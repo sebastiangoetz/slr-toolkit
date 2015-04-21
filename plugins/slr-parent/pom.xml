@@ -40,6 +40,13 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<pomDedependencies>consider</pomDedependencies>
+					<target>
+						<artifact>
+							<groupId>de.tu-dresden</groupId>
+							<artifactId>luna</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
+						</artifact>
+					</target>
 					<environments>
 						<environment>all</environment>
 					</environments>
@@ -73,6 +80,10 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<modules>
+		<module></module>
+	</modules>
 
 	<dependencies>
 		<dependency>
