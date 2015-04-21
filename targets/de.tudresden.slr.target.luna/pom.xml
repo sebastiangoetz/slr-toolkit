@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>luna</artifactId>
+	<artifactId>de.tudresden.slr.target.luna</artifactId>
 	<packaging>eclipse-target-definition</packaging>
-	
+
 	<parent>
 		<groupId>de.tudresden</groupId>
-		<artifactId>slr-parent</artifactId>
+		<artifactId>de.tudresden.slr.parent</artifactId>
 		<relativePath>../../plugins</relativePath>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>

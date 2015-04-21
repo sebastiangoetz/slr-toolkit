@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.tudresden</groupId>
-	<artifactId>slr-parent</artifactId>
+	<artifactId>de.tudresden.slr.parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -42,8 +42,8 @@
 					<pomDedependencies>consider</pomDedependencies>
 					<target>
 						<artifact>
-							<groupId>de.tu-dresden</groupId>
-							<artifactId>luna</artifactId>
+							<groupId>de.tudresden</groupId>
+							<artifactId>de.tudresden.slr.target.luna</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 						</artifact>
 					</target>
@@ -80,10 +80,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<modules>
-		<module></module>
-	</modules>
 
 	<dependencies>
 		<dependency>
