@@ -5,7 +5,7 @@
 A Toolkit for Systematic Literature Reviews
 
 ###Build
-* cd repositories/de.tudresden.slr.thirdparty && mvn p2:site
+* cd repositories/de.tudresden.slr.thirdparty && mvn p2:site jetty:run
 * cd ../../ mvn clean package
 
 ### Dependencies
