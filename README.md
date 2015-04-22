@@ -9,6 +9,9 @@ A Toolkit for Systematic Literature Reviews
 * cd ../../ mvn clean package
 
 ### Dependencies
-* JBibTex (BSD like license)
+* JBibTex (BSD 3-clause)
 * iText (AGPL)
+
+### LICENSE
+GPLv3
 
