@@ -47,7 +47,31 @@
 						</artifact>
 					</target>
 					<environments>
-						<environment>all</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
 					</environments>
 				</configuration>
 			</plugin>
@@ -80,4 +104,11 @@
 		</plugins>
 	</build>
 
+	<modules>
+		<module>../de.tudresden.slr.model.bibtex</module>
+		<module>../de.tudresden.slr.model.bibtex.edit</module>
+		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
+		<module>../../targets/de.tudresden.slr.target.luna</module>
+	</modules>
+	
 </project>
