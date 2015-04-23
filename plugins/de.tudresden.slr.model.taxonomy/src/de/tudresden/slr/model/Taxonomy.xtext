@@ -1,0 +1,13 @@
+grammar de.tudresden.slr.model.Taxonomy with org.eclipse.xtext.common.Terminals
+
+generate taxonomy "http://www.tudresden.de/slr/model/Taxonomy"
+
+Model:
+	(dimensions += Term)*
+;
+
+Term:
+	name = ID ('{'
+		(subclasses += Term ','?)*
+	'}')?
+;
