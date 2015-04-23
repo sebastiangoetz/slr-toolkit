@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link bibtex.Document#getMonth <em>Month</em>}</li>
  *   <li>{@link bibtex.Document#getDay <em>Day</em>}</li>
  *   <li>{@link bibtex.Document#getTitle <em>Title</em>}</li>
+ *   <li>{@link bibtex.Document#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -145,5 +146,31 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setTitle(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Key</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Key</em>' attribute.
+	 * @see #setKey(String)
+	 * @see bibtex.BibtexPackage#getDocument_Key()
+	 * @model
+	 * @generated
+	 */
+	String getKey();
+
+	/**
+	 * Sets the value of the '{@link bibtex.Document#getKey <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Key</em>' attribute.
+	 * @see #getKey()
+	 * @generated
+	 */
+	void setKey(String value);
 
 } // Document

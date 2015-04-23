@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  *   <li>{@link bibtex.impl.DocumentImpl#getMonth <em>Month</em>}</li>
  *   <li>{@link bibtex.impl.DocumentImpl#getDay <em>Day</em>}</li>
  *   <li>{@link bibtex.impl.DocumentImpl#getTitle <em>Title</em>}</li>
+ *   <li>{@link bibtex.impl.DocumentImpl#getKey <em>Key</em>}</li>
  * </ul>
  * </p>
  *
@@ -119,6 +120,26 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	 * @ordered
 	 */
 	protected String title = TITLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String KEY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
+	protected String key = KEY_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -240,6 +261,27 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getKey() {
+		return key;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setKey(String newKey) {
+		String oldKey = key;
+		key = newKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__KEY, oldKey, key));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -253,6 +295,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 				return getDay();
 			case BibtexPackage.DOCUMENT__TITLE:
 				return getTitle();
+			case BibtexPackage.DOCUMENT__KEY:
+				return getKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -282,6 +326,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 			case BibtexPackage.DOCUMENT__TITLE:
 				setTitle((String)newValue);
 				return;
+			case BibtexPackage.DOCUMENT__KEY:
+				setKey((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -309,6 +356,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 			case BibtexPackage.DOCUMENT__TITLE:
 				setTitle(TITLE_EDEFAULT);
 				return;
+			case BibtexPackage.DOCUMENT__KEY:
+				setKey(KEY_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -331,6 +381,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 				return DAY_EDEFAULT == null ? day != null : !DAY_EDEFAULT.equals(day);
 			case BibtexPackage.DOCUMENT__TITLE:
 				return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
+			case BibtexPackage.DOCUMENT__KEY:
+				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -355,6 +407,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		result.append(day);
 		result.append(", title: ");
 		result.append(title);
+		result.append(", key: ");
+		result.append(key);
 		result.append(')');
 		return result.toString();
 	}

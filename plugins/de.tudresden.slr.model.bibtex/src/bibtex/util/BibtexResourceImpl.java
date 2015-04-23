@@ -2,28 +2,34 @@
  */
 package bibtex.util;
 
+import static org.jbibtex.BibTeXEntry.*;
+
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
+import org.jbibtex.BibTeXFormatter;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
-import org.jbibtex.BibTeXString;
-import org.jbibtex.Key;
+import org.jbibtex.KeyValue;
 import org.jbibtex.ParseException;
+import org.jbibtex.StringValue;
+import org.jbibtex.StringValue.Style;
 import org.jbibtex.TokenMgrException;
-import org.jbibtex.Value;
 
 import bibtex.BibtexFactory;
 import bibtex.Document;
@@ -52,39 +58,34 @@ public class BibtexResourceImpl extends ResourceImpl {
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
 
-		Reader reader = new BufferedReader(new InputStreamReader(inputStream));
-		try {
+		try (Reader reader = new BufferedReader(new InputStreamReader(
+				inputStream))) {
 			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parse(reader);
 
-			List<BibTeXObject> objects = db.getObjects();
-			for (BibTeXObject bto : objects) {
+			for (BibTeXObject bto : db.getObjects()) {
 				if (bto instanceof BibTeXEntry) {
 					BibTeXEntry entry = (BibTeXEntry) bto;
 					Document document = BibtexFactory.eINSTANCE
 							.createDocument();
 
-					if (entry.getField(BibTeXEntry.KEY_TITLE) != null) {
-						document.setTitle(entry.getField(BibTeXEntry.KEY_TITLE)
+					document.setKey(entry.getKey().toString());
+
+					if (entry.getField(KEY_TITLE) != null) {
+						document.setTitle(entry.getField(KEY_TITLE)
 								.toUserString());
 					}
-					if (entry.getField(BibTeXEntry.KEY_YEAR) != null) {
-						document.setYear(entry.getField(BibTeXEntry.KEY_YEAR)
+					if (entry.getField(KEY_YEAR) != null) {
+						document.setYear(entry.getField(KEY_YEAR)
 								.toUserString());
 					}
-					if (entry.getField(BibTeXEntry.KEY_MONTH) != null) {
-						document.setMonth(entry.getField(BibTeXEntry.KEY_MONTH)
-								.toUserString());
-					}
-					if (entry.getField(BibTeXEntry.KEY_MONTH) != null) {
-						document.setDay(entry.getField(BibTeXEntry.KEY_MONTH)
+					if (entry.getField(KEY_MONTH) != null) {
+						document.setMonth(entry.getField(KEY_MONTH)
 								.toUserString());
 					}
 					getContents().add(document);
 				}
-				// TODO Check for more types later
 			}
-
 		} catch (TokenMgrException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,29 +96,52 @@ public class BibtexResourceImpl extends ResourceImpl {
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 
-		File f = new File(uri.toString());
-		FileInputStream inputStream = new FileInputStream(f);
-		Reader reader = new BufferedReader(new InputStreamReader(inputStream));
-		BibTeXParser parser;
-		try {
-			parser = new BibTeXParser();
+		ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
+		try (Reader reader = new InputStreamReader(converter.createInputStream(
+				uri, options))) {
+
+			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parse(reader);
+			Map<String, BibTeXEntry> entries = new HashMap<>();
 
-			Map<Key, BibTeXEntry> entryMap = db.getEntries();
-
-			List<BibTeXObject> objects = db.getObjects();
-			for (BibTeXObject bto : objects) {
-				if (bto instanceof BibTeXString) {
-
-				} else if (bto instanceof BibTeXEntry) {
-					BibTeXEntry bte = (BibTeXEntry) bto;
+			for (BibTeXObject bto : db.getObjects()) {
+				if (bto instanceof BibTeXEntry) {
+					BibTeXEntry entry = (BibTeXEntry) bto;
+					entries.put(entry.getKey().toString(), entry);
 				}
 			}
 
+			List<EObject> dirtyDocuments = getContents().stream().filter(p -> {
+				if (p instanceof Document) {
+					Document document = (Document) p;
+					return entries.keySet().contains(document.getKey());
+				}
+				return false;
+			}).collect(Collectors.toList());
+
+			for (EObject e : dirtyDocuments) {
+				Document document = (Document) e;
+				BibTeXEntry entry = entries.get(document.getKey());
+				db.removeObject(entry);
+				db.addObject(updateDocument(document, entry));
+			}
+
+			try (OutputStreamWriter out = new OutputStreamWriter(outputStream)) {
+				BibTeXFormatter formatter = new BibTeXFormatter();
+				formatter.format(db, out);
+			}
 		} catch (TokenMgrException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private BibTeXEntry updateDocument(Document doc, BibTeXEntry entry) {
+		BibTeXEntry result = new BibTeXEntry(entry.getType(), entry.getKey());
+		result.addAllFields(entry.getFields());
+		if (doc.getMonth() != null)
+			result.addField(KEY_MONTH, new StringValue(doc.getMonth(),
+					Style.QUOTED));
+		return result;
+	}
 } // BibtexResourceImpl

@@ -61,6 +61,7 @@ public class DocumentItemProvider
 			addMonthPropertyDescriptor(object);
 			addDayPropertyDescriptor(object);
 			addTitlePropertyDescriptor(object);
+			addKeyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -176,6 +177,28 @@ public class DocumentItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Key feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addKeyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_key_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_key_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__KEY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Document.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -218,6 +241,7 @@ public class DocumentItemProvider
 			case BibtexPackage.DOCUMENT__MONTH:
 			case BibtexPackage.DOCUMENT__DAY:
 			case BibtexPackage.DOCUMENT__TITLE:
+			case BibtexPackage.DOCUMENT__KEY:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

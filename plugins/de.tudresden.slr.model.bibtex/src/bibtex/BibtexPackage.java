@@ -111,13 +111,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__TITLE = 4;
 
 	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__KEY = 5;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 5;
+	int DOCUMENT_FEATURE_COUNT = 6;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class.
@@ -194,6 +203,17 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Title();
 
 	/**
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getKey <em>Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see bibtex.Document#getKey()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Key();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -265,6 +285,14 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__TITLE = eINSTANCE.getDocument_Title();
+
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DOCUMENT__KEY = eINSTANCE.getDocument_Key();
 
 	}
 
