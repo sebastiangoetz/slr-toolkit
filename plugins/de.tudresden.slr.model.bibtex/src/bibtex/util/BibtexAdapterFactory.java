@@ -72,14 +72,6 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 				return createDocumentAdapter();
 			}
 			@Override
-			public Adapter casePaper(Paper object) {
-				return createPaperAdapter();
-			}
-			@Override
-			public Adapter caseBook(Book object) {
-				return createBookAdapter();
-			}
-			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -110,34 +102,6 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createDocumentAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link bibtex.Paper <em>Paper</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see bibtex.Paper
-	 * @generated
-	 */
-	public Adapter createPaperAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link bibtex.Book <em>Book</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see bibtex.Book
-	 * @generated
-	 */
-	public Adapter createBookAdapter() {
 		return null;
 	}
 

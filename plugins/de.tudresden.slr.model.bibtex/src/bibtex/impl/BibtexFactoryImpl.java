@@ -57,8 +57,6 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case BibtexPackage.DOCUMENT: return createDocument();
-			case BibtexPackage.PAPER: return createPaper();
-			case BibtexPackage.BOOK: return createBook();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -72,26 +70,6 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	public Document createDocument() {
 		DocumentImpl document = new DocumentImpl();
 		return document;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Paper createPaper() {
-		PaperImpl paper = new PaperImpl();
-		return paper;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Book createBook() {
-		BookImpl book = new BookImpl();
-		return book;
 	}
 
 	/**

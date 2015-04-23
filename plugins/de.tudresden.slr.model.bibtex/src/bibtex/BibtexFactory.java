@@ -31,24 +31,6 @@ public interface BibtexFactory extends EFactory {
 	Document createDocument();
 
 	/**
-	 * Returns a new object of class '<em>Paper</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Paper</em>'.
-	 * @generated
-	 */
-	Paper createPaper();
-
-	/**
-	 * Returns a new object of class '<em>Book</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Book</em>'.
-	 * @generated
-	 */
-	Book createBook();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -4,14 +4,10 @@ package bibtex.impl;
 
 import bibtex.BibtexFactory;
 import bibtex.BibtexPackage;
-import bibtex.Book;
 import bibtex.Document;
-import bibtex.Paper;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -27,20 +23,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	private EClass documentEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass paperEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass bookEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -126,7 +108,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Published() {
+	public EAttribute getDocument_Year() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -135,8 +117,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPaper() {
-		return paperEClass;
+	public EAttribute getDocument_Month() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -144,8 +126,17 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getBook() {
-		return bookEClass;
+	public EAttribute getDocument_Day() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDocument_Title() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
@@ -178,11 +169,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		// Create classes and their features
 		documentEClass = createEClass(DOCUMENT);
 		createEAttribute(documentEClass, DOCUMENT__AUTHORS);
-		createEAttribute(documentEClass, DOCUMENT__PUBLISHED);
-
-		paperEClass = createEClass(PAPER);
-
-		bookEClass = createEClass(BOOK);
+		createEAttribute(documentEClass, DOCUMENT__YEAR);
+		createEAttribute(documentEClass, DOCUMENT__MONTH);
+		createEAttribute(documentEClass, DOCUMENT__DAY);
+		createEAttribute(documentEClass, DOCUMENT__TITLE);
 	}
 
 	/**
@@ -213,17 +203,14 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		paperEClass.getESuperTypes().add(this.getDocument());
-		bookEClass.getESuperTypes().add(this.getDocument());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(documentEClass, Document.class, "Document", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDocument_Authors(), ecorePackage.getEString(), "authors", null, 1, -1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocument_Published(), ecorePackage.getEDate(), "published", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(paperEClass, Paper.class, "Paper", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(bookEClass, Book.class, "Book", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDocument_Year(), ecorePackage.getEString(), "year", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Month(), ecorePackage.getEString(), "month", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Day(), ecorePackage.getEString(), "day", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Title(), ecorePackage.getEString(), "title", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

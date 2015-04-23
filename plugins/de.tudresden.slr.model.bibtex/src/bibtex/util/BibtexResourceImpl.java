@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -22,11 +21,9 @@ import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.BibTeXString;
 import org.jbibtex.Key;
-import org.jbibtex.LaTeXObject;
-import org.jbibtex.LaTeXParser;
-import org.jbibtex.LaTeXPrinter;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
+import org.jbibtex.Value;
 
 import bibtex.BibtexFactory;
 import bibtex.Document;
@@ -60,33 +57,34 @@ public class BibtexResourceImpl extends ResourceImpl {
 			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parse(reader);
 
-			Map<Key, BibTeXEntry> entryMap = db.getEntries();
+			List<BibTeXObject> objects = db.getObjects();
+			for (BibTeXObject bto : objects) {
+				if (bto instanceof BibTeXEntry) {
+					BibTeXEntry entry = (BibTeXEntry) bto;
+					Document document = BibtexFactory.eINSTANCE
+							.createDocument();
 
-			Collection<BibTeXEntry> entries = entryMap.values();
-			for (BibTeXEntry entry : entries) {
-				org.jbibtex.Value value = entry.getField(BibTeXEntry.KEY_TITLE);
-				if (value == null) {
-					continue;
+					if (entry.getField(BibTeXEntry.KEY_TITLE) != null) {
+						document.setTitle(entry.getField(BibTeXEntry.KEY_TITLE)
+								.toUserString());
+					}
+					if (entry.getField(BibTeXEntry.KEY_YEAR) != null) {
+						document.setYear(entry.getField(BibTeXEntry.KEY_YEAR)
+								.toUserString());
+					}
+					if (entry.getField(BibTeXEntry.KEY_MONTH) != null) {
+						document.setMonth(entry.getField(BibTeXEntry.KEY_MONTH)
+								.toUserString());
+					}
+					if (entry.getField(BibTeXEntry.KEY_MONTH) != null) {
+						document.setDay(entry.getField(BibTeXEntry.KEY_MONTH)
+								.toUserString());
+					}
+					getContents().add(document);
 				}
-
-				// Do something with the title value
-				String plainTextString = "";
-				String string = value.toUserString();
-				if (string.indexOf('\\') > -1 || string.indexOf('{') > -1) {
-					// LaTeX string that needs to be translated to plain text
-					// string
-					LaTeXParser latexParser = new LaTeXParser();
-
-					List<LaTeXObject> latexObjects = latexParser.parse(string);
-
-					LaTeXPrinter latexPrinter = new LaTeXPrinter();
-
-					plainTextString = latexPrinter.print(latexObjects);
-				}
-				Document doc = BibtexFactory.eINSTANCE.createDocument();
-				doc.getAuthors().add(plainTextString);
-				this.getContents().add(doc);
+				// TODO Check for more types later
 			}
+
 		} catch (TokenMgrException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,16 +104,16 @@ public class BibtexResourceImpl extends ResourceImpl {
 			BibTeXDatabase db = parser.parse(reader);
 
 			Map<Key, BibTeXEntry> entryMap = db.getEntries();
-			
+
 			List<BibTeXObject> objects = db.getObjects();
-			for(BibTeXObject bto : objects) {
-				if(bto instanceof BibTeXString) {
-					
-				} else if(bto instanceof BibTeXEntry) {
+			for (BibTeXObject bto : objects) {
+				if (bto instanceof BibTeXString) {
+
+				} else if (bto instanceof BibTeXEntry) {
 					BibTeXEntry bte = (BibTeXEntry) bto;
 				}
 			}
-			
+
 		} catch (TokenMgrException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

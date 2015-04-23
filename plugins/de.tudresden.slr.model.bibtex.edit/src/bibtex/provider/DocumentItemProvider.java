@@ -5,16 +5,11 @@ package bibtex.provider;
 
 import bibtex.BibtexPackage;
 import bibtex.Document;
-
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -62,7 +57,10 @@ public class DocumentItemProvider
 			super.getPropertyDescriptors(object);
 
 			addAuthorsPropertyDescriptor(object);
-			addPublishedPropertyDescriptor(object);
+			addYearPropertyDescriptor(object);
+			addMonthPropertyDescriptor(object);
+			addDayPropertyDescriptor(object);
+			addTitlePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -90,19 +88,85 @@ public class DocumentItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Published feature.
+	 * This adds a property descriptor for the Year feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addPublishedPropertyDescriptor(Object object) {
+	protected void addYearPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Document_published_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Document_published_feature", "_UI_Document_type"),
-				 BibtexPackage.Literals.DOCUMENT__PUBLISHED,
+				 getString("_UI_Document_year_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_year_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__YEAR,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Month feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addMonthPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_month_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_month_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__MONTH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Day feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDayPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_day_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_day_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__DAY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Title feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addTitlePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_title_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_title_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__TITLE,
 				 true,
 				 false,
 				 false,
@@ -130,8 +194,7 @@ public class DocumentItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		Date labelValue = ((Document)object).getPublished();
-		String label = labelValue == null ? null : labelValue.toString();
+		String label = ((Document)object).getYear();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Document_type") :
 			getString("_UI_Document_type") + " " + label;
@@ -151,7 +214,10 @@ public class DocumentItemProvider
 
 		switch (notification.getFeatureID(Document.class)) {
 			case BibtexPackage.DOCUMENT__AUTHORS:
-			case BibtexPackage.DOCUMENT__PUBLISHED:
+			case BibtexPackage.DOCUMENT__YEAR:
+			case BibtexPackage.DOCUMENT__MONTH:
+			case BibtexPackage.DOCUMENT__DAY:
+			case BibtexPackage.DOCUMENT__TITLE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

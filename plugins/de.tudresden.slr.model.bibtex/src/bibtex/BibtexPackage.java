@@ -75,13 +75,40 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__AUTHORS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Published</b></em>' attribute.
+	 * The feature id for the '<em><b>Year</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__PUBLISHED = 1;
+	int DOCUMENT__YEAR = 1;
+
+	/**
+	 * The feature id for the '<em><b>Month</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__MONTH = 2;
+
+	/**
+	 * The feature id for the '<em><b>Day</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__DAY = 3;
+
+	/**
+	 * The feature id for the '<em><b>Title</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__TITLE = 4;
 
 	/**
 	 * The number of structural features of the '<em>Document</em>' class.
@@ -90,7 +117,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 2;
+	int DOCUMENT_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class.
@@ -100,99 +127,6 @@ public interface BibtexPackage extends EPackage {
 	 * @ordered
 	 */
 	int DOCUMENT_OPERATION_COUNT = 0;
-
-	/**
-	 * The meta object id for the '{@link bibtex.impl.PaperImpl <em>Paper</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see bibtex.impl.PaperImpl
-	 * @see bibtex.impl.BibtexPackageImpl#getPaper()
-	 * @generated
-	 */
-	int PAPER = 1;
-
-	/**
-	 * The feature id for the '<em><b>Authors</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAPER__AUTHORS = DOCUMENT__AUTHORS;
-
-	/**
-	 * The feature id for the '<em><b>Published</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAPER__PUBLISHED = DOCUMENT__PUBLISHED;
-
-	/**
-	 * The number of structural features of the '<em>Paper</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAPER_FEATURE_COUNT = DOCUMENT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Paper</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PAPER_OPERATION_COUNT = DOCUMENT_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link bibtex.impl.BookImpl <em>Book</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see bibtex.impl.BookImpl
-	 * @see bibtex.impl.BibtexPackageImpl#getBook()
-	 * @generated
-	 */
-	int BOOK = 2;
-
-	/**
-	 * The feature id for the '<em><b>Authors</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK__AUTHORS = DOCUMENT__AUTHORS;
-
-	/**
-	 * The feature id for the '<em><b>Published</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK__PUBLISHED = DOCUMENT__PUBLISHED;
-
-	/**
-	 * The number of structural features of the '<em>Book</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK_FEATURE_COUNT = DOCUMENT_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Book</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int BOOK_OPERATION_COUNT = DOCUMENT_OPERATION_COUNT + 0;
-
 
 	/**
 	 * Returns the meta object for class '{@link bibtex.Document <em>Document</em>}'.
@@ -216,35 +150,48 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Authors();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getPublished <em>Published</em>}'.
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getYear <em>Year</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Published</em>'.
-	 * @see bibtex.Document#getPublished()
+	 * @return the meta object for the attribute '<em>Year</em>'.
+	 * @see bibtex.Document#getYear()
 	 * @see #getDocument()
 	 * @generated
 	 */
-	EAttribute getDocument_Published();
+	EAttribute getDocument_Year();
 
 	/**
-	 * Returns the meta object for class '{@link bibtex.Paper <em>Paper</em>}'.
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getMonth <em>Month</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Paper</em>'.
-	 * @see bibtex.Paper
+	 * @return the meta object for the attribute '<em>Month</em>'.
+	 * @see bibtex.Document#getMonth()
+	 * @see #getDocument()
 	 * @generated
 	 */
-	EClass getPaper();
+	EAttribute getDocument_Month();
 
 	/**
-	 * Returns the meta object for class '{@link bibtex.Book <em>Book</em>}'.
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getDay <em>Day</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Book</em>'.
-	 * @see bibtex.Book
+	 * @return the meta object for the attribute '<em>Day</em>'.
+	 * @see bibtex.Document#getDay()
+	 * @see #getDocument()
 	 * @generated
 	 */
-	EClass getBook();
+	EAttribute getDocument_Day();
+
+	/**
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getTitle <em>Title</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Title</em>'.
+	 * @see bibtex.Document#getTitle()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Title();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -288,32 +235,36 @@ public interface BibtexPackage extends EPackage {
 		EAttribute DOCUMENT__AUTHORS = eINSTANCE.getDocument_Authors();
 
 		/**
-		 * The meta object literal for the '<em><b>Published</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Year</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute DOCUMENT__PUBLISHED = eINSTANCE.getDocument_Published();
+		EAttribute DOCUMENT__YEAR = eINSTANCE.getDocument_Year();
 
 		/**
-		 * The meta object literal for the '{@link bibtex.impl.PaperImpl <em>Paper</em>}' class.
+		 * The meta object literal for the '<em><b>Month</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see bibtex.impl.PaperImpl
-		 * @see bibtex.impl.BibtexPackageImpl#getPaper()
 		 * @generated
 		 */
-		EClass PAPER = eINSTANCE.getPaper();
+		EAttribute DOCUMENT__MONTH = eINSTANCE.getDocument_Month();
 
 		/**
-		 * The meta object literal for the '{@link bibtex.impl.BookImpl <em>Book</em>}' class.
+		 * The meta object literal for the '<em><b>Day</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see bibtex.impl.BookImpl
-		 * @see bibtex.impl.BibtexPackageImpl#getBook()
 		 * @generated
 		 */
-		EClass BOOK = eINSTANCE.getBook();
+		EAttribute DOCUMENT__DAY = eINSTANCE.getDocument_Day();
+
+		/**
+		 * The meta object literal for the '<em><b>Title</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DOCUMENT__TITLE = eINSTANCE.getDocument_Title();
 
 	}
 

@@ -28,7 +28,7 @@
             id="bibtex.presentation.BibtexEditorID"
             name="%_UI_BibtexEditor_label"
             icon="icons/full/obj16/BibtexModelFile.gif"
-            extensions="bibtex"
+            extensions="bib"
             class="bibtex.presentation.BibtexEditor"
             contributorClass="bibtex.presentation.BibtexActionBarContributor">
       </editor>

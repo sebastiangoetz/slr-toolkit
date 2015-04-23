@@ -95,52 +95,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory imple
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link bibtex.Paper} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PaperItemProvider paperItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link bibtex.Paper}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPaperAdapter() {
-		if (paperItemProvider == null) {
-			paperItemProvider = new PaperItemProvider(this);
-		}
-
-		return paperItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link bibtex.Book} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected BookItemProvider bookItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link bibtex.Book}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createBookAdapter() {
-		if (bookItemProvider == null) {
-			bookItemProvider = new BookItemProvider(this);
-		}
-
-		return bookItemProvider;
-	}
-
-	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -240,8 +194,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory imple
 	 */
 	public void dispose() {
 		if (documentItemProvider != null) documentItemProvider.dispose();
-		if (paperItemProvider != null) paperItemProvider.dispose();
-		if (bookItemProvider != null) bookItemProvider.dispose();
 	}
 
 }
