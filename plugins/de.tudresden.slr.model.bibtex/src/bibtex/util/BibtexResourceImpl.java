@@ -25,7 +25,6 @@ import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
-import org.jbibtex.KeyValue;
 import org.jbibtex.ParseException;
 import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
