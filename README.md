@@ -6,7 +6,7 @@ A Toolkit for Systematic Literature Reviews
 ### Build
 From console:
 * `sh -c "mvn -f ./repositories/de.tudresden.slr.thirdparty/pom.xml p2:site jetty:run &"`
-* `mvn clean package`
+* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package`
 
 Within Eclipse add Run Configurations (Run as -> Maven build):
 * for repositories/de.tudresden.slr.thirdparty/pom.xml with `p2:site jetty:run`
