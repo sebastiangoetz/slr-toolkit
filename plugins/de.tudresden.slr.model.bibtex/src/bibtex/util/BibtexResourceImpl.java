@@ -110,16 +110,17 @@ public class BibtexResourceImpl extends ResourceImpl {
 				}
 			}
 
-			List<EObject> dirtyDocuments = getContents().stream().filter(p -> {
-				if (p instanceof Document) {
-					Document document = (Document) p;
-					return entries.keySet().contains(document.getKey());
-				}
-				return false;
-			}).collect(Collectors.toList());
+			List<Document> dirtyDocuments = getContents()
+					.stream()
+					.filter(p -> {
+						if (p instanceof Document) {
+							Document document = (Document) p;
+							return entries.keySet().contains(document.getKey());
+						}
+						return false;
+					}).map(d -> (Document) d).collect(Collectors.toList());
 
-			for (EObject e : dirtyDocuments) {
-				Document document = (Document) e;
+			for (Document document : dirtyDocuments) {
 				BibTeXEntry entry = entries.get(document.getKey());
 				db.removeObject(entry);
 				db.addObject(updateDocument(document, entry));
