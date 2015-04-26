@@ -13,10 +13,10 @@ Within Eclipse add Run Configurations (Run as -> Maven build):
 * for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
 
 ### Dependencies
-* Eclipse RCP (EPL)
-* JBibTex (BSD 3-clause)
-* iText (AGPL)
+* Eclipse RCP 4.4.2 (EPL)
+* JBibTex 1.0.14 (BSD 3-clause)
+* iText 2.1.7 (MPL)
+* SWTChart (EPL)
 
 ### License
-GPLv3
-
+EPL 1.0
