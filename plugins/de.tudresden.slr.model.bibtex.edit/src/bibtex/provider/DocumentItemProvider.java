@@ -63,6 +63,8 @@ public class DocumentItemProvider
 			addDayPropertyDescriptor(object);
 			addTitlePropertyDescriptor(object);
 			addKeyPropertyDescriptor(object);
+			addDoiPropertyDescriptor(object);
+			addUrlPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -222,6 +224,50 @@ public class DocumentItemProvider
 	}
 
 	/**
+	 * This adds a property descriptor for the Doi feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDoiPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_doi_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_doi_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__DOI,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Url feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addUrlPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_url_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_url_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__URL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This returns Document.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -236,7 +282,6 @@ public class DocumentItemProvider
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
@@ -266,6 +311,8 @@ public class DocumentItemProvider
 			case BibtexPackage.DOCUMENT__DAY:
 			case BibtexPackage.DOCUMENT__TITLE:
 			case BibtexPackage.DOCUMENT__KEY:
+			case BibtexPackage.DOCUMENT__DOI:
+			case BibtexPackage.DOCUMENT__URL:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}
