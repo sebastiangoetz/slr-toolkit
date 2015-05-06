@@ -32,6 +32,13 @@
             class="bibtex.presentation.BibtexEditor"
             contributorClass="bibtex.presentation.BibtexActionBarContributor">
       </editor>
+      <editor
+            class="bibtex.presentation.BibtexEntryEditor"
+            contributorClass="bibtex.presentation.BibtexEntryContributor"
+            icon="icons/sample.gif"
+            id="bibtex.presentation.BibtexEntryEditor"
+            name="BibTeX Entry">
+      </editor>
    </extension>
 
 </plugin>
