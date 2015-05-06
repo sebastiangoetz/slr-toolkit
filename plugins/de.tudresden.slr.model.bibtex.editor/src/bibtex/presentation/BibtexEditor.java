@@ -328,18 +328,21 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		}
 	};
 
+	/**
+	 * listener that calls an editor for selected bibtex entries.
+	 * 
+	 * @see BibtexEntryEditor
+	 */
 	IOpenListener openlistener = new IOpenListener() {
 
 		@Override
 		public void open(OpenEvent event) {
 			if (event.getSelection() != null
 					&& event.getSelection() instanceof StructuredSelection) {
-				Object element = ((StructuredSelection) event
-						.getSelection()).getFirstElement();
-				if (element != null
-						&& element instanceof DocumentImpl) {
-					IWorkbenchWindow window = PlatformUI
-							.getWorkbench()
+				Object element = ((StructuredSelection) event.getSelection())
+						.getFirstElement();
+				if (element != null && element instanceof DocumentImpl) {
+					IWorkbenchWindow window = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow();
 					DocumentStorage storage = new DocumentStorage(
 							(DocumentImpl) element);
@@ -1029,8 +1032,6 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	/**
 	 * This is the method used by the framework to install your own controls.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
 	 */
 	@Override
 	public void createPages() {
@@ -1112,7 +1113,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				parentViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
 				parentViewer.addOpenListener(openlistener);
-				
+
 				createContextMenuFor(parentViewer);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex, getString("_UI_ParentPage_label"));
@@ -1171,7 +1172,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
 				treeViewer.addOpenListener(openlistener);
-				
+
 				new AdapterFactoryTreeEditor(treeViewer.getTree(),
 						adapterFactory);
 
@@ -1222,7 +1223,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
 				tableViewer.addOpenListener(openlistener);
-				
+
 				createContextMenuFor(tableViewer);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex, getString("_UI_TablePage_label"));
@@ -1272,7 +1273,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 						.setLabelProvider(new AdapterFactoryLabelProvider(
 								adapterFactory));
 				treeViewerWithColumns.addOpenListener(openlistener);
-				
+
 				createContextMenuFor(treeViewerWithColumns);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex,
