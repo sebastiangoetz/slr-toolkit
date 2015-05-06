@@ -57,6 +57,7 @@ public class DocumentItemProvider
 			super.getPropertyDescriptors(object);
 
 			addAuthorsPropertyDescriptor(object);
+			addAbstractPropertyDescriptor(object);
 			addYearPropertyDescriptor(object);
 			addMonthPropertyDescriptor(object);
 			addDayPropertyDescriptor(object);
@@ -80,6 +81,28 @@ public class DocumentItemProvider
 				 getString("_UI_Document_authors_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Document_authors_feature", "_UI_Document_type"),
 				 BibtexPackage.Literals.DOCUMENT__AUTHORS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Abstract feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addAbstractPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Document_abstract_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Document_abstract_feature", "_UI_Document_type"),
+				 BibtexPackage.Literals.DOCUMENT__ABSTRACT,
 				 true,
 				 false,
 				 false,
@@ -217,7 +240,7 @@ public class DocumentItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Document)object).getYear();
+		String label = ((Document)object).getKey();
 		return label == null || label.length() == 0 ?
 			getString("_UI_Document_type") :
 			getString("_UI_Document_type") + " " + label;
@@ -237,6 +260,7 @@ public class DocumentItemProvider
 
 		switch (notification.getFeatureID(Document.class)) {
 			case BibtexPackage.DOCUMENT__AUTHORS:
+			case BibtexPackage.DOCUMENT__ABSTRACT:
 			case BibtexPackage.DOCUMENT__YEAR:
 			case BibtexPackage.DOCUMENT__MONTH:
 			case BibtexPackage.DOCUMENT__DAY:
