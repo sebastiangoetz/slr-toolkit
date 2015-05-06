@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -215,9 +216,16 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 		Composite composite = new Composite(getContainer(), SWT.NONE);
 		FillLayout layout = new FillLayout();
 		composite.setLayout(layout);
-		text = new StyledText(composite, SWT.H_SCROLL | SWT.V_SCROLL);
-		text.setEditable(false);
-
+		Browser browser = new Browser(composite, SWT.NONE);
+		String url ="";
+		if (document.getUrl()!= null){
+			url = document.getUrl();
+		} else if (document.getDoi() != null){
+			url = "http://doi.org/"+document.getDoi();
+		} else {
+			return;
+		}
+		browser.setUrl(url);
 		int index = addPage(composite);
 		setPageText(index, "Webpage");
 	}
@@ -244,9 +252,12 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 		createPage0();
 		// TODO: create webpage
 		createPropertyPage();
-		// TODO: create pdf view
-		createWebpage();
-		createPdfPage();
+		if (document.getUrl()!= null || document.getDoi()!= null){
+			createWebpage();
+		}
+		if(document.getAbstract() != null){
+			createPdfPage();
+		}
 	}
 
 	/**

@@ -23,8 +23,7 @@
    </extension>
 
    <extension point="org.eclipse.ui.editors">
-      <!-- @generated bibtex -->
-      <editor
+   	  <editor
             id="bibtex.presentation.BibtexEditorID"
             name="%_UI_BibtexEditor_label"
             icon="icons/full/obj16/BibtexModelFile.gif"
