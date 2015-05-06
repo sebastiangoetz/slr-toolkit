@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link bibtex.Document#getDay <em>Day</em>}</li>
  *   <li>{@link bibtex.Document#getTitle <em>Title</em>}</li>
  *   <li>{@link bibtex.Document#getKey <em>Key</em>}</li>
+ *   <li>{@link bibtex.Document#getDoi <em>Doi</em>}</li>
+ *   <li>{@link bibtex.Document#getUrl <em>Url</em>}</li>
  * </ul>
  * </p>
  *
@@ -185,7 +187,7 @@ public interface Document extends EObject {
 	 * @return the value of the '<em>Key</em>' attribute.
 	 * @see #setKey(String)
 	 * @see bibtex.BibtexPackage#getDocument_Key()
-	 * @model
+	 * @model id="true"
 	 * @generated
 	 */
 	String getKey();
@@ -199,5 +201,57 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setKey(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Doi</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Doi</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Doi</em>' attribute.
+	 * @see #setDoi(String)
+	 * @see bibtex.BibtexPackage#getDocument_Doi()
+	 * @model
+	 * @generated
+	 */
+	String getDoi();
+
+	/**
+	 * Sets the value of the '{@link bibtex.Document#getDoi <em>Doi</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Doi</em>' attribute.
+	 * @see #getDoi()
+	 * @generated
+	 */
+	void setDoi(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Url</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Url</em>' attribute.
+	 * @see #setUrl(String)
+	 * @see bibtex.BibtexPackage#getDocument_Url()
+	 * @model
+	 * @generated
+	 */
+	String getUrl();
+
+	/**
+	 * Sets the value of the '{@link bibtex.Document#getUrl <em>Url</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Url</em>' attribute.
+	 * @see #getUrl()
+	 * @generated
+	 */
+	void setUrl(String value);
 
 } // Document

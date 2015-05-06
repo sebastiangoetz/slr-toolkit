@@ -162,6 +162,24 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getDocument_Doi() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDocument_Url() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory)getEFactoryInstance();
 	}
@@ -193,6 +211,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__DAY);
 		createEAttribute(documentEClass, DOCUMENT__TITLE);
 		createEAttribute(documentEClass, DOCUMENT__KEY);
+		createEAttribute(documentEClass, DOCUMENT__DOI);
+		createEAttribute(documentEClass, DOCUMENT__URL);
 	}
 
 	/**
@@ -232,7 +252,9 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		initEAttribute(getDocument_Month(), ecorePackage.getEString(), "month", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Day(), ecorePackage.getEString(), "day", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Title(), ecorePackage.getEString(), "title", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocument_Key(), ecorePackage.getEString(), "key", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Key(), ecorePackage.getEString(), "key", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Doi(), ecorePackage.getEString(), "doi", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Url(), ecorePackage.getEString(), "url", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

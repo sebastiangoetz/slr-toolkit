@@ -129,13 +129,31 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__KEY = 6;
 
 	/**
+	 * The feature id for the '<em><b>Doi</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__DOI = 7;
+
+	/**
+	 * The feature id for the '<em><b>Url</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__URL = 8;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 7;
+	int DOCUMENT_FEATURE_COUNT = 9;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class.
@@ -234,6 +252,28 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Key();
 
 	/**
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getDoi <em>Doi</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Doi</em>'.
+	 * @see bibtex.Document#getDoi()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Doi();
+
+	/**
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getUrl <em>Url</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Url</em>'.
+	 * @see bibtex.Document#getUrl()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Url();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -321,6 +361,22 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__KEY = eINSTANCE.getDocument_Key();
+
+		/**
+		 * The meta object literal for the '<em><b>Doi</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DOCUMENT__DOI = eINSTANCE.getDocument_Doi();
+
+		/**
+		 * The meta object literal for the '<em><b>Url</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DOCUMENT__URL = eINSTANCE.getDocument_Url();
 
 	}
 

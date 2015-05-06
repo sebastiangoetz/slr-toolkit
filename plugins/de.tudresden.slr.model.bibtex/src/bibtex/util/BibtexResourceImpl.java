@@ -84,6 +84,14 @@ public class BibtexResourceImpl extends ResourceImpl {
 						document.getAuthors().add(entry.getField(KEY_AUTHOR)
 								.toUserString());
 					}
+					if (entry.getField(KEY_DOI) != null) {
+						document.setDoi(entry.getField(KEY_DOI)
+								.toUserString());
+					}
+					if (entry.getField(KEY_URL) != null) {
+						document.setUrl(entry.getField(KEY_URL)
+								.toUserString());
+					}
 					Key key = new Key("abstract");
 					if (entry.getField(key) != null) {
 						document.setAbstract(entry.getField(key)
