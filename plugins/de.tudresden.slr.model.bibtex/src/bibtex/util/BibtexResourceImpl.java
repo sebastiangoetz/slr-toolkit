@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.jbibtex.BibTeXDatabase;
@@ -25,6 +24,7 @@ import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
+import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
@@ -36,17 +36,15 @@ import bibtex.Document;
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
  * <!-- end-user-doc -->
- * 
  * @see bibtex.util.BibtexResourceFactoryImpl
  * @generated
  */
 public class BibtexResourceImpl extends ResourceImpl {
 	/**
-	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
+	 * Creates an instance of the resource.
+	 * <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * 
-	 * @param uri
-	 *            the URI of the new resource.
+	 * @param uri the URI of the new resource.
 	 * @generated
 	 */
 	public BibtexResourceImpl(URI uri) {
@@ -82,6 +80,16 @@ public class BibtexResourceImpl extends ResourceImpl {
 						document.setMonth(entry.getField(KEY_MONTH)
 								.toUserString());
 					}
+					if (entry.getField(KEY_AUTHOR) != null) {
+						document.getAuthors().add(entry.getField(KEY_AUTHOR)
+								.toUserString());
+					}
+					Key key = new Key("abstract");
+					if (entry.getField(key) != null) {
+						document.setAbstract(entry.getField(key)
+								.toUserString());
+					}
+					
 					getContents().add(document);
 				}
 			}
@@ -142,6 +150,10 @@ public class BibtexResourceImpl extends ResourceImpl {
 		if (doc.getMonth() != null)
 			result.addField(KEY_MONTH, new StringValue(doc.getMonth(),
 					Style.QUOTED));
+		if (doc.getAbstract() != null){
+			result.addField(new Key("abstract"), new StringValue(doc.getAbstract(),
+					Style.BRACED));
+		}
 		return result;
 	}
 } // BibtexResourceImpl

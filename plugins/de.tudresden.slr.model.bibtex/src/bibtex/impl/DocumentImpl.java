@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link bibtex.impl.DocumentImpl#getAuthors <em>Authors</em>}</li>
+ *   <li>{@link bibtex.impl.DocumentImpl#getAbstract <em>Abstract</em>}</li>
  *   <li>{@link bibtex.impl.DocumentImpl#getYear <em>Year</em>}</li>
  *   <li>{@link bibtex.impl.DocumentImpl#getMonth <em>Month</em>}</li>
  *   <li>{@link bibtex.impl.DocumentImpl#getDay <em>Day</em>}</li>
@@ -40,6 +41,26 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	 * @ordered
 	 */
 	protected EList<String> authors;
+
+	/**
+	 * The default value of the '{@link #getAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ABSTRACT_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAbstract()
+	 * @generated
+	 * @ordered
+	 */
+	protected String abstract_ = ABSTRACT_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getYear() <em>Year</em>}' attribute.
@@ -177,6 +198,27 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getAbstract() {
+		return abstract_;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAbstract(String newAbstract) {
+		String oldAbstract = abstract_;
+		abstract_ = newAbstract;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__ABSTRACT, oldAbstract, abstract_));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getYear() {
 		return year;
 	}
@@ -287,6 +329,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		switch (featureID) {
 			case BibtexPackage.DOCUMENT__AUTHORS:
 				return getAuthors();
+			case BibtexPackage.DOCUMENT__ABSTRACT:
+				return getAbstract();
 			case BibtexPackage.DOCUMENT__YEAR:
 				return getYear();
 			case BibtexPackage.DOCUMENT__MONTH:
@@ -313,6 +357,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 			case BibtexPackage.DOCUMENT__AUTHORS:
 				getAuthors().clear();
 				getAuthors().addAll((Collection<? extends String>)newValue);
+				return;
+			case BibtexPackage.DOCUMENT__ABSTRACT:
+				setAbstract((String)newValue);
 				return;
 			case BibtexPackage.DOCUMENT__YEAR:
 				setYear((String)newValue);
@@ -344,6 +391,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 			case BibtexPackage.DOCUMENT__AUTHORS:
 				getAuthors().clear();
 				return;
+			case BibtexPackage.DOCUMENT__ABSTRACT:
+				setAbstract(ABSTRACT_EDEFAULT);
+				return;
 			case BibtexPackage.DOCUMENT__YEAR:
 				setYear(YEAR_EDEFAULT);
 				return;
@@ -373,6 +423,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		switch (featureID) {
 			case BibtexPackage.DOCUMENT__AUTHORS:
 				return authors != null && !authors.isEmpty();
+			case BibtexPackage.DOCUMENT__ABSTRACT:
+				return ABSTRACT_EDEFAULT == null ? abstract_ != null : !ABSTRACT_EDEFAULT.equals(abstract_);
 			case BibtexPackage.DOCUMENT__YEAR:
 				return YEAR_EDEFAULT == null ? year != null : !YEAR_EDEFAULT.equals(year);
 			case BibtexPackage.DOCUMENT__MONTH:
@@ -399,6 +451,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (authors: ");
 		result.append(authors);
+		result.append(", abstract: ");
+		result.append(abstract_);
 		result.append(", year: ");
 		result.append(year);
 		result.append(", month: ");

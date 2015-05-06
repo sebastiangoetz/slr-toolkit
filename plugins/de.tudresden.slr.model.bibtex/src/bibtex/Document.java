@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link bibtex.Document#getAuthors <em>Authors</em>}</li>
+ *   <li>{@link bibtex.Document#getAbstract <em>Abstract</em>}</li>
  *   <li>{@link bibtex.Document#getYear <em>Year</em>}</li>
  *   <li>{@link bibtex.Document#getMonth <em>Month</em>}</li>
  *   <li>{@link bibtex.Document#getDay <em>Day</em>}</li>
@@ -42,6 +43,32 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	EList<String> getAuthors();
+
+	/**
+	 * Returns the value of the '<em><b>Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Abstract</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Abstract</em>' attribute.
+	 * @see #setAbstract(String)
+	 * @see bibtex.BibtexPackage#getDocument_Abstract()
+	 * @model
+	 * @generated
+	 */
+	String getAbstract();
+
+	/**
+	 * Sets the value of the '{@link bibtex.Document#getAbstract <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Abstract</em>' attribute.
+	 * @see #getAbstract()
+	 * @generated
+	 */
+	void setAbstract(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Year</b></em>' attribute.

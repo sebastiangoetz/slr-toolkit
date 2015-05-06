@@ -75,13 +75,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__AUTHORS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__ABSTRACT = 1;
+
+	/**
 	 * The feature id for the '<em><b>Year</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__YEAR = 1;
+	int DOCUMENT__YEAR = 2;
 
 	/**
 	 * The feature id for the '<em><b>Month</b></em>' attribute.
@@ -90,7 +99,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__MONTH = 2;
+	int DOCUMENT__MONTH = 3;
 
 	/**
 	 * The feature id for the '<em><b>Day</b></em>' attribute.
@@ -99,7 +108,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__DAY = 3;
+	int DOCUMENT__DAY = 4;
 
 	/**
 	 * The feature id for the '<em><b>Title</b></em>' attribute.
@@ -108,7 +117,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__TITLE = 4;
+	int DOCUMENT__TITLE = 5;
 
 	/**
 	 * The feature id for the '<em><b>Key</b></em>' attribute.
@@ -117,7 +126,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__KEY = 5;
+	int DOCUMENT__KEY = 6;
 
 	/**
 	 * The number of structural features of the '<em>Document</em>' class.
@@ -126,7 +135,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 6;
+	int DOCUMENT_FEATURE_COUNT = 7;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class.
@@ -157,6 +166,17 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDocument_Authors();
+
+	/**
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getAbstract <em>Abstract</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Abstract</em>'.
+	 * @see bibtex.Document#getAbstract()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Abstract();
 
 	/**
 	 * Returns the meta object for the attribute '{@link bibtex.Document#getYear <em>Year</em>}'.
@@ -253,6 +273,14 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__AUTHORS = eINSTANCE.getDocument_Authors();
+
+		/**
+		 * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DOCUMENT__ABSTRACT = eINSTANCE.getDocument_Abstract();
 
 		/**
 		 * The meta object literal for the '<em><b>Year</b></em>' attribute feature.

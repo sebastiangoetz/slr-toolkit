@@ -108,7 +108,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Year() {
+	public EAttribute getDocument_Abstract() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -117,7 +117,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Month() {
+	public EAttribute getDocument_Year() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -126,7 +126,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Day() {
+	public EAttribute getDocument_Month() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -135,7 +135,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Title() {
+	public EAttribute getDocument_Day() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -144,8 +144,17 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDocument_Key() {
+	public EAttribute getDocument_Title() {
 		return (EAttribute)documentEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDocument_Key() {
+		return (EAttribute)documentEClass.getEStructuralFeatures().get(6);
 	}
 
 	/**
@@ -178,6 +187,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		// Create classes and their features
 		documentEClass = createEClass(DOCUMENT);
 		createEAttribute(documentEClass, DOCUMENT__AUTHORS);
+		createEAttribute(documentEClass, DOCUMENT__ABSTRACT);
 		createEAttribute(documentEClass, DOCUMENT__YEAR);
 		createEAttribute(documentEClass, DOCUMENT__MONTH);
 		createEAttribute(documentEClass, DOCUMENT__DAY);
@@ -217,6 +227,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(documentEClass, Document.class, "Document", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDocument_Authors(), ecorePackage.getEString(), "authors", null, 1, -1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Abstract(), ecorePackage.getEString(), "abstract", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Year(), ecorePackage.getEString(), "year", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Month(), ecorePackage.getEString(), "month", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Day(), ecorePackage.getEString(), "day", null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
