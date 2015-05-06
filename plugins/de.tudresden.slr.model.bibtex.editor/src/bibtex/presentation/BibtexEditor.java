@@ -70,7 +70,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
-import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -329,6 +328,37 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		}
 	};
 
+	IOpenListener openlistener = new IOpenListener() {
+
+		@Override
+		public void open(OpenEvent event) {
+			if (event.getSelection() != null
+					&& event.getSelection() instanceof StructuredSelection) {
+				Object element = ((StructuredSelection) event
+						.getSelection()).getFirstElement();
+				if (element != null
+						&& element instanceof DocumentImpl) {
+					IWorkbenchWindow window = PlatformUI
+							.getWorkbench()
+							.getActiveWorkbenchWindow();
+					DocumentStorage storage = new DocumentStorage(
+							(DocumentImpl) element);
+					DocumentStorageEditorInput input = new DocumentStorageEditorInput(
+							storage);
+					IWorkbenchPage page = window.getActivePage();
+					if (page != null)
+						try {
+							page.openEditor(input,
+									"bibtex.presentation.BibtexEntryEditor");
+						} catch (PartInitException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+			}
+
+		}
+	};
 	/**
 	 * Resources that have been removed since last activation. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -1043,6 +1073,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				selectionViewer.setSelection(new StructuredSelection(
 						editingDomain.getResourceSet().getResources().get(0)),
 						true);
+				selectionViewer.addOpenListener(openlistener);
 				viewerPane.setTitle(editingDomain.getResourceSet());
 
 				new AdapterFactoryTreeEditor(selectionViewer.getTree(),
@@ -1080,7 +1111,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 								adapterFactory));
 				parentViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
-
+				parentViewer.addOpenListener(openlistener);
+				
 				createContextMenuFor(parentViewer);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex, getString("_UI_ParentPage_label"));
@@ -1109,37 +1141,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 								adapterFactory));
 				listViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
-				listViewer.addOpenListener(new IOpenListener() {
-
-					@Override
-					public void open(OpenEvent event) {
-						if (event.getSelection() != null
-								&& event.getSelection() instanceof StructuredSelection) {
-							Object element = ((StructuredSelection) event
-									.getSelection()).getFirstElement();
-							if (element != null
-									&& element instanceof DocumentImpl) {
-								IWorkbenchWindow window = PlatformUI
-										.getWorkbench()
-										.getActiveWorkbenchWindow();
-								DocumentStorage storage = new DocumentStorage(
-										(DocumentImpl) element);
-								DocumentStorageEditorInput input = new DocumentStorageEditorInput(
-										storage);
-								IWorkbenchPage page = window.getActivePage();
-								if (page != null)
-									try {
-										page.openEditor(input,
-												"bibtex.presentation.BibtexEntryEditor");
-									} catch (PartInitException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-							}
-						}
-
-					}
-				});
+				listViewer.addOpenListener(openlistener);
 				createContextMenuFor(listViewer);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex, getString("_UI_ListPage_label"));
@@ -1168,7 +1170,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 								adapterFactory));
 				treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
-
+				treeViewer.addOpenListener(openlistener);
+				
 				new AdapterFactoryTreeEditor(treeViewer.getTree(),
 						adapterFactory);
 
@@ -1218,7 +1221,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 								adapterFactory));
 				tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(
 						adapterFactory));
-
+				tableViewer.addOpenListener(openlistener);
+				
 				createContextMenuFor(tableViewer);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex, getString("_UI_TablePage_label"));
@@ -1267,7 +1271,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				treeViewerWithColumns
 						.setLabelProvider(new AdapterFactoryLabelProvider(
 								adapterFactory));
-
+				treeViewerWithColumns.addOpenListener(openlistener);
+				
 				createContextMenuFor(treeViewerWithColumns);
 				int pageIndex = addPage(viewerPane.getControl());
 				setPageText(pageIndex,
