@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="slr-target" sequenceNumber="11">
+<?pde version="3.8"?><target name="slr-target" sequenceNumber="15">
 <locations>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.rcp.feature.group" version="4.4.2.v20150204-1700"/>
+<unit id="org.eclipse.sdk.ide" version="4.4.2.M20150204-1700"/>
+<unit id="org.eclipse.platform.ide" version="4.4.2.M20150204-1700"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.4/"/>
+</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.mockito.source" version="1.9.5.v201311280930"/>
 <unit id="org.junit" version="4.11.0.v201303080030"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.itextpdf" version="5.5.5"/>
-<unit id="org.jbibtex" version="1.0.14"/>
-<repository location="http://localhost:8080/site"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.sdk.feature.group" version="2.10.2.v20150123-0452"/>
@@ -17,10 +18,13 @@
 <repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.rcp.feature.group" version="4.4.2.v20150204-1700"/>
-<unit id="org.eclipse.sdk.ide" version="4.4.2.M20150204-1700"/>
-<unit id="org.eclipse.platform.ide" version="4.4.2.M20150204-1700"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.4/"/>
+<unit id="com.itextpdf" version="5.5.5"/>
+<unit id="org.jbibtex" version="1.0.14"/>
+<repository location="http://localhost:8080/site"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.birt.chart.osgi.runtime.feature.group" version="4.4.2.v201410272105-8C9j7WFYeMBkR_Phfp4-4"/>
+<repository location="http://download.eclipse.org/birt/update-site/4.4"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
