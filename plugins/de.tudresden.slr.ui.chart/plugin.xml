@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             class="helloworldchart.HelloWorldView"
-            id="test.view1"
+            id="chart.view.helloworld"
             name="HelloWorldChart"
             restorable="true">
       </view>
