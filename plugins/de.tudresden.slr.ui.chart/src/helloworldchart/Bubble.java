@@ -25,14 +25,13 @@ import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
 import org.eclipse.birt.chart.model.data.BubbleDataSet;
 import org.eclipse.birt.chart.model.data.DataFactory;
-import org.eclipse.birt.chart.model.data.NumberDataSet;
 import org.eclipse.birt.chart.model.data.OrthogonalSampleData;
 import org.eclipse.birt.chart.model.data.SampleData;
 import org.eclipse.birt.chart.model.data.SeriesDefinition;
+import org.eclipse.birt.chart.model.data.TextDataSet;
 import org.eclipse.birt.chart.model.data.impl.BubbleDataSetImpl;
-import org.eclipse.birt.chart.model.data.impl.NumberDataElementImpl;
-import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
+import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
 import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
@@ -48,7 +47,21 @@ public class Bubble
 
 	public final static Chart createBubble( )
 	{
+	
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create( );
+		
+//		cwaBubble.setScript( "function beforeDrawAxisTitle(axis, title, scriptContext)" //$NON-NLS-1$
+//				+ "{title.getCaption( ).setValue( \"Axis Title By JavaScript\");" //$NON-NLS-1$
+//				+ "title.getCaption( ).getColor( ).set( 32, 168, 255 );}" //$NON-NLS-1$
+//		);
+		
+		cwaBubble.setScript( "function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
+				+ "{if (label.getCaption( ).getValue( ) == 10)"
+				+ "{label.getCaption().setValue( \"Apfel\" )}"
+				+ "label.getCaption( ).getFont( ).setSize(7);" 
+				+ "}\n"		
+				);
+				
 		cwaBubble.setType( "Bubble Chart" ); //$NON-NLS-1$
 		cwaBubble.setSubType( "Standard Bubble Chart" ); //$NON-NLS-1$
 		// Plot
@@ -71,29 +84,29 @@ public class Bubble
 
 		// X-Axis
 		Axis xAxisPrimary = cwaBubble.getPrimaryBaseAxes( )[0];
-		xAxisPrimary.setType( AxisType.LINEAR_LITERAL );
+
+		xAxisPrimary.setType( AxisType.TEXT_LITERAL );
 		xAxisPrimary.getMajorGrid( ).setTickStyle( TickStyle.BELOW_LITERAL );
 		xAxisPrimary.getOrigin( ).setType( IntersectionType.MIN_LITERAL );
-		xAxisPrimary.getScale( ).setMin( NumberDataElementImpl.create( 0 ) );
-		xAxisPrimary.getScale( ).setMax( NumberDataElementImpl.create( 140 ) );
-		
+				
 		// Y-Axis
 		Axis yAxisPrimary = cwaBubble.getPrimaryOrthogonalAxis( xAxisPrimary );
 		yAxisPrimary.getMajorGrid( ).setTickStyle( TickStyle.LEFT_LITERAL );
 		yAxisPrimary.setType( AxisType.LINEAR_LITERAL );
-		yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
+//		yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
+		yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setWordWrap(true);;
 
 		// Data Set
-		NumberDataSet categoryValues = NumberDataSetImpl.create( new double[] {
-				20,45,70,100,120,130
-		});
+//		NumberDataSet categoryValues = NumberDataSetImpl.create( new double[] {
+//				20,45,70,100,120,130
+//		});
+		TextDataSet categoryValues = TextDataSetImpl.create( new String[]{
+				"Birne", "Gurke"} );
 		BubbleDataSet values1 = BubbleDataSetImpl.create( new BubbleEntry[]{
-				null,
-				new BubbleEntry( Integer.valueOf( 15 ), Integer.valueOf( 100 ) ),
-				new BubbleEntry( Integer.valueOf( 18 ), Integer.valueOf( 80 ) ),
-				null,
-				new BubbleEntry( Integer.valueOf( 23 ), Integer.valueOf( 100 ) ),
-				null
+				new BubbleEntry( Integer.valueOf( 10 ), Integer.valueOf( 100 ) ),
+				new BubbleEntry( Integer.valueOf( 20 ), Integer.valueOf( 200 ) )
+				
+				
 		} );
 		BubbleDataSet values2 = BubbleDataSetImpl.create( new BubbleEntry[]{
 				new BubbleEntry( Integer.valueOf( 50 ), Integer.valueOf( 60 ) ),
@@ -103,14 +116,7 @@ public class Bubble
 				new BubbleEntry( Integer.valueOf( 12 ), Integer.valueOf( 100 ) ),
 				null
 		} );
-		BubbleDataSet values3 = BubbleDataSetImpl.create( new BubbleEntry[]{
-				null,
-				null,
-				new BubbleEntry( Integer.valueOf( 43 ), Integer.valueOf( 75 ) ),
-				new BubbleEntry( Integer.valueOf( 31 ), Integer.valueOf( 93 ) ),
-				null,
-				new BubbleEntry( Integer.valueOf( 25 ), Integer.valueOf( 50 ) )
-		} );
+
 		SampleData sd = DataFactory.eINSTANCE.createSampleData( );
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData( );
 		sdBase.setDataSetRepresentation( "" );//$NON-NLS-1$
@@ -141,16 +147,13 @@ public class Bubble
 		bs2.setDataSet( values2 );
 		bs2.getLabel( ).setVisible( false );
 		
-		BubbleSeries bs3 = (BubbleSeries) BubbleSeriesImpl.create( );
-		bs3.setDataSet( values3 );
-		bs3.getLabel( ).setVisible( false );
-
+		
 		SeriesDefinition sdY = SeriesDefinitionImpl.create( );
 		sdY.getSeriesPalette( ).shift( -1 );
 		yAxisPrimary.getSeriesDefinitions( ).add( sdY );
 		sdY.getSeries( ).add( bs1 );
-		sdY.getSeries( ).add( bs2 );
-		sdY.getSeries( ).add( bs3 );
+//		sdY.getSeries( ).add( bs2 );
+//		sdY.getSeries( ).add( bs3 );
 
 		return cwaBubble;
 	}
