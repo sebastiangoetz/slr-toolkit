@@ -16,4 +16,3 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.birt.core.ui;bundle-version="4.4.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Import-Package: org.eclipse.birt.chart.device
