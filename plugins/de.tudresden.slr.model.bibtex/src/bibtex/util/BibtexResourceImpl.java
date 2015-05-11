@@ -36,15 +36,17 @@ import bibtex.Document;
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
  * <!-- end-user-doc -->
+ * 
  * @see bibtex.util.BibtexResourceFactoryImpl
  * @generated
  */
 public class BibtexResourceImpl extends ResourceImpl {
 	/**
-	 * Creates an instance of the resource.
-	 * <!-- begin-user-doc --> <!--
+	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
-	 * @param uri the URI of the new resource.
+	 * 
+	 * @param uri
+	 *            the URI of the new resource.
 	 * @generated
 	 */
 	public BibtexResourceImpl(URI uri) {
@@ -81,23 +83,20 @@ public class BibtexResourceImpl extends ResourceImpl {
 								.toUserString());
 					}
 					if (entry.getField(KEY_AUTHOR) != null) {
-						document.getAuthors().add(entry.getField(KEY_AUTHOR)
-								.toUserString());
+						document.getAuthors().add(
+								entry.getField(KEY_AUTHOR).toUserString());
 					}
 					if (entry.getField(KEY_DOI) != null) {
-						document.setDoi(entry.getField(KEY_DOI)
-								.toUserString());
+						document.setDoi(entry.getField(KEY_DOI).toUserString());
 					}
 					if (entry.getField(KEY_URL) != null) {
-						document.setUrl(entry.getField(KEY_URL)
-								.toUserString());
+						document.setUrl(entry.getField(KEY_URL).toUserString());
 					}
 					Key key = new Key("abstract");
 					if (entry.getField(key) != null) {
-						document.setAbstract(entry.getField(key)
-								.toUserString());
+						document.setAbstract(entry.getField(key).toUserString());
 					}
-					
+
 					getContents().add(document);
 				}
 			}
@@ -158,9 +157,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 		if (doc.getMonth() != null)
 			result.addField(KEY_MONTH, new StringValue(doc.getMonth(),
 					Style.QUOTED));
-		if (doc.getAbstract() != null){
-			result.addField(new Key("abstract"), new StringValue(doc.getAbstract(),
-					Style.BRACED));
+		if (doc.getAbstract() != null) {
+			result.addField(new Key("abstract"),
+					new StringValue(doc.getAbstract(), Style.BRACED));
 		}
 		return result;
 	}

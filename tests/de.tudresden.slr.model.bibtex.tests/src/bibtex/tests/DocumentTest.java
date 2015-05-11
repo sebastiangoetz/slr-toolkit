@@ -10,24 +10,24 @@ import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
 /**
- * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>Document</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A test case for the model object '
+ * <em><b>Document</b></em>'. <!-- end-user-doc -->
+ * 
  * @generated
  */
 public class DocumentTest extends TestCase {
 
 	/**
-	 * The fixture for this Document test case.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The fixture for this Document test case. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected Document fixture = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static void main(String[] args) {
@@ -35,9 +35,9 @@ public class DocumentTest extends TestCase {
 	}
 
 	/**
-	 * Constructs a new Document test case with the given name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Constructs a new Document test case with the given name. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DocumentTest(String name) {
@@ -45,9 +45,9 @@ public class DocumentTest extends TestCase {
 	}
 
 	/**
-	 * Sets the fixture for this Document test case.
-	 * <!-- begin-user-doc -->
+	 * Sets the fixture for this Document test case. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void setFixture(Document fixture) {
@@ -55,9 +55,9 @@ public class DocumentTest extends TestCase {
 	}
 
 	/**
-	 * Returns the fixture for this Document test case.
-	 * <!-- begin-user-doc -->
+	 * Returns the fixture for this Document test case. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected Document getFixture() {
@@ -65,8 +65,8 @@ public class DocumentTest extends TestCase {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 * @generated
 	 */
@@ -76,8 +76,8 @@ public class DocumentTest extends TestCase {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 * @generated
 	 */
@@ -86,4 +86,4 @@ public class DocumentTest extends TestCase {
 		setFixture(null);
 	}
 
-} //DocumentTest
+} // DocumentTest

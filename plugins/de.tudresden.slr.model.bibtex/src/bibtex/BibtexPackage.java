@@ -7,58 +7,55 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Package</b> for the model.
- * It contains accessors for the meta objects to represent
+ * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains
+ * accessors for the meta objects to represent
  * <ul>
- *   <li>each class,</li>
- *   <li>each feature of each class,</li>
- *   <li>each operation of each class,</li>
- *   <li>each enum,</li>
- *   <li>and each data type</li>
+ * <li>each class,</li>
+ * <li>each feature of each class,</li>
+ * <li>each operation of each class,</li>
+ * <li>each enum,</li>
+ * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
+ * 
  * @see bibtex.BibtexFactory
  * @model kind="package"
  * @generated
  */
 public interface BibtexPackage extends EPackage {
 	/**
-	 * The package name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	String eNAME = "bibtex";
 
 	/**
-	 * The package namespace URI.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	String eNS_URI = "http://tudresden.de/slr/2015";
 
 	/**
-	 * The package namespace name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	String eNS_PREFIX = "";
 
 	/**
-	 * The singleton instance of the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The singleton instance of the package. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	BibtexPackage eINSTANCE = bibtex.impl.BibtexPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link bibtex.impl.DocumentImpl <em>Document</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The meta object id for the '{@link bibtex.impl.DocumentImpl
+	 * <em>Document</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see bibtex.impl.DocumentImpl
 	 * @see bibtex.impl.BibtexPackageImpl#getDocument()
 	 * @generated
@@ -66,108 +63,108 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT = 0;
 
 	/**
-	 * The feature id for the '<em><b>Authors</b></em>' attribute list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Authors</b></em>' attribute list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__AUTHORS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Abstract</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Abstract</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__ABSTRACT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Year</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Year</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__YEAR = 2;
 
 	/**
-	 * The feature id for the '<em><b>Month</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Month</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__MONTH = 3;
 
 	/**
-	 * The feature id for the '<em><b>Day</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Day</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__DAY = 4;
 
 	/**
-	 * The feature id for the '<em><b>Title</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Title</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__TITLE = 5;
 
 	/**
-	 * The feature id for the '<em><b>Key</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Key</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__KEY = 6;
 
 	/**
-	 * The feature id for the '<em><b>Doi</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Doi</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__DOI = 7;
 
 	/**
-	 * The feature id for the '<em><b>Url</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The feature id for the '<em><b>Url</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT__URL = 8;
 
 	/**
-	 * The number of structural features of the '<em>Document</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The number of structural features of the '<em>Document</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT_FEATURE_COUNT = 9;
 
 	/**
-	 * The number of operations of the '<em>Document</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The number of operations of the '<em>Document</em>' class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
 	int DOCUMENT_OPERATION_COUNT = 0;
 
 	/**
-	 * Returns the meta object for class '{@link bibtex.Document <em>Document</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for class '{@link bibtex.Document
+	 * <em>Document</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for class '<em>Document</em>'.
 	 * @see bibtex.Document
 	 * @generated
@@ -175,9 +172,10 @@ public interface BibtexPackage extends EPackage {
 	EClass getDocument();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link bibtex.Document#getAuthors <em>Authors</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute list '
+	 * {@link bibtex.Document#getAuthors <em>Authors</em>}'. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute list '<em>Authors</em>'.
 	 * @see bibtex.Document#getAuthors()
 	 * @see #getDocument()
@@ -186,9 +184,10 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Authors();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getAbstract <em>Abstract</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link bibtex.Document#getAbstract <em>Abstract</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Abstract</em>'.
 	 * @see bibtex.Document#getAbstract()
 	 * @see #getDocument()
@@ -197,9 +196,10 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Abstract();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getYear <em>Year</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link bibtex.Document#getYear <em>Year</em>}'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Year</em>'.
 	 * @see bibtex.Document#getYear()
 	 * @see #getDocument()
@@ -208,9 +208,10 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Year();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getMonth <em>Month</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link bibtex.Document#getMonth <em>Month</em>}'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Month</em>'.
 	 * @see bibtex.Document#getMonth()
 	 * @see #getDocument()
@@ -219,9 +220,9 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Month();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getDay <em>Day</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getDay
+	 * <em>Day</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Day</em>'.
 	 * @see bibtex.Document#getDay()
 	 * @see #getDocument()
@@ -230,9 +231,10 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Day();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getTitle <em>Title</em>}'.
-	 * <!-- begin-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link bibtex.Document#getTitle <em>Title</em>}'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Title</em>'.
 	 * @see bibtex.Document#getTitle()
 	 * @see #getDocument()
@@ -241,9 +243,9 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Title();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getKey <em>Key</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getKey
+	 * <em>Key</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Key</em>'.
 	 * @see bibtex.Document#getKey()
 	 * @see #getDocument()
@@ -252,9 +254,9 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Key();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getDoi <em>Doi</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getDoi
+	 * <em>Doi</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Doi</em>'.
 	 * @see bibtex.Document#getDoi()
 	 * @see #getDocument()
@@ -263,9 +265,9 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Doi();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getUrl <em>Url</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '{@link bibtex.Document#getUrl
+	 * <em>Url</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the meta object for the attribute '<em>Url</em>'.
 	 * @see bibtex.Document#getUrl()
 	 * @see #getDocument()
@@ -274,32 +276,34 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Url();
 
 	/**
-	 * Returns the factory that creates the instances of the model.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the factory that creates the instances of the model. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
 	BibtexFactory getBibtexFactory();
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * Defines literals for the meta objects that represent
+	 * <!-- begin-user-doc --> Defines literals for the meta objects that
+	 * represent
 	 * <ul>
-	 *   <li>each class,</li>
-	 *   <li>each feature of each class,</li>
-	 *   <li>each operation of each class,</li>
-	 *   <li>each enum,</li>
-	 *   <li>and each data type</li>
+	 * <li>each class,</li>
+	 * <li>each feature of each class,</li>
+	 * <li>each operation of each class,</li>
+	 * <li>each enum,</li>
+	 * <li>and each data type</li>
 	 * </ul>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link bibtex.impl.DocumentImpl <em>Document</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '{@link bibtex.impl.DocumentImpl
+		 * <em>Document</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
+		 * -->
+		 * 
 		 * @see bibtex.impl.DocumentImpl
 		 * @see bibtex.impl.BibtexPackageImpl#getDocument()
 		 * @generated
@@ -307,77 +311,77 @@ public interface BibtexPackage extends EPackage {
 		EClass DOCUMENT = eINSTANCE.getDocument();
 
 		/**
-		 * The meta object literal for the '<em><b>Authors</b></em>' attribute list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Authors</b></em>' attribute
+		 * list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__AUTHORS = eINSTANCE.getDocument_Authors();
 
 		/**
-		 * The meta object literal for the '<em><b>Abstract</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Abstract</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__ABSTRACT = eINSTANCE.getDocument_Abstract();
 
 		/**
-		 * The meta object literal for the '<em><b>Year</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Year</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__YEAR = eINSTANCE.getDocument_Year();
 
 		/**
-		 * The meta object literal for the '<em><b>Month</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Month</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__MONTH = eINSTANCE.getDocument_Month();
 
 		/**
-		 * The meta object literal for the '<em><b>Day</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Day</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__DAY = eINSTANCE.getDocument_Day();
 
 		/**
-		 * The meta object literal for the '<em><b>Title</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Title</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__TITLE = eINSTANCE.getDocument_Title();
 
 		/**
-		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__KEY = eINSTANCE.getDocument_Key();
 
 		/**
-		 * The meta object literal for the '<em><b>Doi</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Doi</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__DOI = eINSTANCE.getDocument_Doi();
 
 		/**
-		 * The meta object literal for the '<em><b>Url</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Url</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
 		 * @generated
 		 */
 		EAttribute DOCUMENT__URL = eINSTANCE.getDocument_Url();
 
 	}
 
-} //BibtexPackage
+} // BibtexPackage
