@@ -5,18 +5,16 @@ A Toolkit for Systematic Literature Reviews
 
 ### Build
 From console:
-* `sh -c "mvn -f ./repositories/de.tudresden.slr.thirdparty/pom.xml p2:site jetty:run &"`
 * `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package`
 
 Within Eclipse add Run Configurations (Run as -> Maven build):
-* for repositories/de.tudresden.slr.thirdparty/pom.xml with `p2:site jetty:run`
 * for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
 
 ### Dependencies
 * Eclipse RCP 4.4.2 (EPL)
-* JBibTex 1.0.14 (BSD 3-clause)
+* JBibTex 1.0.15 (BSD 3-clause)
 * iText 2.1.7 (MPL)
-* SWTChart (EPL)
+* Eclipse BIRT (EPL)
 
 ### License
 EPL 1.0
