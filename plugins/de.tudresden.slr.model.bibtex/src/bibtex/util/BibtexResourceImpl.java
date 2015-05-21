@@ -92,7 +92,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 						String unparsedAuthors = entry.getField(KEY_AUTHOR)
 								.toUserString().replaceAll("\r", "");
 						String authors = parseLaTeX(unparsedAuthors);
-						
+
 						document.setUnparsedAuthors(unparsedAuthors);
 						for (String author : authors.split(" and ")) {
 							document.getAuthors().add(author);
@@ -178,8 +178,8 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 
 		if (!doc.getAuthors().isEmpty()) {
-			result.addField(KEY_AUTHOR, new StringValue(
-					doc.getUnparsedAuthors(), Style.BRACED));
+			result.addField(KEY_AUTHOR,
+					new StringValue(doc.getUnparsedAuthors(), Style.BRACED));
 		}
 		return result;
 	}

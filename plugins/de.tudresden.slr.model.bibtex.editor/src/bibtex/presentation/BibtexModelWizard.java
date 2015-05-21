@@ -48,7 +48,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
 import bibtex.BibtexFactory;
 import bibtex.BibtexPackage;
-import bibtex.provider.bibEditPlugin;
+import bibtex.provider.BibtexEditPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -71,8 +71,9 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	public static final List<String> FILE_EXTENSIONS = Collections
-			.unmodifiableList(Arrays.asList(bibEditorPlugin.INSTANCE.getString(
-					"_UI_BibtexEditorFilenameExtensions").split("\\s*,\\s*")));
+			.unmodifiableList(Arrays.asList(BibtexEditorPlugin.INSTANCE
+					.getString("_UI_BibtexEditorFilenameExtensions").split(
+							"\\s*,\\s*")));
 
 	/**
 	 * A formatted list of supported file extensions, suitable for display. <!--
@@ -80,7 +81,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 	 * 
 	 * @generated
 	 */
-	public static final String FORMATTED_FILE_EXTENSIONS = bibEditorPlugin.INSTANCE
+	public static final String FORMATTED_FILE_EXTENSIONS = BibtexEditorPlugin.INSTANCE
 			.getString("_UI_BibtexEditorFilenameExtensions").replaceAll(
 					"\\s*,\\s*", ", ");
 
@@ -150,9 +151,10 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.workbench = workbench;
 		this.selection = selection;
-		setWindowTitle(bibEditorPlugin.INSTANCE.getString("_UI_Wizard_label"));
+		setWindowTitle(BibtexEditorPlugin.INSTANCE
+				.getString("_UI_Wizard_label"));
 		setDefaultPageImageDescriptor(ExtendedImageRegistry.INSTANCE
-				.getImageDescriptor(bibEditorPlugin.INSTANCE
+				.getImageDescriptor(BibtexEditorPlugin.INSTANCE
 						.getImage("full/wizban/NewBibtex")));
 	}
 
@@ -238,7 +240,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 								initialObjectCreationPage.getEncoding());
 						resource.save(options);
 					} catch (Exception exception) {
-						bibEditorPlugin.INSTANCE.log(exception);
+						BibtexEditorPlugin.INSTANCE.log(exception);
 					} finally {
 						progressMonitor.done();
 					}
@@ -277,7 +279,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 								.getId());
 			} catch (PartInitException exception) {
 				MessageDialog.openError(workbenchWindow.getShell(),
-						bibEditorPlugin.INSTANCE
+						BibtexEditorPlugin.INSTANCE
 								.getString("_UI_OpenEditorError_label"),
 						exception.getMessage());
 				return false;
@@ -285,7 +287,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 
 			return true;
 		} catch (Exception exception) {
-			bibEditorPlugin.INSTANCE.log(exception);
+			BibtexEditorPlugin.INSTANCE.log(exception);
 			return false;
 		}
 	}
@@ -321,7 +323,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 				if (extension == null || !FILE_EXTENSIONS.contains(extension)) {
 					String key = FILE_EXTENSIONS.size() > 1 ? "_WARN_FilenameExtensions"
 							: "_WARN_FilenameExtension";
-					setErrorMessage(bibEditorPlugin.INSTANCE.getString(key,
+					setErrorMessage(BibtexEditorPlugin.INSTANCE.getString(key,
 							new Object[] { FORMATTED_FILE_EXTENSIONS }));
 					return false;
 				}
@@ -399,7 +401,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 
 			Label containerLabel = new Label(composite, SWT.LEFT);
 			{
-				containerLabel.setText(bibEditorPlugin.INSTANCE
+				containerLabel.setText(BibtexEditorPlugin.INSTANCE
 						.getString("_UI_ModelObject"));
 
 				GridData data = new GridData();
@@ -426,7 +428,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 
 			Label encodingLabel = new Label(composite, SWT.LEFT);
 			{
-				encodingLabel.setText(bibEditorPlugin.INSTANCE
+				encodingLabel.setText(BibtexEditorPlugin.INSTANCE
 						.getString("_UI_XMLEncoding"));
 
 				GridData data = new GridData();
@@ -526,10 +528,10 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 		 */
 		protected String getLabel(String typeName) {
 			try {
-				return bibEditPlugin.INSTANCE.getString("_UI_" + typeName
+				return BibtexEditPlugin.INSTANCE.getString("_UI_" + typeName
 						+ "_type");
 			} catch (MissingResourceException mre) {
-				bibEditorPlugin.INSTANCE.log(mre);
+				BibtexEditorPlugin.INSTANCE.log(mre);
 			}
 			return typeName;
 		}
@@ -543,7 +545,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 			if (encodings == null) {
 				encodings = new ArrayList<String>();
 				for (StringTokenizer stringTokenizer = new StringTokenizer(
-						bibEditorPlugin.INSTANCE
+						BibtexEditorPlugin.INSTANCE
 								.getString("_UI_XMLEncodingChoices")); stringTokenizer
 						.hasMoreTokens();) {
 					encodings.add(stringTokenizer.nextToken());
@@ -565,11 +567,11 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 		//
 		newFileCreationPage = new BibtexModelWizardNewFileCreationPage(
 				"Whatever", selection);
-		newFileCreationPage.setTitle(bibEditorPlugin.INSTANCE
+		newFileCreationPage.setTitle(BibtexEditorPlugin.INSTANCE
 				.getString("_UI_BibtexModelWizard_label"));
-		newFileCreationPage.setDescription(bibEditorPlugin.INSTANCE
+		newFileCreationPage.setDescription(BibtexEditorPlugin.INSTANCE
 				.getString("_UI_BibtexModelWizard_description"));
-		newFileCreationPage.setFileName(bibEditorPlugin.INSTANCE
+		newFileCreationPage.setFileName(BibtexEditorPlugin.INSTANCE
 				.getString("_UI_BibtexEditorFilenameDefaultBase")
 				+ "."
 				+ FILE_EXTENSIONS.get(0));
@@ -601,7 +603,7 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 
 					// Make up a unique new name here.
 					//
-					String defaultModelBaseFilename = bibEditorPlugin.INSTANCE
+					String defaultModelBaseFilename = BibtexEditorPlugin.INSTANCE
 							.getString("_UI_BibtexEditorFilenameDefaultBase");
 					String defaultModelFilenameExtension = FILE_EXTENSIONS
 							.get(0);
@@ -618,9 +620,9 @@ public class BibtexModelWizard extends Wizard implements INewWizard {
 		}
 		initialObjectCreationPage = new BibtexModelWizardInitialObjectCreationPage(
 				"Whatever2");
-		initialObjectCreationPage.setTitle(bibEditorPlugin.INSTANCE
+		initialObjectCreationPage.setTitle(BibtexEditorPlugin.INSTANCE
 				.getString("_UI_BibtexModelWizard_label"));
-		initialObjectCreationPage.setDescription(bibEditorPlugin.INSTANCE
+		initialObjectCreationPage.setDescription(BibtexEditorPlugin.INSTANCE
 				.getString("_UI_Wizard_initial_object_description"));
 		addPage(initialObjectCreationPage);
 	}

@@ -298,7 +298,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return bibEditPlugin.INSTANCE;
+		return BibtexEditPlugin.INSTANCE;
 	}
 
 }

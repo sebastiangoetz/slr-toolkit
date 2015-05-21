@@ -554,7 +554,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 					});
 				}
 			} catch (CoreException exception) {
-				bibEditorPlugin.INSTANCE.log(exception);
+				BibtexEditorPlugin.INSTANCE.log(exception);
 			}
 		}
 	};
@@ -669,7 +669,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 					setActivePage(lastEditorPage);
 					showTabs();
 				} catch (PartInitException exception) {
-					bibEditorPlugin.INSTANCE.log(exception);
+					BibtexEditorPlugin.INSTANCE.log(exception);
 				}
 			}
 
@@ -679,7 +679,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 					try {
 						markerHelper.createMarkers(diagnostic);
 					} catch (CoreException exception) {
-						bibEditorPlugin.INSTANCE.log(exception);
+						BibtexEditorPlugin.INSTANCE.log(exception);
 					}
 				}
 			}
@@ -1627,7 +1627,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		} catch (Exception exception) {
 			// Something went wrong that shouldn't.
 			//
-			bibEditorPlugin.INSTANCE.log(exception);
+			BibtexEditorPlugin.INSTANCE.log(exception);
 		}
 		updateProblemIndication = true;
 		updateProblemIndication();
@@ -1848,7 +1848,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 * @generated
 	 */
 	private static String getString(String key) {
-		return bibEditorPlugin.INSTANCE.getString(key);
+		return BibtexEditorPlugin.INSTANCE.getString(key);
 	}
 
 	/**
@@ -1858,7 +1858,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 * @generated
 	 */
 	private static String getString(String key, Object s1) {
-		return bibEditorPlugin.INSTANCE.getString(key, new Object[] { s1 });
+		return BibtexEditorPlugin.INSTANCE.getString(key, new Object[] { s1 });
 	}
 
 	/**
