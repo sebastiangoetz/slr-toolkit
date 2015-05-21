@@ -70,14 +70,14 @@ public class BibtexActionBarContributor extends
 	 * @generated
 	 */
 	protected IAction showPropertiesViewAction = new Action(
-			BibtexEditorPlugin.INSTANCE
+			bibEditorPlugin.INSTANCE
 					.getString("_UI_ShowPropertiesView_menu_item")) {
 		@Override
 		public void run() {
 			try {
 				getPage().showView("org.eclipse.ui.views.PropertySheet");
 			} catch (PartInitException exception) {
-				BibtexEditorPlugin.INSTANCE.log(exception);
+				bibEditorPlugin.INSTANCE.log(exception);
 			}
 		}
 	};
@@ -90,8 +90,7 @@ public class BibtexActionBarContributor extends
 	 * @generated
 	 */
 	protected IAction refreshViewerAction = new Action(
-			BibtexEditorPlugin.INSTANCE
-					.getString("_UI_RefreshViewer_menu_item")) {
+			bibEditorPlugin.INSTANCE.getString("_UI_RefreshViewer_menu_item")) {
 		@Override
 		public boolean isEnabled() {
 			return activeEditorPart instanceof IViewerProvider;
@@ -184,7 +183,7 @@ public class BibtexActionBarContributor extends
 		super.contributeToMenu(menuManager);
 
 		IMenuManager submenuManager = new MenuManager(
-				BibtexEditorPlugin.INSTANCE.getString("_UI_BibtexEditor_menu"),
+				bibEditorPlugin.INSTANCE.getString("_UI_BibtexEditor_menu"),
 				"bibtexMenuID");
 		menuManager.insertAfter("additions", submenuManager);
 		submenuManager.add(new Separator("settings"));
@@ -195,14 +194,13 @@ public class BibtexActionBarContributor extends
 		// Prepare for CreateChild item addition or removal.
 		//
 		createChildMenuManager = new MenuManager(
-				BibtexEditorPlugin.INSTANCE
-						.getString("_UI_CreateChild_menu_item"));
+				bibEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
 		submenuManager.insertBefore("additions", createChildMenuManager);
 
 		// Prepare for CreateSibling item addition or removal.
 		//
 		createSiblingMenuManager = new MenuManager(
-				BibtexEditorPlugin.INSTANCE
+				bibEditorPlugin.INSTANCE
 						.getString("_UI_CreateSibling_menu_item"));
 		submenuManager.insertBefore("additions", createSiblingMenuManager);
 
@@ -417,13 +415,12 @@ public class BibtexActionBarContributor extends
 		MenuManager submenuManager = null;
 
 		submenuManager = new MenuManager(
-				BibtexEditorPlugin.INSTANCE
-						.getString("_UI_CreateChild_menu_item"));
+				bibEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
 		populateManager(submenuManager, createChildActions, null);
 		menuManager.insertBefore("edit", submenuManager);
 
 		submenuManager = new MenuManager(
-				BibtexEditorPlugin.INSTANCE
+				bibEditorPlugin.INSTANCE
 						.getString("_UI_CreateSibling_menu_item"));
 		populateManager(submenuManager, createSiblingActions, null);
 		menuManager.insertBefore("edit", submenuManager);

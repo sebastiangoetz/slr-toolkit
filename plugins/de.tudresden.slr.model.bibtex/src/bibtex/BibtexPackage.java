@@ -99,22 +99,13 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__MONTH = 3;
 
 	/**
-	 * The feature id for the '<em><b>Day</b></em>' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int DOCUMENT__DAY = 4;
-
-	/**
 	 * The feature id for the '<em><b>Title</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__TITLE = 5;
+	int DOCUMENT__TITLE = 4;
 
 	/**
 	 * The feature id for the '<em><b>Key</b></em>' attribute. <!--
@@ -123,7 +114,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__KEY = 6;
+	int DOCUMENT__KEY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Doi</b></em>' attribute. <!--
@@ -132,7 +123,7 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__DOI = 7;
+	int DOCUMENT__DOI = 6;
 
 	/**
 	 * The feature id for the '<em><b>Url</b></em>' attribute. <!--
@@ -141,7 +132,16 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT__URL = 8;
+	int DOCUMENT__URL = 7;
+
+	/**
+	 * The feature id for the '<em><b>Unparsed Authors</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__UNPARSED_AUTHORS = 8;
 
 	/**
 	 * The number of structural features of the '<em>Document</em>' class. <!--
@@ -220,17 +220,6 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Month();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getDay
-	 * <em>Day</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Day</em>'.
-	 * @see bibtex.Document#getDay()
-	 * @see #getDocument()
-	 * @generated
-	 */
-	EAttribute getDocument_Day();
-
-	/**
 	 * Returns the meta object for the attribute '
 	 * {@link bibtex.Document#getTitle <em>Title</em>}'. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -274,6 +263,18 @@ public interface BibtexPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDocument_Url();
+
+	/**
+	 * Returns the meta object for the attribute '
+	 * {@link bibtex.Document#getUnparsedAuthors <em>Unparsed Authors</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Unparsed Authors</em>'.
+	 * @see bibtex.Document#getUnparsedAuthors()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_UnparsedAuthors();
 
 	/**
 	 * Returns the factory that creates the instances of the model. <!--
@@ -343,14 +344,6 @@ public interface BibtexPackage extends EPackage {
 		EAttribute DOCUMENT__MONTH = eINSTANCE.getDocument_Month();
 
 		/**
-		 * The meta object literal for the '<em><b>Day</b></em>' attribute
-		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute DOCUMENT__DAY = eINSTANCE.getDocument_Day();
-
-		/**
 		 * The meta object literal for the '<em><b>Title</b></em>' attribute
 		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
 		 * 
@@ -381,6 +374,15 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__URL = eINSTANCE.getDocument_Url();
+
+		/**
+		 * The meta object literal for the '<em><b>Unparsed Authors</b></em>'
+		 * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute DOCUMENT__UNPARSED_AUTHORS = eINSTANCE
+				.getDocument_UnparsedAuthors();
 
 	}
 

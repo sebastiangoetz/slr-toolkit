@@ -147,7 +147,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDocument_Day() {
+	public EAttribute getDocument_Title() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(4);
 	}
 
@@ -157,7 +157,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDocument_Title() {
+	public EAttribute getDocument_Key() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(5);
 	}
 
@@ -167,7 +167,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDocument_Key() {
+	public EAttribute getDocument_Doi() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(6);
 	}
 
@@ -177,7 +177,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDocument_Doi() {
+	public EAttribute getDocument_Url() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(7);
 	}
 
@@ -187,7 +187,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
-	public EAttribute getDocument_Url() {
+	public EAttribute getDocument_UnparsedAuthors() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(8);
 	}
 
@@ -226,11 +226,11 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__ABSTRACT);
 		createEAttribute(documentEClass, DOCUMENT__YEAR);
 		createEAttribute(documentEClass, DOCUMENT__MONTH);
-		createEAttribute(documentEClass, DOCUMENT__DAY);
 		createEAttribute(documentEClass, DOCUMENT__TITLE);
 		createEAttribute(documentEClass, DOCUMENT__KEY);
 		createEAttribute(documentEClass, DOCUMENT__DOI);
 		createEAttribute(documentEClass, DOCUMENT__URL);
+		createEAttribute(documentEClass, DOCUMENT__UNPARSED_AUTHORS);
 	}
 
 	/**
@@ -282,10 +282,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
-		initEAttribute(getDocument_Day(), ecorePackage.getEString(), "day",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
 		initEAttribute(getDocument_Title(), ecorePackage.getEString(), "title",
 				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
@@ -302,6 +298,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
+		initEAttribute(getDocument_UnparsedAuthors(),
+				ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
+				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

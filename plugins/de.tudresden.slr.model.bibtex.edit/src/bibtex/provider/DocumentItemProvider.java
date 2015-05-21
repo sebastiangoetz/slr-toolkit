@@ -54,11 +54,11 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 			addAbstractPropertyDescriptor(object);
 			addYearPropertyDescriptor(object);
 			addMonthPropertyDescriptor(object);
-			addDayPropertyDescriptor(object);
 			addTitlePropertyDescriptor(object);
 			addKeyPropertyDescriptor(object);
 			addDoiPropertyDescriptor(object);
 			addUrlPropertyDescriptor(object);
+			addUnparsedAuthorsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -136,24 +136,6 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	}
 
 	/**
-	 * This adds a property descriptor for the Day feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	protected void addDayPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_day_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_day_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__DAY, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Title feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -226,6 +208,25 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	}
 
 	/**
+	 * This adds a property descriptor for the Unparsed Authors feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addUnparsedAuthorsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_Document_unparsedAuthors_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_Document_unparsedAuthors_feature",
+						"_UI_Document_type"),
+				BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, true, false,
+				false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This returns Document.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -264,11 +265,11 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 		case BibtexPackage.DOCUMENT__ABSTRACT:
 		case BibtexPackage.DOCUMENT__YEAR:
 		case BibtexPackage.DOCUMENT__MONTH:
-		case BibtexPackage.DOCUMENT__DAY:
 		case BibtexPackage.DOCUMENT__TITLE:
 		case BibtexPackage.DOCUMENT__KEY:
 		case BibtexPackage.DOCUMENT__DOI:
 		case BibtexPackage.DOCUMENT__URL:
+		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			fireNotifyChanged(new ViewerNotification(notification,
 					notification.getNotifier(), false, true));
 			return;
@@ -297,7 +298,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 */
 	@Override
 	public ResourceLocator getResourceLocator() {
-		return BibtexEditPlugin.INSTANCE;
+		return bibEditPlugin.INSTANCE;
 	}
 
 }

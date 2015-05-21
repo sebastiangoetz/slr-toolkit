@@ -25,6 +25,9 @@ import org.jbibtex.BibTeXFormatter;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
+import org.jbibtex.LaTeXObject;
+import org.jbibtex.LaTeXParser;
+import org.jbibtex.LaTeXPrinter;
 import org.jbibtex.ParseException;
 import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
@@ -41,6 +44,9 @@ import bibtex.Document;
  * @generated
  */
 public class BibtexResourceImpl extends ResourceImpl {
+
+	private static final Key KEY_ABSTRACT = new Key("abstract");
+
 	/**
 	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -83,8 +89,14 @@ public class BibtexResourceImpl extends ResourceImpl {
 								.toUserString());
 					}
 					if (entry.getField(KEY_AUTHOR) != null) {
-						document.getAuthors().add(
-								entry.getField(KEY_AUTHOR).toUserString());
+						String unparsedAuthors = entry.getField(KEY_AUTHOR)
+								.toUserString().replaceAll("\r", "");
+						String authors = parseLaTeX(unparsedAuthors);
+						
+						document.setUnparsedAuthors(unparsedAuthors);
+						for (String author : authors.split(" and ")) {
+							document.getAuthors().add(author);
+						}
 					}
 					if (entry.getField(KEY_DOI) != null) {
 						document.setDoi(entry.getField(KEY_DOI).toUserString());
@@ -92,9 +104,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 					if (entry.getField(KEY_URL) != null) {
 						document.setUrl(entry.getField(KEY_URL).toUserString());
 					}
-					Key key = new Key("abstract");
-					if (entry.getField(key) != null) {
-						document.setAbstract(entry.getField(key).toUserString());
+					if (entry.getField(KEY_ABSTRACT) != null) {
+						document.setAbstract(entry.getField(KEY_ABSTRACT)
+								.toUserString());
 					}
 
 					getContents().add(document);
@@ -154,13 +166,35 @@ public class BibtexResourceImpl extends ResourceImpl {
 	private BibTeXEntry updateDocument(Document doc, BibTeXEntry entry) {
 		BibTeXEntry result = new BibTeXEntry(entry.getType(), entry.getKey());
 		result.addAllFields(entry.getFields());
-		if (doc.getMonth() != null)
+
+		if (doc.getMonth() != null) {
 			result.addField(KEY_MONTH, new StringValue(doc.getMonth(),
 					Style.QUOTED));
+		}
+
 		if (doc.getAbstract() != null) {
-			result.addField(new Key("abstract"),
-					new StringValue(doc.getAbstract(), Style.BRACED));
+			result.addField(KEY_ABSTRACT, new StringValue(doc.getAbstract(),
+					Style.BRACED));
+		}
+
+		if (!doc.getAuthors().isEmpty()) {
+			result.addField(KEY_AUTHOR, new StringValue(
+					doc.getUnparsedAuthors(), Style.BRACED));
 		}
 		return result;
+	}
+
+	private String parseLaTeX(String latexString) {
+		String plainString = "";
+		try {
+			LaTeXParser parser = new LaTeXParser();
+			List<LaTeXObject> latexObjects = parser.parse(latexString);
+			LaTeXPrinter printer = new LaTeXPrinter();
+			plainString = printer.print(latexObjects);
+		} catch (TokenMgrException | ParseException e) {
+			System.out.println(e.getMessage());
+			return latexString;
+		}
+		return plainString;
 	}
 } // BibtexResourceImpl

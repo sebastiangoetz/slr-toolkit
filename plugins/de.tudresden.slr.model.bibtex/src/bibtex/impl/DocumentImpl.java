@@ -22,11 +22,12 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <li>{@link bibtex.impl.DocumentImpl#getAbstract <em>Abstract</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getYear <em>Year</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getMonth <em>Month</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getDay <em>Day</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getTitle <em>Title</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getKey <em>Key</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getDoi <em>Doi</em>}</li>
  * <li>{@link bibtex.impl.DocumentImpl#getUrl <em>Url</em>}</li>
+ * <li>{@link bibtex.impl.DocumentImpl#getUnparsedAuthors <em>Unparsed Authors
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -103,26 +104,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected String month = MONTH_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDay() <em>Day</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getDay()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String DAY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getDay() <em>Day</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getDay()
-	 * @generated
-	 * @ordered
-	 */
-	protected String day = DAY_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getTitle() <em>Title</em>}' attribute.
@@ -203,6 +184,28 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected String url = URL_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getUnparsedAuthors()
+	 * <em>Unparsed Authors</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #getUnparsedAuthors()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String UNPARSED_AUTHORS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getUnparsedAuthors()
+	 * <em>Unparsed Authors</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @see #getUnparsedAuthors()
+	 * @generated
+	 * @ordered
+	 */
+	protected String unparsedAuthors = UNPARSED_AUTHORS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -315,30 +318,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public String getDay() {
-		return day;
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
-	public void setDay(String newDay) {
-		String oldDay = day;
-		day = newDay;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__DAY, oldDay, day));
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -435,6 +414,31 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
+	public String getUnparsedAuthors() {
+		return unparsedAuthors;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setUnparsedAuthors(String newUnparsedAuthors) {
+		String oldUnparsedAuthors = unparsedAuthors;
+		unparsedAuthors = newUnparsedAuthors;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BibtexPackage.DOCUMENT__UNPARSED_AUTHORS,
+					oldUnparsedAuthors, unparsedAuthors));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BibtexPackage.DOCUMENT__AUTHORS:
@@ -445,8 +449,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return getYear();
 		case BibtexPackage.DOCUMENT__MONTH:
 			return getMonth();
-		case BibtexPackage.DOCUMENT__DAY:
-			return getDay();
 		case BibtexPackage.DOCUMENT__TITLE:
 			return getTitle();
 		case BibtexPackage.DOCUMENT__KEY:
@@ -455,6 +457,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return getDoi();
 		case BibtexPackage.DOCUMENT__URL:
 			return getUrl();
+		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
+			return getUnparsedAuthors();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -481,9 +485,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__MONTH:
 			setMonth((String) newValue);
 			return;
-		case BibtexPackage.DOCUMENT__DAY:
-			setDay((String) newValue);
-			return;
 		case BibtexPackage.DOCUMENT__TITLE:
 			setTitle((String) newValue);
 			return;
@@ -495,6 +496,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return;
 		case BibtexPackage.DOCUMENT__URL:
 			setUrl((String) newValue);
+			return;
+		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
+			setUnparsedAuthors((String) newValue);
 			return;
 		}
 		super.eSet(featureID, newValue);
@@ -520,9 +524,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__MONTH:
 			setMonth(MONTH_EDEFAULT);
 			return;
-		case BibtexPackage.DOCUMENT__DAY:
-			setDay(DAY_EDEFAULT);
-			return;
 		case BibtexPackage.DOCUMENT__TITLE:
 			setTitle(TITLE_EDEFAULT);
 			return;
@@ -534,6 +535,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return;
 		case BibtexPackage.DOCUMENT__URL:
 			setUrl(URL_EDEFAULT);
+			return;
+		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
+			setUnparsedAuthors(UNPARSED_AUTHORS_EDEFAULT);
 			return;
 		}
 		super.eUnset(featureID);
@@ -558,9 +562,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__MONTH:
 			return MONTH_EDEFAULT == null ? month != null : !MONTH_EDEFAULT
 					.equals(month);
-		case BibtexPackage.DOCUMENT__DAY:
-			return DAY_EDEFAULT == null ? day != null : !DAY_EDEFAULT
-					.equals(day);
 		case BibtexPackage.DOCUMENT__TITLE:
 			return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT
 					.equals(title);
@@ -573,6 +574,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__URL:
 			return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT
 					.equals(url);
+		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
+			return UNPARSED_AUTHORS_EDEFAULT == null ? unparsedAuthors != null
+					: !UNPARSED_AUTHORS_EDEFAULT.equals(unparsedAuthors);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -596,8 +600,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		result.append(year);
 		result.append(", month: ");
 		result.append(month);
-		result.append(", day: ");
-		result.append(day);
 		result.append(", title: ");
 		result.append(title);
 		result.append(", key: ");
@@ -606,6 +608,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		result.append(doi);
 		result.append(", url: ");
 		result.append(url);
+		result.append(", unparsedAuthors: ");
+		result.append(unparsedAuthors);
 		result.append(')');
 		return result.toString();
 	}

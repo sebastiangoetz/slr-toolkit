@@ -16,11 +16,11 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link bibtex.Document#getAbstract <em>Abstract</em>}</li>
  * <li>{@link bibtex.Document#getYear <em>Year</em>}</li>
  * <li>{@link bibtex.Document#getMonth <em>Month</em>}</li>
- * <li>{@link bibtex.Document#getDay <em>Day</em>}</li>
  * <li>{@link bibtex.Document#getTitle <em>Title</em>}</li>
  * <li>{@link bibtex.Document#getKey <em>Key</em>}</li>
  * <li>{@link bibtex.Document#getDoi <em>Doi</em>}</li>
  * <li>{@link bibtex.Document#getUrl <em>Url</em>}</li>
+ * <li>{@link bibtex.Document#getUnparsedAuthors <em>Unparsed Authors</em>}</li>
  * </ul>
  * </p>
  *
@@ -130,34 +130,6 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setMonth(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Day</b></em>' attribute. <!--
-	 * begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Day</em>' attribute isn't clear, there really
-	 * should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Day</em>' attribute.
-	 * @see #setDay(String)
-	 * @see bibtex.BibtexPackage#getDocument_Day()
-	 * @model
-	 * @generated
-	 */
-	String getDay();
-
-	/**
-	 * Sets the value of the '{@link bibtex.Document#getDay <em>Day</em>}'
-	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @param value
-	 *            the new value of the '<em>Day</em>' attribute.
-	 * @see #getDay()
-	 * @generated
-	 */
-	void setDay(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Title</b></em>' attribute. <!--
@@ -270,5 +242,34 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setUrl(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Unparsed Authors</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Unparsed Authors</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Unparsed Authors</em>' attribute.
+	 * @see #setUnparsedAuthors(String)
+	 * @see bibtex.BibtexPackage#getDocument_UnparsedAuthors()
+	 * @model
+	 * @generated
+	 */
+	String getUnparsedAuthors();
+
+	/**
+	 * Sets the value of the '{@link bibtex.Document#getUnparsedAuthors
+	 * <em>Unparsed Authors</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Unparsed Authors</em>' attribute.
+	 * @see #getUnparsedAuthors()
+	 * @generated
+	 */
+	void setUnparsedAuthors(String value);
 
 } // Document

@@ -35,7 +35,7 @@
             class="bibtex.presentation.BibtexEntryEditor"
             contributorClass="bibtex.presentation.BibtexEntryContributor"
             icon="icons/sample.gif"
-            id="bibtex.presentation.BibtexEntryEditor"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryEditor"
             name="BibTeX Entry">
       </editor>
    </extension>

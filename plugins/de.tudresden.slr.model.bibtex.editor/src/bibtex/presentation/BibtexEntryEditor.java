@@ -65,7 +65,7 @@ import bibtex.provider.BibtexItemProviderAdapterFactory;
  */
 public class BibtexEntryEditor extends MultiPageEditorPart implements
 		IResourceChangeListener {
-	
+
 	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexEntryEditor";
 
 	/** The text editor used in page 0. */
@@ -126,7 +126,12 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 
 		// Authors
 		label = new Label(composite, SWT.CENTER);
-		label.setText(document.getAuthors().get(0));
+		StringBuilder authors = new StringBuilder(document.getAuthors().get(0));
+		for (String author : document.getAuthors().subList(1,
+				document.getAuthors().size())) {
+			authors.append(" and " + author);
+		}
+		label.setText(authors.toString());
 		label.setLayoutData(gridData);
 
 		// Date
@@ -146,8 +151,8 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 		label.setLayoutData(gridData);
 
 		// Abstract
-		text = new StyledText(composite, SWT.V_SCROLL
-				| SWT.READ_ONLY | SWT.WRAP);
+		text = new StyledText(composite, SWT.V_SCROLL | SWT.READ_ONLY
+				| SWT.WRAP);
 		text.setEditable(false);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -219,11 +224,11 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 		FillLayout layout = new FillLayout();
 		composite.setLayout(layout);
 		Browser browser = new Browser(composite, SWT.NONE);
-		String url ="";
-		if (document.getUrl()!= null){
+		String url = "";
+		if (document.getUrl() != null) {
 			url = document.getUrl();
-		} else if (document.getDoi() != null){
-			url = "http://doi.org/"+document.getDoi();
+		} else if (document.getDoi() != null) {
+			url = "http://doi.org/" + document.getDoi();
 		} else {
 			return;
 		}
@@ -254,10 +259,10 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 		createPage0();
 		// TODO: create webpage
 		createPropertyPage();
-		if (document.getUrl()!= null || document.getDoi()!= null){
+		if (document.getUrl() != null || document.getDoi() != null) {
 			createWebpage();
 		}
-		if(document.getAbstract() != null){
+		if (document.getAbstract() != null) {
 			createPdfPage();
 		}
 	}
@@ -330,7 +335,8 @@ public class BibtexEntryEditor extends MultiPageEditorPart implements
 	 * Calculates the contents of page 2 when the it is activated.
 	 */
 	protected void pageChange(int newPageIndex) {
-		if (newPageIndex == 3) return;
+		if (newPageIndex == 3)
+			return;
 		super.pageChange(newPageIndex);
 	}
 
