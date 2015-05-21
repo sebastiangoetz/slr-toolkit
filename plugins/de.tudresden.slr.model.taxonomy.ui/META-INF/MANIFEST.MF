@@ -16,11 +16,13 @@ Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
  org.antlr.runtime,
  org.eclipse.xtext.common.types.ui,
  org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.compare
+ org.eclipse.compare,
+ org.eclipse.core.runtime
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.tudresden.slr.model.ui.quickfix,
+Export-Package: de.tudresden.slr.model.taxonomy.ui.views,
  de.tudresden.slr.model.ui.contentassist,
  de.tudresden.slr.model.ui.contentassist.antlr,
- de.tudresden.slr.model.ui.internal
+ de.tudresden.slr.model.ui.internal,
+ de.tudresden.slr.model.ui.quickfix
 Bundle-Activator: de.tudresden.slr.model.ui.internal.TaxonomyActivator

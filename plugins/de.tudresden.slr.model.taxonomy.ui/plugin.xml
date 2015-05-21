@@ -394,5 +394,25 @@
             extensions="taxonomy">
     </provider>
   </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <category
+           id="de.tudresden.slr.model.taxonomy.ui"
+           name="Sample Category">
+     </category>
+     <view
+           category="de.tudresden.slr.model.taxonomy.ui"
+           class="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+           icon="icons/sample.gif"
+           id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+           name="Taxonomy Checkbox ListView">
+     </view>
+  </extension>
+  <extension
+        point="org.eclipse.help.contexts">
+     <contexts
+           file="contexts.xml">
+     </contexts>
+  </extension>
 
 </plugin>
