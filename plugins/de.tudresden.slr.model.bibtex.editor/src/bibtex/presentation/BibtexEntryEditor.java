@@ -65,6 +65,8 @@ import bibtex.provider.BibtexItemProviderAdapterFactory;
  */
 public class BibtexEntryEditor extends MultiPageEditorPart implements
 		IResourceChangeListener {
+	
+	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexEntryEditor";
 
 	/** The text editor used in page 0. */
 	private TextEditor editor;
