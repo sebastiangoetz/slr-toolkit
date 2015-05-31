@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
@@ -291,7 +292,9 @@ public class BibtexEntryView extends ViewPart {
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		BibtexFilter filter = new BibtexFilter();
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, filter, false);
+		viewer = tree.getViewer();
 		drillDownAdapter = new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
