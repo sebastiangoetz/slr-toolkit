@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Bibtex Ui
+Bundle-SymbolicName: de.tudresden.slr.model.bibtex.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.core.resources,
+ org.eclipse.emf.edit,
+ de.tudresden.slr.model.bibtex.edit,
+ org.eclipse.emf.edit.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.jface.text
+Bundle-RequiredExecutionEnvironment: OSGi/Minimum-1.2
