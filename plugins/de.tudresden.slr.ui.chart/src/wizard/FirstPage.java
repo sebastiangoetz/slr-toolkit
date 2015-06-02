@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Text;
 public class FirstPage extends WizardPage {
 	private Text text1;
 	private Composite container;
+	private Button button2;
+	private Button button1;
 
 	public FirstPage() {
 		super("First Page");
@@ -43,10 +45,10 @@ public class FirstPage extends WizardPage {
 			};
 		};
 
-		Button button1 = new Button(buttonGroup, SWT.RADIO);
+		button1 = new Button(buttonGroup, SWT.RADIO);
 		button1.setText("BarChart");
 		button1.addSelectionListener(selectionListener);
-		Button button2 = new Button(buttonGroup, SWT.RADIO);
+		button2 = new Button(buttonGroup, SWT.RADIO);
 		button2.setText("BubbleChart");
 		button2.addSelectionListener(selectionListener);
 
@@ -56,7 +58,12 @@ public class FirstPage extends WizardPage {
 
 	}
 
-	public String getText1() {
-		return text1.getText();
+	public Button getButton2() {
+		return button2;
 	}
+
+	public Button getButton1() {
+		return button1;
+	}
+
 }

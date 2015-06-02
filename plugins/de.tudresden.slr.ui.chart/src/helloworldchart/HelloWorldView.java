@@ -26,17 +26,17 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 	@Override
 	public void createPartControl(Composite parent) {
 		_parent = parent;
-		
+
 	}
 
 	@Override
 	public void setFocus() {
 
 	}
-	
-	private void renderChart(Composite parent, Chart chart){
+
+	private void renderChart(Composite parent, Chart chart) {
 		// INITIALIZE THE SWT RENDERING DEVICE
-		
+
 		PlatformConfig config = new PlatformConfig();
 		try {
 			idr = ChartEngine.instance(config).getRenderer("dv.SWT");
@@ -68,13 +68,11 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 		});
 	}
 
-
 	@Override
 	public void setChart(Chart parameter) {
 
 		this.myChart = parameter;
 		renderChart(_parent, myChart);
-		
-		
+
 	}
 }

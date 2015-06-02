@@ -1,15 +1,8 @@
-/*******************************************************************************
- * Copyright (c) 2007 Actuate Corporation.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *  Actuate Corporation  - initial API and implementation
- *******************************************************************************/
-
 package helloworldchart;
+
+import java.util.HashMap;
+
+import javax.script.ScriptEngine;
 
 import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
@@ -17,6 +10,7 @@ import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
+import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
@@ -38,26 +32,59 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BubbleSeries;
 import org.eclipse.birt.chart.model.type.impl.BubbleSeriesImpl;
 
-/**
- * 
- */
+public class TaxonomyBubbleChart {
 
-public class Bubble {
+	private HashMap<Integer, String> axisMapping = null;
+	private JavaScriptEvaluator evaluator = null;
+	private ScriptEngine engine = null;
 
-	public final static Chart createBubble() {
+	public TaxonomyBubbleChart() {
+
+	}
+
+	/**
+	 * 
+	 * @param kat11
+	 *            The first x - Axis Label
+	 * @param kat12
+	 *            The second x - Axis Label
+	 * @param kat21
+	 *            The first y - Axis Label
+	 * @param kat22
+	 *            The second y - Axis Label
+	 * @return a new TaxonomyBubbleChart
+	 */
+
+	public final Chart createBubble(String kat11, String kat12, String kat21,
+			String kat22) {
+
+		axisMapping = new HashMap<>();
+		axisMapping.put(10, kat21);
+		axisMapping.put(20, kat22);
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
 
-		//		cwaBubble.setScript( "function beforeDrawAxisTitle(axis, title, scriptContext)" //$NON-NLS-1$
-		//				+ "{title.getCaption( ).setValue( \"Axis Title By JavaScript\");" //$NON-NLS-1$
-		//				+ "title.getCaption( ).getColor( ).set( 32, 168, 255 );}" //$NON-NLS-1$
-		// );
+		evaluator = new JavaScriptEvaluator();
+		engine = evaluator.getEngine();
+		engine.put("kat21", 10);
+		engine.put("kat22", 20);
 
 		cwaBubble
 				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
 						+ "{if (label.getCaption( ).getValue( ) == 10)"
-						+ "{label.getCaption().setValue( \"Apfel\" )}"
-						+ "label.getCaption( ).getFont( ).setSize(7);" + "}\n");
+						+ "{label.getCaption().setValue("
+						+ formatForJS(kat21)
+						+ " )}"
+						+ "if (label.getCaption( ).getValue( ) == 20)"
+						+ "{label.getCaption().setValue("
+						+ formatForJS(kat22)
+						+ " )}"
+						+ "if (label.getCaption( ).getValue( ) == 0)"
+						+ "{label.getCaption().setValue(\"\")}"
+						+ "if (label.getCaption( ).getValue( ) == 30)"
+						+ "{label.getCaption().setValue(\"\")}"
+						// + "label.getCaption( ).getFont( ).setSize(7);"
+						+ "}\n");
 
 		cwaBubble.setType("Bubble Chart"); //$NON-NLS-1$
 		cwaBubble.setSubType("Standard Bubble Chart"); //$NON-NLS-1$
@@ -80,34 +107,24 @@ public class Bubble {
 
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
-		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		xAxisPrimary.getOrigin().setType(IntersectionType.MAX_LITERAL);
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBubble.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		// yAxisPrimary.
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
+		yAxisPrimary.setLabelPosition(Position.RIGHT_LITERAL);
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
-		yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
-		;
+		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
-		// Data Set
-		// NumberDataSet categoryValues = NumberDataSetImpl.create( new double[]
-		// {
-		// 20,45,70,100,120,130
-		// });
 		TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
-				"Birne", "Gurke" });
+				kat11, kat12 });
 		BubbleDataSet values1 = BubbleDataSetImpl.create(new BubbleEntry[] {
 				new BubbleEntry(Integer.valueOf(10), Integer.valueOf(100)),
 				new BubbleEntry(Integer.valueOf(20), Integer.valueOf(200))
 
 		});
-		BubbleDataSet values2 = BubbleDataSetImpl.create(new BubbleEntry[] {
-				new BubbleEntry(Integer.valueOf(50), Integer.valueOf(60)),
-				null, null,
-				new BubbleEntry(Integer.valueOf(43), Integer.valueOf(80)),
-				new BubbleEntry(Integer.valueOf(12), Integer.valueOf(100)),
-				null });
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
@@ -136,17 +153,16 @@ public class Bubble {
 		bs1.setDataSet(values1);
 		bs1.getLabel().setVisible(false);
 
-		BubbleSeries bs2 = (BubbleSeries) BubbleSeriesImpl.create();
-		bs2.setDataSet(values2);
-		bs2.getLabel().setVisible(false);
-
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		sdY.getSeriesPalette().shift(-1);
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
-		// sdY.getSeries( ).add( bs2 );
-		// sdY.getSeries( ).add( bs3 );
 
 		return cwaBubble;
 	}
+
+	public String formatForJS(String toFormat) {
+		return "\"" + toFormat + "\"";
+	}
+
 }
