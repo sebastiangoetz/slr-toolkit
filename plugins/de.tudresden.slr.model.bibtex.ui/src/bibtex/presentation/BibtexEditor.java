@@ -1,12 +1,12 @@
 package bibtex.presentation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringJoiner;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -22,14 +22,12 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
-import org.eclipse.emf.edit.ui.action.EditingDomainActionBarContributor;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -42,17 +40,21 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.*;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorActionBarContributor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.ui.views.contentoutline.ContentOutline;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import bibtex.Document;
-import bibtex.impl.DocumentImpl;
 import bibtex.presentation.serialization.DocumentStorageEditorInput;
 import bibtex.provider.BibtexItemProviderAdapterFactory;
 
@@ -94,11 +96,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 					getActionBarContributor()
 							.setActiveEditor(BibtexEditor.this);
 					setSelection(getSelection());
-					
-					//handleActivate();
+
+					// handleActivate();
 				}
 			} else if (p == BibtexEditor.this) {
-				//handleActivate();
+				// handleActivate();
 			}
 		}
 
@@ -153,34 +155,34 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		//
 		BasicCommandStack commandStack = new BasicCommandStack();
 		// Add a listener to set the most recent command's affected objects to
-				// be the selection of the viewer with focus.
-				//
-				commandStack.addCommandStackListener(new CommandStackListener() {
+		// be the selection of the viewer with focus.
+		//
+		commandStack.addCommandStackListener(new CommandStackListener() {
+			@Override
+			public void commandStackChanged(final EventObject event) {
+				getContainer().getDisplay().asyncExec(new Runnable() {
+
 					@Override
-					public void commandStackChanged(final EventObject event) {
-						getContainer().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						firePropertyChange(IEditorPart.PROP_DIRTY);
 
-							@Override
-							public void run() {
-								firePropertyChange(IEditorPart.PROP_DIRTY);
-
-								// Try to select the affected objects.
-								//
-								Command mostRecentCommand = ((CommandStack) event
-										.getSource()).getMostRecentCommand();
-								for (Iterator<PropertySheetPage> i = propertySheetPages
-										.iterator(); i.hasNext();) {
-									PropertySheetPage propertySheetPage = i.next();
-									if (propertySheetPage.getControl().isDisposed()) {
-										i.remove();
-									} else {
-										propertySheetPage.refresh();
-									}
-								}
+						// Try to select the affected objects.
+						//
+						Command mostRecentCommand = ((CommandStack) event
+								.getSource()).getMostRecentCommand();
+						for (Iterator<PropertySheetPage> i = propertySheetPages
+								.iterator(); i.hasNext();) {
+							PropertySheetPage propertySheetPage = i.next();
+							if (propertySheetPage.getControl().isDisposed()) {
+								i.remove();
+							} else {
+								propertySheetPage.refresh();
 							}
-						});
+						}
 					}
 				});
+			}
+		});
 		// Create the editing domain with a special command stack.
 		//
 		editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
@@ -251,12 +253,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 		// Authors
 		label = new Label(composite, SWT.CENTER);
-		StringBuilder authors = new StringBuilder(document.getAuthors().get(0));
-		for (String author : document.getAuthors().subList(1,
-				document.getAuthors().size())) {
-			authors.append(" and " + author);
-		}
-		label.setText(authors.toString());
+		label.setText(String.join(" and ", document.getAuthors()));
 		label.setLayoutData(gridData);
 
 		// Date
@@ -272,8 +269,10 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			labelText = "published in " + labelText;
 		}
 		label.setText(labelText.trim());
+		//TODO: dispose font
 		FontDescriptor italicDescriptor = FontDescriptor.createFrom(
 				label.getFont()).setStyle(SWT.ITALIC);
+		//TODO: use just one font object
 		Font italicFont = italicDescriptor.createFont(label.getDisplay());
 		label.setFont(italicFont);
 		label.setLayoutData(gridData);
@@ -396,16 +395,13 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		setSelection(getSelection());
 		// TODO: notify propertysheetpage
 		/*
-		//getActionBarContributor().setActiveEditor(this);
-		if (propertySheetPages.isEmpty()){
-			getPropertySheetPage();
-		}
-		for (PropertySheetPage p : propertySheetPages){
-			p.setPropertySourceProvider(new AdapterFactoryContentProvider(adapterFactory));
-			p.refresh();
-		}
-		*/
-		//setInputWithNotify(editorInput);
+		 * //getActionBarContributor().setActiveEditor(this); if
+		 * (propertySheetPages.isEmpty()){ getPropertySheetPage(); } for
+		 * (PropertySheetPage p : propertySheetPages){
+		 * p.setPropertySourceProvider(new
+		 * AdapterFactoryContentProvider(adapterFactory)); p.refresh(); }
+		 */
+		// setInputWithNotify(editorInput);
 	}
 
 	protected void extractDocument(IEditorInput editorInput) {
@@ -424,11 +420,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
-		//getSite().getSelectionProvider().setSelection(selection);
-		for (ISelectionChangedListener l : selectionListeners){
+		// getSite().getSelectionProvider().setSelection(selection);
+		for (ISelectionChangedListener l : selectionListeners) {
 			l.selectionChanged(new SelectionChangedEvent(this, selection));
 		}
-		//setStatusLineManager(selection);
+		// setStatusLineManager(selection);
 	}
 
 	/**
@@ -470,7 +466,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			@Override
 			public void setActionBars(IActionBars actionBars) {
 				super.setActionBars(actionBars);
-				//getActionBarContributor().shareGlobalActions(this,
+				// getActionBarContributor().shareGlobalActions(this,
 				// actionBars);
 			}
 		};
