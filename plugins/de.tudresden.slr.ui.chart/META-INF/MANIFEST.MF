@@ -2,17 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: de.tudresden.slr.ui.chart;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: helloworldchart.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.birt.chart;bundle-version="4.4.2",
- org.eclipse.birt.chart.device.swt;bundle-version="4.4.2",
- org.eclipse.birt.chart.engine;bundle-version="4.4.2",
- org.eclipse.birt.chart.engine.extension;bundle-version="4.4.2",
- org.eclipse.birt.chart.ui;bundle-version="4.4.2",
- org.eclipse.birt.chart.ui.extension;bundle-version="4.4.2",
- org.eclipse.birt.core;bundle-version="4.4.2",
- org.eclipse.birt.core.ui;bundle-version="4.4.2"
+ org.eclipse.birt.chart,
+ org.eclipse.birt.chart.device.swt,
+ org.eclipse.birt.chart.engine,
+ org.eclipse.birt.chart.engine.extension,
+ org.eclipse.birt.chart.ui,
+ org.eclipse.birt.chart.ui.extension,
+ org.eclipse.birt.core,
+ org.eclipse.birt.core.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
