@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.views,
  de.tudresden.slr.model.taxonomy.ui,
- de.tudresden.slr.model.bibtex.editor
+ de.tudresden.slr.model.bibtex.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Import-Package: bibtex.presentation

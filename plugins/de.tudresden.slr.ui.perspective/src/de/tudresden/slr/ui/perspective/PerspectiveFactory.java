@@ -5,7 +5,8 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import bibtex.presentation.BibtexEditor;
-import bibtex.presentation.BibtexEntryEditor;
+import bibtex.presentation.BibtexEntryView;
+import bibtex.presentation.BibtexOverviewEditor;
 import de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView;
 
 public class PerspectiveFactory implements IPerspectiveFactory {
@@ -22,7 +23,7 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout left = layout.createFolder("slr.left", IPageLayout.LEFT,
 				0.25f, editorArea);
 		left.addView(IPageLayout.ID_PROJECT_EXPLORER);
-		left.addView(BibtexEditor.ID);
+		left.addView(BibtexEntryView.ID);
 
 		IFolderLayout bottom = layout.createFolder("slr.bottom",
 				IPageLayout.BOTTOM, 0.65f, editorArea);
@@ -32,7 +33,8 @@ public class PerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout middle = layout.createFolder("slr.middle",
 				IPageLayout.TOP, 0.3f, "slr.bottom");
 		// middle.addPlaceholder(IPageLayout.ID_EDITOR_AREA);
-		middle.addPlaceholder(BibtexEntryEditor.ID);
+		middle.addPlaceholder(BibtexEditor.ID);
+		middle.addPlaceholder(BibtexOverviewEditor.ID);
 
 		IFolderLayout right = layout.createFolder("slr.right",
 				IPageLayout.RIGHT, 0.75f, editorArea);

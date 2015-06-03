@@ -107,6 +107,7 @@
 	<modules>
 		<module>../de.tudresden.slr.model.bibtex</module>
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
+		<module>../de.tudresden.slr.model.bibtex.ui</module>
 		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
 		<module>../../targets/de.tudresden.slr.target.luna</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
