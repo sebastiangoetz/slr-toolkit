@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringJoiner;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -269,10 +268,10 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			labelText = "published in " + labelText;
 		}
 		label.setText(labelText.trim());
-		//TODO: dispose font
+		// TODO: dispose font
 		FontDescriptor italicDescriptor = FontDescriptor.createFrom(
 				label.getFont()).setStyle(SWT.ITALIC);
-		//TODO: use just one font object
+		// TODO: use just one font object
 		Font italicFont = italicDescriptor.createFont(label.getDisplay());
 		label.setFont(italicFont);
 		label.setLayoutData(gridData);
