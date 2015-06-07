@@ -6,7 +6,8 @@
     complianceLevel="8.0" copyrightFields="false" language="" interfaceNamePattern=""
     operationReflection="true" importOrganizing="true" pluginKey="bib" cleanup="true">
   <foreignModel>bibtex.ecore</foreignModel>
-  <genPackages prefix="Bibtex" resource="Basic" disposableProviderFactory="true" fileExtensions="bib"
+  <genPackages prefix="Bibtex" basePackage="de.tudresden.slr.model" resource="Basic"
+      disposableProviderFactory="true" contentTypeIdentifier="" fileExtensions="bib"
       ecorePackage="bibtex.ecore#/" publicationLocation="">
     <genClasses ecoreClass="bibtex.ecore#//Document">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/authors"/>
