@@ -9,7 +9,7 @@ import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStora
 
 public class BibtexOverviewEditor extends BibtexEditor implements
 		IReusableEditor {
-	public static final String ID = "bibtex.presentation.BibtexOverviewEditor";
+	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor";
 	public static final String name = "Bibtex Overview";
 	private boolean init;
 
@@ -22,6 +22,7 @@ public class BibtexOverviewEditor extends BibtexEditor implements
 	 * The <code>MultiPageEditorExample</code> implementation of this method
 	 * checks that the input is an instance of <code>IFileEditorInput</code>.
 	 */
+	@Override
 	public void init(IEditorSite site, IEditorInput editorInput)
 			throws PartInitException {
 		super.init(site, editorInput);
@@ -34,6 +35,7 @@ public class BibtexOverviewEditor extends BibtexEditor implements
 	 * IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID) .openEditor(new
 	 * StructuredSelection(this.document), true); }
 	 */
+	@Override
 	public void setInput(IEditorInput input) {
 		super.setInput(input);
 		if (!init && input instanceof DocumentStorageEditorInput) {
@@ -47,8 +49,9 @@ public class BibtexOverviewEditor extends BibtexEditor implements
 			this.setActivePage(page);
 		}
 	}
-	
-	protected void createPages(){
+
+	@Override
+	protected void createPages() {
 		createAbstractPage();
 	}
 }
