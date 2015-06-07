@@ -1,8 +1,9 @@
 /**
  */
-package bibtex;
+package de.tudresden.slr.model.bibtex;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -12,19 +13,22 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link bibtex.Document#getAuthors <em>Authors</em>}</li>
- * <li>{@link bibtex.Document#getAbstract <em>Abstract</em>}</li>
- * <li>{@link bibtex.Document#getYear <em>Year</em>}</li>
- * <li>{@link bibtex.Document#getMonth <em>Month</em>}</li>
- * <li>{@link bibtex.Document#getTitle <em>Title</em>}</li>
- * <li>{@link bibtex.Document#getKey <em>Key</em>}</li>
- * <li>{@link bibtex.Document#getDoi <em>Doi</em>}</li>
- * <li>{@link bibtex.Document#getUrl <em>Url</em>}</li>
- * <li>{@link bibtex.Document#getUnparsedAuthors <em>Unparsed Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getAuthors <em>Authors
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getAbstract <em>Abstract
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getYear <em>Year</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getMonth <em>Month</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getTitle <em>Title</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getKey <em>Key</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getDoi <em>Doi</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getUrl <em>Url</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors <em>
+ * Unparsed Authors</em>}</li>
  * </ul>
  * </p>
  *
- * @see bibtex.BibtexPackage#getDocument()
+ * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument()
  * @model
  * @generated
  */
@@ -40,7 +44,7 @@ public interface Document extends EObject {
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Authors</em>' attribute list.
-	 * @see bibtex.BibtexPackage#getDocument_Authors()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Authors()
 	 * @model required="true"
 	 * @generated
 	 */
@@ -57,14 +61,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Abstract</em>' attribute.
 	 * @see #setAbstract(String)
-	 * @see bibtex.BibtexPackage#getDocument_Abstract()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Abstract()
 	 * @model
 	 * @generated
 	 */
 	String getAbstract();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getAbstract
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getAbstract
 	 * <em>Abstract</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
 	 * -->
 	 * 
@@ -86,14 +91,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Year</em>' attribute.
 	 * @see #setYear(String)
-	 * @see bibtex.BibtexPackage#getDocument_Year()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Year()
 	 * @model
 	 * @generated
 	 */
 	String getYear();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getYear <em>Year</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getYear <em>Year</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -114,14 +120,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Month</em>' attribute.
 	 * @see #setMonth(String)
-	 * @see bibtex.BibtexPackage#getDocument_Month()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Month()
 	 * @model
 	 * @generated
 	 */
 	String getMonth();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getMonth <em>Month</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getMonth <em>Month</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -142,14 +149,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Title</em>' attribute.
 	 * @see #setTitle(String)
-	 * @see bibtex.BibtexPackage#getDocument_Title()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Title()
 	 * @model
 	 * @generated
 	 */
 	String getTitle();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getTitle <em>Title</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getTitle <em>Title</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -170,14 +178,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Key</em>' attribute.
 	 * @see #setKey(String)
-	 * @see bibtex.BibtexPackage#getDocument_Key()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Key()
 	 * @model id="true"
 	 * @generated
 	 */
 	String getKey();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getKey <em>Key</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getKey <em>Key</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -198,14 +207,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Doi</em>' attribute.
 	 * @see #setDoi(String)
-	 * @see bibtex.BibtexPackage#getDocument_Doi()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Doi()
 	 * @model
 	 * @generated
 	 */
 	String getDoi();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getDoi <em>Doi</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getDoi <em>Doi</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -226,14 +236,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Url</em>' attribute.
 	 * @see #setUrl(String)
-	 * @see bibtex.BibtexPackage#getDocument_Url()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Url()
 	 * @model
 	 * @generated
 	 */
 	String getUrl();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getUrl <em>Url</em>}'
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getUrl <em>Url</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @param value
@@ -254,14 +265,15 @@ public interface Document extends EObject {
 	 * 
 	 * @return the value of the '<em>Unparsed Authors</em>' attribute.
 	 * @see #setUnparsedAuthors(String)
-	 * @see bibtex.BibtexPackage#getDocument_UnparsedAuthors()
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_UnparsedAuthors()
 	 * @model
 	 * @generated
 	 */
 	String getUnparsedAuthors();
 
 	/**
-	 * Sets the value of the '{@link bibtex.Document#getUnparsedAuthors
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors
 	 * <em>Unparsed Authors</em>}' attribute. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 

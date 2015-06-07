@@ -1,9 +1,9 @@
 /**
  */
-package bibtex.tests;
+package de.tudresden.slr.model.bibtex.tests;
 
-import bibtex.BibtexFactory;
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.Document;
 
 import junit.framework.TestCase;
 

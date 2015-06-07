@@ -1,8 +1,9 @@
 /**
  */
-package bibtex.provider;
+package de.tudresden.slr.model.bibtex.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
+
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**

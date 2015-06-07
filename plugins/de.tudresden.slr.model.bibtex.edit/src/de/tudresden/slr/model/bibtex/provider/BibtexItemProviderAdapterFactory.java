@@ -1,8 +1,8 @@
 /**
  */
-package bibtex.provider;
+package de.tudresden.slr.model.bibtex.provider;
 
-import bibtex.util.BibtexAdapterFactory;
+import de.tudresden.slr.model.bibtex.util.BibtexAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,16 +76,18 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link bibtex.Document}
-	 * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * This keeps track of the one adapter used for all
+	 * {@link de.tudresden.slr.model.bibtex.Document} instances. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	protected DocumentItemProvider documentItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link bibtex.Document}. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This creates an adapter for a
+	 * {@link de.tudresden.slr.model.bibtex.Document}. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -104,7 +106,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public ComposeableAdapterFactory getRootAdapterFactory() {
 		return parentAdapterFactory == null ? this : parentAdapterFactory
 				.getRootAdapterFactory();
@@ -116,7 +117,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setParentAdapterFactory(
 			ComposedAdapterFactory parentAdapterFactory) {
 		this.parentAdapterFactory = parentAdapterFactory;
@@ -166,7 +166,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void addListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.addListener(notifyChangedListener);
 	}
@@ -176,7 +175,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void removeListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.removeListener(notifyChangedListener);
 	}
@@ -188,7 +186,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void fireNotifyChanged(Notification notification) {
 		changeNotifier.fireNotifyChanged(notification);
 
@@ -203,7 +200,6 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void dispose() {
 		if (documentItemProvider != null)
 			documentItemProvider.dispose();

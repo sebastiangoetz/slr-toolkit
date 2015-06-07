@@ -1,8 +1,13 @@
 /**
  */
-package bibtex.util;
+package de.tudresden.slr.model.bibtex.util;
 
-import static org.jbibtex.BibTeXEntry.*;
+import static org.jbibtex.BibTeXEntry.KEY_AUTHOR;
+import static org.jbibtex.BibTeXEntry.KEY_DOI;
+import static org.jbibtex.BibTeXEntry.KEY_MONTH;
+import static org.jbibtex.BibTeXEntry.KEY_TITLE;
+import static org.jbibtex.BibTeXEntry.KEY_URL;
+import static org.jbibtex.BibTeXEntry.KEY_YEAR;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,14 +38,14 @@ import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
 import org.jbibtex.TokenMgrException;
 
-import bibtex.BibtexFactory;
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.Document;
 
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
  * <!-- end-user-doc -->
  * 
- * @see bibtex.util.BibtexResourceFactoryImpl
+ * @see de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl
  * @generated
  */
 public class BibtexResourceImpl extends ResourceImpl {
@@ -197,4 +202,5 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 		return plainString;
 	}
+
 } // BibtexResourceImpl

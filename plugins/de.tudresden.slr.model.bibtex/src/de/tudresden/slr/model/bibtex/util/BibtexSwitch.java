@@ -1,8 +1,8 @@
 /**
  */
-package bibtex.util;
+package de.tudresden.slr.model.bibtex.util;
 
-import bibtex.*;
+import de.tudresden.slr.model.bibtex.*;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * inheritance hierarchy until a non-null result is returned, which is the
  * result of the switch. <!-- end-user-doc -->
  * 
- * @see bibtex.BibtexPackage
+ * @see de.tudresden.slr.model.bibtex.BibtexPackage
  * @generated
  */
 public class BibtexSwitch<T> extends Switch<T> {

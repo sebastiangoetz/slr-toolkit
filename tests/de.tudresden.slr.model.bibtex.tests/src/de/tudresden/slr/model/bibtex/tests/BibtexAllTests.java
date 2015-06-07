@@ -1,6 +1,6 @@
 /**
  */
-package bibtex.tests;
+package de.tudresden.slr.model.bibtex.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

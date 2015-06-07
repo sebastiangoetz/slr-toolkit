@@ -1,8 +1,8 @@
 /**
  */
-package bibtex.impl;
+package de.tudresden.slr.model.bibtex.impl;
 
-import bibtex.*;
+import de.tudresden.slr.model.bibtex.*;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -69,7 +69,6 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public Document createDocument() {
 		DocumentImpl document = new DocumentImpl();
 		return document;
@@ -80,7 +79,6 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public BibtexPackage getBibtexPackage() {
 		return (BibtexPackage) getEPackage();
 	}

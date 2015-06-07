@@ -1,13 +1,15 @@
 /**
  */
-package bibtex.impl;
+package de.tudresden.slr.model.bibtex.impl;
 
-import bibtex.BibtexFactory;
-import bibtex.BibtexPackage;
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -35,7 +37,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see bibtex.BibtexPackage#eNS_URI
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
@@ -96,7 +98,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EClass getDocument() {
 		return documentEClass;
 	}
@@ -106,7 +107,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Authors() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(0);
 	}
@@ -116,7 +116,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Abstract() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(1);
 	}
@@ -126,7 +125,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Year() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(2);
 	}
@@ -136,7 +134,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Month() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(3);
 	}
@@ -146,7 +143,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Title() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(4);
 	}
@@ -156,7 +152,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Key() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(5);
 	}
@@ -166,7 +161,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Doi() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(6);
 	}
@@ -176,7 +170,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_Url() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(7);
 	}
@@ -186,7 +179,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EAttribute getDocument_UnparsedAuthors() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(8);
 	}
@@ -196,7 +188,6 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
-	@Override
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory) getEFactoryInstance();
 	}

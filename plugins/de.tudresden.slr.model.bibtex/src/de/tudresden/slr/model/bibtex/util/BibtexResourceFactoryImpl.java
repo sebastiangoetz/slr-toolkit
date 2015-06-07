@@ -1,6 +1,6 @@
 /**
  */
-package bibtex.util;
+package de.tudresden.slr.model.bibtex.util;
 
 import org.eclipse.emf.common.util.URI;
 
@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
  * <!-- begin-user-doc --> The <b>Resource Factory</b> associated with the
  * package. <!-- end-user-doc -->
  * 
- * @see bibtex.util.BibtexResourceImpl
+ * @see de.tudresden.slr.model.bibtex.util.BibtexResourceImpl
  * @generated
  */
 public class BibtexResourceFactoryImpl extends ResourceFactoryImpl {

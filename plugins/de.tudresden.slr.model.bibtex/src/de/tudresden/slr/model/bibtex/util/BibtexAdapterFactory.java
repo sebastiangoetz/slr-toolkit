@@ -1,8 +1,8 @@
 /**
  */
-package bibtex.util;
+package de.tudresden.slr.model.bibtex.util;
 
-import bibtex.*;
+import de.tudresden.slr.model.bibtex.*;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * an adapter <code>createXXX</code> method for each class of the model. <!--
  * end-user-doc -->
  * 
- * @see bibtex.BibtexPackage
+ * @see de.tudresden.slr.model.bibtex.BibtexPackage
  * @generated
  */
 public class BibtexAdapterFactory extends AdapterFactoryImpl {
@@ -92,14 +92,14 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link bibtex.Document
-	 * <em>Document</em>}'. <!-- begin-user-doc --> This default implementation
-	 * returns null so that we can easily ignore cases; it's useful to ignore a
-	 * case when inheritance will catch all the cases anyway. <!-- end-user-doc
-	 * -->
+	 * Creates a new adapter for an object of class '
+	 * {@link de.tudresden.slr.model.bibtex.Document <em>Document</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
-	 * @see bibtex.Document
+	 * @see de.tudresden.slr.model.bibtex.Document
 	 * @generated
 	 */
 	public Adapter createDocumentAdapter() {

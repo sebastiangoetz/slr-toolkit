@@ -1,15 +1,21 @@
 /**
  */
-package bibtex.impl;
+package de.tudresden.slr.model.bibtex.impl;
 
-import bibtex.BibtexPackage;
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -18,16 +24,25 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link bibtex.impl.DocumentImpl#getAuthors <em>Authors</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getAbstract <em>Abstract</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getYear <em>Year</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getMonth <em>Month</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getTitle <em>Title</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getKey <em>Key</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getDoi <em>Doi</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getUrl <em>Url</em>}</li>
- * <li>{@link bibtex.impl.DocumentImpl#getUnparsedAuthors <em>Unparsed Authors
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAuthors <em>
+ * Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAbstract <em>
+ * Abstract</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getYear <em>Year
  * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getMonth <em>Month
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTitle <em>Title
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getKey <em>Key
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getDoi <em>Doi
+ * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUrl <em>Url
+ * </em>}</li>
+ * <li>
+ * {@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUnparsedAuthors
+ * <em>Unparsed Authors</em>}</li>
  * </ul>
  * </p>
  *
@@ -231,7 +246,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public EList<String> getAuthors() {
 		if (authors == null) {
 			authors = new EDataTypeUniqueEList<String>(String.class, this,
@@ -245,7 +259,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getAbstract() {
 		return abstract_;
 	}
@@ -255,7 +268,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setAbstract(String newAbstract) {
 		String oldAbstract = abstract_;
 		abstract_ = newAbstract;
@@ -269,7 +281,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getYear() {
 		return year;
 	}
@@ -279,7 +290,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setYear(String newYear) {
 		String oldYear = year;
 		year = newYear;
@@ -293,7 +303,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -303,7 +312,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setMonth(String newMonth) {
 		String oldMonth = month;
 		month = newMonth;
@@ -317,7 +325,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -327,7 +334,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setTitle(String newTitle) {
 		String oldTitle = title;
 		title = newTitle;
@@ -341,7 +347,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getKey() {
 		return key;
 	}
@@ -351,7 +356,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setKey(String newKey) {
 		String oldKey = key;
 		key = newKey;
@@ -365,7 +369,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getDoi() {
 		return doi;
 	}
@@ -375,7 +378,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setDoi(String newDoi) {
 		String oldDoi = doi;
 		doi = newDoi;
@@ -389,7 +391,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getUrl() {
 		return url;
 	}
@@ -399,7 +400,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setUrl(String newUrl) {
 		String oldUrl = url;
 		url = newUrl;
@@ -413,7 +413,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public String getUnparsedAuthors() {
 		return unparsedAuthors;
 	}
@@ -423,7 +422,6 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
-	@Override
 	public void setUnparsedAuthors(String newUnparsedAuthors) {
 		String oldUnparsedAuthors = unparsedAuthors;
 		unparsedAuthors = newUnparsedAuthors;

@@ -21,4 +21,18 @@
             class="bibtex.util.BibtexResourceFactoryImpl"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated bib -->
+      <package
+            uri="http://tudresden.de/slr/2015"
+            class="de.tudresden.slr.model.bibtex.BibtexPackage"
+            genModel="model/bibtex.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated bib -->
+      <parser
+            type="bib"
+            class="de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl"/>
+   </extension>
 </plugin>

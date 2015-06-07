@@ -1,19 +1,26 @@
 /**
  */
-package bibtex.tests;
+package de.tudresden.slr.model.bibtex.tests;
 
-import bibtex.BibtexFactory;
-import bibtex.BibtexPackage;
-import bibtex.Document;
-import bibtex.util.BibtexResourceFactoryImpl;
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+
+import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
+
 import java.io.File;
 import java.io.IOException;
+
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+
 import org.eclipse.emf.ecore.EObject;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+
 import org.eclipse.emf.ecore.util.Diagnostician;
 
 /**

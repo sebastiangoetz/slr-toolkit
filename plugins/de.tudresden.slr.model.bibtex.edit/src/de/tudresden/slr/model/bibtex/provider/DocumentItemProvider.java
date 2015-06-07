@@ -1,14 +1,18 @@
 /**
  */
-package bibtex.provider;
+package de.tudresden.slr.model.bibtex.provider;
 
-import bibtex.BibtexPackage;
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -21,8 +25,9 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link bibtex.Document} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a
+ * {@link de.tudresden.slr.model.bibtex.Document} object. <!-- begin-user-doc
+ * --> <!-- end-user-doc -->
  * 
  * @generated
  */
@@ -240,10 +245,12 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	/**
 	 * This returns the label text for the adapted class. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Document) object).getKey();
+		String label = ((Document) object).getAbstract();
 		return label == null || label.length() == 0 ? getString("_UI_Document_type")
 				: getString("_UI_Document_type") + " " + label;
 	}

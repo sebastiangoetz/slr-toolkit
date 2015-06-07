@@ -1,6 +1,6 @@
 /**
  */
-package bibtex;
+package de.tudresden.slr.model.bibtex;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EPackage;
  * </ul>
  * <!-- end-user-doc -->
  * 
- * @see bibtex.BibtexFactory
+ * @see de.tudresden.slr.model.bibtex.BibtexFactory
  * @model kind="package"
  * @generated
  */
@@ -50,14 +50,16 @@ public interface BibtexPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	BibtexPackage eINSTANCE = bibtex.impl.BibtexPackageImpl.init();
+	BibtexPackage eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexPackageImpl
+			.init();
 
 	/**
-	 * The meta object id for the '{@link bibtex.impl.DocumentImpl
-	 * <em>Document</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The meta object id for the '
+	 * {@link de.tudresden.slr.model.bibtex.impl.DocumentImpl <em>Document</em>}
+	 * ' class. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @see bibtex.impl.DocumentImpl
-	 * @see bibtex.impl.BibtexPackageImpl#getDocument()
+	 * @see de.tudresden.slr.model.bibtex.impl.DocumentImpl
+	 * @see de.tudresden.slr.model.bibtex.impl.BibtexPackageImpl#getDocument()
 	 * @generated
 	 */
 	int DOCUMENT = 0;
@@ -162,22 +164,23 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT_OPERATION_COUNT = 0;
 
 	/**
-	 * Returns the meta object for class '{@link bibtex.Document
-	 * <em>Document</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for class '
+	 * {@link de.tudresden.slr.model.bibtex.Document <em>Document</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Document</em>'.
-	 * @see bibtex.Document
+	 * @see de.tudresden.slr.model.bibtex.Document
 	 * @generated
 	 */
 	EClass getDocument();
 
 	/**
 	 * Returns the meta object for the attribute list '
-	 * {@link bibtex.Document#getAuthors <em>Authors</em>}'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getAuthors
+	 * <em>Authors</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute list '<em>Authors</em>'.
-	 * @see bibtex.Document#getAuthors()
+	 * @see de.tudresden.slr.model.bibtex.Document#getAuthors()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -185,11 +188,11 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link bibtex.Document#getAbstract <em>Abstract</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getAbstract
+	 * <em>Abstract</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Abstract</em>'.
-	 * @see bibtex.Document#getAbstract()
+	 * @see de.tudresden.slr.model.bibtex.Document#getAbstract()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -197,11 +200,11 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link bibtex.Document#getYear <em>Year</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getYear <em>Year</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Year</em>'.
-	 * @see bibtex.Document#getYear()
+	 * @see de.tudresden.slr.model.bibtex.Document#getYear()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -209,11 +212,11 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link bibtex.Document#getMonth <em>Month</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getMonth <em>Month</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Month</em>'.
-	 * @see bibtex.Document#getMonth()
+	 * @see de.tudresden.slr.model.bibtex.Document#getMonth()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -221,44 +224,47 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link bibtex.Document#getTitle <em>Title</em>}'. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getTitle <em>Title</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Title</em>'.
-	 * @see bibtex.Document#getTitle()
+	 * @see de.tudresden.slr.model.bibtex.Document#getTitle()
 	 * @see #getDocument()
 	 * @generated
 	 */
 	EAttribute getDocument_Title();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getKey
-	 * <em>Key</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getKey <em>Key</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Key</em>'.
-	 * @see bibtex.Document#getKey()
+	 * @see de.tudresden.slr.model.bibtex.Document#getKey()
 	 * @see #getDocument()
 	 * @generated
 	 */
 	EAttribute getDocument_Key();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getDoi
-	 * <em>Doi</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getDoi <em>Doi</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Doi</em>'.
-	 * @see bibtex.Document#getDoi()
+	 * @see de.tudresden.slr.model.bibtex.Document#getDoi()
 	 * @see #getDocument()
 	 * @generated
 	 */
 	EAttribute getDocument_Doi();
 
 	/**
-	 * Returns the meta object for the attribute '{@link bibtex.Document#getUrl
-	 * <em>Url</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getUrl <em>Url</em>}'. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Url</em>'.
-	 * @see bibtex.Document#getUrl()
+	 * @see de.tudresden.slr.model.bibtex.Document#getUrl()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -266,11 +272,12 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '
-	 * {@link bibtex.Document#getUnparsedAuthors <em>Unparsed Authors</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors
+	 * <em>Unparsed Authors</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
 	 * 
 	 * @return the meta object for the attribute '<em>Unparsed Authors</em>'.
-	 * @see bibtex.Document#getUnparsedAuthors()
+	 * @see de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors()
 	 * @see #getDocument()
 	 * @generated
 	 */
@@ -301,12 +308,13 @@ public interface BibtexPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link bibtex.impl.DocumentImpl
+		 * The meta object literal for the '
+		 * {@link de.tudresden.slr.model.bibtex.impl.DocumentImpl
 		 * <em>Document</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
 		 * -->
 		 * 
-		 * @see bibtex.impl.DocumentImpl
-		 * @see bibtex.impl.BibtexPackageImpl#getDocument()
+		 * @see de.tudresden.slr.model.bibtex.impl.DocumentImpl
+		 * @see de.tudresden.slr.model.bibtex.impl.BibtexPackageImpl#getDocument()
 		 * @generated
 		 */
 		EClass DOCUMENT = eINSTANCE.getDocument();
