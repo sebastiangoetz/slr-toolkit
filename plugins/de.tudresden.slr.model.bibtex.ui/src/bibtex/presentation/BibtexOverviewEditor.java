@@ -49,6 +49,6 @@ public class BibtexOverviewEditor extends BibtexEditor implements
 	}
 	
 	protected void createPages(){
-		createPage0();
+		createAbstractPage();
 	}
 }

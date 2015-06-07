@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -69,6 +70,8 @@ import bibtex.provider.BibtexItemProviderAdapterFactory;
 public class BibtexEditor extends MultiPageEditorPart implements
 		IResourceChangeListener, ISelectionProvider {
 	public static final String ID = "bibtex.presentation.BibtexEditor";
+
+	// TODO: prettify
 	protected Composite parent = null;
 	protected Document document;
 	protected ComposedAdapterFactory adapterFactory;
@@ -78,8 +81,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	protected int propertyindex = -1;
 	protected PropertySheetPage property;
 	private ISelection selection;
-	private HashSet<ISelectionChangedListener> selectionListeners = new HashSet<ISelectionChangedListener>();
-	private static ArrayList<PropertySheetPage> propertySheetPages = new ArrayList<PropertySheetPage>();
+	private Set<ISelectionChangedListener> selectionListeners = new HashSet<>();
+	private static List<PropertySheetPage> propertySheetPages = new ArrayList<>();
 	/**
 	 * This listens for when the outline becomes active <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -88,9 +91,9 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 */
 	private IPartListener partListener = new IPartListener() {
 		@Override
-		public void partActivated(IWorkbenchPart p) {
-			if (p instanceof PropertySheet) {
-				if (propertySheetPages.contains(((PropertySheet) p)
+		public void partActivated(IWorkbenchPart part) {
+			if (part instanceof PropertySheet) {
+				if (propertySheetPages.contains(((PropertySheet) part)
 						.getCurrentPage())) {
 					getActionBarContributor()
 							.setActiveEditor(BibtexEditor.this);
@@ -98,7 +101,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 					// handleActivate();
 				}
-			} else if (p == BibtexEditor.this) {
+			} else if (part == BibtexEditor.this) {
 				// handleActivate();
 			}
 		}
@@ -191,15 +194,12 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					// TODO: before closing the editor
-				}
-			});
+			Display.getDefault().asyncExec(() -> {
+			}/* TODO: before closing the editor); */);
 		}
-
 	}
 
+	@Override
 	protected void pageChange(int newPageIndex) {
 		if (newPageIndex == webindex && webcomposite != null) {
 			Browser browser = new Browser(webcomposite, SWT.NONE);
@@ -217,16 +217,70 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		if (newPageIndex == propertyindex) {
 			property.setPropertySourceProvider(new AdapterFactoryContentProvider(
 					adapterFactory));
-			property.selectionChanged(BibtexEditor.this, getSelection());
+			property.selectionChanged(this, getSelection());
 
 		}
 		super.pageChange(newPageIndex);
 	}
 
+	private void createPageLabel(Composite composite, GridData gridData) {
+		Label label = new Label(composite, SWT.CENTER);
+		label.setText(document.getTitle());
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(
+				label.getFont()).setStyle(SWT.BOLD);
+		Font boldFont = boldDescriptor.createFont(label.getDisplay());
+		label.setFont(boldFont);
+		label.setLayoutData(gridData);
+	}
+
+	private void createAuthorsLabel(Composite composite, GridData gridData) {
+		Label label = new Label(composite, SWT.CENTER);
+		label.setText(String.join(" and ", document.getAuthors()));
+		label.setLayoutData(gridData);
+	}
+
+	private void createDateLabel(Composite composite, GridData gridData) {
+		Label label = new Label(composite, SWT.CENTER);
+		StringBuilder labelText = new StringBuilder();
+		if (document.getMonth() != null) {
+			labelText.append(document.getMonth()).append(" ");
+		}
+		if (document.getYear() != null) {
+			labelText.append(document.getYear());
+		}
+		if (labelText.length() > 0) {
+			labelText.insert(0, "published in ").append(labelText);
+		}
+		label.setText(labelText.toString());
+		// TODO: dispose font
+		FontDescriptor italicDescriptor = FontDescriptor.createFrom(
+				label.getFont()).setStyle(SWT.ITALIC);
+		// TODO: use just one font object
+		Font italicFont = italicDescriptor.createFont(label.getDisplay());
+		label.setFont(italicFont);
+		label.setLayoutData(gridData);
+	}
+
+	private void createAbstractText(Composite composite) {
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.grabExcessVerticalSpace = true;
+
+		StyledText text = new StyledText(composite, SWT.V_SCROLL
+				| SWT.READ_ONLY | SWT.WRAP);
+		text.setEditable(false);
+		text.setLayoutData(gridData);
+		if (document.getAbstract() != null) {
+			text.setText(document.getAbstract());
+		}
+	}
+
 	/**
 	 * Creates page 0 of the multi-page editor, which contains a text editor.
 	 */
-	protected void createPage0() {
+	protected void createAbstractPage() {
 		Composite localParent = getContainer();
 		if (localParent == null) {
 			localParent = parent;
@@ -236,59 +290,23 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.makeColumnsEqualWidth = true;
+		composite.setLayout(layout);
+
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		composite.setLayout(layout);
 
 		// Title
-		Label label = new Label(composite, SWT.CENTER);
-		label.setText(document.getTitle());
-		FontDescriptor boldDescriptor = FontDescriptor.createFrom(
-				label.getFont()).setStyle(SWT.BOLD);
-		Font boldFont = boldDescriptor.createFont(label.getDisplay());
-		label.setFont(boldFont);
-		label.setLayoutData(gridData);
+		createPageLabel(composite, gridData);
 
 		// Authors
-		label = new Label(composite, SWT.CENTER);
-		label.setText(String.join(" and ", document.getAuthors()));
-		label.setLayoutData(gridData);
+		createAuthorsLabel(composite, gridData);
 
 		// Date
-		label = new Label(composite, SWT.CENTER);
-		String labelText = "";
-		if (document.getMonth() != null) {
-			labelText += document.getMonth() + " ";
-		}
-		if (document.getYear() != null) {
-			labelText += document.getYear();
-		}
-		if (labelText.length() > 0) {
-			labelText = "published in " + labelText;
-		}
-		label.setText(labelText.trim());
-		// TODO: dispose font
-		FontDescriptor italicDescriptor = FontDescriptor.createFrom(
-				label.getFont()).setStyle(SWT.ITALIC);
-		// TODO: use just one font object
-		Font italicFont = italicDescriptor.createFont(label.getDisplay());
-		label.setFont(italicFont);
-		label.setLayoutData(gridData);
+		createDateLabel(composite, gridData);
 
 		// Abstract
-		StyledText text = new StyledText(composite, SWT.V_SCROLL
-				| SWT.READ_ONLY | SWT.WRAP);
-		text.setEditable(false);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessVerticalSpace = true;
-		text.setLayoutData(gridData);
-		if (document.getAbstract() != null) {
-			text.setText(document.getAbstract());
-		}
+		createAbstractText(composite);
 
 		int index = addPage(composite);
 		setPageText(index, "Abstract");
@@ -350,7 +368,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		if (parent == null) {
 			parent = getContainer();
 		}
-		createPage0();
+		createAbstractPage();
 		createPropertyPage();
 		if (document.getUrl() != null || document.getDoi() != null) {
 			createWebpage();
@@ -381,6 +399,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 * The <code>MultiPageEditorExample</code> implementation of this method
 	 * checks that the input is an instance of <code>IFileEditorInput</code>.
 	 */
+	@Override
 	public void init(IEditorSite site, IEditorInput editorInput)
 			throws PartInitException {
 		if (!(editorInput instanceof DocumentStorageEditorInput))
@@ -413,16 +432,19 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		}
 	}
 
+	@Override
 	public ISelection getSelection() {
 		return selection;
 	}
 
+	@Override
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
+		final SelectionChangedEvent event = new SelectionChangedEvent(this,
+				selection);
+		selectionListeners
+				.forEach(listener -> listener.selectionChanged(event));
 		// getSite().getSelectionProvider().setSelection(selection);
-		for (ISelectionChangedListener l : selectionListeners) {
-			l.selectionChanged(new SelectionChangedEvent(this, selection));
-		}
 		// setStatusLineManager(selection);
 	}
 
@@ -459,7 +481,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			@Override
 			public void setSelectionToViewer(List<?> selection) {
 				// BibtexEditor.this.setSelectionToViewer(selection);
-				BibtexEditor.this.setFocus();
+				this.setFocus();
 			}
 
 			@Override
