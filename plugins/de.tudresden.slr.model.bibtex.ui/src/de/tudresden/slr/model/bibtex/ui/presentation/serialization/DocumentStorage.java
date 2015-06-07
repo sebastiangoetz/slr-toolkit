@@ -1,4 +1,4 @@
-package bibtex.presentation.serialization;
+package de.tudresden.slr.model.bibtex.ui.presentation.serialization;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -7,15 +7,15 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
-import bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 
 public class DocumentStorage implements IStorage {
 	private DocumentImpl document;
-	
+
 	public DocumentStorage(DocumentImpl document) {
 		this.document = document;
 	}
-	
+
 	@Override
 	public Object getAdapter(Class adapter) {
 		return null;
@@ -41,7 +41,7 @@ public class DocumentStorage implements IStorage {
 		return true;
 	}
 
-	public DocumentImpl getDocument(){
+	public DocumentImpl getDocument() {
 		return document;
 	}
 }

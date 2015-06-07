@@ -1,4 +1,4 @@
-package bibtex.presentation.serialization;
+package de.tudresden.slr.model.bibtex.ui.presentation.serialization;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;

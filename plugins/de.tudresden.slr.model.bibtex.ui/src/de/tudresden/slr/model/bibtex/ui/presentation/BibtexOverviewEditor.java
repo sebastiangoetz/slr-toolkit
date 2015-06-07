@@ -1,11 +1,11 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.PartInitException;
 
-import bibtex.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
 
 public class BibtexOverviewEditor extends BibtexEditor implements
 		IReusableEditor {

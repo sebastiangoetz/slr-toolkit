@@ -9,7 +9,7 @@
       </category>
       <view
             category="bibtex.presentation"
-            class="bibtex.presentation.BibtexEntryView"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView"
             icon="icons/sample.gif"
             id="bibtex.presentation.BibtexEntryView"
             name="Bibtex Entries">
@@ -32,14 +32,14 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="bibtex.presentation.BibtexEditor"
-            contributorClass="bibtex.presentation.BibtexContributor"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor"
+            contributorClass="de.tudresden.slr.model.bibtex.ui.presentation.BibtexContributor"
             icon="icons/sample.gif"
             id="bibtex.presentation.BibtexEditor"
             name="Bibtex Editor">
       </editor>
       <editor
-            class="bibtex.presentation.BibtexOverviewEditor"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             icon="icons/sample.gif"
             id="bibtex.presentation.BibtexOverviewEditor"

@@ -1,20 +1,10 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.part.*;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.jface.action.*;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.*;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.SWT;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -27,10 +17,36 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.FilteredTree;
+import org.eclipse.ui.part.DrillDownAdapter;
+import org.eclipse.ui.part.ViewPart;
 
-import bibtex.Document;
-import bibtex.impl.DocumentImpl;
-import bibtex.provider.BibtexItemProviderAdapterFactory;
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 
 /**
  * This view shows the data of {@link DocumentImpl}. It uses different pages:
@@ -107,10 +123,12 @@ public class BibtexEntryView extends ViewPart {
 			return content;
 		}
 
+		@Override
 		public String toString() {
 			return getName();
 		}
 
+		@Override
 		public Object getAdapter(Class key) {
 			return null;
 		}
@@ -157,13 +175,16 @@ public class BibtexEntryView extends ViewPart {
 			ITreeContentProvider {
 		private TreeParent invisibleRoot;
 
+		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 			return;
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (invisibleRoot == null)
@@ -173,6 +194,7 @@ public class BibtexEntryView extends ViewPart {
 			return getChildren(parent);
 		}
 
+		@Override
 		public Object getParent(Object child) {
 			if (child instanceof TreeObject) {
 				return ((TreeObject) child).getParent();
@@ -180,6 +202,7 @@ public class BibtexEntryView extends ViewPart {
 			return null;
 		}
 
+		@Override
 		public Object[] getChildren(Object parent) {
 			if (parent instanceof TreeParent) {
 				return ((TreeParent) parent).getChildren();
@@ -187,6 +210,7 @@ public class BibtexEntryView extends ViewPart {
 			return new Object[0];
 		}
 
+		@Override
 		public boolean hasChildren(Object parent) {
 			if (parent instanceof TreeParent)
 				return ((TreeParent) parent).hasChildren();
@@ -260,6 +284,7 @@ public class BibtexEntryView extends ViewPart {
 
 	class ViewLabelProvider extends LabelProvider {
 
+		@Override
 		public String getText(Object obj) {
 			if (obj instanceof Document) {
 				return ((Document) obj).getKey();
@@ -267,6 +292,7 @@ public class BibtexEntryView extends ViewPart {
 			return obj.toString();
 		}
 
+		@Override
 		public Image getImage(Object obj) {
 			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
 			if (obj instanceof TreeParent)
@@ -291,9 +317,11 @@ public class BibtexEntryView extends ViewPart {
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		BibtexFilter filter = new BibtexFilter();
-		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, filter, false);
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL
+				| SWT.V_SCROLL, filter, false);
 		viewer = tree.getViewer();
 		drillDownAdapter = new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new ViewContentProvider());
@@ -388,6 +416,7 @@ public class BibtexEntryView extends ViewPart {
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				BibtexEntryView.this.fillContextMenu(manager);
 			}
@@ -427,6 +456,7 @@ public class BibtexEntryView extends ViewPart {
 
 	private void makeActions() {
 		action1 = new Action() {
+			@Override
 			public void run() {
 				showMessage("Action 1 executed");
 			}
@@ -437,6 +467,7 @@ public class BibtexEntryView extends ViewPart {
 				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 
 		action2 = new Action() {
+			@Override
 			public void run() {
 				showMessage("Action 2 executed");
 			}
@@ -464,6 +495,7 @@ public class BibtexEntryView extends ViewPart {
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
+	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
 

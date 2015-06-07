@@ -1,4 +1,4 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -54,9 +54,9 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import bibtex.Document;
-import bibtex.presentation.serialization.DocumentStorageEditorInput;
-import bibtex.provider.BibtexItemProviderAdapterFactory;
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
+import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
 
 /**
  * An example showing how to create a multi-page editor. This example has 3
@@ -123,7 +123,6 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 		@Override
 		public void partOpened(IWorkbenchPart p) {
-			// Ignore.
 		}
 	};
 

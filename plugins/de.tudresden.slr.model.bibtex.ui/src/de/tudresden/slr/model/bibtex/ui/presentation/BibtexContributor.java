@@ -1,4 +1,4 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;

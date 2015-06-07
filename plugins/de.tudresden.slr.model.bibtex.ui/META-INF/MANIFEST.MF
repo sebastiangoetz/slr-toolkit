@@ -11,6 +11,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ de.tudresden.slr.model.modelregistry,
+ de.tudresden.slr.model.bibtex
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: bibtex.presentation
+Export-Package: de.tudresden.slr.model.bibtex.ui.presentation
+Bundle-Activator: BibtexUIPlugin

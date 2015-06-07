@@ -1,11 +1,11 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.dialogs.PatternFilter;
 
-import bibtex.Document;
+import de.tudresden.slr.model.bibtex.Document;
 
 public class BibtexFilter extends PatternFilter {
 	/**

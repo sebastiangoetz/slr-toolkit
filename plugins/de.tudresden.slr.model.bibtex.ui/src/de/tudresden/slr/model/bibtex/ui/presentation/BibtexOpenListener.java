@@ -1,4 +1,4 @@
-package bibtex.presentation;
+package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -15,9 +15,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import bibtex.impl.DocumentImpl;
-import bibtex.presentation.serialization.DocumentStorage;
-import bibtex.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorage;
+import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
 
 /**
  * This Listener opens an editor for {@link DocumentImpl}. The editor is focused
