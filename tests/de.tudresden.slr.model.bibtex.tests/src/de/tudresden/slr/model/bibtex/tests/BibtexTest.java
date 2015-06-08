@@ -16,7 +16,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
 import de.tudresden.slr.model.taxonomy.Term;
 
-public class BibtexTests {
+public class BibtexTest {
 
 	@BeforeClass
 	public static void registerResourceFactory() {
