@@ -69,6 +69,7 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public Document createDocument() {
 		DocumentImpl document = new DocumentImpl();
 		return document;
@@ -79,6 +80,7 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public BibtexPackage getBibtexPackage() {
 		return (BibtexPackage) getEPackage();
 	}

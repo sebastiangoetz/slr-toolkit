@@ -5,11 +5,11 @@ package de.tudresden.slr.model.bibtex.impl;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
-
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
-
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -79,6 +79,9 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 
 		isInited = true;
 
+		// Initialize simple dependencies
+		TaxonomyPackage.eINSTANCE.eClass();
+
 		// Create package meta-data objects
 		theBibtexPackage.createPackageContents();
 
@@ -98,6 +101,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EClass getDocument() {
 		return documentEClass;
 	}
@@ -107,6 +111,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Authors() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(0);
 	}
@@ -116,6 +121,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Abstract() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(1);
 	}
@@ -125,6 +131,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Year() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(2);
 	}
@@ -134,6 +141,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Month() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(3);
 	}
@@ -143,6 +151,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Title() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(4);
 	}
@@ -152,6 +161,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Key() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(5);
 	}
@@ -161,6 +171,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Doi() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(6);
 	}
@@ -170,6 +181,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_Url() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(7);
 	}
@@ -179,6 +191,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDocument_UnparsedAuthors() {
 		return (EAttribute) documentEClass.getEStructuralFeatures().get(8);
 	}
@@ -188,6 +201,17 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * 
 	 * @generated
 	 */
+	@Override
+	public EReference getDocument_Taxonomy() {
+		return (EReference) documentEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory) getEFactoryInstance();
 	}
@@ -222,6 +246,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__DOI);
 		createEAttribute(documentEClass, DOCUMENT__URL);
 		createEAttribute(documentEClass, DOCUMENT__UNPARSED_AUTHORS);
+		createEReference(documentEClass, DOCUMENT__TAXONOMY);
 	}
 
 	/**
@@ -247,6 +272,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		setName(eNAME);
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
+
+		// Obtain other dependent packages
+		TaxonomyPackage theTaxonomyPackage = (TaxonomyPackage) EPackage.Registry.INSTANCE
+				.getEPackage(TaxonomyPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -293,6 +322,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
 				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 				!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDocument_Taxonomy(), theTaxonomyPackage.getModel(),
+				null, "taxonomy", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

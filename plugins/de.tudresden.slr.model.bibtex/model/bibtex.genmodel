@@ -3,8 +3,9 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.tudresden.slr.model.bibtex/src" modelPluginID="de.tudresden.slr.model.bibtex"
     templateDirectory="" modelName="Bibtex" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" language="" interfaceNamePattern=""
-    operationReflection="true" importOrganizing="true" pluginKey="bib" cleanup="true">
+    complianceLevel="8.0" copyrightFields="false" language="" usedGenPackages="../../de.tudresden.slr.model.taxonomy/model/generated/Taxonomy.genmodel#//taxonomy"
+    interfaceNamePattern="" operationReflection="true" importOrganizing="true" pluginKey="bib"
+    cleanup="true">
   <foreignModel>bibtex.ecore</foreignModel>
   <genPackages prefix="Bibtex" basePackage="de.tudresden.slr.model" resource="Basic"
       disposableProviderFactory="true" contentTypeIdentifier="" fileExtensions="bib"
@@ -19,6 +20,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/doi"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/url"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/unparsedAuthors"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference bibtex.ecore#//Document/classes"/>
+    </genClasses>
+    <genClasses ecoreClass="bibtex.ecore#//Term">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference bibtex.ecore#//Term/subTerms"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

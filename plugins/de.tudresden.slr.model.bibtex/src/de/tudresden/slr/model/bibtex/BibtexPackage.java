@@ -5,6 +5,7 @@ package de.tudresden.slr.model.bibtex;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 
 /**
  * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains
@@ -146,13 +147,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__UNPARSED_AUTHORS = 8;
 
 	/**
+	 * The feature id for the '<em><b>Taxonomy</b></em>' reference. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__TAXONOMY = 9;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 9;
+	int DOCUMENT_FEATURE_COUNT = 10;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class. <!--
@@ -284,6 +294,18 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_UnparsedAuthors();
 
 	/**
+	 * Returns the meta object for the reference '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getTaxonomy
+	 * <em>Taxonomy</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference '<em>Taxonomy</em>'.
+	 * @see de.tudresden.slr.model.bibtex.Document#getTaxonomy()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EReference getDocument_Taxonomy();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -391,6 +413,14 @@ public interface BibtexPackage extends EPackage {
 		 */
 		EAttribute DOCUMENT__UNPARSED_AUTHORS = eINSTANCE
 				.getDocument_UnparsedAuthors();
+
+		/**
+		 * The meta object literal for the '<em><b>Taxonomy</b></em>' reference
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference DOCUMENT__TAXONOMY = eINSTANCE.getDocument_Taxonomy();
 
 	}
 

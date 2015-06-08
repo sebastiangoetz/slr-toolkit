@@ -4,18 +4,14 @@ package de.tudresden.slr.model.bibtex.impl;
 
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
-
+import de.tudresden.slr.model.taxonomy.Model;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -43,6 +39,8 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <li>
  * {@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUnparsedAuthors
  * <em>Unparsed Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTaxonomy <em>
+ * Taxonomy</em>}</li>
  * </ul>
  * </p>
  *
@@ -223,6 +221,16 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	protected String unparsedAuthors = UNPARSED_AUTHORS_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getTaxonomy() <em>Taxonomy</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getTaxonomy()
+	 * @generated
+	 * @ordered
+	 */
+	protected Model taxonomy;
+
+	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -246,6 +254,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public EList<String> getAuthors() {
 		if (authors == null) {
 			authors = new EDataTypeUniqueEList<String>(String.class, this,
@@ -259,6 +268,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getAbstract() {
 		return abstract_;
 	}
@@ -268,6 +278,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setAbstract(String newAbstract) {
 		String oldAbstract = abstract_;
 		abstract_ = newAbstract;
@@ -281,6 +292,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getYear() {
 		return year;
 	}
@@ -290,6 +302,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setYear(String newYear) {
 		String oldYear = year;
 		year = newYear;
@@ -303,6 +316,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -312,6 +326,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setMonth(String newMonth) {
 		String oldMonth = month;
 		month = newMonth;
@@ -325,6 +340,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -334,6 +350,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setTitle(String newTitle) {
 		String oldTitle = title;
 		title = newTitle;
@@ -347,6 +364,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getKey() {
 		return key;
 	}
@@ -356,6 +374,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setKey(String newKey) {
 		String oldKey = key;
 		key = newKey;
@@ -369,6 +388,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getDoi() {
 		return doi;
 	}
@@ -378,6 +398,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setDoi(String newDoi) {
 		String oldDoi = doi;
 		doi = newDoi;
@@ -391,6 +412,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getUrl() {
 		return url;
 	}
@@ -400,6 +422,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setUrl(String newUrl) {
 		String oldUrl = url;
 		url = newUrl;
@@ -413,6 +436,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public String getUnparsedAuthors() {
 		return unparsedAuthors;
 	}
@@ -422,6 +446,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * 
 	 * @generated
 	 */
+	@Override
 	public void setUnparsedAuthors(String newUnparsedAuthors) {
 		String oldUnparsedAuthors = unparsedAuthors;
 		unparsedAuthors = newUnparsedAuthors;
@@ -429,6 +454,49 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			eNotify(new ENotificationImpl(this, Notification.SET,
 					BibtexPackage.DOCUMENT__UNPARSED_AUTHORS,
 					oldUnparsedAuthors, unparsedAuthors));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Model getTaxonomy() {
+		if (taxonomy != null && taxonomy.eIsProxy()) {
+			InternalEObject oldTaxonomy = (InternalEObject) taxonomy;
+			taxonomy = (Model) eResolveProxy(oldTaxonomy);
+			if (taxonomy != oldTaxonomy) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+							BibtexPackage.DOCUMENT__TAXONOMY, oldTaxonomy,
+							taxonomy));
+			}
+		}
+		return taxonomy;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public Model basicGetTaxonomy() {
+		return taxonomy;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setTaxonomy(Model newTaxonomy) {
+		Model oldTaxonomy = taxonomy;
+		taxonomy = newTaxonomy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BibtexPackage.DOCUMENT__TAXONOMY, oldTaxonomy, taxonomy));
 	}
 
 	/**
@@ -457,6 +525,10 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return getUrl();
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			return getUnparsedAuthors();
+		case BibtexPackage.DOCUMENT__TAXONOMY:
+			if (resolve)
+				return getTaxonomy();
+			return basicGetTaxonomy();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -498,6 +570,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			setUnparsedAuthors((String) newValue);
 			return;
+		case BibtexPackage.DOCUMENT__TAXONOMY:
+			setTaxonomy((Model) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -537,6 +612,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			setUnparsedAuthors(UNPARSED_AUTHORS_EDEFAULT);
 			return;
+		case BibtexPackage.DOCUMENT__TAXONOMY:
+			setTaxonomy((Model) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -575,6 +653,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			return UNPARSED_AUTHORS_EDEFAULT == null ? unparsedAuthors != null
 					: !UNPARSED_AUTHORS_EDEFAULT.equals(unparsedAuthors);
+		case BibtexPackage.DOCUMENT__TAXONOMY:
+			return taxonomy != null;
 		}
 		return super.eIsSet(featureID);
 	}

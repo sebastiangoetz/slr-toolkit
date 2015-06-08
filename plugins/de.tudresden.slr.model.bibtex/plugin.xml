@@ -22,4 +22,5 @@
             type="bib"
             class="de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl"/>
    </extension>
+
 </plugin>

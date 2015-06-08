@@ -3,7 +3,6 @@
 package de.tudresden.slr.model.bibtex.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
-
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
@@ -32,10 +31,11 @@ public final class BibtexEditPlugin extends EMFPlugin {
 	/**
 	 * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public BibtexEditPlugin() {
-		super(new ResourceLocator[] {});
+		super(null);
+		// super(new ResourceLocator[] { TaxonomyEditPlugin.INSTANCE, });
 	}
 
 	/**

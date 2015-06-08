@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="bibtex.presentation"
+            id="de.tudresden.slr.model.bibtex.presentation"
             name="Bibtex UI">
       </category>
       <view
-            category="bibtex.presentation"
+            category="de.tudresden.slr.model.bibtex.presentation"
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView"
             icon="icons/sample.gif"
-            id="bibtex.presentation.BibtexEntryView"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
             name="Bibtex Entries">
       </view>
    </extension>
@@ -20,7 +20,7 @@
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
          <view
-               id="bibtex.presentation.BibtexEntryView"
+               id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
                ratio="0.5"
                relationship="stack"
                relative="org.eclipse.jdt.ui.PackageExplorer"
@@ -35,14 +35,14 @@
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor"
             contributorClass="de.tudresden.slr.model.bibtex.ui.presentation.BibtexContributor"
             icon="icons/sample.gif"
-            id="bibtex.presentation.BibtexEditor"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexEditor"
             name="Bibtex Editor">
       </editor>
       <editor
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             icon="icons/sample.gif"
-            id="bibtex.presentation.BibtexOverviewEditor"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor"
             name="Bibtex Overview">
       </editor>
    </extension>

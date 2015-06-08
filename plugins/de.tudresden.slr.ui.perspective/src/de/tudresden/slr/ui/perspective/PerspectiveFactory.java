@@ -4,9 +4,9 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import bibtex.presentation.BibtexEditor;
-import bibtex.presentation.BibtexEntryView;
-import bibtex.presentation.BibtexOverviewEditor;
+import de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor;
+import de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView;
+import de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor;
 import de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView;
 
 public class PerspectiveFactory implements IPerspectiveFactory {

@@ -2,8 +2,8 @@
  */
 package de.tudresden.slr.model.bibtex;
 
+import de.tudresden.slr.model.taxonomy.Model;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -25,6 +25,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getUrl <em>Url</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors <em>
  * Unparsed Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getTaxonomy <em>Taxonomy
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -283,5 +285,35 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setUnparsedAuthors(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Taxonomy</b></em>' reference. <!--
+	 * begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Taxonomy</em>' reference isn't clear, there
+	 * really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Taxonomy</em>' reference.
+	 * @see #setTaxonomy(Model)
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Taxonomy()
+	 * @model
+	 * @generated
+	 */
+	Model getTaxonomy();
+
+	/**
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getTaxonomy
+	 * <em>Taxonomy</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Taxonomy</em>' reference.
+	 * @see #getTaxonomy()
+	 * @generated
+	 */
+	void setTaxonomy(Model value);
 
 } // Document

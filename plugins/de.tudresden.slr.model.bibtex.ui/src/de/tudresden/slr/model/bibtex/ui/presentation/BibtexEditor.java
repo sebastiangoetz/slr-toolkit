@@ -57,6 +57,7 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**
  * An example showing how to create a multi-page editor. This example has 3
@@ -69,7 +70,7 @@ import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStora
  */
 public class BibtexEditor extends MultiPageEditorPart implements
 		IResourceChangeListener, ISelectionProvider {
-	public static final String ID = "bibtex.presentation.BibtexEditor";
+	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexEditor";
 
 	// TODO: prettify
 	protected Composite parent = null;
@@ -216,7 +217,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		if (newPageIndex == propertyindex) {
 			property.setPropertySourceProvider(new AdapterFactoryContentProvider(
 					adapterFactory));
-			property.selectionChanged(this, getSelection());
+			property.selectionChanged(BibtexEditor.this, getSelection());
 
 		}
 		super.pageChange(newPageIndex);
@@ -248,7 +249,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			labelText.append(document.getYear());
 		}
 		if (labelText.length() > 0) {
-			labelText.insert(0, "published in ").append(labelText);
+			labelText.insert(0, "published in ");
 		}
 		label.setText(labelText.toString());
 		// TODO: dispose font
@@ -401,11 +402,15 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	@Override
 	public void init(IEditorSite site, IEditorInput editorInput)
 			throws PartInitException {
-		if (!(editorInput instanceof DocumentStorageEditorInput))
-			throw new PartInitException(
+		if (!(editorInput instanceof DocumentStorageEditorInput)) {
+			PartInitException pie = new PartInitException(
 					"Invalid Input: Must be DocumentStorageEditorInput");
+			System.out.println(editorInput);
+			pie.printStackTrace();
+			throw pie;
+		}
 		super.init(site, editorInput);
-		this.setPartName(editorInput.getName());
+		setPartName(editorInput.getName());
 		site.getPage().addPartListener(partListener);
 		extractDocument(editorInput);
 		getActionBarContributor().setActiveEditor(BibtexEditor.this);
@@ -419,6 +424,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		 * AdapterFactoryContentProvider(adapterFactory)); p.refresh(); }
 		 */
 		// setInputWithNotify(editorInput);
+		ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
 	}
 
 	protected void extractDocument(IEditorInput editorInput) {
@@ -480,7 +486,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			@Override
 			public void setSelectionToViewer(List<?> selection) {
 				// BibtexEditor.this.setSelectionToViewer(selection);
-				this.setFocus();
+				BibtexEditor.this.setFocus();
 			}
 
 			@Override

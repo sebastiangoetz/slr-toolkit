@@ -64,6 +64,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 			addDoiPropertyDescriptor(object);
 			addUrlPropertyDescriptor(object);
 			addUnparsedAuthorsPropertyDescriptor(object);
+			addTaxonomyPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -229,6 +230,24 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 						"_UI_Document_type"),
 				BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, true, false,
 				false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Taxonomy feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addTaxonomyPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_Document_taxonomy_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_Document_taxonomy_feature", "_UI_Document_type"),
+				BibtexPackage.Literals.DOCUMENT__TAXONOMY, true, false, true,
+				null, null, null));
 	}
 
 	/**

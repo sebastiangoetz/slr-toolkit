@@ -13,5 +13,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="doi" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="url" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unparsedAuthors" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="taxonomy" eType="ecore:EClass ../../de.tudresden.slr.model.taxonomy/model/generated/Taxonomy.ecore#//Model"/>
   </eClassifiers>
 </ecore:EPackage>
