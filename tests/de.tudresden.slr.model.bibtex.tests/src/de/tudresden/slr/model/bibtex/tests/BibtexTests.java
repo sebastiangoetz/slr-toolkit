@@ -1,46 +1,42 @@
-/**
- */
 package de.tudresden.slr.model.bibtex.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import junit.textui.TestRunner;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-/**
- * <!-- begin-user-doc --> A test suite for the '<em><b>bibtex</b></em>'
- * package. <!-- end-user-doc -->
- * 
- * @generated
- */
-public class BibtexTests extends TestSuite {
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
+import de.tudresden.slr.model.taxonomy.Term;
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(suite());
+public class BibtexTests {
+
+	@BeforeClass
+	public static void registerResourceFactory() {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+				"bib", new BibtexResourceFactoryImpl());
 	}
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public static Test suite() {
-		TestSuite suite = new BibtexTests("bibtex Tests");
-		return suite;
-	}
+	@Test
+	public void loadSingleDimensionWithoutSubTerms() throws Exception {
+		final String bib = "@INPROCEEDINGS{Test01, classes = {test}}";
 
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
-	public BibtexTests(String name) {
-		super(name);
-	}
+		ResourceSet resourceSet = new ResourceSetImpl();
 
+		Resource resource = resourceSet.createResource(URI
+				.createURI("test01.bib"));
+		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"), null);
+
+		assertThat(resource.getContents().get(0), instanceOf(Document.class));
+		Document document = (Document) resource.getContents().get(0);
+		Term term = document.getTaxonomy().getDimensions().get(0);
+		assertThat(term.getName(), is("test"));
+	}
 } // BibtexTests
