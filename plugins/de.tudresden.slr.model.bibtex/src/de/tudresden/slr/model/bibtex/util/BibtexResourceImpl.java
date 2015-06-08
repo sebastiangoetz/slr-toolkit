@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -48,6 +49,7 @@ import de.tudresden.slr.model.TaxonomyStandaloneSetupGenerated;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
@@ -221,7 +223,24 @@ public class BibtexResourceImpl extends ResourceImpl {
 			result.addField(KEY_AUTHOR,
 					new StringValue(doc.getUnparsedAuthors(), Style.BRACED));
 		}
+
+		if (doc.getTaxonomy() != null) {
+			result.addField(KEY_CLASSES, new StringValue(blah(doc.getTaxonomy()
+					.getDimensions()), Style.BRACED));
+		}
+
 		return result;
+	}
+
+	private String blah(EList<Term> dimensions) {
+		StringBuilder result = new StringBuilder();
+		for (Term t : dimensions) {
+			result.append(t.getName());
+			result.append("{");
+			result.append(blah(t.getSubclasses()));
+			result.append("}");
+		}
+		return result.toString();
 	}
 
 	private String parseLaTeX(String latexString) {
