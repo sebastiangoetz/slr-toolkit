@@ -156,13 +156,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__TAXONOMY = 9;
 
 	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__TYPE = 10;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 10;
+	int DOCUMENT_FEATURE_COUNT = 11;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class. <!--
@@ -306,6 +315,18 @@ public interface BibtexPackage extends EPackage {
 	EReference getDocument_Taxonomy();
 
 	/**
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see de.tudresden.slr.model.bibtex.Document#getType()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Type();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -421,6 +442,14 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EReference DOCUMENT__TAXONOMY = eINSTANCE.getDocument_Taxonomy();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute DOCUMENT__TYPE = eINSTANCE.getDocument_Type();
 
 	}
 

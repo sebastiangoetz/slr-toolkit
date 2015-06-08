@@ -19,10 +19,10 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
@@ -38,6 +38,7 @@ import org.jbibtex.Key;
 import org.jbibtex.LaTeXObject;
 import org.jbibtex.LaTeXParser;
 import org.jbibtex.LaTeXPrinter;
+import org.jbibtex.ObjectResolutionException;
 import org.jbibtex.ParseException;
 import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
@@ -92,6 +93,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 							.createDocument();
 
 					document.setKey(entry.getKey().toString());
+					document.setType(entry.getType().toString());
 
 					if (entry.getField(KEY_TITLE) != null) {
 						document.setTitle(entry.getField(KEY_TITLE)
@@ -164,44 +166,47 @@ public class BibtexResourceImpl extends ResourceImpl {
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 
+		// check if resource is available and load it
+		// check if elements in the resource already exist and renew them
+		// store everything else
+		BibTeXDatabase db = new BibTeXDatabase();
 		ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
 		try (Reader reader = new InputStreamReader(converter.createInputStream(
 				uri, options))) {
-
 			BibTeXParser parser = new BibTeXParser();
-			BibTeXDatabase db = parser.parse(reader);
-			Map<String, BibTeXEntry> entries = new HashMap<>();
+			db = parser.parse(reader);
+		} catch (IOException e) {
+			// do nothing
+		} catch (ObjectResolutionException | TokenMgrException | ParseException e) {
+			e.printStackTrace();
+		}
 
-			for (BibTeXObject bto : db.getObjects()) {
-				if (bto instanceof BibTeXEntry) {
-					BibTeXEntry entry = (BibTeXEntry) bto;
-					entries.put(entry.getKey().toString(), entry);
+		Map<String, BibTeXEntry> entries = new HashMap<>();
+		for (BibTeXObject bto : db.getObjects()) {
+			if (bto instanceof BibTeXEntry) {
+				BibTeXEntry entry = (BibTeXEntry) bto;
+				entries.put(entry.getKey().toString(), entry);
+			}
+		}
+
+		for (EObject e : getContents()) {
+			if (e instanceof Document) {
+				Document document = (Document) e;
+				if (entries.containsKey(document.getKey())) {
+					BibTeXEntry entry = entries.get(document.getKey());
+					db.removeObject(entry);
+					db.addObject(updateDocument(document, entry));
+				} else {
+					BibTeXEntry entry = new BibTeXEntry(new Key(
+							document.getType()), new Key(document.getKey()));
+					db.addObject(updateDocument(document, entry));
 				}
 			}
+		}
 
-			List<Document> dirtyDocuments = getContents()
-					.stream()
-					.filter(p -> {
-						if (p instanceof Document) {
-							Document document = (Document) p;
-							return entries.keySet().contains(document.getKey());
-						}
-						return false;
-					}).map(d -> (Document) d).collect(Collectors.toList());
-
-			for (Document document : dirtyDocuments) {
-				BibTeXEntry entry = entries.get(document.getKey());
-				db.removeObject(entry);
-				db.addObject(updateDocument(document, entry));
-			}
-
-			try (OutputStreamWriter out = new OutputStreamWriter(outputStream)) {
-				BibTeXFormatter formatter = new BibTeXFormatter();
-				formatter.format(db, out);
-			}
-		} catch (TokenMgrException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		try (OutputStreamWriter out = new OutputStreamWriter(outputStream)) {
+			BibTeXFormatter formatter = new BibTeXFormatter();
+			formatter.format(db, out);
 		}
 	}
 

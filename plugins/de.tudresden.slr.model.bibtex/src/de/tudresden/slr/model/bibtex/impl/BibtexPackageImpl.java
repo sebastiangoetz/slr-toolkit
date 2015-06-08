@@ -212,6 +212,16 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getDocument_Type() {
+		return (EAttribute) documentEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory) getEFactoryInstance();
 	}
@@ -247,6 +257,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__URL);
 		createEAttribute(documentEClass, DOCUMENT__UNPARSED_AUTHORS);
 		createEReference(documentEClass, DOCUMENT__TAXONOMY);
+		createEAttribute(documentEClass, DOCUMENT__TYPE);
 	}
 
 	/**
@@ -326,6 +337,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				null, "taxonomy", null, 0, 1, Document.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type",
+				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

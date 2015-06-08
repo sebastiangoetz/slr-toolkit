@@ -65,6 +65,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 			addUrlPropertyDescriptor(object);
 			addUnparsedAuthorsPropertyDescriptor(object);
 			addTaxonomyPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -251,6 +252,24 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	}
 
 	/**
+	 * This adds a property descriptor for the Type feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_Document_type_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_Document_type_feature", "_UI_Document_type"),
+				BibtexPackage.Literals.DOCUMENT__TYPE, true, false, false,
+				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This returns Document.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -296,6 +315,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 		case BibtexPackage.DOCUMENT__DOI:
 		case BibtexPackage.DOCUMENT__URL:
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
+		case BibtexPackage.DOCUMENT__TYPE:
 			fireNotifyChanged(new ViewerNotification(notification,
 					notification.getNotifier(), false, true));
 			return;

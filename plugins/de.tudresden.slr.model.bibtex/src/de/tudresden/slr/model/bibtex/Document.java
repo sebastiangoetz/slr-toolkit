@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.EObject;
  * Unparsed Authors</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getTaxonomy <em>Taxonomy
  * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -315,5 +316,34 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setTaxonomy(Model value);
+
+	/**
+	 * Returns the value of the '<em><b>Type</b></em>' attribute. <!--
+	 * begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Type</em>' attribute isn't clear, there really
+	 * should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Type</em>' attribute.
+	 * @see #setType(String)
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Type()
+	 * @model
+	 * @generated
+	 */
+	String getType();
+
+	/**
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Type</em>' attribute.
+	 * @see #getType()
+	 * @generated
+	 */
+	void setType(String value);
 
 } // Document
