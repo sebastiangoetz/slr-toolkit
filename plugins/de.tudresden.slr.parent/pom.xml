@@ -131,6 +131,8 @@
 			../../features/de.tudresden.slr.model.taxonomy.sdk
 		</module>
 		<module>../de.tudresden.slr.ui.perspective</module>
+		
+		<module>../de.tudresden.slr.model.modelregistry</module>
 	</modules>
 
 </project>
