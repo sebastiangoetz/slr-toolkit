@@ -11,10 +11,8 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
-import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import de.tudresden.slr.model.bibtex.Document;
@@ -78,7 +76,7 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 		} else if (element instanceof Document) {
 			Document doc = (Document) element;
 			IFile parent = BibtexDecorator.getIFilefromDocument(doc);
-			if (parent == null){
+			if (parent == null) {
 				return;
 			}
 			// IResource parent = ResourcesPlugin.getWorkspace().getRoot()
