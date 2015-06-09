@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,20 +26,25 @@ import de.tudresden.slr.model.taxonomy.Term;
 
 public class BibtexTest {
 
+	private ResourceSet resourceSet;
+	private Resource resource;
+
 	@BeforeClass
 	public static void registerResourceFactory() {
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
 				"bib", new BibtexResourceFactoryImpl());
 	}
 
+	@Before
+	public void setUpFixtures() {
+		resourceSet = new ResourceSetImpl();
+		resource = resourceSet.createResource(URI.createURI("test.bib"));
+	}
+
 	@Test
 	public void loadSingleDimensionWithoutSubTerms() throws Exception {
 		final String bib = "@INPROCEEDINGS{Test01, classes = {test}}";
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-
-		Resource resource = resourceSet.createResource(URI
-				.createURI("test01.bib"));
 		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"),
 				Collections.EMPTY_MAP);
 
@@ -62,17 +68,36 @@ public class BibtexTest {
 		document.setKey("test02");
 		document.setType("article");
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = resourceSet.createResource(URI
-				.createURI("test02.bib"));
-
 		StringWriter writer = new StringWriter();
-
 		resource.getContents().add(document);
 		resource.save(new URIConverter.WriteableOutputStream(writer, "UTF-8"),
 				Collections.EMPTY_MAP);
 
 		String bib = writer.toString();
-		assertThat(bib, containsString("test"));
+		assertThat(bib, containsString("test02"));
+	}
+
+	@Test
+	public void loadChangeAndStoreABibtexResource() throws Exception {
+		final String bibIn = "@INPROCEEDINGS{Test01, classes = {test}}";
+		StringWriter writer = new StringWriter();
+		resource.load(new URIConverter.ReadableInputStream(bibIn, "UTF-8"),
+				Collections.EMPTY_MAP);
+
+		Term subTerm1 = TaxonomyFactory.eINSTANCE.createTerm();
+		subTerm1.setName("sub-test1");
+		Term subTerm2 = TaxonomyFactory.eINSTANCE.createTerm();
+		subTerm2.setName("sub-test2");
+
+		Document document = (Document) resource.getContents().get(0);
+		Term term = document.getTaxonomy().getDimensions().get(0);
+		term.getSubclasses().add(subTerm1);
+		term.getSubclasses().add(subTerm2);
+
+		resource.save(new URIConverter.WriteableOutputStream(writer, "UTF-8"),
+				Collections.EMPTY_MAP);
+		final String bibOut = writer.toString();
+		assertThat(bibOut, containsString("sub-test1"));
+		assertThat(bibOut, containsString("sub-test2"));
 	}
 } // BibtexTests
