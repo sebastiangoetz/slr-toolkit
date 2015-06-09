@@ -230,20 +230,27 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 
 		if (doc.getTaxonomy() != null) {
-			result.addField(KEY_CLASSES, new StringValue(blah(doc.getTaxonomy()
-					.getDimensions()), Style.BRACED));
+			result.addField(KEY_CLASSES, new StringValue(serializeTaxonomy(doc
+					.getTaxonomy().getDimensions()), Style.BRACED));
 		}
 
 		return result;
 	}
 
-	private String blah(EList<Term> dimensions) {
+	private String serializeTaxonomy(EList<Term> dimensions) {
 		StringBuilder result = new StringBuilder();
-		for (Term t : dimensions) {
-			result.append(t.getName());
-			result.append("{");
-			result.append(blah(t.getSubclasses()));
-			result.append("}");
+
+		for (int i = 0; i < dimensions.size(); ++i) {
+			Term term = dimensions.get(i);
+			if (i > 0) {
+				result.append(", ");
+			}
+			result.append(term.getName());
+			if (term.getSubclasses().size() > 0) {
+				result.append("{");
+				result.append(serializeTaxonomy(term.getSubclasses()));
+				result.append("}");
+			}
 		}
 		return result.toString();
 	}
