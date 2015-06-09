@@ -8,10 +8,14 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
 public class HelloWorldView extends ViewPart implements ICommunicationView {
@@ -23,9 +27,22 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 	private Chart myChart = null;
 	private Composite _parent;
 
-	@Override
+	/***
+	 * This listener handles the reaction to the selection of an element in the @BibtexEntryView
+	 */
+	ISelectionListener listener = new ISelectionListener() {
+		public void selectionChanged(IWorkbenchPart part, ISelection sel) {
+			if (!(sel instanceof IStructuredSelection))
+				return;
+			IStructuredSelection ss = (IStructuredSelection) sel;
+			Object o = ss.getFirstElement();
+
+		}
+	};
+
 	public void createPartControl(Composite parent) {
 		_parent = parent;
+		getSite().getPage().addSelectionListener(listener);
 
 	}
 
@@ -68,11 +85,14 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 		});
 	}
 
-	@Override
 	public void setChart(Chart parameter) {
 
 		this.myChart = parameter;
 		renderChart(_parent, myChart);
 
+	}
+
+	public void dispose() {
+		getSite().getPage().removeSelectionListener(listener);
 	}
 }
