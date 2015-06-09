@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -24,6 +27,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -84,97 +89,10 @@ public class BibtexEntryView extends ViewPart {
 	private Action action1;
 	private Action action2;
 	private BibtexOpenListener openListener, selectionListener;
-
-	/*
-	 * The content provider class is responsible for providing objects to the
-	 * view. It can wrap existing objects in adapters or simply return objects
-	 * as-is. These objects may be sensitive to the current input of the view,
-	 * or ignore it and always show the same content (like Task List, for
-	 * example).
-	 */
-
-	class TreeObject implements IAdaptable {
-		private String name;
-		private Object content;
-		private TreeParent parent;
-
-		public TreeObject(String name, Object content) {
-			this.name = name;
-			this.content = content;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setParent(TreeParent parent) {
-			this.parent = parent;
-		}
-
-		public TreeParent getParent() {
-			return parent;
-		}
-
-		public void setContent(Object content) {
-			this.content = content;
-		}
-
-		public Object getContent() {
-			return content;
-		}
-
-		@Override
-		public String toString() {
-			return getName();
-		}
-
-		@Override
-		public Object getAdapter(Class key) {
-			return null;
-		}
-	}
-
-	class TreeParent extends TreeObject {
-		private ArrayList<TreeObject> children;
-
-		public TreeParent(String name) {
-			super(name, null);
-			children = new ArrayList<TreeObject>();
-		}
-
-		public void addChild(TreeObject child) {
-			children.add(child);
-			child.setParent(this);
-		}
-
-		public void removeChild(TreeObject child) {
-			children.remove(child);
-			child.setParent(null);
-		}
-
-		public Object[] getChildren() {
-			Object[] ret = new Object[children.size()];
-			TreeObject child;
-			for (int i = 0; i < ret.length; i++) {
-				child = children.get(i);
-				if (!(child instanceof TreeParent)) {
-					ret[i] = child.getContent();
-				} else {
-					ret[i] = child;
-				}
-			}
-			return ret;
-		}
-
-		public boolean hasChildren() {
-			return children.size() > 0;
-		}
-	}
-
 	class ViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
-		private TreeParent invisibleRoot;
-
+		private String invisibleRoot;
+		
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 			return;
@@ -188,7 +106,7 @@ public class BibtexEntryView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (invisibleRoot == null)
-					initialize();
+					invisibleRoot = new String("");
 				return getChildren(invisibleRoot);
 			}
 			return getChildren(parent);
@@ -196,110 +114,128 @@ public class BibtexEntryView extends ViewPart {
 
 		@Override
 		public Object getParent(Object child) {
-			if (child instanceof TreeObject) {
-				return ((TreeObject) child).getParent();
+			if (child instanceof IProject) {
+				return invisibleRoot;
+			}
+			if (child instanceof IFile){
+				return ((IFile)child).getProject();
+			}
+			if (child instanceof Document){
+				String filePath = ((Document)child).eResource().getURI().toFileString();
+				return ResourcesPlugin.getWorkspace().getRoot().findMember(filePath);
+				
 			}
 			return null;
 		}
 
 		@Override
 		public Object[] getChildren(Object parent) {
-			if (parent instanceof TreeParent) {
-				return ((TreeParent) parent).getChildren();
+			if (parent == invisibleRoot){
+				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+						.getProjects();
+				return projects;
+			}
+			if (parent instanceof IProject) {
+				IResource[] resources;
+				try {
+					resources = ((IProject)parent).members();
+				} catch (CoreException e) {
+					e.printStackTrace();
+					return new Object[0];
+				}
+				LinkedList<IFile> bibFiles = new LinkedList<IFile>();
+				for (IResource res : resources) {
+					if (res.getType() != IResource.FILE
+							|| !"bib".equals(res.getFileExtension())) {
+						continue;
+					}
+					bibFiles.add((IFile)res);
+				}
+				return bibFiles.toArray();
+			}
+			if (parent instanceof IFile){
+				Resource resource = editingDomain.createResource(((IFile)parent)
+						.getFullPath().toString());
+				try {
+					resource.load(null);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return new Object[0];
+				}
+				Document doc;
+				String key = null;
+				LinkedList<Document> docs = new LinkedList<Document>();
+				for (EObject eobj : resource.getContents()) {
+					if (!(eobj instanceof Document)) {
+						continue;
+					}
+					doc = (Document) eobj;
+					if (key == null){
+						key = doc.getKey();
+					}
+					docs.add(doc);
+				}
+				System.out.println("PersistentProperty: " + key);
+				try {
+					((IFile)parent).setPersistentProperty(new QualifiedName(
+							BibtexDecorator.QUALIFIER, key), "ERROR");
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return docs.toArray();
+
 			}
 			return new Object[0];
 		}
 
 		@Override
 		public boolean hasChildren(Object parent) {
-			if (parent instanceof TreeParent)
-				return ((TreeParent) parent).hasChildren();
-			return false;
-		}
-
-		/*
-		 * We will set up a dummy model to initialize tree heararchy. In a real
-		 * code, you will connect to a real model and expose its hierarchy.
-		 */
-		private void initialize() {
-			invisibleRoot = new TreeParent("");
-
-			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-					.getProjects();
-			TreeParent projTree, bibTree;
-			for (IProject project : projects) {
-				projTree = new TreeParent(project.getName());
-				invisibleRoot.addChild(projTree);
-
+			if (parent instanceof String){
+				//invisibleRoot
+				return true;
+			}
+			if (parent instanceof IProject){
 				IResource[] resources;
 				try {
-					resources = project.members();
+					resources = ((IProject)parent).members();
 				} catch (CoreException e) {
 					e.printStackTrace();
-					continue;
+					return false;
 				}
+				LinkedList<IFile> bibFiles = new LinkedList<IFile>();
 				for (IResource res : resources) {
 					if (res.getType() != IResource.FILE
 							|| !"bib".equals(res.getFileExtension())) {
 						continue;
 					}
-					bibTree = new TreeParent(res.getName());
-					projTree.addChild(bibTree);
-					Resource resource = editingDomain.createResource(res
-							.getFullPath().toString());
-					try {
-						resource.load(null);
-					} catch (IOException e) {
-						e.printStackTrace();
+					bibFiles.add((IFile)res);
+				}
+				return !bibFiles.isEmpty();
+			}
+			if (parent instanceof IFile){
+				Resource resource = editingDomain.createResource(((IFile)parent)
+						.getFullPath().toString());
+				try {
+					resource.load(null);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
+				Document doc;
+				LinkedList<Document> docs = new LinkedList<Document>();
+				for (EObject eobj : resource.getContents()) {
+					if (!(eobj instanceof Document)) {
 						continue;
 					}
-					TreeObject tobj;
-					Document doc;
-					for (EObject eobj : resource.getContents()) {
-						if (!(eobj instanceof Document)) {
-							continue;
-						}
-						doc = (Document) eobj;
-						tobj = new TreeObject(doc.getKey(), doc);
-						bibTree.addChild(tobj);
-					}
-					// adapterFactory.getFactoryForType(res);
+					doc = (Document) eobj;
+					docs.add(doc);
 				}
+				return !docs.isEmpty();
 			}
-			/*
-			 * TreeObject to1 = new TreeObject("Leaf 1"); TreeObject to2 = new
-			 * TreeObject("Leaf 2"); TreeObject to3 = new TreeObject("Leaf 3");
-			 * TreeParent p1 = new TreeParent("Parent 1"); p1.addChild(to1);
-			 * p1.addChild(to2); p1.addChild(to3);
-			 * 
-			 * TreeObject to4 = new TreeObject("Leaf 4"); TreeParent p2 = new
-			 * TreeParent("Parent 2"); p2.addChild(to4);
-			 * 
-			 * TreeParent root = new TreeParent("Root"); root.addChild(p1);
-			 * root.addChild(p2);
-			 * 
-			 * invisibleRoot = new TreeParent(""); invisibleRoot.addChild(root);
-			 */}
-	}
-
-	class ViewLabelProvider extends LabelProvider {
-
-		@Override
-		public String getText(Object obj) {
-			if (obj instanceof Document) {
-				return ((Document) obj).getKey();
-			}
-			return obj.toString();
+			return false;
 		}
 
-		@Override
-		public Image getImage(Object obj) {
-			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
-			if (obj instanceof TreeParent)
-				imageKey = ISharedImages.IMG_OBJ_FOLDER;
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(imageKey);
-		}
 	}
 
 	class NameSorter extends ViewerSorter {
@@ -325,7 +261,10 @@ public class BibtexEntryView extends ViewPart {
 		viewer = tree.getViewer();
 		drillDownAdapter = new DrillDownAdapter(viewer);
 		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
+		ILabelDecorator decorator = PlatformUI.getWorkbench()
+				.getDecoratorManager().getLabelDecorator();
+		viewer.setLabelProvider(new DecoratingLabelProvider(new ViewLabelProvider(),
+				decorator));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 		makeActions();

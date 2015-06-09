@@ -46,6 +46,32 @@
             name="Bibtex Overview">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexDecorator"
+            icon="icons/decorator.gif"
+            id="de.tudresden.slr.model.bibtex.ui.presentation.BibtexDecorator"
+            label="Bibtex Decorator"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+            <description>
+            This Decorator marks Bibtex entries which do not match the requirements.
+            </description>
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IFile">
+               </objectClass>
+               <objectClass
+                     name="de.tudresden.slr.model.bibtex.Document">
+               </objectClass>
+            </and>
+         </enablement>
+      </decorator>
+   </extension>
 
 
 </plugin>
