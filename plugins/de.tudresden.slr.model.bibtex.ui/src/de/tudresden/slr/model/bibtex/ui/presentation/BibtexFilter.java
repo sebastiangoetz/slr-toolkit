@@ -1,11 +1,14 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.util.LinkedList;
+
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.dialogs.PatternFilter;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.taxonomy.Term;
 
 public class BibtexFilter extends PatternFilter {
 	/**
@@ -45,6 +48,19 @@ public class BibtexFilter extends PatternFilter {
 		for (String s : element.getAuthors()) {
 			if (wordMatches(s)) {
 				return true;
+			}
+		}
+		LinkedList<Term> terms = new LinkedList<Term>();
+		if (element.getTaxonomy() != null && element.getTaxonomy().getDimensions() != null){
+			terms.addAll(element.getTaxonomy().getDimensions());
+		}
+		while(!terms.isEmpty()){
+			Term t = terms.remove();
+			if (wordMatches(t.getName())){
+				return true;
+			}
+			if (t.getSubclasses() != null){
+				terms.addAll(t.getSubclasses());
 			}
 		}
 		return wordMatches(element.getAbstract());
