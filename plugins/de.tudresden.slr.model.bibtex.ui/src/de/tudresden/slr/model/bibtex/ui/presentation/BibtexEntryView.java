@@ -122,10 +122,7 @@ public class BibtexEntryView extends ViewPart {
 				return ((IFile) child).getProject();
 			}
 			if (child instanceof Document) {
-				String filePath = ((Document) child).eResource().getURI()
-						.toFileString();
-				return ResourcesPlugin.getWorkspace().getRoot()
-						.findMember(filePath);
+				return BibtexDecorator.getIFilefromDocument((Document)child);
 
 			}
 			return null;
