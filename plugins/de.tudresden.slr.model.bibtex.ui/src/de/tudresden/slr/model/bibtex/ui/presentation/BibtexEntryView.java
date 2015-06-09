@@ -89,10 +89,11 @@ public class BibtexEntryView extends ViewPart {
 	private Action action1;
 	private Action action2;
 	private BibtexOpenListener openListener, selectionListener;
+
 	class ViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
 		private String invisibleRoot;
-		
+
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 			return;
@@ -117,20 +118,22 @@ public class BibtexEntryView extends ViewPart {
 			if (child instanceof IProject) {
 				return invisibleRoot;
 			}
-			if (child instanceof IFile){
-				return ((IFile)child).getProject();
+			if (child instanceof IFile) {
+				return ((IFile) child).getProject();
 			}
-			if (child instanceof Document){
-				String filePath = ((Document)child).eResource().getURI().toFileString();
-				return ResourcesPlugin.getWorkspace().getRoot().findMember(filePath);
-				
+			if (child instanceof Document) {
+				String filePath = ((Document) child).eResource().getURI()
+						.toFileString();
+				return ResourcesPlugin.getWorkspace().getRoot()
+						.findMember(filePath);
+
 			}
 			return null;
 		}
 
 		@Override
 		public Object[] getChildren(Object parent) {
-			if (parent == invisibleRoot){
+			if (parent == invisibleRoot) {
 				IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
 						.getProjects();
 				return projects;
@@ -138,24 +141,24 @@ public class BibtexEntryView extends ViewPart {
 			if (parent instanceof IProject) {
 				IResource[] resources;
 				try {
-					resources = ((IProject)parent).members();
+					resources = ((IProject) parent).members();
 				} catch (CoreException e) {
 					e.printStackTrace();
 					return new Object[0];
 				}
 				LinkedList<IFile> bibFiles = new LinkedList<IFile>();
 				for (IResource res : resources) {
-					if (res.getType() != IResource.FILE
-							|| !"bib".equals(res.getFileExtension())) {
-						continue;
+					if (res.getType() == IResource.FILE
+							&& "bib".equals(res.getFileExtension())) {
+						bibFiles.add((IFile) res);
 					}
-					bibFiles.add((IFile)res);
 				}
 				return bibFiles.toArray();
 			}
-			if (parent instanceof IFile){
-				Resource resource = editingDomain.createResource(((IFile)parent)
-						.getFullPath().toString());
+			if (parent instanceof IFile) {
+				Resource resource = editingDomain
+						.createResource(((IFile) parent).getFullPath()
+								.toString());
 				try {
 					resource.load(null);
 				} catch (IOException e) {
@@ -170,14 +173,14 @@ public class BibtexEntryView extends ViewPart {
 						continue;
 					}
 					doc = (Document) eobj;
-					if (key == null){
+					if (key == null) {
 						key = doc.getKey();
 					}
 					docs.add(doc);
 				}
 				System.out.println("PersistentProperty: " + key);
 				try {
-					((IFile)parent).setPersistentProperty(new QualifiedName(
+					((IFile) parent).setPersistentProperty(new QualifiedName(
 							BibtexDecorator.QUALIFIER, key), "ERROR");
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
@@ -191,14 +194,14 @@ public class BibtexEntryView extends ViewPart {
 
 		@Override
 		public boolean hasChildren(Object parent) {
-			if (parent instanceof String){
-				//invisibleRoot
+			if (parent instanceof String) {
+				// invisibleRoot
 				return true;
 			}
-			if (parent instanceof IProject){
+			if (parent instanceof IProject) {
 				IResource[] resources;
 				try {
-					resources = ((IProject)parent).members();
+					resources = ((IProject) parent).members();
 				} catch (CoreException e) {
 					e.printStackTrace();
 					return false;
@@ -209,13 +212,14 @@ public class BibtexEntryView extends ViewPart {
 							|| !"bib".equals(res.getFileExtension())) {
 						continue;
 					}
-					bibFiles.add((IFile)res);
+					bibFiles.add((IFile) res);
 				}
 				return !bibFiles.isEmpty();
 			}
-			if (parent instanceof IFile){
-				Resource resource = editingDomain.createResource(((IFile)parent)
-						.getFullPath().toString());
+			if (parent instanceof IFile) {
+				Resource resource = editingDomain
+						.createResource(((IFile) parent).getFullPath()
+								.toString());
 				try {
 					resource.load(null);
 				} catch (IOException e) {
@@ -263,8 +267,8 @@ public class BibtexEntryView extends ViewPart {
 		viewer.setContentProvider(new ViewContentProvider());
 		ILabelDecorator decorator = PlatformUI.getWorkbench()
 				.getDecoratorManager().getLabelDecorator();
-		viewer.setLabelProvider(new DecoratingLabelProvider(new ViewLabelProvider(),
-				decorator));
+		viewer.setLabelProvider(new DecoratingLabelProvider(
+				new ViewLabelProvider(), decorator));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
 		makeActions();
