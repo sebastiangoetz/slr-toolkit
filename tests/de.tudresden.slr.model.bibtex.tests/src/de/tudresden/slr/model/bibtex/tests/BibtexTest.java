@@ -97,7 +97,7 @@ public class BibtexTest {
 		resource.save(new URIConverter.WriteableOutputStream(writer, "UTF-8"),
 				Collections.EMPTY_MAP);
 		final String bibOut = writer.toString();
-		assertThat(bibOut, containsString("sub-test1"));
-		assertThat(bibOut, containsString("sub-test2"));
+		final String expected = "@INPROCEEDINGS{Test01,\n\tclasses = {test{sub-test1, sub-test2}}\n}";
+		assertThat(bibOut, is(expected));
 	}
 } // BibtexTests
