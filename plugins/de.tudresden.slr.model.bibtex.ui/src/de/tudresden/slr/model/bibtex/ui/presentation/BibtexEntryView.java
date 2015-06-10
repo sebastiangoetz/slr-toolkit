@@ -268,6 +268,14 @@ public class BibtexEntryView extends ViewPart {
 				new ViewLabelProvider(), decorator));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
+
+		// this is needed to let other views know what is currently selected
+		// in my case the Chart View wants to display data
+		// see
+		// https://wiki.eclipse.org/FAQ_How_do_I_make_a_view_respond_to_selection_changes_in_another_view%3F
+
+		getSite().setSelectionProvider(viewer);
+
 		makeActions();
 		hookContextMenu();
 		hookActions();

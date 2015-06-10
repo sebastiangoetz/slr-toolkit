@@ -1,5 +1,12 @@
 package wizard;
 
+import java.util.Collections;
+
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -10,13 +17,18 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
+
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
+import de.tudresden.slr.model.taxonomy.Term;
 
 public class FirstPage extends WizardPage {
-	private Text text1;
 	private Composite container;
 	private Button button2;
 	private Button button1;
+
+	private ResourceSet resourceSet;
+	private Resource resource;
 
 	public FirstPage() {
 		super("First Page");
@@ -55,6 +67,12 @@ public class FirstPage extends WizardPage {
 		// required to avoid an error in the system
 		setControl(container);
 		setPageComplete(false);
+		try {
+			setUpExampleBibtex();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -64,6 +82,20 @@ public class FirstPage extends WizardPage {
 
 	public Button getButton1() {
 		return button1;
+	}
+
+	private void setUpExampleBibtex() throws Exception {
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(
+				"bib", new BibtexResourceFactoryImpl());
+
+		final String bib = "@INPROCEEDINGS{Test01, classes = {test}}";
+		resourceSet = new ResourceSetImpl();
+		resource = resourceSet.createResource(URI.createURI("test.bib"));
+		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"),
+				Collections.EMPTY_MAP);
+
+		Document document = (Document) resource.getContents().get(0);
+		Term term = document.getTaxonomy().getDimensions().get(0);
 	}
 
 }
