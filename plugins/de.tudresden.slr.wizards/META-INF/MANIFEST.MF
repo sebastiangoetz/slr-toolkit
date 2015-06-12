@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Wizards
+Bundle-SymbolicName: de.tudresden.slr.wizards;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: de.tudresden.slr.wizards.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.ide;bundle-version="3.10.2",
+ org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.tudresden.slr.wizards.natures,
+ de.tudresden.slr.wizards.projects

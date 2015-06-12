@@ -140,6 +140,9 @@
 		<module>../de.tudresden.slr.ui.perspective</module>
 
 		<module>../de.tudresden.slr.model.modelregistry</module>
+		<module>
+			../../../../workspace/slr/de.tudresden.slr.wizards
+		</module>
 	</modules>
 
 </project>
