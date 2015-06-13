@@ -432,6 +432,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			this.document = ((DocumentStorageEditorInput) editorInput)
 					.getStorage().getDocument();
 			this.selection = new StructuredSelection(this.document);
+			ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

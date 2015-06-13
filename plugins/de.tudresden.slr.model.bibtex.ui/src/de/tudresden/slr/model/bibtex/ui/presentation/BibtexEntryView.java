@@ -66,7 +66,7 @@ public class BibtexEntryView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "bibtex.presentation.BibtexEntryView";
+	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
 	public static final String overviewId = BibtexOverviewEditor.ID;
 	/**
@@ -175,7 +175,7 @@ public class BibtexEntryView extends ViewPart {
 					}
 					docs.add(doc);
 				}
-				System.out.println("PersistentProperty: " + key);
+				// System.out.println("PersistentProperty: " + key);
 				try {
 					((IFile) parent).setPersistentProperty(new QualifiedName(
 							BibtexDecorator.QUALIFIER, key), "ERROR");
