@@ -1,19 +1,21 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -31,13 +33,12 @@ import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
@@ -61,7 +62,8 @@ import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
  * @author Manuel Brauer
  */
 
-public class BibtexEntryView extends ViewPart {
+public class BibtexEntryView extends ViewPart implements
+		IResourceChangeListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -122,7 +124,7 @@ public class BibtexEntryView extends ViewPart {
 				return ((IFile) child).getProject();
 			}
 			if (child instanceof Document) {
-				return BibtexDecorator.getIFilefromDocument((Document)child);
+				return BibtexDecorator.getIFilefromDocument((Document) child);
 
 			}
 			return null;
@@ -141,6 +143,7 @@ public class BibtexEntryView extends ViewPart {
 					resources = ((IProject) parent).members();
 				} catch (CoreException e) {
 					e.printStackTrace();
+
 					return new Object[0];
 				}
 				LinkedList<IFile> bibFiles = new LinkedList<IFile>();
@@ -153,9 +156,24 @@ public class BibtexEntryView extends ViewPart {
 				return bibFiles.toArray();
 			}
 			if (parent instanceof IFile) {
-				Resource resource = editingDomain
-						.createResource(((IFile) parent).getFullPath()
-								.toString());
+				try {
+					for (Map.Entry<QualifiedName, String> entry : ((IFile) parent)
+							.getPersistentProperties().entrySet()) {
+						if (BibtexDecorator.QUALIFIER.equals(entry.getKey()
+								.getQualifier())) {
+							((IFile) parent).setPersistentProperty(
+									entry.getKey(), null);
+						}
+					}
+				} catch (CoreException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				URI uri = URI.createURI(((IFile) parent).getFullPath()
+						.toString());
+				Resource resource = editingDomain.getResourceSet().getResource(
+						uri, true);
+
 				try {
 					resource.load(null);
 				} catch (IOException e) {
@@ -163,22 +181,32 @@ public class BibtexEntryView extends ViewPart {
 					return new Object[0];
 				}
 				Document doc;
-				String key = null;
+				String key_error = null;
+				String key_nonsense = null;
 				LinkedList<Document> docs = new LinkedList<Document>();
 				for (EObject eobj : resource.getContents()) {
 					if (!(eobj instanceof Document)) {
 						continue;
 					}
 					doc = (Document) eobj;
-					if (key == null) {
-						key = doc.getKey();
+					if (key_error == null) {
+						key_error = doc.getKey();
+					} else if (key_nonsense == null) {
+						key_nonsense = doc.getKey();
 					}
 					docs.add(doc);
 				}
-				System.out.println("PersistentProperty: " + key);
+				// System.out.println("ERROR PersistentProperty: " + key_error);
+				System.out.println("NONSENSE PersistentProperty: "
+						+ key_nonsense);
+				// System.out.println("PersistentProperty: " + key);
 				try {
+					// ((IFile) parent).setPersistentProperty(new QualifiedName(
+					// BibtexDecorator.QUALIFIER, key_error),
+					// BibtexDecorator.ERROR);
 					((IFile) parent).setPersistentProperty(new QualifiedName(
-							BibtexDecorator.QUALIFIER, key), "ERROR");
+							BibtexDecorator.QUALIFIER, key_nonsense),
+							"NONSENSE");
 				} catch (CoreException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -280,6 +308,7 @@ public class BibtexEntryView extends ViewPart {
 		hookContextMenu();
 		hookActions();
 		contributeToActionBars();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 	}
 
 	/**
@@ -406,10 +435,30 @@ public class BibtexEntryView extends ViewPart {
 		action1 = new Action() {
 			@Override
 			public void run() {
-				showMessage("Action 1 executed");
+				// TODO: security checks
+				TreeSelection select = (TreeSelection) viewer.getSelection();
+				Document doc = (Document) select.getFirstElement();
+				IFile file = (IFile) ((ITreeContentProvider) viewer
+						.getContentProvider()).getParent(select
+						.getFirstElement());
+				try {
+					QualifiedName qName = new QualifiedName(
+							BibtexDecorator.QUALIFIER, doc.getKey());
+					if (file.getPersistentProperty(qName) != null
+							&& BibtexDecorator.ERROR.equals(file
+									.getPersistentProperty(qName))) {
+						file.setPersistentProperty(qName, null);
+					} else {
+						file.setPersistentProperty(qName, BibtexDecorator.ERROR);
+					}
+					showMessage("Action 1 executed");
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
-		action1.setText("Action 1");
+		action1.setText("Decorate");
 		action1.setToolTipText("Action 1 tooltip");
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
@@ -447,5 +496,10 @@ public class BibtexEntryView extends ViewPart {
 	public void setFocus() {
 		viewer.getControl().setFocus();
 
+	}
+
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		viewer.refresh();
 	}
 }
