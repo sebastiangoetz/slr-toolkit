@@ -17,17 +17,28 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import de.tudresden.slr.model.bibtex.Document;
 
+/**
+ * This Decorator is added to {@link IFile}s where the persisted property with
+ * the {@link BibtexDecorator#QUALIFIER} is set with any local name but with
+ * {@link BibtexDecorator#ERROR} as value. It also decorates {@link Document}s
+ * whose key is used as local name in the persisted property of the parental
+ * {@link IFile}.
+ * 
+ * @author Manuel Brauer
+ *
+ */
 public class BibtexDecorator implements ILightweightLabelDecorator {
 	private static final ImageDescriptor DECORATOR;
 	public static final String QUALIFIER = "de.tudresden.slr";
+	public static final String ERROR = "ERROR";
 
+	// load imagedescriptor only once
 	static {
 		DECORATOR = AbstractUIPlugin.imageDescriptorFromPlugin(
 				"de.tudresden.slr.model.bibtex.ui", "icons/decorator.gif");
 	}
 
 	public BibtexDecorator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -57,11 +68,11 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 	@Override
 	public void decorate(Object element, IDecoration decoration) {
 		if (element instanceof IFile) {
+			IFile file = (IFile) element;
 			Set<QualifiedName> names = null;
 			try {
-				names = ((IFile) element).getPersistentProperties().keySet();
+				names = file.getPersistentProperties().keySet();
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (names == null || names.isEmpty()) {
@@ -69,8 +80,19 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 			}
 			for (QualifiedName qName : names) {
 				if (QUALIFIER.equals(qName.getQualifier())) {
-					decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
-					return;
+					String content = null;
+					try {
+						content = file.getPersistentProperty(qName);
+					} catch (CoreException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						continue;
+					}
+					if (ERROR.equals(content)) {
+						decoration.addOverlay(DECORATOR,
+								IDecoration.BOTTOM_RIGHT);
+						return;
+					}
 				}
 			}
 		} else if (element instanceof Document) {
@@ -89,13 +111,22 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (property == null || !("ERROR".equals(property))) {
+			if (property != null && ERROR.equals(property)) {
+				decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
 				return;
 			}
-			decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
 		}
 	}
 
+	/**
+	 * Returns the resource file which contains the given bibtex document. Bases
+	 * on {@link http://www.eclipse.org/forums/index.php?t=msg&th=128695/}
+	 * 
+	 * @param doc
+	 *            {@link Document} whom's resource is wanted
+	 * @return {@link IFile} which contains doc. <code>null</code> if nothing
+	 *         was found.
+	 */
 	public static IFile getIFilefromDocument(Document doc) {
 		URI uri = doc.eResource().getURI();
 		uri = doc.eResource().getResourceSet().getURIConverter().normalize(uri);

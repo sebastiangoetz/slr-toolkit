@@ -32,7 +32,7 @@ public class SlrProjectSupport {
             addNature(project);
  
 			String[] paths = {
-					"parent/child1-1/child2", "parent/child1-2/child2" }; //$NON-NLS-1$ //$NON-NLS-2$
+ "literature", "taxonomy" }; //$NON-NLS-1$ //$NON-NLS-2$
             addToProjectStructure(project, paths);
         } catch (CoreException e) {
             e.printStackTrace();
