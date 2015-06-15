@@ -1,16 +1,15 @@
 package de.tudresden.slr.model.modelregistry;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.Observable;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.taxonomy.Model;
 
-public class ModelRegistry {
+public class ModelRegistry extends Observable {
 	private Document activeDocument;
-
-	private EObject activeTaxonomy;
+	private Model activeTaxonomy;
 
 	public ModelRegistry() {
-
 	}
 
 	public Document getActiveDocument() {
@@ -18,16 +17,22 @@ public class ModelRegistry {
 	}
 
 	public void setActiveDocument(Document document) {
-		activeDocument = document;
+		if (activeDocument != document) {
+			activeDocument = document;
+			setChanged();
+			notifyObservers(activeDocument);
+		}
 	}
 
-	public EObject getActiveTaxonomy() {
+	public Model getActiveTaxonomy() {
 		return activeTaxonomy;
 	}
 
-	public void setActiveTaxonomy(EObject taxonomy) {
+	public void setActiveTaxonomy(Model taxonomy) {
 		if (activeTaxonomy != taxonomy) {
 			activeTaxonomy = taxonomy;
+			setChanged();
+			notifyObservers(activeTaxonomy);
 		}
 	}
 }
