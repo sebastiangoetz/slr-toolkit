@@ -13,15 +13,11 @@ import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
@@ -30,7 +26,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ContainerCheckedTreeViewer;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.resource.XtextResource;
@@ -67,52 +62,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	private ContainerCheckedTreeViewer viewer;
 	private Action doubleClickAction;
 	private ViewContentProvider contentProvider;
-
-	class ViewContentLabelProvider implements ILabelProvider {
-
-		@Override
-		public void addListener(ILabelProviderListener listener) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void dispose() {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public boolean isLabelProperty(Object element, String property) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public void removeListener(ILabelProviderListener listener) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public Image getImage(Object element) {
-			return null;
-		}
-
-		@Override
-		public String getText(Object element) {
-			if (element instanceof ICompositeNode) {
-				ICompositeNode composite = (ICompositeNode) element;
-				return composite.getText();
-			}
-			if (element instanceof INode) {
-				INode node = (INode) element;
-				return node.getText();
-			}
-			return "";
-		}
-
-	}
 
 	class ViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
@@ -171,9 +120,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 	}
 
-	class NameSorter extends ViewerSorter {
-	}
-
 	/**
 	 * The constructor.
 	 */
@@ -193,9 +139,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new DefaultEObjectLabelProvider());
 		viewer.addCheckStateListener(this);
-		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
-		viewer.expandAll();
+		viewer.setSorter(null);
 
 		// Create the help context id for the viewer's control
 		PlatformUI
@@ -230,9 +174,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (part != this) {
-			if (!selection.isEmpty() && selection instanceof ITextSelection
-					&& part instanceof XtextEditor) {
+		if (part instanceof XtextEditor) {
+			if (!selection.isEmpty() && selection instanceof ITextSelection) {
 				final XtextEditor editor = (XtextEditor) part;
 				final IXtextDocument document = editor.getDocument();
 
@@ -249,8 +192,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 								ModelRegistryPlugin.getModelRegistry()
 										.setActiveTaxonomy((Model) taxonomy);
 							}
-							// contentProvider.addRoot(NodeModelUtils
-							// .findActualSemanticObjectFor(root));
 						}
 					}
 				});
@@ -283,12 +224,11 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		if (activeDocument != null) {
 			if (event.getElement() instanceof Term) {
 				Term term = (Term) event.getElement();
+				Model taxonomy = activeDocument.getTaxonomy();
 				if (event.getChecked()) {
-					findAndAdd(activeDocument.getTaxonomy().getDimensions(),
-							term);
+					findAndAdd(taxonomy.getDimensions(), term);
 				} else {
-					findAndRemove(activeDocument.getTaxonomy().getDimensions(),
-							term);
+					findAndRemove(taxonomy.getDimensions(), term);
 				}
 			}
 		}
@@ -302,14 +242,11 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		if (from.size() == 0) {
 			return;
 		}
-		for (int i = 0; i < from.size(); ++i) {
-			Term candidate = from.get(i);
-			if (candidate.equals(term)) {
-				from.remove(i);
-				break;
-			} else {
-				findAndRemove(candidate.getSubclasses(), term);
-			}
+		// TODO fix terms with the same name. check parent hierarchy
+		if (from.contains(term)) {
+			from.remove(term);
+		} else {
+			from.forEach(t -> findAndRemove(t.getSubclasses(), term));
 		}
 	}
 

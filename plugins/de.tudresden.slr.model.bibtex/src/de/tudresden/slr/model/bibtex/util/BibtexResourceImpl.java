@@ -50,6 +50,7 @@ import de.tudresden.slr.model.TaxonomyStandaloneSetupGenerated;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
 
 /**
@@ -94,6 +95,8 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 					document.setKey(entry.getKey().toString());
 					document.setType(entry.getType().toString());
+					
+					//TODO refactor, cleaner smaller code
 
 					if (entry.getField(KEY_TITLE) != null) {
 						document.setTitle(entry.getField(KEY_TITLE)
@@ -131,8 +134,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 						Model model = parseClasses(entry.getField(KEY_CLASSES)
 								.toUserString());
 						document.setTaxonomy(model);
+					} else {
+						document.setTaxonomy(TaxonomyFactory.eINSTANCE.createModel());
 					}
-
 					getContents().add(document);
 				}
 			}
@@ -153,13 +157,12 @@ public class BibtexResourceImpl extends ResourceImpl {
 					new URIConverter.ReadableInputStream(string, "UTF-8"), null);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
 		}
 		if (!resource.getContents().isEmpty()
 				&& resource.getContents().get(0) instanceof Model) {
 			return (Model) resource.getContents().get(0);
 		}
-		return null;
+		return TaxonomyFactory.eINSTANCE.createModel();
 	}
 
 	@Override
