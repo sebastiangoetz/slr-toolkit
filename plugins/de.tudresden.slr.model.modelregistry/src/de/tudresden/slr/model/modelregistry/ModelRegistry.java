@@ -60,4 +60,13 @@ public class ModelRegistry extends Observable {
 			notifyObservers(activeTaxonomy);
 		}
 	}
+
+	@Override
+	public void notifyObservers(Object arg) {
+		try {
+			super.notifyObservers(arg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
