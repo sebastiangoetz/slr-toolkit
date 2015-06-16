@@ -215,6 +215,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
 		}
+		viewer.expandAll();
 	}
 
 	@Override
@@ -251,13 +252,16 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	}
 
 	private void setTicks(Document document) {
-		for (Term t : ModelRegistryPlugin.getModelRegistry()
-				.getActiveTaxonomy().getDimensions()) {
-			viewer.setSubtreeChecked(t, false);
-		}
-		if (document.getTaxonomy() != null) {
-			for (Term t : document.getTaxonomy().getDimensions()) {
-				viewer.setChecked(getTerm(t), true);
+		Model model = ModelRegistryPlugin.getModelRegistry()
+				.getActiveTaxonomy();
+		if (model != null) {
+			for (Term t : model.getDimensions()) {
+				viewer.setSubtreeChecked(t, false);
+			}
+			if (document.getTaxonomy() != null) {
+				for (Term t : document.getTaxonomy().getDimensions()) {
+					viewer.setChecked(getTerm(t), true);
+				}
 			}
 		}
 	}
