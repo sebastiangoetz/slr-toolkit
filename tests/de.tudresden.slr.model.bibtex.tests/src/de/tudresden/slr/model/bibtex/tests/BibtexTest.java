@@ -100,4 +100,23 @@ public class BibtexTest {
 		final String expected = "@INPROCEEDINGS{Test01,\n\tclasses = {test{sub-test1, sub-test2}}\n}";
 		assertThat(bibOut, is(expected));
 	}
+
+	@Test
+	public void loadSingleDimensionWithSubTerms() throws Exception {
+		final String bib = "@INPROCEEDINGS{Test01, classes = {dimension{sub{subsub}}}}";
+
+		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"),
+				Collections.EMPTY_MAP);
+
+		assertThat(resource.getContents().get(0), instanceOf(Document.class));
+
+		Document document = (Document) resource.getContents().get(0);
+		Term dimension = document.getTaxonomy().getDimensions().get(0);
+		Term subDimension = dimension.getSubclasses().get(0);
+		Term subSubDimension = subDimension.getSubclasses().get(0);
+
+		assertThat(dimension.getName(), is("dimension"));
+		assertThat(subDimension.getName(), is("sub"));
+		assertThat(subSubDimension.getName(), is("subsub"));
+	}
 } // BibtexTests
