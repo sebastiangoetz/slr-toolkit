@@ -2,6 +2,7 @@ package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -220,12 +221,13 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	@Override
 	public void checkStateChanged(CheckStateChangedEvent event) {
-		Document activeDocument = ModelRegistryPlugin.getModelRegistry()
-				.getActiveDocument();
-		if (activeDocument != null) {
+		Optional<Document> activeDocument = ModelRegistryPlugin
+				.getModelRegistry().getActiveDocument();
+
+		if (activeDocument.isPresent()) {
 			if (event.getElement() instanceof Term) {
 				Term term = (Term) event.getElement();
-				Model taxonomy = activeDocument.getTaxonomy();
+				Model taxonomy = activeDocument.get().getTaxonomy();
 				if (event.getChecked()) {
 					findAndAdd(taxonomy.getDimensions(), term);
 				} else {
@@ -233,6 +235,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				}
 			}
 		}
+
 	}
 
 	private void findAndAdd(EList<Term> dimensions, Term term) {
@@ -252,10 +255,10 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	}
 
 	private void setTicks(Document document) {
-		Model model = ModelRegistryPlugin.getModelRegistry()
+		Optional<Model> model = ModelRegistryPlugin.getModelRegistry()
 				.getActiveTaxonomy();
-		if (model != null) {
-			for (Term t : model.getDimensions()) {
+		if (model.isPresent()) {
+			for (Term t : model.get().getDimensions()) {
 				viewer.setSubtreeChecked(t, false);
 			}
 			if (document.getTaxonomy() != null) {
@@ -267,11 +270,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	}
 
 	private Term getTerm(Term term) {
-		Model model = ModelRegistryPlugin.getModelRegistry()
+		Optional<Model> model = ModelRegistryPlugin.getModelRegistry()
 				.getActiveTaxonomy();
-		if (model != null) {
+
+		if (model.isPresent()) {
 			TreeIterator<EObject> iter = EcoreUtil.<EObject> getAllContents(
-					model, false);
+					model.get(), false);
 			while (iter.hasNext()) {
 				EObject e = iter.next();
 				if (e instanceof Term) {
