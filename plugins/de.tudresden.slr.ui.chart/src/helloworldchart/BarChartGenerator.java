@@ -42,6 +42,7 @@ public class BarChartGenerator {
 
 	public final static Chart createBar() {// String tag, HashMap<String,
 											// Integer> values) {
+		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart");

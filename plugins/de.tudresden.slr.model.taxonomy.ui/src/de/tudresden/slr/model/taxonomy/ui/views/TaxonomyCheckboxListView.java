@@ -142,6 +142,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		viewer.addCheckStateListener(this);
 		viewer.setSorter(null);
 
+		getSite().setSelectionProvider(viewer);
+
 		// Create the help context id for the viewer's control
 		PlatformUI
 				.getWorkbench()
