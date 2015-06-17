@@ -1,29 +1,32 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.EventObject;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.common.command.CommandStackListener;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -38,7 +41,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorActionBarContributor;
@@ -48,6 +50,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -55,7 +58,6 @@ import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import de.tudresden.slr.model.bibtex.Document;
-import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
@@ -69,7 +71,7 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
  * </ul>
  */
 public class BibtexEditor extends MultiPageEditorPart implements
-		IResourceChangeListener, ISelectionProvider {
+		ISelectionProvider {
 	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexEditor";
 
 	// TODO: prettify
@@ -84,6 +86,10 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	private ISelection selection;
 	private Set<ISelectionChangedListener> selectionListeners = new HashSet<>();
 	private static List<PropertySheetPage> propertySheetPages = new ArrayList<>();
+
+	protected Collection<Resource> changedResources = new ArrayList<Resource>();
+	protected Collection<Resource> removedResources = new ArrayList<Resource>();
+	protected Collection<Resource> savedResources = new ArrayList<Resource>();
 	/**
 	 * This listens for when the outline becomes active <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -129,7 +135,6 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 	public BibtexEditor() {
 		super();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 		initializeEditingDomain();
 	}
 
@@ -140,63 +145,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 * @generated
 	 */
 	protected void initializeEditingDomain() {
-		// Create an adapter factory that yields item providers.
-		//
-		adapterFactory = new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-
-		adapterFactory
-				.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		adapterFactory
-				.addAdapterFactory(new BibtexItemProviderAdapterFactory());
-		adapterFactory
-				.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-
-		// Create the command stack that will notify this editor as commands are
-		// executed.
-		//
-		BasicCommandStack commandStack = new BasicCommandStack();
-		// Add a listener to set the most recent command's affected objects to
-		// be the selection of the viewer with focus.
-		//
-		commandStack.addCommandStackListener(new CommandStackListener() {
-			@Override
-			public void commandStackChanged(final EventObject event) {
-				getContainer().getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						firePropertyChange(IEditorPart.PROP_DIRTY);
-
-						// Try to select the affected objects.
-						//
-						Command mostRecentCommand = ((CommandStack) event
-								.getSource()).getMostRecentCommand();
-						for (Iterator<PropertySheetPage> i = propertySheetPages
-								.iterator(); i.hasNext();) {
-							PropertySheetPage propertySheetPage = i.next();
-							if (propertySheetPage.getControl().isDisposed()) {
-								i.remove();
-							} else {
-								propertySheetPage.refresh();
-							}
-						}
-					}
-				});
-			}
-		});
-		// Create the editing domain with a special command stack.
-		//
-		editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
-				commandStack, new HashMap<Resource, Boolean>());
-	}
-
-	@Override
-	public void resourceChanged(IResourceChangeEvent event) {
-		if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
-			Display.getDefault().asyncExec(() -> {
-			}/* TODO: before closing the editor); */);
-		}
+		ModelRegistryPlugin.getModelRegistry().getEditingDomain()
+				.ifPresent((domain) -> editingDomain = domain);
 	}
 
 	@Override
@@ -296,16 +246,9 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 
-		// Title
 		createPageLabel(composite, gridData);
-
-		// Authors
 		createAuthorsLabel(composite, gridData);
-
-		// Date
 		createDateLabel(composite, gridData);
-
-		// Abstract
 		createAbstractText(composite);
 
 		int index = addPage(composite);
@@ -379,9 +322,72 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) {
-		// TODO: save entry in bib file
+	public void doSave(IProgressMonitor progressMonitor) {
+		// Save only resources that have actually changed.
+		//
+		final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+		saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
+				Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+		saveOptions.put(Resource.OPTION_LINE_DELIMITER,
+				Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
 
+		// Do the work within an operation because this is a long running
+		// activity that modifies the workbench.
+		//
+		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
+			// This is the method that gets invoked when the operation runs.
+			//
+			@Override
+			public void execute(IProgressMonitor monitor) {
+				// Save the resources to the file system.
+				//
+				boolean first = true;
+				for (Resource resource : editingDomain.getResourceSet()
+						.getResources()) {
+					if ((first || !resource.getContents().isEmpty() || isPersisted(resource))
+							&& !editingDomain.isReadOnly(resource)) {
+						try {
+							long timeStamp = resource.getTimeStamp();
+							resource.save(saveOptions);
+							if (resource.getTimeStamp() != timeStamp) {
+								savedResources.add(resource);
+							}
+						} catch (Exception exception) {
+						}
+						first = false;
+					}
+				}
+			}
+		};
+		try {
+			// This runs the options, and shows progress.
+			//
+			new ProgressMonitorDialog(getSite().getShell()).run(true, false,
+					operation);
+
+			// Refresh the necessary state.
+			//
+			((BasicCommandStack) editingDomain.getCommandStack()).saveIsDone();
+			firePropertyChange(IEditorPart.PROP_DIRTY);
+		} catch (Exception exception) {
+			// Something went wrong that shouldn't.
+			//
+		}
+	}
+
+	protected boolean isPersisted(Resource resource) {
+		boolean result = false;
+		try {
+			InputStream stream = editingDomain.getResourceSet()
+					.getURIConverter().createInputStream(resource.getURI());
+			if (stream != null) {
+				result = true;
+				stream.close();
+			}
+		} catch (IOException e) {
+			// Ignore
+		}
+		return result;
 	}
 
 	@Override
@@ -524,5 +530,142 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	public void removeSelectionChangedListener(
 			ISelectionChangedListener listener) {
 		selectionListeners.remove(listener);
+	}
+
+	protected IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			IResourceDelta delta = event.getDelta();
+			try {
+				class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+					protected ResourceSet resourceSet = editingDomain
+							.getResourceSet();
+					protected Collection<Resource> changedResources = new ArrayList<Resource>();
+					protected Collection<Resource> removedResources = new ArrayList<Resource>();
+
+					@Override
+					public boolean visit(IResourceDelta delta) {
+						if (delta.getResource().getType() == IResource.FILE) {
+							if (delta.getKind() == IResourceDelta.REMOVED
+									|| delta.getKind() == IResourceDelta.CHANGED
+									&& delta.getFlags() != IResourceDelta.MARKERS) {
+								Resource resource = resourceSet
+										.getResource(URI
+												.createPlatformResourceURI(
+														delta.getFullPath()
+																.toString(),
+														true), false);
+								if (resource != null) {
+									if (delta.getKind() == IResourceDelta.REMOVED) {
+										removedResources.add(resource);
+									} else if (!savedResources.remove(resource)) {
+										changedResources.add(resource);
+									}
+								}
+							}
+							return false;
+						}
+
+						return true;
+					}
+
+					public Collection<Resource> getChangedResources() {
+						return changedResources;
+					}
+
+					public Collection<Resource> getRemovedResources() {
+						return removedResources;
+					}
+				}
+
+				final ResourceDeltaVisitor visitor = new ResourceDeltaVisitor();
+				delta.accept(visitor);
+
+				if (!visitor.getRemovedResources().isEmpty()) {
+					getSite().getShell().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							removedResources.addAll(visitor
+									.getRemovedResources());
+							if (!isDirty()) {
+								getSite().getPage().closeEditor(
+										BibtexEditor.this, false);
+							}
+						}
+					});
+				}
+
+				if (!visitor.getChangedResources().isEmpty()) {
+					getSite().getShell().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							changedResources.addAll(visitor
+									.getChangedResources());
+							if (getSite().getPage().getActiveEditor() == BibtexEditor.this) {
+								handleActivate();
+							}
+						}
+					});
+				}
+			} catch (CoreException exception) {
+				exception.printStackTrace();
+			}
+		}
+	};
+
+	protected void handleActivate() {
+		// Recompute the read only state.
+		//
+		if (editingDomain.getResourceToReadOnlyMap() != null) {
+			editingDomain.getResourceToReadOnlyMap().clear();
+
+			// Refresh any actions that may become enabled or disabled.
+			//
+			setSelection(getSelection());
+		}
+
+		if (!removedResources.isEmpty()) {
+			removedResources.clear();
+			changedResources.clear();
+			savedResources.clear();
+		} else if (!changedResources.isEmpty()) {
+			changedResources.removeAll(savedResources);
+			handleChangedResources();
+			changedResources.clear();
+			savedResources.clear();
+		}
+	}
+
+	/**
+	 * Handles what to do with changed resources on activation. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void handleChangedResources() {
+		if (!changedResources.isEmpty()) {
+			if (isDirty()) {
+				changedResources.addAll(editingDomain.getResourceSet()
+						.getResources());
+			}
+			editingDomain.getCommandStack().flush();
+
+			for (Resource resource : changedResources) {
+				if (resource.isLoaded()) {
+					resource.unload();
+					try {
+						resource.load(Collections.EMPTY_MAP);
+					} catch (IOException exception) {
+					}
+				}
+			}
+
+		}
+	}
+
+	@Override
+	public boolean isDirty() {
+		return ((BasicCommandStack) editingDomain.getCommandStack())
+				.isSaveNeeded();
 	}
 }

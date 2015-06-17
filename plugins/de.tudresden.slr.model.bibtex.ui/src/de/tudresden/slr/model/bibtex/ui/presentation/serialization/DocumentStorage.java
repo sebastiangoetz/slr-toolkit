@@ -38,7 +38,7 @@ public class DocumentStorage implements IStorage {
 
 	@Override
 	public boolean isReadOnly() {
-		return true;
+		return false;
 	}
 
 	public DocumentImpl getDocument() {
