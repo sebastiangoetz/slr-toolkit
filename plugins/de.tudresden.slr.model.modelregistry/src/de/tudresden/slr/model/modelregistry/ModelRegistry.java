@@ -17,10 +17,8 @@ public class ModelRegistry extends Observable {
 	}
 
 	public Optional<AdapterFactoryEditingDomain> getEditingDomain() {
-		if (sharedEditingDomain == null) {
-			return Optional.empty();
-		}
-		return Optional.of(sharedEditingDomain);
+		return sharedEditingDomain == null ? Optional.empty() : Optional
+				.of(sharedEditingDomain);
 	}
 
 	public void setEditingDomain(AdapterFactoryEditingDomain editingDomain) {
@@ -33,10 +31,8 @@ public class ModelRegistry extends Observable {
 	}
 
 	public Optional<Document> getActiveDocument() {
-		if (activeDocument == null) {
-			return Optional.empty();
-		}
-		return Optional.of(activeDocument);
+		return activeDocument == null ? Optional.empty() : Optional
+				.of(activeDocument);
 	}
 
 	public void setActiveDocument(Document document) {
@@ -48,10 +44,8 @@ public class ModelRegistry extends Observable {
 	}
 
 	public Optional<Model> getActiveTaxonomy() {
-		if (activeTaxonomy == null) {
-			return Optional.empty();
-		}
-		return Optional.of(activeTaxonomy);
+		return activeTaxonomy == null ? Optional.empty() : Optional
+				.of(activeTaxonomy);
 	}
 
 	public void setActiveTaxonomy(Model taxonomy) {
