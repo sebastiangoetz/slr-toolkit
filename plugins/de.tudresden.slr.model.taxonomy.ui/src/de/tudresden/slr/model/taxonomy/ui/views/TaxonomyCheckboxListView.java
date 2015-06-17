@@ -4,10 +4,13 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -67,18 +70,11 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	class ViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
 
-		private Model invisibleRoot;
-		private Viewer viewer;
-
 		public ViewContentProvider(Viewer v) {
-			viewer = v;
 		}
 
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-			if (newInput instanceof Model) {
-				invisibleRoot = (Model) newInput;
-			}
 		}
 
 		@Override
@@ -227,11 +223,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getModelRegistry().getActiveDocument();
 
 		if (activeDocument.isPresent()) {
+			Document document = activeDocument.get();
 			if (event.getElement() instanceof Term) {
 				Term term = (Term) event.getElement();
-				Model taxonomy = activeDocument.get().getTaxonomy();
+				Model taxonomy = document.getTaxonomy();
 				if (event.getChecked()) {
-					findAndAdd(taxonomy.getDimensions(), term);
+					findAndAdd(document, term);
 				} else {
 					findAndRemove(taxonomy.getDimensions(), term);
 				}
@@ -240,20 +237,33 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	}
 
-	private void findAndAdd(EList<Term> dimensions, Term term) {
+	private void executeCommand(Command command) {
+		Optional<AdapterFactoryEditingDomain> editingDomain = ModelRegistryPlugin
+				.getModelRegistry().getEditingDomain();
+		editingDomain.ifPresent((domain) -> ((BasicCommandStack) domain
+				.getCommandStack()).execute(command));
+	}
+
+	private void findAndAdd(Document document, Term term) {
 		// TODO
+		Command changeCommand = new ExecuteCommand() {
+			@Override
+			public void execute() {
+				document.getTaxonomy().getDimensions().add(term);
+			}
+		};
+		executeCommand(changeCommand);
 	}
 
 	private void findAndRemove(EList<Term> from, Term term) {
-		if (from.size() == 0) {
-			return;
-		}
-		// TODO fix terms with the same name. check parent hierarchy
-		if (from.contains(term)) {
-			from.remove(term);
-		} else {
-			from.forEach(t -> findAndRemove(t.getSubclasses(), term));
-		}
+		// TODO
+		Command changeCommand = new ExecuteCommand() {
+			@Override
+			public void execute() {
+				from.remove(term);
+			}
+		};
+		executeCommand(changeCommand);
 	}
 
 	private void setTicks(Document document) {
@@ -265,7 +275,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 			}
 			if (document.getTaxonomy() != null) {
 				for (Term t : document.getTaxonomy().getDimensions()) {
-					viewer.setChecked(getTerm(t), true);
+					Term tt = getTerm(t);
+					viewer.setChecked(tt, true);
 				}
 			}
 		}
@@ -289,4 +300,5 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 		return null;
 	}
+
 }

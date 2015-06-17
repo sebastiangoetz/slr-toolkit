@@ -6,7 +6,9 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: de.tudresden.slr.model.modelregistry.ModelRegistryPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- de.tudresden.slr.model.bibtex
+ de.tudresden.slr.model.bibtex,
+ org.eclipse.emf.edit,
+ de.tudresden.slr.model.bibtex.edit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.modelregistry

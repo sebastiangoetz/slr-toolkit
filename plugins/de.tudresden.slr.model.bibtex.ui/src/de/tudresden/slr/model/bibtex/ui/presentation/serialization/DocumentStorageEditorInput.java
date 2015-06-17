@@ -10,9 +10,9 @@ public class DocumentStorageEditorInput implements IStorageEditorInput {
 	private DocumentStorage storage;
 
 	public DocumentStorageEditorInput(DocumentStorage ds) {
-		this.storage = ds;
+		storage = ds;
 	}
-	
+
 	@Override
 	public boolean exists() {
 		return false;
@@ -35,11 +35,16 @@ public class DocumentStorageEditorInput implements IStorageEditorInput {
 
 	@Override
 	public String getToolTipText() {
-		return "BibTeX entry for document "+getName();
+		return "BibTeX entry for document " + getName();
 	}
 
 	@Override
 	public Object getAdapter(Class adapter) {
+		if (adapter == DocumentStorageEditorInput.class) {
+			DocumentStorageEditorInput adaptedStorage = new DocumentStorageEditorInput(
+					storage);
+			return adaptedStorage;
+		}
 		return null;
 	}
 
@@ -49,9 +54,10 @@ public class DocumentStorageEditorInput implements IStorageEditorInput {
 	}
 
 	@Override
-	public boolean equals(Object obj){
-		if (obj != null && obj instanceof DocumentStorageEditorInput){
-			return getName().equals(((DocumentStorageEditorInput)obj).getName());
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof DocumentStorageEditorInput) {
+			return getName().equals(
+					((DocumentStorageEditorInput) obj).getName());
 		}
 		return false;
 	}
