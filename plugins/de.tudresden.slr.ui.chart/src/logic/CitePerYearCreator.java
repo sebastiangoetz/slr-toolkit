@@ -25,7 +25,7 @@ public class CitePerYearCreator {
 	 * @return a map with sub categories and the number of cites of papers in
 	 *         them
 	 */
-	private HashMap<String, Integer> akkumulateCites(Term inputTerm) {
+	private HashMap<String, Integer> accumulateCites(Term inputTerm) {
 		HashMap<String, Integer> countPerYearMap = new HashMap<>();
 
 		ArrayList<String> subclasses = new ArrayList<>();

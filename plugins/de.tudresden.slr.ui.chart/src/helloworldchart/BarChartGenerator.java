@@ -11,6 +11,9 @@
 
 package helloworldchart;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
@@ -40,8 +43,7 @@ import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
 public class BarChartGenerator {
 
-	public final static Chart createBar() {// String tag, HashMap<String,
-											// Integer> values) {
+	public final static Chart createBar(HashMap<String, Integer> input) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
@@ -75,13 +77,31 @@ public class BarChartGenerator {
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 
+		// create the dataset from the map
+
+		ArrayList<String> names = new ArrayList<>();
+
+		for (String s : input.keySet()) {
+			names.add(s);
+		}
+
+		ArrayList<Double> values = new ArrayList<>();
+
+		for (String s : names) {
+			values.add((double) input.get(s));
+		}
+
+		TextDataSet categoryValues = TextDataSetImpl.create(names);
+		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
+
 		// Data Set
-		TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
-				"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		NumberDataSet orthoValues1 = NumberDataSetImpl.create(new double[] {
-				25, 35, 15, 5, 20 });
-		NumberDataSet orthoValues2 = NumberDataSetImpl.create(new double[] { 5,
-				10, 25, 10, 5 });
+		// TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
+		//				"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		// NumberDataSet orthoValues1 = NumberDataSetImpl.create(new double[] {
+		// 25, 35, 15, 5, 20 });
+		// NumberDataSet orthoValues2 = NumberDataSetImpl.create(new double[] {
+		// 5,
+		// 10, 25, 10, 5 });
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
@@ -117,10 +137,10 @@ public class BarChartGenerator {
 		bs1.getLabel().setVisible(true);
 		bs1.setLabelPosition(Position.INSIDE_LITERAL);
 
-		BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
-		bs2.setDataSet(orthoValues2);
-		bs2.getLabel().setVisible(true);
-		bs2.setLabelPosition(Position.INSIDE_LITERAL);
+		// BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
+		// bs2.setDataSet(orthoValues2);
+		// bs2.getLabel().setVisible(true);
+		// bs2.setLabelPosition(Position.INSIDE_LITERAL);
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
