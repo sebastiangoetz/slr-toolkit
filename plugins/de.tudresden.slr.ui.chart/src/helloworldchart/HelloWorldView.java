@@ -1,5 +1,8 @@
 package helloworldchart;
 
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import org.eclipse.birt.chart.api.ChartEngine;
 import org.eclipse.birt.chart.device.IDeviceRenderer;
 import org.eclipse.birt.chart.exception.ChartException;
@@ -8,6 +11,8 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.PaintEvent;
@@ -16,7 +21,11 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+
+import de.tudresden.slr.model.taxonomy.Term;
 
 public class HelloWorldView extends ViewPart implements ICommunicationView {
 
@@ -26,17 +35,38 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 	private IDeviceRenderer idr = null;
 	private Chart myChart = null;
 	private Composite _parent;
+	private final String chartViewId = "chart.view.helloworld";
 
 	/***
 	 * This listener handles the reaction to the selection of an element in the @BibtexEntryView
 	 */
 	ISelectionListener listener = new ISelectionListener() {
+
 		public void selectionChanged(IWorkbenchPart part, ISelection sel) {
 			if (!(sel instanceof IStructuredSelection))
 				return;
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
+			// TODO: Why can't I check here for Term interface?
+			// It just doesn't get triggered that way. :o
+			// TODO: I have to reset the diagram somehow
+			if (o instanceof BasicEObjectImpl) {
+				// _parent.dispose();
 
+				Term termToPresent = (Term) o;
+				EList<Term> subclassList = termToPresent.getSubclasses();
+				SortedMap<String, Integer> myValues = new TreeMap<>();
+				myValues.put(subclassList.get(0).getName(), 10);
+				myValues.put(subclassList.get(1).getName(), 20);
+				myChart = BarChartGenerator.createBar(myValues);
+				setChart(myChart);
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage().showView(chartViewId);
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	};
 

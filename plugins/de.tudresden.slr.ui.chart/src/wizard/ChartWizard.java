@@ -1,7 +1,11 @@
 package wizard;
 
+import helloworldchart.BarChartGenerator;
 import helloworldchart.ChartGenerator;
 import helloworldchart.ICommunicationView;
+
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.wizard.Wizard;
@@ -40,9 +44,16 @@ public class ChartWizard extends Wizard {
 	public boolean performFinish() {
 
 		// here the chart is passed to the view.
+		// create the diagram
 
 		if (one.getButton1().getSelection()) {
-			myChart = ChartGenerator.createBar();
+
+			SortedMap<String, Integer> myValues = new TreeMap<>();
+			myValues.put("Kat1", 10);
+			myValues.put("Kat5", 50);
+			myValues.put("Kat3", 30);
+			myValues.put("Kat4", 40);
+			myChart = BarChartGenerator.createBar(myValues);
 		} else if (one.getButton2().getSelection()) {
 			myChart = ChartGenerator.createBubble("A1", "A2", "Langes Wort",
 					"Birne");
