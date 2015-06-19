@@ -2,7 +2,8 @@ package de.tudresden.slr.model.taxonomy.ui.views;
 
 import org.eclipse.emf.common.command.AbstractCommand;
 
-public abstract class ExecuteCommand extends AbstractCommand {
+public abstract class ExecuteCommand extends AbstractCommand implements
+		Executable {
 
 	@Override
 	public boolean prepare() {
@@ -12,5 +13,10 @@ public abstract class ExecuteCommand extends AbstractCommand {
 	@Override
 	public void redo() {
 		execute();
+	}
+
+	@Override
+	public void execute() {
+		toExecute();
 	}
 }
