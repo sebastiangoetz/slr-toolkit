@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -508,6 +509,6 @@ public class BibtexEntryView extends ViewPart implements
 
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		viewer.refresh();
+		Display.getDefault().asyncExec(() -> viewer.refresh());
 	}
 }
