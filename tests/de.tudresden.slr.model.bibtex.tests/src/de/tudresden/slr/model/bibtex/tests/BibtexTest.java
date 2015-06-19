@@ -119,4 +119,21 @@ public class BibtexTest {
 		assertThat(subDimension.getName(), is("sub"));
 		assertThat(subSubDimension.getName(), is("subsub"));
 	}
+
+	@Test
+	public void loadTwoDimensions() throws Exception {
+		final String bib = "@INPROCEEDINGS{Test01, classes = {dimension1{subterm1} dimension2{subterm2}}}";
+
+		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"),
+				Collections.EMPTY_MAP);
+
+		assertThat(resource.getContents().get(0), instanceOf(Document.class));
+
+		Document document = (Document) resource.getContents().get(0);
+		Term dimension1 = document.getTaxonomy().getDimensions().get(0);
+		Term dimension2 = document.getTaxonomy().getDimensions().get(1);
+
+		assertThat(dimension1.getName(), is("dimension1"));
+		assertThat(dimension2.getName(), is("dimension2"));
+	}
 } // BibtexTests

@@ -1,18 +1,17 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
+import java.util.Queue;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
@@ -42,21 +41,6 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
 
 public class TaxonomyCheckboxListView extends ViewPart implements
 		ISelectionListener, Observer, ICheckStateListener {
@@ -173,28 +157,25 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (part instanceof XtextEditor) {
-			if (!selection.isEmpty() && selection instanceof ITextSelection) {
-				final XtextEditor editor = (XtextEditor) part;
-				final IXtextDocument document = editor.getDocument();
+		if (part instanceof XtextEditor && !selection.isEmpty()) {
+			final XtextEditor editor = (XtextEditor) part;
+			final IXtextDocument document = editor.getDocument();
 
-				document.readOnly(new IUnitOfWork.Void<XtextResource>() {
-					@Override
-					public void process(XtextResource resource)
-							throws Exception {
-						IParseResult parseResult = resource.getParseResult();
-						if (parseResult != null) {
-							ICompositeNode root = parseResult.getRootNode();
-							EObject taxonomy = NodeModelUtils
-									.findActualSemanticObjectFor(root);
-							if (taxonomy instanceof Model) {
-								ModelRegistryPlugin.getModelRegistry()
-										.setActiveTaxonomy((Model) taxonomy);
-							}
+			document.readOnly(new IUnitOfWork.Void<XtextResource>() {
+				@Override
+				public void process(XtextResource resource) throws Exception {
+					IParseResult parseResult = resource.getParseResult();
+					if (parseResult != null) {
+						ICompositeNode root = parseResult.getRootNode();
+						EObject taxonomy = NodeModelUtils
+								.findActualSemanticObjectFor(root);
+						if (taxonomy instanceof Model) {
+							ModelRegistryPlugin.getModelRegistry()
+									.setActiveTaxonomy((Model) taxonomy);
 						}
 					}
-				});
-			}
+				}
+			});
 		}
 	}
 
@@ -221,84 +202,113 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	public void checkStateChanged(CheckStateChangedEvent event) {
 		Optional<Document> activeDocument = ModelRegistryPlugin
 				.getModelRegistry().getActiveDocument();
-
 		if (activeDocument.isPresent()) {
 			Document document = activeDocument.get();
-			if (event.getElement() instanceof Term) {
-				Term term = (Term) event.getElement();
-				Model taxonomy = document.getTaxonomy();
-				if (event.getChecked()) {
-					findAndAdd(document, term);
-				} else {
-					findAndRemove(taxonomy.getDimensions(), term);
-				}
+			Term term = (Term) event.getElement();
+			Command changeCommand = null;
+			if (event.getChecked()) {
+				changeCommand = new ExecuteCommand() {
+					@Override
+					public void execute() {
+						findAndAdd(document, term);
+					}
+				};
+			} else {
+				changeCommand = new ExecuteCommand() {
+					@Override
+					public void execute() {
+						findAndRemove(document, term);
+					}
+				};
 			}
+			executeCommand(changeCommand);
 		}
-
 	}
 
 	private void executeCommand(Command command) {
 		Optional<AdapterFactoryEditingDomain> editingDomain = ModelRegistryPlugin
 				.getModelRegistry().getEditingDomain();
-		editingDomain.ifPresent((domain) -> ((BasicCommandStack) domain
-				.getCommandStack()).execute(command));
+		editingDomain.ifPresent((domain) -> domain.getCommandStack().execute(
+				command));
 	}
 
 	private void findAndAdd(Document document, Term term) {
 		// TODO
-		Command changeCommand = new ExecuteCommand() {
-			@Override
-			public void execute() {
-				document.getTaxonomy().getDimensions().add(term);
+		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
+				.getDimensions());
+		while (!queue.isEmpty()) {
+			Term queued = queue.poll();
+			if (queued.eContainer() instanceof Term
+					&& term.eContainer() instanceof Term) {
+				Term parent = (Term) queued.eContainer();
+				Term otherParent = (Term) term.eContainer();
+				if (parent.getName().equals(otherParent.getName())) {
+					parent.getSubclasses().add(term);
+					return;
+				}
 			}
-		};
-		executeCommand(changeCommand);
+		}
+		if (term.eContainer() instanceof Model) {
+			document.getTaxonomy().getDimensions().add(term);
+		}
 	}
 
-	private void findAndRemove(EList<Term> from, Term term) {
+	private void findAndRemove(Document document, Term term) {
 		// TODO
-		Command changeCommand = new ExecuteCommand() {
-			@Override
-			public void execute() {
-				from.remove(term);
-			}
-		};
-		executeCommand(changeCommand);
-	}
-
-	private void setTicks(Document document) {
-		Optional<Model> model = ModelRegistryPlugin.getModelRegistry()
-				.getActiveTaxonomy();
-		if (model.isPresent()) {
-			for (Term t : model.get().getDimensions()) {
-				viewer.setSubtreeChecked(t, false);
-			}
-			if (document.getTaxonomy() != null) {
-				for (Term t : document.getTaxonomy().getDimensions()) {
-					Term tt = getTerm(t);
-					viewer.setChecked(tt, true);
+		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
+				.getDimensions());
+		while (!queue.isEmpty()) {
+			Term queued = queue.poll();
+			if (term.getName().equals(queued.getName())) {
+				if (queued.eContainer() instanceof Model) {
+					document.getTaxonomy().getDimensions().remove(queued);
+				} else {
+					Term parent = (Term) queued.eContainer();
+					parent.getSubclasses().remove(queued);
 				}
 			}
 		}
 	}
 
-	private Term getTerm(Term term) {
-		Optional<Model> model = ModelRegistryPlugin.getModelRegistry()
-				.getActiveTaxonomy();
+	private void setTicks(Document document) {
+		viewer.setCheckedElements(new Object[0]);
+		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
+				.getDimensions());
+		List<Term> checkedTerms = new ArrayList<>();
+		while (!queue.isEmpty()) {
+			Term queued = queue.poll();
+			Term term = getTerm(queued);
+			if (term != null && term.getSubclasses().isEmpty()) {
+				checkedTerms.add(term);
+			}
+			queue.addAll(queued.getSubclasses());
+		}
+		viewer.setCheckedElements(checkedTerms.toArray());
+	}
 
-		if (model.isPresent()) {
-			TreeIterator<EObject> iter = EcoreUtil.<EObject> getAllContents(
-					model.get(), false);
-			while (iter.hasNext()) {
-				EObject e = iter.next();
-				if (e instanceof Term) {
-					if (((Term) e).getName().equals(term.getName())) {
-						return (Term) e;
+	private Term getTerm(Term term) {
+		Optional<Model> taxonomy = ModelRegistryPlugin.getModelRegistry()
+				.getActiveTaxonomy();
+		if (taxonomy.isPresent()) {
+			Queue<Term> queue = new LinkedList<>(taxonomy.get().getDimensions());
+			while (!queue.isEmpty()) {
+				Term queued = queue.poll();
+				if (queued.getName().equals(term.getName())) {
+					if (queued.eContainer() instanceof Model) {
+						return queued;
+					} else if (queued.eContainer() instanceof Term
+							&& term.eContainer() instanceof Term) {
+						Term parent = (Term) queued.eContainer();
+						Term otherParent = (Term) term.eContainer();
+						if (parent.getName().equals(otherParent.getName())) {
+							return queued;
+						}
 					}
+				} else {
+					queue.addAll(queued.getSubclasses());
 				}
 			}
 		}
 		return null;
 	}
-
 }
