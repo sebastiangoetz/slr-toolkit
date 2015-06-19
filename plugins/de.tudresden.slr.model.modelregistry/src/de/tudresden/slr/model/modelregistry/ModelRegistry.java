@@ -49,11 +49,9 @@ public class ModelRegistry extends Observable {
 	}
 
 	public void setActiveTaxonomy(Model taxonomy) {
-		if (activeTaxonomy != taxonomy) {
-			activeTaxonomy = taxonomy;
-			setChanged();
-			notifyObservers(activeTaxonomy);
-		}
+		activeTaxonomy = taxonomy;
+		setChanged();
+		notifyObservers(activeTaxonomy);
 	}
 
 	@Override
