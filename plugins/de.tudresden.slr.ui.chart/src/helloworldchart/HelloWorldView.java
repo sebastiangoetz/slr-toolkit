@@ -12,7 +12,6 @@ import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.PaintEvent;
@@ -21,8 +20,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import de.tudresden.slr.model.taxonomy.Term;
@@ -35,23 +32,37 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 	private IDeviceRenderer idr = null;
 	private Chart myChart = null;
 	private Composite _parent;
-	private final String chartViewId = "chart.view.helloworld";
+	private PaintListener p = null;
+	private Term previousTerm = null;
+	// private final String chartViewId = "chart.view.helloworld";
+	// private IViewPart chartView = null;
 
 	/***
-	 * This listener handles the reaction to the selection of an element in the @BibtexEntryView
+	 * This listener handles the reaction to the selection of an element in the
+	 * TaxonomyView
 	 */
 	ISelectionListener listener = new ISelectionListener() {
 
+		@Override
 		public void selectionChanged(IWorkbenchPart part, ISelection sel) {
 			if (!(sel instanceof IStructuredSelection))
 				return;
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
-			// TODO: Why can't I check here for Term interface?
-			// It just doesn't get triggered that way. :o
-			// TODO: I have to reset the diagram somehow
-			if (o instanceof BasicEObjectImpl) {
-				// _parent.dispose();
+			// TODO: Diagram is redrawn for new selection, but only if I switch
+			// focus to another
+			// view back and forth
+			if (o instanceof Term && !(o.equals(previousTerm))) {
+				// IWorkbenchPage page = PlatformUI.getWorkbench()
+				// .getActiveWorkbenchWindow().getActivePage();
+				// chartView = page.findView(chartViewId);
+				// try {
+				// page.showView(chartViewId);
+				// } catch (PartInitException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// page.hideView(chartView);
 
 				Term termToPresent = (Term) o;
 				EList<Term> subclassList = termToPresent.getSubclasses();
@@ -60,16 +71,14 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 				myValues.put(subclassList.get(1).getName(), 20);
 				myChart = BarChartGenerator.createBar(myValues);
 				setChart(myChart);
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage().showView(chartViewId);
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				}
+				_parent.redraw();
+				_parent.update();
+				previousTerm = termToPresent;
 			}
 		}
 	};
 
+	@Override
 	public void createPartControl(Composite parent) {
 		_parent = parent;
 		getSite().getPage().addSelectionListener(listener);
@@ -91,7 +100,7 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 			e.printStackTrace();
 		}
 
-		parent.addPaintListener(new PaintListener() {
+		parent.addPaintListener(p = new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent pe) {
@@ -115,6 +124,7 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 		});
 	}
 
+	@Override
 	public void setChart(Chart parameter) {
 
 		this.myChart = parameter;
@@ -122,7 +132,10 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 
 	}
 
+	@Override
 	public void dispose() {
 		getSite().getPage().removeSelectionListener(listener);
+		if (p != null)
+			_parent.removePaintListener(p);
 	}
 }
