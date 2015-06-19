@@ -12,7 +12,9 @@
 package helloworldchart;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
@@ -43,7 +45,7 @@ import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
 public class BarChartGenerator {
 
-	public final static Chart createBar(HashMap<String, Integer> input) {
+	public final static Chart createBar(Map<String, Integer> input) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
@@ -79,17 +81,9 @@ public class BarChartGenerator {
 
 		// create the dataset from the map
 
-		ArrayList<String> names = new ArrayList<>();
-
-		for (String s : input.keySet()) {
-			names.add(s);
-		}
-
-		ArrayList<Double> values = new ArrayList<>();
-
-		for (String s : names) {
-			values.add((double) input.get(s));
-		}
+		List<String> names = new ArrayList<>(input.keySet());
+		List<Double> values = names.stream().mapToDouble(input::get).boxed()
+				.collect(Collectors.toList());
 
 		TextDataSet categoryValues = TextDataSetImpl.create(names);
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
