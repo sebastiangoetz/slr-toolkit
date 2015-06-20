@@ -7,12 +7,12 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 
-import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.Document;
 
 public class DocumentStorage implements IStorage {
-	private DocumentImpl document;
+	private Document document;
 
-	public DocumentStorage(DocumentImpl document) {
+	public DocumentStorage(Document document) {
 		this.document = document;
 	}
 
@@ -41,7 +41,7 @@ public class DocumentStorage implements IStorage {
 		return false;
 	}
 
-	public DocumentImpl getDocument() {
+	public Document getDocument() {
 		return document;
 	}
 }
