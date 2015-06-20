@@ -1,6 +1,8 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -69,27 +71,11 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 public class BibtexEntryView extends ViewPart implements
 		IResourceChangeListener {
 
-	/**
-	 * The ID of the view as specified by the extension.
-	 */
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
 	public static final String overviewId = BibtexOverviewEditor.ID;
-	/**
-	 * This is the one adapter factory used for providing views of the model.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	protected ComposedAdapterFactory adapterFactory;
-	/**
-	 * This keeps track of the editing domain that is used to track all changes
-	 * to the model. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	protected AdapterFactoryEditingDomain editingDomain;
-
 	private TreeViewer viewer;
 	private DrillDownAdapter drillDownAdapter;
 	private Action action1;
@@ -369,12 +355,6 @@ public class BibtexEntryView extends ViewPart implements
 		ModelRegistryPlugin.getModelRegistry().setEditingDomain(editingDomain);
 	}
 
-	/**
-	 * This sets the selection into whichever viewer is active. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 */
 	public void setSelectionToViewer(Collection<?> collection) {
 		// TODO: check if it is necessary
 		final Collection<?> theSelection = collection;
@@ -509,6 +489,17 @@ public class BibtexEntryView extends ViewPart implements
 
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		Display.getDefault().asyncExec(() -> viewer.refresh());
+		if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
+			for (Resource resource : editingDomain.getResourceSet()
+					.getResources()) {
+				resource.unload();
+				try {
+					resource.load(Collections.emptyMap());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		Display.getDefault().asyncExec(() -> viewer.setInput(getViewSite()));
 	}
 }
