@@ -10,7 +10,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -108,12 +107,6 @@ public class BibtexOpenListener implements IOpenListener,
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		IWorkbenchPage page = window.getActivePage();
-		IWorkbenchPart activePart = page.getActivePart();
 		openEditor(event.getSelection(), false);
-		// page.activate(activePart);
-		// activePart.setFocus();
 	}
 }
