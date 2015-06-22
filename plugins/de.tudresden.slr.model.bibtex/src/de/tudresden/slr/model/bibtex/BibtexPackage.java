@@ -165,13 +165,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__TYPE = 10;
 
 	/**
+	 * The feature id for the '<em><b>File</b></em>' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__FILE = 11;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 11;
+	int DOCUMENT_FEATURE_COUNT = 12;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class. <!--
@@ -327,6 +336,18 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_Type();
 
 	/**
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getFile <em>File</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>File</em>'.
+	 * @see de.tudresden.slr.model.bibtex.Document#getFile()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_File();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -450,6 +471,14 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__TYPE = eINSTANCE.getDocument_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>File</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute DOCUMENT__FILE = eINSTANCE.getDocument_File();
 
 	}
 

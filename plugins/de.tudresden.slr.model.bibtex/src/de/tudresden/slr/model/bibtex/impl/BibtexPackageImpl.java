@@ -222,6 +222,16 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getDocument_File() {
+		return (EAttribute) documentEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory) getEFactoryInstance();
 	}
@@ -258,6 +268,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__UNPARSED_AUTHORS);
 		createEReference(documentEClass, DOCUMENT__TAXONOMY);
 		createEAttribute(documentEClass, DOCUMENT__TYPE);
+		createEAttribute(documentEClass, DOCUMENT__FILE);
 	}
 
 	/**
@@ -339,6 +350,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type",
 				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
+				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEAttribute(getDocument_File(), ecorePackage.getEString(), "file",
+				"", 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
 				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
 				IS_ORDERED);
 

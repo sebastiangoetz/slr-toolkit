@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getTaxonomy <em>Taxonomy
  * </em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getFile <em>File</em>}</li>
  * </ul>
  * </p>
  *
@@ -345,5 +346,34 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setType(String value);
+
+	/**
+	 * Returns the value of the '<em><b>File</b></em>' attribute. The default
+	 * value is <code>""</code>. <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>File</em>' attribute isn't clear, there really
+	 * should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>File</em>' attribute.
+	 * @see #setFile(String)
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_File()
+	 * @model default=""
+	 * @generated
+	 */
+	String getFile();
+
+	/**
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getFile <em>File</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>File</em>' attribute.
+	 * @see #getFile()
+	 * @generated
+	 */
+	void setFile(String value);
 
 } // Document

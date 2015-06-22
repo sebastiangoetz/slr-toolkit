@@ -43,6 +43,8 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * Taxonomy</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getType <em>Type
  * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getFile <em>File
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -251,6 +253,26 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected String type = TYPE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getFile() <em>File</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getFile()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String FILE_EDEFAULT = "";
+
+	/**
+	 * The cached value of the '{@link #getFile() <em>File</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getFile()
+	 * @generated
+	 * @ordered
+	 */
+	protected String file = FILE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -551,6 +573,30 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
+	public String getFile() {
+		return file;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setFile(String newFile) {
+		String oldFile = file;
+		file = newFile;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BibtexPackage.DOCUMENT__FILE, oldFile, file));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BibtexPackage.DOCUMENT__AUTHORS:
@@ -577,6 +623,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return basicGetTaxonomy();
 		case BibtexPackage.DOCUMENT__TYPE:
 			return getType();
+		case BibtexPackage.DOCUMENT__FILE:
+			return getFile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -624,6 +672,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__TYPE:
 			setType((String) newValue);
 			return;
+		case BibtexPackage.DOCUMENT__FILE:
+			setFile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -669,6 +720,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__TYPE:
 			setType(TYPE_EDEFAULT);
 			return;
+		case BibtexPackage.DOCUMENT__FILE:
+			setFile(FILE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -712,6 +766,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__TYPE:
 			return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT
 					.equals(type);
+		case BibtexPackage.DOCUMENT__FILE:
+			return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT
+					.equals(file);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -747,6 +804,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		result.append(unparsedAuthors);
 		result.append(", type: ");
 		result.append(type);
+		result.append(", file: ");
+		result.append(file);
 		result.append(')');
 		return result.toString();
 	}

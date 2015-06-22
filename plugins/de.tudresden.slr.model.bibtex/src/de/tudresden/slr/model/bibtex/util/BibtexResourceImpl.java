@@ -63,6 +63,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class BibtexResourceImpl extends ResourceImpl {
 
 	private static final Key KEY_ABSTRACT = new Key("abstract");
+	private static final Key KEY_FILE = new Key("file");
 
 	private static final Key KEY_CLASSES = new Key("classes");
 
@@ -95,8 +96,8 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 					document.setKey(entry.getKey().toString());
 					document.setType(entry.getType().toString());
-					
-					//TODO refactor, cleaner smaller code
+
+					// TODO refactor, cleaner smaller code
 
 					if (entry.getField(KEY_TITLE) != null) {
 						document.setTitle(entry.getField(KEY_TITLE)
@@ -130,12 +131,17 @@ public class BibtexResourceImpl extends ResourceImpl {
 						document.setAbstract(entry.getField(KEY_ABSTRACT)
 								.toUserString());
 					}
+					if (entry.getField(KEY_FILE) != null) {
+						document.setFile(entry.getField(KEY_FILE)
+								.toUserString());
+					}
 					if (entry.getField(KEY_CLASSES) != null) {
 						Model model = parseClasses(entry.getField(KEY_CLASSES)
 								.toUserString());
 						document.setTaxonomy(model);
 					} else {
-						document.setTaxonomy(TaxonomyFactory.eINSTANCE.createModel());
+						document.setTaxonomy(TaxonomyFactory.eINSTANCE
+								.createModel());
 					}
 					getContents().add(document);
 				}
@@ -224,6 +230,11 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 		if (doc.getAbstract() != null) {
 			result.addField(KEY_ABSTRACT, new StringValue(doc.getAbstract(),
+					Style.BRACED));
+		}
+
+		if (doc.getFile() != null) {
+			result.addField(KEY_FILE, new StringValue(doc.getFile(),
 					Style.BRACED));
 		}
 
