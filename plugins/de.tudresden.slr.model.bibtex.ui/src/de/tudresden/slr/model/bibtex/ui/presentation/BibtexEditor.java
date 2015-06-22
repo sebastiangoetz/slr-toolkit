@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ISelection;
@@ -178,27 +179,41 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			property.selectionChanged(BibtexEditor.this, getSelection());
 
 		} else if (newPageIndex == pdfIndex) {
-			IFile res = Utils.getIFilefromDocument(document);
-			IFile file = res.getProject().getFile(document.getFile());
-			if (file.exists()) {
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						file.getLocation());
-				IWorkbenchPage page = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage();
-
-				try {
-					IDE.openEditorOnFileStore(page, fileStore);
-					// IDE.
-				} catch (PartInitException e) {
-					e.printStackTrace();
-				}
-			} else {
-				// Do something if the file does not exist
-			}
-			this.pageChange(0);
+			openPdf();
+			this.setActivePage(0);
 			return;
 		}
 		super.pageChange(newPageIndex);
+	}
+
+	/**
+	 * open the file document which is refered to in the bibtex entry. The path
+	 * has to start from the root of the project where the bibtex entry is
+	 * included.
+	 */
+	private void openPdf() {
+		IFile res = Utils.getIFilefromDocument(document);
+		if (res == null || res.getProject() == null) {
+			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex"
+					+ document.getKey(), "Root or Resource not found");
+			return;
+		}
+		IFile file = res.getProject().getFile(document.getFile());
+		if (file.exists()) {
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					file.getLocation());
+			IWorkbenchPage page = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage();
+
+			try {
+				IDE.openEditorOnFileStore(page, fileStore);
+			} catch (PartInitException e) {
+				e.printStackTrace();
+			}
+		} else {
+			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex"
+					+ document.getKey(), "Document not found");
+		}
 	}
 
 	private void createPageLabel(Composite composite, GridData gridData) {
@@ -301,9 +316,13 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	}
 
 	/**
-	 * Creates page 2 of the multi-page editor, which shows the sorted text.
+	 * Creates a browser for downloading the document which the bibtex entry
+	 * refers to. This only works if there is an URL or DOI in the bibtex entry.
 	 */
 	protected void createWebpage() {
+		if (document.getUrl() == null && document.getDoi() == null) {
+			return;
+		}
 		Composite localParent = getContainer();
 		if (localParent == null) {
 			localParent = parent;
@@ -316,22 +335,30 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	}
 
 	/**
-	 * Creates page 3 of the multi-page editor, which shows the sorted text.
+	 * Creates an anchor for opening the research paper. This only works if the
+	 * paper is refered in the bibtex entry and the named file exists.
 	 */
 	protected void createPdfPage() {
-		Composite localParent = getContainer();
-		if (localParent == null) {
-			localParent = parent;
-		}
-		Composite composite = new Composite(localParent, SWT.NONE);
-		// FillLayout layout = new FillLayout();
-		// composite.setLayout(layout);
-		// StyledText text = new StyledText(composite, SWT.H_SCROLL |
-		// SWT.V_SCROLL);
-		// text.setEditable(false);
+		if (document.getFile() != null) {
+			IFile res = Utils.getIFilefromDocument(document);
+			IFile projFile = res.getProject().getFile(document.getFile());
+			if (projFile.exists()) {
+				Composite localParent = getContainer();
+				if (localParent == null) {
+					localParent = parent;
+				}
+				Composite composite = new Composite(localParent, SWT.NONE);
+				// FillLayout layout = new FillLayout();
+				// composite.setLayout(layout);
+				// StyledText text = new StyledText(composite, SWT.H_SCROLL |
+				// SWT.V_SCROLL);
+				// text.setEditable(false);
 
-		pdfIndex = addPage(composite);
-		setPageText(pdfIndex, "PDF");
+				pdfIndex = addPage(composite);
+				setPageText(pdfIndex, "PDF");
+			}
+		}
+
 	}
 
 	@Override
@@ -342,16 +369,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		}
 		createAbstractPage();
 		createPropertyPage();
-		if (document.getUrl() != null || document.getDoi() != null) {
-			createWebpage();
-		}
-		if (document.getFile() != null) {
-			IFile res = Utils.getIFilefromDocument(document);
-			IFile projFile = res.getProject().getFile(document.getFile());
-			if (projFile.exists()) {
-				createPdfPage();
-			}
-		}
+		createWebpage();
+		createPdfPage();
 	}
 
 	@Override
