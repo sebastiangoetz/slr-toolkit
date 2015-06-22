@@ -128,6 +128,9 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 	 *         was found.
 	 */
 	public static IFile getIFilefromDocument(Document doc) {
+		if (doc == null || doc.eResource() == null) {
+			return null;
+		}
 		URI uri = doc.eResource().getURI();
 		uri = doc.eResource().getResourceSet().getURIConverter().normalize(uri);
 		String scheme = uri.scheme();
