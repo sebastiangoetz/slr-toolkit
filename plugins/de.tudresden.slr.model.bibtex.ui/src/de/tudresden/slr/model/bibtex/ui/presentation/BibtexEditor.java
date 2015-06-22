@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -19,11 +22,11 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -48,9 +51,12 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -77,8 +83,9 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	// TODO: prettify
 	protected Composite parent = null;
 	protected Document document;
-	protected ComposedAdapterFactory adapterFactory;
+	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
+	protected int pdfIndex = -1;
 	protected int webindex = -1;
 	protected Composite webcomposite;
 	protected int propertyindex = -1;
@@ -147,6 +154,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	protected void initializeEditingDomain() {
 		ModelRegistryPlugin.getModelRegistry().getEditingDomain()
 				.ifPresent((domain) -> editingDomain = domain);
+		adapterFactory = editingDomain.getAdapterFactory();
 	}
 
 	@Override
@@ -163,12 +171,31 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			}
 			browser.setUrl(url);
 			webcomposite = null;
-		}
-		if (newPageIndex == propertyindex) {
+		} else if (newPageIndex == propertyindex) {
 			property.setPropertySourceProvider(new AdapterFactoryContentProvider(
 					adapterFactory));
 			property.selectionChanged(BibtexEditor.this, getSelection());
 
+		} else if (newPageIndex == pdfIndex) {
+			IFile res = BibtexDecorator.getIFilefromDocument(document);
+			IFile file = res.getProject().getFile(document.getFile());
+			if (file.exists()) {
+				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+						file.getLocation());
+				IWorkbenchPage page = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage();
+
+				try {
+					IDE.openEditorOnFileStore(page, fileStore);
+					// IDE.
+				} catch (PartInitException e) {
+					e.printStackTrace();
+				}
+			} else {
+				// Do something if the file does not exist
+			}
+			this.pageChange(0);
+			return;
 		}
 		super.pageChange(newPageIndex);
 	}
@@ -296,13 +323,14 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			localParent = parent;
 		}
 		Composite composite = new Composite(localParent, SWT.NONE);
-		FillLayout layout = new FillLayout();
-		composite.setLayout(layout);
-		StyledText text = new StyledText(composite, SWT.H_SCROLL | SWT.V_SCROLL);
-		text.setEditable(false);
+		// FillLayout layout = new FillLayout();
+		// composite.setLayout(layout);
+		// StyledText text = new StyledText(composite, SWT.H_SCROLL |
+		// SWT.V_SCROLL);
+		// text.setEditable(false);
 
-		int index = addPage(composite);
-		setPageText(index, "PDF");
+		pdfIndex = addPage(composite);
+		setPageText(pdfIndex, "PDF");
 	}
 
 	@Override
@@ -316,8 +344,12 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		if (document.getUrl() != null || document.getDoi() != null) {
 			createWebpage();
 		}
-		if (document.getAbstract() != null) {
-			createPdfPage();
+		if (document.getFile() != null) {
+			IFile res = BibtexDecorator.getIFilefromDocument(document);
+			IFile projFile = res.getProject().getFile(document.getFile());
+			if (projFile.exists()) {
+				createPdfPage();
+			}
 		}
 	}
 
