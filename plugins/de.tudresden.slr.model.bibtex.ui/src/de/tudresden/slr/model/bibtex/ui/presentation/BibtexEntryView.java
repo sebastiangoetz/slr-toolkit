@@ -55,6 +55,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
+import de.tudresden.slr.Utils;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
@@ -114,7 +115,7 @@ public class BibtexEntryView extends ViewPart implements
 				return ((IFile) child).getProject();
 			}
 			if (child instanceof Document) {
-				return BibtexDecorator.getIFilefromDocument((Document) child);
+				return Utils.getIFilefromDocument((Document) child);
 
 			}
 			return null;
@@ -426,6 +427,10 @@ public class BibtexEntryView extends ViewPart implements
 			public void run() {
 				// TODO: security checks
 				TreeSelection select = (TreeSelection) viewer.getSelection();
+				if (select == null
+						|| !(select.getFirstElement() instanceof Document)) {
+					return;
+				}
 				Document doc = (Document) select.getFirstElement();
 				IFile file = (IFile) ((ITreeContentProvider) viewer
 						.getContentProvider()).getParent(select
@@ -455,10 +460,17 @@ public class BibtexEntryView extends ViewPart implements
 		action2 = new Action() {
 			@Override
 			public void run() {
+				TreeSelection select = (TreeSelection) viewer.getSelection();
+				if (select == null
+						|| !(select.getFirstElement() instanceof Document)) {
+					return;
+				}
+				Document doc = (Document) select.getFirstElement();
+				Utils.mark(doc, "Just marking for tests", ID);
 				showMessage("Action 2 executed");
 			}
 		};
-		action2.setText("Action 2");
+		action2.setText("Mark");
 		action2.setToolTipText("Action 2 tooltip");
 		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
 				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));

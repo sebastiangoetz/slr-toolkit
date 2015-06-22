@@ -63,6 +63,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
+import de.tudresden.slr.Utils;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -177,7 +178,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			property.selectionChanged(BibtexEditor.this, getSelection());
 
 		} else if (newPageIndex == pdfIndex) {
-			IFile res = BibtexDecorator.getIFilefromDocument(document);
+			IFile res = Utils.getIFilefromDocument(document);
 			IFile file = res.getProject().getFile(document.getFile());
 			if (file.exists()) {
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
@@ -345,7 +346,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			createWebpage();
 		}
 		if (document.getFile() != null) {
-			IFile res = BibtexDecorator.getIFilefromDocument(document);
+			IFile res = Utils.getIFilefromDocument(document);
 			IFile projFile = res.getProject().getFile(document.getFile());
 			if (projFile.exists()) {
 				createPdfPage();
