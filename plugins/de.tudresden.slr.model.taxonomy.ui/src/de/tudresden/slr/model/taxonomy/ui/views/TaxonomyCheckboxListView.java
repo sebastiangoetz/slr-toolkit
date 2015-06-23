@@ -10,6 +10,8 @@ import java.util.Queue;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -204,23 +206,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getModelRegistry().getActiveDocument();
 		if (activeDocument.isPresent()) {
 			Document document = activeDocument.get();
-			Term term = (Term) event.getElement();
-			Command changeCommand = null;
-			if (event.getChecked()) {
-				changeCommand = new ExecuteCommand() {
-					@Override
-					public void execute() {
-						findAndAdd(document, term);
-					}
-				};
-			} else {
-				changeCommand = new ExecuteCommand() {
-					@Override
-					public void execute() {
-						findAndRemove(document, term);
-					}
-				};
-			}
+			Command changeCommand = new ExecuteCommand() {
+				@Override
+				public void execute() {
+					setTerms(document, viewer.getCheckedElements());
+				}
+			};
 			executeCommand(changeCommand);
 		}
 	}
@@ -232,40 +223,41 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				command));
 	}
 
-	private void findAndAdd(Document document, Term term) {
-		// TODO
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
-		while (!queue.isEmpty()) {
-			Term queued = queue.poll();
-			if (queued.eContainer() instanceof Term
-					&& term.eContainer() instanceof Term) {
-				Term parent = (Term) queued.eContainer();
-				Term otherParent = (Term) term.eContainer();
-				if (parent.getName().equals(otherParent.getName())) {
-					parent.getSubclasses().add(term);
-					return;
-				}
-			}
+	private void setTerms(Document document, Object[] checkedTerms) {
+		document.getTaxonomy().getDimensions().clear();
+		Copier copier = new Copier();
+		List<Term> copies = new ArrayList<>();
+		for (Object o : checkedTerms) {
+			copies.add((Term) copier.copy((EObject) o));
 		}
-		if (term.eContainer() instanceof Model) {
-			document.getTaxonomy().getDimensions().add(term);
+		copier.copyReferences();
+		for (Object obj : checkedTerms) {
+			Term term = (Term) obj;
+			if (term.eContainer() instanceof Model) {
+				Term copy = copies.stream()
+						.filter(c -> c.getName().equals(term.getName()))
+						.findFirst().get();
+				document.getTaxonomy().getDimensions().add(copy);
+				removeUnchecked(copy.getSubclasses(), checkedTerms);
+			}
 		}
 	}
 
-	private void findAndRemove(Document document, Term term) {
-		// TODO
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
+	private void removeUnchecked(List<Term> copies, Object[] checked) {
+		Queue<Term> queue = new LinkedList<>(copies);
 		while (!queue.isEmpty()) {
-			Term queued = queue.poll();
-			if (term.getName().equals(queued.getName())) {
-				if (queued.eContainer() instanceof Model) {
-					document.getTaxonomy().getDimensions().remove(queued);
-				} else {
-					Term parent = (Term) queued.eContainer();
-					parent.getSubclasses().remove(queued);
+			Term head = queue.poll();
+			queue.addAll(head.getSubclasses());
+			boolean found = false;
+			for (Object o : checked) {
+				Term t = (Term) o;
+				if (t.getName().equals(head.getName())) {
+					found = true;
+					break;
 				}
+			}
+			if (!found) {
+				EcoreUtil.delete(head);
 			}
 		}
 	}
@@ -278,7 +270,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		while (!queue.isEmpty()) {
 			Term queued = queue.poll();
 			Term term = getTerm(queued);
-			if (term != null && term.getSubclasses().isEmpty()) {
+			if (term.getSubclasses().isEmpty()) {
 				checkedTerms.add(term);
 			}
 			queue.addAll(queued.getSubclasses());
@@ -309,6 +301,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				}
 			}
 		}
-		return null;
+		return term;
 	}
 }
