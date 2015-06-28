@@ -1,6 +1,8 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -209,7 +211,11 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 			Command changeCommand = new ExecuteCommand() {
 				@Override
 				public void execute() {
-					setTerms(document, viewer.getCheckedElements());
+					Object[] checkedElements = viewer.getCheckedElements();
+					List<Term> checkedTerms = Arrays.asList(Arrays.copyOf(
+							checkedElements, checkedElements.length,
+							Term[].class));
+					setTerms(document, checkedTerms);
 				}
 			};
 			executeCommand(changeCommand);
@@ -223,16 +229,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				command));
 	}
 
-	private void setTerms(Document document, Object[] checkedTerms) {
+	private void setTerms(Document document, List<Term> checkedTerms) {
 		document.getTaxonomy().getDimensions().clear();
 		Copier copier = new Copier();
-		List<Term> copies = new ArrayList<>();
-		for (Object o : checkedTerms) {
-			copies.add((Term) copier.copy((EObject) o));
-		}
+		Collection<Term> copies = copier.copyAll(checkedTerms);
 		copier.copyReferences();
-		for (Object obj : checkedTerms) {
-			Term term = (Term) obj;
+		for (Term term : checkedTerms) {
 			if (term.eContainer() instanceof Model) {
 				Term copy = copies.stream()
 						.filter(c -> c.getName().equals(term.getName()))
@@ -243,7 +245,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 	}
 
-	private void removeUnchecked(List<Term> copies, Object[] checked) {
+	private void removeUnchecked(List<Term> copies, List<Term> checked) {
 		Queue<Term> queue = new LinkedList<>(copies);
 		while (!queue.isEmpty()) {
 			Term head = queue.poll();
