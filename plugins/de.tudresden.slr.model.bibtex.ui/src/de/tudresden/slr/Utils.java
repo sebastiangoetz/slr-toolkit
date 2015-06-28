@@ -19,6 +19,9 @@ import de.tudresden.slr.model.bibtex.Document;
  *
  */
 public class Utils {
+	private static Document lastDoc = null;
+	private static int repetition = 1;
+
 	/**
 	 * Returns the resource file which contains the given bibtex document. Bases
 	 * on {@link http://www.eclipse.org/forums/index.php?t=msg&th=128695/}
@@ -30,11 +33,27 @@ public class Utils {
 	 */
 	public static IFile getIFilefromDocument(Document doc) {
 		if (doc == null || doc.eResource() == null) {
+			// TODO: remove syso
+			System.err.println("Document " + doc
+					+ " does not exist or has no resource");
 			return null;
 		}
+		if (doc.equals(lastDoc)) {
+			repetition++;
+		} else {
+			System.out.println("Document "
+					+ ((lastDoc == null) ? null : lastDoc.getKey())
+					+ "'s resource was called " + repetition + " times.");
+			lastDoc = doc;
+			repetition = 1;
+		}
+		// TODO: remove logbuffer
+		StringBuffer logBuffer = new StringBuffer();
 		URI uri = doc.eResource().getURI();
 		uri = doc.eResource().getResourceSet().getURIConverter().normalize(uri);
 		String scheme = uri.scheme();
+		logBuffer.append("URI Scheme: " + scheme + "\n");
+
 		if ("platform".equals(scheme) && uri.segmentCount() > 1
 				&& "resource".equals(uri.segment(0))) {
 			StringBuffer platformResourcePath = new StringBuffer();
@@ -42,12 +61,19 @@ public class Utils {
 				platformResourcePath.append('/');
 				platformResourcePath.append(uri.segment(j));
 			}
+			logBuffer.append("Platform path " + platformResourcePath.toString()
+					+ "\n");
+
 			IResource parent = ResourcesPlugin.getWorkspace().getRoot()
 					.getFile(new Path(platformResourcePath.toString()));
+			// TODO: remove syso
+			logBuffer.append("IResource " + parent);
+
 			if (parent instanceof IFile) {
 				return (IFile) parent;
 			}
 		}
+		// System.out.println(logBuffer.toString());
 		return null;
 
 	}
@@ -90,4 +116,5 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
+
 }
