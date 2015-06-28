@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
@@ -502,16 +503,57 @@ public class BibtexEntryView extends ViewPart implements
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-			for (Resource resource : editingDomain.getResourceSet()
-					.getResources()) {
-				resource.unload();
-				try {
-					resource.load(Collections.emptyMap());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			reloadSources(event.getDelta());
+			// for (Resource resource : editingDomain.getResourceSet()
+			// .getResources()) {
+			// resource.unload();
+			// try {
+			// resource.load(Collections.emptyMap());
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
+			// }
 		}
-		Display.getDefault().asyncExec(() -> viewer.setInput(getViewSite()));
+		Display.getDefault().asyncExec(() -> {
+			viewer.setInput(getViewSite());
+			// viewer.refresh();
+			});
+
+	}
+
+	/**
+	 * unload and load only affected resources, not all resources.
+	 * 
+	 * @param delta
+	 *            top level delta from the {@link IResourceChangeEvent}
+	 */
+	private void reloadSources(IResourceDelta delta) {
+		LinkedList<IResourceDelta> result = new LinkedList<IResourceDelta>();
+		result.add(delta);
+		do {
+			IResourceDelta marchingDelta = result.removeFirst();
+			if (marchingDelta.getAffectedChildren() != null
+					&& marchingDelta.getAffectedChildren().length > 0) {
+				// we are only interested in the affected files
+				for (IResourceDelta deltaChild : marchingDelta
+						.getAffectedChildren()) {
+					result.add(deltaChild);
+				}
+				continue;
+			}
+			// current delta has no affected children
+			// delta contains the affected file itself
+			URI uri = URI.createPlatformResourceURI(marchingDelta.getFullPath()
+					.toString(), true);
+			Resource resource = editingDomain.getResourceSet().getResource(uri,
+					false);
+			resource.unload();
+			try {
+				resource.load(Collections.emptyMap());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} while (result.size() > 0);
 	}
 }
