@@ -38,6 +38,7 @@ public class DocumentStorageEditorInput implements IStorageEditorInput {
 		return "BibTeX entry for document " + getName();
 	}
 
+	@SuppressWarnings(value = { "rawtypes" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == DocumentStorageEditorInput.class) {
