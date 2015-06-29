@@ -90,6 +90,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	protected int pdfIndex = -1;
 	protected int webindex = -1;
 	protected Composite webcomposite;
+	protected Browser browser;
 	protected int propertyindex = -1;
 	protected PropertySheetPage property;
 	private ISelection selection;
@@ -162,7 +163,6 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	@Override
 	protected void pageChange(int newPageIndex) {
 		if (newPageIndex == webindex && webcomposite != null) {
-			Browser browser = new Browser(webcomposite, SWT.NONE);
 			String url = "";
 			if (document.getUrl() != null) {
 				url = document.getUrl();
@@ -171,7 +171,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			} else {
 				return;
 			}
-			browser.setUrl(url);
+			boolean effort = browser.setUrl(url);
+			// call url only once
 			webcomposite = null;
 		} else if (newPageIndex == propertyindex) {
 			property.setPropertySourceProvider(new AdapterFactoryContentProvider(
@@ -330,6 +331,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		webcomposite = new Composite(localParent, SWT.NONE);
 		FillLayout layout = new FillLayout();
 		webcomposite.setLayout(layout);
+		browser = new Browser(webcomposite, SWT.NONE);
+		browser.setLayout(layout);
 		webindex = addPage(webcomposite);
 		setPageText(webindex, "Webpage");
 	}
@@ -339,8 +342,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	 * paper is refered in the bibtex entry and the named file exists.
 	 */
 	protected void createPdfPage() {
-		if (document.getFile() != null) {
+		if (document.getFile() != null && !document.getFile().isEmpty()) {
 			IFile res = Utils.getIFilefromDocument(document);
+			if (res == null) {
+				return;
+			}
 			IFile projFile = res.getProject().getFile(document.getFile());
 			if (projFile.exists()) {
 				Composite localParent = getContainer();
