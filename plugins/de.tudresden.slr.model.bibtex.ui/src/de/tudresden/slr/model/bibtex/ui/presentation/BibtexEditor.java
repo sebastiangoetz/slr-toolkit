@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -85,11 +84,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	// TODO: prettify
 	protected Composite parent = null;
 	protected Document document;
-	protected AdapterFactory adapterFactory;
+	protected AdapterFactoryContentProvider contentProvider;
 	protected AdapterFactoryEditingDomain editingDomain;
 	protected int pdfIndex = -1;
 	protected int webindex = -1;
-	protected Composite webcomposite;
+	// protected Composite webcomposite;
 	protected Browser browser;
 	protected int propertyindex = -1;
 	protected PropertySheetPage property;
@@ -157,12 +156,13 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	protected void initializeEditingDomain() {
 		ModelRegistryPlugin.getModelRegistry().getEditingDomain()
 				.ifPresent((domain) -> editingDomain = domain);
-		adapterFactory = editingDomain.getAdapterFactory();
+		contentProvider = new AdapterFactoryContentProvider(
+				editingDomain.getAdapterFactory());
 	}
 
 	@Override
 	protected void pageChange(int newPageIndex) {
-		if (newPageIndex == webindex && webcomposite != null) {
+		if (newPageIndex == webindex && browser != null) {
 			String url = "";
 			if (document.getUrl() != null) {
 				url = document.getUrl();
@@ -171,12 +171,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			} else {
 				return;
 			}
-			boolean effort = browser.setUrl(url);
+			browser.setUrl(url);
 			// call url only once
-			webcomposite = null;
+			browser = null;
 		} else if (newPageIndex == propertyindex) {
-			property.setPropertySourceProvider(new AdapterFactoryContentProvider(
-					adapterFactory));
+			property.setPropertySourceProvider(contentProvider);
 			property.selectionChanged(BibtexEditor.this, getSelection());
 
 		} else if (newPageIndex == pdfIndex) {
@@ -310,8 +309,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			localParent = parent;
 		}
 		property.createControl(localParent);
-		property.setPropertySourceProvider(new AdapterFactoryContentProvider(
-				adapterFactory));
+		property.setPropertySourceProvider(contentProvider);
 		propertyindex = addPage(property.getControl());
 		setPageText(propertyindex, "Properties");
 	}
@@ -328,7 +326,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 		if (localParent == null) {
 			localParent = parent;
 		}
-		webcomposite = new Composite(localParent, SWT.NONE);
+		Composite webcomposite = new Composite(localParent, SWT.NONE);
 		FillLayout layout = new FillLayout();
 		webcomposite.setLayout(layout);
 		browser = new Browser(webcomposite, SWT.NONE);
@@ -339,7 +337,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 
 	/**
 	 * Creates an anchor for opening the research paper. This only works if the
-	 * paper is refered in the bibtex entry and the named file exists.
+	 * paper is referred in the bibtex entry and the named file exists.
 	 */
 	protected void createPdfPage() {
 		if (document.getFile() != null && !document.getFile().isEmpty()) {
@@ -561,9 +559,7 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				// actionBars);
 			}
 		};
-		propertySheetPage
-				.setPropertySourceProvider(new AdapterFactoryContentProvider(
-						adapterFactory));
+		propertySheetPage.setPropertySourceProvider(contentProvider);
 		propertySheetPages.add(propertySheetPage);
 		propertySheetPage.handleEntrySelection(getSelection());
 		propertySheetPage.setRootEntry(null);
