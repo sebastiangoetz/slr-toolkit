@@ -1,8 +1,7 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -13,7 +12,6 @@ import java.util.Queue;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -63,6 +61,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+
 		}
 
 		@Override
@@ -211,14 +210,51 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 			Command changeCommand = new ExecuteCommand() {
 				@Override
 				public void execute() {
-					Object[] checkedElements = viewer.getCheckedElements();
-					List<Term> checkedTerms = Arrays.asList(Arrays.copyOf(
-							checkedElements, checkedElements.length,
-							Term[].class));
-					setTerms(document, checkedTerms);
+					setTermChanged(document, (Term) event.getElement(),
+							event.getChecked());
 				}
 			};
 			executeCommand(changeCommand);
+		}
+	}
+
+	private Term findTerm(Document document, Term term) {
+		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
+				.getDimensions());
+		while (!queue.isEmpty()) {
+			Term head = queue.poll();
+			if (head.getUuid().equals(term.getUuid())) {
+				return head;
+			}
+			queue.addAll(head.getSubclasses());
+		}
+		return null;
+	}
+
+	private void setTermChanged(Document document, Term element, boolean add) {
+		if (add) {
+			if (element.eContainer() instanceof Term) {
+				Term parent = findTerm(document, (Term) element.eContainer());
+				parent.getSubclasses().add(EcoreUtil.copy(element));
+			} else { // Model
+				document.getTaxonomy().getDimensions()
+						.add(EcoreUtil.copy(element));
+			}
+		} else { // delete
+			Iterator<Term> iter = null;
+			if (element.eContainer() instanceof Term) {
+				Term parent = findTerm(document, (Term) element.eContainer());
+				iter = parent.getSubclasses().iterator();
+			} else { // Model
+				iter = document.getTaxonomy().getDimensions().iterator();
+			}
+			while (iter.hasNext()) {
+				Term next = iter.next();
+				if (next.getUuid().equals(element.getUuid())) {
+					iter.remove();
+					break;
+				}
+			}
 		}
 	}
 
@@ -227,41 +263,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getModelRegistry().getEditingDomain();
 		editingDomain.ifPresent((domain) -> domain.getCommandStack().execute(
 				command));
-	}
-
-	private void setTerms(Document document, List<Term> checkedTerms) {
-		document.getTaxonomy().getDimensions().clear();
-		Copier copier = new Copier();
-		Collection<Term> copies = copier.copyAll(checkedTerms);
-		copier.copyReferences();
-		for (Term term : checkedTerms) {
-			if (term.eContainer() instanceof Model) {
-				Term copy = copies.stream()
-						.filter(c -> c.getName().equals(term.getName()))
-						.findFirst().get();
-				document.getTaxonomy().getDimensions().add(copy);
-				removeUnchecked(copy.getSubclasses(), checkedTerms);
-			}
-		}
-	}
-
-	private void removeUnchecked(List<Term> copies, List<Term> checked) {
-		Queue<Term> queue = new LinkedList<>(copies);
-		while (!queue.isEmpty()) {
-			Term head = queue.poll();
-			queue.addAll(head.getSubclasses());
-			boolean found = false;
-			for (Object o : checked) {
-				Term t = (Term) o;
-				if (t.getName().equals(head.getName())) {
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				EcoreUtil.delete(head);
-			}
-		}
 	}
 
 	private void setTicks(Document document) {
