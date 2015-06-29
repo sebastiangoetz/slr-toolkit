@@ -41,9 +41,9 @@ public class Utils {
 		if (doc.equals(lastDoc)) {
 			repetition++;
 		} else {
-			System.out.println("Document "
-					+ ((lastDoc == null) ? null : lastDoc.getKey())
-					+ "'s resource was called " + repetition + " times.");
+			// System.out.println("Document "
+			// + ((lastDoc == null) ? null : lastDoc.getKey())
+			// + "'s resource was called " + repetition + " times.");
 			lastDoc = doc;
 			repetition = 1;
 		}
