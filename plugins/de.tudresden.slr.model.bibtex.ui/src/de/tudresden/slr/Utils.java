@@ -34,8 +34,8 @@ public class Utils {
 	public static IFile getIFilefromDocument(Document doc) {
 		if (doc == null || doc.eResource() == null) {
 			// TODO: remove syso
-			System.err.println("Document " + doc
-					+ " does not exist or has no resource");
+			// System.err.println("Document " + doc
+			// + " does not exist or has no resource");
 			return null;
 		}
 		if (doc.equals(lastDoc)) {

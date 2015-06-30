@@ -546,7 +546,13 @@ public class BibtexEntryView extends ViewPart implements
 			URI uri = URI.createPlatformResourceURI(marchingDelta.getFullPath()
 					.toString(), true);
 			Resource resource = editingDomain.getResourceSet().getResource(uri,
-					false);
+					true); // is it necessary to load a loaded resource?
+			if (resource == null) {
+				// System.err.println("Resource "
+				// + marchingDelta.getFullPath().toString()
+				// + " does not exist.");
+				return;
+			}
 			resource.unload();
 			try {
 				resource.load(Collections.emptyMap());
