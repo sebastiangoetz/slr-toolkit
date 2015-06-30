@@ -65,7 +65,7 @@ public class ImportTaxonomyPage extends WizardNewFileCreationPage {
 				setFileName(path.lastSegment());
 			}
 		});
-		String[] extensions = new String[] { "*.xtext" }; // NON-NLS-1
+		String[] extensions = new String[] { "*.taxonomy" }; // NON-NLS-1
 		editor.setFileExtensions(extensions);
 		fileSelectionArea.moveAbove(null);
 

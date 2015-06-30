@@ -24,7 +24,7 @@ import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 /**
  * The "New" wizard page allows setting the container for the new file as well
  * as the file name. The page will only accept file name without the extension
- * OR with the extension that matches the expected one (xtext).
+ * OR with the extension that matches the expected one (taxonomy).
  */
 
 public class NewTaxonomyPage extends WizardPage {
@@ -42,7 +42,7 @@ public class NewTaxonomyPage extends WizardPage {
 	public NewTaxonomyPage(ISelection selection) {
 		super("wizardPage");
 		setTitle("Taxonomy File");
-		setDescription("This wizard creates a new file with *.xtext extension that can be opened by an editor.");
+		setDescription("This wizard creates a new file with *.taxonomy extension that can be opened by an editor.");
 		this.selection = selection;
 	}
 
@@ -114,7 +114,7 @@ public class NewTaxonomyPage extends WizardPage {
 				containerText.setText(container.getFullPath().toString());
 			}
 		}
-		fileText.setText("new_file.xtext");
+		fileText.setText("new_file.taxonomy");
 	}
 
 	/**
@@ -167,8 +167,8 @@ public class NewTaxonomyPage extends WizardPage {
 		int dotLoc = fileName.lastIndexOf('.');
 		if (dotLoc != -1) {
 			String ext = fileName.substring(dotLoc + 1);
-			if (ext.equalsIgnoreCase("xtext") == false) {
-				updateStatus("File extension must be \"xtext\"");
+			if (ext.equalsIgnoreCase("taxonomy") == false) {
+				updateStatus("File extension must be \"taxonomy\"");
 				return;
 			}
 		}

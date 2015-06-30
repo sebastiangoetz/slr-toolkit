@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
+import de.tudresden.slr.wizards.pages.NewSlrProjectCreationPage;
 import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
 public class NewSlrProjectWizard extends Wizard implements INewWizard,
@@ -19,7 +20,9 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard,
 
 	private static final String WIZARD_NAME = "New SLR Project"; //$NON-NLS-1$
 	private static final String PAGE_NAME = "SLR Project Wizard"; //$NON-NLS-1$
+	private static final String PAGE2_NAME = "SLR Project Wizard Imports"; //$NON-NLS-1$
 	private WizardNewProjectCreationPage _pageOne;
+	private NewSlrProjectCreationPage _pageOneOne;
 	private IConfigurationElement _configurationElement;
 
 	public NewSlrProjectWizard() {
@@ -28,8 +31,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard,
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
-
+		_pageOneOne = new NewSlrProjectCreationPage("PAGE2_NAME", selection); // NON-NLS-1
 	}
 
 	@Override
@@ -41,6 +43,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard,
 		_pageOne.setDescription(SlrWizardMessages.NewSlrProjectWizard_Project_Name);
 
 		addPage(_pageOne);
+		addPage(_pageOneOne);
 	}
 
 	@Override
@@ -50,9 +53,15 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard,
 		if (!_pageOne.useDefaults()) {
 			location = _pageOne.getLocationURI();
 		} // else location == null
+		String fileName = _pageOneOne.getFileName();
+		String taxFileName = _pageOneOne.getTaxFileName();
 
-		SlrProjectSupport.createProject(name, location);
+		SlrProjectSupport.createProject(name, fileName, taxFileName, location);
 		BasicNewProjectResourceWizard.updatePerspective(_configurationElement);
+
+		// IFile file = _pageOneOne.createNewFile();
+		// if (file == null)
+		// return false;
 		return true;
 	}
 

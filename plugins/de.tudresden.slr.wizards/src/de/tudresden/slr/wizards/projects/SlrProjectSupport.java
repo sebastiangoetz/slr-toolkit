@@ -1,5 +1,7 @@
 package de.tudresden.slr.wizards.projects;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 
 import org.eclipse.core.resources.IContainer;
@@ -23,16 +25,21 @@ public class SlrProjectSupport {
 	 * @param natureId
 	 * @return
 	 */
-	public static IProject createProject(String projectName, URI location) {
+	public static IProject createProject(String projectName, String fileName,
+			String taxFileName,
+			URI location) {
         Assert.isNotNull(projectName);
 		Assert.isTrue(projectName.trim().length() > 0);
+		Assert.isNotNull(fileName);
+		Assert.isNotNull(taxFileName);
  
-        IProject project = createBaseProject(projectName, location);
+		IProject project = createBaseProject(projectName, fileName,
+				taxFileName, location);
         try {
             addNature(project);
  
 			String[] paths = {
- "literature", "taxonomy" }; //$NON-NLS-1$ //$NON-NLS-2$
+ "literature", "charts" }; //$NON-NLS-1$ //$NON-NLS-2$
             addToProjectStructure(project, paths);
         } catch (CoreException e) {
             e.printStackTrace();
@@ -48,7 +55,8 @@ public class SlrProjectSupport {
 	 * @param location
 	 * @param projectName
 	 */
-	private static IProject createBaseProject(String projectName, URI location) {
+	private static IProject createBaseProject(String projectName,
+			String fileName, String taxFileName, URI location) {
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
  
@@ -65,13 +73,30 @@ public class SlrProjectSupport {
             try {
                 newProject.create(desc, null);
                 if (!newProject.isOpen()) {
-                    newProject.open(null);
+					File f = new File(newProject.getLocation()
+ + "/"
+							+ fileName);
+					try {
+						f.createNewFile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					File f2 = new File(newProject.getLocation() + "/"
+							+ taxFileName);
+					try {
+						f2.createNewFile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					newProject.open(null);
                 }
             } catch (CoreException e) {
                 e.printStackTrace();
             }
         }
- 
         return newProject;
     }
 
