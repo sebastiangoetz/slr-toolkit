@@ -223,7 +223,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getDimensions());
 		while (!queue.isEmpty()) {
 			Term head = queue.poll();
-			if (head.getUuid().equals(term.getUuid())) {
+			if (head.hashCode() == term.hashCode()) {
 				return head;
 			}
 			queue.addAll(head.getSubclasses());
@@ -250,7 +250,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 			}
 			while (iter.hasNext()) {
 				Term next = iter.next();
-				if (next.getUuid().equals(element.getUuid())) {
+				if (next.hashCode() == element.hashCode()) {
 					iter.remove();
 					break;
 				}
