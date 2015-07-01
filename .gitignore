@@ -8,6 +8,4 @@ bin
 *.bak
 
 plugin.xml_gen
-src-gen
-xtend-gen
 *.jar

@@ -233,7 +233,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 					Style.BRACED));
 		}
 
-		if (doc.getFile() != null) {
+		if (doc.getFile() != null && !doc.getFile().isEmpty()) {
 			result.addField(KEY_FILE, new StringValue(doc.getFile(),
 					Style.BRACED));
 		}
@@ -256,7 +256,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 		for (int i = 0; i < dimensions.size(); ++i) {
 			Term term = dimensions.get(i);
-			if (i > 0) {
+			if (i > 0 && term.eContainer() instanceof Term) {
 				result.append(", ");
 			}
 			result.append(term.getName());

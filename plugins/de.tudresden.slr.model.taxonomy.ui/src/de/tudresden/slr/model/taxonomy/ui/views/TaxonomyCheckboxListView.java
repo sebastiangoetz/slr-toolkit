@@ -1,6 +1,7 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -10,6 +11,7 @@ import java.util.Queue;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -59,6 +61,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
+
 		}
 
 		@Override
@@ -204,24 +207,54 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getModelRegistry().getActiveDocument();
 		if (activeDocument.isPresent()) {
 			Document document = activeDocument.get();
-			Term term = (Term) event.getElement();
-			Command changeCommand = null;
-			if (event.getChecked()) {
-				changeCommand = new ExecuteCommand() {
-					@Override
-					public void execute() {
-						findAndAdd(document, term);
-					}
-				};
-			} else {
-				changeCommand = new ExecuteCommand() {
-					@Override
-					public void execute() {
-						findAndRemove(document, term);
-					}
-				};
-			}
+			Command changeCommand = new ExecuteCommand() {
+				@Override
+				public void execute() {
+					setTermChanged(document, (Term) event.getElement(),
+							event.getChecked());
+				}
+			};
 			executeCommand(changeCommand);
+		}
+	}
+
+	private Term findTerm(Document document, Term term) {
+		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
+				.getDimensions());
+		while (!queue.isEmpty()) {
+			Term head = queue.poll();
+			if (head.hashCode() == term.hashCode()) {
+				return head;
+			}
+			queue.addAll(head.getSubclasses());
+		}
+		return null;
+	}
+
+	private void setTermChanged(Document document, Term element, boolean add) {
+		if (add) {
+			if (element.eContainer() instanceof Term) {
+				Term parent = findTerm(document, (Term) element.eContainer());
+				parent.getSubclasses().add(EcoreUtil.copy(element));
+			} else { // Model
+				document.getTaxonomy().getDimensions()
+						.add(EcoreUtil.copy(element));
+			}
+		} else { // delete
+			Iterator<Term> iter = null;
+			if (element.eContainer() instanceof Term) {
+				Term parent = findTerm(document, (Term) element.eContainer());
+				iter = parent.getSubclasses().iterator();
+			} else { // Model
+				iter = document.getTaxonomy().getDimensions().iterator();
+			}
+			while (iter.hasNext()) {
+				Term next = iter.next();
+				if (next.hashCode() == element.hashCode()) {
+					iter.remove();
+					break;
+				}
+			}
 		}
 	}
 
@@ -232,44 +265,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				command));
 	}
 
-	private void findAndAdd(Document document, Term term) {
-		// TODO
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
-		while (!queue.isEmpty()) {
-			Term queued = queue.poll();
-			if (queued.eContainer() instanceof Term
-					&& term.eContainer() instanceof Term) {
-				Term parent = (Term) queued.eContainer();
-				Term otherParent = (Term) term.eContainer();
-				if (parent.getName().equals(otherParent.getName())) {
-					parent.getSubclasses().add(term);
-					return;
-				}
-			}
-		}
-		if (term.eContainer() instanceof Model) {
-			document.getTaxonomy().getDimensions().add(term);
-		}
-	}
-
-	private void findAndRemove(Document document, Term term) {
-		// TODO
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
-		while (!queue.isEmpty()) {
-			Term queued = queue.poll();
-			if (term.getName().equals(queued.getName())) {
-				if (queued.eContainer() instanceof Model) {
-					document.getTaxonomy().getDimensions().remove(queued);
-				} else {
-					Term parent = (Term) queued.eContainer();
-					parent.getSubclasses().remove(queued);
-				}
-			}
-		}
-	}
-
 	private void setTicks(Document document) {
 		viewer.setCheckedElements(new Object[0]);
 		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
@@ -278,7 +273,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		while (!queue.isEmpty()) {
 			Term queued = queue.poll();
 			Term term = getTerm(queued);
-			if (term != null && term.getSubclasses().isEmpty()) {
+			if (term.getSubclasses().isEmpty()) {
 				checkedTerms.add(term);
 			}
 			queue.addAll(queued.getSubclasses());
@@ -309,6 +304,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				}
 			}
 		}
-		return null;
+		return term;
 	}
 }
