@@ -3,6 +3,8 @@ package helloworldchart;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import logic.ChartDataProvider;
+
 import org.eclipse.birt.chart.api.ChartEngine;
 import org.eclipse.birt.chart.device.IDeviceRenderer;
 import org.eclipse.birt.chart.exception.ChartException;
@@ -11,7 +13,6 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.events.PaintEvent;
@@ -34,8 +35,6 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 	private Composite _parent;
 	private PaintListener p = null;
 	private Term previousTerm = null;
-	// private final String chartViewId = "chart.view.helloworld";
-	// private IViewPart chartView = null;
 
 	/***
 	 * This listener handles the reaction to the selection of an element in the
@@ -49,31 +48,27 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 				return;
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
-			// TODO: Diagram is redrawn for new selection, but only if I switch
-			// focus to another
-			// view back and forth
-			if (o instanceof Term && !(o.equals(previousTerm))) {
-				// IWorkbenchPage page = PlatformUI.getWorkbench()
-				// .getActiveWorkbenchWindow().getActivePage();
-				// chartView = page.findView(chartViewId);
-				// try {
-				// page.showView(chartViewId);
-				// } catch (PartInitException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				// page.hideView(chartView);
 
-				Term termToPresent = (Term) o;
-				EList<Term> subclassList = termToPresent.getSubclasses();
+			// TODO: there is still some flickering when changing the selection
+			if (o instanceof Term && !(o.equals(previousTerm))) {
+
 				SortedMap<String, Integer> myValues = new TreeMap<>();
-				myValues.put(subclassList.get(0).getName(), 10);
-				myValues.put(subclassList.get(1).getName(), 20);
+				Term termToPresent = (Term) o;
+				// EList<Term> subclassList;
+				// for (Term t : termToPresent.getSubclasses()) {
+				// myValues.put(t.getName(), t.getSubclasses().size() == 0 ? 0
+				// : t.getSubclasses().size());
+				// }
+				myValues = getNumberOfPapersPerClass(termToPresent);
+				// for(int i : myValues.values()){
+				// if()
+				// }
 				myChart = BarChartGenerator.createBar(myValues);
+				_parent.setRedraw(false);
 				setChart(myChart);
-				_parent.redraw();
-				_parent.update();
+				_parent.setRedraw(true);
 				previousTerm = termToPresent;
+
 			}
 		}
 	};
@@ -83,6 +78,14 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 		_parent = parent;
 		getSite().getPage().addSelectionListener(listener);
 
+	}
+
+	private SortedMap<String, Integer> getNumberOfPapersPerClass(Term inputTerm) {
+
+		ChartDataProvider chartDataProvider = new ChartDataProvider();
+		SortedMap<String, Integer> myValues = chartDataProvider
+				.calculateNumberOfPapersPerClass(inputTerm);
+		return myValues;
 	}
 
 	@Override
@@ -107,8 +110,8 @@ public class HelloWorldView extends ViewPart implements ICommunicationView {
 				idr.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, pe.gc);
 				Composite co = (Composite) pe.getSource();
 				Rectangle re = co.getClientArea();
-				Bounds bo = BoundsImpl.create(re.x, re.y, re.width, re.height);
 				// BOUNDS MUST BE SPECIFIED IN POINTS
+				Bounds bo = BoundsImpl.create(re.x, re.y, re.width, re.height);
 				// BUILD AND RENDER THE CHART
 				bo.scale(72d / idr.getDisplayServer().getDpiResolution());
 
