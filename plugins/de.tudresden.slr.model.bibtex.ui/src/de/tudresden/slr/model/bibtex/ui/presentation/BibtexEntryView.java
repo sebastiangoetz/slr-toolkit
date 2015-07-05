@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -148,56 +147,15 @@ public class BibtexEntryView extends ViewPart implements
 				return bibFiles.toArray();
 			}
 			if (parent instanceof IFile) {
-				try {
-					for (Map.Entry<QualifiedName, String> entry : ((IFile) parent)
-							.getPersistentProperties().entrySet()) {
-						if (BibtexDecorator.QUALIFIER.equals(entry.getKey()
-								.getQualifier())) {
-							((IFile) parent).setPersistentProperty(
-									entry.getKey(), null);
-						}
-					}
-				} catch (CoreException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				URI uri = URI.createURI(((IFile) parent).getFullPath()
 						.toString());
 				Resource resource = editingDomain.getResourceSet().getResource(
 						uri, true);
+				if (resource == null) {
+					return new Object[0];
+				}
 
-				Document doc;
-				String key_error = null;
-				String key_nonsense = null;
-				LinkedList<Document> docs = new LinkedList<>();
-				for (EObject eobj : resource.getContents()) {
-					if (eobj instanceof Document) {
-						doc = (Document) eobj;
-						// TODO: test only
-						if (key_error == null) {
-							key_error = doc.getKey();
-						} else if (key_nonsense == null) {
-							key_nonsense = doc.getKey();
-						}
-						// TODO: end of test
-						docs.add(doc);
-					}
-				}
-				// System.out.println("ERROR PersistentProperty: " + key_error);
-				// System.out.println("NONSENSE PersistentProperty: "+
-				// key_nonsense);
-				try {
-					// ((IFile) parent).setPersistentProperty(new QualifiedName(
-					// BibtexDecorator.QUALIFIER, key_error),
-					// BibtexDecorator.ERROR);
-					((IFile) parent).setPersistentProperty(new QualifiedName(
-							BibtexDecorator.QUALIFIER, key_nonsense),
-							"NONSENSE");
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return docs.toArray();
+				return resource.getContents().toArray();
 
 			}
 			return new Object[0];
