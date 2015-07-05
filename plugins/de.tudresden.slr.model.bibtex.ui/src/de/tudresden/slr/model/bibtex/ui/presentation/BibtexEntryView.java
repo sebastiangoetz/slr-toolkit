@@ -280,7 +280,7 @@ public class BibtexEntryView extends ViewPart implements
 				new ViewLabelProvider(), decorator));
 		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
-
+		viewer.expandAll();
 		// this is needed to let other views know what is currently selected
 		// in my case the Chart View wants to display data
 		// see
