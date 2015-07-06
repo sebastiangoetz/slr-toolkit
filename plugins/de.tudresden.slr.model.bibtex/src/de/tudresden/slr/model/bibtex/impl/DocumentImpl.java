@@ -45,6 +45,8 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * </em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getFile <em>File
  * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getCites <em>Cites
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -273,6 +275,26 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected String file = FILE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCites() <em>Cites</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCites()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int CITES_EDEFAULT = 0;
+
+	/**
+	 * The cached value of the '{@link #getCites() <em>Cites</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @see #getCites()
+	 * @generated
+	 * @ordered
+	 */
+	protected int cites = CITES_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -597,6 +619,30 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
+	public int getCites() {
+		return cites;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public void setCites(int newCites) {
+		int oldCites = cites;
+		cites = newCites;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET,
+					BibtexPackage.DOCUMENT__CITES, oldCites, cites));
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case BibtexPackage.DOCUMENT__AUTHORS:
@@ -625,6 +671,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			return getType();
 		case BibtexPackage.DOCUMENT__FILE:
 			return getFile();
+		case BibtexPackage.DOCUMENT__CITES:
+			return getCites();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -675,6 +723,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__FILE:
 			setFile((String) newValue);
 			return;
+		case BibtexPackage.DOCUMENT__CITES:
+			setCites((Integer) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -723,6 +774,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__FILE:
 			setFile(FILE_EDEFAULT);
 			return;
+		case BibtexPackage.DOCUMENT__CITES:
+			setCites(CITES_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -769,6 +823,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__FILE:
 			return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT
 					.equals(file);
+		case BibtexPackage.DOCUMENT__CITES:
+			return cites != CITES_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -806,6 +862,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		result.append(type);
 		result.append(", file: ");
 		result.append(file);
+		result.append(", cites: ");
+		result.append(cites);
 		result.append(')');
 		return result.toString();
 	}

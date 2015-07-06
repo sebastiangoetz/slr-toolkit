@@ -2,17 +2,12 @@
  */
 package de.tudresden.slr.model.bibtex.provider;
 
-import de.tudresden.slr.model.bibtex.BibtexPackage;
-import de.tudresden.slr.model.bibtex.Document;
-
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -23,6 +18,9 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
 
 /**
  * This is the item provider adapter for a
@@ -67,6 +65,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 			addTaxonomyPropertyDescriptor(object);
 			addTypePropertyDescriptor(object);
 			addFilePropertyDescriptor(object);
+			addCitesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -289,6 +288,24 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	}
 
 	/**
+	 * This adds a property descriptor for the Cites feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addCitesPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(
+				((ComposeableAdapterFactory) adapterFactory)
+						.getRootAdapterFactory(),
+				getResourceLocator(),
+				getString("_UI_Document_cites_feature"),
+				getString("_UI_PropertyDescriptor_description",
+						"_UI_Document_cites_feature", "_UI_Document_type"),
+				BibtexPackage.Literals.DOCUMENT__CITES, true, false, false,
+				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This returns Document.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -303,13 +320,12 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * This returns the label text for the adapted class. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Document) object).getAbstract();
+		String label = ((Document) object).getKey();
 		return label == null || label.length() == 0 ? getString("_UI_Document_type")
-				: getString("_UI_Document_type") + " " + label;
+				: label;
 	}
 
 	/**
@@ -336,6 +352,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 		case BibtexPackage.DOCUMENT__TYPE:
 		case BibtexPackage.DOCUMENT__FILE:
+		case BibtexPackage.DOCUMENT__CITES:
 			fireNotifyChanged(new ViewerNotification(notification,
 					notification.getNotifier(), false, true));
 			return;

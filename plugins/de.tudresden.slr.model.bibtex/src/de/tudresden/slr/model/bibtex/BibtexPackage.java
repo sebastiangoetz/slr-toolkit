@@ -174,13 +174,22 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__FILE = 11;
 
 	/**
+	 * The feature id for the '<em><b>Cites</b></em>' attribute list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int DOCUMENT__CITES = 12;
+
+	/**
 	 * The number of structural features of the '<em>Document</em>' class. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int DOCUMENT_FEATURE_COUNT = 12;
+	int DOCUMENT_FEATURE_COUNT = 13;
 
 	/**
 	 * The number of operations of the '<em>Document</em>' class. <!--
@@ -348,6 +357,18 @@ public interface BibtexPackage extends EPackage {
 	EAttribute getDocument_File();
 
 	/**
+	 * Returns the meta object for the attribute '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Cites</em>'.
+	 * @see de.tudresden.slr.model.bibtex.Document#getCites()
+	 * @see #getDocument()
+	 * @generated
+	 */
+	EAttribute getDocument_Cites();
+
+	/**
 	 * Returns the factory that creates the instances of the model. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -479,6 +500,14 @@ public interface BibtexPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DOCUMENT__FILE = eINSTANCE.getDocument_File();
+
+		/**
+		 * The meta object literal for the '<em><b>Cites</b></em>' attribute
+		 * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute DOCUMENT__CITES = eINSTANCE.getDocument_Cites();
 
 	}
 

@@ -64,6 +64,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 	private static final Key KEY_ABSTRACT = new Key("abstract");
 	private static final Key KEY_FILE = new Key("file");
+	private static final Key KEY_CITES = new Key("cites");
 
 	private static final Key KEY_CLASSES = new Key("classes");
 
@@ -102,6 +103,10 @@ public class BibtexResourceImpl extends ResourceImpl {
 					if (entry.getField(KEY_TITLE) != null) {
 						document.setTitle(entry.getField(KEY_TITLE)
 								.toUserString());
+					}
+					if (entry.getField(KEY_CITES) != null) {
+						document.setCites(Integer.parseInt(entry.getField(
+								KEY_CITES).toUserString()));
 					}
 					if (entry.getField(KEY_YEAR) != null) {
 						document.setYear(entry.getField(KEY_YEAR)
@@ -230,6 +235,10 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 		if (doc.getAbstract() != null) {
 			result.addField(KEY_ABSTRACT, new StringValue(doc.getAbstract(),
+					Style.BRACED));
+		}
+		if (doc.getCites() > 0) {
+			result.addField(KEY_CITES, new StringValue("" + doc.getCites(),
 					Style.BRACED));
 		}
 

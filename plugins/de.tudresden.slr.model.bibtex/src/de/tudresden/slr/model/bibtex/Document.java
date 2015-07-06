@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * </em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getFile <em>File</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}</li>
  * </ul>
  * </p>
  *
@@ -375,5 +376,34 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setFile(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Cites</b></em>' attribute. <!--
+	 * begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cites</em>' attribute list isn't clear, there
+	 * really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Cites</em>' attribute.
+	 * @see #setCites(int)
+	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument_Cites()
+	 * @model
+	 * @generated
+	 */
+	int getCites();
+
+	/**
+	 * Sets the value of the '
+	 * {@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Cites</em>' attribute.
+	 * @see #getCites()
+	 * @generated
+	 */
+	void setCites(int value);
 
 } // Document
