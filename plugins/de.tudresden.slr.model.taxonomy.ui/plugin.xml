@@ -122,6 +122,7 @@
     <extension
          point="org.eclipse.ui.commands">
       <command
+            defaultHandler="createBubbleChartHandler"
             description="Trigger expensive validation"
             id="de.tudresden.slr.model.Taxonomy.validate"
             name="Validate">
@@ -138,6 +139,12 @@
             categoryId="org.eclipse.ui.category.edit"
             description="Copy the qualified name for the selected element"
             name="Copy Qualified Name">
+      </command>
+      <command
+            defaultHandler="handlers.CreateBubbleChartHandler"
+            description="Create a BubbleChart for two taxonomy terms"
+            id="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+            name="Create BubbleChart">
       </command>
     </extension>
     <extension point="org.eclipse.ui.menus">
@@ -183,6 +190,15 @@
 					</and>
 				</visibleWhen>
 			</command>
+         </menuContribution>
+         <menuContribution
+               allPopups="false"
+               locationURI="toolbar:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+                  label="Create BubbleChart"
+                  style="push">
+            </command>
          </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">

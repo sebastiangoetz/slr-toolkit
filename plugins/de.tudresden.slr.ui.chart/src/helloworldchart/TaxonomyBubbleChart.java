@@ -11,7 +11,6 @@ import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.DataType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
 import org.eclipse.birt.chart.model.attribute.Position;
@@ -40,7 +39,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 
 public class TaxonomyBubbleChart {
 
-	private HashMap<Integer, String> axisMapping = null;
+	private Map<Term, Integer> scriptMappings;
 
 	public TaxonomyBubbleChart() {
 
@@ -57,8 +56,14 @@ public class TaxonomyBubbleChart {
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
 
-		// cwaBubble
-		//				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
+		// This is not working, maybe i have to do it in javascript?
+		// sdX.getGrouping().setEnabled(true);
+		// sdX.getGrouping().setAggregateExpression("Sum");
+		// sdX.getGrouping().setGroupType(DataType.TEXT_LITERAL);
+		// sdX.getGrouping().setGroupingInterval(1);
+
+		// cwaBubble.setScript(
+		//				 "function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
 		// + "{if (label.getCaption( ).getValue( ) == 10)"
 		// + "{label.getCaption().setValue("
 		// + formatForJS(kat21)
@@ -106,17 +111,11 @@ public class TaxonomyBubbleChart {
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
+		scriptMappings = new HashMap<Term, Integer>();
+		createScriptMappings(input);
 		List<String> xValues = new ArrayList<>();
 		List<BubbleEntry> yValues = new ArrayList<>();
-		Map<Term, Integer> scriptMappings = new HashMap<Term, Integer>();
-		int i = 10;
-		for (BubbleChartDataContainer b : input) {
-			xValues.add(b.getxTerm().getName());
-			yValues.add(new BubbleEntry(Integer.valueOf(i), Integer.valueOf(b
-					.getBubbleSize())));
-			scriptMappings.put((Term) b.getyTerm(), i);
-
-		}
+		createXandYValues(input, xValues, yValues);
 
 		TextDataSet categoryValues = TextDataSetImpl.create(xValues);
 		BubbleDataSet values1 = BubbleDataSetImpl.create(yValues);
@@ -145,22 +144,43 @@ public class TaxonomyBubbleChart {
 
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
 		sdX.getSeriesPalette().shift(0);
-		sdX.getGrouping().setEnabled(true);
-		sdX.getGrouping().setGroupType(DataType.NUMERIC_LITERAL);
-		xAxisPrimary.getSeriesDefinitions().add(sdX);
-		sdX.getSeries().add(seCategory);
 
 		// Y-Series
 		BubbleSeries bs1 = (BubbleSeries) BubbleSeriesImpl.create();
 		bs1.setDataSet(values1);
-		bs1.getLabel().setVisible(false);
+
+		bs1.getLabel().setVisible(true);
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		sdY.getSeriesPalette().shift(-1);
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
 
+		sdX.getSeries().add(seCategory);
+
+		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		return cwaBubble;
+	}
+
+	private void createXandYValues(List<BubbleChartDataContainer> input,
+			List<String> xValues, List<BubbleEntry> yValues) {
+		for (BubbleChartDataContainer b : input) {
+			xValues.add(b.getxTerm().getName());
+			yValues.add(new BubbleEntry(Integer.valueOf(scriptMappings.get(b
+					.getyTerm())), Integer.valueOf(b.getBubbleSize())));
+
+		}
+	}
+
+	private void createScriptMappings(List<BubbleChartDataContainer> input) {
+		int i = 1;
+		for (BubbleChartDataContainer b : input) {
+			Term yCandidate = b.getyTerm();
+			int mapping = scriptMappings.containsKey(yCandidate) ? scriptMappings
+					.get(yCandidate) : i;
+			i++;
+			scriptMappings.put(yCandidate, mapping);
+		}
 	}
 
 	public String formatForJS(String toFormat) {
