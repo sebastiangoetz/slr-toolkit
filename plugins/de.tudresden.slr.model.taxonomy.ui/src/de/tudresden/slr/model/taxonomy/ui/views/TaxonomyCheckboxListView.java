@@ -210,9 +210,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				@Override
 				public void execute() {
 					final Term element = (Term) event.getElement();
-					final boolean isLeaf = element.getSubclasses().size() == 0;
-					final boolean add = event.getChecked();
-					setTermChanged(document, element, add, isLeaf);
+					setTermChanged(document, element, event.getChecked());
 				}
 			};
 			executeCommand(changeCommand);
@@ -225,33 +223,39 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		while (!queue.isEmpty()) {
 			Term head = queue.poll();
 			if (head.hashCode() == term.hashCode()) {
-				return head;
+				if (head.getName().equals(term.getName())) {
+					return head;
+				}
 			}
 			queue.addAll(head.getSubclasses());
 		}
 		return null;
 	}
 
-	private void setTermChanged(Document document, Term element, boolean add,
-			boolean wasLeaf) {
+	private void setTermChanged(Document document, Term element, boolean add) {
 		if (add) {
-			addTerm(document, element, wasLeaf);
+			addTerm(document, element);
 		} else { // delete
-			removeTerm(document, element, wasLeaf);
+			removeTerm(document, element);
 		}
 	}
 
-	private void addTerm(Document document, Term element, boolean wasLeaf) {
+	private void addTerm(Document document, Term element) {
+		addTerm(document, element, false);
+	}
+
+	private void addTerm(Document document, Term element,
+			boolean removeSubclasses) {
 		final Term copy = EcoreUtil.copy(element);
+		if (removeSubclasses) {
+			copy.getSubclasses().clear();
+		}
 		if (element.eContainer() instanceof Term) {
 			final Term elementContainer = (Term) element.eContainer();
 			Term parent = findTerm(document, elementContainer);
 			if (parent == null) {
-				addTerm(document, elementContainer, wasLeaf);
+				addTerm(document, elementContainer, true);
 				parent = findTerm(document, elementContainer);
-			}
-			if (wasLeaf) {
-				copy.getSubclasses().clear();
 			}
 			parent.getSubclasses().add(copy);
 		} else { // Model
@@ -259,12 +263,15 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 	}
 
-	private void removeTerm(Document document, Term element, boolean wasLeaf) {
+	private void removeTerm(Document document, Term element) {
 		final List<Term> parent;
 		if (element.eContainer() instanceof Term) {
 			final Term elementContainer = (Term) element.eContainer();
 			Term elementParent = findTerm(document, elementContainer);
 			parent = elementParent.getSubclasses();
+			if (parent.size() == 1) {
+				removeTerm(document, elementContainer);
+			}
 		} else { // Model
 			parent = document.getTaxonomy().getDimensions();
 		}
