@@ -1,7 +1,6 @@
 package wizard;
 
 import helloworldchart.BarChartGenerator;
-import helloworldchart.ChartGenerator;
 import helloworldchart.ICommunicationView;
 
 import java.util.SortedMap;
@@ -49,14 +48,11 @@ public class ChartWizard extends Wizard {
 		if (one.getButton1().getSelection()) {
 
 			SortedMap<String, Integer> myValues = new TreeMap<>();
-			myValues.put("Kat1", 10);
-			myValues.put("Kat5", 50);
-			myValues.put("Kat3", 30);
-			myValues.put("Kat4", 40);
 			myChart = BarChartGenerator.createBar(myValues);
 		} else if (one.getButton2().getSelection()) {
-			myChart = ChartGenerator.createBubble("A1", "A2", "Langes Wort",
-					"Birne");
+			// ChartDataProvider provider = new ChartDataProvider();
+			// myChart = provider.calculateBubbleChartData(firstTerm,
+			// secondTerm);
 		}
 		ICommunicationView view = null;
 		try {

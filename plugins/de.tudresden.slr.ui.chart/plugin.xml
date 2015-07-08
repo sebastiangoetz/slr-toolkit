@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="helloworldchart.HelloWorldView"
+            class="helloworldchart.ChartView"
             id="chart.view.helloworld"
             name="HelloWorldChart"
             restorable="true">

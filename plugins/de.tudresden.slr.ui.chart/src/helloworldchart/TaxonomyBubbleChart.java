@@ -1,13 +1,17 @@
 package helloworldchart;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.script.ScriptEngine;
+import logic.BubbleChartDataContainer;
 
 import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
+import org.eclipse.birt.chart.model.attribute.DataType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
 import org.eclipse.birt.chart.model.attribute.Position;
@@ -32,11 +36,11 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BubbleSeries;
 import org.eclipse.birt.chart.model.type.impl.BubbleSeriesImpl;
 
+import de.tudresden.slr.model.taxonomy.Term;
+
 public class TaxonomyBubbleChart {
 
 	private HashMap<Integer, String> axisMapping = null;
-	private JavaScriptEvaluator evaluator = null;
-	private ScriptEngine engine = null;
 
 	public TaxonomyBubbleChart() {
 
@@ -44,47 +48,31 @@ public class TaxonomyBubbleChart {
 
 	/**
 	 * 
-	 * @param kat11
-	 *            The first x - Axis Label
-	 * @param kat12
-	 *            The second x - Axis Label
-	 * @param kat21
-	 *            The first y - Axis Label
-	 * @param kat22
-	 *            The second y - Axis Label
+	 * @param dataContainer
+	 *            TODO
 	 * @return a new TaxonomyBubbleChart
 	 */
 
-	public final Chart createBubble(String kat11, String kat12, String kat21,
-			String kat22) {
-
-		axisMapping = new HashMap<>();
-		axisMapping.put(10, kat21);
-		axisMapping.put(20, kat22);
+	public final Chart createBubble(List<BubbleChartDataContainer> input) {
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
 
-		evaluator = new JavaScriptEvaluator();
-		engine = evaluator.getEngine();
-		engine.put("kat21", 10);
-		engine.put("kat22", 20);
-
-		cwaBubble
-				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
-						+ "{if (label.getCaption( ).getValue( ) == 10)"
-						+ "{label.getCaption().setValue("
-						+ formatForJS(kat21)
-						+ " )}"
-						+ "if (label.getCaption( ).getValue( ) == 20)"
-						+ "{label.getCaption().setValue("
-						+ formatForJS(kat22)
-						+ " )}"
-						+ "if (label.getCaption( ).getValue( ) == 0)"
-						+ "{label.getCaption().setValue(\"\")}"
-						+ "if (label.getCaption( ).getValue( ) == 30)"
-						+ "{label.getCaption().setValue(\"\")}"
-						// + "label.getCaption( ).getFont( ).setSize(7);"
-						+ "}\n");
+		// cwaBubble
+		//				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
+		// + "{if (label.getCaption( ).getValue( ) == 10)"
+		// + "{label.getCaption().setValue("
+		// + formatForJS(kat21)
+		// + " )}"
+		// + "if (label.getCaption( ).getValue( ) == 20)"
+		// + "{label.getCaption().setValue("
+		// + formatForJS(kat22)
+		// + " )}"
+		// + "if (label.getCaption( ).getValue( ) == 0)"
+		// + "{label.getCaption().setValue(\"\")}"
+		// + "if (label.getCaption( ).getValue( ) == 30)"
+		// + "{label.getCaption().setValue(\"\")}"
+		// // + "label.getCaption( ).getFont( ).setSize(7);"
+		// + "}\n");
 
 		cwaBubble.setType("Bubble Chart"); //$NON-NLS-1$
 		cwaBubble.setSubType("Standard Bubble Chart"); //$NON-NLS-1$
@@ -118,13 +106,25 @@ public class TaxonomyBubbleChart {
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
-		TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
-				kat11, kat12 });
-		BubbleDataSet values1 = BubbleDataSetImpl.create(new BubbleEntry[] {
-				new BubbleEntry(Integer.valueOf(10), Integer.valueOf(100)),
-				new BubbleEntry(Integer.valueOf(20), Integer.valueOf(200))
+		List<String> xValues = new ArrayList<>();
+		List<BubbleEntry> yValues = new ArrayList<>();
+		Map<Term, Integer> scriptMappings = new HashMap<Term, Integer>();
+		int i = 10;
+		for (BubbleChartDataContainer b : input) {
+			xValues.add(b.getxTerm().getName());
+			yValues.add(new BubbleEntry(Integer.valueOf(i), Integer.valueOf(b
+					.getBubbleSize())));
+			scriptMappings.put((Term) b.getyTerm(), i);
 
-		});
+		}
+
+		TextDataSet categoryValues = TextDataSetImpl.create(xValues);
+		BubbleDataSet values1 = BubbleDataSetImpl.create(yValues);
+		// new BubbleEntry[] {
+		// new BubbleEntry(Integer.valueOf(10), Integer.valueOf(100)),
+		// new BubbleEntry(Integer.valueOf(20), Integer.valueOf(200))
+		//
+		// });
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
@@ -145,6 +145,8 @@ public class TaxonomyBubbleChart {
 
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
 		sdX.getSeriesPalette().shift(0);
+		sdX.getGrouping().setEnabled(true);
+		sdX.getGrouping().setGroupType(DataType.NUMERIC_LITERAL);
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
 

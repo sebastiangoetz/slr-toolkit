@@ -11,6 +11,10 @@
 
 package helloworldchart;
 
+import java.util.List;
+
+import logic.BubbleChartDataContainer;
+
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
@@ -130,11 +134,9 @@ public class ChartGenerator {
 
 	}
 
-	public final static Chart createBubble(String kat11, String kat12,
-			String kat21, String kat22) {
+	public final static Chart createBubble(List<BubbleChartDataContainer> input) {
 
-		return new TaxonomyBubbleChart().createBubble(kat11, kat12, kat21,
-				kat22);
+		return new TaxonomyBubbleChart().createBubble(input);
 	}
 
 }

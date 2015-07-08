@@ -108,12 +108,6 @@ public class BarChartGenerator {
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
 
-		// OrthogonalSampleData sdOrthogonal2 =
-		// DataFactory.eINSTANCE.createOrthogonalSampleData( );
-		//			sdOrthogonal2.setDataSetRepresentation( "" );//$NON-NLS-1$
-		// sdOrthogonal2.setSeriesDefinitionIndex( 1 );
-		// sd.getOrthogonalSampleData( ).add( sdOrthogonal2 );
-
 		cwaBar.setSampleData(sd);
 
 		// X-Series
@@ -130,11 +124,6 @@ public class BarChartGenerator {
 		bs1.setDataSet(orthoValues1);
 		bs1.getLabel().setVisible(true);
 		bs1.setLabelPosition(Position.INSIDE_LITERAL);
-
-		// BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
-		// bs2.setDataSet(orthoValues2);
-		// bs2.getLabel().setVisible(true);
-		// bs2.setLabelPosition(Position.INSIDE_LITERAL);
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
