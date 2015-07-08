@@ -1,6 +1,11 @@
 package de.tudresden.slr.wizards.pages;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -19,6 +24,8 @@ public class NewSlrProjectCreationPage extends WizardPage {
 
 	private String fileName = null;
 	private String taxFileName = null;
+	private String bibContent = "";
+	private String taxContent = "";
 
 	private Composite container;
 	private String[] extensions = new String[] { "*.bib", "*.taxonomy" };
@@ -45,15 +52,28 @@ public class NewSlrProjectCreationPage extends WizardPage {
 
 			@Override
 			protected String changePressed() {
+				setPageComplete(true);
 				File f = new File(getTextControl().getText());
 				if (!f.exists()) {
 					f = null;
 				}
-				File d = getFile(f);
+				File d = getFile(f, "bib");
 				if (d == null) {
 					return null;
 				}
-				setPageComplete(true);
+ else {
+				try {
+						if (d.exists()) {
+							setFileContent(d);
+						}
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
 				return d.getAbsolutePath();
 			}
 		};
@@ -63,15 +83,28 @@ public class NewSlrProjectCreationPage extends WizardPage {
 
 			@Override
 			protected String changePressed() {
+				setPageComplete(true);
 				File f = new File(getTextControl().getText());
 				if (!f.exists()) {
 					f = null;
 				}
-				File d = getFile(f);
+				File d = getFile(f, "tax");
 				if (d == null) {
 					return null;
 				}
-				setPageComplete(true);
+ else {
+				try {
+						if (d.exists()) {
+							setFileContent(d);
+						}
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
 				return d.getAbsolutePath();
 			}
 		};
@@ -108,14 +141,24 @@ public class NewSlrProjectCreationPage extends WizardPage {
 		setPageComplete(false);
 	}
 
-	private File getFile(File startingDirectory) {
+	private File getFile(File startingDirectory, String extension) {
 
 		FileDialog dialog = new FileDialog(getShell(), SWT.OPEN | SWT.SHEET);
 		if (startingDirectory != null) {
 			dialog.setFileName(startingDirectory.getPath());
 		}
 		if (extensions != null) {
-			dialog.setFilterExtensions(extensions);
+			switch (extension) {
+			case "bib":
+				dialog.setFileName("myBibtex.bib");
+				dialog.setFilterExtensions(Arrays.copyOfRange(extensions, 0, 1));
+				break;
+			default:
+				dialog.setFileName("myTaxonomy.taxonomy");
+				dialog.setFilterExtensions(Arrays.copyOfRange(extensions, 1, 2));
+				break;
+			}
+
 		}
 		String file = dialog.open();
 		if (file != null) {
@@ -132,16 +175,51 @@ public class NewSlrProjectCreationPage extends WizardPage {
 		return this.fileName;
 	}
 
-	private void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
 	public String getTaxFileName() {
 		return this.taxFileName;
 	}
 
+	public String getBibContent() {
+		return this.bibContent;
+	}
+
+	public String getTaxContent() {
+		return this.taxContent;
+	}
+
+	private void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	private void setTaxFileName(String fileName) {
 		this.taxFileName = fileName;
+	}
+
+	private void setFileContent(File f) throws FileNotFoundException,
+			IOException {
+		try(BufferedReader br = new BufferedReader(new FileReader(f))) {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				sb.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			System.out.println("########################");
+			System.out.println(f.getName().substring(
+					f.getName().lastIndexOf(".") + 1));
+			if (f.getName().substring(f.getName().lastIndexOf(".") + 1)
+					.equals("bib")) {
+				bibContent = sb.toString();
+			}
+			if (f.getName().substring(f.getName().lastIndexOf(".") + 1)
+					.equals("tax")) {
+				taxContent = sb.toString();
+			}
+			br.close();
+		
+	}
 	}
 
 }

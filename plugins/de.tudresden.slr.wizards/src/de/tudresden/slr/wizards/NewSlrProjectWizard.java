@@ -55,8 +55,11 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard,
 		} // else location == null
 		String fileName = _pageOneOne.getFileName();
 		String taxFileName = _pageOneOne.getTaxFileName();
+		String bibContent = _pageOneOne.getBibContent();
+		String taxContent = _pageOneOne.getTaxContent();
 
-		SlrProjectSupport.createProject(name, fileName, taxFileName, location);
+		SlrProjectSupport.createProject(name, fileName, taxFileName,
+				bibContent, taxContent, location);
 		BasicNewProjectResourceWizard.updatePerspective(_configurationElement);
 
 		// IFile file = _pageOneOne.createNewFile();

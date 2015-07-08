@@ -2,6 +2,7 @@ package de.tudresden.slr.wizards.projects;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 
 import org.eclipse.core.resources.IContainer;
@@ -26,6 +27,7 @@ public class SlrProjectSupport {
 	 * @return
 	 */
 	public static IProject createProject(String projectName, String fileName,
+			String bibContent, String taxContent,
 			String taxFileName,
 			URI location) {
         Assert.isNotNull(projectName);
@@ -33,7 +35,8 @@ public class SlrProjectSupport {
 		Assert.isNotNull(fileName);
 		Assert.isNotNull(taxFileName);
  
-		IProject project = createBaseProject(projectName, fileName,
+		IProject project = createBaseProject(projectName, fileName, bibContent,
+				taxContent,
 				taxFileName, location);
         try {
             addNature(project);
@@ -50,13 +53,16 @@ public class SlrProjectSupport {
     }
 
 	/**
-	 * Just do the basics: create a basic project.
+	 * create a basic project with a given .bib and .taxonomy file
 	 *
 	 * @param location
+	 * @param taxFileName
+	 * @param fileName
 	 * @param projectName
 	 */
 	private static IProject createBaseProject(String projectName,
-			String fileName, String taxFileName, URI location) {
+			String fileName, String taxFileName, String bibContent,
+			String taxContent, URI location) {
         // it is acceptable to use the ResourcesPlugin class
         IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
  
@@ -78,6 +84,9 @@ public class SlrProjectSupport {
 							+ fileName);
 					try {
 						f.createNewFile();
+						PrintWriter out = new PrintWriter(f);
+						out.println(bibContent);
+						out.close();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -87,6 +96,9 @@ public class SlrProjectSupport {
 							+ taxFileName);
 					try {
 						f2.createNewFile();
+						PrintWriter out = new PrintWriter(f2);
+						out.println(taxContent);
+						out.close();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
