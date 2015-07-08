@@ -1,7 +1,6 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -210,8 +209,10 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 			Command changeCommand = new ExecuteCommand() {
 				@Override
 				public void execute() {
-					setTermChanged(document, (Term) event.getElement(),
-							event.getChecked());
+					final Term element = (Term) event.getElement();
+					final boolean isLeaf = element.getSubclasses().size() == 0;
+					final boolean add = event.getChecked();
+					setTermChanged(document, element, add, isLeaf);
 				}
 			};
 			executeCommand(changeCommand);
@@ -231,31 +232,43 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		return null;
 	}
 
-	private void setTermChanged(Document document, Term element, boolean add) {
+	private void setTermChanged(Document document, Term element, boolean add,
+			boolean wasLeaf) {
 		if (add) {
-			if (element.eContainer() instanceof Term) {
-				Term parent = findTerm(document, (Term) element.eContainer());
-				parent.getSubclasses().add(EcoreUtil.copy(element));
-			} else { // Model
-				document.getTaxonomy().getDimensions()
-						.add(EcoreUtil.copy(element));
-			}
+			addTerm(document, element, wasLeaf);
 		} else { // delete
-			Iterator<Term> iter = null;
-			if (element.eContainer() instanceof Term) {
-				Term parent = findTerm(document, (Term) element.eContainer());
-				iter = parent.getSubclasses().iterator();
-			} else { // Model
-				iter = document.getTaxonomy().getDimensions().iterator();
-			}
-			while (iter.hasNext()) {
-				Term next = iter.next();
-				if (next.hashCode() == element.hashCode()) {
-					iter.remove();
-					break;
-				}
-			}
+			removeTerm(document, element, wasLeaf);
 		}
+	}
+
+	private void addTerm(Document document, Term element, boolean wasLeaf) {
+		final Term copy = EcoreUtil.copy(element);
+		if (element.eContainer() instanceof Term) {
+			final Term elementContainer = (Term) element.eContainer();
+			Term parent = findTerm(document, elementContainer);
+			if (parent == null) {
+				addTerm(document, elementContainer, wasLeaf);
+				parent = findTerm(document, elementContainer);
+			}
+			if (wasLeaf) {
+				copy.getSubclasses().clear();
+			}
+			parent.getSubclasses().add(copy);
+		} else { // Model
+			document.getTaxonomy().getDimensions().add(copy);
+		}
+	}
+
+	private void removeTerm(Document document, Term element, boolean wasLeaf) {
+		final List<Term> parent;
+		if (element.eContainer() instanceof Term) {
+			final Term elementContainer = (Term) element.eContainer();
+			Term elementParent = findTerm(document, elementContainer);
+			parent = elementParent.getSubclasses();
+		} else { // Model
+			parent = document.getTaxonomy().getDimensions();
+		}
+		parent.removeIf(t -> t.hashCode() == element.hashCode());
 	}
 
 	private void executeCommand(Command command) {
