@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
@@ -27,23 +26,27 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
-import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -94,6 +97,50 @@ public class BibtexEntryView extends ViewPart implements
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 1;
+		parent.setLayout(layout);
+		ComboViewer combo = new ComboViewer(parent, SWT.READ_ONLY);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		combo.setSorter(new NameSorter());
+		combo.setContentProvider(ArrayContentProvider.getInstance());
+		combo.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof IProject) {
+					IProject project = (IProject) element;
+					return project.getName();
+				}
+				return super.getText(element);
+			}
+		});
+		combo.addSelectionChangedListener(new ISelectionChangedListener() {
+			private IProject lastProject = null;
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (event.getSelection() instanceof StructuredSelection) {
+					Object element = ((StructuredSelection) event
+							.getSelection()).getFirstElement();
+					if (element instanceof IProject) {
+						IProject project = (IProject) element;
+						if (!(project.equals(lastProject))) {
+							deleteResources();
+							registerResources(project);
+							viewer.refresh();
+							// TODO: close editors
+							// TODO: refresh Taxonomy
+							lastProject = project;
+						}
+					}
+				}
+			}
+		});
+		combo.getCombo().setLayoutData(gridData);
+
+		combo.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+
 		BibtexFilter filter = new BibtexFilter();
 		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL, filter, false);
@@ -179,6 +226,13 @@ public class BibtexEntryView extends ViewPart implements
 		}
 	}
 
+	private void deleteResources() {
+		for (Resource resource : editingDomain.getResourceSet().getResources()) {
+			resource.unload();
+		}
+		editingDomain.getResourceSet().getResources().clear();
+	}
+
 	public void setSelectionToViewer(Collection<?> collection) {
 		// TODO: check if it is necessary
 		final Collection<?> theSelection = collection;
@@ -223,62 +277,38 @@ public class BibtexEntryView extends ViewPart implements
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(new Separator());
-		manager.add(action2);
+		// manager.add(action1);
+		// manager.add(new Separator());
+		// manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
+		// manager.add(action1);
 		manager.add(action2);
-		manager.add(new Separator());
-		drillDownAdapter.addNavigationActions(manager);
+		// manager.add(new Separator());
+		// drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		// manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(action1);
-		manager.add(action2);
-		manager.add(new Separator());
-		drillDownAdapter.addNavigationActions(manager);
+		// manager.add(action2);
+		// manager.add(new Separator());
+		// drillDownAdapter.addNavigationActions(manager);
 	}
 
 	private void makeActions() {
 		action1 = new Action() {
 			@Override
 			public void run() {
-				// TODO: security checks
-				TreeSelection select = (TreeSelection) viewer.getSelection();
-				if (select == null
-						|| !(select.getFirstElement() instanceof Document)) {
-					return;
-				}
-				Document doc = (Document) select.getFirstElement();
-				IFile file = (IFile) ((ITreeContentProvider) viewer
-						.getContentProvider()).getParent(select
-						.getFirstElement());
-				try {
-					QualifiedName qName = new QualifiedName(
-							BibtexDecorator.QUALIFIER, doc.getKey());
-					if (file.getPersistentProperty(qName) != null
-							&& BibtexDecorator.ERROR.equals(file
-									.getPersistentProperty(qName))) {
-						file.setPersistentProperty(qName, null);
-					} else {
-						file.setPersistentProperty(qName, BibtexDecorator.ERROR);
-					}
-					showMessage("Action 1 executed");
-				} catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				viewer.refresh();
 			}
 		};
-		action1.setText("Decorate");
-		action1.setToolTipText("Action 1 tooltip");
+		action1.setText("Refresh");
+		action1.setToolTipText("Refreshes the tree. Make sure you selected a project before");
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+				.getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
 
 		action2 = new Action() {
 			@Override
@@ -296,7 +326,7 @@ public class BibtexEntryView extends ViewPart implements
 		action2.setText("Mark");
 		action2.setToolTipText("Action 2 tooltip");
 		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+				.getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
 		openListener = new BibtexOpenListener(editorId,
 				IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID);
 		selectionListener = new BibtexOpenListener(overviewId,
