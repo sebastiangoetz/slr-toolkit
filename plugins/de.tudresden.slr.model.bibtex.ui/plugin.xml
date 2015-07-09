@@ -63,7 +63,7 @@
          <enablement>
             <and>
                <objectClass
-                     name="org.eclipse.core.resources.IFile">
+                     name="org.eclipse.emf.ecore.resource.Resource">
                </objectClass>
                <objectClass
                      name="de.tudresden.slr.model.bibtex.Document">

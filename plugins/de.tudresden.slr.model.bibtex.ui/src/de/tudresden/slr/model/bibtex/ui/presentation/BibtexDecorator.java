@@ -6,11 +6,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import de.tudresden.slr.Utils;
@@ -47,17 +47,8 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 		listeners.add(listener);
 	}
 
-	private void notifyListeners(Object element) {
-		LabelProviderChangedEvent event = new LabelProviderChangedEvent(this,
-				element);
-		for (ILabelProviderListener listener : listeners) {
-			listener.labelProviderChanged(event);
-		}
-	}
-
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -74,14 +65,16 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 
 	@Override
 	public void decorate(Object element, IDecoration decoration) {
-		if (element instanceof IFile) {
-			IFile file = (IFile) element;
+		if (element instanceof Resource) {
+			IFile file = Utils.getIFilefromEMFResource((Resource) element);
+			if (file == null) {
+				return;
+			}
 			IMarker[] markers = null;
 			try {
 				markers = file.findMarkers(IMarker.PROBLEM, true,
 						IResource.DEPTH_ONE);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (markers == null || markers.length == 0) {
@@ -91,42 +84,13 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 				String location = marker.getAttribute(IMarker.LOCATION, null);
 				if (location != null) {
 					decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
-					notifyListeners(element);
 					return;
 				}
 			}
-			// Set<QualifiedName> names = null;
-			// try {
-			// names = file.getPersistentProperties().keySet();
-			// } catch (CoreException e) {
-			// e.printStackTrace();
-			// }
-			// if (names == null || names.isEmpty()) {
-			// return;
-			// }
-			// for (QualifiedName qName : names) {
-			// if (QUALIFIER.equals(qName.getQualifier())) {
-			// String content = null;
-			// try {
-			// content = file.getPersistentProperty(qName);
-			// } catch (CoreException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// continue;
-			// }
-			// if (ERROR.equals(content)) {
-			// decoration.addOverlay(DECORATOR,
-			// IDecoration.BOTTOM_RIGHT);
-			// return;
-			// }
-			// }
-			// }
 		} else if (element instanceof Document) {
 			Document doc = (Document) element;
 			IFile parent = Utils.getIFilefromDocument(doc);
 			if (parent == null) {
-				// TODO: remove syso
-				// System.err.println("No IFile from document " + doc.getKey());
 				return;
 			}
 			IMarker[] markers = null;
@@ -134,7 +98,6 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 				markers = parent.findMarkers(IMarker.PROBLEM, true,
 						IResource.DEPTH_ONE);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			if (markers == null || markers.length == 0) {
@@ -144,27 +107,9 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 				if (doc.getKey().equals(
 						marker.getAttribute(IMarker.LOCATION, null))) {
 					decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
-					// notifyListeners(element);
 					return;
 				}
 			}
-			// if (parent == null) {
-			// return;
-			// }
-			// // IResource parent = ResourcesPlugin.getWorkspace().getRoot()
-			// // .findMember(platformString);
-			// String property = null;
-			// try {
-			// property = parent.getPersistentProperty(new QualifiedName(
-			// QUALIFIER, doc.getKey()));
-			// } catch (CoreException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// if (property != null && ERROR.equals(property)) {
-			// decoration.addOverlay(DECORATOR, IDecoration.BOTTOM_RIGHT);
-			// return;
-			// }
 		}
 	}
 }
