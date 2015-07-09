@@ -9,6 +9,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import de.tudresden.slr.model.bibtex.Document;
 
@@ -21,6 +22,7 @@ import de.tudresden.slr.model.bibtex.Document;
 public class Utils {
 	private static Document lastDoc = null;
 	private static int repetition = 1;
+	private static StringBuffer logBuffer = new StringBuffer();
 
 	/**
 	 * Returns the resource file which contains the given bibtex document. Bases
@@ -32,7 +34,7 @@ public class Utils {
 	 *         was found.
 	 */
 	public static IFile getIFilefromDocument(Document doc) {
-		if (doc == null || doc.eResource() == null) {
+		if (doc == null) {
 			// TODO: remove syso
 			// System.err.println("Document " + doc
 			// + " does not exist or has no resource");
@@ -47,10 +49,28 @@ public class Utils {
 			lastDoc = doc;
 			repetition = 1;
 		}
+		return getIFilefromEMFResource(doc.eResource());
+
+	}
+
+	/**
+	 * Returns the resource file which contains the given bibtex document. Bases
+	 * on {@link http://www.eclipse.org/forums/index.php?t=msg&th=128695/}
+	 * 
+	 * @param doc
+	 *            {@link Document} whom's resource is wanted
+	 * @return {@link IFile} which contains doc. <code>null</code> if nothing
+	 *         was found.
+	 */
+	public static IFile getIFilefromEMFResource(Resource resource) {
+		if (resource == null) {
+			return null;
+		}
 		// TODO: remove logbuffer
-		StringBuffer logBuffer = new StringBuffer();
-		URI uri = doc.eResource().getURI();
-		uri = doc.eResource().getResourceSet().getURIConverter().normalize(uri);
+		logBuffer = new StringBuffer();
+
+		URI uri = resource.getURI();
+		uri = resource.getResourceSet().getURIConverter().normalize(uri);
 		String scheme = uri.scheme();
 		logBuffer.append("URI Scheme: " + scheme + "\n");
 
