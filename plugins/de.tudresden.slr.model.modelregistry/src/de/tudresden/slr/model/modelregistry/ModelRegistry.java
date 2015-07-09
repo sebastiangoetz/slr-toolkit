@@ -1,11 +1,18 @@
 package de.tudresden.slr.model.modelregistry;
 
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Optional;
 
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.taxonomy.Model;
 
 public class ModelRegistry extends Observable {
@@ -14,6 +21,34 @@ public class ModelRegistry extends Observable {
 	private AdapterFactoryEditingDomain sharedEditingDomain;
 
 	public ModelRegistry() {
+		createEditingDomain();
+	}
+
+	private void createEditingDomain() {
+		// Create an adapter factory that yields item providers.
+		//
+		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+		adapterFactory
+				.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+		adapterFactory
+				.addAdapterFactory(new BibtexItemProviderAdapterFactory());
+		adapterFactory
+				.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+
+		// Create the command stack that will notify this editor as commands are
+		// executed.
+		//
+		BasicCommandStack commandStack = new BasicCommandStack();
+
+		// Create the editing domain with a special command stack.
+		//
+		sharedEditingDomain = new AdapterFactoryEditingDomain(adapterFactory,
+				commandStack, new HashMap<Resource, Boolean>());
+
+		// ModelRegistryPlugin.getModelRegistry().setEditingDomain(
+		// sharedEditingDomain);
 	}
 
 	public Optional<AdapterFactoryEditingDomain> getEditingDomain() {
