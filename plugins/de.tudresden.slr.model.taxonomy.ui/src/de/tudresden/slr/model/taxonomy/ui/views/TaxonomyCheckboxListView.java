@@ -1,12 +1,12 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
-import java.util.Queue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
@@ -42,6 +42,8 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.model.utils.TaxonomyIterator;
 
 public class TaxonomyCheckboxListView extends ViewPart implements
 		ISelectionListener, Observer, ICheckStateListener {
@@ -217,21 +219,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 	}
 
-	private Term findTerm(Document document, Term term) {
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
-		while (!queue.isEmpty()) {
-			Term head = queue.poll();
-			if (head.hashCode() == term.hashCode()) {
-				if (head.getName().equals(term.getName())) {
-					return head;
-				}
-			}
-			queue.addAll(head.getSubclasses());
-		}
-		return null;
-	}
-
 	private void setTermChanged(Document document, Term element, boolean add) {
 		if (add) {
 			addTerm(document, element);
@@ -252,10 +239,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		}
 		if (element.eContainer() instanceof Term) {
 			final Term elementContainer = (Term) element.eContainer();
-			Term parent = findTerm(document, elementContainer);
+			Term parent = SearchUtils.findTermInDocument(document,
+					elementContainer);
 			if (parent == null) {
 				addTerm(document, elementContainer, true);
-				parent = findTerm(document, elementContainer);
+				parent = SearchUtils.findTermInDocument(document,
+						elementContainer);
 			}
 			parent.getSubclasses().add(copy);
 		} else { // Model
@@ -267,7 +256,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 		final List<Term> parent;
 		if (element.eContainer() instanceof Term) {
 			final Term elementContainer = (Term) element.eContainer();
-			Term elementParent = findTerm(document, elementContainer);
+			Term elementParent = SearchUtils.findTermInDocument(document,
+					elementContainer);
 			parent = elementParent.getSubclasses();
 			if (parent.size() == 1) {
 				removeTerm(document, elementContainer);
@@ -287,43 +277,12 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	private void setTicks(Document document) {
 		viewer.setCheckedElements(new Object[0]);
-		Queue<Term> queue = new LinkedList<>(document.getTaxonomy()
-				.getDimensions());
-		List<Term> checkedTerms = new ArrayList<>();
-		while (!queue.isEmpty()) {
-			Term queued = queue.poll();
-			Term term = getTerm(queued);
-			if (term.getSubclasses().isEmpty()) {
-				checkedTerms.add(term);
-			}
-			queue.addAll(queued.getSubclasses());
-		}
+		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
+		Stream<Term> stream = StreamSupport.stream(iter.spliterator(), false);
+		List<Term> checkedTerms = stream
+				.map(term -> SearchUtils.findTermInTaxonomy(term))
+				.filter(term -> term.getSubclasses().isEmpty())
+				.collect(Collectors.toList());
 		viewer.setCheckedElements(checkedTerms.toArray());
-	}
-
-	private Term getTerm(Term term) {
-		Optional<Model> taxonomy = ModelRegistryPlugin.getModelRegistry()
-				.getActiveTaxonomy();
-		if (taxonomy.isPresent()) {
-			Queue<Term> queue = new LinkedList<>(taxonomy.get().getDimensions());
-			while (!queue.isEmpty()) {
-				Term queued = queue.poll();
-				if (queued.getName().equals(term.getName())) {
-					if (queued.eContainer() instanceof Model) {
-						return queued;
-					} else if (queued.eContainer() instanceof Term
-							&& term.eContainer() instanceof Term) {
-						Term parent = (Term) queued.eContainer();
-						Term otherParent = (Term) term.eContainer();
-						if (parent.getName().equals(otherParent.getName())) {
-							return queued;
-						}
-					}
-				} else {
-					queue.addAll(queued.getSubclasses());
-				}
-			}
-		}
-		return term;
 	}
 }
