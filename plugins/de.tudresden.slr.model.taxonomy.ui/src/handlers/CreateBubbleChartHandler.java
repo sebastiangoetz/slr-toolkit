@@ -1,11 +1,9 @@
 package handlers;
-import helloworldchart.ChartGenerator;
-import helloworldchart.ICommunicationView;
 
 import java.util.Iterator;
 import java.util.List;
 
-import logic.BubbleChartDataContainer;
+import logic.BubbleDataContainer;
 import logic.ChartDataProvider;
 
 import org.eclipse.birt.chart.model.Chart;
@@ -16,13 +14,16 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import view.ChartGenerator;
+import view.ICommunicationView;
 import de.tudresden.slr.model.taxonomy.Term;
 
 public class CreateBubbleChartHandler implements IHandler {
 
-	private final String chartViewId = "chart.view.helloworld";
+	private final String chartViewId = "chart.view.chartview";
 
 	@Override
 	public void dispose() {
@@ -41,16 +42,24 @@ public class CreateBubbleChartHandler implements IHandler {
 				return null;
 			}
 			ChartDataProvider provider = new ChartDataProvider();
-			IViewPart part = HandlerUtil.getActiveWorkbenchWindow(event)
-					.getActivePage().findView(chartViewId);
+			IViewPart part = null;
+			try {
+				part = HandlerUtil.getActiveWorkbenchWindow(event)
+						.getActivePage().showView(chartViewId);
+			} catch (PartInitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			ICommunicationView view = (ICommunicationView) part;
 			Iterator<Term> selectionIterator = currentSelection.iterator();
-			List<BubbleChartDataContainer> bubbleChartData = provider
+			List<BubbleDataContainer> bubbleChartData = provider
 					.calculateBubbleChartData(selectionIterator.next(),
 							selectionIterator.next());
 			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData);
-			view.setChart(bubbleChart);
+			view.setAndRenderChart(bubbleChart);
+			view.getNoDataToShowText().setVisible(false);
+			view.redraw();
 			return null;
 		}
 	}

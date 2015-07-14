@@ -122,7 +122,6 @@
     <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="createBubbleChartHandler"
             description="Trigger expensive validation"
             id="de.tudresden.slr.model.Taxonomy.validate"
             name="Validate">

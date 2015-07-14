@@ -4,31 +4,31 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="helloworldchart.ChartView"
-            id="chart.view.helloworld"
-            name="HelloWorldChart"
+            class="view.ChartView"
+            id="chart.view.chartview"
+            name="ChartView"
             restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="helloworldchart.ShowChartHandler"
-            id="de.tudresden.slr.ui.chart.showchart"
-            name="Show Chart">
-      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
-            locationURI="menu:org.eclipse.ui.main.menu">
+            locationURI="toolbar:chart.view.chartview">
          <command
-               commandId="de.tudresden.slr.ui.chart.showchart"
-               label="Show Chart"
+               commandId="de.tudresden.slr.ui.chart.savechartaspdf"
+               label="Save as PDF"
                style="push">
          </command>
       </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="SaveAsPDFHandler"
+            id="de.tudresden.slr.ui.chart.savechartaspdf"
+            name="Save as PDF">
+      </command>
    </extension>
 
 </plugin>

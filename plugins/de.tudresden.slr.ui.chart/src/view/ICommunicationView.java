@@ -1,4 +1,4 @@
-package helloworldchart;
+package view;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.swt.widgets.Text;
@@ -10,4 +10,6 @@ public interface ICommunicationView extends IViewPart {
 	public Text getNoDataToShowText();
 
 	public void redraw();
+
+	public void generatePDFForCurrentChart(String output);
 }

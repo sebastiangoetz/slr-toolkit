@@ -1,8 +1,5 @@
 package wizard;
 
-import helloworldchart.BarChartGenerator;
-import helloworldchart.ICommunicationView;
-
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -10,6 +7,9 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+
+import view.BarChartGenerator;
+import view.ICommunicationView;
 
 public class ChartWizard extends Wizard {
 

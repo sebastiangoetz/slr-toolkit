@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: de.tudresden.slr.ui.chart;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: helloworldchart.Activator
+Bundle-Activator: view.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.birt.chart,
@@ -18,9 +18,10 @@ Require-Bundle: org.eclipse.ui,
  de.tudresden.slr.model.bibtex,
  de.tudresden.slr.model.modelregistry;bundle-version="0.0.1",
  org.eclipse.emf.edit,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ com.ibm.icu
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: de.tudresden.slr.model.bibtex
-Export-Package: helloworldchart,
- logic
+Export-Package: logic,
+ view

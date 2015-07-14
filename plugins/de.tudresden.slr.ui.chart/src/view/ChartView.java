@@ -1,4 +1,4 @@
-package helloworldchart;
+package view;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -6,9 +6,12 @@ import java.util.TreeMap;
 import logic.ChartDataProvider;
 
 import org.eclipse.birt.chart.api.ChartEngine;
+import org.eclipse.birt.chart.device.EmptyUpdateNotifier;
 import org.eclipse.birt.chart.device.IDeviceRenderer;
 import org.eclipse.birt.chart.exception.ChartException;
+import org.eclipse.birt.chart.factory.GeneratedChartState;
 import org.eclipse.birt.chart.factory.Generator;
+import org.eclipse.birt.chart.factory.RunTimeContext;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
@@ -24,6 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
+
+import com.ibm.icu.util.ULocale;
 
 import de.tudresden.slr.model.taxonomy.Term;
 
@@ -103,14 +108,13 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 	private void renderChart(Composite parent, Chart chart) {
 		// INITIALIZE THE SWT RENDERING DEVICE
-
 		PlatformConfig config = new PlatformConfig();
 		try {
 			idr = ChartEngine.instance(config).getRenderer("dv.SWT");
-		} catch (Exception e) {
+		} catch (ChartException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		parent.addPaintListener(p = new PaintListener() {
 
 			@Override
@@ -133,6 +137,47 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 			}
 		});
+	}
+
+	public void generatePDFForCurrentChart(String output) {
+		generatePDFOutput(myChart, output);
+		setAndRenderChart(myChart);
+	}
+
+	/***
+	 * 
+	 * @param chart
+	 *            The chart that is to be printed to pdf
+	 * @param output
+	 *            The system specific output path of the pdf
+	 */
+
+	private void generatePDFOutput(Chart chart, String output) {
+		// Example output string for Windows
+		// "C:\\pdf\\output.pdf"
+		PlatformConfig config = new PlatformConfig();
+		try {
+			// idr = ChartEngine.instance(config).getRenderer("dv.SWT");
+			idr = ChartEngine.instance(config).getRenderer("dv.PDF");
+
+			RunTimeContext rtc = new RunTimeContext();
+			rtc.setULocale(ULocale.getDefault());
+
+			Generator gr = Generator.instance();
+			GeneratedChartState gcs = null;
+			Bounds bo = BoundsImpl.create(0, 0, 600, 400);
+			gcs = gr.build(idr.getDisplayServer(), chart, bo, null, rtc, null);
+
+			idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, output);
+			idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER,
+					new EmptyUpdateNotifier(chart, gcs.getChartModel()));
+
+			gr.render(idr, gcs);
+
+		} catch (ChartException gex) {
+			gex.printStackTrace();
+		}
+
 	}
 
 	/**

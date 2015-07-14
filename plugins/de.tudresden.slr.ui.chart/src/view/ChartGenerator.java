@@ -9,12 +9,11 @@
  *  Actuate Corporation  - initial API and implementation
  *******************************************************************************/
 
-package helloworldchart;
+package view;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import logic.BubbleDataContainer;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
@@ -43,10 +42,10 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
-public class BarChartGenerator {
+public class ChartGenerator {
 
-	public final static Chart createBar(Map<String, Integer> input) {
-		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
+	public final static Chart createBar() {// String tag, HashMap<String,
+											// Integer> values) {
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType("Bar Chart");
@@ -79,23 +78,13 @@ public class BarChartGenerator {
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 
-		// create the dataset from the map
-
-		List<String> names = new ArrayList<>(input.keySet());
-		List<Double> values = names.stream().mapToDouble(input::get).boxed()
-				.collect(Collectors.toList());
-
-		TextDataSet categoryValues = TextDataSetImpl.create(names);
-		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
-
 		// Data Set
-		// TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
-		//				"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		// NumberDataSet orthoValues1 = NumberDataSetImpl.create(new double[] {
-		// 25, 35, 15, 5, 20 });
-		// NumberDataSet orthoValues2 = NumberDataSetImpl.create(new double[] {
-		// 5,
-		// 10, 25, 10, 5 });
+		TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
+				"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		NumberDataSet orthoValues1 = NumberDataSetImpl.create(new double[] {
+				25, 35, 15, 5, 20 });
+		NumberDataSet orthoValues2 = NumberDataSetImpl.create(new double[] { 5,
+				10, 25, 10, 5 });
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
@@ -107,6 +96,12 @@ public class BarChartGenerator {
 		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
+
+		// OrthogonalSampleData sdOrthogonal2 =
+		// DataFactory.eINSTANCE.createOrthogonalSampleData( );
+		//			sdOrthogonal2.setDataSetRepresentation( "" );//$NON-NLS-1$
+		// sdOrthogonal2.setSeriesDefinitionIndex( 1 );
+		// sd.getOrthogonalSampleData( ).add( sdOrthogonal2 );
 
 		cwaBar.setSampleData(sd);
 
@@ -125,6 +120,11 @@ public class BarChartGenerator {
 		bs1.getLabel().setVisible(true);
 		bs1.setLabelPosition(Position.INSIDE_LITERAL);
 
+		BarSeries bs2 = (BarSeries) BarSeriesImpl.create();
+		bs2.setDataSet(orthoValues2);
+		bs2.getLabel().setVisible(true);
+		bs2.setLabelPosition(Position.INSIDE_LITERAL);
+
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
@@ -133,4 +133,10 @@ public class BarChartGenerator {
 		return cwaBar;
 
 	}
+
+	public final static Chart createBubble(List<BubbleDataContainer> input) {
+
+		return new TaxonomyBubbleChart().createBubble(input);
+	}
+
 }
