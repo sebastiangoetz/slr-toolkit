@@ -13,6 +13,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.utils.SearchUtils;
 
 public class ChartDataProvider {
 
@@ -110,18 +111,16 @@ public class ChartDataProvider {
 	 * @return The modified list which contains how many papers are assigned the
 	 *         two terms from the BubbleChartDataContainer
 	 */
-	public List<BubbleChartDataContainer> calculateBubbleChartData(
-			Term firstTerm, Term secondTerm) {
-		List<BubbleChartDataContainer> inputList = generatePairsForBubbleChart(
+	public List<BubbleDataContainer> calculateBubbleChartData(Term firstTerm,
+			Term secondTerm) {
+		List<BubbleDataContainer> inputList = generatePairsForBubbleChart(
 				firstTerm, secondTerm);
-		for (BubbleChartDataContainer b : inputList) {
+		for (BubbleDataContainer b : inputList) {
 			for (Document d : getDocumentList(resources.get(0))) {
-				for (Term t : getDimensionsForDocument(d)) {
-					if (isTermIncludedInTaxonomy(t, b.getxTerm())
-							&& isTermIncludedInTaxonomy(t, b.getyTerm())) {
-						b.setBubbleSize(b.getBubbleSize() + 1);
+				if ((SearchUtils.findTermInDocument(d, b.getxTerm()) != null)
+						&& (SearchUtils.findTermInDocument(d, b.getyTerm()) != null)) {
+					b.setBubbleSize(b.getBubbleSize() + 1);
 
-					}
 				}
 			}
 		}
@@ -157,13 +156,13 @@ public class ChartDataProvider {
 	 * @param secondTerm
 	 * @return
 	 */
-	private List<BubbleChartDataContainer> generatePairsForBubbleChart(
+	private List<BubbleDataContainer> generatePairsForBubbleChart(
 			Term firstTerm, Term secondTerm) {
-		ArrayList<BubbleChartDataContainer> bubbleChartData = new ArrayList<>();
+		ArrayList<BubbleDataContainer> bubbleChartData = new ArrayList<>();
 		for (Term subclassFromFirst : firstTerm.getSubclasses()) {
 			for (Term subclassFromSecond : secondTerm.getSubclasses()) {
-				bubbleChartData.add(new BubbleChartDataContainer(
-						subclassFromFirst, subclassFromSecond, 0));
+				bubbleChartData.add(new BubbleDataContainer(subclassFromFirst,
+						subclassFromSecond, 0));
 			}
 		}
 		return bubbleChartData;

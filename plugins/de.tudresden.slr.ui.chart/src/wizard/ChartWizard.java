@@ -63,7 +63,7 @@ public class ChartWizard extends Wizard {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		view.setChart(myChart);
+		view.setAndRenderChart(myChart);
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().showView(chartViewId);

@@ -30,6 +30,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class ChartView extends ViewPart implements ICommunicationView {
 
 	public ChartView() {
+
 	}
 
 	private IDeviceRenderer idr = null;
@@ -37,7 +38,7 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	private Composite _parent;
 	private PaintListener p = null;
 	private Term previousTerm = null;
-	private Text text = null;
+	private Text noDataToShowText = null;
 
 	/***
 	 * This listener handles the reaction to the selection of an element in the
@@ -60,14 +61,14 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
-					text.setVisible(false);
+					noDataToShowText.setVisible(false);
 					myChart = BarChartGenerator.createBar(myValues);
 					_parent.setRedraw(false);
-					setChart(myChart);
+					setAndRenderChart(myChart);
 					_parent.setRedraw(true);
 					_parent.redraw();
 				} else {
-					text.setVisible(true);
+					noDataToShowText.setVisible(true);
 					_parent.removePaintListener(p);
 					_parent.redraw();
 				}
@@ -82,8 +83,9 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	public void createPartControl(Composite parent) {
 		_parent = parent;
 		getSite().getPage().addSelectionListener(listener);
-		text = new Text(_parent, SWT.CENTER);
-		text.setText("There is no Data to display. Try selecting a Term with subclasses.");
+		noDataToShowText = new Text(_parent, SWT.CENTER);
+		noDataToShowText
+				.setText("There is no Data to display. Try selecting a Term with subclasses.");
 	}
 
 	private SortedMap<String, Integer> getNumberOfPapersPerClass(Term inputTerm) {
@@ -133,8 +135,15 @@ public class ChartView extends ViewPart implements ICommunicationView {
 		});
 	}
 
+	/**
+	 * @return the text
+	 */
+	public Text getNoDataToShowText() {
+		return noDataToShowText;
+	}
+
 	@Override
-	public void setChart(Chart parameter) {
+	public void setAndRenderChart(Chart parameter) {
 
 		this.myChart = parameter;
 		renderChart(_parent, myChart);
@@ -146,5 +155,12 @@ public class ChartView extends ViewPart implements ICommunicationView {
 		getSite().getPage().removeSelectionListener(listener);
 		if (p != null)
 			_parent.removePaintListener(p);
+
+	}
+
+	@Override
+	public void redraw() {
+		_parent.redraw();
+
 	}
 }

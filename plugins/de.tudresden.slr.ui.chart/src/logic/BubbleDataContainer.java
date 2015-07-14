@@ -2,7 +2,7 @@ package logic;
 
 import de.tudresden.slr.model.taxonomy.Term;
 
-public class BubbleChartDataContainer {
+public class BubbleDataContainer {
 
 	private Term xTerm;
 	private Term yTerm;
@@ -42,7 +42,7 @@ public class BubbleChartDataContainer {
 		this.bubbleSize = bubbleSize;
 	}
 
-	public BubbleChartDataContainer(Term xTerm, Term yTerm, int bubbleSize) {
+	public BubbleDataContainer(Term xTerm, Term yTerm, int bubbleSize) {
 		super();
 		this.xTerm = xTerm;
 		this.yTerm = yTerm;

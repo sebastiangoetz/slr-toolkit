@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import logic.BubbleChartDataContainer;
+import logic.BubbleDataContainer;
 
 import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
@@ -40,6 +42,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class TaxonomyBubbleChart {
 
 	private Map<Term, Integer> scriptMappings;
+	Map<Term, List<BubbleDataContainer>> ySeriesMap;
 
 	public TaxonomyBubbleChart() {
 
@@ -52,18 +55,14 @@ public class TaxonomyBubbleChart {
 	 * @return a new TaxonomyBubbleChart
 	 */
 
-	public final Chart createBubble(List<BubbleChartDataContainer> input) {
+	public final Chart createBubble(List<BubbleDataContainer> input) {
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
 
 		// This is not working, maybe i have to do it in javascript?
-		// sdX.getGrouping().setEnabled(true);
-		// sdX.getGrouping().setAggregateExpression("Sum");
-		// sdX.getGrouping().setGroupType(DataType.TEXT_LITERAL);
-		// sdX.getGrouping().setGroupingInterval(1);
 
-		// cwaBubble.setScript(
-		//				 "function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
+		// cwaBubble
+		//				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
 		// + "{if (label.getCaption( ).getValue( ) == 10)"
 		// + "{label.getCaption().setValue("
 		// + formatForJS(kat21)
@@ -89,7 +88,8 @@ public class TaxonomyBubbleChart {
 				ColorDefinitionImpl.create(255, 255, 225));
 
 		// Title
-		cwaBubble.getTitle().getLabel().getCaption().setValue("Bubble Chart"); //$NON-NLS-1$
+		cwaBubble.getTitle().getLabel().getCaption()
+				.setValue("Sub class comparison"); //$NON-NLS-1$
 
 		// Legend
 		Legend lg = cwaBubble.getLegend();
@@ -111,20 +111,6 @@ public class TaxonomyBubbleChart {
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
-		scriptMappings = new HashMap<Term, Integer>();
-		createScriptMappings(input);
-		List<String> xValues = new ArrayList<>();
-		List<BubbleEntry> yValues = new ArrayList<>();
-		createXandYValues(input, xValues, yValues);
-
-		TextDataSet categoryValues = TextDataSetImpl.create(xValues);
-		BubbleDataSet values1 = BubbleDataSetImpl.create(yValues);
-		// new BubbleEntry[] {
-		// new BubbleEntry(Integer.valueOf(10), Integer.valueOf(100)),
-		// new BubbleEntry(Integer.valueOf(20), Integer.valueOf(200))
-		//
-		// });
-
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
 		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
@@ -139,42 +125,74 @@ public class TaxonomyBubbleChart {
 		cwaBubble.setSampleData(sd);
 
 		// X-Series
-		Series seCategory = SeriesImpl.create();
-		seCategory.setDataSet(categoryValues);
 
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
+		scriptMappings = new HashMap<Term, Integer>();
+		createScriptMappingsForYAxis(input);
+		List<String> xValues = createXLabels(input);
+
+		Series seCategory = SeriesImpl.create();
+		TextDataSet categoryValues = TextDataSetImpl.create(xValues);
+		seCategory.setDataSet(categoryValues);
 		sdX.getSeriesPalette().shift(0);
-
-		// Y-Series
-		BubbleSeries bs1 = (BubbleSeries) BubbleSeriesImpl.create();
-		bs1.setDataSet(values1);
-
-		bs1.getLabel().setVisible(true);
+		xAxisPrimary.getSeriesDefinitions().add(sdX);
+		sdX.getSeries().add(seCategory);
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		sdY.getSeriesPalette().shift(-1);
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
-		sdY.getSeries().add(bs1);
 
-		sdX.getSeries().add(seCategory);
-
-		xAxisPrimary.getSeriesDefinitions().add(sdX);
+		ySeriesMap = createYSeriesMap(input);
+		addSeries(ySeriesMap, sdY);
 		return cwaBubble;
 	}
 
-	private void createXandYValues(List<BubbleChartDataContainer> input,
-			List<String> xValues, List<BubbleEntry> yValues) {
-		for (BubbleChartDataContainer b : input) {
+	private List<String> createXLabels(List<BubbleDataContainer> input) {
+		SortedSet<String> xValues = new TreeSet<>();
+		for (BubbleDataContainer b : input) {
 			xValues.add(b.getxTerm().getName());
-			yValues.add(new BubbleEntry(Integer.valueOf(scriptMappings.get(b
-					.getyTerm())), Integer.valueOf(b.getBubbleSize())));
+		}
+		return new ArrayList<String>(xValues);
+
+	}
+
+	private Map<Term, List<BubbleDataContainer>> createYSeriesMap(
+			List<BubbleDataContainer> input) {
+		Map<Term, List<BubbleDataContainer>> yMap = new HashMap<>();
+		for (BubbleDataContainer b : input) {
+			if (yMap.get(b.getyTerm()) == null) {
+				yMap.put(b.getyTerm(), new ArrayList<BubbleDataContainer>());
+			}
+			if (yMap.containsKey(b.getyTerm())) {
+				yMap.get(b.getyTerm()).add(b);
+
+			}
+		}
+
+		return yMap;
+	}
+
+	private void addSeries(Map<Term, List<BubbleDataContainer>> yMap,
+			SeriesDefinition sdY) {
+		for (Term t : yMap.keySet()) {
+			List<BubbleEntry> yValues = new ArrayList<>();
+			for (BubbleDataContainer b : yMap.get(t)) {
+				// I need to retrieve the Mapping from yTerm to Integer here
+				yValues.add(new BubbleEntry(Integer.valueOf(scriptMappings
+						.get(b.getyTerm())), Integer.valueOf(b.getBubbleSize())));
+			}
+			BubbleDataSet values = BubbleDataSetImpl.create(yValues);
+			BubbleSeries bs = (BubbleSeries) BubbleSeriesImpl.create();
+			bs.getLabel().setVisible(true);
+			bs.setDataSet(values);
+			sdY.getSeries().add(bs);
 
 		}
 	}
 
-	private void createScriptMappings(List<BubbleChartDataContainer> input) {
+	private void createScriptMappingsForYAxis(List<BubbleDataContainer> input) {
 		int i = 1;
-		for (BubbleChartDataContainer b : input) {
+		for (BubbleDataContainer b : input) {
 			Term yCandidate = b.getyTerm();
 			int mapping = scriptMappings.containsKey(yCandidate) ? scriptMappings
 					.get(yCandidate) : i;

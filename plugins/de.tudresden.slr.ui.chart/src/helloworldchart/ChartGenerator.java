@@ -13,7 +13,7 @@ package helloworldchart;
 
 import java.util.List;
 
-import logic.BubbleChartDataContainer;
+import logic.BubbleDataContainer;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
@@ -134,7 +134,7 @@ public class ChartGenerator {
 
 	}
 
-	public final static Chart createBubble(List<BubbleChartDataContainer> input) {
+	public final static Chart createBubble(List<BubbleDataContainer> input) {
 
 		return new TaxonomyBubbleChart().createBubble(input);
 	}
