@@ -80,6 +80,13 @@ public class BibtexResourceImpl extends ResourceImpl {
 		super(uri);
 	}
 
+	private String safeGetField(BibTeXEntry entry, Key key) {
+		if (entry.getField(key) != null) {
+			return entry.getField(key).toUserString();
+		}
+		return "";
+	}
+
 	@Override
 	protected void doLoad(InputStream inputStream, Map<?, ?> options)
 			throws IOException {
@@ -88,68 +95,36 @@ public class BibtexResourceImpl extends ResourceImpl {
 				inputStream))) {
 			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parse(reader);
+			Map<Key, BibTeXEntry> entryMap = db.getEntries();
 
-			for (BibTeXObject bto : db.getObjects()) {
-				if (bto instanceof BibTeXEntry) {
-					BibTeXEntry entry = (BibTeXEntry) bto;
-					Document document = BibtexFactory.eINSTANCE
-							.createDocument();
+			for (BibTeXEntry entry : entryMap.values()) {
+				Document document = BibtexFactory.eINSTANCE.createDocument();
 
-					document.setKey(entry.getKey().toString());
-					document.setType(entry.getType().toString());
+				document.setKey(entry.getKey().toString());
+				document.setType(entry.getType().toString());
 
-					// TODO refactor, cleaner smaller code
+				// TODO refactor, cleaner smaller code
 
-					if (entry.getField(KEY_TITLE) != null) {
-						document.setTitle(entry.getField(KEY_TITLE)
-								.toUserString());
-					}
-					if (entry.getField(KEY_CITES) != null) {
-						document.setCites(Integer.parseInt(entry.getField(
-								KEY_CITES).toUserString()));
-					}
-					if (entry.getField(KEY_YEAR) != null) {
-						document.setYear(entry.getField(KEY_YEAR)
-								.toUserString());
-					}
-					if (entry.getField(KEY_MONTH) != null) {
-						document.setMonth(entry.getField(KEY_MONTH)
-								.toUserString());
-					}
-					if (entry.getField(KEY_AUTHOR) != null) {
-						String unparsedAuthors = entry.getField(KEY_AUTHOR)
-								.toUserString().replaceAll("\r", "");
-						String authors = parseLaTeX(unparsedAuthors);
-
-						document.setUnparsedAuthors(unparsedAuthors);
-						for (String author : authors.split(" and ")) {
-							document.getAuthors().add(author);
-						}
-					}
-					if (entry.getField(KEY_DOI) != null) {
-						document.setDoi(entry.getField(KEY_DOI).toUserString());
-					}
-					if (entry.getField(KEY_URL) != null) {
-						document.setUrl(entry.getField(KEY_URL).toUserString());
-					}
-					if (entry.getField(KEY_ABSTRACT) != null) {
-						document.setAbstract(entry.getField(KEY_ABSTRACT)
-								.toUserString());
-					}
-					if (entry.getField(KEY_FILE) != null) {
-						document.setFile(entry.getField(KEY_FILE)
-								.toUserString());
-					}
-					if (entry.getField(KEY_CLASSES) != null) {
-						Model model = parseClasses(entry.getField(KEY_CLASSES)
-								.toUserString());
-						document.setTaxonomy(model);
-					} else {
-						document.setTaxonomy(TaxonomyFactory.eINSTANCE
-								.createModel());
-					}
-					getContents().add(document);
+				document.setTitle(safeGetField(entry, KEY_TITLE));
+				document.setCites(Integer.parseInt(safeGetField(entry,
+						KEY_CITES)));
+				document.setYear(safeGetField(entry, KEY_YEAR));
+				document.setMonth(safeGetField(entry, KEY_MONTH));
+				String unparsedAuthors = safeGetField(entry, KEY_AUTHOR)
+						.replaceAll("\r", "");
+				document.setUnparsedAuthors(unparsedAuthors);
+				String authors = parseLaTeX(unparsedAuthors);
+				for (String author : authors.split(" and ")) {
+					document.getAuthors().add(author);
 				}
+				document.setDoi(safeGetField(entry, KEY_DOI));
+				document.setUrl(safeGetField(entry, KEY_URL));
+				document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
+				document.setFile(safeGetField(entry, KEY_FILE));
+				Model model = parseClasses(safeGetField(entry, KEY_CLASSES));
+				document.setTaxonomy(model);
+
+				getContents().add(document);
 			}
 		} catch (TokenMgrException | ParseException e) {
 			// TODO Auto-generated catch block
@@ -158,6 +133,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 	}
 
 	private Model parseClasses(String string) {
+		if (string.isEmpty()) {
+			return TaxonomyFactory.eINSTANCE.createModel();
+		}
 		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
 		Injector injector = setup.createInjectorAndDoEMFRegistration();
 		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
@@ -238,8 +216,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 					Style.BRACED));
 		}
 		if (doc.getCites() > 0) {
-			result.addField(KEY_CITES, new StringValue("" + doc.getCites(),
-					Style.BRACED));
+			result.addField(KEY_CITES,
+					new StringValue(Integer.toString(doc.getCites()),
+							Style.BRACED));
 		}
 
 		if (doc.getFile() != null && !doc.getFile().isEmpty()) {
