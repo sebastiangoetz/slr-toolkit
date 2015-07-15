@@ -103,11 +103,12 @@ public class BibtexResourceImpl extends ResourceImpl {
 				document.setKey(entry.getKey().toString());
 				document.setType(entry.getType().toString());
 
-				// TODO refactor, cleaner smaller code
-
 				document.setTitle(safeGetField(entry, KEY_TITLE));
-				document.setCites(Integer.parseInt(safeGetField(entry,
-						KEY_CITES)));
+				try {
+					document.setCites(Integer.parseInt(safeGetField(entry,
+							KEY_CITES)));
+				} catch (NumberFormatException e) {
+				}
 				document.setYear(safeGetField(entry, KEY_YEAR));
 				document.setMonth(safeGetField(entry, KEY_MONTH));
 				String unparsedAuthors = safeGetField(entry, KEY_AUTHOR)
@@ -121,8 +122,8 @@ public class BibtexResourceImpl extends ResourceImpl {
 				document.setUrl(safeGetField(entry, KEY_URL));
 				document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
 				document.setFile(safeGetField(entry, KEY_FILE));
-				Model model = parseClasses(safeGetField(entry, KEY_CLASSES));
-				document.setTaxonomy(model);
+				document.setTaxonomy(parseClasses(safeGetField(entry,
+						KEY_CLASSES)));
 
 				getContents().add(document);
 			}
