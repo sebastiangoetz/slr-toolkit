@@ -1,3 +1,5 @@
+import java.io.File;
+
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
@@ -33,7 +35,7 @@ public class SaveAsPDFHandler implements IHandler {
 				HandlerUtil.getActiveShell(event), SWT.OPEN);
 		String result = dialog.open();
 		ICommunicationView view = (ICommunicationView) part;
-		view.generatePDFForCurrentChart(result + "\\output.pdf");
+		view.generatePDFForCurrentChart(result + File.separator + "output.pdf");
 		view.redraw();
 
 		return null;
