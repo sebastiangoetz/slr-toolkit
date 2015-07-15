@@ -55,14 +55,24 @@ public class TaxonomyBubbleChart {
 	 * @return a new TaxonomyBubbleChart
 	 */
 
+	private String createScriptString(Map<Term, Integer> scriptMappings) {
+
+		String output = "function beforeDrawAxisLabel(axis, label, scriptContext){";
+		for (Term t : scriptMappings.keySet()) {
+			output += "if (label.getCaption( ).getValue( ) == "
+					+ formatForJS(String.valueOf(scriptMappings.get(t))) + ")"
+					+ "{label.getCaption().setValue("
+					+ formatForJS(t.getName()) + " )}";
+		}
+		output += "}\n";
+		return output;
+	}
+
 	public final Chart createBubble(List<BubbleDataContainer> input) {
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
 
-		// This is not working, maybe i have to do it in javascript?
-
-		// cwaBubble
-		//				.setScript("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
+		//		 ("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
 		// + "{if (label.getCaption( ).getValue( ) == 10)"
 		// + "{label.getCaption().setValue("
 		// + formatForJS(kat21)
@@ -129,6 +139,11 @@ public class TaxonomyBubbleChart {
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
 		scriptMappings = new HashMap<Term, Integer>();
 		createScriptMappingsForYAxis(input);
+
+		// Set script for Chart
+
+		cwaBubble.setScript(createScriptString(scriptMappings));
+
 		List<String> xValues = createXLabels(input);
 
 		Series seCategory = SeriesImpl.create();
