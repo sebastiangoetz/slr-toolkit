@@ -11,9 +11,11 @@
             category="de.tudresden.slr.wizards.slr"
             class="de.tudresden.slr.wizards.NewSlrProjectWizard"
             finalPerspective="de.tudresden.slr.ui.perspective.perspective"
+            hasPages="true"
             icon="icons/newslrprj_wiz.gif"
             id="de.tudresden.slr.wizards.newSlrProject"
-            name="SLR Project">
+            name="SLR Project"
+            project="true">
       </wizard>
       <wizard
             category="de.tudresden.slr.wizards.slr"
