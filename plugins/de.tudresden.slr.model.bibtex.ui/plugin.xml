@@ -16,20 +16,6 @@
       </view>
    </extension>
    <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <view
-               id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
-               ratio="0.5"
-               relationship="stack"
-               relative="org.eclipse.jdt.ui.PackageExplorer"
-               showTitle="true"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor"
