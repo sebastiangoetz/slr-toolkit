@@ -62,6 +62,6 @@ public abstract class WizardSetupPage extends WizardPage {
 	}
 
 	public String getFilePath() {
-		return textField.getText();
+		return textField.getText().trim();
 	}
 }

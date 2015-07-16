@@ -16,4 +16,10 @@ public class WizardSetupTaxonomyPage extends WizardSetupPage {
 		label.setText("Taxonomy file name");
 		textField.setText("my_taxonomy.taxonomy");
 	}
+
+	@Override
+	public String getFilePath() {
+		String result = super.getFilePath();
+		return result.isEmpty() ? "my_taxonomy.taxonomy" : result;
+	}
 }

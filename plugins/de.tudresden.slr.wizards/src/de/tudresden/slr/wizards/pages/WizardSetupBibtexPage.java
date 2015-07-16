@@ -16,4 +16,10 @@ public class WizardSetupBibtexPage extends WizardSetupPage {
 		label.setText("BibTeX file name");
 		textField.setText("my_bibtex.bib");
 	}
+
+	@Override
+	public String getFilePath() {
+		String result = super.getFilePath();
+		return result.isEmpty() ? "my_bibtex.bib" : result;
+	}
 }
