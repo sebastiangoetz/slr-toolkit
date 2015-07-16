@@ -22,8 +22,6 @@
 <repository location="http://download.eclipse.org/birt/update-site/4.4"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.mockito" version="1.9.5.v201311280930"/>
-<unit id="org.mockito.source" version="1.9.5.v201311280930"/>
 <unit id="org.junit" version="4.11.0.v201303080030"/>
 <unit id="org.junit.source" version="4.11.0.v201303080030"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
