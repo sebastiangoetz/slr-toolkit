@@ -3,6 +3,7 @@ package view;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import logic.BarChartGenerator;
 import logic.ChartDataProvider;
 
 import org.eclipse.birt.chart.api.ChartEngine;
@@ -19,11 +20,9 @@ import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
@@ -39,11 +38,12 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	}
 
 	private IDeviceRenderer idr = null;
+	private Canvas paintCanvas;
 	private Chart myChart = null;
+	private ChartPreview preview;
 	private Composite _parent;
-	private PaintListener p = null;
 	private Term previousTerm = null;
-	private Text noDataToShowText = null;
+	private final String noDataToDisplay = "There is no Data to display at the moment.\n Try clicking a Term with subclasses.";
 
 	/***
 	 * This listener handles the reaction to the selection of an element in the
@@ -66,17 +66,13 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
-					noDataToShowText.setVisible(false);
 					myChart = BarChartGenerator.createBar(myValues);
-					_parent.setRedraw(false);
-					setAndRenderChart(myChart);
-					_parent.setRedraw(true);
-					_parent.redraw();
+					preview.setDataPresent(true);
 				} else {
-					noDataToShowText.setVisible(true);
-					_parent.removePaintListener(p);
-					_parent.redraw();
+					preview.setTextToShow(noDataToDisplay);
+					preview.setDataPresent(false);
 				}
+				setAndRenderChart(myChart);
 				previousTerm = termToPresent;
 
 			}
@@ -88,9 +84,11 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	public void createPartControl(Composite parent) {
 		_parent = parent;
 		getSite().getPage().addSelectionListener(listener);
-		noDataToShowText = new Text(_parent, SWT.CENTER);
-		noDataToShowText
-				.setText("There is no Data to display. Try selecting a Term with subclasses.");
+		// noDataToShowText = new Text(_parent, SWT.CENTER);
+		// noDataToShowText
+		// .setText("There is no Data to display. Try selecting a Term with subclasses.");
+		setUpDrawing(parent);
+
 	}
 
 	private SortedMap<String, Integer> getNumberOfPapersPerClass(Term inputTerm) {
@@ -106,41 +104,24 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 	}
 
-	private void renderChart(Composite parent, Chart chart) {
-		// INITIALIZE THE SWT RENDERING DEVICE
-		PlatformConfig config = new PlatformConfig();
-		try {
-			idr = ChartEngine.instance(config).getRenderer("dv.SWT");
-		} catch (ChartException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		parent.addPaintListener(p = new PaintListener() {
+	private void setUpDrawing(Composite parent) {
+		// preview canvas
 
-			@Override
-			public void paintControl(PaintEvent pe) {
-				idr.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, pe.gc);
-				Composite co = (Composite) pe.getSource();
-				Rectangle re = co.getClientArea();
-				// BOUNDS MUST BE SPECIFIED IN POINTS
-				Bounds bo = BoundsImpl.create(re.x, re.y, re.width, re.height);
-				// BUILD AND RENDER THE CHART
-				bo.scale(72d / idr.getDisplayServer().getDpiResolution());
-
-				Generator gr = Generator.instance();
-				try {
-					gr.render(idr,
-							gr.build(idr.getDisplayServer(), myChart, bo, null));
-				} catch (ChartException gex) {
-					gex.printStackTrace();
-				}
-
-			}
-		});
+		paintCanvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE);
+		paintCanvas.setBackground(Display.getDefault().getSystemColor(
+				SWT.COLOR_BLACK));
+		preview = new ChartPreview();
+		paintCanvas.addPaintListener(preview);
+		paintCanvas.addControlListener(preview);
+		preview.setPreview(paintCanvas);
+		preview.setDataPresent(false);
+		preview.setTextToShow(noDataToDisplay);
 	}
 
 	public void generatePDFForCurrentChart(String output) {
 		generatePDFOutput(myChart, output);
+		// here I call the render method again to show the chart after
+		// outputting it
 		setAndRenderChart(myChart);
 	}
 
@@ -180,32 +161,28 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 	}
 
-	/**
-	 * @return the text
-	 */
-	public Text getNoDataToShowText() {
-		return noDataToShowText;
-	}
-
 	@Override
 	public void setAndRenderChart(Chart parameter) {
 
 		this.myChart = parameter;
-		renderChart(_parent, myChart);
+		preview.renderModel(parameter);
+		// renderChart(_parent, myChart);
 
 	}
 
 	@Override
 	public void dispose() {
 		getSite().getPage().removeSelectionListener(listener);
-		if (p != null)
-			_parent.removePaintListener(p);
-
 	}
 
 	@Override
 	public void redraw() {
 		_parent.redraw();
 
+	}
+
+	@Override
+	public ChartPreview getPreview() {
+		return preview;
 	}
 }

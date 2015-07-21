@@ -1,4 +1,4 @@
-package view;
+package logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import logic.BubbleDataContainer;
 
 import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
@@ -56,7 +54,17 @@ public class TaxonomyBubbleChart {
 	 */
 
 	private String createScriptString(Map<Term, Integer> scriptMappings) {
+		// This affects the size of the bubbles, have to try this out
 
+		String bubbleSize = "function afterComputations( chart, plotComputation ) "
+				+ "{ importPackage(Packages.java.lang); var xAxis = chart.getAxes().get(0);"
+				+ "var yAxis = xAxis.getAssociatedAxes().get(0);"
+				+ "var xSerieDef = xAxis.getSeriesDefinitions().get(0);"
+				+ "var ySerieDef = yAxis.getSeriesDefinitions().get(0);"
+				+ "var ySerie = ySerieDef.getRunTimeSeries().get(0);"
+				+ "var dpa = plotComputation.getSeriesRenderingHints(ySerieDef,ySerie).getDataPoints();"
+				+ "for( ii =0; ii<dpa.length; ii++ ){var csize = dpa[ii].getOrthogonalValue().getSize();"
+				+ "dpa[ii].getOrthogonalValue().setSize( Double.parseDouble( csize)*.3);}}";
 		String output = "function beforeDrawAxisLabel(axis, label, scriptContext){";
 		for (Term t : scriptMappings.keySet()) {
 			output += "if (label.getCaption( ).getValue( ) == "
@@ -64,29 +72,13 @@ public class TaxonomyBubbleChart {
 					+ "{label.getCaption().setValue("
 					+ formatForJS(t.getName()) + " )}";
 		}
-		output += "}\n";
+		output += "}\n"; // bubbleSize;
 		return output;
 	}
 
 	public final Chart createBubble(List<BubbleDataContainer> input) {
 
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
-
-		//		 ("function beforeDrawAxisLabel(axis, label, scriptContext)" //$NON-NLS-1$
-		// + "{if (label.getCaption( ).getValue( ) == 10)"
-		// + "{label.getCaption().setValue("
-		// + formatForJS(kat21)
-		// + " )}"
-		// + "if (label.getCaption( ).getValue( ) == 20)"
-		// + "{label.getCaption().setValue("
-		// + formatForJS(kat22)
-		// + " )}"
-		// + "if (label.getCaption( ).getValue( ) == 0)"
-		// + "{label.getCaption().setValue(\"\")}"
-		// + "if (label.getCaption( ).getValue( ) == 30)"
-		// + "{label.getCaption().setValue(\"\")}"
-		// // + "label.getCaption( ).getFont( ).setSize(7);"
-		// + "}\n");
 
 		cwaBubble.setType("Bubble Chart"); //$NON-NLS-1$
 		cwaBubble.setSubType("Standard Bubble Chart"); //$NON-NLS-1$

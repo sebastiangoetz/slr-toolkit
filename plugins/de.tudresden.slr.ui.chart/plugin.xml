@@ -25,7 +25,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="SaveAsPDFHandler"
+            defaultHandler="handlers.SaveAsPDFHandler"
             id="de.tudresden.slr.ui.chart.savechartaspdf"
             name="Save as PDF">
       </command>
