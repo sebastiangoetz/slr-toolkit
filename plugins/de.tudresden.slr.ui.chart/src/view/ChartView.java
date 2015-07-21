@@ -84,9 +84,6 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	public void createPartControl(Composite parent) {
 		_parent = parent;
 		getSite().getPage().addSelectionListener(listener);
-		// noDataToShowText = new Text(_parent, SWT.CENTER);
-		// noDataToShowText
-		// .setText("There is no Data to display. Try selecting a Term with subclasses.");
 		setUpDrawing(parent);
 
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import logic.BubbleDataContainer;
 import logic.ChartDataProvider;
+import logic.ChartGenerator;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -17,13 +18,14 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import view.ChartGenerator;
 import view.ICommunicationView;
 import de.tudresden.slr.model.taxonomy.Term;
 
 public class CreateBubbleChartHandler implements IHandler {
 
 	private final String chartViewId = "chart.view.chartview";
+	private ICommunicationView view;
+	private String noDataToDisplay = "Could not create a bubble chart. \n Try to select two Terms with subclasses.";
 
 	@Override
 	public void dispose() {
@@ -38,10 +40,6 @@ public class CreateBubbleChartHandler implements IHandler {
 			return null;
 		} else {
 			IStructuredSelection currentSelection = (IStructuredSelection) sel;
-			if (currentSelection.isEmpty() || currentSelection.size() > 2) {
-				return null;
-			}
-			ChartDataProvider provider = new ChartDataProvider();
 			IViewPart part = null;
 			try {
 				part = HandlerUtil.getActiveWorkbenchWindow(event)
@@ -50,16 +48,21 @@ public class CreateBubbleChartHandler implements IHandler {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			ICommunicationView view = (ICommunicationView) part;
-			Iterator<Term> selectionIterator = currentSelection.iterator();
-			List<BubbleDataContainer> bubbleChartData = provider
-					.calculateBubbleChartData(selectionIterator.next(),
-							selectionIterator.next());
-			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData);
-			view.setAndRenderChart(bubbleChart);
-			view.getNoDataToShowText().setVisible(false);
-			view.redraw();
+			view = (ICommunicationView) part;
+			view.getPreview().setTextToShow(noDataToDisplay);
+			if (currentSelection.size() == 2) {
+				ChartDataProvider provider = new ChartDataProvider();
+				Iterator<Term> selectionIterator = currentSelection.iterator();
+				List<BubbleDataContainer> bubbleChartData = provider
+						.calculateBubbleChartData(selectionIterator.next(),
+								selectionIterator.next());
+				Chart bubbleChart = ChartGenerator
+						.createBubble(bubbleChartData);
+				view.setAndRenderChart(bubbleChart);
+				return null;
+			} else {
+				view.setAndRenderChart(null);
+			}
 			return null;
 		}
 	}

@@ -115,11 +115,11 @@ public class ChartPreview implements PaintListener, ControlListener {
 					SWT.COLOR_WHITE));
 			gc.fillRectangle(buffer.getBounds());
 
-			// final Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,
-			// adjustedRe.width - 2 * X_OFFSET, adjustedRe.height - 2
-			// * Y_OFFSET);
-			final Bounds bo = BoundsImpl
-					.create(re.x, re.y, re.width, re.height);
+			final Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,
+					adjustedRe.width - 2 * X_OFFSET, adjustedRe.height - 2
+							* Y_OFFSET);
+			// final Bounds bo = BoundsImpl
+			// .create(re.x, re.y, re.width, re.height);
 
 			IDeviceRenderer deviceRenderer = null;
 			try {
