@@ -15,6 +15,8 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -35,36 +37,46 @@ public class CreateBubbleChartHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISelection sel = HandlerUtil.getCurrentSelectionChecked(event);
-		if (!(sel instanceof IStructuredSelection)) {
-			return null;
-		} else {
-			IStructuredSelection currentSelection = (IStructuredSelection) sel;
-			IViewPart part = null;
-			try {
-				part = HandlerUtil.getActiveWorkbenchWindow(event)
-						.getActivePage().showView(chartViewId);
-			} catch (PartInitException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			view = (ICommunicationView) part;
-			view.getPreview().setTextToShow(noDataToDisplay);
-			if (currentSelection.size() == 2) {
-				ChartDataProvider provider = new ChartDataProvider();
-				Iterator<Term> selectionIterator = currentSelection.iterator();
-				List<BubbleDataContainer> bubbleChartData = provider
-						.calculateBubbleChartData(selectionIterator.next(),
-								selectionIterator.next());
-				Chart bubbleChart = ChartGenerator
-						.createBubble(bubbleChartData);
-				view.setAndRenderChart(bubbleChart);
-				return null;
-			} else {
-				view.setAndRenderChart(null);
-			}
+		// TODO: seems to be there is some refactoring needed in here
+		ISelection selection = HandlerUtil.getCurrentSelectionChecked(event);
+		if (selection == null || !(selection instanceof IStructuredSelection)) {
 			return null;
 		}
+		IStructuredSelection currentSelection = (IStructuredSelection) selection;
+		IViewPart part = null;
+		try {
+			IWorkbenchWindow window = HandlerUtil
+					.getActiveWorkbenchWindow(event);
+			if (window != null) {
+				IWorkbenchPage page = window.getActivePage();
+				if (page != null) {
+					part = page.showView(chartViewId);
+				}
+			}
+		} catch (PartInitException e) {
+			e.printStackTrace();
+			return null;
+		}
+		if (part instanceof ICommunicationView) {
+			view = (ICommunicationView) part;
+		} else {
+			return null;
+		}
+		view.getPreview().setTextToShow(noDataToDisplay);
+		if (currentSelection.size() == 2) {
+			ChartDataProvider provider = new ChartDataProvider();
+			@SuppressWarnings("unchecked")
+			Iterator<Term> selectionIterator = currentSelection.iterator();
+			Term first = selectionIterator.next();
+			Term second = selectionIterator.next();
+			List<BubbleDataContainer> bubbleChartData = provider
+					.calculateBubbleChartData(first, second);
+			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData);
+			view.setAndRenderChart(bubbleChart);
+		} else {
+			view.setAndRenderChart(null);
+		}
+		return null;
 	}
 
 	@Override
