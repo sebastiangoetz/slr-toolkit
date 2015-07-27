@@ -65,7 +65,16 @@ public class TaxonomyBubbleChart {
 				+ "var dpa = plotComputation.getSeriesRenderingHints(ySerieDef,ySerie).getDataPoints();"
 				+ "for( ii =0; ii<dpa.length; ii++ ){var csize = dpa[ii].getOrthogonalValue().getSize();"
 				+ "dpa[ii].getOrthogonalValue().setSize( Double.parseDouble( csize)*.3);}}";
+
+		// here i get rid of 0 and also the highest value in the script mapping
+		// + 1 so no numbers are displayed on the y-axis
+		int max = scriptMappings.values().stream().max(Integer::compareTo)
+				.orElse(0) + 1;
 		String output = "function beforeDrawAxisLabel(axis, label, scriptContext){";
+		output += "if (label.getCaption( ).getValue( ) == 0) {label.getCaption().setValue(\"\")}"
+				+ "if (label.getCaption( ).getValue( ) == "
+				+ max
+				+ ") {label.getCaption().setValue(\"\")}";
 		for (Term t : scriptMappings.keySet()) {
 			output += "if (label.getCaption( ).getValue( ) == "
 					+ formatForJS(String.valueOf(scriptMappings.get(t))) + ")"

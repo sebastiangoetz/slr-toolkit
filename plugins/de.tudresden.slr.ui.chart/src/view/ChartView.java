@@ -57,8 +57,6 @@ public class ChartView extends ViewPart implements ICommunicationView {
 				return;
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
-
-			// TODO: there is still some flickering when changing the selection
 			if (o instanceof Term && !(o.equals(previousTerm))) {
 
 				SortedMap<String, Integer> myValues = new TreeMap<>();
