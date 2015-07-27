@@ -1,9 +1,7 @@
 package handlers;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
-import logic.BubbleDataContainer;
 import logic.ChartDataProvider;
 import logic.ChartGenerator;
 
@@ -23,11 +21,19 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import view.ICommunicationView;
 import de.tudresden.slr.model.taxonomy.Term;
 
-public class CreateBubbleChartHandler implements IHandler {
+public class CreateCiteHandler implements IHandler {
+
+	// TODO: find a better way to store these strings
 
 	private final String chartViewId = "chart.view.chartview";
 	private ICommunicationView view;
-	private String noDataToDisplay = "Could not create a bubble chart. \n Try to select two Terms with subclasses.";
+	private String noDataToDisplay = "Could not create a cite chart. \n Try to select a single Term.";
+
+	@Override
+	public void addHandlerListener(IHandlerListener handlerListener) {
+		// TODO Auto-generated method stub
+
+	}
 
 	@Override
 	public void dispose() {
@@ -62,18 +68,16 @@ public class CreateBubbleChartHandler implements IHandler {
 		} else {
 			return null;
 		}
+
 		view.getPreview().setTextToShow(noDataToDisplay);
-		if (currentSelection.size() == 2) {
+		if (currentSelection.size() == 1) {
 			view.getPreview().setDataPresent(true);
 			ChartDataProvider provider = new ChartDataProvider();
-			@SuppressWarnings("unchecked")
-			Iterator<Term> selectionIterator = currentSelection.iterator();
-			Term first = selectionIterator.next();
-			Term second = selectionIterator.next();
-			List<BubbleDataContainer> bubbleChartData = provider
-					.calculateBubbleChartData(first, second);
-			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData);
-			view.setAndRenderChart(bubbleChart);
+			Term input = (Term) currentSelection.getFirstElement();
+			Map<String, Integer> citeChartData = provider
+					.calculateNumberOfCitesPerYearForClass(input);
+			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
+			view.setAndRenderChart(citeChart);
 		} else {
 			view.setAndRenderChart(null);
 		}
@@ -82,24 +86,16 @@ public class CreateBubbleChartHandler implements IHandler {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
 
 	}

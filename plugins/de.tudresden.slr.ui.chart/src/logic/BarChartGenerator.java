@@ -45,7 +45,7 @@ import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
 public class BarChartGenerator {
 
-	public final static Chart createBar(Map<String, Integer> input) {
+	public final Chart createBar(Map<String, Integer> input) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();

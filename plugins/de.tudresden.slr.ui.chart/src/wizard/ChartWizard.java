@@ -49,7 +49,7 @@ public class ChartWizard extends Wizard {
 		if (one.getButton1().getSelection()) {
 
 			SortedMap<String, Integer> myValues = new TreeMap<>();
-			myChart = BarChartGenerator.createBar(myValues);
+			myChart = new BarChartGenerator().createBar(myValues);
 		} else if (one.getButton2().getSelection()) {
 			// ChartDataProvider provider = new ChartDataProvider();
 			// myChart = provider.calculateBubbleChartData(firstTerm,

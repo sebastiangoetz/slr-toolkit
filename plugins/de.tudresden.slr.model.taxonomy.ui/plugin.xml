@@ -145,6 +145,11 @@
             id="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
             name="Create BubbleChart">
       </command>
+      <command
+            defaultHandler="handlers.CreateCiteHandler"
+            id="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+            name="Create Cite Bar">
+      </command>
     </extension>
     <extension point="org.eclipse.ui.menus">
         <menuContribution
@@ -195,7 +200,12 @@
                locationURI="toolbar:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
             <command
                   commandId="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
-                  label="Create BubbleChart"
+                  label="Create Bubblechart"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+                  label="Create Cite Barchart"
                   style="push">
             </command>
          </menuContribution>

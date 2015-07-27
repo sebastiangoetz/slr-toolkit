@@ -104,6 +104,24 @@ public class ChartDataProvider {
 		return countOfPapersPerSubTerm;
 	}
 
+	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(
+			Term inputTerm) {
+		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
+		boolean isTermFoundInPaperTaxonomy = false;
+		for (Document d : getDocumentList(resources.get(0))) {
+			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d,
+					inputTerm) != null;
+			if (isTermFoundInPaperTaxonomy) {
+				String year = d.getYear();
+				int count = citesPerYear.containsKey(year) ? citesPerYear
+						.get(year) : 0;
+				citesPerYear.put(year, count + d.getCites());
+
+			}
+		}
+		return citesPerYear;
+	}
+
 	/**
 	 * 
 	 * @param inputList
