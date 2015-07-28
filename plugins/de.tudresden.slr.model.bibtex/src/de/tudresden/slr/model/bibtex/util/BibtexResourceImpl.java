@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,6 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
-import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
 import org.jbibtex.LaTeXObject;
@@ -65,7 +64,6 @@ public class BibtexResourceImpl extends ResourceImpl {
 	private static final Key KEY_ABSTRACT = new Key("abstract");
 	private static final Key KEY_FILE = new Key("file");
 	private static final Key KEY_CITES = new Key("cites");
-
 	private static final Key KEY_CLASSES = new Key("classes");
 
 	/**
@@ -88,48 +86,45 @@ public class BibtexResourceImpl extends ResourceImpl {
 	}
 
 	@Override
-	protected void doLoad(InputStream inputStream, Map<?, ?> options)
-			throws IOException {
+	protected void doLoad(InputStream in, Map<?, ?> options) throws IOException {
 
-		try (Reader reader = new BufferedReader(new InputStreamReader(
-				inputStream))) {
+		Map<Key, BibTeXEntry> entryMap = Collections.emptyMap();
+		try (Reader reader = new BufferedReader(new InputStreamReader(in))) {
 			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parse(reader);
-			Map<Key, BibTeXEntry> entryMap = db.getEntries();
+			entryMap = db.getEntries();
+		} catch (TokenMgrException | ParseException e) {
+			e.printStackTrace();
+		}
+		for (BibTeXEntry entry : entryMap.values()) {
+			Document document = BibtexFactory.eINSTANCE.createDocument();
 
-			for (BibTeXEntry entry : entryMap.values()) {
-				Document document = BibtexFactory.eINSTANCE.createDocument();
-
-				document.setKey(entry.getKey().toString());
-				document.setType(entry.getType().toString());
-
-				document.setTitle(safeGetField(entry, KEY_TITLE));
-				try {
-					document.setCites(Integer.parseInt(safeGetField(entry,
-							KEY_CITES)));
-				} catch (NumberFormatException e) {
-				}
-				document.setYear(safeGetField(entry, KEY_YEAR));
-				document.setMonth(safeGetField(entry, KEY_MONTH));
-				String unparsedAuthors = safeGetField(entry, KEY_AUTHOR)
-						.replaceAll("\r", "");
-				document.setUnparsedAuthors(unparsedAuthors);
-				String authors = parseLaTeX(unparsedAuthors);
-				for (String author : authors.split(" and ")) {
+			document.setKey(entry.getKey().toString());
+			document.setType(entry.getType().toString());
+			document.setTitle(safeGetField(entry, KEY_TITLE));
+			try {
+				int cites = Integer.parseInt(safeGetField(entry, KEY_CITES));
+				document.setCites(cites);
+			} catch (NumberFormatException e) {
+			}
+			document.setYear(safeGetField(entry, KEY_YEAR));
+			document.setMonth(safeGetField(entry, KEY_MONTH));
+			String unparsedAuthors = safeGetField(entry, KEY_AUTHOR)
+					.replaceAll("\r", "");
+			document.setUnparsedAuthors(unparsedAuthors);
+			String authors = parseLaTeX(unparsedAuthors);
+			for (String author : authors.split(" and ")) {
+				if (!author.isEmpty()) {
 					document.getAuthors().add(author);
 				}
-				document.setDoi(safeGetField(entry, KEY_DOI));
-				document.setUrl(safeGetField(entry, KEY_URL));
-				document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
-				document.setFile(safeGetField(entry, KEY_FILE));
-				document.setTaxonomy(parseClasses(safeGetField(entry,
-						KEY_CLASSES)));
-
-				getContents().add(document);
 			}
-		} catch (TokenMgrException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			document.setDoi(safeGetField(entry, KEY_DOI));
+			document.setUrl(safeGetField(entry, KEY_URL));
+			document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
+			document.setFile(safeGetField(entry, KEY_FILE));
+			document.setTaxonomy(parseClasses(safeGetField(entry, KEY_CLASSES)));
+
+			getContents().add(document);
 		}
 	}
 
@@ -142,9 +137,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
 		Resource resource = resourceSet.createResource(URI
 				.createURI("tmp.taxonomy"));
-		try {
-			resource.load(
-					new URIConverter.ReadableInputStream(string, "UTF-8"), null);
+		try (InputStream is = new URIConverter.ReadableInputStream(string,
+				"UTF-8")) {
+			resource.load(is, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -159,9 +154,6 @@ public class BibtexResourceImpl extends ResourceImpl {
 	protected void doSave(OutputStream outputStream, Map<?, ?> options)
 			throws IOException {
 
-		// check if resource is available and load it
-		// check if elements in the resource already exist and renew them
-		// store everything else
 		BibTeXDatabase db = new BibTeXDatabase();
 		ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
 		try (Reader reader = new InputStreamReader(converter.createInputStream(
@@ -174,25 +166,19 @@ public class BibtexResourceImpl extends ResourceImpl {
 			e.printStackTrace();
 		}
 
-		Map<String, BibTeXEntry> entries = new HashMap<>();
-		for (BibTeXObject bto : db.getObjects()) {
-			if (bto instanceof BibTeXEntry) {
-				BibTeXEntry entry = (BibTeXEntry) bto;
-				entries.put(entry.getKey().toString(), entry);
-			}
-		}
-
+		Map<Key, BibTeXEntry> entries = db.getEntries();
 		for (EObject e : getContents()) {
 			if (e instanceof Document) {
 				Document document = (Document) e;
-				if (entries.containsKey(document.getKey())) {
-					BibTeXEntry entry = entries.get(document.getKey());
-					db.removeObject(entry);
-					db.addObject(updateDocument(document, entry));
+				Key key = new Key(document.getKey());
+				if (entries.containsKey(key)) {
+					BibTeXEntry entry = entries.get(key);
+					updateDocument(document, entry);
 				} else {
-					BibTeXEntry entry = new BibTeXEntry(new Key(
-							document.getType()), new Key(document.getKey()));
-					db.addObject(updateDocument(document, entry));
+					Key type = new Key(document.getType());
+					BibTeXEntry entry = new BibTeXEntry(type, key);
+					updateDocument(document, entry);
+					db.addObject(entry);
 				}
 			}
 		}
@@ -203,41 +189,39 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 	}
 
-	private BibTeXEntry updateDocument(Document doc, BibTeXEntry entry) {
-		BibTeXEntry result = new BibTeXEntry(entry.getType(), entry.getKey());
-		result.addAllFields(entry.getFields());
+	private void updateDocument(Document document, BibTeXEntry entry) {
 
-		if (doc.getMonth() != null) {
-			result.addField(KEY_MONTH, new StringValue(doc.getMonth(),
+		if (document.getMonth() != null && !document.getMonth().isEmpty()) {
+			entry.addField(KEY_MONTH, new StringValue(document.getMonth(),
 					Style.QUOTED));
 		}
 
-		if (doc.getAbstract() != null) {
-			result.addField(KEY_ABSTRACT, new StringValue(doc.getAbstract(),
-					Style.BRACED));
+		if (document.getAbstract() != null && !document.getAbstract().isEmpty()) {
+			entry.addField(KEY_ABSTRACT, new StringValue(
+					document.getAbstract(), Style.BRACED));
 		}
-		if (doc.getCites() > 0) {
-			result.addField(KEY_CITES,
-					new StringValue(Integer.toString(doc.getCites()),
+		if (document.getCites() > 0) {
+			entry.addField(KEY_CITES,
+					new StringValue(Integer.toString(document.getCites()),
 							Style.BRACED));
 		}
 
-		if (doc.getFile() != null && !doc.getFile().isEmpty()) {
-			result.addField(KEY_FILE, new StringValue(doc.getFile(),
+		if (document.getFile() != null && !document.getFile().isEmpty()) {
+			entry.addField(KEY_FILE, new StringValue(document.getFile(),
 					Style.BRACED));
 		}
 
-		if (!doc.getAuthors().isEmpty()) {
-			result.addField(KEY_AUTHOR,
-					new StringValue(doc.getUnparsedAuthors(), Style.BRACED));
+		if (!document.getAuthors().isEmpty()) {
+			entry.addField(
+					KEY_AUTHOR,
+					new StringValue(document.getUnparsedAuthors(), Style.BRACED));
 		}
 
-		if (doc.getTaxonomy() != null) {
-			result.addField(KEY_CLASSES, new StringValue(serializeTaxonomy(doc
-					.getTaxonomy().getDimensions()), Style.BRACED));
+		if (!document.getTaxonomy().getDimensions().isEmpty()) {
+			entry.addField(KEY_CLASSES, new StringValue(
+					serializeTaxonomy(document.getTaxonomy().getDimensions()),
+					Style.BRACED));
 		}
-
-		return result;
 	}
 
 	private String serializeTaxonomy(EList<Term> dimensions) {
