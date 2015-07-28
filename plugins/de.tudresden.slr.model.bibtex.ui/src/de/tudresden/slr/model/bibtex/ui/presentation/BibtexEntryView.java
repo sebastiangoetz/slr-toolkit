@@ -1,17 +1,11 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.EventObject;
-import java.util.LinkedList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
@@ -44,7 +38,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -69,8 +62,7 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
  * @author Manuel Brauer
  */
 
-public class BibtexEntryView extends ViewPart implements
-		IResourceChangeListener {
+public class BibtexEntryView extends ViewPart {
 
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
@@ -154,14 +146,12 @@ public class BibtexEntryView extends ViewPart implements
 		hookContextMenu();
 		hookActions();
 		contributeToActionBars();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 
 		if (projectName != null) {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot()
 					.getProject(projectName);
 			combo.setSelection(new StructuredSelection(project));
 		}
-
 	}
 
 	/**
@@ -419,11 +409,6 @@ public class BibtexEntryView extends ViewPart implements
 		viewer.addSelectionChangedListener(selectionListener);
 	}
 
-	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(),
-				BibtexEntryView.this.getTitle(), message);
-	}
-
 	private boolean requestConfirmation(String message) {
 		return MessageDialog.openConfirm(viewer.getControl().getShell(),
 				BibtexEntryView.this.getTitle(), message);
@@ -435,72 +420,5 @@ public class BibtexEntryView extends ViewPart implements
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
-
-	}
-
-	@Override
-	public void resourceChanged(IResourceChangeEvent event) {
-		if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-			reloadSources(event.getDelta());
-			// for (Resource resource : editingDomain.getResourceSet()
-			// .getResources()) {
-			// resource.unload();
-			// try {
-			// resource.load(Collections.emptyMap());
-			// } catch (IOException e) {
-			// e.printStackTrace();
-			// }
-			// }
-		}
-		Display.getDefault().asyncExec(() -> {
-			viewer.setInput(editingDomain.getResourceSet());
-			// viewer.refresh();
-			});
-
-	}
-
-	/**
-	 * unload and load only affected resources, not all resources.
-	 * 
-	 * @param delta
-	 *            top level delta from the {@link IResourceChangeEvent}
-	 */
-	private void reloadSources(IResourceDelta delta) {
-		LinkedList<IResourceDelta> result = new LinkedList<IResourceDelta>();
-		result.add(delta);
-		do {
-			IResourceDelta marchingDelta = result.removeFirst();
-			if (marchingDelta.getAffectedChildren() != null
-					&& marchingDelta.getAffectedChildren().length > 0) {
-				// we are only interested in the affected files
-				for (IResourceDelta deltaChild : marchingDelta
-						.getAffectedChildren()) {
-					result.add(deltaChild);
-				}
-				continue;
-			}
-			// current delta has no affected children
-			// delta contains the affected file itself
-			URI uri = URI.createPlatformResourceURI(marchingDelta.getFullPath()
-					.toString(), true);
-			if (uri == null) {
-				return;
-			}
-			Resource resource = editingDomain.getResourceSet().getResource(uri,
-					true); // is it necessary to load a loaded resource?
-			if (resource == null) {
-				// System.err.println("Resource "
-				// + marchingDelta.getFullPath().toString()
-				// + " does not exist.");
-				return;
-			}
-			resource.unload();
-			try {
-				resource.load(Collections.emptyMap());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} while (result.size() > 0);
 	}
 }

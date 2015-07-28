@@ -1,7 +1,7 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -432,18 +432,11 @@ public class BibtexEditor extends MultiPageEditorPart implements
 	}
 
 	protected boolean isPersisted(Resource resource) {
-		boolean result = false;
-		try {
-			InputStream stream = editingDomain.getResourceSet()
-					.getURIConverter().createInputStream(resource.getURI());
-			if (stream != null) {
-				result = true;
-				stream.close();
-			}
-		} catch (IOException e) {
-			// Ignore
+		if (resource.getURI().isFile()) {
+			File f = new File(resource.getURI().toFileString());
+			return f.exists();
 		}
-		return result;
+		return false;
 	}
 
 	@Override
