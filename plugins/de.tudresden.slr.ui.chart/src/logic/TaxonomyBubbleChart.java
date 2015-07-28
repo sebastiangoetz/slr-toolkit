@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,7 @@ public class TaxonomyBubbleChart {
 
 		// here i get rid of 0 and also the highest value in the script mapping
 		// + 1 so no numbers are displayed on the y-axis
-		int max = scriptMappings.values().stream().max(Integer::compareTo)
-				.orElse(0) + 1;
+		int max = Collections.max(scriptMappings.values()) + 1;
 		String output = "function beforeDrawAxisLabel(axis, label, scriptContext){";
 		output += "if (label.getCaption( ).getValue( ) == 0) {label.getCaption().setValue(\"\")}"
 				+ "if (label.getCaption( ).getValue( ) == "
