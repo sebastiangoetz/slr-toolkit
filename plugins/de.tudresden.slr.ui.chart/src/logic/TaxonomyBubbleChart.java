@@ -200,6 +200,7 @@ public class TaxonomyBubbleChart {
 			BubbleDataSet values = BubbleDataSetImpl.create(yValues);
 			BubbleSeries bs = (BubbleSeries) BubbleSeriesImpl.create();
 			bs.getLabel().setVisible(true);
+			bs.setLabelPosition(Position.INSIDE_LITERAL);
 			bs.setDataSet(values);
 			sdY.getSeries().add(bs);
 
