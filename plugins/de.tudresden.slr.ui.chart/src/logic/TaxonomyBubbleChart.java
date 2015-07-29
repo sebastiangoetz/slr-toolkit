@@ -67,6 +67,10 @@ public class TaxonomyBubbleChart {
 				+ "for( ii =0; ii<dpa.length; ii++ ){var csize = dpa[ii].getOrthogonalValue().getSize();"
 				+ "dpa[ii].getOrthogonalValue().setSize( Double.parseDouble( csize)*.3);}}";
 
+		String formatSeriesLabels = "function beforeDrawDataPointLabel( dataPointHint, label, iChartScriptContext){"
+				+ "var oldLabel = label.getCaption().getValue();"
+				+ "var newLabel = oldLabel.match(/S(\\d*)\\./);"
+				+ "label.getCaption().setValue(newLabel[1]);}";
 		// here i get rid of 0 and also the highest value in the script mapping
 		// + 1 so no numbers are displayed on the y-axis
 		int max = Collections.max(scriptMappings.values()) + 1;
@@ -81,7 +85,7 @@ public class TaxonomyBubbleChart {
 					+ "{label.getCaption().setValue("
 					+ formatForJS(t.getName()) + " )}";
 		}
-		output += "}\n"; // bubbleSize;
+		output += "}\n" + formatSeriesLabels;
 		return output;
 	}
 
