@@ -16,7 +16,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -166,13 +168,14 @@ public class BibtexResourceImpl extends ResourceImpl {
 			e.printStackTrace();
 		}
 
-		Map<Key, BibTeXEntry> entries = db.getEntries();
+		Map<Key, BibTeXEntry> entryMap = new HashMap<>(db.getEntries());
+		List<Document> processedDocuments = new ArrayList<Document>();
 		for (EObject e : getContents()) {
 			if (e instanceof Document) {
 				Document document = (Document) e;
 				Key key = new Key(document.getKey());
-				if (entries.containsKey(key)) {
-					BibTeXEntry entry = entries.get(key);
+				if (entryMap.containsKey(key)) {
+					BibTeXEntry entry = entryMap.get(key);
 					updateDocument(document, entry);
 				} else {
 					Key type = new Key(document.getType());
@@ -180,6 +183,22 @@ public class BibtexResourceImpl extends ResourceImpl {
 					updateDocument(document, entry);
 					db.addObject(entry);
 				}
+				processedDocuments.add(document);
+			}
+		}
+
+		for (BibTeXEntry entry : entryMap.values()) {
+			Document foundDocument = null;
+			for (Document document : processedDocuments) {
+				Key key = new Key(document.getKey());
+				if (entry.equals(key)) {
+					foundDocument = document;
+					db.removeObject(entry);
+					break;
+				}
+			}
+			if (foundDocument != null) {
+				processedDocuments.remove(foundDocument);
 			}
 		}
 
