@@ -187,8 +187,7 @@ public class ChartPreview implements PaintListener, ControlListener {
 
 			// Plot centred by subtracting half the width of the string from
 			// the centre of the Canvas width
-			gc.drawText(textToShow, canvasWidth / 2 - textWidth / 2,
-					canvasHeight / 2);
+			gc.drawText(textToShow, canvasWidth / 2, canvasHeight / 2);
 		}
 
 	}

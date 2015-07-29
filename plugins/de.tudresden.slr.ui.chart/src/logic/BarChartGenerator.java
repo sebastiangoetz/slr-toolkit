@@ -45,7 +45,7 @@ import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
 public class BarChartGenerator {
 
-	public final Chart createBar(Map<String, Integer> input) {
+	public final Chart createBar(Map<String, Integer> input, String title) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
@@ -59,8 +59,7 @@ public class BarChartGenerator {
 				ColorDefinitionImpl.create(255, 255, 225));
 
 		// Title
-		cwaBar.getTitle().getLabel().getCaption()
-				.setValue("Side-by-side Bar Chart"); //$NON-NLS-1$
+		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
 
 		// Legend
 		Legend lg = cwaBar.getLegend();

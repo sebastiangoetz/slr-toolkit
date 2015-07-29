@@ -19,7 +19,7 @@ import org.eclipse.birt.chart.model.Chart;
 public class ChartGenerator {
 
 	public final static Chart createCiteBar(Map<String, Integer> input) {
-		return new BarChartGenerator().createBar(input);
+		return new BarChartGenerator().createBar(input, "Cites per year for selected Class");
 	}
 
 	public final static Chart createBubble(List<BubbleDataContainer> input) {

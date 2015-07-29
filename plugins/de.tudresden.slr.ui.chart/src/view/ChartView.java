@@ -53,11 +53,14 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 		@Override
 		public void selectionChanged(IWorkbenchPart part, ISelection sel) {
-			if (!(sel instanceof IStructuredSelection))
+			if (!(sel instanceof IStructuredSelection)) {
 				return;
+			}
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
-			if (o instanceof Term && !(o.equals(previousTerm))) {
+
+			if (o instanceof Term && !(o.equals(previousTerm))
+					&& ss.size() == 1) {
 
 				SortedMap<String, Integer> myValues = new TreeMap<>();
 				Term termToPresent = (Term) o;
@@ -65,7 +68,8 @@ public class ChartView extends ViewPart implements ICommunicationView {
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
 
-					myChart = new BarChartGenerator().createBar(myValues);
+					myChart = new BarChartGenerator().createBar(myValues,
+							"# Papers per Subclass for selected Class");
 					preview.setDataPresent(true);
 				} else {
 					preview.setTextToShow(noDataToDisplay);
@@ -103,7 +107,8 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	private void setUpDrawing(Composite parent) {
 		// preview canvas
 
-		paintCanvas = new Canvas(parent, SWT.NO_REDRAW_RESIZE);
+		paintCanvas = new Canvas(parent, SWT.NO_BACKGROUND
+				| SWT.NO_REDRAW_RESIZE);
 		paintCanvas.setBackground(Display.getDefault().getSystemColor(
 				SWT.COLOR_BLACK));
 		preview = new ChartPreview();
@@ -114,6 +119,7 @@ public class ChartView extends ViewPart implements ICommunicationView {
 		preview.setTextToShow(noDataToDisplay);
 	}
 
+	@Override
 	public void generatePDFForCurrentChart(String output) {
 		generatePDFOutput(myChart, output);
 		// here I call the render method again to show the chart after
