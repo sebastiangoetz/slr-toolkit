@@ -1,12 +1,11 @@
 package handlers;
-import java.io.File;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -32,13 +31,18 @@ public class SaveAsPDFHandler implements IHandler {
 		IViewPart part = null;
 		part = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
 				.findView(chartViewId);
-		DirectoryDialog dialog = new DirectoryDialog(
-				HandlerUtil.getActiveShell(event), SWT.OPEN);
-		String result = dialog.open();
-		ICommunicationView view = (ICommunicationView) part;
-		view.generatePDFForCurrentChart(result + File.separator + "output.pdf");
-		view.redraw();
-
+		FileDialog dialog = new FileDialog(HandlerUtil.getActiveShell(event),
+				SWT.OPEN);
+		dialog.setFilterExtensions(new String[] { "*.pdf" });
+		try {
+			String result = dialog.open();
+			if (result != null) {
+				ICommunicationView view = (ICommunicationView) part;
+				view.generatePDFForCurrentChart(result);
+				view.redraw();
+			}
+		} catch (Exception e) {
+		}
 		return null;
 	}
 
