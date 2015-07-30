@@ -13,6 +13,7 @@ import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
@@ -35,6 +36,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -134,6 +137,7 @@ public class BibtexEntryView extends ViewPart {
 				new AdapterFactoryLabelProvider(adapterFactory), decorator));
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(editingDomain.getResourceSet());
+		viewer.getTree().addKeyListener(createDeleteListener());
 		viewer.expandAll();
 		// this is needed to let other views know what is currently selected
 		// in my case the Chart View wants to display data
@@ -152,6 +156,54 @@ public class BibtexEntryView extends ViewPart {
 					.getProject(projectName);
 			combo.setSelection(new StructuredSelection(project));
 		}
+	}
+
+	/**
+	 * listener for releasing DEL key. Removes selected document from domain.
+	 * 
+	 * @return
+	 */
+	private KeyListener createDeleteListener() {
+		KeyListener deleter = new KeyListener() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.keyCode != SWT.DEL) {
+					return;
+				}
+				if (viewer.getSelection() instanceof StructuredSelection) {
+					StructuredSelection selection = (StructuredSelection) viewer
+							.getSelection();
+					if (selection.getFirstElement() instanceof Document) {
+						Document document = (Document) selection
+								.getFirstElement();
+						/*
+						 * editingDomain.getCommandStack().execute( new
+						 * AbstractCommand() {
+						 * 
+						 * @Override public boolean prepare() { return true; }
+						 * 
+						 * @Override public void redo() { execute(); }
+						 * 
+						 * @Override public void execute() { if
+						 * (document.eResource() != null) {
+						 * EcoreUtil.remove(document); } } });
+						 */
+						EcoreUtil.remove(document);
+						viewer.refresh();
+						// TODO: close Editor with this document
+					}
+				}
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		return deleter;
 	}
 
 	/**
@@ -356,10 +408,19 @@ public class BibtexEntryView extends ViewPart {
 				IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID);
 		selectionListener = new BibtexOpenListener(overviewId,
 				IWorkbenchPage.MATCH_ID);
-
+		/*
+		 * ResourcesPlugin.getWorkspace().addResourceChangeListener( new
+		 * IResourceChangeListener() {
+		 * 
+		 * @Override public void resourceChanged(IResourceChangeEvent event) {
+		 * refreshProjectCombo();
+		 * 
+		 * } }, IResourceChangeEvent.POST_CHANGE);
+		 */
 		refreshAction = new Action() {
 			@Override
 			public void run() {
+				refreshProjectCombo();
 				viewer.refresh();
 			}
 		};
@@ -420,5 +481,13 @@ public class BibtexEntryView extends ViewPart {
 	@Override
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+	private void refreshProjectCombo() {
+		StructuredSelection selection = (StructuredSelection) combo
+				.getSelection();
+		combo.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+		combo.setSelection(selection, true);
+		combo.refresh();
 	}
 }
