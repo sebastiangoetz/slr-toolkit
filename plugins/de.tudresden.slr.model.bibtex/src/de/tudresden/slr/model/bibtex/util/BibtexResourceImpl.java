@@ -19,6 +19,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -188,17 +189,18 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 
 		for (BibTeXEntry entry : entryMap.values()) {
-			Document foundDocument = null;
-			for (Document document : processedDocuments) {
+			Iterator<Document> iter = processedDocuments.iterator();
+			boolean found = false;
+			while (iter.hasNext() && !found) {
+				Document document = iter.next();
 				Key key = new Key(document.getKey());
-				if (entry.equals(key)) {
-					foundDocument = document;
-					db.removeObject(entry);
-					break;
+				if (entry.getKey().equals(key)) {
+					found = true;
+					iter.remove();
 				}
 			}
-			if (foundDocument != null) {
-				processedDocuments.remove(foundDocument);
+			if (!found) {
+				db.removeObject(entry);
 			}
 		}
 
