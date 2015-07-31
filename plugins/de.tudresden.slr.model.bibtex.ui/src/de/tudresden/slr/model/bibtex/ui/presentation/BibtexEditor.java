@@ -1,6 +1,5 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -400,7 +399,8 @@ public class BibtexEditor extends MultiPageEditorPart implements
 				boolean first = true;
 				for (Resource resource : editingDomain.getResourceSet()
 						.getResources()) {
-					if ((first || !resource.getContents().isEmpty() || isPersisted(resource))
+					if ((first || !resource.getContents().isEmpty() || Utils
+							.isPersisted(resource))
 							&& !editingDomain.isReadOnly(resource)) {
 						try {
 							long timeStamp = resource.getTimeStamp();
@@ -429,14 +429,6 @@ public class BibtexEditor extends MultiPageEditorPart implements
 			// Something went wrong that shouldn't.
 			//
 		}
-	}
-
-	protected boolean isPersisted(Resource resource) {
-		if (resource.getURI().isFile()) {
-			File f = new File(resource.getURI().toFileString());
-			return f.exists();
-		}
-		return false;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.tudresden.slr;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
@@ -135,6 +136,14 @@ public class Utils {
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static boolean isPersisted(Resource resource) {
+		if (resource.getURI().isFile()) {
+			File f = new File(resource.getURI().toFileString());
+			return f.exists();
+		}
+		return false;
 	}
 
 }

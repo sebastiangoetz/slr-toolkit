@@ -2,13 +2,18 @@ package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.util.Collection;
 import java.util.EventObject;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.emf.common.command.AbstractCommand;
+import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
@@ -24,6 +29,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
@@ -49,6 +55,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 
@@ -177,21 +184,86 @@ public class BibtexEntryView extends ViewPart {
 					if (selection.getFirstElement() instanceof Document) {
 						Document document = (Document) selection
 								.getFirstElement();
-						/*
-						 * editingDomain.getCommandStack().execute( new
-						 * AbstractCommand() {
-						 * 
-						 * @Override public boolean prepare() { return true; }
-						 * 
-						 * @Override public void redo() { execute(); }
-						 * 
-						 * @Override public void execute() { if
-						 * (document.eResource() != null) {
-						 * EcoreUtil.remove(document); } } });
-						 */
-						EcoreUtil.remove(document);
+
+						editingDomain.getCommandStack().execute(
+								new AbstractCommand() {
+
+									@Override
+									public boolean prepare() {
+										return true;
+									}
+
+									@Override
+									public void redo() {
+										execute();
+									}
+
+									@Override
+									public void execute() {
+										if (document.eResource() != null) {
+											EcoreUtil.remove(document);
+										}
+									}
+								});
+						// Save only resources that have actually changed.
+						//
+						final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
+						saveOptions
+								.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
+										Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+						saveOptions.put(Resource.OPTION_LINE_DELIMITER,
+								Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
+						// Do the work within an operation because this is a
+						// long running
+						// activity that modifies the workbench.
+						//
+						WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
+							// This is the method that gets invoked when the
+							// operation runs.
+							//
+							@Override
+							public void execute(IProgressMonitor monitor) {
+								// Save the resources to the file system.
+								//
+								boolean first = true;
+								for (Resource resource : editingDomain
+										.getResourceSet().getResources()) {
+									if ((first
+											|| !resource.getContents()
+													.isEmpty() || Utils
+												.isPersisted(resource))
+											&& !editingDomain
+													.isReadOnly(resource)) {
+										try {
+											resource.save(saveOptions);
+										} catch (Exception exception) {
+										}
+										first = false;
+									}
+								}
+							}
+						};
+						try {
+							// This runs the options, and shows progress.
+							//
+							new ProgressMonitorDialog(getSite().getShell())
+									.run(true, false, operation);
+
+							// Refresh the necessary state.
+							//
+							((BasicCommandStack) editingDomain
+									.getCommandStack()).saveIsDone();
+							firePropertyChange(IEditorPart.PROP_DIRTY);
+						} catch (Exception exception) {
+							// Something went wrong that shouldn't.
+							//
+						}
+						viewer.setSelection(selection);
+						viewer.getTree().forceFocus();
 						viewer.refresh();
-						// TODO: close Editor with this document
+
+						// TODO: close Editor which contains the deleted
+						// document
 					}
 				}
 
@@ -199,8 +271,7 @@ public class BibtexEntryView extends ViewPart {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-
+				// do nothing
 			}
 		};
 		return deleter;
