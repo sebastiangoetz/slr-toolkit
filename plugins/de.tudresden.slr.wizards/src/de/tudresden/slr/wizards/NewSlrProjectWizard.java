@@ -3,11 +3,10 @@ package de.tudresden.slr.wizards;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -17,6 +16,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
+import de.tudresden.slr.wizards.pages.WizardSetupPage;
 import de.tudresden.slr.wizards.pages.WizardSetupTaxonomyPage;
 import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
@@ -52,44 +52,6 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 		addPage(thirdPage);
 	}
 
-	private void copyBibtexFile(IProject project) {
-		try {
-			if (secondPage.hasFileImported()) {
-				String path = secondPage.getFilePath();
-				String fileName = path.substring(path
-						.lastIndexOf(File.separator) + 1);
-				String local = project.getLocation().append(fileName)
-						.toOSString();
-				copy("file:///" + path, local);
-			} else {
-				String path = project.getLocation()
-						.append(secondPage.getFilePath()).toOSString();
-				copy(BIBTEX_RESOURCE, path);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void copyTaxonomyFile(IProject project) {
-		try {
-			if (thirdPage.hasFileImported()) {
-				String path = thirdPage.getFilePath();
-				String fileName = path.substring(path
-						.lastIndexOf(File.separator) + 1);
-				String local = project.getLocation().append(fileName)
-						.toOSString();
-				copy("file:///" + path, local);
-			} else {
-				String path = project.getLocation()
-						.append(thirdPage.getFilePath()).toOSString();
-				copy(TAXONOMY_RESOURCE, path);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	@Override
 	public boolean performFinish() {
 		// create the project set up in the first wizard page
@@ -102,16 +64,39 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 			return false;
 		}
 
-		copyBibtexFile(project);
-		copyTaxonomyFile(project);
+		createResourceFile(project, secondPage, BIBTEX_RESOURCE);
+		createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
 		return true;
 	}
 
-	private static void copy(String from, String to) throws IOException {
-		final URL url = new URL(from);
-		try (InputStream in = url.openConnection().getInputStream()) {
-			Path out = Paths.get(to);
-			Files.copy(in, out);
+	/**
+	 * Creates a project file
+	 * @param project The project
+	 * @param wizardPage The wizard page that provides the file to be imported/created
+	 * @param defaultResource Platform URL (platform:/) pointing to default file
+	 */
+	private void createResourceFile(IProject project, WizardSetupPage wizardPage, String defaultResource){
+		try {
+			if (wizardPage.hasFileImported()) {	
+				File existingFile = new File(wizardPage.getFilePath());
+				URL existingFileUrl = existingFile.toURI().toURL();
+				String newFileName = existingFile.getName();
+				createFile(project, existingFileUrl, newFileName);
+			} else {
+				URL defaultResourceUrl = new URL(defaultResource);
+				createFile(project, defaultResourceUrl, wizardPage.getFilePath());
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void createFile(IProject project, URL sourceFile, String newFileName){
+		try (InputStream fileStream = sourceFile.openConnection().getInputStream()) {
+			IFile taxonomyFile = project.getFile(newFileName);
+			taxonomyFile.create(fileStream, false, null);
+		} catch (IOException | CoreException e) {
+			e.printStackTrace();
 		}
 	}
 }
