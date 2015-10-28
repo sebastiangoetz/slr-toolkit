@@ -1,9 +1,16 @@
 Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Product
 Bundle-SymbolicName: de.tudresden.slr.product;singleton:=true
+Bundle-Name: Product
 Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,com.google.guava;bundle-versi
+ on="15.0.0",com.google.inject;bundle-version="3.0.0",org.eclipse.core
+ .runtime,org.eclipse.swt,org.eclipse.jface,org.eclipse.e4.ui.services
+ ,org.eclipse.e4.ui.workbench,org.eclipse.e4.core.di,org.eclipse.e4.ui
+ .di,org.eclipse.e4.core.contexts,org.eclipse.e4.ui.workbench.renderer
+ s.swt,de.tudresden.slr.model.bibtex.ui;bundle-version=0.0.1,de.tudres
+ den.slr.model.taxonomy.ui;bundle-version=0.0.1
+Bundle-ManifestVersion: 2
 Bundle-Activator: de.tudresden.slr.product.Activator
-Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+

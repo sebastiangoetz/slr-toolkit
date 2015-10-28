@@ -76,7 +76,7 @@
 					<target>
 						<artifact>
 							<groupId>de.tudresden</groupId>
-							<artifactId>de.tudresden.slr.target.luna</artifactId>
+							<artifactId>de.tudresden.slr.target.mars</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 						</artifact>
 					</target>
@@ -143,7 +143,7 @@
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
 		<module>../de.tudresden.slr.model.bibtex.ui</module>
 		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
-		<module>../../targets/de.tudresden.slr.target.luna</module>
+		<module>../../targets/de.tudresden.slr.target.mars</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.ui.chart</module>
 		<module>

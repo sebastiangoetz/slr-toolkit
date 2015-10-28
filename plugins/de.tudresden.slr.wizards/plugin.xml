@@ -17,6 +17,7 @@
             name="SLR Project"
             project="true">
       </wizard>
+      <!--
       <wizard
             category="de.tudresden.slr.wizards.slr"
             class="de.tudresden.slr.wizards.NewBibtexWizard"
@@ -31,6 +32,7 @@
             id="de.tudresden.slr.wizards.NewTaxonomyWizard"
             name="Taxonomy file">
       </wizard>
+      -->
    </extension>
    <extension
          id="de.tudresden.slr.wizards.projectNature"
@@ -47,6 +49,7 @@
             id="de.tudresden.slr.wizards.slrImport"
             name="SLR">
       </category>
+      <!--
       <wizard
             category="de.tudresden.slr.wizards.slrImport"
             class="de.tudresden.slr.wizards.ImportTaxonomyWizard"
@@ -54,10 +57,12 @@
             id="de.tudresden.slr.wizards.importTaxWizard"
             name="Taxonomy">
       </wizard>
+      -->
       <category
             id="de.tudresden.slr.wizards.importWizards.sampleCategory"
             name="SLR">
       </category>
+      <!--
       <wizard
             category="de.tudresden.slr.wizards.slrImport"
             class="de.tudresden.slr.wizards.ImportBibtexWizard"
@@ -67,7 +72,7 @@
          <description>
             Import a file from the local file system into the workspace.
          </description>
-      </wizard>
+      </wizard> -->
    </extension>
 
 

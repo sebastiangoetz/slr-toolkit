@@ -2,13 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="de.tudresden.slr.product.product"
-            name="SLR Product">
-      </product>
-   </extension>
-   <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
@@ -18,7 +11,10 @@
                name="appName"
                value="SLR Product">
          </property>
+         <property
+name="clearPersistedState"
+value="true">
+</property>
       </product>
    </extension>
-
 </plugin>

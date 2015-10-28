@@ -9,3 +9,9 @@ bin
 
 plugin.xml_gen
 *.jar
+.metadata/
+src-gen/
+xtend-gen/
+*.java._trace
+generated/
+.settings/
