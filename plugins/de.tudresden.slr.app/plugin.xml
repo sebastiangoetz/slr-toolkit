@@ -12,12 +12,25 @@
       </application>
    </extension>
    <extension
+         id="perspective"
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
             class="de.tudresden.slr.app.Perspective"
             id="de.tudresden.slr.app.perspective">
       </perspective>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.tudresden.slr.app.application"
+            name="app">
+         <property
+               name="appName"
+               value="app">
+         </property>
+      </product>
    </extension>
 
 </plugin>
