@@ -5,13 +5,13 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.e4.ui.workbench.swt.E4Application"
-            name="SLR Product">
+            application="de.tudresden.slr.app.application"
+            name="app">
          <property
                name="appName"
-               value="SLR Product">
+               value="app">
          </property>
-         <property
+                  <property
 name="clearPersistedState"
 value="true">
 </property>
