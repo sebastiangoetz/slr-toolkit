@@ -3,7 +3,6 @@
 
 <product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -25,12 +24,11 @@
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
 
-
    <plugins>
    </plugins>
 
    <features>
-	  <feature id="org.eclipse.emf.ecore"/>
+      <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.equinox.p2.user.ui"/>
       <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
       <feature id="org.eclipse.help"/>
@@ -69,10 +67,11 @@
       <feature id="org.eclipse.jdt" version="3.11.1.v20150904-0015"/>
       <feature id="org.eclipse.platform" version="4.5.1.v20150904-0015"/>
       <feature id="de.tudresden.slr.dependencies" version="1.0.0.qualifier"/>
-      <feature id="de.tudresden.slr.batik.feature"/>
       <feature id="de.tudresden.slr.feature" version="0.0.1.qualifier"/>
       <feature id="de.tudresden.slr.model.taxonomy.sdk" version="0.0.1.qualifier"/>
+      <feature id="de.tudresden.slr.batik.feature" version="1.0.0.qualifier"/>
    </features>
+
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
@@ -80,6 +79,5 @@
 
    <cssInfo>
    </cssInfo>
-
 
 </product>

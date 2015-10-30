@@ -21,8 +21,6 @@
          version="0.0.0"/>
 
    <requires>
-      <import plugin="org.eclipse.emf.common" version="2.11.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.11.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
       <import plugin="org.eclipse.help" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.9.0" match="compatible"/>
@@ -62,8 +60,6 @@
       <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.4.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.edit" version="2.11.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.common.ui" version="2.10.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.jface.text" version="3.8.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench.texteditor" version="3.7.0" match="compatible"/>
@@ -160,6 +156,12 @@
       <import plugin="org.eclipse.e4.ui.workbench3" version="0.11.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.jobs" version="3.5.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.ds"/>
+      <import plugin="org.eclipse.emf.common" version="2.10.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.10.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.edit" version="2.10.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.common.ui" version="2.9.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.ide" version="3.4.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
