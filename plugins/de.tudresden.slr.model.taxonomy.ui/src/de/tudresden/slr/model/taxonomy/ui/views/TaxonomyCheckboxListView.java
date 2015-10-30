@@ -51,7 +51,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
 
 	private ContainerCheckedTreeViewer viewer;
-	private Action doubleClickAction;
 	private ViewContentProvider contentProvider;
 
 	class ViewContentProvider implements IStructuredContentProvider,
@@ -134,7 +133,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 				.getHelpSystem()
 				.setHelp(viewer.getControl(),
 						"de.tudresden.slr.model.taxonomy.ui.viewer");
-		hookDoubleClickAction();
 		contributeToActionBars();
 
 		getSite().getWorkbenchWindow().getSelectionService()
@@ -143,15 +141,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements
 
 	private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
-	}
-
-	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
 	}
 
 	@Override
