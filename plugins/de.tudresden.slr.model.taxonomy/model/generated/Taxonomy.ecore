@@ -9,7 +9,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Term">
     <eOperations name="hashCode" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="final int prime = 31;&#xA;&#x9;&#x9;int hash = 1;&#xA;&#x9;&#x9;if (eContainer instanceof Term) {&#xA;&#x9;&#x9;&#x9;int parentHash = eContainer.hashCode();&#xA;&#x9;&#x9;&#x9;hash = prime * hash + parentHash ^ (parentHash >> 32);&#xA;&#x9;&#x9;}&#xA;&#x9;&#x9;int nameHash = name.hashCode();&#xA;&#x9;&#x9;hash = prime * hash + nameHash ^ (nameHash >> 32);&#xA;&#x9;&#x9;return hash;"/>
+        <details key="body" value="final int prime = 31;&#xD;&#xA;&#x9;&#x9;int hash = 1;&#xD;&#xA;&#x9;&#x9;if (eContainer instanceof Term) {&#xD;&#xA;&#x9;&#x9;&#x9;int parentHash = eContainer.hashCode();&#xD;&#xA;&#x9;&#x9;&#x9;hash = prime * hash + parentHash ^ (parentHash >> 32);&#xD;&#xA;&#x9;&#x9;}&#xD;&#xA;&#x9;&#x9;int nameHash = name.hashCode();&#xD;&#xA;&#x9;&#x9;hash = prime * hash + nameHash ^ (nameHash >> 32);&#xD;&#xA;&#x9;&#x9;return hash;"/>
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

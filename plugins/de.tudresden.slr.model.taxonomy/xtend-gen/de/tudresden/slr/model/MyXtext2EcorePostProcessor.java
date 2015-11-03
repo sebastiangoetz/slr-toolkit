@@ -20,7 +20,6 @@ import org.eclipse.xtext.xtext.ecoreInference.IXtext2EcorePostProcessor;
 
 @SuppressWarnings("all")
 public class MyXtext2EcorePostProcessor implements IXtext2EcorePostProcessor {
-  @Override
   public void process(final GeneratedMetamodel metamodel) {
     EPackage _ePackage = metamodel.getEPackage();
     this.process(_ePackage);
@@ -52,7 +51,7 @@ public class MyXtext2EcorePostProcessor implements IXtext2EcorePostProcessor {
       final BasicEMap.Entry<String, String> map = ((BasicEMap.Entry<String, String>) _create);
       map.setKey("body");
       map.setValue(
-        "final int prime = 31;\n\t\tint hash = 1;\n\t\tif (eContainer instanceof Term) {\n\t\t\tint parentHash = eContainer.hashCode();\n\t\t\thash = prime * hash + parentHash ^ (parentHash >> 32);\n\t\t}\n\t\tint nameHash = name.hashCode();\n\t\thash = prime * hash + nameHash ^ (nameHash >> 32);\n\t\treturn hash;");
+        "final int prime = 31;\r\n\t\tint hash = 1;\r\n\t\tif (eContainer instanceof Term) {\r\n\t\t\tint parentHash = eContainer.hashCode();\r\n\t\t\thash = prime * hash + parentHash ^ (parentHash >> 32);\r\n\t\t}\r\n\t\tint nameHash = name.hashCode();\r\n\t\thash = prime * hash + nameHash ^ (nameHash >> 32);\r\n\t\treturn hash;");
       EMap<String, String> _details = body.getDetails();
       _details.add(map);
       EList<EAnnotation> _eAnnotations = op.getEAnnotations();
