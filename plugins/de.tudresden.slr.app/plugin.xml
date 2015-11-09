@@ -42,9 +42,9 @@
          <view
                id="org.eclipse.ui.views.ProblemView"
                minimized="false"
-               ratio="0.65"
+               ratio="0.5"
                relationship="bottom"
-               relative="org.eclipse.ui.editorss">
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
          </view>
          <view
                id="org.eclipse.ui.views.PropertySheet"
@@ -61,9 +61,9 @@
          <view
                id="chart.view.chartview"
                minimized="false"
-               ratio="0.65"
+               ratio="0.25"
                relationship="bottom"
-               relative="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+               relative="org.eclipse.ui.editorss">
          </view>
       </perspectiveExtension>
    </extension>
@@ -78,5 +78,68 @@
                value="app">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <menu
+                  commandId="org.eclipse.ui.file.newQuickMenu"
+                  label="New">
+               <command
+                     commandId="org.eclipse.ui.newWizard"
+                     label="Other"
+                     style="push">
+               </command>
+            </menu>
+            <command
+                  commandId="org.eclipse.ui.edit.text.openLocalFile"
+                  label="Open File..."
+                  style="push">
+            </command>
+            <separator
+                  name="fileMenuSeparator0"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.close"
+                  label="Close"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.closeAll"
+                  label="Close All"
+                  style="push">
+            </command>
+            <separator
+                  name="fileMenuSeparator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.save"
+                  label="Save"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.saveAs"
+                  label="Save As..."
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.saveAll"
+                  label="Save All"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.revert"
+                  label="Revert"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
 </plugin>
