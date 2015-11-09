@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Wizards
 Bundle-SymbolicName: de.tudresden.slr.wizards;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: de.tudresden.slr.wizards.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui,
