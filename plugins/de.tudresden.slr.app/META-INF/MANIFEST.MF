@@ -7,10 +7,11 @@ Bundle-Activator: de.tudresden.slr.app.Activator
 Require-Bundle: org.eclipse.core.runtime,
  com.google.inject;bundle-version="3.0.0",
  de.tudresden.slr.model.bibtex;bundle-version="0.0.1",
- de.tudresden.slr.model.bibtex.ui;bundle-version="0.0.1",
  de.tudresden.slr.model.taxonomy;bundle-version="0.0.1",
  de.tudresden.slr.model.taxonomy.ui;bundle-version="0.0.1",
  de.tudresden.slr.wizards;bundle-version="0.0.1",
- org.eclipse.ui;bundle-version="3.107.0"
+ org.eclipse.ui;bundle-version="3.107.0",
+ de.tudresden.slr.model.bibtex.ui;bundle-version="0.0.1",
+ org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

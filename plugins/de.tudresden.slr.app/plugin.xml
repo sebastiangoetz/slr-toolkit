@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
@@ -15,10 +14,64 @@
          id="perspective"
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
+            name="SLR"
             class="de.tudresden.slr.app.Perspective"
             id="de.tudresden.slr.app.perspective">
       </perspective>
+   </extension>
+      <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="de.tudresden.slr.app.perspective">
+         <view
+               closeable="true"
+               id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
+               minimized="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
+         <view
+               id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+               minimized="false"
+               ratio="0.75"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="org.eclipse.ui.views.ProblemView"
+               minimized="false"
+               ratio="0.65"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss">
+         </view>
+         <view
+               id="org.eclipse.ui.views.PropertySheet"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+         <view
+               id="org.eclipse.ui.navigator.ProjectExplorer"
+               minimized="false"
+               relationship="stack"
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
+         </view>
+         <view
+               id="chart.view.chartview"
+               minimized="false"
+               ratio="0.65"
+               relationship="bottom"
+               relative="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+         </view>
+         <hiddenMenuItem
+               id="org.eclipse.ui.run">
+         </hiddenMenuItem>
+         <hiddenMenuItem
+               id="org.eclipse.debug.internal.ui.actions.RunDropDownAction">
+         </hiddenMenuItem>
+      </perspectiveExtension>
    </extension>
    <extension
          id="product"
@@ -32,5 +85,4 @@
          </property>
       </product>
    </extension>
-
 </plugin>

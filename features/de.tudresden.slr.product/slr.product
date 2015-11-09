@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="app" uid="product" id="de.tudresden.slr.product.product" application="de.tudresden.slr.app.application" useFeatures="true" includeLaunchers="true">
+<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" useFeatures="true" includeLaunchers="true">
+
 
    <configIni use="default">
    </configIni>
@@ -13,6 +14,7 @@
 
    <windowImages/>
 
+
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -20,9 +22,11 @@
       </win>
    </launcher>
 
+
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
+
 
    <plugins>
    </plugins>
