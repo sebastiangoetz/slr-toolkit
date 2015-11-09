@@ -65,12 +65,6 @@
                relationship="bottom"
                relative="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
          </view>
-         <hiddenMenuItem
-               id="org.eclipse.ui.run">
-         </hiddenMenuItem>
-         <hiddenMenuItem
-               id="org.eclipse.debug.internal.ui.actions.RunDropDownAction">
-         </hiddenMenuItem>
       </perspectiveExtension>
    </extension>
    <extension
