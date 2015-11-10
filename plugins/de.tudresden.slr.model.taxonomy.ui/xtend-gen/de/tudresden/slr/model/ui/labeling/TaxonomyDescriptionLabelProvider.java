@@ -6,9 +6,9 @@ package de.tudresden.slr.model.ui.labeling;
 import org.eclipse.xtext.ui.label.DefaultDescriptionLabelProvider;
 
 /**
- * Provides labels for a IEObjectDescriptions and IResourceDescriptions.
+ * Provides labels for IEObjectDescriptions and IResourceDescriptions.
  * 
- * see http://www.eclipse.org/Xtext/documentation.html#labelProvider
+ * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#label-provider
  */
 @SuppressWarnings("all")
 public class TaxonomyDescriptionLabelProvider extends DefaultDescriptionLabelProvider {

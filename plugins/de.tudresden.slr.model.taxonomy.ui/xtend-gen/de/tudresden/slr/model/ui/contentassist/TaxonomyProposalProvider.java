@@ -6,7 +6,8 @@ package de.tudresden.slr.model.ui.contentassist;
 import de.tudresden.slr.model.ui.contentassist.AbstractTaxonomyProposalProvider;
 
 /**
- * see http://www.eclipse.org/Xtext/documentation.html#contentAssist on how to customize content assistant
+ * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
+ * on how to customize the content assistant.
  */
 @SuppressWarnings("all")
 public class TaxonomyProposalProvider extends AbstractTaxonomyProposalProvider {
