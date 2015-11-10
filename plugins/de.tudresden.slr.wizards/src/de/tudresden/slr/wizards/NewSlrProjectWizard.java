@@ -59,13 +59,12 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 		try {
 			project.create(null);
 			project.open(null);
+			createResourceFile(project, secondPage, BIBTEX_RESOURCE);
+			createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
 			SlrProjectSupport.addNature(project);
 		} catch (CoreException e) {
 			return false;
 		}
-
-		createResourceFile(project, secondPage, BIBTEX_RESOURCE);
-		createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
 		return true;
 	}
 
