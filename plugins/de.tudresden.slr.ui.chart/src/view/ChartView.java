@@ -3,9 +3,6 @@ package view;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import logic.BarChartGenerator;
-import logic.ChartDataProvider;
-
 import org.eclipse.birt.chart.api.ChartEngine;
 import org.eclipse.birt.chart.device.EmptyUpdateNotifier;
 import org.eclipse.birt.chart.device.IDeviceRenderer;
@@ -22,7 +19,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
@@ -30,27 +26,24 @@ import org.eclipse.ui.part.ViewPart;
 import com.ibm.icu.util.ULocale;
 
 import de.tudresden.slr.model.taxonomy.Term;
+import logic.BarChartGenerator;
+import logic.ChartDataProvider;
 
 public class ChartView extends ViewPart implements ICommunicationView {
-
-	public ChartView() {
-
-	}
-
+	private final String noDataToDisplay = "There is no Data to display at the moment.\n Try clicking a Term with subclasses.";
 	private IDeviceRenderer idr = null;
 	private Canvas paintCanvas;
-	private Chart myChart = null;
+	private Chart myChart;
 	private ChartPreview preview;
-	private Composite _parent;
-	private Term previousTerm = null;
-	private final String noDataToDisplay = "There is no Data to display at the moment.\n Try clicking a Term with subclasses.";
+	private Composite parent;
+	private Term previousTerm;
+
+	public ChartView() {}
 
 	/***
-	 * This listener handles the reaction to the selection of an element in the
-	 * TaxonomyView
+	 * This listener handles the reaction to the selection of an element in the TaxonomyView
 	 */
 	ISelectionListener listener = new ISelectionListener() {
-
 		@Override
 		public void selectionChanged(IWorkbenchPart part, ISelection sel) {
 			if (!(sel instanceof IStructuredSelection)) {
@@ -59,17 +52,13 @@ public class ChartView extends ViewPart implements ICommunicationView {
 			IStructuredSelection ss = (IStructuredSelection) sel;
 			Object o = ss.getFirstElement();
 
-			if (o instanceof Term && !(o.equals(previousTerm))
-					&& ss.size() == 1) {
-
+			if (o instanceof Term && !(o.equals(previousTerm)) && ss.size() == 1) {
 				SortedMap<String, Integer> myValues = new TreeMap<>();
 				Term termToPresent = (Term) o;
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
-
-					myChart = new BarChartGenerator().createBar(myValues,
-							"# Papers per Subclass for selected Class");
+					myChart = new BarChartGenerator().createBar(myValues, "# Papers per Subclass for selected Class");
 					preview.setDataPresent(true);
 				} else {
 					preview.setTextToShow(noDataToDisplay);
@@ -77,22 +66,18 @@ public class ChartView extends ViewPart implements ICommunicationView {
 				}
 				setAndRenderChart(myChart);
 				previousTerm = termToPresent;
-
 			}
-
 		}
 	};
 
 	@Override
 	public void createPartControl(Composite parent) {
-		_parent = parent;
+		this.parent = parent;
 		getSite().getPage().addSelectionListener(listener);
 		setUpDrawing(parent);
-
 	}
 
 	private SortedMap<String, Integer> getNumberOfPapersPerClass(Term inputTerm) {
-
 		ChartDataProvider chartDataProvider = new ChartDataProvider();
 		SortedMap<String, Integer> myValues = chartDataProvider
 				.calculateNumberOfPapersPerClass(inputTerm);
@@ -100,17 +85,10 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	}
 
 	@Override
-	public void setFocus() {
-
-	}
+	public void setFocus() {}
 
 	private void setUpDrawing(Composite parent) {
-		// preview canvas
-
-		paintCanvas = new Canvas(parent, SWT.NO_BACKGROUND
-				| SWT.NO_REDRAW_RESIZE);
-		paintCanvas.setBackground(Display.getDefault().getSystemColor(
-				SWT.COLOR_BLACK));
+		paintCanvas = new Canvas(parent, SWT.BACKGROUND);
 		preview = new ChartPreview();
 		paintCanvas.addPaintListener(preview);
 		paintCanvas.addControlListener(preview);
@@ -134,15 +112,12 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	 * @param output
 	 *            The system specific output path of the pdf
 	 */
-
 	private void generatePDFOutput(Chart chart, String output) {
 		// Example output string for Windows
 		// "C:\\pdf\\output.pdf"
 		PlatformConfig config = new PlatformConfig();
 		try {
-			// idr = ChartEngine.instance(config).getRenderer("dv.SWT");
 			idr = ChartEngine.instance(config).getRenderer("dv.PDF");
-
 			RunTimeContext rtc = new RunTimeContext();
 			rtc.setULocale(ULocale.getDefault());
 
@@ -152,24 +127,18 @@ public class ChartView extends ViewPart implements ICommunicationView {
 			gcs = gr.build(idr.getDisplayServer(), chart, bo, null, rtc, null);
 
 			idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, output);
-			idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER,
-					new EmptyUpdateNotifier(chart, gcs.getChartModel()));
+			idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
 
 			gr.render(idr, gcs);
-
 		} catch (ChartException gex) {
 			gex.printStackTrace();
 		}
-
 	}
 
 	@Override
 	public void setAndRenderChart(Chart parameter) {
-
 		this.myChart = parameter;
 		preview.renderModel(parameter);
-		// renderChart(_parent, myChart);
-
 	}
 
 	@Override
@@ -179,8 +148,7 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 	@Override
 	public void redraw() {
-		_parent.redraw();
-
+		this.parent.redraw();
 	}
 
 	@Override
