@@ -31,6 +31,14 @@
             id="de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor"
             name="Bibtex Overview">
       </editor>
+      <editor
+            class="org.eclipse.ui.editors.text.TextEditor"
+            id="de.tudresden.slr.model.bibtex.ui.bibtexFileEditor"
+            name="Bibtex File Editor">
+         <contentTypeBinding
+               contentTypeId="de.tudresden.slr.model.bibtex.ui.bibtexContentType">
+         </contentTypeBinding>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -57,5 +65,14 @@
             </and>
          </enablement>
       </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="bib"
+            id="de.tudresden.slr.model.bibtex.ui.bibtexContentType"
+            name="Bibtex Files"
+            priority="normal">
+      </content-type>
    </extension>
 </plugin>

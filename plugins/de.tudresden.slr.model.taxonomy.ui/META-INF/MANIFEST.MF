@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: de.tudresden.slr.model.taxonomy.ui
 Bundle-Vendor: My Company
 Bundle-Version: 0.0.1.qualifier
-Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.ui; singleton:=true
+Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
  org.eclipse.xtext.ui,
