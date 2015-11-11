@@ -72,6 +72,7 @@
       <feature id="de.tudresden.slr.feature" version="0.0.1.qualifier"/>
       <feature id="de.tudresden.slr.model.taxonomy.sdk" version="0.0.1.qualifier"/>
       <feature id="de.tudresden.slr.batik.feature" version="1.0.0.qualifier"/>
+      <feature id="org.eclipse.pde"/>
    </features>
 
 
