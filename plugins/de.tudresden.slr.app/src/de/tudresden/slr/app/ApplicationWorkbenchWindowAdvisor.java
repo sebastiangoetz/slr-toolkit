@@ -22,10 +22,16 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
  
     public void preWindowOpen() {
         IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+        configurer.setInitialSize(null);
         configurer.setInitialSize(new Point(400, 300));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
         configurer.setTitle("SLR Toolkit"); //$NON-NLS-1$
+    }
+    
+    public void postWindowOpen(){
+    	IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+    	configurer.getWindow().getShell().setMaximized(true); 
     }
     
     public void postWindowCreate(){
