@@ -4,17 +4,95 @@
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
-      <product
-            application="de.tudresden.slr.app.application"
-            name="app">
-         <property
-               name="appName"
-               value="app">
-         </property>
-                  <property
-name="clearPersistedState"
-value="true">
-</property>
+      <product application="de.tudresden.slr.app.application" name="app">
+         <property name="appName" value="app"></property>
+         <property name="clearPersistedState" value="true"></property>
       </product>
+   </extension>
+   <extension
+         id="activities"
+         point="org.eclipse.ui.activities">
+      <activity id="de.tudresden.slr.app.hideUiElementsActivity" name="MenuHidingActivity">  
+         <enabledWhen>  
+            <with variable="activePartId">
+               <equals value="foobar"></equals>
+            </with>
+         </enabledWhen>
+      </activity>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.jdt\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.jdt\.junit\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.jdt\.debug\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.ant\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.pde\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.pde\.ds\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.pde\.ua\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.codegen\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.codegen\.ecore\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.mapping\.ecore2xml\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.mapping.\ecore2ecore\.editor\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*EcoreModelWizard.*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*Ecore2XMLModelWizard.*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.ecore\.editor\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.emf\.importer\..*">
+      </activityPatternBinding>
+      <!--
+      The following entries hide the items in the "Run" menu, but not the menu
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.ui\.run\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.debug\.ui\..*">
+      </activityPatternBinding>
+      <activityPatternBinding
+           activityId="de.tudresden.slr.app.hideUiElementsActivity"
+           pattern=".*org\.eclipse\.ui\.externaltools\..*">
+      </activityPatternBinding>
+      -->
    </extension>
 </plugin>
