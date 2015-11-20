@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" useFeatures="true" includeLaunchers="true">
+<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -68,11 +68,11 @@
       <feature id="org.eclipse.emf.ecore.edit"/>
       <feature id="org.eclipse.jdt" version="3.11.1.v20150904-0015"/>
       <feature id="org.eclipse.platform" version="4.5.1.v20150904-0015"/>
-      <feature id="de.tudresden.slr.dependencies" version="1.0.0.qualifier"/>
-      <feature id="de.tudresden.slr.feature" version="0.0.1.qualifier"/>
-      <feature id="de.tudresden.slr.model.taxonomy.sdk" version="0.0.1.qualifier"/>
-      <feature id="de.tudresden.slr.batik.feature" version="1.0.0.qualifier"/>
       <feature id="org.eclipse.pde"/>
+      <feature id="de.tudresden.slr.feature"/>
+      <feature id="de.tudresden.slr.batik.feature"/>
+      <feature id="de.tudresden.slr.model.taxonomy.sdk"/>
+      <feature id="de.tudresden.slr.dependencies"/>
    </features>
 
 

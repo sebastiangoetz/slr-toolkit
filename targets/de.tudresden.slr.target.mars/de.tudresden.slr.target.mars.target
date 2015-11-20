@@ -84,6 +84,7 @@
 <unit id="com.google.inject" version="3.0.0.v201312141243"/>
 <unit id="org.apache.batik.dom.source" version="1.7.1.v201505191845"/>
 <unit id="org.apache.batik.parser.source" version="1.7.0.v201011041433"/>
+<unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150821153341/repository/"/>
 </location>
 </locations>

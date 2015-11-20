@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: de.tudresden.slr.product;singleton:=true
 Bundle-Name: Product
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  com.google.guava;bundle-version="15.0.0",
  com.google.inject;bundle-version="3.0.0",

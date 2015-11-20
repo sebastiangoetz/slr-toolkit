@@ -7,8 +7,8 @@
 
 	<parent>
 		<groupId>de.tudresden</groupId>
-		<artifactId>de.tudresden.slr.dependencies</artifactId>
-		<relativePath>../../features/de.tudresden.slr.dependencies/pom.xml</relativePath>
+		<artifactId>de.tudresden.slr.parent</artifactId>
+		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml</relativePath>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 </project>

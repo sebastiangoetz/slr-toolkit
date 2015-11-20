@@ -29,6 +29,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
 		<tycho.version>0.22.0</tycho.version>
 	</properties>
 
@@ -80,6 +81,7 @@
 							<version>0.0.1-SNAPSHOT</version>
 						</artifact>
 					</target>
+					<pomDependencies>consider</pomDependencies>
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -147,16 +149,14 @@
 		<module>../../targets/de.tudresden.slr.target.mars</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.ui.chart</module>
-		<module>
-			../../tests/de.tudresden.slr.model.taxonomy.tests
-		</module>
+		<module>../../tests/de.tudresden.slr.model.taxonomy.tests</module>
 		<module>../de.tudresden.slr.model.taxonomy.ui</module>
-		<module>
-			../../features/de.tudresden.slr.model.taxonomy.sdk
-		</module>
-		
+		<module>../../features/de.tudresden.slr.model.taxonomy.sdk</module>
 		<module>../de.tudresden.slr.model.modelregistry</module>
 		<module>../de.tudresden.slr.wizards</module>
+		<module>../../features/de.tudresden.slr.batik.feature</module>
+		<module>../../features/de.tudresden.slr.dependencies</module>
+		<module>../../features/de.tudresden.slr.feature</module>
+		<module>../../features/de.tudresden.slr.product</module>
 	</modules>
-
 </project>

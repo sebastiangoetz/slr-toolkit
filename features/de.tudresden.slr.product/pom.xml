@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>de.tudresden.slr.product</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<parent>
+		<groupId>de.tudresden</groupId>
+		<artifactId>de.tudresden.slr.parent</artifactId>
+		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml</relativePath>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<!-- install the product using the p2 director -->
+						<id>materialize-products</id>
+						<goals>
+							<goal>materialize-products</goal>
+						</goals>
+					</execution>
+					<execution>
+						<!-- create zip file with the installed product -->
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+						<configuration>
+							<formats>
+								<linux>tar.gz</linux>
+								<win32>zip</win32>
+							</formats>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<products>
+						<product>
+							<!-- select product with ID product.id; the archives get the classifiers 
+								"<os>.<ws>.<arch>" -->
+							<id>product</id>
+							<rootFolder>workbench</rootFolder>
+						</product>
+					</products>
+				</configuration>
+				<!-- <configuration> <includeAllDependencies>true</includeAllDependencies> 
+					</configuration> <executions> <execution> <id>materialize-products</id> <goals> 
+					<goal>materialize-products</goal> </goals> </execution> <execution> <id>archive-products</id> 
+					<goals> <goal>archive-products</goal> </goals> </execution> </executions> -->
+			</plugin>
+		</plugins>
+	</build>
+</project>
