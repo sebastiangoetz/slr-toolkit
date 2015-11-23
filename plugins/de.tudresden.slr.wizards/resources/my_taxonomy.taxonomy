@@ -1,0 +1,20 @@
+/* This taxonomy was created by the new taxonomy wizard
+   It holds a simple taxonomy to showcase the syntax */
+
+Dimension 1 {
+	Term 1 {
+		Subterm 1,
+		Subterm 2
+	},
+	Term 2,
+	Term 3
+}
+
+Dimension 2 {
+	Term 1 {
+		Subterm 1,
+		Subterm 2
+	},
+	Term 2,
+	Term 3
+}

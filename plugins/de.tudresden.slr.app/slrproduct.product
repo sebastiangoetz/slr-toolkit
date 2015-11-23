@@ -3,7 +3,6 @@
 
 <product name="SLRToolkitProduct" uid="slrProductId" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1.qualifier" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -14,7 +13,6 @@
 
    <windowImages/>
 
-
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -22,10 +20,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>
