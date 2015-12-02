@@ -7,6 +7,8 @@
    </configIni>
 
    <launcherArgs>
+      <programArgs>-console -noexit -consoleLog -clearPersistedState
+      </programArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
