@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Eclipse 4.5 RCP" sequenceNumber="53">
+<?pde version="3.8"?><target name="Eclipse 4.5 RCP" sequenceNumber="54">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.emf.common.feature.group" version="2.10.1.v20150123-0348"/>
@@ -59,29 +59,30 @@
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.batik.css.source" version="1.7.0.v201011041433"/>
+<unit id="org.apache.batik.dom.source" version="1.7.1.v201505191845"/>
 <unit id="com.google.guava" version="15.0.0.v201403281430"/>
 <unit id="org.apache.batik.util.gui.source" version="1.7.0.v200903091627"/>
 <unit id="org.apache.batik.parser" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.ext.awt" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.xml" version="1.7.0.v201011041433"/>
+<unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
 <unit id="org.apache.batik.bridge" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.svggen" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.xml.source" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.pdf" version="1.6.0.v201105071520"/>
 <unit id="org.apache.batik.transcoder.source" version="1.7.0.v201011041433"/>
+<unit id="org.apache.batik.util.gui" version="1.6.0.v201011041432"/>
 <unit id="org.apache.batik.util.source" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.dom.svg.source" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.svggen.source" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.ext.awt.source" version="1.7.0.v201011041433"/>
-<unit id="org.apache.batik.dom" version="1.7.1.v201505191845"/>
 <unit id="org.apache.batik.transcoder" version="1.7.0.v201011041433"/>
 <unit id="org.apache.batik.dom.svg" version="1.7.0.v201011041433"/>
-<unit id="org.apache.batik.bridge.source" version="1.7.0.v201011041433"/>
-<unit id="org.apache.batik.util.gui" version="1.6.0.v201011041432"/>
-<unit id="org.apache.batik.css" version="1.6.0.v201011041432"/>
 <unit id="org.apache.batik.util" version="1.6.0.v201011041432"/>
+<unit id="org.apache.batik.bridge.source" version="1.7.0.v201011041433"/>
+<unit id="org.apache.batik.css" version="1.6.0.v201011041432"/>
+<unit id="org.apache.batik.dom" version="1.7.1.v201505191845"/>
 <unit id="com.google.inject" version="3.0.0.v201312141243"/>
-<unit id="org.apache.batik.dom.source" version="1.7.1.v201505191845"/>
 <unit id="org.apache.batik.parser.source" version="1.7.0.v201011041433"/>
 <unit id="org.antlr.runtime" version="4.3.0.v201502022030"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150821153341/repository/"/>

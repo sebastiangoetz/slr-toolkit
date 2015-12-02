@@ -3,6 +3,7 @@
 
 <product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
 
+
    <configIni use="default">
    </configIni>
 
@@ -15,6 +16,7 @@
 
    <windowImages/>
 
+
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -22,9 +24,11 @@
       </win>
    </launcher>
 
+
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
    </vm>
+
 
    <plugins>
    </plugins>
@@ -73,8 +77,23 @@
       <feature id="de.tudresden.slr.batik.feature"/>
       <feature id="de.tudresden.slr.model.taxonomy.sdk"/>
       <feature id="de.tudresden.slr.dependencies"/>
+      <feature id="org.eclipse.xtext.xbase" version="2.8.4.v201508050135"/>
+      <feature id="org.eclipse.xtext.redist" version="2.8.4.v201508050135"/>
+      <feature id="org.eclipse.xtend" version="2.1.0.v201505260349"/>
+      <feature id="org.eclipse.xpand" version="2.1.0.v201505260349"/>
+      <feature id="org.eclipse.xtext.xbase.lib"/>
+      <feature id="org.eclipse.xtend.typesystem.emf"/>
+      <feature id="org.eclipse.xtend.dependencies"/>
    </features>
 
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
+   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
