@@ -3,7 +3,6 @@ package de.tudresden.slr.wizards.projects;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 
 public class SlrProjectSupport {
 
@@ -26,7 +25,7 @@ public class SlrProjectSupport {
 			newNatures[prevNatures.length] = "org.eclipse.xtext.ui.shared.xtextNature";
 			description.setNatureIds(newNatures);
 
-			project.setDescription(description, new NullProgressMonitor());
+			project.setDescription(description, null);
 		}
 	}
 

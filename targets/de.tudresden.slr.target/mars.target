@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Eclipse 4.5.1 RCP" sequenceNumber="62">
+<?pde version="3.8"?><target name="Eclipse 4.5.1 RCP" sequenceNumber="58">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.equinox.sdk.feature.group" version="3.11.1.v20150831-1342"/>
@@ -11,14 +11,6 @@
 <unit id="org.eclipse.emf.ecore.xmi" version="2.11.1.v20150805-0538"/>
 <unit id="org.eclipse.ant.core" version="3.4.0.v20150428-1928"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
-</location>
-<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.xtext.builder.standalone" version="2.9.0.v201512010527"/>
-<unit id="org.eclipse.xtext.builder" version="2.9.0.v201512010527"/>
-<unit id="org.eclipse.xtext.ui" version="2.9.0.v201512010527"/>
-<unit id="org.eclipse.xtext" version="2.9.0.v201512010527"/>
-<unit id="org.eclipse.xtext.junit4" version="2.9.0.v201512010527"/>
-<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
