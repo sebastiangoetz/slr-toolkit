@@ -35,21 +35,15 @@
       </wizard>
       -->
    </extension>
+   <!--
    <extension
-         id="de.tudresden.slr.wizards.projectNature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="de.tudresden.slr.wizards.natures.ProjectNature">
-         </run>
-      </runtime>
-   </extension>
-   <extension
+         id="de.tudresden.slr.importWizards"
          point="org.eclipse.ui.importWizards">
       <category
             id="de.tudresden.slr.wizards.slrImport"
             name="SLR">
       </category>
+      -->
       <!--
       <wizard
             category="de.tudresden.slr.wizards.slrImport"
@@ -59,10 +53,12 @@
             name="Taxonomy">
       </wizard>
       -->
+      <!--
       <category
             id="de.tudresden.slr.wizards.importWizards.sampleCategory"
             name="SLR">
       </category>
+      -->
       <!--
       <wizard
             category="de.tudresden.slr.wizards.slrImport"
@@ -74,7 +70,8 @@
             Import a file from the local file system into the workspace.
          </description>
       </wizard> -->
+      <!--
    </extension>
-
+-->
 
 </plugin>
