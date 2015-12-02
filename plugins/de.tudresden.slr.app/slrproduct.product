@@ -95,6 +95,9 @@
       <feature id="de.tudresden.slr.product.feature" version="0.0.0.qualifier"/>
    </features>
 
+   <configurations>
+      <property name="eclipse.log.level" value="INFO" />
+   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>
