@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.tudresden</groupId>
+	<artifactId>de.tudresden.slr.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Systematic Literature Review</name>
+	<description>Bla bla</description>
+
+	<organization>
+		<name>Technische Universität Dresden</name>
+		<url>http://st.inf.tu-dresden.de</url>
+	</organization>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/sebastiangoetz/slr-toolkit/issues</url>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/sebastiangoetz/slr-toolkit</url>
+		<connection>scm:git:git://github.com/sebastiangoetz/slr-toolkit.git</connection>
+		<developerConnection>scm:git:git@github.com:sebastiangoetz/slr-toolkit.git</developerConnection>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
+		<tycho.version>0.22.0</tycho.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+				<version>2.7.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<!-- optionally you can configure a different target folder -->
+						<configuration>
+							<outputDirectory>${basedir}/xtend-gen</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<!-- <configuration> <useUIHarness>true</useUIHarness> </configuration> -->
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>de.tudresden</groupId>
+							<artifactId>de.tudresden.slr.target</artifactId>
+							<version>0.0.1-SNAPSHOT</version>
+						</artifact>
+					</target>
+					<pomDependencies>consider</pomDependencies>
+					<environments>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<!-- Uncomment to build for other platforms as well <environment> <os>linux</os> 
+							<ws>gtk</ws> <arch>x86</arch> </environment> <environment> <os>linux</os> 
+							<ws>gtk</ws> <arch>x86_64</arch> </environment> <environment> <os>win32</os> 
+							<ws>win32</ws> <arch>x86</arch> </environment> <environment> <os>macosx</os> 
+							<ws>cocoa</ws> <arch>x86_64</arch> </environment> -->
+					</environments>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>plugin-source</id>
+						<goals>
+							<goal>plugin-source</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>../../targets/de.tudresden.slr.target</module>
+		<module>../de.tudresden.slr.wizards</module>
+		<module>../../features/de.tudresden.slr.app.feature</module>
+		<module>../de.tudresden.slr.app</module>
+		<module>../../features/de.tudresden.slr.product</module>
+	</modules>
+</project>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="SLRToolkitProduct" uid="slrProductId" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -92,10 +92,16 @@
    </plugins>
 
    <features>
-      <feature id="de.tudresden.slr.product.feature" version="0.0.0.qualifier"/>
+      <feature id="de.tudresden.slr.app.feature"/>
    </features>
 
    <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
       <property name="eclipse.log.level" value="INFO" />
    </configurations>
 

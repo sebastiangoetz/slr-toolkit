@@ -1,2 +1,7 @@
 .metadata/
 /**/bin/
+/**/classes
+/**/.settings/
+plugins/de.tudresden.slr.app/target/xtend/*
+*.jar
+/**/target/
