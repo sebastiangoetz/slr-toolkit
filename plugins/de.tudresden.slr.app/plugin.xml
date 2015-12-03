@@ -115,10 +115,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="de.tudresden.slr.app.application"
-            name="SLRToolkitProduct">
+            name="app">
          <property
                name="appName"
-               value="SLRToolkitProduct">
+               value="app">
          </property>
       </product>
    </extension>
