@@ -4,7 +4,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 
-import org.eclipse.xtext.ui.XtextProjectHelper;
+//import org.eclipse.xtext.ui.XtextProjectHelper;
 
 public class SlrProjectSupport {
 
@@ -20,14 +20,14 @@ public class SlrProjectSupport {
 
 	public static void addNature(IProject project) throws CoreException {
 							  //"org.eclipse.xtext.ui.shared.xtextNature"
-		if (!project.hasNature( XtextProjectHelper.NATURE_ID)){//(XtextProjectHelper.NATURE_ID)) {
+		if (!project.hasNature( "org.eclipse.xtext.ui.shared.xtextNature")){//(XtextProjectHelper.NATURE_ID)) {
 			IProjectDescription description = project.getDescription();
 			/*description.setNatureIds(new String[] { "org.eclipse.xtext.ui.shared.xtextNature" });
 		    project.setDescription(description, null);*/
 			String[] prevNatures = description.getNatureIds();
 			String[] newNatures = new String[prevNatures.length + 1];
 			System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
-			newNatures[prevNatures.length] = XtextProjectHelper.NATURE_ID;
+			newNatures[prevNatures.length] = "org.eclipse.xtext.ui.shared.xtextNature";
 			description.setNatureIds(newNatures);
 
 			project.setDescription(description, null);
