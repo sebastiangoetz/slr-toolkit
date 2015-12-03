@@ -18,7 +18,6 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
 import de.tudresden.slr.wizards.pages.WizardSetupPage;
 import de.tudresden.slr.wizards.pages.WizardSetupTaxonomyPage;
-import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
 public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
