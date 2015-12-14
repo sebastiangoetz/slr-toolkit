@@ -1,0 +1,31 @@
+grammar de.tudresden.slr.model.Taxonomy hidden(ML_COMMENT, WS, NEWLINE)
+
+generate taxonomy "http://www.tudresden.de/slr/model/Taxonomy"
+import "http://www.eclipse.org/emf/2002/Ecore"
+
+
+Model:
+	(dimensions += Term)*
+;
+
+terminal ML_COMMENT:
+	'/*' -> '*/'
+;
+
+terminal WS:
+    (' ' | '\t')+
+;
+
+terminal NEWLINE:
+    '\r'? '\n'
+;
+
+terminal ID:
+	  ('A'..'Z' | 'a'..'z') ('A'..'Z' | 'a'..'z' | '_' | '-' | '0'..'9' | ' ')*
+;
+
+Term:
+	name = ID ('{'
+		(subclasses += Term ','?)*
+	'}')?
+;
