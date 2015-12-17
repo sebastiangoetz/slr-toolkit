@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: de.tudresden.slr.model.bibtex;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ de.tudresden.slr.model.taxonomy;visibility:=reexport,
+ org.eclipse.ui.workbench,
+ org.eclipse.xtext,
+ org.eclipse.core.runtime;bundle-version="3.11.1",
+ org.jbibtex;bundle-version="1.0.15"
+Foo: org.jbibtex;bundle-version="1.0.15"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: de.tudresden.slr.model.bibtex,
+ de.tudresden.slr.model.bibtex.impl,
+ de.tudresden.slr.model.bibtex.util
+

@@ -135,5 +135,6 @@
 
 		
 		<module>../de.tudresden.slr.model.taxonomy</module>
+		<module>../de.tudresden.slr.model.bibtex</module>
 	</modules>
 </project>

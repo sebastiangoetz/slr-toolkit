@@ -34,6 +34,11 @@
 <repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.jbibtex.source" version="1.0.15"/>
+<unit id="org.jbibtex" version="1.0.15"/>
+<repository location="https://dl.bintray.com/lschuetze/org.jbibtex"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.draw2d.feature.group" version="3.5.2.v20100111-1352-4417w311A223702A19"/>
 <repository location="http://download.eclipse.org/tools/gef/updates/releases/"/>
 </location>
