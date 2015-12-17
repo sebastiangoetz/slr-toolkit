@@ -4,7 +4,8 @@
     editorDirectory="/de.tudresden.slr.model.taxonomy.editor/src" modelPluginID="de.tudresden.slr.model.taxonomy"
     forceOverwrite="true" modelName="Taxonomy" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="6.0" copyrightFields="false" editPluginID="de.tudresden.slr.model.taxonomy.edit"
-    editorPluginID="de.tudresden.slr.model.taxonomy.editor" runtimeVersion="2.10">
+    editorPluginID="de.tudresden.slr.model.taxonomy.editor" runtimeVersion="2.10"
+    runtimePlatform="RCP">
   <genPackages prefix="Taxonomy" basePackage="de.tudresden.slr.model" disposableProviderFactory="true"
       fileExtensions="taxonomy" ecorePackage="Taxonomy.ecore#/">
     <genClasses ecoreClass="Taxonomy.ecore#//Model">

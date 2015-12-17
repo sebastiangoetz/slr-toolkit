@@ -23,212 +23,212 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 {
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   private EClass modelEClass = null;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   private EClass termEClass = null;
 
   /**
-   * Creates an instance of the model <b>Package</b>, registered with
-   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-   * package URI value.
-   * <p>Note: the correct way to create the package is via the static
-   * factory method {@link #init init()}, which also performs
-   * initialization of the package, or returns the registered package,
-   * if one already exists.
-   * <!-- begin-user-doc -->
+	 * Creates an instance of the model <b>Package</b>, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * package URI value.
+	 * <p>Note: the correct way to create the package is via the static
+	 * factory method {@link #init init()}, which also performs
+	 * initialization of the package, or returns the registered package,
+	 * if one already exists.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.eclipse.emf.ecore.EPackage.Registry
-   * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#eNS_URI
-   * @see #init()
-   * @generated
-   */
+	 * @see org.eclipse.emf.ecore.EPackage.Registry
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#eNS_URI
+	 * @see #init()
+	 * @generated
+	 */
   private TaxonomyPackageImpl()
   {
-    super(eNS_URI, TaxonomyFactory.eINSTANCE);
-  }
+		super(eNS_URI, TaxonomyFactory.eINSTANCE);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   private static boolean isInited = false;
 
   /**
-   * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-   * 
-   * <p>This method is used to initialize {@link TaxonomyPackage#eINSTANCE} when that field is accessed.
-   * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-   * <!-- begin-user-doc -->
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * 
+	 * <p>This method is used to initialize {@link TaxonomyPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #eNS_URI
-   * @see #createPackageContents()
-   * @see #initializePackageContents()
-   * @generated
-   */
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
   public static TaxonomyPackage init()
   {
-    if (isInited) return (TaxonomyPackage)EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI);
+		if (isInited) return (TaxonomyPackage)EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI);
 
-    // Obtain or create and register package
-    TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TaxonomyPackageImpl());
+		// Obtain or create and register package
+		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TaxonomyPackageImpl());
 
-    isInited = true;
+		isInited = true;
 
-    // Create package meta-data objects
-    theTaxonomyPackage.createPackageContents();
+		// Create package meta-data objects
+		theTaxonomyPackage.createPackageContents();
 
-    // Initialize created meta-data
-    theTaxonomyPackage.initializePackageContents();
+		// Initialize created meta-data
+		theTaxonomyPackage.initializePackageContents();
 
-    // Mark meta-data to indicate it can't be changed
-    theTaxonomyPackage.freeze();
+		// Mark meta-data to indicate it can't be changed
+		theTaxonomyPackage.freeze();
 
   
-    // Update the registry and return the package
-    EPackage.Registry.INSTANCE.put(TaxonomyPackage.eNS_URI, theTaxonomyPackage);
-    return theTaxonomyPackage;
-  }
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(TaxonomyPackage.eNS_URI, theTaxonomyPackage);
+		return theTaxonomyPackage;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EClass getModel()
   {
-    return modelEClass;
-  }
+		return modelEClass;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EReference getModel_Dimensions()
   {
-    return (EReference)modelEClass.getEStructuralFeatures().get(0);
-  }
+		return (EReference)modelEClass.getEStructuralFeatures().get(0);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EClass getTerm()
   {
-    return termEClass;
-  }
+		return termEClass;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EAttribute getTerm_Name()
   {
-    return (EAttribute)termEClass.getEStructuralFeatures().get(0);
-  }
+		return (EAttribute)termEClass.getEStructuralFeatures().get(0);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EReference getTerm_Subclasses()
   {
-    return (EReference)termEClass.getEStructuralFeatures().get(1);
-  }
+		return (EReference)termEClass.getEStructuralFeatures().get(1);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public TaxonomyFactory getTaxonomyFactory()
   {
-    return (TaxonomyFactory)getEFactoryInstance();
-  }
+		return (TaxonomyFactory)getEFactoryInstance();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   private boolean isCreated = false;
 
   /**
-   * Creates the meta-model objects for the package.  This method is
-   * guarded to have no affect on any invocation but its first.
-   * <!-- begin-user-doc -->
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void createPackageContents()
   {
-    if (isCreated) return;
-    isCreated = true;
+		if (isCreated) return;
+		isCreated = true;
 
-    // Create classes and their features
-    modelEClass = createEClass(MODEL);
-    createEReference(modelEClass, MODEL__DIMENSIONS);
+		// Create classes and their features
+		modelEClass = createEClass(MODEL);
+		createEReference(modelEClass, MODEL__DIMENSIONS);
 
-    termEClass = createEClass(TERM);
-    createEAttribute(termEClass, TERM__NAME);
-    createEReference(termEClass, TERM__SUBCLASSES);
-  }
+		termEClass = createEClass(TERM);
+		createEAttribute(termEClass, TERM__NAME);
+		createEReference(termEClass, TERM__SUBCLASSES);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   private boolean isInitialized = false;
 
   /**
-   * Complete the initialization of the package and its meta-model.  This
-   * method is guarded to have no affect on any invocation but its first.
-   * <!-- begin-user-doc -->
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void initializePackageContents()
   {
-    if (isInitialized) return;
-    isInitialized = true;
+		if (isInitialized) return;
+		isInitialized = true;
 
-    // Initialize package
-    setName(eNAME);
-    setNsPrefix(eNS_PREFIX);
-    setNsURI(eNS_URI);
+		// Initialize package
+		setName(eNAME);
+		setNsPrefix(eNS_PREFIX);
+		setNsURI(eNS_URI);
 
-    // Create type parameters
+		// Create type parameters
 
-    // Set bounds for type parameters
+		// Set bounds for type parameters
 
-    // Add supertypes to classes
+		// Add supertypes to classes
 
-    // Initialize classes and features; add operations and parameters
-    initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getModel_Dimensions(), this.getTerm(), null, "dimensions", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		// Initialize classes and features; add operations and parameters
+		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getModel_Dimensions(), this.getTerm(), null, "dimensions", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(termEClass, Term.class, "Term", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getTerm_Name(), ecorePackage.getEString(), "name", null, 0, 1, Term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getTerm_Subclasses(), this.getTerm(), null, "subclasses", null, 0, -1, Term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(termEClass, Term.class, "Term", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTerm_Name(), ecorePackage.getEString(), "name", null, 0, 1, Term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTerm_Subclasses(), this.getTerm(), null, "subclasses", null, 0, -1, Term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    addEOperation(termEClass, ecorePackage.getEInt(), "hashCode", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEOperation(termEClass, ecorePackage.getEInt(), "hashCode", 0, 1, IS_UNIQUE, IS_ORDERED);
 
-    // Create resource
-    createResource(eNS_URI);
-  }
+		// Create resource
+		createResource(eNS_URI);
+	}
 
 } //TaxonomyPackageImpl

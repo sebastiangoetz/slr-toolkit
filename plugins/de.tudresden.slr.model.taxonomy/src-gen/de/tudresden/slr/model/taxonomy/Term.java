@@ -26,53 +26,53 @@ import org.eclipse.emf.ecore.EObject;
 public interface Term extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Name</em>' attribute.
-   * @see #setName(String)
-   * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Name()
-   * @model
-   * @generated
-   */
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Name()
+	 * @model
+	 * @generated
+	 */
   String getName();
 
   /**
-   * Sets the value of the '{@link de.tudresden.slr.model.taxonomy.Term#getName <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link de.tudresden.slr.model.taxonomy.Term#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Name</em>' attribute.
-   * @see #getName()
-   * @generated
-   */
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Subclasses</b></em>' containment reference list.
-   * The list contents are of type {@link de.tudresden.slr.model.taxonomy.Term}.
-   * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Subclasses</b></em>' containment reference list.
+	 * The list contents are of type {@link de.tudresden.slr.model.taxonomy.Term}.
+	 * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Subclasses</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Subclasses</em>' containment reference list.
-   * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Subclasses()
-   * @model containment="true"
-   * @generated
-   */
+	 * @return the value of the '<em>Subclasses</em>' containment reference list.
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Subclasses()
+	 * @model containment="true"
+	 * @generated
+	 */
   EList<Term> getSubclasses();
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='final int prime = 31;\r\n\t\tint hash = 1;\r\n\t\tif (eContainer instanceof Term) {\r\n\t\t\tint parentHash = eContainer.hashCode();\r\n\t\t\thash = prime * hash + parentHash ^ (parentHash >> 32);\r\n\t\t}\r\n\t\tint nameHash = name.hashCode();\r\n\t\thash = prime * hash + nameHash ^ (nameHash >> 32);\r\n\t\treturn hash;'"
-   * @generated
-   */
+	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='final int prime = 31;\r\n\t\tint hash = 1;\r\n\t\tif (eContainer instanceof Term) {\r\n\t\t\tint parentHash = eContainer.hashCode();\r\n\t\t\thash = prime * hash + parentHash ^ (parentHash >> 32);\r\n\t\t}\r\n\t\tint nameHash = name.hashCode();\r\n\t\thash = prime * hash + nameHash ^ (nameHash >> 32);\r\n\t\treturn hash;'"
+	 * @generated
+	 */
   int hashCode();
 
 } // Term

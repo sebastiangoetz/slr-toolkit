@@ -38,220 +38,214 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class TermImpl extends MinimalEObjectImpl.Container implements Term
 {
   /**
-   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
   protected static final String NAME_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getName()
-   * @generated
-   * @ordered
-   */
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getSubclasses() <em>Subclasses</em>}' containment reference list.
-   * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getSubclasses() <em>Subclasses</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSubclasses()
-   * @generated
-   * @ordered
-   */
+	 * @see #getSubclasses()
+	 * @generated
+	 * @ordered
+	 */
   protected EList<Term> subclasses;
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   protected TermImpl()
   {
-    super();
-  }
+		super();
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   protected EClass eStaticClass()
   {
-    return TaxonomyPackage.Literals.TERM;
-  }
+		return TaxonomyPackage.Literals.TERM;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public String getName()
   {
-    return name;
-  }
+		return name;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public void setName(String newName)
   {
-    String oldName = name;
-    name = newName;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, TaxonomyPackage.TERM__NAME, oldName, name));
-  }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TaxonomyPackage.TERM__NAME, oldName, name));
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public EList<Term> getSubclasses()
   {
-    if (subclasses == null)
-    {
-      subclasses = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.TERM__SUBCLASSES);
-    }
-    return subclasses;
-  }
+		if (subclasses == null) {
+			subclasses = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.TERM__SUBCLASSES);
+		}
+		return subclasses;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   public int hashCode()
   {
-    final int prime = 31;
-        int hash = 1;
-        if (eContainer instanceof Term) {
-          int parentHash = eContainer.hashCode();
-          hash = prime * hash + parentHash ^ (parentHash >> 32);
-        }
-        int nameHash = name.hashCode();
-        hash = prime * hash + nameHash ^ (nameHash >> 32);
-        return hash;
-  }
+		final int prime = 31;
+				int hash = 1;
+				if (eContainer instanceof Term) {
+					int parentHash = eContainer.hashCode();
+					hash = prime * hash + parentHash ^ (parentHash >> 32);
+				}
+				int nameHash = name.hashCode();
+				hash = prime * hash + nameHash ^ (nameHash >> 32);
+				return hash;
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-    switch (featureID)
-    {
-      case TaxonomyPackage.TERM__SUBCLASSES:
-        return ((InternalEList<?>)getSubclasses()).basicRemove(otherEnd, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
-  }
+		switch (featureID) {
+			case TaxonomyPackage.TERM__SUBCLASSES:
+				return ((InternalEList<?>)getSubclasses()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-    switch (featureID)
-    {
-      case TaxonomyPackage.TERM__NAME:
-        return getName();
-      case TaxonomyPackage.TERM__SUBCLASSES:
-        return getSubclasses();
-    }
-    return super.eGet(featureID, resolve, coreType);
-  }
+		switch (featureID) {
+			case TaxonomyPackage.TERM__NAME:
+				return getName();
+			case TaxonomyPackage.TERM__SUBCLASSES:
+				return getSubclasses();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
-    switch (featureID)
-    {
-      case TaxonomyPackage.TERM__NAME:
-        setName((String)newValue);
-        return;
-      case TaxonomyPackage.TERM__SUBCLASSES:
-        getSubclasses().clear();
-        getSubclasses().addAll((Collection<? extends Term>)newValue);
-        return;
-    }
-    super.eSet(featureID, newValue);
-  }
+		switch (featureID) {
+			case TaxonomyPackage.TERM__NAME:
+				setName((String)newValue);
+				return;
+			case TaxonomyPackage.TERM__SUBCLASSES:
+				getSubclasses().clear();
+				getSubclasses().addAll((Collection<? extends Term>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public void eUnset(int featureID)
   {
-    switch (featureID)
-    {
-      case TaxonomyPackage.TERM__NAME:
-        setName(NAME_EDEFAULT);
-        return;
-      case TaxonomyPackage.TERM__SUBCLASSES:
-        getSubclasses().clear();
-        return;
-    }
-    super.eUnset(featureID);
-  }
+		switch (featureID) {
+			case TaxonomyPackage.TERM__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case TaxonomyPackage.TERM__SUBCLASSES:
+				getSubclasses().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public boolean eIsSet(int featureID)
   {
-    switch (featureID)
-    {
-      case TaxonomyPackage.TERM__NAME:
-        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case TaxonomyPackage.TERM__SUBCLASSES:
-        return subclasses != null && !subclasses.isEmpty();
-    }
-    return super.eIsSet(featureID);
-  }
+		switch (featureID) {
+			case TaxonomyPackage.TERM__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case TaxonomyPackage.TERM__SUBCLASSES:
+				return subclasses != null && !subclasses.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
   /**
-   * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
-   */
+	 * @generated
+	 */
   @Override
   public String toString()
   {
-    if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
-    result.append(name);
-    result.append(')');
-    return result.toString();
-  }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
+	}
 
 } //TermImpl

@@ -131,7 +131,9 @@
 		<module>../de.tudresden.slr.app</module>
 		
 		<module>../../features/de.tudresden.slr.product</module>
+
+
 		
-		
+		<module>../de.tudresden.slr.model.taxonomy</module>
 	</modules>
 </project>
