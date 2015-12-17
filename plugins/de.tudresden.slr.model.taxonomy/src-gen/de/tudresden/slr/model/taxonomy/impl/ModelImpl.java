@@ -36,126 +36,132 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class ModelImpl extends MinimalEObjectImpl.Container implements Model
 {
   /**
-	 * The cached value of the '{@link #getDimensions() <em>Dimensions</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getDimensions() <em>Dimensions</em>}' containment reference list.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @see #getDimensions()
-	 * @generated
-	 * @ordered
-	 */
+   * @see #getDimensions()
+   * @generated
+   * @ordered
+   */
   protected EList<Term> dimensions;
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   protected ModelImpl()
   {
-		super();
-	}
+    super();
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @Override
   protected EClass eStaticClass()
   {
-		return TaxonomyPackage.Literals.MODEL;
-	}
+    return TaxonomyPackage.Literals.MODEL;
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   public EList<Term> getDimensions()
   {
-		if (dimensions == null) {
-			dimensions = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.MODEL__DIMENSIONS);
-		}
-		return dimensions;
-	}
+    if (dimensions == null)
+    {
+      dimensions = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.MODEL__DIMENSIONS);
+    }
+    return dimensions;
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
-		switch (featureID) {
-			case TaxonomyPackage.MODEL__DIMENSIONS:
-				return ((InternalEList<?>)getDimensions()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
+    switch (featureID)
+    {
+      case TaxonomyPackage.MODEL__DIMENSIONS:
+        return ((InternalEList<?>)getDimensions()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
-		switch (featureID) {
-			case TaxonomyPackage.MODEL__DIMENSIONS:
-				return getDimensions();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
+    switch (featureID)
+    {
+      case TaxonomyPackage.MODEL__DIMENSIONS:
+        return getDimensions();
+    }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
-		switch (featureID) {
-			case TaxonomyPackage.MODEL__DIMENSIONS:
-				getDimensions().clear();
-				getDimensions().addAll((Collection<? extends Term>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
+    switch (featureID)
+    {
+      case TaxonomyPackage.MODEL__DIMENSIONS:
+        getDimensions().clear();
+        getDimensions().addAll((Collection<? extends Term>)newValue);
+        return;
+    }
+    super.eSet(featureID, newValue);
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @Override
   public void eUnset(int featureID)
   {
-		switch (featureID) {
-			case TaxonomyPackage.MODEL__DIMENSIONS:
-				getDimensions().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
+    switch (featureID)
+    {
+      case TaxonomyPackage.MODEL__DIMENSIONS:
+        getDimensions().clear();
+        return;
+    }
+    super.eUnset(featureID);
+  }
 
   /**
-	 * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   @Override
   public boolean eIsSet(int featureID)
   {
-		switch (featureID) {
-			case TaxonomyPackage.MODEL__DIMENSIONS:
-				return dimensions != null && !dimensions.isEmpty();
-		}
-		return super.eIsSet(featureID);
-	}
+    switch (featureID)
+    {
+      case TaxonomyPackage.MODEL__DIMENSIONS:
+        return dimensions != null && !dimensions.isEmpty();
+    }
+    return super.eIsSet(featureID);
+  }
 
 } //ModelImpl

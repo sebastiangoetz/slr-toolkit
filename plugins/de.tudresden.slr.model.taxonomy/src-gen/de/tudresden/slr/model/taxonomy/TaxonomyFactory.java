@@ -15,38 +15,38 @@ import org.eclipse.emf.ecore.EFactory;
 public interface TaxonomyFactory extends EFactory
 {
   /**
-	 * The singleton instance of the factory.
-	 * <!-- begin-user-doc -->
+   * The singleton instance of the factory.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @generated
-	 */
+   * @generated
+   */
   TaxonomyFactory eINSTANCE = de.tudresden.slr.model.taxonomy.impl.TaxonomyFactoryImpl.init();
 
   /**
-	 * Returns a new object of class '<em>Model</em>'.
-	 * <!-- begin-user-doc -->
+   * Returns a new object of class '<em>Model</em>'.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Model</em>'.
-	 * @generated
-	 */
+   * @return a new object of class '<em>Model</em>'.
+   * @generated
+   */
   Model createModel();
 
   /**
-	 * Returns a new object of class '<em>Term</em>'.
-	 * <!-- begin-user-doc -->
+   * Returns a new object of class '<em>Term</em>'.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Term</em>'.
-	 * @generated
-	 */
+   * @return a new object of class '<em>Term</em>'.
+   * @generated
+   */
   Term createTerm();
 
   /**
-	 * Returns the package supported by this factory.
-	 * <!-- begin-user-doc -->
+   * Returns the package supported by this factory.
+   * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-	 * @return the package supported by this factory.
-	 * @generated
-	 */
+   * @return the package supported by this factory.
+   * @generated
+   */
   TaxonomyPackage getTaxonomyPackage();
 
 } //TaxonomyFactory

@@ -20,7 +20,6 @@ import org.eclipse.xtext.xtext.ecoreInference.IXtext2EcorePostProcessor;
 
 @SuppressWarnings("all")
 public class MyXtext2EcorePostProcessor implements IXtext2EcorePostProcessor {
-  @Override
   public void process(final GeneratedMetamodel metamodel) {
     EPackage _ePackage = metamodel.getEPackage();
     this.process(_ePackage);
