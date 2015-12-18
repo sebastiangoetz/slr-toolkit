@@ -139,6 +139,5 @@
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
 		<module>../de.tudresden.slr.model.modelregistry</module>
 		<module>../de.tudresden.slr.ui.chart</module>
-		<module>../de.tudresden.slr.model.taxonomy.ui</module>
 	</modules>
 </project>

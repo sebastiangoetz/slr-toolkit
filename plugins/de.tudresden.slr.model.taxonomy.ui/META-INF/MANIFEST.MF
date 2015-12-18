@@ -5,6 +5,24 @@ Bundle-Vendor: My Company
 Bundle-Version: 0.0.1.qualifier
 Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.ui;singleton:=true
 Bundle-ActivationPolicy: lazy
+Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.ui,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare,
+ org.eclipse.core.runtime,
+ de.tudresden.slr.model.modelregistry,
+ de.tudresden.slr.model.bibtex,
+ de.tudresden.slr.ui.chart,
+ org.eclipse.birt.chart.engine,
+ org.eclipse.xtext.builder
+Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.tudresden.slr.model.taxonomy.ui.views,
  de.tudresden.slr.model.ui.contentassist,
@@ -12,23 +30,3 @@ Export-Package: de.tudresden.slr.model.taxonomy.ui.views,
  de.tudresden.slr.model.ui.internal,
  de.tudresden.slr.model.ui.quickfix
 Bundle-Activator: de.tudresden.slr.model.ui.internal.TaxonomyActivator
-Require-Bundle: org.eclipse.emf.common,
- org.eclipse.emf.ecore,
- org.eclipse.emf.edit,
- org.eclipse.jface,
- org.eclipse.ui.workbench,
- org.eclipse.xtext,
- org.eclipse.xtext.ui,
- de.tudresden.slr.model.bibtex,
- de.tudresden.slr.model.modelregistry,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.apache.log4j,
- org.eclipse.xtext.ui.shared,
- org.eclipse.xtext.common.types.ui,
- org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.compare,
- org.eclipse.xtext.builder
-
