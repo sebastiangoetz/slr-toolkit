@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="chartviewId"
+         point="org.eclipse.ui.views">
+      <view
+            class="de.tudresden.slr.ui.chart.views.ChartView"
+            id="chart.view.chartview"
+            name="ChartView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         id="chartMenuId"
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:chart.view.chartview">
+         <command
+               commandId="de.tudresden.slr.ui.chart.savechartaspdf"
+               label="Save as PDF"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="chartCommandsId"
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="de.tudresden.slr.ui.chart.handlers.SaveAsPDFHandler"
+            id="de.tudresden.slr.ui.chart.savechartaspdf"
+            name="Save as PDF">
+      </command>
+   </extension>
+</plugin>
