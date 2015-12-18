@@ -339,7 +339,7 @@
             point="org.eclipse.ui.ide.markerResolution">
         <markerResolutionGenerator
             class="de.tudresden.slr.model.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-            markerType="de.tudresden.slr.model.ui.taxonomy.check.fast">
+            markerType="de.tudresden.slr.model.taxonomy.ui.taxonomy.check.fast">
             <attribute
                 name="FIXABLE_KEY"
                 value="true">
@@ -347,7 +347,7 @@
         </markerResolutionGenerator>
         <markerResolutionGenerator
             class="de.tudresden.slr.model.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-            markerType="de.tudresden.slr.model.ui.taxonomy.check.normal">
+            markerType="de.tudresden.slr.model.taxonomy.ui.taxonomy.check.normal">
             <attribute
                 name="FIXABLE_KEY"
                 value="true">
@@ -355,7 +355,7 @@
         </markerResolutionGenerator>
         <markerResolutionGenerator
             class="de.tudresden.slr.model.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.quickfix.MarkerResolutionGenerator"
-            markerType="de.tudresden.slr.model.ui.taxonomy.check.expensive">
+            markerType="de.tudresden.slr.model.taxonomy.ui.taxonomy.check.expensive">
             <attribute
                 name="FIXABLE_KEY"
                 value="true">
