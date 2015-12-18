@@ -908,13 +908,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.jbibtex"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="de.tudresden.slr.model.bibtex.edit"
          download-size="0"
          install-size="0"
@@ -923,6 +916,20 @@
 
    <plugin
          id="org.eclipse.emf.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jbibtex"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.model.modelregistry"
          download-size="0"
          install-size="0"
          version="0.0.0"

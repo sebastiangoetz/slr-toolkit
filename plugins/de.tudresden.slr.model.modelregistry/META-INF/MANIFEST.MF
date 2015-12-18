@@ -8,9 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.tudresden.slr.model.bibtex,
  org.eclipse.emf.edit,
- de.tudresden.slr.model.bibtex.edit,
- de.tudresden.slr.model.taxonomy
-Comment: de.tudresden.slr.model.taxonomy should be remoded
+ de.tudresden.slr.model.bibtex.edit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.modelregistry,
