@@ -48,11 +48,11 @@ import org.jbibtex.TokenMgrException;
 
 import com.google.inject.Injector;
 
-import de.tudresden.slr.model.TaxonomyStandaloneSetupGenerated;
+import de.tudresden.slr.model.TaxanomyStandaloneSetupGenerated;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.taxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
 
 /**
@@ -131,9 +131,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 	private Model parseClasses(String string) {
 		if (string.isEmpty()) {
-			return TaxonomyFactory.eINSTANCE.createModel();
+			return taxonomyFactory.eINSTANCE.createModel();
 		}
-		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
+		TaxanomyStandaloneSetupGenerated setup = new TaxanomyStandaloneSetupGenerated();
 		Injector injector = setup.createInjectorAndDoEMFRegistration();
 		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
 		Resource resource = resourceSet.createResource(URI.createURI("tmp.taxonomy"));
@@ -145,7 +145,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 		if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Model) {
 			return (Model) resource.getContents().get(0);
 		}
-		return TaxonomyFactory.eINSTANCE.createModel();
+		return taxonomyFactory.eINSTANCE.createModel();
 	}
 
 	@Override

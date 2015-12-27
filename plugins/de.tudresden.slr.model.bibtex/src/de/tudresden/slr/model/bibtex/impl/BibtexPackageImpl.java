@@ -6,7 +6,7 @@ import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
 
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.taxonomyPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -82,7 +82,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		isInited = true;
 
 		// Initialize simple dependencies
-		TaxonomyPackage.eINSTANCE.eClass();
+		taxonomyPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBibtexPackage.createPackageContents();
@@ -309,8 +309,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		TaxonomyPackage theTaxonomyPackage = (TaxonomyPackage) EPackage.Registry.INSTANCE
-				.getEPackage(TaxonomyPackage.eNS_URI);
+		taxonomyPackage theTaxonomyPackage = (taxonomyPackage) EPackage.Registry.INSTANCE
+				.getEPackage(taxonomyPackage.eNS_URI);
 
 		// Create type parameters
 
