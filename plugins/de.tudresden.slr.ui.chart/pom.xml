@@ -6,6 +6,6 @@
   	<groupId>de.tudresden</groupId>
   	<artifactId>de.tudresden.slr.parent</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
-  	<relativePath>../plugins/de.tudresden.slr.parent/pom.xml</relativePath>
+  	<relativePath>../de.tudresden.slr.parent/pom.xml</relativePath>
   </parent>
 </project>
