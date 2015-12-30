@@ -292,13 +292,12 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This returns the label text for the adapted class. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Document) object).getAbstract();
+		String label = ((Document) object).getKey();
 		return label == null || label.length() == 0 ? getString("_UI_Document_type")
-				: getString("_UI_Document_type") + " " + label;
+				: label;
 	}
 
 	/**

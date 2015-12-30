@@ -36,7 +36,7 @@ public final class BibtexEditPlugin extends EMFPlugin {
 	 */
 	public BibtexEditPlugin() {
 		super(null);
-		//super(new ResourceLocator[] { TaxonomyEditPlugin.INSTANCE, });
+		// super(new ResourceLocator[] { TaxonomyEditPlugin.INSTANCE, });
 	}
 
 	/**

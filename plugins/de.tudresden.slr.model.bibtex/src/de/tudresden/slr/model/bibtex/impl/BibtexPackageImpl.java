@@ -309,7 +309,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		taxonomyPackage theTaxonomyPackage = (taxonomyPackage) EPackage.Registry.INSTANCE
+		taxonomyPackage thetaxonomyPackage = (taxonomyPackage) EPackage.Registry.INSTANCE
 				.getEPackage(taxonomyPackage.eNS_URI);
 
 		// Create type parameters
@@ -340,7 +340,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		initEAttribute(getDocument_UnparsedAuthors(), ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
 				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
-		initEReference(getDocument_Taxonomy(), theTaxonomyPackage.getModel(), null, "taxonomy", null, 0, 1,
+		initEReference(getDocument_Taxonomy(), thetaxonomyPackage.getModel(), null, "taxonomy", null, 0, 1,
 				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type", null, 0, 1, Document.class, !IS_TRANSIENT,

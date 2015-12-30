@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <em><b>Document</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAuthors
  * <em>Authors</em>}</li>
@@ -54,7 +55,6 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getCites
  * <em>Cites</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

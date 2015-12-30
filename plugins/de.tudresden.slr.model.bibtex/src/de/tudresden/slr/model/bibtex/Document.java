@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getAuthors <em>Authors</em>
  * }</li>
@@ -36,7 +37,6 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}
  * </li>
  * </ul>
- * </p>
  *
  * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument()
  * @model

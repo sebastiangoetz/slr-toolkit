@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/de.tudresden.slr.model.bibtex/src" modelPluginID="de.tudresden.slr.model.bibtex"
     redirection="" modelName="Bibtex" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     codeFormatting="true" commentFormatting="true" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.tudresden.slr.model.taxonomy/model/generated/Taxonomy.genmodel#//taxonomy"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.tudresden.slr.model.taxonomy.model/model/Taxonomy.genmodel#//taxonomy"
     operationReflection="true" runtimePlatform="RCP" importOrganizing="true" pluginKey="bib"
     cleanup="true">
   <foreignModel>bibtex.ecore</foreignModel>
