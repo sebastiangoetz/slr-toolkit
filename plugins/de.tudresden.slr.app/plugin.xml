@@ -25,6 +25,15 @@
             targetID="de.tudresden.slr.app.perspective">
          <view
                closeable="true"
+               id="org.eclipse.ui.navigator.resources.ProjectExplorer"
+               minimized="false"
+               ratio="0.25"
+               relationship="stack"
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
+               visible="true">
+         </view>
+         <view
+               closeable="true"
                id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
                minimized="false"
                ratio="0.25"
