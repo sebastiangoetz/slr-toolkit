@@ -19,24 +19,51 @@
             id="de.tudresden.slr.app.perspective">
       </perspective>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            name="View"
-            class="de.tudresden.slr.app.View"
-            id="de.tudresden.slr.app.view">
-      </view>
-   </extension>
-   <extension
+<extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="de.tudresden.slr.app.perspective">
          <view
-               standalone="true"
+               closeable="true"
+               id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
                minimized="false"
-               relative="org.eclipse.ui.editorss"
+               ratio="0.25"
                relationship="left"
-               id="de.tudresden.slr.app.view">
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
+        <!-- <view
+               id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+               minimized="false"
+               ratio="0.75"
+               relationship="right"
+               relative="org.eclipse.ui.editorss">
+         </view> -->
+         <view
+               id="org.eclipse.ui.views.ProblemView"
+               minimized="false"
+               ratio="0.5"
+               relationship="bottom"
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
+         </view>
+         <view
+               id="org.eclipse.ui.views.PropertySheet"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+         <view
+               id="org.eclipse.ui.navigator.ProjectExplorer"
+               minimized="false"
+               relationship="stack"
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
+         </view>
+         <view
+               id="chart.view.chartview"
+               minimized="false"
+               ratio="0.25"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss">
          </view>
       </perspectiveExtension>
    </extension>
