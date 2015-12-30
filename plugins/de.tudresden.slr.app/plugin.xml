@@ -41,13 +41,15 @@
                relative="org.eclipse.ui.editorss"
                visible="true">
          </view>
-        <!-- <view
+         <view
+               closeable="true"
                id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
                minimized="false"
                ratio="0.75"
                relationship="right"
-               relative="org.eclipse.ui.editorss">
-         </view> -->
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
          <view
                id="org.eclipse.ui.views.ProblemView"
                minimized="false"

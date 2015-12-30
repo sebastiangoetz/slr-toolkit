@@ -35,18 +35,12 @@ public class TaxanomyParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
-					put(grammarAccess.getEStringAccess().getAlternatives(), "rule__EString__Alternatives");
-					put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
-					put(grammarAccess.getModelAccess().getGroup_3(), "rule__Model__Group_3__0");
-					put(grammarAccess.getModelAccess().getGroup_3_3(), "rule__Model__Group_3_3__0");
 					put(grammarAccess.getTermAccess().getGroup(), "rule__Term__Group__0");
-					put(grammarAccess.getTermAccess().getGroup_4(), "rule__Term__Group_4__0");
-					put(grammarAccess.getTermAccess().getGroup_4_3(), "rule__Term__Group_4_3__0");
-					put(grammarAccess.getModelAccess().getDimensionsAssignment_3_2(), "rule__Model__DimensionsAssignment_3_2");
-					put(grammarAccess.getModelAccess().getDimensionsAssignment_3_3_1(), "rule__Model__DimensionsAssignment_3_3_1");
-					put(grammarAccess.getTermAccess().getNameAssignment_2(), "rule__Term__NameAssignment_2");
-					put(grammarAccess.getTermAccess().getSubclassesAssignment_4_2(), "rule__Term__SubclassesAssignment_4_2");
-					put(grammarAccess.getTermAccess().getSubclassesAssignment_4_3_1(), "rule__Term__SubclassesAssignment_4_3_1");
+					put(grammarAccess.getTermAccess().getGroup_1(), "rule__Term__Group_1__0");
+					put(grammarAccess.getTermAccess().getGroup_1_1(), "rule__Term__Group_1_1__0");
+					put(grammarAccess.getModelAccess().getDimensionsAssignment(), "rule__Model__DimensionsAssignment");
+					put(grammarAccess.getTermAccess().getNameAssignment_0(), "rule__Term__NameAssignment_0");
+					put(grammarAccess.getTermAccess().getSubclassesAssignment_1_1_0(), "rule__Term__SubclassesAssignment_1_1_0");
 				}
 			};
 		}

@@ -78,82 +78,22 @@ ruleModel returns [EObject current=null]
 	(
 		(
 			{
-				$current = forceCreateModelElement(
-					grammarAccess.getModelAccess().getModelAction_0(),
-					$current);
+				newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_0());
+			}
+			lv_dimensions_0_0=ruleTerm
+			{
+				if ($current==null) {
+					$current = createModelElementForParent(grammarAccess.getModelRule());
+				}
+				add(
+					$current,
+					"dimensions",
+					lv_dimensions_0_0,
+					"de.tudresden.slr.model.Taxanomy.Term");
+				afterParserOrEnumRuleCall();
 			}
 		)
-		otherlv_1='Model'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getModelAccess().getModelKeyword_1());
-		}
-		otherlv_2='{'
-		{
-			newLeafNode(otherlv_2, grammarAccess.getModelAccess().getLeftCurlyBracketKeyword_2());
-		}
-		(
-			otherlv_3='dimensions'
-			{
-				newLeafNode(otherlv_3, grammarAccess.getModelAccess().getDimensionsKeyword_3_0());
-			}
-			otherlv_4='{'
-			{
-				newLeafNode(otherlv_4, grammarAccess.getModelAccess().getLeftCurlyBracketKeyword_3_1());
-			}
-			(
-				(
-					{
-						newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_3_2_0());
-					}
-					lv_dimensions_5_0=ruleTerm
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getModelRule());
-						}
-						add(
-							$current,
-							"dimensions",
-							lv_dimensions_5_0,
-							"de.tudresden.slr.model.Taxanomy.Term");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			(
-				otherlv_6=','
-				{
-					newLeafNode(otherlv_6, grammarAccess.getModelAccess().getCommaKeyword_3_3_0());
-				}
-				(
-					(
-						{
-							newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_3_3_1_0());
-						}
-						lv_dimensions_7_0=ruleTerm
-						{
-							if ($current==null) {
-								$current = createModelElementForParent(grammarAccess.getModelRule());
-							}
-							add(
-								$current,
-								"dimensions",
-								lv_dimensions_7_0,
-								"de.tudresden.slr.model.Taxanomy.Term");
-							afterParserOrEnumRuleCall();
-						}
-					)
-				)
-			)*
-			otherlv_8='}'
-			{
-				newLeafNode(otherlv_8, grammarAccess.getModelAccess().getRightCurlyBracketKeyword_3_4());
-			}
-		)?
-		otherlv_9='}'
-		{
-			newLeafNode(otherlv_9, grammarAccess.getModelAccess().getRightCurlyBracketKeyword_4());
-		}
-	)
+	)*
 ;
 
 // Entry rule entryRuleTerm
@@ -173,78 +113,35 @@ ruleTerm returns [EObject current=null]
 }:
 	(
 		(
-			{
-				$current = forceCreateModelElement(
-					grammarAccess.getTermAccess().getTermAction_0(),
-					$current);
-			}
-		)
-		otherlv_1='Term'
-		{
-			newLeafNode(otherlv_1, grammarAccess.getTermAccess().getTermKeyword_1());
-		}
-		(
 			(
+				lv_name_0_0=RULE_ID
 				{
-					newCompositeNode(grammarAccess.getTermAccess().getNameEStringParserRuleCall_2_0());
+					newLeafNode(lv_name_0_0, grammarAccess.getTermAccess().getNameIDTerminalRuleCall_0_0());
 				}
-				lv_name_2_0=ruleEString
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getTermRule());
+						$current = createModelElement(grammarAccess.getTermRule());
 					}
-					set(
+					setWithLastConsumed(
 						$current,
 						"name",
-						lv_name_2_0,
-						"de.tudresden.slr.model.Taxanomy.EString");
-					afterParserOrEnumRuleCall();
+						lv_name_0_0,
+						"de.tudresden.slr.model.Taxanomy.ID");
 				}
 			)
 		)
-		otherlv_3='{'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getTermAccess().getLeftCurlyBracketKeyword_3());
-		}
 		(
-			otherlv_4='subclasses'
+			otherlv_1='{'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getTermAccess().getSubclassesKeyword_4_0());
-			}
-			otherlv_5='{'
-			{
-				newLeafNode(otherlv_5, grammarAccess.getTermAccess().getLeftCurlyBracketKeyword_4_1());
+				newLeafNode(otherlv_1, grammarAccess.getTermAccess().getLeftCurlyBracketKeyword_1_0());
 			}
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getTermAccess().getSubclassesTermParserRuleCall_4_2_0());
-					}
-					lv_subclasses_6_0=ruleTerm
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getTermRule());
-						}
-						add(
-							$current,
-							"subclasses",
-							lv_subclasses_6_0,
-							"de.tudresden.slr.model.Taxanomy.Term");
-						afterParserOrEnumRuleCall();
-					}
-				)
-			)
-			(
-				otherlv_7=','
-				{
-					newLeafNode(otherlv_7, grammarAccess.getTermAccess().getCommaKeyword_4_3_0());
-				}
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getTermAccess().getSubclassesTermParserRuleCall_4_3_1_0());
+							newCompositeNode(grammarAccess.getTermAccess().getSubclassesTermParserRuleCall_1_1_0_0());
 						}
-						lv_subclasses_8_0=ruleTerm
+						lv_subclasses_2_0=ruleTerm
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getTermRule());
@@ -252,69 +149,39 @@ ruleTerm returns [EObject current=null]
 							add(
 								$current,
 								"subclasses",
-								lv_subclasses_8_0,
+								lv_subclasses_2_0,
 								"de.tudresden.slr.model.Taxanomy.Term");
 							afterParserOrEnumRuleCall();
 						}
 					)
 				)
+				(
+					otherlv_3=','
+					{
+						newLeafNode(otherlv_3, grammarAccess.getTermAccess().getCommaKeyword_1_1_1());
+					}
+				)?
 			)*
-			otherlv_9='}'
+			otherlv_4='}'
 			{
-				newLeafNode(otherlv_9, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_4_4());
+				newLeafNode(otherlv_4, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_1_2());
 			}
 		)?
-		otherlv_10='}'
-		{
-			newLeafNode(otherlv_10, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_5());
-		}
 	)
 ;
 
-// Entry rule entryRuleEString
-entryRuleEString returns [String current=null]:
-	{ newCompositeNode(grammarAccess.getEStringRule()); }
-	iv_ruleEString=ruleEString
-	{ $current=$iv_ruleEString.current.getText(); }
-	EOF;
+RULE_ML_COMMENT : '/*' ( options {greedy=false;} : . )*'*/';
 
-// Rule EString
-ruleEString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		this_STRING_0=RULE_STRING
-		{
-			$current.merge(this_STRING_0);
-		}
-		{
-			newLeafNode(this_STRING_0, grammarAccess.getEStringAccess().getSTRINGTerminalRuleCall_0());
-		}
-		    |
-		this_ID_1=RULE_ID
-		{
-			$current.merge(this_ID_1);
-		}
-		{
-			newLeafNode(this_ID_1, grammarAccess.getEStringAccess().getIDTerminalRuleCall_1());
-		}
-	)
-;
+RULE_WS : (' '|'\t')+;
 
-RULE_ID : '^'? ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
+RULE_NEWLINE : '\r'? '\n';
+
+RULE_ID : ('A'..'Z'|'a'..'z') ('A'..'Z'|'a'..'z'|'_'|'-'|'0'..'9'|' ')*;
 
 RULE_INT : ('0'..'9')+;
 
 RULE_STRING : ('"' ('\\' .|~(('\\'|'"')))* '"'|'\'' ('\\' .|~(('\\'|'\'')))* '\'');
 
-RULE_ML_COMMENT : '/*' ( options {greedy=false;} : . )*'*/';
-
 RULE_SL_COMMENT : '//' ~(('\n'|'\r'))* ('\r'? '\n')?;
-
-RULE_WS : (' '|'\t'|'\r'|'\n')+;
 
 RULE_ANY_OTHER : .;

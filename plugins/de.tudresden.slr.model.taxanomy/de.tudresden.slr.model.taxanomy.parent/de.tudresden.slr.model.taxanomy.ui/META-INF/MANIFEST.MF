@@ -17,7 +17,11 @@ Require-Bundle: de.tudresden.slr.model.taxanomy,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
  org.eclipse.xtend.lib;resolution:=optional,
- org.eclipse.xtext.xbase.lib
+ org.eclipse.xtext.xbase.lib,
+ de.tudresden.slr.model.bibtex,
+ de.tudresden.slr.model.modelregistry,
+ org.eclipse.birt.chart.engine,
+ de.tudresden.slr.ui.chart
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.tudresden.slr.model.ui.contentassist,

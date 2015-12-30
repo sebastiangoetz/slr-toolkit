@@ -12,17 +12,14 @@ import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class InternalTaxanomyLexer extends Lexer {
-    public static final int RULE_ID=5;
-    public static final int RULE_WS=9;
-    public static final int RULE_STRING=4;
-    public static final int RULE_ANY_OTHER=10;
-    public static final int RULE_SL_COMMENT=8;
-    public static final int T__15=15;
-    public static final int T__16=16;
-    public static final int T__17=17;
-    public static final int RULE_INT=6;
-    public static final int T__11=11;
-    public static final int RULE_ML_COMMENT=7;
+    public static final int RULE_ID=4;
+    public static final int RULE_WS=6;
+    public static final int RULE_NEWLINE=7;
+    public static final int RULE_STRING=9;
+    public static final int RULE_ANY_OTHER=11;
+    public static final int RULE_SL_COMMENT=10;
+    public static final int RULE_INT=8;
+    public static final int RULE_ML_COMMENT=5;
     public static final int T__12=12;
     public static final int T__13=13;
     public static final int T__14=14;
@@ -41,34 +38,13 @@ public class InternalTaxanomyLexer extends Lexer {
     }
     public String getGrammarFileName() { return "InternalTaxanomy.g"; }
 
-    // $ANTLR start "T__11"
-    public final void mT__11() throws RecognitionException {
-        try {
-            int _type = T__11;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:11:7: ( 'Model' )
-            // InternalTaxanomy.g:11:9: 'Model'
-            {
-            match("Model"); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__11"
-
     // $ANTLR start "T__12"
     public final void mT__12() throws RecognitionException {
         try {
             int _type = T__12;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:12:7: ( '{' )
-            // InternalTaxanomy.g:12:9: '{'
+            // InternalTaxanomy.g:11:7: ( '{' )
+            // InternalTaxanomy.g:11:9: '{'
             {
             match('{'); 
 
@@ -87,8 +63,8 @@ public class InternalTaxanomyLexer extends Lexer {
         try {
             int _type = T__13;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:13:7: ( '}' )
-            // InternalTaxanomy.g:13:9: '}'
+            // InternalTaxanomy.g:12:7: ( '}' )
+            // InternalTaxanomy.g:12:9: '}'
             {
             match('}'); 
 
@@ -107,29 +83,8 @@ public class InternalTaxanomyLexer extends Lexer {
         try {
             int _type = T__14;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:14:7: ( 'dimensions' )
-            // InternalTaxanomy.g:14:9: 'dimensions'
-            {
-            match("dimensions"); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__14"
-
-    // $ANTLR start "T__15"
-    public final void mT__15() throws RecognitionException {
-        try {
-            int _type = T__15;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:15:7: ( ',' )
-            // InternalTaxanomy.g:15:9: ','
+            // InternalTaxanomy.g:13:7: ( ',' )
+            // InternalTaxanomy.g:13:9: ','
             {
             match(','); 
 
@@ -141,92 +96,84 @@ public class InternalTaxanomyLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__15"
+    // $ANTLR end "T__14"
 
-    // $ANTLR start "T__16"
-    public final void mT__16() throws RecognitionException {
+    // $ANTLR start "RULE_ML_COMMENT"
+    public final void mRULE_ML_COMMENT() throws RecognitionException {
         try {
-            int _type = T__16;
+            int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:16:7: ( 'Term' )
-            // InternalTaxanomy.g:16:9: 'Term'
+            // InternalTaxanomy.g:336:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalTaxanomy.g:336:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
-            match("Term"); 
+            match("/*"); 
 
+            // InternalTaxanomy.g:336:24: ( options {greedy=false; } : . )*
+            loop1:
+            do {
+                int alt1=2;
+                int LA1_0 = input.LA(1);
 
-            }
+                if ( (LA1_0=='*') ) {
+                    int LA1_1 = input.LA(2);
 
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__16"
-
-    // $ANTLR start "T__17"
-    public final void mT__17() throws RecognitionException {
-        try {
-            int _type = T__17;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:17:7: ( 'subclasses' )
-            // InternalTaxanomy.g:17:9: 'subclasses'
-            {
-            match("subclasses"); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "T__17"
-
-    // $ANTLR start "RULE_ID"
-    public final void mRULE_ID() throws RecognitionException {
-        try {
-            int _type = RULE_ID;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:898:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // InternalTaxanomy.g:898:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
-            {
-            // InternalTaxanomy.g:898:11: ( '^' )?
-            int alt1=2;
-            int LA1_0 = input.LA(1);
-
-            if ( (LA1_0=='^') ) {
-                alt1=1;
-            }
-            switch (alt1) {
-                case 1 :
-                    // InternalTaxanomy.g:898:11: '^'
-                    {
-                    match('^'); 
-
+                    if ( (LA1_1=='/') ) {
+                        alt1=2;
                     }
-                    break;
+                    else if ( ((LA1_1>='\u0000' && LA1_1<='.')||(LA1_1>='0' && LA1_1<='\uFFFF')) ) {
+                        alt1=1;
+                    }
+
+
+                }
+                else if ( ((LA1_0>='\u0000' && LA1_0<=')')||(LA1_0>='+' && LA1_0<='\uFFFF')) ) {
+                    alt1=1;
+                }
+
+
+                switch (alt1) {
+            	case 1 :
+            	    // InternalTaxanomy.g:336:52: .
+            	    {
+            	    matchAny(); 
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop1;
+                }
+            } while (true);
+
+            match("*/"); 
+
 
             }
 
-            if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
-                input.consume();
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "RULE_ML_COMMENT"
 
-            }
-            else {
-                MismatchedSetException mse = new MismatchedSetException(null,input);
-                recover(mse);
-                throw mse;}
-
-            // InternalTaxanomy.g:898:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+    // $ANTLR start "RULE_WS"
+    public final void mRULE_WS() throws RecognitionException {
+        try {
+            int _type = RULE_WS;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // InternalTaxanomy.g:338:9: ( ( ' ' | '\\t' )+ )
+            // InternalTaxanomy.g:338:11: ( ' ' | '\\t' )+
+            {
+            // InternalTaxanomy.g:338:11: ( ' ' | '\\t' )+
+            int cnt2=0;
             loop2:
             do {
                 int alt2=2;
                 int LA2_0 = input.LA(1);
 
-                if ( ((LA2_0>='0' && LA2_0<='9')||(LA2_0>='A' && LA2_0<='Z')||LA2_0=='_'||(LA2_0>='a' && LA2_0<='z')) ) {
+                if ( (LA2_0=='\t'||LA2_0==' ') ) {
                     alt2=1;
                 }
 
@@ -235,7 +182,7 @@ public class InternalTaxanomyLexer extends Lexer {
             	case 1 :
             	    // InternalTaxanomy.g:
             	    {
-            	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
             	        input.consume();
 
             	    }
@@ -249,7 +196,110 @@ public class InternalTaxanomyLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop2;
+            	    if ( cnt2 >= 1 ) break loop2;
+                        EarlyExitException eee =
+                            new EarlyExitException(2, input);
+                        throw eee;
+                }
+                cnt2++;
+            } while (true);
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "RULE_WS"
+
+    // $ANTLR start "RULE_NEWLINE"
+    public final void mRULE_NEWLINE() throws RecognitionException {
+        try {
+            int _type = RULE_NEWLINE;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // InternalTaxanomy.g:340:14: ( ( '\\r' )? '\\n' )
+            // InternalTaxanomy.g:340:16: ( '\\r' )? '\\n'
+            {
+            // InternalTaxanomy.g:340:16: ( '\\r' )?
+            int alt3=2;
+            int LA3_0 = input.LA(1);
+
+            if ( (LA3_0=='\r') ) {
+                alt3=1;
+            }
+            switch (alt3) {
+                case 1 :
+                    // InternalTaxanomy.g:340:16: '\\r'
+                    {
+                    match('\r'); 
+
+                    }
+                    break;
+
+            }
+
+            match('\n'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "RULE_NEWLINE"
+
+    // $ANTLR start "RULE_ID"
+    public final void mRULE_ID() throws RecognitionException {
+        try {
+            int _type = RULE_ID;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // InternalTaxanomy.g:342:9: ( ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )* )
+            // InternalTaxanomy.g:342:11: ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
+            {
+            if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+                input.consume();
+
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                recover(mse);
+                throw mse;}
+
+            // InternalTaxanomy.g:342:31: ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
+            loop4:
+            do {
+                int alt4=2;
+                int LA4_0 = input.LA(1);
+
+                if ( (LA4_0==' '||LA4_0=='-'||(LA4_0>='0' && LA4_0<='9')||(LA4_0>='A' && LA4_0<='Z')||LA4_0=='_'||(LA4_0>='a' && LA4_0<='z')) ) {
+                    alt4=1;
+                }
+
+
+                switch (alt4) {
+            	case 1 :
+            	    // InternalTaxanomy.g:
+            	    {
+            	    if ( input.LA(1)==' '||input.LA(1)=='-'||(input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
+            	        input.consume();
+
+            	    }
+            	    else {
+            	        MismatchedSetException mse = new MismatchedSetException(null,input);
+            	        recover(mse);
+            	        throw mse;}
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop4;
                 }
             } while (true);
 
@@ -269,24 +319,24 @@ public class InternalTaxanomyLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:900:10: ( ( '0' .. '9' )+ )
-            // InternalTaxanomy.g:900:12: ( '0' .. '9' )+
+            // InternalTaxanomy.g:344:10: ( ( '0' .. '9' )+ )
+            // InternalTaxanomy.g:344:12: ( '0' .. '9' )+
             {
-            // InternalTaxanomy.g:900:12: ( '0' .. '9' )+
-            int cnt3=0;
-            loop3:
+            // InternalTaxanomy.g:344:12: ( '0' .. '9' )+
+            int cnt5=0;
+            loop5:
             do {
-                int alt3=2;
-                int LA3_0 = input.LA(1);
+                int alt5=2;
+                int LA5_0 = input.LA(1);
 
-                if ( ((LA3_0>='0' && LA3_0<='9')) ) {
-                    alt3=1;
+                if ( ((LA5_0>='0' && LA5_0<='9')) ) {
+                    alt5=1;
                 }
 
 
-                switch (alt3) {
+                switch (alt5) {
             	case 1 :
-            	    // InternalTaxanomy.g:900:13: '0' .. '9'
+            	    // InternalTaxanomy.g:344:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -294,12 +344,12 @@ public class InternalTaxanomyLexer extends Lexer {
             	    break;
 
             	default :
-            	    if ( cnt3 >= 1 ) break loop3;
+            	    if ( cnt5 >= 1 ) break loop5;
                         EarlyExitException eee =
-                            new EarlyExitException(3, input);
+                            new EarlyExitException(5, input);
                         throw eee;
                 }
-                cnt3++;
+                cnt5++;
             } while (true);
 
 
@@ -318,47 +368,47 @@ public class InternalTaxanomyLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:902:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // InternalTaxanomy.g:902:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // InternalTaxanomy.g:346:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // InternalTaxanomy.g:346:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // InternalTaxanomy.g:902:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
-            int alt6=2;
-            int LA6_0 = input.LA(1);
+            // InternalTaxanomy.g:346:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            int alt8=2;
+            int LA8_0 = input.LA(1);
 
-            if ( (LA6_0=='\"') ) {
-                alt6=1;
+            if ( (LA8_0=='\"') ) {
+                alt8=1;
             }
-            else if ( (LA6_0=='\'') ) {
-                alt6=2;
+            else if ( (LA8_0=='\'') ) {
+                alt8=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 0, input);
+                    new NoViableAltException("", 8, 0, input);
 
                 throw nvae;
             }
-            switch (alt6) {
+            switch (alt8) {
                 case 1 :
-                    // InternalTaxanomy.g:902:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // InternalTaxanomy.g:346:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // InternalTaxanomy.g:902:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
-                    loop4:
+                    // InternalTaxanomy.g:346:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    loop6:
                     do {
-                        int alt4=3;
-                        int LA4_0 = input.LA(1);
+                        int alt6=3;
+                        int LA6_0 = input.LA(1);
 
-                        if ( (LA4_0=='\\') ) {
-                            alt4=1;
+                        if ( (LA6_0=='\\') ) {
+                            alt6=1;
                         }
-                        else if ( ((LA4_0>='\u0000' && LA4_0<='!')||(LA4_0>='#' && LA4_0<='[')||(LA4_0>=']' && LA4_0<='\uFFFF')) ) {
-                            alt4=2;
+                        else if ( ((LA6_0>='\u0000' && LA6_0<='!')||(LA6_0>='#' && LA6_0<='[')||(LA6_0>=']' && LA6_0<='\uFFFF')) ) {
+                            alt6=2;
                         }
 
 
-                        switch (alt4) {
+                        switch (alt6) {
                     	case 1 :
-                    	    // InternalTaxanomy.g:902:21: '\\\\' .
+                    	    // InternalTaxanomy.g:346:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -366,7 +416,7 @@ public class InternalTaxanomyLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalTaxanomy.g:902:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // InternalTaxanomy.g:346:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -382,7 +432,7 @@ public class InternalTaxanomyLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop4;
+                    	    break loop6;
                         }
                     } while (true);
 
@@ -391,26 +441,26 @@ public class InternalTaxanomyLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // InternalTaxanomy.g:902:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // InternalTaxanomy.g:346:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // InternalTaxanomy.g:902:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
-                    loop5:
+                    // InternalTaxanomy.g:346:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    loop7:
                     do {
-                        int alt5=3;
-                        int LA5_0 = input.LA(1);
+                        int alt7=3;
+                        int LA7_0 = input.LA(1);
 
-                        if ( (LA5_0=='\\') ) {
-                            alt5=1;
+                        if ( (LA7_0=='\\') ) {
+                            alt7=1;
                         }
-                        else if ( ((LA5_0>='\u0000' && LA5_0<='&')||(LA5_0>='(' && LA5_0<='[')||(LA5_0>=']' && LA5_0<='\uFFFF')) ) {
-                            alt5=2;
+                        else if ( ((LA7_0>='\u0000' && LA7_0<='&')||(LA7_0>='(' && LA7_0<='[')||(LA7_0>=']' && LA7_0<='\uFFFF')) ) {
+                            alt7=2;
                         }
 
 
-                        switch (alt5) {
+                        switch (alt7) {
                     	case 1 :
-                    	    // InternalTaxanomy.g:902:54: '\\\\' .
+                    	    // InternalTaxanomy.g:346:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -418,7 +468,7 @@ public class InternalTaxanomyLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // InternalTaxanomy.g:902:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // InternalTaxanomy.g:346:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -434,7 +484,7 @@ public class InternalTaxanomyLexer extends Lexer {
                     	    break;
 
                     	default :
-                    	    break loop5;
+                    	    break loop7;
                         }
                     } while (true);
 
@@ -456,90 +506,30 @@ public class InternalTaxanomyLexer extends Lexer {
     }
     // $ANTLR end "RULE_STRING"
 
-    // $ANTLR start "RULE_ML_COMMENT"
-    public final void mRULE_ML_COMMENT() throws RecognitionException {
-        try {
-            int _type = RULE_ML_COMMENT;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:904:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalTaxanomy.g:904:19: '/*' ( options {greedy=false; } : . )* '*/'
-            {
-            match("/*"); 
-
-            // InternalTaxanomy.g:904:24: ( options {greedy=false; } : . )*
-            loop7:
-            do {
-                int alt7=2;
-                int LA7_0 = input.LA(1);
-
-                if ( (LA7_0=='*') ) {
-                    int LA7_1 = input.LA(2);
-
-                    if ( (LA7_1=='/') ) {
-                        alt7=2;
-                    }
-                    else if ( ((LA7_1>='\u0000' && LA7_1<='.')||(LA7_1>='0' && LA7_1<='\uFFFF')) ) {
-                        alt7=1;
-                    }
-
-
-                }
-                else if ( ((LA7_0>='\u0000' && LA7_0<=')')||(LA7_0>='+' && LA7_0<='\uFFFF')) ) {
-                    alt7=1;
-                }
-
-
-                switch (alt7) {
-            	case 1 :
-            	    // InternalTaxanomy.g:904:52: .
-            	    {
-            	    matchAny(); 
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop7;
-                }
-            } while (true);
-
-            match("*/"); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "RULE_ML_COMMENT"
-
     // $ANTLR start "RULE_SL_COMMENT"
     public final void mRULE_SL_COMMENT() throws RecognitionException {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:906:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // InternalTaxanomy.g:906:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // InternalTaxanomy.g:348:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // InternalTaxanomy.g:348:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // InternalTaxanomy.g:906:24: (~ ( ( '\\n' | '\\r' ) ) )*
-            loop8:
+            // InternalTaxanomy.g:348:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            loop9:
             do {
-                int alt8=2;
-                int LA8_0 = input.LA(1);
+                int alt9=2;
+                int LA9_0 = input.LA(1);
 
-                if ( ((LA8_0>='\u0000' && LA8_0<='\t')||(LA8_0>='\u000B' && LA8_0<='\f')||(LA8_0>='\u000E' && LA8_0<='\uFFFF')) ) {
-                    alt8=1;
+                if ( ((LA9_0>='\u0000' && LA9_0<='\t')||(LA9_0>='\u000B' && LA9_0<='\f')||(LA9_0>='\u000E' && LA9_0<='\uFFFF')) ) {
+                    alt9=1;
                 }
 
 
-                switch (alt8) {
+                switch (alt9) {
             	case 1 :
-            	    // InternalTaxanomy.g:906:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // InternalTaxanomy.g:348:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -555,31 +545,31 @@ public class InternalTaxanomyLexer extends Lexer {
             	    break;
 
             	default :
-            	    break loop8;
+            	    break loop9;
                 }
             } while (true);
 
-            // InternalTaxanomy.g:906:40: ( ( '\\r' )? '\\n' )?
-            int alt10=2;
-            int LA10_0 = input.LA(1);
+            // InternalTaxanomy.g:348:40: ( ( '\\r' )? '\\n' )?
+            int alt11=2;
+            int LA11_0 = input.LA(1);
 
-            if ( (LA10_0=='\n'||LA10_0=='\r') ) {
-                alt10=1;
+            if ( (LA11_0=='\n'||LA11_0=='\r') ) {
+                alt11=1;
             }
-            switch (alt10) {
+            switch (alt11) {
                 case 1 :
-                    // InternalTaxanomy.g:906:41: ( '\\r' )? '\\n'
+                    // InternalTaxanomy.g:348:41: ( '\\r' )? '\\n'
                     {
-                    // InternalTaxanomy.g:906:41: ( '\\r' )?
-                    int alt9=2;
-                    int LA9_0 = input.LA(1);
+                    // InternalTaxanomy.g:348:41: ( '\\r' )?
+                    int alt10=2;
+                    int LA10_0 = input.LA(1);
 
-                    if ( (LA9_0=='\r') ) {
-                        alt9=1;
+                    if ( (LA10_0=='\r') ) {
+                        alt10=1;
                     }
-                    switch (alt9) {
+                    switch (alt10) {
                         case 1 :
-                            // InternalTaxanomy.g:906:41: '\\r'
+                            // InternalTaxanomy.g:348:41: '\\r'
                             {
                             match('\r'); 
 
@@ -606,70 +596,13 @@ public class InternalTaxanomyLexer extends Lexer {
     }
     // $ANTLR end "RULE_SL_COMMENT"
 
-    // $ANTLR start "RULE_WS"
-    public final void mRULE_WS() throws RecognitionException {
-        try {
-            int _type = RULE_WS;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:908:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // InternalTaxanomy.g:908:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
-            {
-            // InternalTaxanomy.g:908:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
-            int cnt11=0;
-            loop11:
-            do {
-                int alt11=2;
-                int LA11_0 = input.LA(1);
-
-                if ( ((LA11_0>='\t' && LA11_0<='\n')||LA11_0=='\r'||LA11_0==' ') ) {
-                    alt11=1;
-                }
-
-
-                switch (alt11) {
-            	case 1 :
-            	    // InternalTaxanomy.g:
-            	    {
-            	    if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
-            	        input.consume();
-
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;}
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt11 >= 1 ) break loop11;
-                        EarlyExitException eee =
-                            new EarlyExitException(11, input);
-                        throw eee;
-                }
-                cnt11++;
-            } while (true);
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        }
-    }
-    // $ANTLR end "RULE_WS"
-
     // $ANTLR start "RULE_ANY_OTHER"
     public final void mRULE_ANY_OTHER() throws RecognitionException {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxanomy.g:910:16: ( . )
-            // InternalTaxanomy.g:910:18: .
+            // InternalTaxanomy.g:350:16: ( . )
+            // InternalTaxanomy.g:350:18: .
             {
             matchAny(); 
 
@@ -684,103 +617,82 @@ public class InternalTaxanomyLexer extends Lexer {
     // $ANTLR end "RULE_ANY_OTHER"
 
     public void mTokens() throws RecognitionException {
-        // InternalTaxanomy.g:1:8: ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
-        int alt12=14;
+        // InternalTaxanomy.g:1:8: ( T__12 | T__13 | T__14 | RULE_ML_COMMENT | RULE_WS | RULE_NEWLINE | RULE_ID | RULE_INT | RULE_STRING | RULE_SL_COMMENT | RULE_ANY_OTHER )
+        int alt12=11;
         alt12 = dfa12.predict(input);
         switch (alt12) {
             case 1 :
-                // InternalTaxanomy.g:1:10: T__11
-                {
-                mT__11(); 
-
-                }
-                break;
-            case 2 :
-                // InternalTaxanomy.g:1:16: T__12
+                // InternalTaxanomy.g:1:10: T__12
                 {
                 mT__12(); 
 
                 }
                 break;
-            case 3 :
-                // InternalTaxanomy.g:1:22: T__13
+            case 2 :
+                // InternalTaxanomy.g:1:16: T__13
                 {
                 mT__13(); 
 
                 }
                 break;
-            case 4 :
-                // InternalTaxanomy.g:1:28: T__14
+            case 3 :
+                // InternalTaxanomy.g:1:22: T__14
                 {
                 mT__14(); 
 
                 }
                 break;
-            case 5 :
-                // InternalTaxanomy.g:1:34: T__15
-                {
-                mT__15(); 
-
-                }
-                break;
-            case 6 :
-                // InternalTaxanomy.g:1:40: T__16
-                {
-                mT__16(); 
-
-                }
-                break;
-            case 7 :
-                // InternalTaxanomy.g:1:46: T__17
-                {
-                mT__17(); 
-
-                }
-                break;
-            case 8 :
-                // InternalTaxanomy.g:1:52: RULE_ID
-                {
-                mRULE_ID(); 
-
-                }
-                break;
-            case 9 :
-                // InternalTaxanomy.g:1:60: RULE_INT
-                {
-                mRULE_INT(); 
-
-                }
-                break;
-            case 10 :
-                // InternalTaxanomy.g:1:69: RULE_STRING
-                {
-                mRULE_STRING(); 
-
-                }
-                break;
-            case 11 :
-                // InternalTaxanomy.g:1:81: RULE_ML_COMMENT
+            case 4 :
+                // InternalTaxanomy.g:1:28: RULE_ML_COMMENT
                 {
                 mRULE_ML_COMMENT(); 
 
                 }
                 break;
-            case 12 :
-                // InternalTaxanomy.g:1:97: RULE_SL_COMMENT
-                {
-                mRULE_SL_COMMENT(); 
-
-                }
-                break;
-            case 13 :
-                // InternalTaxanomy.g:1:113: RULE_WS
+            case 5 :
+                // InternalTaxanomy.g:1:44: RULE_WS
                 {
                 mRULE_WS(); 
 
                 }
                 break;
-            case 14 :
-                // InternalTaxanomy.g:1:121: RULE_ANY_OTHER
+            case 6 :
+                // InternalTaxanomy.g:1:52: RULE_NEWLINE
+                {
+                mRULE_NEWLINE(); 
+
+                }
+                break;
+            case 7 :
+                // InternalTaxanomy.g:1:65: RULE_ID
+                {
+                mRULE_ID(); 
+
+                }
+                break;
+            case 8 :
+                // InternalTaxanomy.g:1:73: RULE_INT
+                {
+                mRULE_INT(); 
+
+                }
+                break;
+            case 9 :
+                // InternalTaxanomy.g:1:82: RULE_STRING
+                {
+                mRULE_STRING(); 
+
+                }
+                break;
+            case 10 :
+                // InternalTaxanomy.g:1:94: RULE_SL_COMMENT
+                {
+                mRULE_SL_COMMENT(); 
+
+                }
+                break;
+            case 11 :
+                // InternalTaxanomy.g:1:110: RULE_ANY_OTHER
                 {
                 mRULE_ANY_OTHER(); 
 
@@ -794,70 +706,39 @@ public class InternalTaxanomyLexer extends Lexer {
 
     protected DFA12 dfa12 = new DFA12(this);
     static final String DFA12_eotS =
-        "\1\uffff\1\21\2\uffff\1\21\1\uffff\2\21\1\17\2\uffff\3\17\2\uffff\1\21\3\uffff\1\21\1\uffff\2\21\5\uffff\6\21\1\47\1\21\1\51\1\21\1\uffff\1\21\1\uffff\10\21\1\64\1\65\2\uffff";
+        "\4\uffff\1\14\1\uffff\1\14\3\uffff\2\14\13\uffff";
     static final String DFA12_eofS =
-        "\66\uffff";
+        "\27\uffff";
     static final String DFA12_minS =
-        "\1\0\1\157\2\uffff\1\151\1\uffff\1\145\1\165\1\101\2\uffff\2\0\1\52\2\uffff\1\144\3\uffff\1\155\1\uffff\1\162\1\142\5\uffff\2\145\1\155\1\143\1\154\1\156\1\60\1\154\1\60\1\163\1\uffff\1\141\1\uffff\1\151\1\163\1\157\1\163\1\156\1\145\2\163\2\60\2\uffff";
+        "\1\0\3\uffff\1\52\1\uffff\1\12\3\uffff\2\0\13\uffff";
     static final String DFA12_maxS =
-        "\1\uffff\1\157\2\uffff\1\151\1\uffff\1\145\1\165\1\172\2\uffff\2\uffff\1\57\2\uffff\1\144\3\uffff\1\155\1\uffff\1\162\1\142\5\uffff\2\145\1\155\1\143\1\154\1\156\1\172\1\154\1\172\1\163\1\uffff\1\141\1\uffff\1\151\1\163\1\157\1\163\1\156\1\145\2\163\2\172\2\uffff";
+        "\1\uffff\3\uffff\1\57\1\uffff\1\12\3\uffff\2\uffff\13\uffff";
     static final String DFA12_acceptS =
-        "\2\uffff\1\2\1\3\1\uffff\1\5\3\uffff\1\10\1\11\3\uffff\1\15\1\16\1\uffff\1\10\1\2\1\3\1\uffff\1\5\2\uffff\1\11\1\12\1\13\1\14\1\15\12\uffff\1\6\1\uffff\1\1\12\uffff\1\4\1\7";
+        "\1\uffff\1\1\1\2\1\3\1\uffff\1\5\1\uffff\1\6\1\7\1\10\2\uffff\1\13\1\1\1\2\1\3\1\4\1\12\1\5\1\6\1\7\1\10\1\11";
     static final String DFA12_specialS =
-        "\1\2\12\uffff\1\0\1\1\51\uffff}>";
+        "\1\0\11\uffff\1\1\1\2\13\uffff}>";
     static final String[] DFA12_transitionS = {
-            "\11\17\2\16\2\17\1\16\22\17\1\16\1\17\1\13\4\17\1\14\4\17\1\5\2\17\1\15\12\12\7\17\14\11\1\1\6\11\1\6\6\11\3\17\1\10\1\11\1\17\3\11\1\4\16\11\1\7\7\11\1\2\1\17\1\3\uff82\17",
-            "\1\20",
-            "",
-            "",
-            "\1\24",
-            "",
-            "\1\26",
-            "\1\27",
-            "\32\21\4\uffff\1\21\1\uffff\32\21",
-            "",
-            "",
-            "\0\31",
-            "\0\31",
-            "\1\32\4\uffff\1\33",
-            "",
-            "",
-            "\1\35",
+            "\11\14\1\5\1\7\2\14\1\6\22\14\1\5\1\14\1\12\4\14\1\13\4\14\1\3\2\14\1\4\12\11\7\14\32\10\6\14\32\10\1\1\1\14\1\2\uff82\14",
             "",
             "",
             "",
-            "\1\36",
+            "\1\20\4\uffff\1\21",
             "",
-            "\1\37",
-            "\1\40",
+            "\1\23",
+            "",
+            "",
+            "",
+            "\0\26",
+            "\0\26",
             "",
             "",
             "",
             "",
             "",
-            "\1\41",
-            "\1\42",
-            "\1\43",
-            "\1\44",
-            "\1\45",
-            "\1\46",
-            "\12\21\7\uffff\32\21\4\uffff\1\21\1\uffff\32\21",
-            "\1\50",
-            "\12\21\7\uffff\32\21\4\uffff\1\21\1\uffff\32\21",
-            "\1\52",
             "",
-            "\1\53",
             "",
-            "\1\54",
-            "\1\55",
-            "\1\56",
-            "\1\57",
-            "\1\60",
-            "\1\61",
-            "\1\62",
-            "\1\63",
-            "\12\21\7\uffff\32\21\4\uffff\1\21\1\uffff\32\21",
-            "\12\21\7\uffff\32\21\4\uffff\1\21\1\uffff\32\21",
+            "",
+            "",
             "",
             ""
     };
@@ -892,65 +773,59 @@ public class InternalTaxanomyLexer extends Lexer {
             this.transition = DFA12_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__11 | T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
+            return "1:1: Tokens : ( T__12 | T__13 | T__14 | RULE_ML_COMMENT | RULE_WS | RULE_NEWLINE | RULE_ID | RULE_INT | RULE_STRING | RULE_SL_COMMENT | RULE_ANY_OTHER );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA12_11 = input.LA(1);
+                        int LA12_0 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA12_11>='\u0000' && LA12_11<='\uFFFF')) ) {s = 25;}
+                        if ( (LA12_0=='{') ) {s = 1;}
 
-                        else s = 15;
+                        else if ( (LA12_0=='}') ) {s = 2;}
+
+                        else if ( (LA12_0==',') ) {s = 3;}
+
+                        else if ( (LA12_0=='/') ) {s = 4;}
+
+                        else if ( (LA12_0=='\t'||LA12_0==' ') ) {s = 5;}
+
+                        else if ( (LA12_0=='\r') ) {s = 6;}
+
+                        else if ( (LA12_0=='\n') ) {s = 7;}
+
+                        else if ( ((LA12_0>='A' && LA12_0<='Z')||(LA12_0>='a' && LA12_0<='z')) ) {s = 8;}
+
+                        else if ( ((LA12_0>='0' && LA12_0<='9')) ) {s = 9;}
+
+                        else if ( (LA12_0=='\"') ) {s = 10;}
+
+                        else if ( (LA12_0=='\'') ) {s = 11;}
+
+                        else if ( ((LA12_0>='\u0000' && LA12_0<='\b')||(LA12_0>='\u000B' && LA12_0<='\f')||(LA12_0>='\u000E' && LA12_0<='\u001F')||LA12_0=='!'||(LA12_0>='#' && LA12_0<='&')||(LA12_0>='(' && LA12_0<='+')||(LA12_0>='-' && LA12_0<='.')||(LA12_0>=':' && LA12_0<='@')||(LA12_0>='[' && LA12_0<='`')||LA12_0=='|'||(LA12_0>='~' && LA12_0<='\uFFFF')) ) {s = 12;}
 
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA12_12 = input.LA(1);
+                        int LA12_10 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA12_12>='\u0000' && LA12_12<='\uFFFF')) ) {s = 25;}
+                        if ( ((LA12_10>='\u0000' && LA12_10<='\uFFFF')) ) {s = 22;}
 
-                        else s = 15;
+                        else s = 12;
 
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
-                        int LA12_0 = input.LA(1);
+                        int LA12_11 = input.LA(1);
 
                         s = -1;
-                        if ( (LA12_0=='M') ) {s = 1;}
+                        if ( ((LA12_11>='\u0000' && LA12_11<='\uFFFF')) ) {s = 22;}
 
-                        else if ( (LA12_0=='{') ) {s = 2;}
-
-                        else if ( (LA12_0=='}') ) {s = 3;}
-
-                        else if ( (LA12_0=='d') ) {s = 4;}
-
-                        else if ( (LA12_0==',') ) {s = 5;}
-
-                        else if ( (LA12_0=='T') ) {s = 6;}
-
-                        else if ( (LA12_0=='s') ) {s = 7;}
-
-                        else if ( (LA12_0=='^') ) {s = 8;}
-
-                        else if ( ((LA12_0>='A' && LA12_0<='L')||(LA12_0>='N' && LA12_0<='S')||(LA12_0>='U' && LA12_0<='Z')||LA12_0=='_'||(LA12_0>='a' && LA12_0<='c')||(LA12_0>='e' && LA12_0<='r')||(LA12_0>='t' && LA12_0<='z')) ) {s = 9;}
-
-                        else if ( ((LA12_0>='0' && LA12_0<='9')) ) {s = 10;}
-
-                        else if ( (LA12_0=='\"') ) {s = 11;}
-
-                        else if ( (LA12_0=='\'') ) {s = 12;}
-
-                        else if ( (LA12_0=='/') ) {s = 13;}
-
-                        else if ( ((LA12_0>='\t' && LA12_0<='\n')||LA12_0=='\r'||LA12_0==' ') ) {s = 14;}
-
-                        else if ( ((LA12_0>='\u0000' && LA12_0<='\b')||(LA12_0>='\u000B' && LA12_0<='\f')||(LA12_0>='\u000E' && LA12_0<='\u001F')||LA12_0=='!'||(LA12_0>='#' && LA12_0<='&')||(LA12_0>='(' && LA12_0<='+')||(LA12_0>='-' && LA12_0<='.')||(LA12_0>=':' && LA12_0<='@')||(LA12_0>='[' && LA12_0<=']')||LA12_0=='`'||LA12_0=='|'||(LA12_0>='~' && LA12_0<='\uFFFF')) ) {s = 15;}
+                        else s = 12;
 
                         if ( s>=0 ) return s;
                         break;

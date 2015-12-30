@@ -6,8 +6,6 @@ package de.tudresden.slr.model.services;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.List;
-import org.eclipse.xtext.Action;
-import org.eclipse.xtext.Alternatives;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.Grammar;
 import org.eclipse.xtext.GrammarUtil;
@@ -25,177 +23,75 @@ public class TaxanomyGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public class ModelElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.Model");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cModelAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cModelKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cDimensionsKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
-		private final Assignment cDimensionsAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
-		private final RuleCall cDimensionsTermParserRuleCall_3_2_0 = (RuleCall)cDimensionsAssignment_3_2.eContents().get(0);
-		private final Group cGroup_3_3 = (Group)cGroup_3.eContents().get(3);
-		private final Keyword cCommaKeyword_3_3_0 = (Keyword)cGroup_3_3.eContents().get(0);
-		private final Assignment cDimensionsAssignment_3_3_1 = (Assignment)cGroup_3_3.eContents().get(1);
-		private final RuleCall cDimensionsTermParserRuleCall_3_3_1_0 = (RuleCall)cDimensionsAssignment_3_3_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_3_4 = (Keyword)cGroup_3.eContents().get(4);
-		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Assignment cDimensionsAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cDimensionsTermParserRuleCall_0 = (RuleCall)cDimensionsAssignment.eContents().get(0);
 		
 		//Model:
-		//	{Model}
-		//	'Model'
-		//	'{' ('dimensions' '{' dimensions+=Term ("," dimensions+=Term)* '}')?
-		//	'}';
+		//	dimensions+=Term*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Model} 'Model' '{' ('dimensions' '{' dimensions+=Term ("," dimensions+=Term)* '}')? '}'
-		public Group getGroup() { return cGroup; }
-		
-		//{Model}
-		public Action getModelAction_0() { return cModelAction_0; }
-		
-		//'Model'
-		public Keyword getModelKeyword_1() { return cModelKeyword_1; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
-		
-		//('dimensions' '{' dimensions+=Term ("," dimensions+=Term)* '}')?
-		public Group getGroup_3() { return cGroup_3; }
-		
-		//'dimensions'
-		public Keyword getDimensionsKeyword_3_0() { return cDimensionsKeyword_3_0; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_3_1() { return cLeftCurlyBracketKeyword_3_1; }
-		
-		//dimensions+=Term
-		public Assignment getDimensionsAssignment_3_2() { return cDimensionsAssignment_3_2; }
+		//dimensions+=Term*
+		public Assignment getDimensionsAssignment() { return cDimensionsAssignment; }
 		
 		//Term
-		public RuleCall getDimensionsTermParserRuleCall_3_2_0() { return cDimensionsTermParserRuleCall_3_2_0; }
-		
-		//("," dimensions+=Term)*
-		public Group getGroup_3_3() { return cGroup_3_3; }
-		
-		//","
-		public Keyword getCommaKeyword_3_3_0() { return cCommaKeyword_3_3_0; }
-		
-		//dimensions+=Term
-		public Assignment getDimensionsAssignment_3_3_1() { return cDimensionsAssignment_3_3_1; }
-		
-		//Term
-		public RuleCall getDimensionsTermParserRuleCall_3_3_1_0() { return cDimensionsTermParserRuleCall_3_3_1_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_3_4() { return cRightCurlyBracketKeyword_3_4; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+		public RuleCall getDimensionsTermParserRuleCall_0() { return cDimensionsTermParserRuleCall_0; }
 	}
 	public class TermElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.Term");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cTermAction_0 = (Action)cGroup.eContents().get(0);
-		private final Keyword cTermKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
-		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
-		private final Keyword cSubclassesKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_4_1 = (Keyword)cGroup_4.eContents().get(1);
-		private final Assignment cSubclassesAssignment_4_2 = (Assignment)cGroup_4.eContents().get(2);
-		private final RuleCall cSubclassesTermParserRuleCall_4_2_0 = (RuleCall)cSubclassesAssignment_4_2.eContents().get(0);
-		private final Group cGroup_4_3 = (Group)cGroup_4.eContents().get(3);
-		private final Keyword cCommaKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
-		private final Assignment cSubclassesAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
-		private final RuleCall cSubclassesTermParserRuleCall_4_3_1_0 = (RuleCall)cSubclassesAssignment_4_3_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_4_4 = (Keyword)cGroup_4.eContents().get(4);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cNameIDTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
+		private final Assignment cSubclassesAssignment_1_1_0 = (Assignment)cGroup_1_1.eContents().get(0);
+		private final RuleCall cSubclassesTermParserRuleCall_1_1_0_0 = (RuleCall)cSubclassesAssignment_1_1_0.eContents().get(0);
+		private final Keyword cCommaKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Keyword cRightCurlyBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//Term:
-		//	{Term}
-		//	'Term'
-		//	name=EString
-		//	'{' ('subclasses' '{' subclasses+=Term ("," subclasses+=Term)* '}')?
-		//	'}';
+		//	name=ID ('{' (subclasses+=Term ','?)*
+		//	'}')?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Term} 'Term' name=EString '{' ('subclasses' '{' subclasses+=Term ("," subclasses+=Term)* '}')? '}'
+		//name=ID ('{' (subclasses+=Term ','?)* '}')?
 		public Group getGroup() { return cGroup; }
 		
-		//{Term}
-		public Action getTermAction_0() { return cTermAction_0; }
-		
-		//'Term'
-		public Keyword getTermKeyword_1() { return cTermKeyword_1; }
-		
-		//name=EString
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
-		
-		//EString
-		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
-		
-		//('subclasses' '{' subclasses+=Term ("," subclasses+=Term)* '}')?
-		public Group getGroup_4() { return cGroup_4; }
-		
-		//'subclasses'
-		public Keyword getSubclassesKeyword_4_0() { return cSubclassesKeyword_4_0; }
-		
-		//'{'
-		public Keyword getLeftCurlyBracketKeyword_4_1() { return cLeftCurlyBracketKeyword_4_1; }
-		
-		//subclasses+=Term
-		public Assignment getSubclassesAssignment_4_2() { return cSubclassesAssignment_4_2; }
-		
-		//Term
-		public RuleCall getSubclassesTermParserRuleCall_4_2_0() { return cSubclassesTermParserRuleCall_4_2_0; }
-		
-		//("," subclasses+=Term)*
-		public Group getGroup_4_3() { return cGroup_4_3; }
-		
-		//","
-		public Keyword getCommaKeyword_4_3_0() { return cCommaKeyword_4_3_0; }
-		
-		//subclasses+=Term
-		public Assignment getSubclassesAssignment_4_3_1() { return cSubclassesAssignment_4_3_1; }
-		
-		//Term
-		public RuleCall getSubclassesTermParserRuleCall_4_3_1_0() { return cSubclassesTermParserRuleCall_4_3_1_0; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_4_4() { return cRightCurlyBracketKeyword_4_4; }
-		
-		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
-	}
-	public class EStringElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.EString");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cSTRINGTerminalRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cIDTerminalRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
-		//EString:
-		//	STRING | ID;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//STRING | ID
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//STRING
-		public RuleCall getSTRINGTerminalRuleCall_0() { return cSTRINGTerminalRuleCall_0; }
+		//name=ID
+		public Assignment getNameAssignment_0() { return cNameAssignment_0; }
 		
 		//ID
-		public RuleCall getIDTerminalRuleCall_1() { return cIDTerminalRuleCall_1; }
+		public RuleCall getNameIDTerminalRuleCall_0_0() { return cNameIDTerminalRuleCall_0_0; }
+		
+		//('{' (subclasses+=Term ','?)* '}')?
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//'{'
+		public Keyword getLeftCurlyBracketKeyword_1_0() { return cLeftCurlyBracketKeyword_1_0; }
+		
+		//(subclasses+=Term ','?)*
+		public Group getGroup_1_1() { return cGroup_1_1; }
+		
+		//subclasses+=Term
+		public Assignment getSubclassesAssignment_1_1_0() { return cSubclassesAssignment_1_1_0; }
+		
+		//Term
+		public RuleCall getSubclassesTermParserRuleCall_1_1_0_0() { return cSubclassesTermParserRuleCall_1_1_0_0; }
+		
+		//','?
+		public Keyword getCommaKeyword_1_1_1() { return cCommaKeyword_1_1_1; }
+		
+		//'}'
+		public Keyword getRightCurlyBracketKeyword_1_2() { return cRightCurlyBracketKeyword_1_2; }
 	}
 	
 	
 	private final ModelElements pModel;
+	private final TerminalRule tML_COMMENT;
+	private final TerminalRule tWS;
+	private final TerminalRule tNEWLINE;
+	private final TerminalRule tID;
 	private final TermElements pTerm;
-	private final EStringElements pEString;
 	
 	private final Grammar grammar;
 	
@@ -207,8 +103,11 @@ public class TaxanomyGrammarAccess extends AbstractGrammarElementFinder {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaTerminals = gaTerminals;
 		this.pModel = new ModelElements();
+		this.tML_COMMENT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.ML_COMMENT");
+		this.tWS = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.WS");
+		this.tNEWLINE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.NEWLINE");
+		this.tID = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.Taxanomy.ID");
 		this.pTerm = new TermElements();
-		this.pEString = new EStringElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -239,10 +138,7 @@ public class TaxanomyGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//Model:
-	//	{Model}
-	//	'Model'
-	//	'{' ('dimensions' '{' dimensions+=Term ("," dimensions+=Term)* '}')?
-	//	'}';
+	//	dimensions+=Term*;
 	public ModelElements getModelAccess() {
 		return pModel;
 	}
@@ -251,34 +147,39 @@ public class TaxanomyGrammarAccess extends AbstractGrammarElementFinder {
 		return getModelAccess().getRule();
 	}
 	
+	//terminal ML_COMMENT:
+	//	'/ *'->'* /';
+	public TerminalRule getML_COMMENTRule() {
+		return tML_COMMENT;
+	}
+	
+	//terminal WS:
+	//	' ' | '\t'+;
+	public TerminalRule getWSRule() {
+		return tWS;
+	}
+	
+	//terminal NEWLINE:
+	//	'\r'? '\n';
+	public TerminalRule getNEWLINERule() {
+		return tNEWLINE;
+	}
+	
+	//terminal ID:
+	//	('A'..'Z' | 'a'..'z') ('A'..'Z' | 'a'..'z' | '_' | '-' | '0'..'9' | ' ')*;
+	public TerminalRule getIDRule() {
+		return tID;
+	}
+	
 	//Term:
-	//	{Term}
-	//	'Term'
-	//	name=EString
-	//	'{' ('subclasses' '{' subclasses+=Term ("," subclasses+=Term)* '}')?
-	//	'}';
+	//	name=ID ('{' (subclasses+=Term ','?)*
+	//	'}')?;
 	public TermElements getTermAccess() {
 		return pTerm;
 	}
 	
 	public ParserRule getTermRule() {
 		return getTermAccess().getRule();
-	}
-	
-	//EString:
-	//	STRING | ID;
-	public EStringElements getEStringAccess() {
-		return pEString;
-	}
-	
-	public ParserRule getEStringRule() {
-		return getEStringAccess().getRule();
-	}
-	
-	//terminal ID:
-	//	'^'? ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*;
-	public TerminalRule getIDRule() {
-		return gaTerminals.getIDRule();
 	}
 	
 	//terminal INT returns ecore::EInt:
@@ -293,22 +194,10 @@ public class TaxanomyGrammarAccess extends AbstractGrammarElementFinder {
 		return gaTerminals.getSTRINGRule();
 	}
 	
-	//terminal ML_COMMENT:
-	//	'/ *'->'* /';
-	public TerminalRule getML_COMMENTRule() {
-		return gaTerminals.getML_COMMENTRule();
-	}
-	
 	//terminal SL_COMMENT:
 	//	'//' !('\n' | '\r')* ('\r'? '\n')?;
 	public TerminalRule getSL_COMMENTRule() {
 		return gaTerminals.getSL_COMMENTRule();
-	}
-	
-	//terminal WS:
-	//	' ' | '\t' | '\r' | '\n'+;
-	public TerminalRule getWSRule() {
-		return gaTerminals.getWSRule();
 	}
 	
 	//terminal ANY_OTHER:
