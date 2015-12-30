@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.tudresden.slr.model.bibtex.presentation"
+            name="Bibtex UI">
+      </category>
+      <view
+            category="de.tudresden.slr.model.bibtex.presentation"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView"
+            icon="icons/sample.gif"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
+            name="Bibtex Entries">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor"
+            contributorClass="de.tudresden.slr.model.bibtex.ui.presentation.BibtexContributor"
+            icon="icons/sample.gif"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexEditor"
+            name="Bibtex Editor">
+      </editor>
+      <editor
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            icon="icons/sample.gif"
+            id="de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor"
+            name="Bibtex Overview">
+      </editor>
+      <editor
+            class="org.eclipse.ui.editors.text.TextEditor"
+            id="de.tudresden.slr.model.bibtex.ui.bibtexFileEditor"
+            name="Bibtex File Editor">
+         <contentTypeBinding
+               contentTypeId="de.tudresden.slr.model.bibtex.ui.bibtexContentType">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexDecorator"
+            icon="icons/decorator.gif"
+            id="de.tudresden.slr.model.bibtex.ui.presentation.BibtexDecorator"
+            label="Bibtex Decorator"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+            <description>
+            This Decorator marks Bibtex entries which do not match the requirements.
+            </description>
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.emf.ecore.resource.Resource">
+               </objectClass>
+               <objectClass
+                     name="de.tudresden.slr.model.bibtex.Document">
+               </objectClass>
+            </and>
+         </enablement>
+      </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            file-extensions="bib"
+            id="de.tudresden.slr.model.bibtex.ui.bibtexContentType"
+            name="Bibtex Files"
+            priority="normal">
+      </content-type>
+   </extension>
+</plugin>
