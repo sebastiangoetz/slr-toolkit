@@ -48,11 +48,11 @@ import org.jbibtex.TokenMgrException;
 
 import com.google.inject.Injector;
 
-import de.tudresden.slr.model.TaxonomyStandaloneSetupGenerated;
+import de.tudresden.slr.model.TaxanomyStandaloneSetupGenerated;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.taxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
 
 /**
@@ -63,7 +63,6 @@ import de.tudresden.slr.model.taxonomy.Term;
  * @generated
  */
 public class BibtexResourceImpl extends ResourceImpl {
-
 	private static final Key KEY_ABSTRACT = new Key("abstract");
 	private static final Key KEY_FILE = new Key("file");
 	private static final Key KEY_CITES = new Key("cites");
@@ -112,8 +111,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 			}
 			document.setYear(safeGetField(entry, KEY_YEAR));
 			document.setMonth(safeGetField(entry, KEY_MONTH));
-			String unparsedAuthors = safeGetField(entry, KEY_AUTHOR)
-					.replaceAll("\r", "");
+			String unparsedAuthors = safeGetField(entry, KEY_AUTHOR).replaceAll("\r", "");
 			document.setUnparsedAuthors(unparsedAuthors);
 			String authors = parseLaTeX(unparsedAuthors);
 			for (String author : authors.split(" and ")) {
@@ -133,34 +131,29 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 	private Model parseClasses(String string) {
 		if (string.isEmpty()) {
-			return TaxonomyFactory.eINSTANCE.createModel();
+			return taxonomyFactory.eINSTANCE.createModel();
 		}
-		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
+		TaxanomyStandaloneSetupGenerated setup = new TaxanomyStandaloneSetupGenerated();
 		Injector injector = setup.createInjectorAndDoEMFRegistration();
 		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
-		Resource resource = resourceSet.createResource(URI
-				.createURI("tmp.taxonomy"));
-		try (InputStream is = new URIConverter.ReadableInputStream(string,
-				"UTF-8")) {
+		Resource resource = resourceSet.createResource(URI.createURI("tmp.taxonomy"));
+		try (InputStream is = new URIConverter.ReadableInputStream(string, "UTF-8")) {
 			resource.load(is, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (!resource.getContents().isEmpty()
-				&& resource.getContents().get(0) instanceof Model) {
+		if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Model) {
 			return (Model) resource.getContents().get(0);
 		}
-		return TaxonomyFactory.eINSTANCE.createModel();
+		return taxonomyFactory.eINSTANCE.createModel();
 	}
 
 	@Override
-	protected void doSave(OutputStream outputStream, Map<?, ?> options)
-			throws IOException {
+	protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
 
 		BibTeXDatabase db = new BibTeXDatabase();
 		ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
-		try (Reader reader = new InputStreamReader(converter.createInputStream(
-				uri, options))) {
+		try (Reader reader = new InputStreamReader(converter.createInputStream(uri, options))) {
 			BibTeXParser parser = new BibTeXParser();
 			db = parser.parse(reader);
 		} catch (IOException e) {
@@ -213,35 +206,27 @@ public class BibtexResourceImpl extends ResourceImpl {
 	private void updateDocument(Document document, BibTeXEntry entry) {
 
 		if (document.getMonth() != null && !document.getMonth().isEmpty()) {
-			entry.addField(KEY_MONTH, new StringValue(document.getMonth(),
-					Style.QUOTED));
+			entry.addField(KEY_MONTH, new StringValue(document.getMonth(), Style.QUOTED));
 		}
 
 		if (document.getAbstract() != null && !document.getAbstract().isEmpty()) {
-			entry.addField(KEY_ABSTRACT, new StringValue(
-					document.getAbstract(), Style.BRACED));
+			entry.addField(KEY_ABSTRACT, new StringValue(document.getAbstract(), Style.BRACED));
 		}
 		if (document.getCites() > 0) {
-			entry.addField(KEY_CITES,
-					new StringValue(Integer.toString(document.getCites()),
-							Style.BRACED));
+			entry.addField(KEY_CITES, new StringValue(Integer.toString(document.getCites()), Style.BRACED));
 		}
 
 		if (document.getFile() != null && !document.getFile().isEmpty()) {
-			entry.addField(KEY_FILE, new StringValue(document.getFile(),
-					Style.BRACED));
+			entry.addField(KEY_FILE, new StringValue(document.getFile(), Style.BRACED));
 		}
 
 		if (!document.getAuthors().isEmpty()) {
-			entry.addField(
-					KEY_AUTHOR,
-					new StringValue(document.getUnparsedAuthors(), Style.BRACED));
+			entry.addField(KEY_AUTHOR, new StringValue(document.getUnparsedAuthors(), Style.BRACED));
 		}
 
 		if (!document.getTaxonomy().getDimensions().isEmpty()) {
-			entry.addField(KEY_CLASSES, new StringValue(
-					serializeTaxonomy(document.getTaxonomy().getDimensions()),
-					Style.BRACED));
+			entry.addField(KEY_CLASSES,
+					new StringValue(serializeTaxonomy(document.getTaxonomy().getDimensions()), Style.BRACED));
 		}
 	}
 

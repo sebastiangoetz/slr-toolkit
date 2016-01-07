@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?><target name="Eclipse 4.5 RCP" sequenceNumber="60">
+<locations>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.equinox.sdk.feature.group" version="3.11.1.v20150831-1342"/>
+<unit id="org.eclipse.platform.sdk" version="4.5.1.M20150904-0015"/>
+<unit id="org.eclipse.platform.feature.group" version="4.5.1.v20150904-0015"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.5.1.v20150904-0015"/>
+<unit id="com.ibm.icu" version="54.1.1.v201501272100"/>
+<unit id="org.eclipse.emf.ecore" version="2.11.1.v20150805-0538"/>
+<unit id="org.eclipse.emf.common" version="2.11.0.v20150805-0538"/>
+<unit id="org.eclipse.emf.ecore.change" version="2.11.0.v20150805-0538"/>
+<unit id="org.eclipse.emf.ecore.xmi" version="2.11.1.v20150805-0538"/>
+<unit id="org.eclipse.ant.core" version="3.4.0.v20150428-1928"/>
+<unit id="org.eclipse.sdk.feature.group" version="4.5.1.v20150904-0345"/>
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.1.0.v20150810-1719"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.10.1.v20150810-1719"/>
+<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="1.3.100.v20150527-1706"/>
+<unit id="org.eclipse.ui.navigator.resources" version="3.5.0.v20150422-0725"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.10.2.v20150123-0348"/>
+<unit id="org.eclipse.emf.mwe2.language.sdk.feature.group" version="2.8.3.v201512160634"/>
+<unit id="org.eclipse.emf.mwe2.runtime.sdk.feature.group" version="2.8.3.v201512160556"/>
+<unit id="org.eclipse.xtend.sdk.feature.group" version="2.9.1.v201512180746"/>
+<unit id="org.eclipse.xtext.sdk.feature.group" version="2.9.1.v201512180746"/>
+<unit id="org.eclipse.emf.sdk.feature.group" version="2.10.2.v20150123-0452"/>
+<unit id="com.google.inject" version="3.0.0.v201312141243"/>
+<unit id="com.google.guava" version="15.0.0.v201403281430"/>
+<unit id="org.eclipse.xpand.sdk.feature.group" version="2.0.0.v201406030414"/>
+<unit id="org.eclipse.emf.mwe.sdk.feature.group" version="1.3.13.v201512160556"/>
+<unit id="org.eclipse.xsd.feature.group" version="2.10.0.v20150123-0452"/>
+<unit id="org.eclipse.xsd" version="2.10.0.v20150123-0452"/>
+<repository location="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.jbibtex.source" version="1.0.15"/>
+<unit id="org.jbibtex" version="1.0.15"/>
+<repository location="https://dl.bintray.com/lschuetze/org.jbibtex"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.draw2d.feature.group" version="3.5.2.v20100111-1352-4417w311A223702A19"/>
+<repository location="http://download.eclipse.org/tools/gef/updates/releases/"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<repository location="http://download.eclipse.org/rt/ecf/3.12.0/site.p2"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<repository location="http://download.eclipse.org/modeling/emf/updates/releases/"/>
+</location>
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.birt.chart.feature.group" version="4.4.2.v201410272105-829B7QFQCnvK6GVLVWBZS"/>
+<repository location="http://download.eclipse.org/birt/update-site/4.4"/>
+</location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+</target>

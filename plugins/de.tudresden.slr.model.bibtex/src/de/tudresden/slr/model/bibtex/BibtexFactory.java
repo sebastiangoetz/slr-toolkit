@@ -18,8 +18,7 @@ public interface BibtexFactory extends EFactory {
 	 * 
 	 * @generated
 	 */
-	BibtexFactory eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexFactoryImpl
-			.init();
+	BibtexFactory eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexFactoryImpl.init();
 
 	/**
 	 * Returns a new object of class '<em>Document</em>'. <!-- begin-user-doc

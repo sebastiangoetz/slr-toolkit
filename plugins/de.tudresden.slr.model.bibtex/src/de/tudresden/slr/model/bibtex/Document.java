@@ -3,7 +3,9 @@
 package de.tudresden.slr.model.bibtex;
 
 import de.tudresden.slr.model.taxonomy.Model;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -12,26 +14,29 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getAuthors <em>Authors
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getAbstract <em>Abstract
- * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getAuthors <em>Authors</em>
+ * }</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getAbstract
+ * <em>Abstract</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getYear <em>Year</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getMonth <em>Month</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getTitle <em>Title</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getMonth <em>Month</em>}
+ * </li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getTitle <em>Title</em>}
+ * </li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getKey <em>Key</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getDoi <em>Doi</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getUrl <em>Url</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors <em>
- * Unparsed Authors</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getTaxonomy <em>Taxonomy
- * </em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getUnparsedAuthors
+ * <em>Unparsed Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getTaxonomy
+ * <em>Taxonomy</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getType <em>Type</em>}</li>
  * <li>{@link de.tudresden.slr.model.bibtex.Document#getFile <em>File</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.Document#getCites <em>Cites</em>}
+ * </li>
  * </ul>
- * </p>
  *
  * @see de.tudresden.slr.model.bibtex.BibtexPackage#getDocument()
  * @model
@@ -381,7 +386,7 @@ public interface Document extends EObject {
 	 * Returns the value of the '<em><b>Cites</b></em>' attribute. <!--
 	 * begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Cites</em>' attribute list isn't clear, there
+	 * If the meaning of the '<em>Cites</em>' attribute isn't clear, there
 	 * really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->

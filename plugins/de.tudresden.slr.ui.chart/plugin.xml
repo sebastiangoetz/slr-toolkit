@@ -2,15 +2,17 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         id="chartviewId"
          point="org.eclipse.ui.views">
       <view
-            class="view.ChartView"
+            class="de.tudresden.slr.ui.chart.views.ChartView"
             id="chart.view.chartview"
             name="ChartView"
             restorable="true">
       </view>
    </extension>
    <extension
+         id="chartMenuId"
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
@@ -23,12 +25,12 @@
       </menuContribution>
    </extension>
    <extension
+         id="chartCommandsId"
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="handlers.SaveAsPDFHandler"
+            defaultHandler="de.tudresden.slr.ui.chart.handlers.SaveAsPDFHandler"
             id="de.tudresden.slr.ui.chart.savechartaspdf"
             name="Save as PDF">
       </command>
    </extension>
-
 </plugin>

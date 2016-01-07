@@ -2,12 +2,17 @@
  */
 package de.tudresden.slr.model.bibtex.provider;
 
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -19,9 +24,6 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import de.tudresden.slr.model.bibtex.BibtexPackage;
-import de.tudresden.slr.model.bibtex.Document;
-
 /**
  * This is the item provider adapter for a
  * {@link de.tudresden.slr.model.bibtex.Document} object. <!-- begin-user-doc
@@ -29,9 +31,8 @@ import de.tudresden.slr.model.bibtex.Document;
  * 
  * @generated
  */
-public class DocumentItemProvider extends ItemProviderAdapter implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class DocumentItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
@@ -77,15 +78,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addAuthorsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_authors_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_authors_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__AUTHORS, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_authors_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_authors_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__AUTHORS, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -95,15 +94,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addAbstractPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_abstract_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_abstract_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__ABSTRACT, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_abstract_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_abstract_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__ABSTRACT, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -113,15 +110,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addYearPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_year_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_year_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__YEAR, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_year_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_year_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__YEAR, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -131,15 +126,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addMonthPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_month_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_month_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__MONTH, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_month_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_month_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__MONTH, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -149,15 +142,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addTitlePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_title_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_title_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__TITLE, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_title_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_title_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__TITLE, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -167,15 +158,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addKeyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_key_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_key_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__KEY, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_key_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_key_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__KEY, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -185,15 +174,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addDoiPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_doi_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_doi_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__DOI, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_doi_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_doi_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__DOI, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -203,15 +190,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addUrlPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_url_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_url_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__URL, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_url_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_url_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__URL, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -221,16 +206,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addUnparsedAuthorsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_unparsedAuthors_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_unparsedAuthors_feature",
-						"_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, true, false,
-				false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_unparsedAuthors_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_unparsedAuthors_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -240,15 +222,12 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addTaxonomyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_taxonomy_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_taxonomy_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__TAXONOMY, true, false, true,
-				null, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_taxonomy_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_taxonomy_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__TAXONOMY, true, false, true, null, null, null));
 	}
 
 	/**
@@ -258,15 +237,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_type_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_type_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__TYPE, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_type_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_type_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__TYPE, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -276,15 +253,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addFilePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_file_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_file_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__FILE, true, false, false,
-				ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_file_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_file_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__FILE, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -294,15 +269,13 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	protected void addCitesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add(createItemPropertyDescriptor(
-				((ComposeableAdapterFactory) adapterFactory)
-						.getRootAdapterFactory(),
-				getResourceLocator(),
-				getString("_UI_Document_cites_feature"),
-				getString("_UI_PropertyDescriptor_description",
-						"_UI_Document_cites_feature", "_UI_Document_type"),
-				BibtexPackage.Literals.DOCUMENT__CITES, true, false, false,
-				ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_cites_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_cites_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__CITES, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -312,8 +285,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object,
-				getResourceLocator().getImage("full/obj16/Document"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Document"));
 	}
 
 	/**
@@ -353,8 +325,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 		case BibtexPackage.DOCUMENT__TYPE:
 		case BibtexPackage.DOCUMENT__FILE:
 		case BibtexPackage.DOCUMENT__CITES:
-			fireNotifyChanged(new ViewerNotification(notification,
-					notification.getNotifier(), false, true));
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}
 		super.notifyChanged(notification);
@@ -368,8 +339,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements
 	 * @generated
 	 */
 	@Override
-	protected void collectNewChildDescriptors(
-			Collection<Object> newChildDescriptors, Object object) {
+	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
 

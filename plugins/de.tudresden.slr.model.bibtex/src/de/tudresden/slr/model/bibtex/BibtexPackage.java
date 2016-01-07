@@ -51,8 +51,7 @@ public interface BibtexPackage extends EPackage {
 	 * 
 	 * @generated
 	 */
-	BibtexPackage eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexPackageImpl
-			.init();
+	BibtexPackage eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexPackageImpl.init();
 
 	/**
 	 * The meta object id for the '
@@ -174,7 +173,7 @@ public interface BibtexPackage extends EPackage {
 	int DOCUMENT__FILE = 11;
 
 	/**
-	 * The feature id for the '<em><b>Cites</b></em>' attribute list. <!--
+	 * The feature id for the '<em><b>Cites</b></em>' attribute. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -213,8 +212,8 @@ public interface BibtexPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute list '
-	 * {@link de.tudresden.slr.model.bibtex.Document#getAuthors
-	 * <em>Authors</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document#getAuthors <em>Authors</em>
+	 * }'. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute list '<em>Authors</em>'.
 	 * @see de.tudresden.slr.model.bibtex.Document#getAuthors()
@@ -474,8 +473,7 @@ public interface BibtexPackage extends EPackage {
 		 * 
 		 * @generated
 		 */
-		EAttribute DOCUMENT__UNPARSED_AUTHORS = eINSTANCE
-				.getDocument_UnparsedAuthors();
+		EAttribute DOCUMENT__UNPARSED_AUTHORS = eINSTANCE.getDocument_UnparsedAuthors();
 
 		/**
 		 * The meta object literal for the '<em><b>Taxonomy</b></em>' reference

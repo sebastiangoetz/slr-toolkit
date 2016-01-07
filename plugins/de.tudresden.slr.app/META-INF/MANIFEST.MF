@@ -4,16 +4,11 @@ Bundle-Name: App
 Bundle-SymbolicName: de.tudresden.slr.app;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: de.tudresden.slr.app.Activator
-Require-Bundle: org.eclipse.core.runtime,
- com.google.inject;bundle-version="3.0.0",
- de.tudresden.slr.model.bibtex;bundle-version="0.0.1",
- de.tudresden.slr.model.taxonomy;bundle-version="0.0.1",
- de.tudresden.slr.model.taxonomy.ui;bundle-version="0.0.1",
- de.tudresden.slr.wizards;bundle-version="0.0.1",
- org.eclipse.ui;bundle-version="3.107.0",
- de.tudresden.slr.model.bibtex.ui;bundle-version="0.0.1",
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.navigator.resources,
  org.eclipse.ui.workbench,
- org.eclipse.core.resources,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

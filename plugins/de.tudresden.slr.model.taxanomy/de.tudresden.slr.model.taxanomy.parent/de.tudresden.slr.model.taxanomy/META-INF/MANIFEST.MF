@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: de.tudresden.slr.model.taxanomy
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: de.tudresden.slr.model.taxanomy; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: de.tudresden.slr.model.taxonomy.model,
+ org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.tudresden.slr.model.parser.antlr,
+ de.tudresden.slr.model.generator,
+ de.tudresden.slr.model.parser.antlr.internal,
+ de.tudresden.slr.model.scoping,
+ de.tudresden.slr.model.services,
+ de.tudresden.slr.model,
+ de.tudresden.slr.model.validation,
+ de.tudresden.slr.model.formatting,
+ de.tudresden.slr.model.serializer
+Import-Package: org.apache.log4j

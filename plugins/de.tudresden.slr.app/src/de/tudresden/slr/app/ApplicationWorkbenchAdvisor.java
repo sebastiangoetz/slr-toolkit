@@ -10,22 +10,24 @@ import org.eclipse.ui.ide.IDE;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "de.tudresden.slr.app.perspective"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "de.tudresden.slr.app.perspective";
 
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-        return new ApplicationWorkbenchWindowAdvisor(configurer);
-    }
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
+			IWorkbenchWindowConfigurer configurer) {
+		return new ApplicationWorkbenchWindowAdvisor(configurer);
+	}
 
+	public String getInitialWindowPerspectiveId() {
+		return PERSPECTIVE_ID;
+	}
+	
     public void initialize(IWorkbenchConfigurer configurer) 
 	{
 		IDE.registerAdapters();
-	}
-    
-	public String getInitialWindowPerspectiveId() {
-		return PERSPECTIVE_ID;
 	}
 	
 	public IAdaptable getDefaultPageInput(){
 		return ResourcesPlugin.getWorkspace().getRoot();
 	}
+
 }

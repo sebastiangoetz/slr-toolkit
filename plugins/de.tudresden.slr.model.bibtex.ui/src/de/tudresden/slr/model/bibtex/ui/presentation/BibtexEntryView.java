@@ -1,5 +1,6 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
@@ -59,9 +60,9 @@ import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
 
-import de.tudresden.slr.Utils;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**

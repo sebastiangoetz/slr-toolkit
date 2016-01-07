@@ -4,14 +4,21 @@ package de.tudresden.slr.model.bibtex.impl;
 
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
+
 import de.tudresden.slr.model.taxonomy.Model;
+
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -19,41 +26,39 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <em><b>Document</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
- * <ul>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAuthors <em>
- * Authors</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAbstract <em>
- * Abstract</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getYear <em>Year
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getMonth <em>Month
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTitle <em>Title
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getKey <em>Key
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getDoi <em>Doi
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUrl <em>Url
- * </em>}</li>
- * <li>
- * {@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUnparsedAuthors
- * <em>Unparsed Authors</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTaxonomy <em>
- * Taxonomy</em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getType <em>Type
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getFile <em>File
- * </em>}</li>
- * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getCites <em>Cites
- * </em>}</li>
- * </ul>
  * </p>
+ * <ul>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAuthors
+ * <em>Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getAbstract
+ * <em>Abstract</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getYear
+ * <em>Year</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getMonth
+ * <em>Month</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTitle
+ * <em>Title</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getKey
+ * <em>Key</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getDoi
+ * <em>Doi</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUrl
+ * <em>Url</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getUnparsedAuthors
+ * <em>Unparsed Authors</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getTaxonomy
+ * <em>Taxonomy</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getType
+ * <em>Type</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getFile
+ * <em>File</em>}</li>
+ * <li>{@link de.tudresden.slr.model.bibtex.impl.DocumentImpl#getCites
+ * <em>Cites</em>}</li>
+ * </ul>
  *
  * @generated
  */
-public class DocumentImpl extends MinimalEObjectImpl.Container implements
-		Document {
+public class DocumentImpl extends MinimalEObjectImpl.Container implements Document {
 	/**
 	 * The cached value of the '{@link #getAuthors() <em>Authors</em>}'
 	 * attribute list. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -323,8 +328,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public EList<String> getAuthors() {
 		if (authors == null) {
-			authors = new EDataTypeUniqueEList<String>(String.class, this,
-					BibtexPackage.DOCUMENT__AUTHORS);
+			authors = new EDataTypeUniqueEList<String>(String.class, this, BibtexPackage.DOCUMENT__AUTHORS);
 		}
 		return authors;
 	}
@@ -349,8 +353,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldAbstract = abstract_;
 		abstract_ = newAbstract;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__ABSTRACT, oldAbstract, abstract_));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__ABSTRACT, oldAbstract,
+					abstract_));
 	}
 
 	/**
@@ -373,8 +377,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldYear = year;
 		year = newYear;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__YEAR, oldYear, year));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__YEAR, oldYear, year));
 	}
 
 	/**
@@ -397,8 +400,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldMonth = month;
 		month = newMonth;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__MONTH, oldMonth, month));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__MONTH, oldMonth, month));
 	}
 
 	/**
@@ -421,8 +423,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldTitle = title;
 		title = newTitle;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__TITLE, oldTitle, title));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__TITLE, oldTitle, title));
 	}
 
 	/**
@@ -445,8 +446,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldKey = key;
 		key = newKey;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__KEY, oldKey, key));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__KEY, oldKey, key));
 	}
 
 	/**
@@ -469,8 +469,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldDoi = doi;
 		doi = newDoi;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__DOI, oldDoi, doi));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__DOI, oldDoi, doi));
 	}
 
 	/**
@@ -493,8 +492,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldUrl = url;
 		url = newUrl;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__URL, oldUrl, url));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__URL, oldUrl, url));
 	}
 
 	/**
@@ -517,8 +515,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldUnparsedAuthors = unparsedAuthors;
 		unparsedAuthors = newUnparsedAuthors;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__UNPARSED_AUTHORS,
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__UNPARSED_AUTHORS,
 					oldUnparsedAuthors, unparsedAuthors));
 	}
 
@@ -534,9 +531,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 			taxonomy = (Model) eResolveProxy(oldTaxonomy);
 			if (taxonomy != oldTaxonomy) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-							BibtexPackage.DOCUMENT__TAXONOMY, oldTaxonomy,
-							taxonomy));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, BibtexPackage.DOCUMENT__TAXONOMY,
+							oldTaxonomy, taxonomy));
 			}
 		}
 		return taxonomy;
@@ -561,8 +557,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		Model oldTaxonomy = taxonomy;
 		taxonomy = newTaxonomy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__TAXONOMY, oldTaxonomy, taxonomy));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__TAXONOMY, oldTaxonomy,
+					taxonomy));
 	}
 
 	/**
@@ -585,8 +581,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__TYPE, oldType, type));
 	}
 
 	/**
@@ -609,8 +604,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		String oldFile = file;
 		file = newFile;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__FILE, oldFile, file));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__FILE, oldFile, file));
 	}
 
 	/**
@@ -633,8 +627,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		int oldCites = cites;
 		cites = newCites;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET,
-					BibtexPackage.DOCUMENT__CITES, oldCites, cites));
+			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__CITES, oldCites, cites));
 	}
 
 	/**
@@ -792,37 +785,28 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements
 		case BibtexPackage.DOCUMENT__AUTHORS:
 			return authors != null && !authors.isEmpty();
 		case BibtexPackage.DOCUMENT__ABSTRACT:
-			return ABSTRACT_EDEFAULT == null ? abstract_ != null
-					: !ABSTRACT_EDEFAULT.equals(abstract_);
+			return ABSTRACT_EDEFAULT == null ? abstract_ != null : !ABSTRACT_EDEFAULT.equals(abstract_);
 		case BibtexPackage.DOCUMENT__YEAR:
-			return YEAR_EDEFAULT == null ? year != null : !YEAR_EDEFAULT
-					.equals(year);
+			return YEAR_EDEFAULT == null ? year != null : !YEAR_EDEFAULT.equals(year);
 		case BibtexPackage.DOCUMENT__MONTH:
-			return MONTH_EDEFAULT == null ? month != null : !MONTH_EDEFAULT
-					.equals(month);
+			return MONTH_EDEFAULT == null ? month != null : !MONTH_EDEFAULT.equals(month);
 		case BibtexPackage.DOCUMENT__TITLE:
-			return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT
-					.equals(title);
+			return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
 		case BibtexPackage.DOCUMENT__KEY:
-			return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT
-					.equals(key);
+			return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
 		case BibtexPackage.DOCUMENT__DOI:
-			return DOI_EDEFAULT == null ? doi != null : !DOI_EDEFAULT
-					.equals(doi);
+			return DOI_EDEFAULT == null ? doi != null : !DOI_EDEFAULT.equals(doi);
 		case BibtexPackage.DOCUMENT__URL:
-			return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT
-					.equals(url);
+			return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
 			return UNPARSED_AUTHORS_EDEFAULT == null ? unparsedAuthors != null
 					: !UNPARSED_AUTHORS_EDEFAULT.equals(unparsedAuthors);
 		case BibtexPackage.DOCUMENT__TAXONOMY:
 			return taxonomy != null;
 		case BibtexPackage.DOCUMENT__TYPE:
-			return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT
-					.equals(type);
+			return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 		case BibtexPackage.DOCUMENT__FILE:
-			return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT
-					.equals(file);
+			return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT.equals(file);
 		case BibtexPackage.DOCUMENT__CITES:
 			return cites != CITES_EDEFAULT;
 		}

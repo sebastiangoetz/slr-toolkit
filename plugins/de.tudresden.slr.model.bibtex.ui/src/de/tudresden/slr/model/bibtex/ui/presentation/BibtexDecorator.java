@@ -13,8 +13,8 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import de.tudresden.slr.Utils;
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 
 /**
  * This Decorator is added to {@link IFile}s where the persisted property with

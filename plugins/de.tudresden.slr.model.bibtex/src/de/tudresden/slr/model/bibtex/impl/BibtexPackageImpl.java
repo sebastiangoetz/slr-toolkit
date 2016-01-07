@@ -5,11 +5,14 @@ package de.tudresden.slr.model.bibtex.impl;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+
+import de.tudresden.slr.model.taxonomy.taxonomyPackage;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -69,18 +72,17 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 */
 	public static BibtexPackage init() {
 		if (isInited)
-			return (BibtexPackage) EPackage.Registry.INSTANCE
-					.getEPackage(BibtexPackage.eNS_URI);
+			return (BibtexPackage) EPackage.Registry.INSTANCE.getEPackage(BibtexPackage.eNS_URI);
 
 		// Obtain or create and register package
 		BibtexPackageImpl theBibtexPackage = (BibtexPackageImpl) (EPackage.Registry.INSTANCE
-				.get(eNS_URI) instanceof BibtexPackageImpl ? EPackage.Registry.INSTANCE
-				.get(eNS_URI) : new BibtexPackageImpl());
+				.get(eNS_URI) instanceof BibtexPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
+						: new BibtexPackageImpl());
 
 		isInited = true;
 
 		// Initialize simple dependencies
-		TaxonomyPackage.eINSTANCE.eClass();
+		taxonomyPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theBibtexPackage.createPackageContents();
@@ -307,8 +309,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		TaxonomyPackage theTaxonomyPackage = (TaxonomyPackage) EPackage.Registry.INSTANCE
-				.getEPackage(TaxonomyPackage.eNS_URI);
+		taxonomyPackage thetaxonomyPackage = (taxonomyPackage) EPackage.Registry.INSTANCE
+				.getEPackage(taxonomyPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -317,60 +319,36 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		// Add supertypes to classes
 
 		// Initialize classes, features, and operations; add parameters
-		initEClass(documentEClass, Document.class, "Document", !IS_ABSTRACT,
-				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDocument_Authors(), ecorePackage.getEString(),
-				"authors", null, 1, -1, Document.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+		initEClass(documentEClass, Document.class, "Document", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDocument_Authors(), ecorePackage.getEString(), "authors", null, 1, -1, Document.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Abstract(), ecorePackage.getEString(), "abstract", null, 0, 1, Document.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Year(), ecorePackage.getEString(), "year", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Month(), ecorePackage.getEString(), "month", null, 0, 1, Document.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Title(), ecorePackage.getEString(), "title", null, 0, 1, Document.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Key(), ecorePackage.getEString(), "key", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Doi(), ecorePackage.getEString(), "doi", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Url(), ecorePackage.getEString(), "url", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_UnparsedAuthors(), ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
+				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocument_Abstract(), ecorePackage.getEString(),
-				"abstract", null, 0, 1, Document.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-				!IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocument_Year(), ecorePackage.getEString(), "year",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Month(), ecorePackage.getEString(), "month",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Title(), ecorePackage.getEString(), "title",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Key(), ecorePackage.getEString(), "key",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Doi(), ecorePackage.getEString(), "doi",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Url(), ecorePackage.getEString(), "url",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_UnparsedAuthors(),
-				ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
-				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-				!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDocument_Taxonomy(), theTaxonomyPackage.getModel(),
-				null, "taxonomy", null, 0, 1, Document.class, !IS_TRANSIENT,
-				!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+		initEReference(getDocument_Taxonomy(), thetaxonomyPackage.getModel(), null, "taxonomy", null, 0, 1,
+				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_File(), ecorePackage.getEString(), "file",
-				"", 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
-		initEAttribute(getDocument_Cites(), ecorePackage.getEInt(), "cites",
-				null, 0, 1, Document.class, !IS_TRANSIENT, !IS_VOLATILE,
-				IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED,
-				IS_ORDERED);
+		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_File(), ecorePackage.getEString(), "file", "", 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Cites(), ecorePackage.getEInt(), "cites", null, 0, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

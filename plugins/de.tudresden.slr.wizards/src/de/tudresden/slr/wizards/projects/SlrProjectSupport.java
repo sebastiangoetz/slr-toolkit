@@ -4,6 +4,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 
+//import org.eclipse.xtext.ui.XtextProjectHelper;
+
 public class SlrProjectSupport {
 
 	// private static void createFolder(IFolder folder) throws CoreException {
@@ -17,8 +19,11 @@ public class SlrProjectSupport {
 	// }
 
 	public static void addNature(IProject project) throws CoreException {
-		if (!project.hasNature("org.eclipse.xtext.ui.shared.xtextNature")) {
+							  //"org.eclipse.xtext.ui.shared.xtextNature"
+		if (!project.hasNature( "org.eclipse.xtext.ui.shared.xtextNature")){//(XtextProjectHelper.NATURE_ID)) {
 			IProjectDescription description = project.getDescription();
+			/*description.setNatureIds(new String[] { "org.eclipse.xtext.ui.shared.xtextNature" });
+		    project.setDescription(description, null);*/
 			String[] prevNatures = description.getNatureIds();
 			String[] newNatures = new String[prevNatures.length + 1];
 			System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);

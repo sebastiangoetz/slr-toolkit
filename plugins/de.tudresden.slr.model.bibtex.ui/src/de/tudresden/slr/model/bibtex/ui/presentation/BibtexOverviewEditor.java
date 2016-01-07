@@ -5,7 +5,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.PartInitException;
 
-import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorageEditorInput;
 
 public class BibtexOverviewEditor extends BibtexEditor implements
 		IReusableEditor {
@@ -55,3 +55,4 @@ public class BibtexOverviewEditor extends BibtexEditor implements
 		createAbstractPage();
 	}
 }
+

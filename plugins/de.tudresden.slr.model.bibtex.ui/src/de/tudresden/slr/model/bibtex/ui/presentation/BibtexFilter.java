@@ -66,3 +66,4 @@ public class BibtexFilter extends PatternFilter {
 		return wordMatches(element.getAbstract());
 	}
 }
+

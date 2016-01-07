@@ -15,8 +15,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
-import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorage;
-import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorage;
+import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorageEditorInput;
 
 /**
  * This Listener opens an editor for {@link DocumentImpl}. The editor is focused

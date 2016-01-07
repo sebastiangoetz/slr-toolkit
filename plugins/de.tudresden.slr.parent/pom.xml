@@ -77,37 +77,22 @@
 					<target>
 						<artifact>
 							<groupId>de.tudresden</groupId>
-							<artifactId>de.tudresden.slr.target.mars</artifactId>
+							<artifactId>de.tudresden.slr.target</artifactId>
 							<version>0.0.1-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
 						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
+						<!-- Uncomment to build for other platforms as well <environment> <os>linux</os> 
+							<ws>gtk</ws> <arch>x86</arch> </environment> <environment> <os>linux</os> 
+							<ws>gtk</ws> <arch>x86_64</arch> </environment> <environment> <os>win32</os> 
+							<ws>win32</ws> <arch>x86</arch> </environment> <environment> <os>macosx</os> 
+							<ws>cocoa</ws> <arch>x86_64</arch> </environment> -->
 					</environments>
 				</configuration>
 			</plugin>
@@ -139,26 +124,21 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<modules>
-		<module>../de.tudresden.slr.app</module>
-		<module>../de.tudresden.slr.model.bibtex</module>
-		<module>../de.tudresden.slr.model.bibtex.edit</module>
-		<module>../de.tudresden.slr.model.bibtex.ui</module>
-		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
-		<module>../../targets/de.tudresden.slr.target.mars</module>
-		<module>../de.tudresden.slr.model.taxonomy</module>
-		<module>../de.tudresden.slr.ui.chart</module>
-		<module>../../tests/de.tudresden.slr.model.taxonomy.tests</module>
-		<module>../de.tudresden.slr.model.taxonomy.ui</module>
-		<module>../../features/de.tudresden.slr.model.taxonomy.sdk</module>
-		<module>../de.tudresden.slr.model.modelregistry</module>
+		<module>../../targets/de.tudresden.slr.target</module>
 		<module>../de.tudresden.slr.wizards</module>
-		<module>../../features/de.tudresden.slr.batik.feature</module>
-		<module>../../features/de.tudresden.slr.dependencies</module>
-		<module>../../features/de.tudresden.slr.feature</module>
-
+		<module>../../features/de.tudresden.slr.app.feature</module>
+		<module>../de.tudresden.slr.app</module>
 		
 		<module>../../features/de.tudresden.slr.product</module>
+
+
+		
+		
+		<module>../de.tudresden.slr.model.bibtex</module>
+		<module>../de.tudresden.slr.model.bibtex.edit</module>
+		<module>../de.tudresden.slr.model.modelregistry</module>
+		<module>../de.tudresden.slr.ui.chart</module>
+		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
 	</modules>
 </project>

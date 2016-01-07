@@ -59,8 +59,7 @@ public class BibtexFactoryImpl extends EFactoryImpl implements BibtexFactory {
 		case BibtexPackage.DOCUMENT:
 			return createDocument();
 		default:
-			throw new IllegalArgumentException("The class '" + eClass.getName()
-					+ "' is not a valid classifier");
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 

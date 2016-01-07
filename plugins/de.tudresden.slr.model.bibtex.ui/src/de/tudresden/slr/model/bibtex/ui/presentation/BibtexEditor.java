@@ -62,9 +62,9 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheet;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import de.tudresden.slr.Utils;
 import de.tudresden.slr.model.bibtex.Document;
-import de.tudresden.slr.model.bibtex.ui.presentation.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**

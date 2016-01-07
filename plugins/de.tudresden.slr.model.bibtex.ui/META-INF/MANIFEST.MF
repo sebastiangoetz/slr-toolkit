@@ -1,20 +1,21 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Bibtex Ui
+Bundle-Name: Bibtex User Interface
 Bundle-SymbolicName: de.tudresden.slr.model.bibtex.ui;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
+Bundle-Activator: de.tudresden.slr.model.bibtex.ui.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.common,
+ org.eclipse.emf.ecore,
  org.eclipse.core.resources,
- org.eclipse.emf.edit,
- de.tudresden.slr.model.bibtex.edit,
- org.eclipse.emf.edit.ui,
- org.eclipse.ui.editors,
- org.eclipse.ui.ide,
- org.eclipse.jface.text,
- de.tudresden.slr.model.modelregistry,
  de.tudresden.slr.model.bibtex,
- org.eclipse.core.filesystem;bundle-version="1.4.100"
+ org.eclipse.ui.ide,
+ org.eclipse.ui.editors,
+ org.eclipse.core.filesystem,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.edit.ui,
+ de.tudresden.slr.model.modelregistry
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.bibtex.ui.presentation
-Bundle-Activator: de.tudresden.slr.model.bibtex.ui.BibtexUIPlugin

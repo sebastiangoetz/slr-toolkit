@@ -46,25 +46,19 @@ public class BibtexExample {
 		// Register the appropriate resource factory to handle all file
 		// extensions.
 		//
-		resourceSet
-				.getResourceFactoryRegistry()
-				.getExtensionToFactoryMap()
-				.put(Resource.Factory.Registry.DEFAULT_EXTENSION,
-						new BibtexResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new BibtexResourceFactoryImpl());
 
 		// Register the package to ensure it is available during loading.
 		//
-		resourceSet.getPackageRegistry().put(BibtexPackage.eNS_URI,
-				BibtexPackage.eINSTANCE);
+		resourceSet.getPackageRegistry().put(BibtexPackage.eNS_URI, BibtexPackage.eINSTANCE);
 
 		// If there are no arguments, emit an appropriate usage message.
 		//
 		if (args.length == 0) {
-			System.out
-					.println("Enter a list of file paths or URIs that have content like this:");
+			System.out.println("Enter a list of file paths or URIs that have content like this:");
 			try {
-				Resource resource = resourceSet.createResource(URI
-						.createURI("http:///My.bib"));
+				Resource resource = resourceSet.createResource(URI.createURI("http:///My.bib"));
 				Document root = BibtexFactory.eINSTANCE.createDocument();
 				resource.getContents().add(root);
 				resource.save(System.out, null);
@@ -81,8 +75,7 @@ public class BibtexExample {
 				// Otherwise, it's directly treated as a URL.
 				//
 				File file = new File(args[i]);
-				URI uri = file.isFile() ? URI.createFileURI(file
-						.getAbsolutePath()) : URI.createURI(args[i]);
+				URI uri = file.isFile() ? URI.createFileURI(file.getAbsolutePath()) : URI.createURI(args[i]);
 
 				try {
 					// Demand load resource for this file.
@@ -93,8 +86,7 @@ public class BibtexExample {
 					// Validate the contents of the loaded resource.
 					//
 					for (EObject eObject : resource.getContents()) {
-						Diagnostic diagnostic = Diagnostician.INSTANCE
-								.validate(eObject);
+						Diagnostic diagnostic = Diagnostician.INSTANCE.validate(eObject);
 						if (diagnostic.getSeverity() != Diagnostic.OK) {
 							printDiagnostic(diagnostic, "");
 						}

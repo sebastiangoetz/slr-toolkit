@@ -14,18 +14,17 @@ public class Application implements IApplication {
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
-	public Object start(IApplicationContext context) throws Exception {
+	public Object start(IApplicationContext context) {
 		Display display = PlatformUI.createDisplay();
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
-			if (returnCode == PlatformUI.RETURN_RESTART)
+			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
-			else
-				return IApplication.EXIT_OK;
+			}
+			return IApplication.EXIT_OK;
 		} finally {
 			display.dispose();
 		}
-		
 	}
 
 	/* (non-Javadoc)

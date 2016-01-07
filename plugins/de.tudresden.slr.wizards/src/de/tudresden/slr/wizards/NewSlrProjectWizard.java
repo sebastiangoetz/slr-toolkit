@@ -18,7 +18,6 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
 import de.tudresden.slr.wizards.pages.WizardSetupPage;
 import de.tudresden.slr.wizards.pages.WizardSetupTaxonomyPage;
-import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
 public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
@@ -61,8 +60,9 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 			project.open(null);
 			createResourceFile(project, secondPage, BIBTEX_RESOURCE);
 			createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
-			SlrProjectSupport.addNature(project);
+			//SlrProjectSupport.addNature(project);
 		} catch (CoreException e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;

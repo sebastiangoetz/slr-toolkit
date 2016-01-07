@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
@@ -11,7 +12,6 @@
       </application>
    </extension>
    <extension
-         id="perspective"
          point="org.eclipse.ui.perspectives">
       <perspective
             name="SLR"
@@ -19,10 +19,19 @@
             id="de.tudresden.slr.app.perspective">
       </perspective>
    </extension>
-      <extension
+<extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="de.tudresden.slr.app.perspective">
+         <view
+               closeable="true"
+               id="org.eclipse.ui.navigator.resources.ProjectExplorer"
+               minimized="false"
+               ratio="0.25"
+               relationship="stack"
+               relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
+               visible="true">
+         </view>
          <view
                closeable="true"
                id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
@@ -33,11 +42,13 @@
                visible="true">
          </view>
          <view
+               closeable="true"
                id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
                minimized="false"
                ratio="0.75"
                relationship="right"
-               relative="org.eclipse.ui.editorss">
+               relative="org.eclipse.ui.editorss"
+               visible="true">
          </view>
          <view
                id="org.eclipse.ui.views.ProblemView"
@@ -68,26 +79,13 @@
       </perspectiveExtension>
    </extension>
    <extension
-         id="product"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="de.tudresden.slr.app.application"
-            name="app">
-         <property
-               name="appName"
-               value="app">
-         </property>
-      </product>
-   </extension>
-   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               id="fileMenu"
                label="File">
-            <menu
+               <menu
                   commandId="org.eclipse.ui.file.newQuickMenu"
                   label="New">
                <command
@@ -139,7 +137,28 @@
                   label="Revert"
                   style="push">
             </command>
+                        <separator
+                  name="fileMenuSeparator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit">
+            </command>
          </menu>
       </menuContribution>
+   </extension>  
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.tudresden.slr.app.application"
+            name="app">
+         <property
+               name="appName"
+               value="app">
+         </property>
+      </product>
    </extension>
+
 </plugin>

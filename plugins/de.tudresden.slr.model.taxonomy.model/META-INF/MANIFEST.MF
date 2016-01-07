@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-Version: 0.0.1.qualifier
+Bundle-ClassPath: .
+Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.model;singleton:=true
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.tudresden.slr.model.taxonomy,
+ de.tudresden.slr.model.taxonomy.impl,
+ de.tudresden.slr.model.taxonomy.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
