@@ -137,6 +137,17 @@
 			description="Copy the qualified name for the selected element"
 			name="Copy Qualified Name">
 	</command>
+		      <command
+            defaultHandler="de.tudresden.slr.model.ui.handlers.CreateBubbleChartHandler"
+            description="Create a BubbleChart for two taxonomy terms"
+            id="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+            name="Create BubbleChart">
+      </command>
+      <command
+            defaultHandler="de.tudresden.slr.model.ui.handlers.CreateCiteHandler"
+            id="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+            name="Create Cite Bar">
+      </command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
@@ -182,6 +193,20 @@
 				</visibleWhen>
 			</command>
 		</menuContribution>
+				<menuContribution
+               allPopups="false"
+               locationURI="toolbar:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+                  label="Create Bubblechart"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+                  label="Create Cite Barchart"
+                  style="push">
+            </command>
+         </menuContribution>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution locationURI="popup:#TextEditorContext?endof=group.find">
@@ -407,4 +432,24 @@
 			type="text">
 		</fileTypes>
 	</extension>
+	<extension
+        point="org.eclipse.ui.views">
+     <category
+           id="de.tudresden.slr.model.taxonomy.ui"
+           name="Sample Category">
+     </category>
+     <view
+           category="de.tudresden.slr.model.taxonomy.ui"
+           class="de.tudresden.slr.model.ui.views.TaxonomyCheckboxListView"
+           icon="icons/sample.gif"
+           id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+           name="Taxonomy Checkbox ListView">
+     </view>
+  </extension>
+    <extension
+        point="org.eclipse.help.contexts">
+     <contexts
+           file="contexts.xml">
+     </contexts>
+  </extension>
 </plugin>
