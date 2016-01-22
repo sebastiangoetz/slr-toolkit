@@ -48,12 +48,13 @@ import org.jbibtex.TokenMgrException;
 
 import com.google.inject.Injector;
 
-import de.tudresden.slr.model.TaxanomyStandaloneSetupGenerated;
+
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.taxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.TaxonomyStandaloneSetupGenerated;
 
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
@@ -133,7 +134,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 		if (string.isEmpty()) {
 			return taxonomyFactory.eINSTANCE.createModel();
 		}
-		TaxanomyStandaloneSetupGenerated setup = new TaxanomyStandaloneSetupGenerated();
+		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
 		Injector injector = setup.createInjectorAndDoEMFRegistration();
 		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
 		Resource resource = resourceSet.createResource(URI.createURI("tmp.taxonomy"));

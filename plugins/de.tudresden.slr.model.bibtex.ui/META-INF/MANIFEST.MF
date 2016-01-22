@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem,
  org.eclipse.emf.edit,
  org.eclipse.emf.edit.ui,
- de.tudresden.slr.model.modelregistry
+ de.tudresden.slr.model.modelregistry,
+ de.tudresden.slr.model.taxonomy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.bibtex.ui.presentation

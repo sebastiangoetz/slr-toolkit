@@ -950,20 +950,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.tudresden.slr.model.taxanomy.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.tudresden.slr.model.taxanomy.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.xtext.smap"
          download-size="0"
          install-size="0"
@@ -1062,20 +1048,6 @@
          unpack="false"/>
 
    <plugin
-         id="de.tudresden.slr.model.taxonomy.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.tudresden.slr.model.taxanomy"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="de.tudresden.slr.model.bibtex.ui"
          download-size="0"
          install-size="0"
@@ -1133,13 +1105,6 @@
 
    <plugin
          id="org.eclipse.emf.ecore.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jdt.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1275,13 +1240,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.xtext.common.types.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.xtext.logging"
          download-size="0"
          install-size="0"
@@ -1298,6 +1256,41 @@
 
    <plugin
          id="org.apache.felix.gogo.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.xtext.common.types.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jdt.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.model.taxonomy"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.model.taxonomy.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.model.taxonomy.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -12,8 +12,8 @@ Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.xtext,
  org.eclipse.core.runtime,
  org.jbibtex;bundle-version="1.0.15",
- de.tudresden.slr.model.taxonomy.model;visibility:=reexport,
- de.tudresden.slr.model.taxanomy
+ de.tudresden.slr.model.taxonomy.model,
+ de.tudresden.slr.model.taxonomy
 Foo: org.jbibtex;bundle-version="1.0.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

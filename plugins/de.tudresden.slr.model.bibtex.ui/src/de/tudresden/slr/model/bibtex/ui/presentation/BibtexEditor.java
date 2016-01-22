@@ -76,8 +76,7 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
  * <li>page 2 shows the words in page 0 in sorted order
  * </ul>
  */
-public class BibtexEditor extends MultiPageEditorPart implements
-		ISelectionProvider {
+public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvider {
 	public static final String ID = "de.tudresden.slr.model.bibtex.presentation.BibtexEditor";
 
 	// TODO: prettify
