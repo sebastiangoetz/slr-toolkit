@@ -10,7 +10,7 @@
       <view
             category="de.tudresden.slr.model.bibtex.presentation"
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView"
-            icon="icons/sample.gif"
+            icon="icons/icon.png"
             id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
             name="Bibtex Entries">
       </view>
@@ -20,14 +20,14 @@
       <editor
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEditor"
             contributorClass="de.tudresden.slr.model.bibtex.ui.presentation.BibtexContributor"
-            icon="icons/sample.gif"
+            icon="icons/icon.png"
             id="de.tudresden.slr.model.bibtex.presentation.BibtexEditor"
             name="Bibtex Editor">
       </editor>
       <editor
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            icon="icons/sample.gif"
+            icon="icons/icon.png"
             id="de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor"
             name="Bibtex Overview">
       </editor>
