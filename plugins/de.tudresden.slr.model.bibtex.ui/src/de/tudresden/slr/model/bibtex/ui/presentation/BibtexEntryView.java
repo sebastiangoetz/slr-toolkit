@@ -399,6 +399,9 @@ public class BibtexEntryView extends ViewPart {
 					&& "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
 				editingDomain.getResourceSet().getResource(uri, true);
+			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
+				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
+				ModelRegistryPlugin.getModelRegistry().setActiveTaxonomyDocument(uri);
 			}
 		}
 	}
@@ -517,7 +520,7 @@ public class BibtexEntryView extends ViewPart {
 			}
 		};
 		markingAction.setText("Mark");
-		markingAction.setToolTipText("Mark document fpr ProblemsView");
+		markingAction.setToolTipText("Mark document for ProblemsView");
 		markingAction.setImageDescriptor(PlatformUI.getWorkbench()
 				.getSharedImages()
 				.getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
