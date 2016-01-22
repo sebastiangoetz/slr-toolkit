@@ -43,7 +43,6 @@ import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyIterator;
 
 public class TaxonomyCheckboxListView extends ViewPart implements ISelectionListener, Observer, ICheckStateListener {
-
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
 
 	private ContainerCheckedTreeViewer viewer;

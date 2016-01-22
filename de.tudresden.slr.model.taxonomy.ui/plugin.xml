@@ -2,7 +2,19 @@
 <?eclipse version="3.0"?>
 
 <plugin>
-
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.tudresden.slr.model.taxonomy.ui.views"
+            name="Taxonomy UI">
+      </category>
+      <view
+            category="de.tudresden.slr.model.taxonomy.ui.views"
+            class="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+            id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+            name="Taxonomy">
+      </view>
+   </extension>
     <extension
             point="org.eclipse.ui.editors">
         <editor
