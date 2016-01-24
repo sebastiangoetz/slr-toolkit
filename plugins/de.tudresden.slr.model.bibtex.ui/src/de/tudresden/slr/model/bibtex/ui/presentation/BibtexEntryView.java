@@ -399,9 +399,6 @@ public class BibtexEntryView extends ViewPart {
 					&& "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
 				editingDomain.getResourceSet().getResource(uri, true);
-			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
-				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
-				ModelRegistryPlugin.getModelRegistry().setActiveTaxonomyDocument(uri);
 			}
 		}
 	}
