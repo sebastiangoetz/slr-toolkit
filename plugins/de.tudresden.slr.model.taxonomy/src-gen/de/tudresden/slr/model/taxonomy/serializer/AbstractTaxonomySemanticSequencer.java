@@ -5,9 +5,9 @@ package de.tudresden.slr.model.taxonomy.serializer;
 
 import com.google.inject.Inject;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess;
-import de.tudresden.slr.model.taxonomy.taxonomyPackage;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -29,12 +29,12 @@ public abstract class AbstractTaxonomySemanticSequencer extends AbstractDelegati
 		ParserRule rule = context.getParserRule();
 		Action action = context.getAssignedAction();
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
-		if (epackage == taxonomyPackage.eINSTANCE)
+		if (epackage == TaxonomyPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
-			case taxonomyPackage.MODEL:
+			case TaxonomyPackage.MODEL:
 				sequence_Model(context, (Model) semanticObject); 
 				return; 
-			case taxonomyPackage.TERM:
+			case TaxonomyPackage.TERM:
 				sequence_Term(context, (Term) semanticObject); 
 				return; 
 			}

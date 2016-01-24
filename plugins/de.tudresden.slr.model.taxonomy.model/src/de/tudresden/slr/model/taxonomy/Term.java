@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tudresden.slr.model.taxonomy.Term#getSubclasses <em>Subclasses</em>}</li>
  * </ul>
  *
- * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getTerm()
+ * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm()
  * @model
  * @generated
  */
@@ -34,7 +34,7 @@ public interface Term extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getTerm_Name()
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Name()
 	 * @model
 	 * @generated
 	 */
@@ -60,7 +60,7 @@ public interface Term extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Subclasses</em>' containment reference list.
-	 * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getTerm_Subclasses()
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getTerm_Subclasses()
 	 * @model containment="true"
 	 * @generated
 	 */

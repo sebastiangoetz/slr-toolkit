@@ -5,7 +5,7 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
     operationReflection="true" runtimePlatform="RCP" importOrganizing="true">
   <foreignModel>file:/C:/Users/Jay/Documents/Taxonomy.ecore</foreignModel>
-  <genPackages prefix="taxonomy" basePackage="de.tudresden.slr.model" disposableProviderFactory="true"
+  <genPackages prefix="Taxonomy" basePackage="de.tudresden.slr.model" disposableProviderFactory="true"
       ecorePackage="Taxonomy.ecore#/">
     <genClasses ecoreClass="Taxonomy.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Taxonomy.ecore#//Model/dimensions"/>

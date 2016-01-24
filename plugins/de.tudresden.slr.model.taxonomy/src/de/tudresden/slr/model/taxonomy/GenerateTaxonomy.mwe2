@@ -14,7 +14,7 @@ Workflow {
 	bean = StandaloneSetup {
 		scanClassPath  = true
 		platformUri = "${runtimeProject}/.."
-		registerGeneratedEPackage = "de.tudresden.slr.model.taxonomy.taxonomyPackage"
+		registerGeneratedEPackage = "de.tudresden.slr.model.taxonomy.TaxonomyPackage"
 		registerGenModelFile = "platform:/resource/de.tudresden.slr.model.taxonomy.model/model/Taxonomy.genmodel"
 	}
 

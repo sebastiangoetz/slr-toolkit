@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link de.tudresden.slr.model.taxonomy.Model#getDimensions <em>Dimensions</em>}</li>
  * </ul>
  *
- * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getModel()
+ * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getModel()
  * @model
  * @generated
  */
@@ -33,7 +33,7 @@ public interface Model extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Dimensions</em>' containment reference list.
-	 * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getModel_Dimensions()
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getModel_Dimensions()
 	 * @model containment="true"
 	 * @generated
 	 */

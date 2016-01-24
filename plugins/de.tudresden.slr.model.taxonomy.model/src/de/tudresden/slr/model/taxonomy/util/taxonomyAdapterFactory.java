@@ -16,17 +16,17 @@ import org.eclipse.emf.ecore.EObject;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see de.tudresden.slr.model.taxonomy.taxonomyPackage
+ * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage
  * @generated
  */
-public class taxonomyAdapterFactory extends AdapterFactoryImpl {
+public class TaxonomyAdapterFactory extends AdapterFactoryImpl {
 	/**
 	 * The cached model package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static taxonomyPackage modelPackage;
+	protected static TaxonomyPackage modelPackage;
 
 	/**
 	 * Creates an instance of the adapter factory.
@@ -34,9 +34,9 @@ public class taxonomyAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public taxonomyAdapterFactory() {
+	public TaxonomyAdapterFactory() {
 		if (modelPackage == null) {
-			modelPackage = taxonomyPackage.eINSTANCE;
+			modelPackage = TaxonomyPackage.eINSTANCE;
 		}
 	}
 
@@ -65,8 +65,8 @@ public class taxonomyAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected taxonomySwitch<Adapter> modelSwitch =
-		new taxonomySwitch<Adapter>() {
+	protected TaxonomySwitch<Adapter> modelSwitch =
+		new TaxonomySwitch<Adapter>() {
 			@Override
 			public Adapter caseModel(Model object) {
 				return createModelAdapter();
@@ -135,4 +135,4 @@ public class taxonomyAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //taxonomyAdapterFactory
+} //TaxonomyAdapterFactory

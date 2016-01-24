@@ -52,7 +52,7 @@ import com.google.inject.Injector;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.taxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.TaxonomyStandaloneSetupGenerated;
 
@@ -132,7 +132,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 	private Model parseClasses(String string) {
 		if (string.isEmpty()) {
-			return taxonomyFactory.eINSTANCE.createModel();
+			return TaxonomyFactory.eINSTANCE.createModel();
 		}
 		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
 		Injector injector = setup.createInjectorAndDoEMFRegistration();
@@ -146,7 +146,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 		if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Model) {
 			return (Model) resource.getContents().get(0);
 		}
-		return taxonomyFactory.eINSTANCE.createModel();
+		return TaxonomyFactory.eINSTANCE.createModel();
 	}
 
 	@Override

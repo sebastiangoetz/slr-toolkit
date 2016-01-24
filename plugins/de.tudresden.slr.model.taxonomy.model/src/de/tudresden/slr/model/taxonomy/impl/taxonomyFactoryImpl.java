@@ -18,24 +18,24 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
  * <!-- end-user-doc -->
  * @generated
  */
-public class taxonomyFactoryImpl extends EFactoryImpl implements taxonomyFactory {
+public class TaxonomyFactoryImpl extends EFactoryImpl implements TaxonomyFactory {
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static taxonomyFactory init() {
+	public static TaxonomyFactory init() {
 		try {
-			taxonomyFactory thetaxonomyFactory = (taxonomyFactory)EPackage.Registry.INSTANCE.getEFactory(taxonomyPackage.eNS_URI);
-			if (thetaxonomyFactory != null) {
-				return thetaxonomyFactory;
+			TaxonomyFactory theTaxonomyFactory = (TaxonomyFactory)EPackage.Registry.INSTANCE.getEFactory(TaxonomyPackage.eNS_URI);
+			if (theTaxonomyFactory != null) {
+				return theTaxonomyFactory;
 			}
 		}
 		catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new taxonomyFactoryImpl();
+		return new TaxonomyFactoryImpl();
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class taxonomyFactoryImpl extends EFactoryImpl implements taxonomyFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public taxonomyFactoryImpl() {
+	public TaxonomyFactoryImpl() {
 		super();
 	}
 
@@ -56,8 +56,8 @@ public class taxonomyFactoryImpl extends EFactoryImpl implements taxonomyFactory
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case taxonomyPackage.MODEL: return createModel();
-			case taxonomyPackage.TERM: return createTerm();
+			case TaxonomyPackage.MODEL: return createModel();
+			case TaxonomyPackage.TERM: return createTerm();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -88,8 +88,8 @@ public class taxonomyFactoryImpl extends EFactoryImpl implements taxonomyFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public taxonomyPackage gettaxonomyPackage() {
-		return (taxonomyPackage)getEPackage();
+	public TaxonomyPackage getTaxonomyPackage() {
+		return (TaxonomyPackage)getEPackage();
 	}
 
 	/**
@@ -99,8 +99,8 @@ public class taxonomyFactoryImpl extends EFactoryImpl implements taxonomyFactory
 	 * @generated
 	 */
 	@Deprecated
-	public static taxonomyPackage getPackage() {
-		return taxonomyPackage.eINSTANCE;
+	public static TaxonomyPackage getPackage() {
+		return TaxonomyPackage.eINSTANCE;
 	}
 
-} //taxonomyFactoryImpl
+} //TaxonomyFactoryImpl

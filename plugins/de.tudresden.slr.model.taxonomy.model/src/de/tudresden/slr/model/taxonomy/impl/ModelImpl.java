@@ -3,8 +3,8 @@
 package de.tudresden.slr.model.taxonomy.impl;
 
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.taxonomyPackage;
 
 import java.util.Collection;
 
@@ -60,7 +60,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return taxonomyPackage.Literals.MODEL;
+		return TaxonomyPackage.Literals.MODEL;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	 */
 	public EList<Term> getDimensions() {
 		if (dimensions == null) {
-			dimensions = new EObjectContainmentEList<Term>(Term.class, this, taxonomyPackage.MODEL__DIMENSIONS);
+			dimensions = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.MODEL__DIMENSIONS);
 		}
 		return dimensions;
 	}
@@ -83,7 +83,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case taxonomyPackage.MODEL__DIMENSIONS:
+			case TaxonomyPackage.MODEL__DIMENSIONS:
 				return ((InternalEList<?>)getDimensions()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -97,7 +97,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case taxonomyPackage.MODEL__DIMENSIONS:
+			case TaxonomyPackage.MODEL__DIMENSIONS:
 				return getDimensions();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -112,7 +112,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case taxonomyPackage.MODEL__DIMENSIONS:
+			case TaxonomyPackage.MODEL__DIMENSIONS:
 				getDimensions().clear();
 				getDimensions().addAll((Collection<? extends Term>)newValue);
 				return;
@@ -128,7 +128,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case taxonomyPackage.MODEL__DIMENSIONS:
+			case TaxonomyPackage.MODEL__DIMENSIONS:
 				getDimensions().clear();
 				return;
 		}
@@ -143,7 +143,7 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case taxonomyPackage.MODEL__DIMENSIONS:
+			case TaxonomyPackage.MODEL__DIMENSIONS:
 				return dimensions != null && !dimensions.isEmpty();
 		}
 		return super.eIsSet(featureID);

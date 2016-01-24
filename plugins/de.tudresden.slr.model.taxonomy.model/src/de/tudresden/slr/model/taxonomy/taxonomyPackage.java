@@ -20,11 +20,11 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see de.tudresden.slr.model.taxonomy.taxonomyFactory
+ * @see de.tudresden.slr.model.taxonomy.TaxonomyFactory
  * @model kind="package"
  * @generated
  */
-public interface taxonomyPackage extends EPackage {
+public interface TaxonomyPackage extends EPackage {
 	/**
 	 * The package name.
 	 * <!-- begin-user-doc -->
@@ -55,14 +55,14 @@ public interface taxonomyPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	taxonomyPackage eINSTANCE = de.tudresden.slr.model.taxonomy.impl.taxonomyPackageImpl.init();
+	TaxonomyPackage eINSTANCE = de.tudresden.slr.model.taxonomy.impl.TaxonomyPackageImpl.init();
 
 	/**
 	 * The meta object id for the '{@link de.tudresden.slr.model.taxonomy.impl.ModelImpl <em>Model</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.tudresden.slr.model.taxonomy.impl.ModelImpl
-	 * @see de.tudresden.slr.model.taxonomy.impl.taxonomyPackageImpl#getModel()
+	 * @see de.tudresden.slr.model.taxonomy.impl.TaxonomyPackageImpl#getModel()
 	 * @generated
 	 */
 	int MODEL = 0;
@@ -99,7 +99,7 @@ public interface taxonomyPackage extends EPackage {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see de.tudresden.slr.model.taxonomy.impl.TermImpl
-	 * @see de.tudresden.slr.model.taxonomy.impl.taxonomyPackageImpl#getTerm()
+	 * @see de.tudresden.slr.model.taxonomy.impl.TaxonomyPackageImpl#getTerm()
 	 * @generated
 	 */
 	int TERM = 1;
@@ -220,7 +220,7 @@ public interface taxonomyPackage extends EPackage {
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
-	taxonomyFactory gettaxonomyFactory();
+	TaxonomyFactory getTaxonomyFactory();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -241,7 +241,7 @@ public interface taxonomyPackage extends EPackage {
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see de.tudresden.slr.model.taxonomy.impl.ModelImpl
-		 * @see de.tudresden.slr.model.taxonomy.impl.taxonomyPackageImpl#getModel()
+		 * @see de.tudresden.slr.model.taxonomy.impl.TaxonomyPackageImpl#getModel()
 		 * @generated
 		 */
 		EClass MODEL = eINSTANCE.getModel();
@@ -259,7 +259,7 @@ public interface taxonomyPackage extends EPackage {
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see de.tudresden.slr.model.taxonomy.impl.TermImpl
-		 * @see de.tudresden.slr.model.taxonomy.impl.taxonomyPackageImpl#getTerm()
+		 * @see de.tudresden.slr.model.taxonomy.impl.TaxonomyPackageImpl#getTerm()
 		 * @generated
 		 */
 		EClass TERM = eINSTANCE.getTerm();
@@ -290,4 +290,4 @@ public interface taxonomyPackage extends EPackage {
 
 	}
 
-} //taxonomyPackage
+} //TaxonomyPackage

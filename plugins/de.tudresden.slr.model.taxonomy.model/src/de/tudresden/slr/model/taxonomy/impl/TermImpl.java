@@ -2,8 +2,8 @@
  */
 package de.tudresden.slr.model.taxonomy.impl;
 
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.taxonomyPackage;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -84,7 +84,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return taxonomyPackage.Literals.TERM;
+		return TaxonomyPackage.Literals.TERM;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, taxonomyPackage.TERM__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, TaxonomyPackage.TERM__NAME, oldName, name));
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	 */
 	public EList<Term> getSubclasses() {
 		if (subclasses == null) {
-			subclasses = new EObjectContainmentEList<Term>(Term.class, this, taxonomyPackage.TERM__SUBCLASSES);
+			subclasses = new EObjectContainmentEList<Term>(Term.class, this, TaxonomyPackage.TERM__SUBCLASSES);
 		}
 		return subclasses;
 	}
@@ -145,7 +145,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case taxonomyPackage.TERM__SUBCLASSES:
+			case TaxonomyPackage.TERM__SUBCLASSES:
 				return ((InternalEList<?>)getSubclasses()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -159,9 +159,9 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case taxonomyPackage.TERM__NAME:
+			case TaxonomyPackage.TERM__NAME:
 				return getName();
-			case taxonomyPackage.TERM__SUBCLASSES:
+			case TaxonomyPackage.TERM__SUBCLASSES:
 				return getSubclasses();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -176,10 +176,10 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case taxonomyPackage.TERM__NAME:
+			case TaxonomyPackage.TERM__NAME:
 				setName((String)newValue);
 				return;
-			case taxonomyPackage.TERM__SUBCLASSES:
+			case TaxonomyPackage.TERM__SUBCLASSES:
 				getSubclasses().clear();
 				getSubclasses().addAll((Collection<? extends Term>)newValue);
 				return;
@@ -195,10 +195,10 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case taxonomyPackage.TERM__NAME:
+			case TaxonomyPackage.TERM__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case taxonomyPackage.TERM__SUBCLASSES:
+			case TaxonomyPackage.TERM__SUBCLASSES:
 				getSubclasses().clear();
 				return;
 		}
@@ -213,9 +213,9 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case taxonomyPackage.TERM__NAME:
+			case TaxonomyPackage.TERM__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case taxonomyPackage.TERM__SUBCLASSES:
+			case TaxonomyPackage.TERM__SUBCLASSES:
 				return subclasses != null && !subclasses.isEmpty();
 		}
 		return super.eIsSet(featureID);
@@ -229,7 +229,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case taxonomyPackage.TERM___HASH_CODE:
+			case TaxonomyPackage.TERM___HASH_CODE:
 				return hashCode();
 		}
 		return super.eInvoke(operationID, arguments);

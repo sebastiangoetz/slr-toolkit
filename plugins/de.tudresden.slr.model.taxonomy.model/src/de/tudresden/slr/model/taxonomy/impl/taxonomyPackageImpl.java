@@ -3,9 +3,9 @@
 package de.tudresden.slr.model.taxonomy.impl;
 
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.taxonomyFactory;
-import de.tudresden.slr.model.taxonomy.taxonomyPackage;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
  * <!-- end-user-doc -->
  * @generated
  */
-public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage {
+public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -47,12 +47,12 @@ public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#eNS_URI
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
-	private taxonomyPackageImpl() {
-		super(eNS_URI, taxonomyFactory.eINSTANCE);
+	private TaxonomyPackageImpl() {
+		super(eNS_URI, TaxonomyFactory.eINSTANCE);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
 	 * 
-	 * <p>This method is used to initialize {@link taxonomyPackage#eINSTANCE} when that field is accessed.
+	 * <p>This method is used to initialize {@link TaxonomyPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -74,27 +74,27 @@ public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
-	public static taxonomyPackage init() {
-		if (isInited) return (taxonomyPackage)EPackage.Registry.INSTANCE.getEPackage(taxonomyPackage.eNS_URI);
+	public static TaxonomyPackage init() {
+		if (isInited) return (TaxonomyPackage)EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI);
 
 		// Obtain or create and register package
-		taxonomyPackageImpl thetaxonomyPackage = (taxonomyPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof taxonomyPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new taxonomyPackageImpl());
+		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TaxonomyPackageImpl());
 
 		isInited = true;
 
 		// Create package meta-data objects
-		thetaxonomyPackage.createPackageContents();
+		theTaxonomyPackage.createPackageContents();
 
 		// Initialize created meta-data
-		thetaxonomyPackage.initializePackageContents();
+		theTaxonomyPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
-		thetaxonomyPackage.freeze();
+		theTaxonomyPackage.freeze();
 
   
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(taxonomyPackage.eNS_URI, thetaxonomyPackage);
-		return thetaxonomyPackage;
+		EPackage.Registry.INSTANCE.put(TaxonomyPackage.eNS_URI, theTaxonomyPackage);
+		return theTaxonomyPackage;
 	}
 
 	/**
@@ -156,8 +156,8 @@ public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public taxonomyFactory gettaxonomyFactory() {
-		return (taxonomyFactory)getEFactoryInstance();
+	public TaxonomyFactory getTaxonomyFactory() {
+		return (TaxonomyFactory)getEFactoryInstance();
 	}
 
 	/**
@@ -231,4 +231,4 @@ public class taxonomyPackageImpl extends EPackageImpl implements taxonomyPackage
 		createResource(eNS_URI);
 	}
 
-} //taxonomyPackageImpl
+} //TaxonomyPackageImpl

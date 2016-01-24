@@ -28,7 +28,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.taxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 
 
 
@@ -101,8 +101,8 @@ public class BibtexTests extends TestSuite {
 	@Test
 	public void storeSingleDimensionWithoutSubTerms() throws Exception {
 
-		Model model = taxonomyFactory.eINSTANCE.createModel();
-		Term term = taxonomyFactory.eINSTANCE.createTerm();
+		Model model = TaxonomyFactory.eINSTANCE.createModel();
+		Term term = TaxonomyFactory.eINSTANCE.createTerm();
 
 		term.setName("test");
 		model.getDimensions().add(term);
@@ -128,9 +128,9 @@ public class BibtexTests extends TestSuite {
 		resource.load(new URIConverter.ReadableInputStream(bibIn, "UTF-8"),
 				Collections.EMPTY_MAP);
 
-		Term subTerm1 = taxonomyFactory.eINSTANCE.createTerm();
+		Term subTerm1 = TaxonomyFactory.eINSTANCE.createTerm();
 		subTerm1.setName("sub-test1");
-		Term subTerm2 = taxonomyFactory.eINSTANCE.createTerm();
+		Term subTerm2 = TaxonomyFactory.eINSTANCE.createTerm();
 		subTerm2.setName("sub-test2");
 
 		Document document = (Document) resource.getContents().get(0);

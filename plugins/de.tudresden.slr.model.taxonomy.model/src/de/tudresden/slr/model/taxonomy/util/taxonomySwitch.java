@@ -19,17 +19,17 @@ import org.eclipse.emf.ecore.util.Switch;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see de.tudresden.slr.model.taxonomy.taxonomyPackage
+ * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage
  * @generated
  */
-public class taxonomySwitch<T> extends Switch<T> {
+public class TaxonomySwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected static taxonomyPackage modelPackage;
+	protected static TaxonomyPackage modelPackage;
 
 	/**
 	 * Creates an instance of the switch.
@@ -37,9 +37,9 @@ public class taxonomySwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public taxonomySwitch() {
+	public TaxonomySwitch() {
 		if (modelPackage == null) {
-			modelPackage = taxonomyPackage.eINSTANCE;
+			modelPackage = TaxonomyPackage.eINSTANCE;
 		}
 	}
 
@@ -66,13 +66,13 @@ public class taxonomySwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case taxonomyPackage.MODEL: {
+			case TaxonomyPackage.MODEL: {
 				Model model = (Model)theEObject;
 				T result = caseModel(model);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case taxonomyPackage.TERM: {
+			case TaxonomyPackage.TERM: {
 				Term term = (Term)theEObject;
 				T result = caseTerm(term);
 				if (result == null) result = defaultCase(theEObject);
@@ -128,4 +128,4 @@ public class taxonomySwitch<T> extends Switch<T> {
 		return null;
 	}
 
-} //taxonomySwitch
+} //TaxonomySwitch

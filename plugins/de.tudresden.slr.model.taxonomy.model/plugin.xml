@@ -10,7 +10,7 @@
       <!-- @generated Taxonomy -->
       <package
             uri="http://www.tudresden.de/slr/model/Taxonomy"
-            class="de.tudresden.slr.model.taxonomy.taxonomyPackage"
+            class="de.tudresden.slr.model.taxonomy.TaxonomyPackage"
             genModel="model/Taxonomy.genmodel"/>
    </extension>
 
