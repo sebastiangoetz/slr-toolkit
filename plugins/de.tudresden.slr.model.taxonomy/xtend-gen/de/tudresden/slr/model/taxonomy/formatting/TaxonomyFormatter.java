@@ -27,6 +27,7 @@ public class TaxonomyFormatter extends AbstractDeclarativeFormatter {
   @Extension
   private TaxonomyGrammarAccess _taxonomyGrammarAccess;
   
+  @Override
   protected void configureFormatting(final FormattingConfig c) {
     List<Pair<Keyword, Keyword>> _findKeywordPairs = this._taxonomyGrammarAccess.findKeywordPairs("{", "}");
     for (final Pair<Keyword, Keyword> pair : _findKeywordPairs) {
