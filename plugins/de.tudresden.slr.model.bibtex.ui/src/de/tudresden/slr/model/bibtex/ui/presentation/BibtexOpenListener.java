@@ -52,7 +52,7 @@ public class BibtexOpenListener implements IOpenListener,
 
 	@Override
 	public void open(OpenEvent event) {
-		openEditor(event.getSelection(), true);
+		openEditor(event.getSelection(), false);
 	}
 
 	/**
