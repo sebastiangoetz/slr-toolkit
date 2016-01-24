@@ -215,7 +215,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	}
 
 	private void createPageLabel(Composite composite, GridData gridData) {
-		Label label = new Label(composite, SWT.CENTER);
+		Label label = new Label(composite, SWT.LEFT);
 		label.setText(document.getTitle());
 		FontDescriptor boldDescriptor = FontDescriptor.createFrom(
 				label.getFont()).setStyle(SWT.BOLD);
@@ -225,42 +225,34 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	}
 
 	private void createAuthorsLabel(Composite composite, GridData gridData) {
-		Label label = new Label(composite, SWT.CENTER);
+		Label label = new Label(composite, SWT.LEFT);
 		label.setText(String.join(" and ", document.getAuthors()));
 		label.setLayoutData(gridData);
 	}
 
 	private void createDateLabel(Composite composite, GridData gridData) {
-		Label label = new Label(composite, SWT.CENTER);
+		Label label = new Label(composite, SWT.LEFT);
 		StringBuilder labelText = new StringBuilder();
-		if (document.getMonth() != null) {
+		if (document.getMonth() != null && !document.getMonth().isEmpty()) {
 			labelText.append(document.getMonth()).append(" ");
 		}
-		if (document.getYear() != null) {
+		if (document.getYear() != null && !document.getYear().isEmpty()) {
 			labelText.append(document.getYear());
 		}
-		if (labelText.length() > 0) {
-			labelText.insert(0, "published in ");
-		}
 		label.setText(labelText.toString());
-		// TODO: dispose font
-		FontDescriptor italicDescriptor = FontDescriptor.createFrom(
-				label.getFont()).setStyle(SWT.ITALIC);
-		// TODO: use just one font object
-		Font italicFont = italicDescriptor.createFont(label.getDisplay());
-		label.setFont(italicFont);
 		label.setLayoutData(gridData);
 	}
 
 	private void createAbstractText(Composite composite) {
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
+		gridData.horizontalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
+		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessVerticalSpace = true;
-
-		StyledText text = new StyledText(composite, SWT.V_SCROLL
-				| SWT.READ_ONLY | SWT.WRAP);
+		gridData.verticalSpan = 1;
+		gridData.horizontalSpan = 2;
+		
+		StyledText text = new StyledText(composite, SWT.V_SCROLL | SWT.READ_ONLY | SWT.WRAP);
 		text.setEditable(false);
 		text.setLayoutData(gridData);
 		if (document.getAbstract() != null) {
@@ -276,23 +268,24 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 		if (localParent == null) {
 			localParent = parent;
 		}
-		Composite composite = new Composite(localParent, SWT.NONE);
-
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.makeColumnsEqualWidth = true;
-		composite.setLayout(layout);
+		
+		Composite container = new Composite(parent, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
 
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
+		
+		Label lblTitle = new Label(container, SWT.NONE);
+		lblTitle.setText("Title");
+		createPageLabel(container, gridData);
+		Label lblAuthor = new Label(container, SWT.NONE);
+		lblAuthor.setText("Author");
+		createAuthorsLabel(container, gridData);
+		Label lblPublished = new Label(container, SWT.NONE);
+		lblPublished.setText("Published");
+		createDateLabel(container, gridData);
+		createAbstractText(container);
 
-		createPageLabel(composite, gridData);
-		createAuthorsLabel(composite, gridData);
-		createDateLabel(composite, gridData);
-		createAbstractText(composite);
-
-		int index = addPage(composite);
+		int index = addPage(container);
 		setPageText(index, "Abstract");
 	}
 
