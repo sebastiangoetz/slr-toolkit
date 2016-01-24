@@ -88,11 +88,26 @@
 							<ws>win32</ws>
 							<arch>x86_64</arch>
 						</environment>
-						<!-- Uncomment to build for other platforms as well <environment> <os>linux</os> 
-							<ws>gtk</ws> <arch>x86</arch> </environment> <environment> <os>linux</os> 
-							<ws>gtk</ws> <arch>x86_64</arch> </environment> <environment> <os>win32</os> 
-							<ws>win32</ws> <arch>x86</arch> </environment> <environment> <os>macosx</os> 
-							<ws>cocoa</ws> <arch>x86_64</arch> </environment> -->
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
 					</environments>
 				</configuration>
 			</plugin>
@@ -122,40 +137,16 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--  
-			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-eclipserun-plugin</artifactId> -->
-				<!-- tested with 0.18 --><!--  
-				<version>${tycho.version}</version>
-				<configuration> -->
-					<!-- linebreaks not permitted in this arg line --> <!-- 
-					<appArgLine>-data target/workspace -application	org.eclipse.emf.codegen.ecore.Generator -projects ${basedir} -model ${basedir}/model/Taxonomy.genmodel src</appArgLine>
-					<dependencies>
-						<dependency>
-							<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
-							<type>eclipse-plugin</type>
-						</dependency>
-					</dependencies>
-
-					<repositories>
-						<repository>
-							<id>mars</id>
-							<layout>p2</layout>
-							<url>http://download.eclipse.org/releases/mars</url>
-						</repository>
-					</repositories>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>eclipse-run</goal>
-						</goals>
-						<phase>generate-sources</phase>
-					</execution>
-				</executions>
-			</plugin>
-			-->
+			<!-- <plugin> <groupId>org.eclipse.tycho.extras</groupId> <artifactId>tycho-eclipserun-plugin</artifactId> -->
+			<!-- tested with 0.18 --><!-- <version>${tycho.version}</version> <configuration> -->
+			<!-- linebreaks not permitted in this arg line --> <!-- <appArgLine>-data target/workspace -application org.eclipse.emf.codegen.ecore.Generator 
+				-projects ${basedir} -model ${basedir}/model/Taxonomy.genmodel src</appArgLine> 
+				<dependencies> <dependency> <artifactId>org.eclipse.emf.codegen.ecore</artifactId> 
+				<type>eclipse-plugin</type> </dependency> </dependencies> <repositories> 
+				<repository> <id>mars</id> <layout>p2</layout> <url>http://download.eclipse.org/releases/mars</url> 
+				</repository> </repositories> </configuration> <executions> <execution> <goals> 
+				<goal>eclipse-run</goal> </goals> <phase>generate-sources</phase> </execution> 
+				</executions> </plugin> -->
 		</plugins>
 	</build>
 	<modules>
@@ -163,12 +154,12 @@
 		<module>../de.tudresden.slr.wizards</module>
 		<module>../../features/de.tudresden.slr.app.feature</module>
 		<module>../de.tudresden.slr.app</module>
-		
+
 		<module>../../features/de.tudresden.slr.product</module>
 
 
-		
-		
+
+
 		<module>../de.tudresden.slr.model.bibtex</module>
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
 		<module>../de.tudresden.slr.model.modelregistry</module>
@@ -181,6 +172,6 @@
 			../../features/de.tudresden.slr.model.taxonomy.sdk
 		</module>
 		<module>../de.tudresden.slr.model.taxonomy.ui</module>
-		
+
 	</modules>
 </project>
