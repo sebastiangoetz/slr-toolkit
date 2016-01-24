@@ -122,6 +122,40 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--  
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-eclipserun-plugin</artifactId> -->
+				<!-- tested with 0.18 --><!--  
+				<version>${tycho.version}</version>
+				<configuration> -->
+					<!-- linebreaks not permitted in this arg line --> <!-- 
+					<appArgLine>-data target/workspace -application	org.eclipse.emf.codegen.ecore.Generator -projects ${basedir} -model ${basedir}/model/Taxonomy.genmodel src</appArgLine>
+					<dependencies>
+						<dependency>
+							<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+							<type>eclipse-plugin</type>
+						</dependency>
+					</dependencies>
+
+					<repositories>
+						<repository>
+							<id>mars</id>
+							<layout>p2</layout>
+							<url>http://download.eclipse.org/releases/mars</url>
+						</repository>
+					</repositories>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>eclipse-run</goal>
+						</goals>
+						<phase>generate-sources</phase>
+					</execution>
+				</executions>
+			</plugin>
+			-->
 		</plugins>
 	</build>
 	<modules>
@@ -140,5 +174,13 @@
 		<module>../de.tudresden.slr.model.modelregistry</module>
 		<module>../de.tudresden.slr.ui.chart</module>
 		<module>../../tests/de.tudresden.slr.model.bibtex.tests</module>
+		<module>../de.tudresden.slr.model.bibtex.ui</module>
+		<module>../de.tudresden.slr.model.taxonomy</module>
+		<module>../de.tudresden.slr.model.taxonomy.model</module>
+		<module>
+			../../features/de.tudresden.slr.model.taxonomy.sdk
+		</module>
+		<module>../de.tudresden.slr.model.taxonomy.ui</module>
+		
 	</modules>
 </project>

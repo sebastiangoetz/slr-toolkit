@@ -13,11 +13,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.tudresden.slr.model.taxonomy.Term#getName <em>Name</em>}</li>
  *   <li>{@link de.tudresden.slr.model.taxonomy.Term#getSubclasses <em>Subclasses</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getTerm()
  * @model

@@ -2,7 +2,7 @@
 <feature
       id="de.tudresden.slr.model.taxonomy.sdk"
       label="Taxonomy SDK Feature "
-      version="1.0.0.qualifier">
+      version="0.0.1.qualifier">
 
    <plugin
          id="de.tudresden.slr.model.taxonomy"

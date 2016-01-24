@@ -13,10 +13,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link de.tudresden.slr.model.taxonomy.Model#getDimensions <em>Dimensions</em>}</li>
  * </ul>
- * </p>
  *
  * @see de.tudresden.slr.model.taxonomy.taxonomyPackage#getModel()
  * @model

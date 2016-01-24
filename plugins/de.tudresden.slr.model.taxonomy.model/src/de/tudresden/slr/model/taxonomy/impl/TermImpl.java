@@ -29,11 +29,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link de.tudresden.slr.model.taxonomy.impl.TermImpl#getName <em>Name</em>}</li>
  *   <li>{@link de.tudresden.slr.model.taxonomy.impl.TermImpl#getSubclasses <em>Subclasses</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

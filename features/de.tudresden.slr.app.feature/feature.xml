@@ -16,6 +16,10 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="de.tudresden.slr.model.taxonomy.sdk"
+         version="0.0.0"/>
+
    <plugin
          id="com.ibm.icu"
          download-size="0"
@@ -1270,27 +1274,6 @@
 
    <plugin
          id="org.eclipse.jdt.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.tudresden.slr.model.taxonomy"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.tudresden.slr.model.taxonomy.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.tudresden.slr.model.taxonomy.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
