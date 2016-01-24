@@ -25,13 +25,6 @@
             name="Bibtex Editor">
       </editor>
       <editor
-            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexOverviewEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            icon="icons/icon.png"
-            id="de.tudresden.slr.model.bibtex.presentation.BibtexOverviewEditor"
-            name="Bibtex Overview">
-      </editor>
-      <editor
             class="org.eclipse.ui.editors.text.TextEditor"
             id="de.tudresden.slr.model.bibtex.ui.bibtexFileEditor"
             name="Bibtex File Editor">

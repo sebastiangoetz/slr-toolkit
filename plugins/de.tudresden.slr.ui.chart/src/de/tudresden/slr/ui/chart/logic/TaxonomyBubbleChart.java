@@ -55,18 +55,6 @@ public class TaxonomyBubbleChart {
 	 */
 
 	private String createScriptString(Map<Term, Integer> scriptMappings) {
-		// This affects the size of the bubbles, have to try this out
-
-		String bubbleSize = "function afterComputations( chart, plotComputation ) "
-				+ "{ importPackage(Packages.java.lang); var xAxis = chart.getAxes().get(0);"
-				+ "var yAxis = xAxis.getAssociatedAxes().get(0);"
-				+ "var xSerieDef = xAxis.getSeriesDefinitions().get(0);"
-				+ "var ySerieDef = yAxis.getSeriesDefinitions().get(0);"
-				+ "var ySerie = ySerieDef.getRunTimeSeries().get(0);"
-				+ "var dpa = plotComputation.getSeriesRenderingHints(ySerieDef,ySerie).getDataPoints();"
-				+ "for( ii =0; ii<dpa.length; ii++ ){var csize = dpa[ii].getOrthogonalValue().getSize();"
-				+ "dpa[ii].getOrthogonalValue().setSize( Double.parseDouble( csize)*.3);}}";
-
 		String formatSeriesLabels = "function beforeDrawDataPointLabel( dataPointHint, label, iChartScriptContext){"
 				+ "var oldLabel = label.getCaption().getValue();"
 				+ "var newLabel = oldLabel.match(/S(\\d*)\\./);"

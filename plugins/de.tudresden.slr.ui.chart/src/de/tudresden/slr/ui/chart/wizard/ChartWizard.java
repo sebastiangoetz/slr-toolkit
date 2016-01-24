@@ -1,8 +1,5 @@
 package de.tudresden.slr.ui.chart.wizard;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.PartInitException;
@@ -33,26 +30,12 @@ public class ChartWizard extends Wizard {
 	public void addPages() {
 		one = new FirstPage();
 		addPage(one);
-		// two = new SecondPage();
-		// addPage(two);
-
 	}
 
 	@Override
 	public boolean performFinish() {
-
 		// here the chart is passed to the view.
 		// create the diagram
-
-		if (one.getButton1().getSelection()) {
-
-			SortedMap<String, Integer> myValues = new TreeMap<>();
-//			myChart = new BarChartGenerator().createBar(myValues);
-		} else if (one.getButton2().getSelection()) {
-			// ChartDataProvider provider = new ChartDataProvider();
-			// myChart = provider.calculateBubbleChartData(firstTerm,
-			// secondTerm);
-		}
 		ICommunicationView view = null;
 		try {
 			view = (ICommunicationView) PlatformUI.getWorkbench()

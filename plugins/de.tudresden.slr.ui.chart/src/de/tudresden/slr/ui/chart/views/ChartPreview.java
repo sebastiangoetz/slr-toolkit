@@ -178,13 +178,6 @@ public class ChartPreview implements PaintListener, ControlListener {
 			int canvasWidth = preview.getSize().x;
 			int canvasHeight = preview.getSize().y;
 
-			// Use the method stringExtent(String) which returns a
-			// org.eclipse.swt.graphics.Point
-			// and access the x variable of the Point which contains the
-			// width of the given String
-			// when plotted with the current Font on the Canvas
-			int textWidth = gc.stringExtent(textToShow).x;
-
 			// Plot centred by subtracting half the width of the string from
 			// the centre of the Canvas width
 			gc.drawText(textToShow, canvasWidth / 2, canvasHeight / 2);

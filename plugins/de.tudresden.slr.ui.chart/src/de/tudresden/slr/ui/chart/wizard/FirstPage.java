@@ -18,9 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
-import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceFactoryImpl;
-import de.tudresden.slr.model.taxonomy.Term;
 
 public class FirstPage extends WizardPage {
 	private Composite container;
@@ -47,7 +45,6 @@ public class FirstPage extends WizardPage {
 
 		Group buttonGroup = new Group(container, SWT.NONE);
 		buttonGroup.setLayout(layout);
-		// buttonGroup.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
 		SelectionListener selectionListener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -91,11 +88,7 @@ public class FirstPage extends WizardPage {
 		final String bib = "@INPROCEEDINGS{Test01, classes = {test}}";
 		resourceSet = new ResourceSetImpl();
 		resource = resourceSet.createResource(URI.createURI("test.bib"));
-		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"),
-				Collections.EMPTY_MAP);
-
-		Document document = (Document) resource.getContents().get(0);
-		Term term = document.getTaxonomy().getDimensions().get(0);
+		resource.load(new URIConverter.ReadableInputStream(bib, "UTF-8"), Collections.EMPTY_MAP);
 	}
 
 }

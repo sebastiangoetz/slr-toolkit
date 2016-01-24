@@ -20,7 +20,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -122,15 +121,10 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "de.tudresden.slr.model.taxonomy.ui.viewer");
-		contributeToActionBars();
 
-		getSite().getWorkbenchWindow().getSelectionService()
-		.addPostSelectionListener(this);
+		getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener(this);
 	}
 
-	private void contributeToActionBars() {
-		IActionBars bars = getViewSite().getActionBars();
-	}
 
 	@Override
 	public void setFocus() {
