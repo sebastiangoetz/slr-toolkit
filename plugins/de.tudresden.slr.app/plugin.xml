@@ -142,8 +142,48 @@
                   visible="true">
             </separator>
             <command
+                  commandId="org.eclipse.ui.file.import"
+                  label="Import..."
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.export"
+                  label="Export..."
+                  style="push">
+            </command>
+            <separator
+                  name="fileMenuSeparator3"
+                  visible="true">
+            </separator>
+            <command
                   commandId="org.eclipse.ui.file.exit"
                   label="Exit">
+            </command>
+         </menu>
+         <menu
+               label="Search">
+            <command
+                  commandId="org.eclipse.search.ui.openSearchDialog"
+                  label="Search"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.search.ui.openFileSearchPage"
+                  label="File..."
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Window">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Show View"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.perspectives.showPerspective"
+                  label="Show Perspective"
+                  style="push">
             </command>
          </menu>
       </menuContribution>
