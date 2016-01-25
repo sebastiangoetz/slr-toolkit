@@ -160,19 +160,5 @@
          </property>
       </product>
    </extension>
-   <extension
-         id="activities"
-         point="org.eclipse.ui.activities">
-      <activity id="de.tudresden.slr.app.hideUiElementsActivity" name="MenuHidingActivity">  
-         <enabledWhen>  
-            <with variable="activePartId">
-               <equals value="foobar"></equals>
-            </with>
-         </enabledWhen>
-      </activity>
-      <activityPatternBinding
-           activityId="de.tudresden.slr.app.hideUiElementsActivity"
-           pattern=".*org\.eclipse\.jdt\..*">
-      </activityPatternBinding>
-   </extension>
+
 </plugin>
