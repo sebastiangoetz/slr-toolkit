@@ -1,5 +1,7 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.viewers.IOpenListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -17,6 +19,7 @@ import org.eclipse.ui.PlatformUI;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorage;
 import de.tudresden.slr.model.bibtex.ui.serialization.DocumentStorageEditorInput;
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**
  * This Listener opens an editor for {@link DocumentImpl}. The editor is focused
@@ -79,34 +82,25 @@ public class BibtexOpenListener implements IOpenListener,
 				storage);
 		IWorkbenchPage page = window.getActivePage();
 		if (page != null) {
-			IEditorReference[] editorRef = page.findEditors(null, id,
-					IWorkbenchPage.MATCH_ID);
-			IEditorPart editor;
-			if (editorRef.length > 0) {
-				editor = editorRef[0].getEditor(false);
-				// if (editor != null)
-				// page.closeEditor(editor, false);
-				if (editor instanceof IReusableEditor) {
-					page.reuseEditor((IReusableEditor) editor, input);
-					page.bringToTop(editor);
-					return;
-				}
-			}
-			try {
-				editor = page.openEditor(input, id, activate, match_flags);
-				if (activate) {
-					page.activate(editor);
+			IEditorReference[] editorRef = page.findEditors(input, id, match_flags);
+			try{
+				IEditorPart editor = page.openEditor(input, id, activate, match_flags);
+				//We need to update the active document, if the editor already existed
+				if(editor != null && Arrays.stream(editorRef).anyMatch(x -> x.getEditor(false).equals(editor))){
+					ModelRegistryPlugin.getModelRegistry().setActiveDocument(((BibtexEditor) editor).document);
+					if (activate) {
+						page.activate(editor);
+					}
 				}
 			} catch (PartInitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		openEditor(event.getSelection(), false);
+		openEditor(event.getSelection(), true);
 	}
 }

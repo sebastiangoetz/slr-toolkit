@@ -116,7 +116,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 					// handleActivate();
 				}
 			} else if (part == BibtexEditor.this) {
-				// handleActivate();
+				ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
 			}
 		}
 
