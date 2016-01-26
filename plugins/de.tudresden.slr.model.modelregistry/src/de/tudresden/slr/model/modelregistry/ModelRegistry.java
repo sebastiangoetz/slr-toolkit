@@ -27,7 +27,6 @@ import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 public class ModelRegistry extends Observable {
 	private Document activeDocument;
 	private Model activeTaxonomy;
-	private IFile activeTaxonomyDocument;
 	private AdapterFactoryEditingDomain sharedEditingDomain;
 
 	public ModelRegistry() {
@@ -94,12 +93,6 @@ public class ModelRegistry extends Observable {
 		notifyObservers(activeTaxonomy);
 	}
 
-	public void setActiveTaxonomyDocument(IFile document){
-		activeTaxonomyDocument = document;
-		setChanged();
-		notifyObservers(activeTaxonomyDocument);
-	}
-	
 	@Override
 	public void notifyObservers(Object arg) {
 		try {
