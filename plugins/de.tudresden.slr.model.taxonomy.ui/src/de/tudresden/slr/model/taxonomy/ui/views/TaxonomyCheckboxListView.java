@@ -170,8 +170,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		
 		if(arg instanceof IFile){
 			XtextResource xtextResource = new XtextResource(((URI)arg));
-			String foo = ((URI)arg).toPlatformString(true);
-			EList<EObject> contents = xtextResource.getContents();
 			IParseResult parseResult = xtextResource.getParseResult();
 			if (parseResult != null) {
 				ICompositeNode root = parseResult.getRootNode();
