@@ -11,7 +11,7 @@ Within Eclipse add Run Configurations (Run as -> Maven build):
 * de.tudresden.slr.target.luna -> open de.tudresden.slr.target.luna.target -> set as target platform
 * de.tudresden.slr.model.taxonomy -> de.tudresden.slr.model.GenerateTaxonomy.mwe2 -> Run as.. -> MWE2 Workflow
 * for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
-
+ 
 ### Dependencies
 * JDK 1.8
 * Eclipse RCP 4.4.2 (EPL)

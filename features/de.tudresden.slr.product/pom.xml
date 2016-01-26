@@ -24,24 +24,30 @@
 						</goals>
 					</execution>
 					<execution>
-						<!-- Uncomment to create zip file with the installed product <id>archive-products</id> 
-							<goals> <goal>archive-products</goal> </goals> <configuration> <formats> 
-							<linux>tar.gz</linux> <win32>zip</win32> <macosx>tar.gz</macosx> </formats> </configuration> -->
+						<!-- Uncomment to create zip file with the installed product -->
+						<id>archive-products</id>
+						<goals>
+							<goal>archive-products</goal>
+						</goals>
+						<configuration>
+							<formats>
+								<linux>tar.gz</linux>
+								<win32>zip</win32>
+								<macosx>tar.gz</macosx>
+							</formats>
+						</configuration>
 					</execution>
 				</executions>
 				<configuration>
 					<products>
 						<product>
 							<!-- select product with ID product.id; the archives get the classifiers 
-								"<os>.<ws>.<arch>" -->
+								<os>.<ws>.<arch> -->
 							<id>product</id>
+                            <archiveFileName>slr-toolkit.${buildQualifier}</archiveFileName>
 						</product>
 					</products>
 				</configuration>
-				<!-- <configuration> <includeAllDependencies>true</includeAllDependencies> 
-					</configuration> <executions> <execution> <id>materialize-products</id> <goals> 
-					<goal>materialize-products</goal> </goals> </execution> <execution> <id>archive-products</id> 
-					<goals> <goal>archive-products</goal> </goals> </execution> </executions> -->
 			</plugin>
 		</plugins>
 	</build>
