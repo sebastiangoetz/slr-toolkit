@@ -8,8 +8,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -164,6 +168,21 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		if (arg instanceof Model) {
 			viewer.setInput(arg);
 		}
+		
+		if(arg instanceof IFile){
+			XtextResource xtextResource = new XtextResource(((URI)arg));
+			String foo = ((URI)arg).toPlatformString(true);
+			EList<EObject> contents = xtextResource.getContents();
+			IParseResult parseResult = xtextResource.getParseResult();
+			if (parseResult != null) {
+				ICompositeNode root = parseResult.getRootNode();
+				EObject taxonomy = NodeModelUtils.findActualSemanticObjectFor(root);
+				if (taxonomy instanceof Model) {
+					ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy((Model) taxonomy);
+				}
+			}
+		}
+		
 		// document has changed
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
