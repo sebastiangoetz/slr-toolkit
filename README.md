@@ -8,17 +8,17 @@ From console:
 * `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package`
 
 Within Eclipse add Run Configurations (Run as -> Maven build):
-* de.tudresden.slr.target.luna -> open de.tudresden.slr.target.luna.target -> set as target platform
-* de.tudresden.slr.model.taxonomy -> de.tudresden.slr.model.GenerateTaxonomy.mwe2 -> Run as.. -> MWE2 Workflow
+* de.tudresden.slr.target.target -> open de.tudresden.slr.target.target -> set as target platform
+* de.tudresden.slr.model.taxonomy -> de.tudresden.slr.model.taxonomy.GenerateTaxonomy.mwe2 -> Run as.. -> MWE2 Workflow
 * for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
  
 ### Dependencies
 * JDK 1.8
-* Eclipse RCP 4.4.2 (EPL)
+* Eclipse RCP 4.5.1 (EPL)
 * JBibTex 1.0.15 (BSD 3-clause)
 * iText 2.1.7 (MPL)
 * Eclipse BIRT (EPL)
-* Xtext 2.8.0 (EPL)
+* Xtext 2.9.1 (EPL)
 
 ### License
 EPL 1.0
