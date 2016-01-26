@@ -86,7 +86,6 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	protected AdapterFactoryEditingDomain editingDomain;
 	protected int pdfIndex = -1;
 	protected int webindex = -1;
-	// protected Composite webcomposite;
 	protected Browser browser;
 	protected int propertyindex = -1;
 	protected PropertySheetPage property;
@@ -107,13 +106,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 		@Override
 		public void partActivated(IWorkbenchPart part) {
 			if (part instanceof PropertySheet) {
-				if (propertySheetPages.contains(((PropertySheet) part)
-						.getCurrentPage())) {
-					getActionBarContributor()
-							.setActiveEditor(BibtexEditor.this);
+				if (propertySheetPages.contains(((PropertySheet) part).getCurrentPage())) {
+					getActionBarContributor().setActiveEditor(BibtexEditor.this);
 					setSelection(getSelection());
-
-					// handleActivate();
 				}
 			} else if (part == BibtexEditor.this) {
 				ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
@@ -152,10 +147,8 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	 * @generated
 	 */
 	protected void initializeEditingDomain() {
-		ModelRegistryPlugin.getModelRegistry().getEditingDomain()
-				.ifPresent((domain) -> editingDomain = domain);
-		contentProvider = new AdapterFactoryContentProvider(
-				editingDomain.getAdapterFactory());
+		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
+		contentProvider = new AdapterFactoryContentProvider(editingDomain.getAdapterFactory());
 	}
 
 	@Override
@@ -192,16 +185,13 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	private void openPdf() {
 		IFile res = Utils.getIFilefromDocument(document);
 		if (res == null || res.getProject() == null) {
-			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex"
-					+ document.getKey(), "Root or Resource not found");
+			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex" + document.getKey(), "Root or Resource not found");
 			return;
 		}
 		IFile file = res.getProject().getFile(document.getFile());
 		if (file.exists()) {
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					file.getLocation());
-			IWorkbenchPage page = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage();
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.getLocation());
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 			try {
 				IDE.openEditorOnFileStore(page, fileStore);
@@ -209,16 +199,14 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 				e.printStackTrace();
 			}
 		} else {
-			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex"
-					+ document.getKey(), "Document not found");
+			MessageDialog.openInformation(this.getSite().getShell(), "Bibtex" + document.getKey(), "Document not found");
 		}
 	}
 
 	private void createPageLabel(Composite composite, GridData gridData) {
 		Label label = new Label(composite, SWT.LEFT);
 		label.setText(document.getTitle());
-		FontDescriptor boldDescriptor = FontDescriptor.createFrom(
-				label.getFont()).setStyle(SWT.BOLD);
+		FontDescriptor boldDescriptor = FontDescriptor.createFrom(label.getFont()).setStyle(SWT.BOLD);
 		Font boldFont = boldDescriptor.createFont(label.getDisplay());
 		label.setFont(boldFont);
 		label.setLayoutData(gridData);
@@ -343,12 +331,6 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 					localParent = parent;
 				}
 				Composite composite = new Composite(localParent, SWT.NONE);
-				// FillLayout layout = new FillLayout();
-				// composite.setLayout(layout);
-				// StyledText text = new StyledText(composite, SWT.H_SCROLL |
-				// SWT.V_SCROLL);
-				// text.setEditable(false);
-
 				pdfIndex = addPage(composite);
 				setPageText(pdfIndex, "PDF");
 			}
@@ -373,24 +355,18 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 		// Save only resources that have actually changed.
 		//
 		final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
-		saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
-				Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
-		saveOptions.put(Resource.OPTION_LINE_DELIMITER,
-				Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
+		saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED, Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+		saveOptions.put(Resource.OPTION_LINE_DELIMITER, Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
 
 		// Do the work within an operation because this is a long running
 		// activity that modifies the workbench.
-		//
 		WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
 			// This is the method that gets invoked when the operation runs.
-			//
 			@Override
 			public void execute(IProgressMonitor monitor) {
 				// Save the resources to the file system.
-				//
 				boolean first = true;
-				for (Resource resource : editingDomain.getResourceSet()
-						.getResources()) {
+				for (Resource resource : editingDomain.getResourceSet().getResources()) {
 					if ((first || !resource.getContents().isEmpty() || Utils
 							.isPersisted(resource))
 							&& !editingDomain.isReadOnly(resource)) {
@@ -409,24 +385,19 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 		};
 		try {
 			// This runs the options, and shows progress.
-			//
-			new ProgressMonitorDialog(getSite().getShell()).run(true, false,
-					operation);
+			new ProgressMonitorDialog(getSite().getShell()).run(true, false, operation);
 
 			// Refresh the necessary state.
-			//
 			((BasicCommandStack) editingDomain.getCommandStack()).saveIsDone();
 			firePropertyChange(IEditorPart.PROP_DIRTY);
 		} catch (Exception exception) {
-			// Something went wrong that shouldn't.
-			//
+			exception.printStackTrace();
 		}
 	}
 
 	@Override
 	public void doSaveAs() {
 		// TODO: save entry as new bib file
-
 	}
 
 	@Override
@@ -439,12 +410,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	 * checks that the input is an instance of <code>IFileEditorInput</code>.
 	 */
 	@Override
-	public void init(IEditorSite site, IEditorInput editorInput)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
 		if (!(editorInput instanceof DocumentStorageEditorInput)) {
-			PartInitException pie = new PartInitException(
-					"Invalid Input: Must be DocumentStorageEditorInput");
-			System.out.println(editorInput);
+			PartInitException pie = new PartInitException("Invalid Input: Must be DocumentStorageEditorInput");
 			pie.printStackTrace();
 			throw pie;
 		}
@@ -454,22 +422,12 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 		extractDocument(editorInput);
 		getActionBarContributor().setActiveEditor(BibtexEditor.this);
 		setSelection(getSelection());
-		// TODO: notify propertysheetpage
-		/*
-		 * //getActionBarContributor().setActiveEditor(this); if
-		 * (propertySheetPages.isEmpty()){ getPropertySheetPage(); } for
-		 * (PropertySheetPage p : propertySheetPages){
-		 * p.setPropertySourceProvider(new
-		 * AdapterFactoryContentProvider(adapterFactory)); p.refresh(); }
-		 */
-		// setInputWithNotify(editorInput);
 		ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
 	}
 
 	protected void extractDocument(IEditorInput editorInput) {
 		try {
-			this.document = ((DocumentStorageEditorInput) editorInput)
-					.getStorage().getDocument();
+			this.document = ((DocumentStorageEditorInput) editorInput).getStorage().getDocument();
 			this.selection = new StructuredSelection(this.document);
 			ModelRegistryPlugin.getModelRegistry().setActiveDocument(document);
 		} catch (CoreException e) {
@@ -485,12 +443,8 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	@Override
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
-		final SelectionChangedEvent event = new SelectionChangedEvent(this,
-				selection);
-		selectionListeners
-				.forEach(listener -> listener.selectionChanged(event));
-		// getSite().getSelectionProvider().setSelection(selection);
-		// setStatusLineManager(selection);
+		final SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
+		selectionListeners.forEach(listener -> listener.selectionChanged(event));
 	}
 
 	/**
@@ -499,16 +453,13 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	 * 
 	 * @generated
 	 */
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class key) {
-		/*
-		 * if (key.equals(IContentOutlinePage.class)) { return showOutlineView()
-		 * ? getContentOutlinePage() : null; } else
-		 */if (key.equals(IPropertySheetPage.class)) {
+		if (key.equals(IPropertySheetPage.class)) {
 			return getPropertySheetPage();
 		} else if (key.equals(IGotoMarker.class)) {
-			return this;
+			throw new RuntimeException("Returning this as IGotoMarker.");
+			//return this;
 		} else {
 			return super.getAdapter(key);
 		}
@@ -525,15 +476,12 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 				editingDomain) {
 			@Override
 			public void setSelectionToViewer(List<?> selection) {
-				// BibtexEditor.this.setSelectionToViewer(selection);
 				BibtexEditor.this.setFocus();
 			}
 
 			@Override
 			public void setActionBars(IActionBars actionBars) {
 				super.setActionBars(actionBars);
-				// getActionBarContributor().shareGlobalActions(this,
-				// actionBars);
 			}
 		};
 		propertySheetPage.setPropertySourceProvider(contentProvider);
@@ -558,8 +506,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	}
 
 	@Override
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		selectionListeners.remove(listener);
 	}
 
@@ -569,23 +516,15 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 			IResourceDelta delta = event.getDelta();
 			try {
 				class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-					protected ResourceSet resourceSet = editingDomain
-							.getResourceSet();
+					protected ResourceSet resourceSet = editingDomain.getResourceSet();
 					protected Collection<Resource> changedResources = new ArrayList<Resource>();
 					protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
 					@Override
 					public boolean visit(IResourceDelta delta) {
 						if (delta.getResource().getType() == IResource.FILE) {
-							if (delta.getKind() == IResourceDelta.REMOVED
-									|| delta.getKind() == IResourceDelta.CHANGED
-									&& delta.getFlags() != IResourceDelta.MARKERS) {
-								Resource resource = resourceSet
-										.getResource(URI
-												.createPlatformResourceURI(
-														delta.getFullPath()
-																.toString(),
-														true), false);
+							if (delta.getKind() == IResourceDelta.REMOVED || delta.getKind() == IResourceDelta.CHANGED && delta.getFlags() != IResourceDelta.MARKERS) {
+								Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(delta.getFullPath().toString(),true), false);
 								if (resource != null) {
 									if (delta.getKind() == IResourceDelta.REMOVED) {
 										removedResources.add(resource);
@@ -596,7 +535,6 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 							}
 							return false;
 						}
-
 						return true;
 					}
 
@@ -616,11 +554,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 					getSite().getShell().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							removedResources.addAll(visitor
-									.getRemovedResources());
+							removedResources.addAll(visitor.getRemovedResources());
 							if (!isDirty()) {
-								getSite().getPage().closeEditor(
-										BibtexEditor.this, false);
+								getSite().getPage().closeEditor(BibtexEditor.this, false);
 							}
 						}
 					});
@@ -630,8 +566,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 					getSite().getShell().getDisplay().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							changedResources.addAll(visitor
-									.getChangedResources());
+							changedResources.addAll(visitor.getChangedResources());
 							if (getSite().getPage().getActiveEditor() == BibtexEditor.this) {
 								handleActivate();
 							}
@@ -646,12 +581,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 
 	protected void handleActivate() {
 		// Recompute the read only state.
-		//
 		if (editingDomain.getResourceToReadOnlyMap() != null) {
 			editingDomain.getResourceToReadOnlyMap().clear();
-
 			// Refresh any actions that may become enabled or disabled.
-			//
 			setSelection(getSelection());
 		}
 
@@ -676,8 +608,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	protected void handleChangedResources() {
 		if (!changedResources.isEmpty()) {
 			if (isDirty()) {
-				changedResources.addAll(editingDomain.getResourceSet()
-						.getResources());
+				changedResources.addAll(editingDomain.getResourceSet().getResources());
 			}
 			editingDomain.getCommandStack().flush();
 
@@ -687,6 +618,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 					try {
 						resource.load(Collections.EMPTY_MAP);
 					} catch (IOException exception) {
+						exception.printStackTrace();
 					}
 				}
 			}
@@ -696,7 +628,6 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 
 	@Override
 	public boolean isDirty() {
-		return ((BasicCommandStack) editingDomain.getCommandStack())
-				.isSaveNeeded();
+		return ((BasicCommandStack) editingDomain.getCommandStack()).isSaveNeeded();
 	}
 }

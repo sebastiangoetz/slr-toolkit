@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -38,15 +37,11 @@ public class ModelRegistry extends Observable {
 	private void createEditingDomain() {
 		// Create an adapter factory that yields item providers.
 		//
-		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
-				ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
-		adapterFactory
-				.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		adapterFactory
-				.addAdapterFactory(new BibtexItemProviderAdapterFactory());
-		adapterFactory
-				.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new BibtexItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are
 		// executed.
@@ -55,30 +50,23 @@ public class ModelRegistry extends Observable {
 
 		// Create the editing domain with a special command stack.
 		//
-		sharedEditingDomain = new AdapterFactoryEditingDomain(adapterFactory,
-				commandStack, new HashMap<Resource, Boolean>());
-
-		// ModelRegistryPlugin.getModelRegistry().setEditingDomain(
-		// sharedEditingDomain);
+		sharedEditingDomain = new AdapterFactoryEditingDomain(adapterFactory,commandStack, new HashMap<Resource, Boolean>());
 	}
 
 	public Optional<AdapterFactoryEditingDomain> getEditingDomain() {
-		return sharedEditingDomain == null ? Optional.empty() : Optional
-				.of(sharedEditingDomain);
+		return sharedEditingDomain == null ? Optional.empty() : Optional.of(sharedEditingDomain);
 	}
 
 	public void setEditingDomain(AdapterFactoryEditingDomain editingDomain) {
 		if (sharedEditingDomain != editingDomain) {
 			sharedEditingDomain = editingDomain;
-
 			setChanged();
 			notifyObservers(sharedEditingDomain);
 		}
 	}
 
 	public Optional<Document> getActiveDocument() {
-		return activeDocument == null ? Optional.empty() : Optional
-				.of(activeDocument);
+		return activeDocument == null ? Optional.empty() : Optional.of(activeDocument);
 	}
 
 	public void setActiveDocument(Document document) {
@@ -97,8 +85,7 @@ public class ModelRegistry extends Observable {
 	}
 	
 	public Optional<Model> getActiveTaxonomy() {
-		return activeTaxonomy == null ? Optional.empty() : Optional
-				.of(activeTaxonomy);
+		return activeTaxonomy == null ? Optional.empty() : Optional.of(activeTaxonomy);
 	}
 
 	public void setActiveTaxonomy(Model taxonomy) {

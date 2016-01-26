@@ -58,7 +58,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-
 		}
 
 		@Override

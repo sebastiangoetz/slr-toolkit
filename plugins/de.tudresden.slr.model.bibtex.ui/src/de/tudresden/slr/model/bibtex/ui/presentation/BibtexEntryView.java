@@ -124,32 +124,25 @@ public class BibtexEntryView extends ViewPart {
 		combo.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		String projectName = null;
 		try {
-			projectName = ResourcesPlugin.getWorkspace().getRoot()
-					.getPersistentProperty(new QualifiedName(ID, "project"));
+			projectName = ResourcesPlugin.getWorkspace().getRoot().getPersistentProperty(new QualifiedName(ID, "project"));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 
 		BibtexFilter filter = new BibtexFilter();
-		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL, filter, false);
+		FilteredTree tree = new FilteredTree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, filter, false);
 		viewer = tree.getViewer();
-		// drillDownAdapter = new DrillDownAdapter(viewer);
-		viewer.setContentProvider(new AdapterFactoryContentProvider(
-				adapterFactory));
-		ILabelDecorator decorator = PlatformUI.getWorkbench()
-				.getDecoratorManager().getLabelDecorator();
-		viewer.setLabelProvider(new DecoratingLabelProvider(
-				new AdapterFactoryLabelProvider(adapterFactory), decorator));
+		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
+		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
+		viewer.setLabelProvider(new DecoratingLabelProvider(new AdapterFactoryLabelProvider(adapterFactory), decorator));
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(editingDomain.getResourceSet());
 		viewer.getTree().addKeyListener(createDeleteListener());
 		viewer.expandAll();
+		
 		// this is needed to let other views know what is currently selected
 		// in my case the Chart View wants to display data
-		// see
-		// https://wiki.eclipse.org/FAQ_How_do_I_make_a_view_respond_to_selection_changes_in_another_view%3F
-
+		// see https://wiki.eclipse.org/FAQ_How_do_I_make_a_view_respond_to_selection_changes_in_another_view%3F
 		getSite().setSelectionProvider(viewer);
 
 		makeActions();
@@ -158,8 +151,7 @@ public class BibtexEntryView extends ViewPart {
 		contributeToActionBars();
 
 		if (projectName != null) {
-			IProject project = ResourcesPlugin.getWorkspace().getRoot()
-					.getProject(projectName);
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			combo.setSelection(new StructuredSelection(project));
 		}
 	}
@@ -178,15 +170,12 @@ public class BibtexEntryView extends ViewPart {
 					return;
 				}
 				if (viewer.getSelection() instanceof StructuredSelection) {
-					StructuredSelection selection = (StructuredSelection) viewer
-							.getSelection();
+					StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 					if (selection.getFirstElement() instanceof Document) {
-						Document document = (Document) selection
-								.getFirstElement();
+						Document document = (Document) selection.getFirstElement();
 
 						editingDomain.getCommandStack().execute(
 								new AbstractCommand() {
-
 									@Override
 									public boolean prepare() {
 										return true;
@@ -204,18 +193,14 @@ public class BibtexEntryView extends ViewPart {
 										}
 									}
 								});
+						
 						// Save only resources that have actually changed.
-						//
 						final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
-						saveOptions
-								.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
-										Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
-						saveOptions.put(Resource.OPTION_LINE_DELIMITER,
-								Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
+						saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+						saveOptions.put(Resource.OPTION_LINE_DELIMITER,Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
+						
 						// Do the work within an operation because this is a
-						// long running
-						// activity that modifies the workbench.
-						//
+						// long running activity that modifies the workbench.
 						WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
 							// This is the method that gets invoked when the
 							// operation runs.
@@ -225,14 +210,8 @@ public class BibtexEntryView extends ViewPart {
 								// Save the resources to the file system.
 								//
 								boolean first = true;
-								for (Resource resource : editingDomain
-										.getResourceSet().getResources()) {
-									if ((first
-											|| !resource.getContents()
-													.isEmpty() || Utils
-												.isPersisted(resource))
-											&& !editingDomain
-													.isReadOnly(resource)) {
+								for (Resource resource : editingDomain.getResourceSet().getResources()) {
+									if ((first || !resource.getContents().isEmpty() || Utils.isPersisted(resource)) && !editingDomain.isReadOnly(resource)) {
 										try {
 											resource.save(saveOptions);
 										} catch (Exception exception) {
@@ -245,13 +224,11 @@ public class BibtexEntryView extends ViewPart {
 						try {
 							// This runs the options, and shows progress.
 							//
-							new ProgressMonitorDialog(getSite().getShell())
-									.run(true, false, operation);
+							new ProgressMonitorDialog(getSite().getShell()).run(true, false, operation);
 
 							// Refresh the necessary state.
 							//
-							((BasicCommandStack) editingDomain
-									.getCommandStack()).saveIsDone();
+							((BasicCommandStack) editingDomain.getCommandStack()).saveIsDone();
 							firePropertyChange(IEditorPart.PROP_DIRTY);
 						} catch (Exception exception) {
 							// Something went wrong that shouldn't.
@@ -287,43 +264,31 @@ public class BibtexEntryView extends ViewPart {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				if (event.getSelection() == null
-						|| event.getSelection().isEmpty()) {
+				if (event.getSelection() == null || event.getSelection().isEmpty()) {
 					return;
 				}
 				if (event.getSelection() instanceof StructuredSelection) {
-					Object element = ((StructuredSelection) event
-							.getSelection()).getFirstElement();
+					Object element = ((StructuredSelection) event.getSelection()).getFirstElement();
 					if (element.equals(lastProject)) {
 						return;
 					}
 					if (element instanceof IProject) {
 						IProject project = (IProject) element;
-						if (lastProject == null
-								|| editingDomain.getResourceSet()
-										.getResources().isEmpty()
-								|| requestConfirmation(confirmation)) {
+						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty() || requestConfirmation(confirmation)) {
 							deleteResources();
 							registerResources(project);
 							viewer.refresh();
 							closeEditors();
-							// TODO: refresh Taxonomy
 							lastProject = project;
 							try {
-								ResourcesPlugin
-										.getWorkspace()
-										.getRoot()
-										.setPersistentProperty(
-												new QualifiedName(ID, "project"),
-												lastProject.getName());
+								ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(new QualifiedName(ID, "project"),lastProject.getName());
 							} catch (CoreException e) {
 								e.printStackTrace();
 							}
 						} else if (lastProject == null) {
 							combo.setSelection(null);
 						} else {
-							combo.setSelection(new StructuredSelection(
-									lastProject));
+							combo.setSelection(new StructuredSelection( lastProject));
 						}
 					}
 				}
@@ -337,11 +302,9 @@ public class BibtexEntryView extends ViewPart {
 	 * editors have to be closed without saving their content.
 	 */
 	protected void closeEditors() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench() .getActiveWorkbenchWindow();
 		IWorkbenchPage page = window.getActivePage();
-		IEditorReference[] references = page.findEditors(null, editorId,
-				IWorkbenchPage.MATCH_ID);
+		IEditorReference[] references = page.findEditors(null, editorId, IWorkbenchPage.MATCH_ID);
 		page.closeEditors(references, false);
 	}
 
@@ -372,7 +335,6 @@ public class BibtexEntryView extends ViewPart {
 						});
 					}
 				});
-
 		closeEditors();
 	}
 
@@ -390,10 +352,11 @@ public class BibtexEntryView extends ViewPart {
 			return;
 		}
 		for (IResource res : resources) {
-			if (res.getType() == IResource.FILE
-					&& "bib".equals(res.getFileExtension())) {
+			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
 				editingDomain.getResourceSet().getResource(uri, true);
+			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
+				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
 			}
 		}
 	}
@@ -409,18 +372,13 @@ public class BibtexEntryView extends ViewPart {
 		// TODO: check if it is necessary
 		final Collection<?> theSelection = collection;
 		// Make sure it's okay.
-		//
 		if (theSelection != null && !theSelection.isEmpty()) {
 			Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
-					// Try to select the items in the current content viewer of
-					// the editor.
-					//
+					// Try to select the items in the current content viewer of the editor.
 					if (BibtexEntryView.this != null) {
-						BibtexEntryView.this.viewer
-								.setSelection(new StructuredSelection(
-										theSelection.toArray()), true);
+						BibtexEntryView.this.viewer.setSelection(new StructuredSelection(theSelection.toArray()), true);
 					}
 				}
 			};
@@ -444,44 +402,23 @@ public class BibtexEntryView extends ViewPart {
 
 	private void contributeToActionBars() {
 		IActionBars bars = getViewSite().getActionBars();
-		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
-	}
-
-	private void fillLocalPullDown(IMenuManager manager) {
-		// manager.add(action1);
-		// manager.add(new Separator());
-		// manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(openingAction);
 		manager.add(new Separator());
 		manager.add(markingAction);
-		// drillDownAdapter.addNavigationActions(manager);
-		// Other plug-ins can contribute there actions here
-		// manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(refreshAction);
-		// manager.add(action2);
-		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
 	}
 
 	private void makeActions() {
 		openListener = new BibtexOpenListener(editorId, IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID);
 		selectionListener = openListener;
-		/*
-		 * ResourcesPlugin.getWorkspace().addResourceChangeListener( new
-		 * IResourceChangeListener() {
-		 * 
-		 * @Override public void resourceChanged(IResourceChangeEvent event) {
-		 * refreshProjectCombo();
-		 * 
-		 * } }, IResourceChangeEvent.POST_CHANGE);
-		 */
+		
 		refreshAction = new Action() {
 			@Override
 			public void run() {
@@ -490,40 +427,32 @@ public class BibtexEntryView extends ViewPart {
 			}
 		};
 		refreshAction.setText("Refresh");
-		refreshAction
-				.setToolTipText("Refreshes the tree. Make sure you selected a project before");
-		refreshAction.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
+		refreshAction.setToolTipText("Refreshes the tree. Make sure you selected a project before");
+		refreshAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
 
 		markingAction = new Action() {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
-				if (select == null
-						|| !(select.getFirstElement() instanceof Document)) {
+				if (select == null || !(select.getFirstElement() instanceof Document)) {
 					return;
 				}
 				Document doc = (Document) select.getFirstElement();
 				Utils.mark(doc, "Just marking for tests", ID);
-				// showMessage("Action 2 executed");
 			}
 		};
 		markingAction.setText("Mark");
 		markingAction.setToolTipText("Mark document for ProblemsView");
-		markingAction.setImageDescriptor(PlatformUI.getWorkbench()
-				.getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
+		markingAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
+		
 		openingAction = new Action() {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
-				if (select == null
-						|| !(select.getFirstElement() instanceof Document)) {
+				if (select == null || !(select.getFirstElement() instanceof Document)) {
 					return;
 				}
 				openListener.openEditor(select, true);
-				// showMessage("Action 2 executed");
 			}
 		};
 		openingAction.setText("Open");
@@ -536,8 +465,7 @@ public class BibtexEntryView extends ViewPart {
 	}
 
 	private boolean requestConfirmation(String message) {
-		return MessageDialog.openConfirm(viewer.getControl().getShell(),
-				BibtexEntryView.this.getTitle(), message);
+		return MessageDialog.openConfirm(viewer.getControl().getShell(), BibtexEntryView.this.getTitle(), message);
 	}
 
 	/**
@@ -549,8 +477,7 @@ public class BibtexEntryView extends ViewPart {
 	}
 
 	private void refreshProjectCombo() {
-		StructuredSelection selection = (StructuredSelection) combo
-				.getSelection();
+		StructuredSelection selection = (StructuredSelection) combo.getSelection();
 		combo.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		combo.setSelection(selection, true);
 		combo.refresh();
