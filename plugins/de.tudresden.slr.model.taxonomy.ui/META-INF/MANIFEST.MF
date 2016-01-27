@@ -26,6 +26,5 @@ Export-Package: de.tudresden.slr.model.taxonomy.ui.contentassist,
  de.tudresden.slr.model.taxonomy.ui.contentassist.antlr,
  de.tudresden.slr.model.taxonomy.ui.contentassist.antlr.internal,
  de.tudresden.slr.model.taxonomy.ui.internal,
- de.tudresden.slr.model.taxonomy.ui.quickfix,
- de.tudresden.slr.model.taxonomy.ui.util
+ de.tudresden.slr.model.taxonomy.ui.quickfix
 Bundle-Activator: de.tudresden.slr.model.taxonomy.ui.internal.TaxonomyActivator
