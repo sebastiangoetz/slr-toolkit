@@ -53,7 +53,10 @@ Workflow {
 			// fragment = parseTreeConstructor.ParseTreeConstructorFragment auto-inject {}
 
 			// a custom ResourceFactory for use with EMF 
-			//fragment = resourceFactory.ResourceFactoryFragment auto-inject {}
+			fragment = resourceFactory.ResourceFactoryFragment auto-inject {
+				fileExtensions = "taxonomy"
+			}
+
 
 			// the Antlr parser
 			fragment = parser.antlr.XtextAntlrGeneratorFragment auto-inject {

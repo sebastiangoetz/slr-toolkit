@@ -26,12 +26,8 @@ import java.util.Map;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
@@ -46,15 +42,12 @@ import org.jbibtex.StringValue;
 import org.jbibtex.StringValue.Style;
 import org.jbibtex.TokenMgrException;
 
-import com.google.inject.Injector;
-
-
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.TaxonomyStandaloneSetupGenerated;
+import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
@@ -130,28 +123,17 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 	}
 
-	private Model parseClasses(String string) {
-		if (string.isEmpty()) {
+	private Model parseClasses(String taxonomyString) {
+		if (taxonomyString == null || taxonomyString.isEmpty()) {
 			return TaxonomyFactory.eINSTANCE.createModel();
 		}
-		TaxonomyStandaloneSetupGenerated setup = new TaxonomyStandaloneSetupGenerated();
-		Injector injector = setup.createInjectorAndDoEMFRegistration();
-		ResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
-		Resource resource = resourceSet.createResource(URI.createURI("tmp.taxonomy"));
-		try (InputStream is = new URIConverter.ReadableInputStream(string, "UTF-8")) {
-			resource.load(is, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (!resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Model) {
-			return (Model) resource.getContents().get(0);
-		}
-		return TaxonomyFactory.eINSTANCE.createModel();
+		TaxonomyStandaloneParser tsp = new TaxonomyStandaloneParser();
+		return tsp.parseTaxonomyText(taxonomyString);
+
 	}
 
 	@Override
 	protected void doSave(OutputStream outputStream, Map<?, ?> options) throws IOException {
-
 		BibTeXDatabase db = new BibTeXDatabase();
 		ExtensibleURIConverterImpl converter = new ExtensibleURIConverterImpl();
 		try (Reader reader = new InputStreamReader(converter.createInputStream(uri, options))) {

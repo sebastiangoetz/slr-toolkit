@@ -23,6 +23,8 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
+//import de.tudresden.slr.model.taxonomy.ui.util.CustomTaxonomyParser;
+
 
 public class ModelRegistry extends Observable {
 	private Document activeDocument;
@@ -79,7 +81,9 @@ public class ModelRegistry extends Observable {
 	}
 
 	public void setTaxonomyFile(IFile taxonomyFile){
-		Model model = TaxonomyStandaloneParser.parseTaxonomyFile(taxonomyFile);
+		TaxonomyStandaloneParser tsp = new TaxonomyStandaloneParser();
+		Model model =  tsp.parseTaxonomyFile(taxonomyFile);
+
 		setActiveTaxonomy(model);
 	}
 	

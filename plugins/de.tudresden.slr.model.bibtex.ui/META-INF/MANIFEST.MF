@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.edit,
  org.eclipse.emf.edit.ui,
  de.tudresden.slr.model.taxonomy,
+ de.tudresden.slr.model.taxonomy.ui,
  de.tudresden.slr.model.modelregistry,
  org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

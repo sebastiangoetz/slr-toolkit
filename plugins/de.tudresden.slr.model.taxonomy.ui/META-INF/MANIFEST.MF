@@ -15,7 +15,6 @@ Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.compare,
- org.eclipse.xtext.common.types.ui,
  org.eclipse.emf.common,
  de.tudresden.slr.model.bibtex,
  de.tudresden.slr.model.modelregistry,
@@ -23,9 +22,10 @@ Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
  de.tudresden.slr.ui.chart
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.tudresden.slr.model.taxonomy.ui.quickfix,
- de.tudresden.slr.model.taxonomy.ui.contentassist,
- de.tudresden.slr.model.taxonomy.ui.internal,
+Export-Package: de.tudresden.slr.model.taxonomy.ui.contentassist,
  de.tudresden.slr.model.taxonomy.ui.contentassist.antlr,
- de.tudresden.slr.model.taxonomy.ui.contentassist.antlr.internal
+ de.tudresden.slr.model.taxonomy.ui.contentassist.antlr.internal,
+ de.tudresden.slr.model.taxonomy.ui.internal,
+ de.tudresden.slr.model.taxonomy.ui.quickfix,
+ de.tudresden.slr.model.taxonomy.ui.util
 Bundle-Activator: de.tudresden.slr.model.taxonomy.ui.internal.TaxonomyActivator

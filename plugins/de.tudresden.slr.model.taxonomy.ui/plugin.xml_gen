@@ -207,6 +207,23 @@
         </handler>
     </extension>   
 
+<!-- adding resource factories -->
+
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.resource.IResourceFactory"
+			type="taxonomy">
+		</parser>
+	</extension>
+	<extension point="org.eclipse.xtext.extension_resourceServiceProvider">
+        <resourceServiceProvider
+            class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.resource.IResourceUIServiceProvider"
+            uriExtension="taxonomy">
+        </resourceServiceProvider>
+    </extension>
+
+
 	<!-- marker definitions for de.tudresden.slr.model.taxonomy.Taxonomy -->
 	<extension
 	        id="taxonomy.check.fast"
