@@ -18,9 +18,7 @@ public class Activator extends AbstractUIPlugin {
 	/**
 	 * The constructor
 	 */
-	public Activator() {
-		//nothing
-	}
+	public Activator() {}
 
 	/*
 	 * (non-Javadoc)
