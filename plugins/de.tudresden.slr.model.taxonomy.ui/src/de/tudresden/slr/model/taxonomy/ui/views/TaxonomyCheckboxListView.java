@@ -154,6 +154,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 	@Override
 	public void dispose() {
+		ModelRegistryPlugin.getModelRegistry().deleteObserver(this);
 		getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(this);
 	}
 
