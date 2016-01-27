@@ -3,7 +3,11 @@ jdk:
 - oraclejdk8
 
 script: mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package
- 
+
+cache:
+  directories:
+    - $HOME/.m2
+
 deploy:
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
