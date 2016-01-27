@@ -65,6 +65,7 @@ pom.xml
 								<url>https://github.com/sebastiangoetz/slr-toolkit.git</url>
 							</repository>
 						</baselineRepositories>
+						         	
 					</configuration>
 				</plugin>
 			</plugins>
@@ -109,6 +110,98 @@ pom.xml
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<filters>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.ui</id>
+			            	<removeAll />
+			         	</filter>
+			         	<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.debug.core</id>
+			            	<removeAll />
+			         	</filter>
+			         	<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.debug.ui</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.debug</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.debug.core</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.debug.ui</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.emf.codegen.ecore</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.emf.codegen</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.emf.ecore.edit</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.emf.ecore.editor</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.equinox.concurrent</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.core.manipulation</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.core</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.jdt.launching</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.xtext.common.types.edit</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.xtext.common.types.ui</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.xtext.generator</id>
+			            	<removeAll />
+			         	</filter>
+						<filter>
+			            	<type>eclipse-plugin</type>
+			            	<id>org.eclipse.xtext.xtext.generator</id>
+			            	<removeAll />
+			         	</filter>					
+					</filters>
 					<target>
 						<artifact>
 							<groupId>de.tudresden</groupId>
