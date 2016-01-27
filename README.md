@@ -3,6 +3,10 @@
 
 A Toolkit for Systematic Literature Reviews
 
+### Releases
+
+Latest release: [here](https://github.com/sebastiangoetz/slr-toolkit/releases)
+
 ### Build
 From console:
 * `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package`
