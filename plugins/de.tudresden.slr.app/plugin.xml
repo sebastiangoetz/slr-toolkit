@@ -187,7 +187,7 @@
             </command>
          </menu>
       </menuContribution>
-   </extension>  
+   </extension>
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
