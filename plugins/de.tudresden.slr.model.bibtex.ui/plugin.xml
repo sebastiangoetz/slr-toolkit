@@ -4,11 +4,10 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="de.tudresden.slr.model.bibtex.presentation"
-            name="Bibtex UI">
-      </category>
+            id="de.tudresden.slr.views"
+            name="SLR Toolkit"/>
       <view
-            category="de.tudresden.slr.model.bibtex.presentation"
+            category="de.tudresden.slr.views"
             class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView"
             icon="icons/icon.png"
             id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
@@ -27,6 +26,7 @@
       <editor
             class="org.eclipse.ui.editors.text.TextEditor"
             id="de.tudresden.slr.model.bibtex.ui.bibtexFileEditor"
+            icon="icons/icon.png"
             name="Bibtex File Editor">
          <contentTypeBinding
                contentTypeId="de.tudresden.slr.model.bibtex.ui.bibtexContentType">

@@ -4,9 +4,14 @@
    <extension
          id="chartviewId"
          point="org.eclipse.ui.views">
+     <category
+            id="de.tudresden.slr.views"
+            name="SLR Toolkit"/>
       <view
+      		category="de.tudresden.slr.views"
             class="de.tudresden.slr.ui.chart.views.ChartView"
             id="chart.view.chartview"
+            icon="/icons/chartbar_16.png"
             name="ChartView"
             restorable="true">
       </view>

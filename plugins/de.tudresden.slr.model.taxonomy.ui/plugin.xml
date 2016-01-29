@@ -4,14 +4,14 @@
 <plugin>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="de.tudresden.slr.model.taxonomy.ui.views"
-            name="Taxonomy UI">
-      </category>
+     <category
+            id="de.tudresden.slr.views"
+            name="SLR Toolkit"/>
       <view
-            category="de.tudresden.slr.model.taxonomy.ui.views"
+            category="de.tudresden.slr.views"
             class="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
             id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+            icon="icons/tree_mode.gif"
             name="Taxonomy">
       </view>
    </extension>
@@ -22,6 +22,7 @@
             contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
             default="true"
             extensions="taxonomy"
+            icon="icons/tree_mode.gif"
             id="de.tudresden.slr.model.taxonomy.Taxonomy"
             name="Taxonomy Editor">
         </editor>

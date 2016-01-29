@@ -185,6 +185,15 @@
                   label="Show Perspective"
                   style="push">
             </command>
+            <separator
+                  name="de.tudresden.slr.app.separator01"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  label="Preferences"
+                  style="push">
+            </command>
          </menu>
       </menuContribution>
    </extension>
