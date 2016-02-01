@@ -16,7 +16,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 		this.actionBarConfigurer = configurer;
-    	return new ApplicationActionBarAdvisor(configurer);
+		return new ApplicationActionBarAdvisor(configurer);
 	}
 	
 	public void preWindowOpen() {
@@ -27,20 +27,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	}
 	
 	public void postWindowOpen() {
-		hideRunMenu();
-    	IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-    	configurer.getWindow().getShell().setMaximized(true); 
+		hideSearchMenu();
+		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+		configurer.getWindow().getShell().setMaximized(true); 
 	}
 	
-	private void hideRunMenu() {
+	private void hideSearchMenu() {
 		IMenuManager menuManager = this.actionBarConfigurer.getMenuManager();
-        IContributionItem[] menuItems =  menuManager.getItems();
-        for (IContributionItem item : menuItems)
-        {
-        	if(item.getId().equalsIgnoreCase("org.eclipse.search.menu")){
+		IContributionItem[] menuItems =  menuManager.getItems();
+		for (IContributionItem item : menuItems) {
+			if(item.getId().equalsIgnoreCase("org.eclipse.search.menu")) {
         		item.setVisible(false);
-        	}
-            
-        }
-    }
+        		}
+		}
+	}
 }
