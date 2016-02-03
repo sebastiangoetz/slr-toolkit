@@ -29,10 +29,8 @@ public class SaveAsPDFHandler implements IHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IViewPart part = null;
-		part = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-				.findView(chartViewId);
-		FileDialog dialog = new FileDialog(HandlerUtil.getActiveShell(event),
-				SWT.OPEN);
+		part = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().findView(chartViewId);
+		FileDialog dialog = new FileDialog(HandlerUtil.getActiveShell(event), SWT.SAVE);
 		dialog.setFilterExtensions(new String[] { "*.pdf" });
 		try {
 			String result = dialog.open();
@@ -42,6 +40,7 @@ public class SaveAsPDFHandler implements IHandler {
 				view.redraw();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
