@@ -75,7 +75,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Authors feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addAuthorsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -83,7 +83,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_authors_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_authors_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__AUTHORS, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__AUTHORS, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -91,7 +91,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Abstract feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addAbstractPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -99,7 +99,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_abstract_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_abstract_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__ABSTRACT, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__ABSTRACT, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -107,7 +107,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Year feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addYearPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -115,7 +115,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_year_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_year_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__YEAR, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__YEAR, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -123,7 +123,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Month feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addMonthPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -131,7 +131,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_month_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_month_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__MONTH, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__MONTH, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -139,7 +139,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Title feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addTitlePropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -147,7 +147,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_title_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_title_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__TITLE, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__TITLE, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -155,7 +155,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Key feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addKeyPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -163,7 +163,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_key_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_key_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__KEY, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__KEY, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -171,7 +171,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Doi feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addDoiPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -179,7 +179,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_doi_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_doi_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__DOI, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__DOI, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -187,7 +187,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Url feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addUrlPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -195,7 +195,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_url_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_url_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__URL, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__URL, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -203,7 +203,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Unparsed Authors feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addUnparsedAuthorsPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -211,7 +211,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_unparsedAuthors_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_unparsedAuthors_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__UNPARSED_AUTHORS, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -219,7 +219,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Taxonomy feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addTaxonomyPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -227,14 +227,14 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_taxonomy_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_taxonomy_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__TAXONOMY, true, false, true, null, null, null));
+						BibtexPackage.Literals.DOCUMENT__TAXONOMY, false, false, true, null, null, null));
 	}
 
 	/**
 	 * This adds a property descriptor for the Type feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -242,7 +242,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_type_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_type_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__TYPE, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__TYPE, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -250,7 +250,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the File feature. <!-- begin-user-doc
 	 * --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated  NOT
 	 */
 	protected void addFilePropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -258,7 +258,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_file_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_file_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__FILE, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__FILE, false, false, false,
 						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
@@ -266,7 +266,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	 * This adds a property descriptor for the Cites feature. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	protected void addCitesPropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -274,7 +274,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 						getResourceLocator(), getString("_UI_Document_cites_feature"),
 						getString("_UI_PropertyDescriptor_description", "_UI_Document_cites_feature",
 								"_UI_Document_type"),
-						BibtexPackage.Literals.DOCUMENT__CITES, true, false, false,
+						BibtexPackage.Literals.DOCUMENT__CITES, false, false, false,
 						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
 	}
 
