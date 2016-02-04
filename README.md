@@ -20,7 +20,6 @@ Within Eclipse add Run Configurations (Run as -> Maven build):
 * JDK 1.8
 * Eclipse RCP 4.5.1 (EPL)
 * JBibTex 1.0.15 (BSD 3-clause)
-* iText 2.1.7 (MPL)
 * Eclipse BIRT (EPL)
 * Xtext 2.9.1 (EPL)
 
