@@ -21,12 +21,10 @@ public class ChartDataProvider {
 	private ArrayList<Resource> resources;
 
 	public ChartDataProvider() {
-		domainOptional = ModelRegistryPlugin.getModelRegistry()
-				.getEditingDomain();
+		domainOptional = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
 		if (domainOptional.isPresent()) {
 			adapterFactoryEditingDomain = domainOptional.get();
-			resources = new ArrayList<>(adapterFactoryEditingDomain
-					.getResourceSet().getResources());
+			resources = new ArrayList<>(adapterFactoryEditingDomain.getResourceSet().getResources());
 		}
 	}
 
@@ -81,8 +79,7 @@ public class ChartDataProvider {
 	 *         assigned to
 	 */
 
-	public SortedMap<String, Integer> calculateNumberOfPapersPerClass(
-			Term inputTerm) {
+	public SortedMap<String, Integer> calculateNumberOfPapersPerClass(Term inputTerm) {
 		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
 		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
 		for (Term searchTerm : subclasses) {

@@ -58,7 +58,7 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
-					myChart = new BarChartGenerator().createBar(myValues, "# Papers per Subclass for selected Class");
+					myChart = new BarChartGenerator().createBar(myValues, "# Papers per Subclass of " + ((Term)o).getName());
 					preview.setDataPresent(true);
 				} else {
 					preview.setTextToShow(noDataToDisplay);
@@ -113,8 +113,6 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	 *            The system specific output path of the pdf
 	 */
 	private void generatePDFOutput(Chart chart, String output) {
-		// Example output string for Windows
-		// "C:\\pdf\\output.pdf"
 		PlatformConfig config = new PlatformConfig();
 		try {
 			idr = ChartEngine.instance(config).getRenderer("dv.PDF");

@@ -111,33 +111,24 @@ public class ChartPreview implements PaintListener, ControlListener {
 			GC gc = new GC(buffer);
 
 			// fill default backgournd as white.
-			gc.setForeground(Display.getDefault().getSystemColor(
-					SWT.COLOR_WHITE));
+			gc.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 			gc.fillRectangle(buffer.getBounds());
 
-			final Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,
-					adjustedRe.width - 2 * X_OFFSET, adjustedRe.height - 2
-							* Y_OFFSET);
+			final Bounds bo = BoundsImpl.create(X_OFFSET, Y_OFFSET,	adjustedRe.width - 2 * X_OFFSET, adjustedRe.height - 2 * Y_OFFSET);
 			// final Bounds bo = BoundsImpl
 			// .create(re.x, re.y, re.width, re.height);
 
 			IDeviceRenderer deviceRenderer = null;
 			try {
 				deviceRenderer = PluginSettings.instance().getDevice("dv.SWT"); //$NON-NLS-1$
-				deviceRenderer
-						.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, gc);
-				bo.scale(72d / deviceRenderer.getDisplayServer()
-						.getDpiResolution()); // CONVERT
-				// TO
-				// POINTS
+				deviceRenderer.setProperty(IDeviceRenderer.GRAPHICS_CONTEXT, gc);
+				bo.scale(72d / deviceRenderer.getDisplayServer().getDpiResolution()); // CONVERT TO POINTS
 
 				// GENERATE AND RENDER THE CHART
 				final Generator gr = Generator.instance();
 				RunTimeContext rtc = new RunTimeContext();
 
-				GeneratedChartState state = gr.build(
-						deviceRenderer.getDisplayServer(), cm, bo, null, rtc,
-						null);
+				GeneratedChartState state = gr.build(deviceRenderer.getDisplayServer(), cm, bo, null, rtc,null);
 
 				gr.render(deviceRenderer, state);
 			} catch (Exception ex) {

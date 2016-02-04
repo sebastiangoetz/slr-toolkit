@@ -22,6 +22,7 @@ import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
+import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
@@ -56,8 +57,7 @@ public class BarChartGenerator {
 		cwaBar.getBlock().setBackground(ColorDefinitionImpl.WHITE());
 		cwaBar.getBlock().getOutline().setVisible(true);
 		Plot p = cwaBar.getPlot();
-		p.getClientArea().setBackground(
-				ColorDefinitionImpl.create(255, 255, 225));
+		p.getClientArea().setBackground(ColorDefinitionImpl.WHITE());
 
 		// Title
 		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
@@ -70,20 +70,20 @@ public class BarChartGenerator {
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
 
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
-		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
-		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
+		yAxisPrimary.setOrientation(Orientation.VERTICAL_LITERAL);
 		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 
 		// create the dataset from the map
 
 		List<String> names = new ArrayList<>(input.keySet());
-		List<Double> values = names.stream().mapToDouble(input::get).boxed()
-				.collect(Collectors.toList());
+		List<Double> values = names.stream().mapToDouble(input::get).boxed().collect(Collectors.toList());
 
 		TextDataSet categoryValues = TextDataSetImpl.create(names);
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
@@ -102,8 +102,7 @@ public class BarChartGenerator {
 		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
 		sd.getBaseSampleData().add(sdBase);
 
-		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE
-				.createOrthogonalSampleData();
+		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE.createOrthogonalSampleData();
 		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
