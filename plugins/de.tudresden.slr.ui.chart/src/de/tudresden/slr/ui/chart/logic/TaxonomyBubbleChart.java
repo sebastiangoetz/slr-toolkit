@@ -87,8 +87,7 @@ public class TaxonomyBubbleChart {
 		cwaBubble.getBlock().setBackground(ColorDefinitionImpl.WHITE());
 		cwaBubble.getBlock().getOutline().setVisible(true);
 		Plot p = cwaBubble.getPlot();
-		p.getClientArea().setBackground(
-				ColorDefinitionImpl.create(255, 255, 225));
+		p.getClientArea().setBackground(ColorDefinitionImpl.WHITE());
 
 		// Title
 		cwaBubble.getTitle().getLabel().getCaption()
@@ -107,11 +106,11 @@ public class TaxonomyBubbleChart {
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBubble.getPrimaryOrthogonalAxis(xAxisPrimary);
-		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.LEFT_LITERAL);
+		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
 		// yAxisPrimary.
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		yAxisPrimary.setLabelPosition(Position.RIGHT_LITERAL);
-		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
+		// yAxisPrimary.getLabel().getCaption().getFont().setRotation( 90 );
 		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
