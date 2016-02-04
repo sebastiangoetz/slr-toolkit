@@ -38,6 +38,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.util.TermComparator;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyIterator;
 
@@ -46,6 +47,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 	private ContainerCheckedTreeViewer viewer;
 	private ViewContentProvider contentProvider;
+	private TermComparator termComparator = new TermComparator();
 
 	class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
@@ -230,7 +232,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		} else { // Model
 			parent = document.getTaxonomy().getDimensions();
 		}
-		parent.removeIf(t -> t.hashCode() == element.hashCode());
+		parent.removeIf(t -> termComparator.equals(t, element));
 	}
 
 	private void executeCommand(Command command) {

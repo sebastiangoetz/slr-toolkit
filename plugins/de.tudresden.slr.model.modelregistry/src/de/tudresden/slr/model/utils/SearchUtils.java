@@ -8,15 +8,16 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.util.TermComparator;
 
 public class SearchUtils {
-
+	private static TermComparator termComparator = new TermComparator();
+	
 	public static Term findTermInDocument(Document document, Term other) {
 		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
 		Stream<Term> stream = StreamSupport.stream(iter.spliterator(), false);
 		Optional<Term> result = stream.filter(
-				term -> term.hashCode() == other.hashCode()
-						&& term.getName().equals(other.getName())).findAny();
+				term -> termComparator.equals(term, other)).findAny();
 		return result.isPresent() ? result.get() : null;
 	}
 
@@ -26,8 +27,7 @@ public class SearchUtils {
 		if (taxonomy.isPresent()) {
 			TaxonomyIterator iter = new TaxonomyIterator(taxonomy.get());
 			for (Term term : iter) {
-				if (term.hashCode() == other.hashCode()
-						&& term.getName().equals(other.getName())) {
+				if (termComparator.equals(term, other)) {
 					if (term.eContainer() instanceof Model) {
 						return term;
 					} else {

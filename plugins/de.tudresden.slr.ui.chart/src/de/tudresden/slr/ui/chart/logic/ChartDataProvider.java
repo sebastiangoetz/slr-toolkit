@@ -12,6 +12,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.util.TermComparator;
 import de.tudresden.slr.model.utils.SearchUtils;
 
 public class ChartDataProvider {
@@ -19,6 +20,7 @@ public class ChartDataProvider {
 	private Optional<AdapterFactoryEditingDomain> domainOptional;
 	private AdapterFactoryEditingDomain adapterFactoryEditingDomain;
 	private ArrayList<Resource> resources;
+	private TermComparator termComparator = new TermComparator();
 
 	public ChartDataProvider() {
 		domainOptional = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
@@ -57,7 +59,9 @@ public class ChartDataProvider {
 	 *         taxonomy
 	 */
 	private boolean isTermIncludedInTaxonomy(Term startNode, Term searchTerm) {
-		if (startNode.hashCode() == searchTerm.hashCode()) {
+		
+		//if (startNode.hashCode() == searchTerm.hashCode())
+		if(termComparator.equals(startNode, searchTerm)){
 			return true;
 		}
 		ArrayList<Term> subclasses = new ArrayList<>(startNode.getSubclasses());

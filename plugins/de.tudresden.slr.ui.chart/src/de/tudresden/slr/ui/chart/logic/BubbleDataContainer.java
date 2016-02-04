@@ -8,6 +8,7 @@ public class BubbleDataContainer {
 	private Term yTerm;
 	private int bubbleSize;
 
+	//TODO: What's the purpose of BubbleDataContainer.hashCode()? Can it be removed and why does it call Term.hashCode()?
 	@Override
 	public int hashCode() {
 		final int prime = 31;
