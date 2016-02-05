@@ -7,8 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,6 +54,7 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -92,6 +99,8 @@ public class BibtexEntryView extends ViewPart {
 	 */
 	public BibtexEntryView() {
 		super();
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		workspace.addResourceChangeListener(resourceChangeListener);
 		initializeEditingDomain();
 	}
 
@@ -154,6 +163,13 @@ public class BibtexEntryView extends ViewPart {
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			combo.setSelection(new StructuredSelection(project));
 		}
+	}
+	
+	@Override
+	public void dispose(){
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		workspace.removeResourceChangeListener(resourceChangeListener);
+		super.dispose();
 	}
 
 	/**
@@ -253,6 +269,41 @@ public class BibtexEntryView extends ViewPart {
 		return deleter;
 	}
 
+	private IResourceChangeListener resourceChangeListener = new IResourceChangeListener(){
+		private MarkerVisitor fVisitor = new MarkerVisitor();
+
+		public void resourceChanged(IResourceChangeEvent event) {
+			IResourceDelta delta= event.getDelta();
+			if (delta != null) {
+				try {
+					delta.accept(fVisitor);
+				} catch (CoreException ce) {
+
+				}
+			}
+		}
+	};
+   
+   private class MarkerVisitor implements IResourceDeltaVisitor {
+	   public boolean visit(IResourceDelta delta) throws CoreException {
+		   if(delta == null) {
+			   return false;
+		   }
+		   
+		   IMarkerDelta[] markerDeltas = delta.getMarkerDeltas();
+		   
+		   if(markerDeltas.length > 0){
+			   Display.getDefault().asyncExec(new Runnable() {
+				   public void run() {
+					   refreshAction.run();
+				   }
+			   });
+		   }
+		   
+		   return true;
+	   }
+   }
+	
 	/**
 	 * create a listener for listening the comboviewer.
 	 * 

@@ -1,9 +1,5 @@
 package de.tudresden.slr.model.taxonomy.util;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil.EqualityHelper;
 
