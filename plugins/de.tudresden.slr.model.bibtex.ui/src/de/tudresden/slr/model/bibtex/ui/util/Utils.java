@@ -68,6 +68,9 @@ public class Utils {
 		logBuffer = new StringBuffer();
 
 		URI uri = resource.getURI();
+		if(resource.getResourceSet() == null){
+			return null;
+		}
 		uri = resource.getResourceSet().getURIConverter().normalize(uri);
 		String scheme = uri.scheme();
 		logBuffer.append("URI Scheme: " + scheme + "\n");

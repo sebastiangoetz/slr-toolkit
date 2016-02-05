@@ -72,6 +72,9 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 			}
 			IMarker[] markers = null;
 			try {
+				if(!file.exists()){
+					return;
+				}
 				markers = file.findMarkers(IMarker.PROBLEM, true,
 						IResource.DEPTH_ONE);
 			} catch (CoreException e) {
@@ -90,13 +93,12 @@ public class BibtexDecorator implements ILightweightLabelDecorator {
 		} else if (element instanceof Document) {
 			Document doc = (Document) element;
 			IFile parent = Utils.getIFilefromDocument(doc);
-			if (parent == null) {
+			if (parent == null || !parent.exists()) {
 				return;
 			}
 			IMarker[] markers = null;
 			try {
-				markers = parent.findMarkers(IMarker.PROBLEM, true,
-						IResource.DEPTH_ONE);
+				markers = parent.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}

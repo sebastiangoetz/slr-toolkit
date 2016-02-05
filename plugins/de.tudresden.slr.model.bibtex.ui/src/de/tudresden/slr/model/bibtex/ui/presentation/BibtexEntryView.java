@@ -1,9 +1,11 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -42,6 +44,7 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -100,7 +103,8 @@ public class BibtexEntryView extends ViewPart {
 	public BibtexEntryView() {
 		super();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.addResourceChangeListener(resourceChangeListener);
+		workspace.addResourceChangeListener(markerChangeListener);
+		workspace.addResourceChangeListener(projectChangeListener);
 		initializeEditingDomain();
 	}
 
@@ -168,7 +172,8 @@ public class BibtexEntryView extends ViewPart {
 	@Override
 	public void dispose(){
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.removeResourceChangeListener(resourceChangeListener);
+		workspace.removeResourceChangeListener(markerChangeListener);
+		workspace.removeResourceChangeListener(projectChangeListener);
 		super.dispose();
 	}
 
@@ -269,41 +274,146 @@ public class BibtexEntryView extends ViewPart {
 		return deleter;
 	}
 
-	private IResourceChangeListener resourceChangeListener = new IResourceChangeListener(){
-		private MarkerVisitor fVisitor = new MarkerVisitor();
+	/**
+	 * Listener for listening to changes to the underlying resources.
+	 */
+	private IResourceChangeListener markerChangeListener = new IResourceChangeListener(){
+		private MarkerVisitor markerVisitor = new MarkerVisitor();
 
 		public void resourceChanged(IResourceChangeEvent event) {
 			IResourceDelta delta= event.getDelta();
 			if (delta != null) {
 				try {
-					delta.accept(fVisitor);
-				} catch (CoreException ce) {
-
+					delta.accept(markerVisitor);
+				} catch (CoreException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 	};
+	/**
+	 * Listens to resource changes and updates the BibtexEntryView when projects are added or removed.
+	 */
+	private IResourceChangeListener projectChangeListener = new IResourceChangeListener(){
+		/**
+		 * Fired whenever a resource is changed
+		 */
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			if(event.getType() != IResourceChangeEvent.POST_CHANGE && event.getType() != IResourceChangeEvent.PRE_DELETE){
+				return;
+			}
+			if(event.getType() == IResourceChangeEvent.POST_CHANGE){
+				handleResourceChangeEvent(event);
+			} else if (event.getType() == IResourceChangeEvent.PRE_DELETE){
+				handleResourceDeleteEvent(event);
+			}
+		}
+
+		/**
+		 * Handle deletion of resources (does only handle deletion of projects)
+		 * @param event
+		 */
+		private void handleResourceDeleteEvent(IResourceChangeEvent event){
+			IResource resource = event.getResource();
+			if(!(resource instanceof IProject)){
+				return;
+			}
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					IProject[] input = (IProject[]) combo.getInput();
+					IStructuredSelection selection = combo.getStructuredSelection();
+
+					//Deleted project is selected
+					if(selection.getFirstElement() == resource){
+						if(input.length > 1){
+							int currentIndex = combo.getCombo().getSelectionIndex();
+							Object newItem = combo.getElementAt(currentIndex + 1);
+							if(newItem != null){
+								combo.setSelection(new StructuredSelection(newItem)); 
+							} else{
+								newItem = combo.getElementAt(currentIndex - 1);
+								if(newItem != null){
+									combo.setSelection(new StructuredSelection(newItem)); 
+								}
+							}
+						} else if (input.length == 1){
+							combo.setSelection(StructuredSelection.EMPTY);
+						}
+					}
+					combo.remove(resource);
+				}
+			});
+		}
+
+		/**
+		 * Handles addition of new resources (projects only)
+		 * @param event
+		 */
+		private void handleResourceChangeEvent(IResourceChangeEvent event){
+			List<IProject> projects = getAddedProjects(event.getDelta());
+			if(projects.size() >  0){
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						refreshAction.run();
+						if(projects.size() > 0 && (combo.getSelection() == null || combo.getSelection().isEmpty())){
+							combo.setSelection(new StructuredSelection(projects.get(0)));
+						}
+					}
+				});
+			}
+		}
+
+		/**
+		 * Returns a list of newly added projects.
+		 * @param resourceDelta
+		 * @return List of newly added projects.
+		 */
+		private List<IProject> getAddedProjects(IResourceDelta resourceDelta){
+			final List<IProject> projects = new ArrayList<IProject>();
+			try {
+				resourceDelta.accept(new IResourceDeltaVisitor() {
+					public boolean visit(IResourceDelta delta) throws CoreException {
+						if (delta.getKind() == IResourceDelta.ADDED && delta.getResource().getType() == IResource.PROJECT) {
+							IProject project = (IProject) delta.getResource();
+							projects.add(project);
+							return false;
+						}
+						return delta.getResource().getType() == IResource.ROOT;
+					}
+				});
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			return projects;
+		}
+	};
    
-   private class MarkerVisitor implements IResourceDeltaVisitor {
-	   public boolean visit(IResourceDelta delta) throws CoreException {
-		   if(delta == null) {
-			   return false;
-		   }
-		   
-		   IMarkerDelta[] markerDeltas = delta.getMarkerDeltas();
-		   
-		   if(markerDeltas.length > 0){
-			   Display.getDefault().asyncExec(new Runnable() {
-				   public void run() {
-					   refreshAction.run();
-				   }
-			   });
-		   }
-		   
-		   return true;
-	   }
-   }
-	
+	/**
+	 * Visitor for marker changes
+	 */
+	private class MarkerVisitor implements IResourceDeltaVisitor {
+		/**
+		 * Update the BibtextEntryView when markers change.
+		 */
+		public boolean visit(IResourceDelta delta) throws CoreException {
+			if(delta == null) {
+				return false;
+			}
+
+			IMarkerDelta[] markerDeltas = delta.getMarkerDeltas();
+
+			if(markerDeltas.length > 0){
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						refreshAction.run();
+					}
+				});
+			}
+			return true;
+		}
+	}
+
 	/**
 	 * create a listener for listening the comboviewer.
 	 * 
@@ -316,6 +426,7 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				if (event.getSelection() == null || event.getSelection().isEmpty()) {
+					deleteResources();
 					return;
 				}
 				if (event.getSelection() instanceof StructuredSelection) {
@@ -366,13 +477,11 @@ public class BibtexEntryView extends ViewPart {
 	 * @generated
 	 */
 	protected void initializeEditingDomain() {
-		ModelRegistryPlugin.getModelRegistry().getEditingDomain()
-				.ifPresent((domain) -> editingDomain = domain);
+		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
 		// Add a listener to set the most recent command's affected objects
 		// to be the selection of the viewer with focus.
 		if (editingDomain == null) {
-			System.err
-					.println("[BibtexEntryView#initializeEditingDomain] uninitailised editing domain");
+			System.err.println("[BibtexEntryView#initializeEditingDomain] uninitailised editing domain");
 			return;
 		}
 		adapterFactory = editingDomain.getAdapterFactory();
