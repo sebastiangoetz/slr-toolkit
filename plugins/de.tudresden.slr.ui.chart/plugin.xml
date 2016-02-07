@@ -24,7 +24,7 @@
             locationURI="toolbar:chart.view.chartview">
          <command
                commandId="de.tudresden.slr.ui.chart.savechartaspdf"
-               label="Save as PDF"
+               icon="icons/pdf_export.png"
                style="push">
          </command>
       </menuContribution>

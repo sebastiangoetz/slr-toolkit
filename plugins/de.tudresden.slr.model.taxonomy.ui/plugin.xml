@@ -213,13 +213,16 @@
                locationURI="toolbar:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
             <command
                   commandId="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
-                  label="Create Bubblechart"
-                  style="push">
+                  icon="icons/bubble_chart.png"
+                  style="push"
+                  tooltip="Create Bubbblechart">
             </command>
             <command
                   commandId="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+                  icon="icons/chart_bar.png"
                   label="Create Cite Barchart"
-                  style="push">
+                  style="push"
+                  tooltip="Create Cite Barchart">
             </command>
          </menuContribution>
     </extension>
