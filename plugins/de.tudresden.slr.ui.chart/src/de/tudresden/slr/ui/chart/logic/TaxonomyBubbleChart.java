@@ -110,7 +110,8 @@ public class TaxonomyBubbleChart {
 		// yAxisPrimary.
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		yAxisPrimary.setLabelPosition(Position.RIGHT_LITERAL);
-		// yAxisPrimary.getLabel().getCaption().getFont().setRotation( 90 );
+		yAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
+		yAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
 		// yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
