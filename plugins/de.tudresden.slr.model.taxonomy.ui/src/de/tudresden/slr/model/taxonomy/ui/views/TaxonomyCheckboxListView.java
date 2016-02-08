@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import javax.annotation.PostConstruct;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -20,6 +22,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -44,23 +47,18 @@ import de.tudresden.slr.model.utils.TaxonomyIterator;
 
 public class TaxonomyCheckboxListView extends ViewPart implements ISelectionListener, Observer, ICheckStateListener {
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
-
 	private ContainerCheckedTreeViewer viewer;
 	private ViewContentProvider contentProvider;
 	private TermComparator termComparator = new TermComparator();
 
 	class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
-
-		public ViewContentProvider(Viewer v) {
-		}
+		public ViewContentProvider(Viewer v) {}
+		
+		@Override
+		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
 
 		@Override
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-
-		@Override
-		public void dispose() {
-		}
+		public void dispose() {}
 
 		@Override
 		public Object[] getElements(Object parent) {
@@ -83,10 +81,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 			if (parent instanceof Term) {
 				return ((Term) parent).getSubclasses().toArray();
 			}
-			// if (parent instanceof EObject) {
-			// return ((EObject) parent).eContents().toArray();
-			// }
-			return new Object[0];
+			throw new IllegalArgumentException("parent");
 		}
 
 		@Override
@@ -111,18 +106,21 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
-		viewer = new ContainerCheckedTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		Optional<Model> m = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 		contentProvider = new ViewContentProvider(viewer);
+		viewer = new ContainerCheckedTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new DefaultEObjectLabelProvider());
 		viewer.addCheckStateListener(this);
 		viewer.setSorter(null);
+		if(m.isPresent()){
+			viewer.setInput(m.get());
+		}
+		viewer.expandAll();
 
 		getSite().setSelectionProvider(viewer);
-
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "de.tudresden.slr.model.taxonomy.ui.viewer");
-
 		getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener(this);
 	}
 
@@ -158,20 +156,20 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	public void dispose() {
 		ModelRegistryPlugin.getModelRegistry().deleteObserver(this);
 		getSite().getWorkbenchWindow().getSelectionService().removePostSelectionListener(this);
+		super.dispose();
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		// taxonomy has changed
-		if (arg instanceof Model) {
+		if (arg instanceof Model){
 			viewer.setInput(arg);
+			return;
 		}
-				
 		// document has changed
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
 		}
-		viewer.expandAll();
 	}
 
 	@Override

@@ -22,14 +22,15 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.util.ModelComparer;
 import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
-//import de.tudresden.slr.model.taxonomy.ui.util.CustomTaxonomyParser;
-
 
 public class ModelRegistry extends Observable {
 	private Document activeDocument;
 	private Model activeTaxonomy;
 	private AdapterFactoryEditingDomain sharedEditingDomain;
+	private TaxonomyStandaloneParser taxonomyParser = new TaxonomyStandaloneParser();
+	private ModelComparer modelComparer = new ModelComparer();
 
 	public ModelRegistry() {
 		createEditingDomain();
@@ -72,8 +73,8 @@ public class ModelRegistry extends Observable {
 
 	public void setActiveDocument(Document document) {
 		if (activeDocument != document) {
-			IFile taxonomyFile = getTaxonomyFileInProject(document.eResource());
-			setTaxonomyFile(taxonomyFile);
+			setTaxonomyFile(getTaxonomyFileInProject(document.eResource()));
+			
 			activeDocument = document;
 			setChanged();
 			notifyObservers(activeDocument);
@@ -81,9 +82,7 @@ public class ModelRegistry extends Observable {
 	}
 
 	public void setTaxonomyFile(IFile taxonomyFile){
-		TaxonomyStandaloneParser tsp = new TaxonomyStandaloneParser();
-		Model model =  tsp.parseTaxonomyFile(taxonomyFile);
-
+		Model model =  taxonomyParser.parseTaxonomyFile(taxonomyFile);
 		setActiveTaxonomy(model);
 	}
 	
@@ -92,6 +91,11 @@ public class ModelRegistry extends Observable {
 	}
 
 	public void setActiveTaxonomy(Model taxonomy) {
+		//Comparing large models is rather expensive, maybe we can avoid it more often.
+		if(activeTaxonomy == taxonomy || modelComparer.equals(activeTaxonomy, taxonomy)){
+			return;
+		}
+
 		activeTaxonomy = taxonomy;
 		setChanged();
 		notifyObservers(activeTaxonomy);
