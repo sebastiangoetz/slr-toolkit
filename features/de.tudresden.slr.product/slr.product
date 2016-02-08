@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.1" useFeatures="true" includeLaunchers="true">
+<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.3" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
