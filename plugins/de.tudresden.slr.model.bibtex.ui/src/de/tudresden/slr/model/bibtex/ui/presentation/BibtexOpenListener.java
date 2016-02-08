@@ -98,6 +98,6 @@ public class BibtexOpenListener implements IOpenListener, ISelectionChangedListe
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		openEditor(event.getSelection(), true);
+		openEditor(event.getSelection(), false);
 	}
 }
