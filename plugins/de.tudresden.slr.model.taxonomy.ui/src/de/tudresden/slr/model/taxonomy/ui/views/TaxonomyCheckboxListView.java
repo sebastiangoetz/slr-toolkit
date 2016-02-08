@@ -38,7 +38,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermComparator;
+import de.tudresden.slr.model.taxonomy.util.TermComparer;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyIterator;
 
@@ -46,7 +46,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
 	private ContainerCheckedTreeViewer viewer;
 	private ViewContentProvider contentProvider;
-	private TermComparator termComparator = new TermComparator();
+	private TermComparer termComparator = new TermComparer();
 
 	class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 		public ViewContentProvider(Viewer v) {}

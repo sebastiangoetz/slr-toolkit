@@ -12,7 +12,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermComparator;
+import de.tudresden.slr.model.taxonomy.util.TermComparer;
 import de.tudresden.slr.model.utils.SearchUtils;
 
 public class ChartDataProvider {
@@ -20,7 +20,7 @@ public class ChartDataProvider {
 	private Optional<AdapterFactoryEditingDomain> domainOptional;
 	private AdapterFactoryEditingDomain adapterFactoryEditingDomain;
 	private ArrayList<Resource> resources;
-	private TermComparator termComparator = new TermComparator();
+	private TermComparer termComparator = new TermComparer();
 
 	public ChartDataProvider() {
 		domainOptional = ModelRegistryPlugin.getModelRegistry().getEditingDomain();

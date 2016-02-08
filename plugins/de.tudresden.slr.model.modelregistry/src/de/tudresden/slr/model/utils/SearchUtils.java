@@ -8,10 +8,10 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermComparator;
+import de.tudresden.slr.model.taxonomy.util.TermComparer;
 
 public class SearchUtils {
-	private static TermComparator termComparator = new TermComparator();
+	private static TermComparer termComparator = new TermComparer();
 	
 	public static Term findTermInDocument(Document document, Term other) {
 		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
