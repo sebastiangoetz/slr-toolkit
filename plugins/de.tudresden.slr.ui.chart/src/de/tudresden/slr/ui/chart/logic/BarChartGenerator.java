@@ -15,7 +15,6 @@ package de.tudresden.slr.ui.chart.logic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
@@ -47,6 +46,12 @@ import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
 public class BarChartGenerator {
 
+	/**
+	 * Creates a bar chart from a given input
+	 * @param input Input data
+	 * @param title Chart title
+	 * @return The bar chart
+	 */
 	public final Chart createBar(Map<String, Integer> input, String title) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 
@@ -72,38 +77,38 @@ public class BarChartGenerator {
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		xAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
+		//TODO: Find a more intelligent way to set the rotation...
+		//Rotate labels even further if we have many bars
+		if(input.size() > 15){
+			xAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
+		}
+		xAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
 
 		// Y-Axis
 		Axis yAxisPrimary = cwaBar.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		yAxisPrimary.setOrientation(Orientation.VERTICAL_LITERAL);
-		// yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 
-		// create the dataset from the map
-
-		List<String> names = new ArrayList<>(input.keySet());
-		List<Double> values = names.stream().mapToDouble(input::get).boxed().collect(Collectors.toList());
-
+		List<String> names = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+		
+		input.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).forEach(x -> {
+			names.add(x.getKey());
+			values.add((double)x.getValue());
+		});
+		
 		TextDataSet categoryValues = TextDataSetImpl.create(names);
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
-
-		// Data Set
-		// TextDataSet categoryValues = TextDataSetImpl.create(new String[] {
-		//				"Item 1", "Item 2", "Item 3", "Item 4", "Item 5" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		// NumberDataSet orthoValues1 = NumberDataSetImpl.create(new double[] {
-		// 25, 35, 15, 5, 20 });
-		// NumberDataSet orthoValues2 = NumberDataSetImpl.create(new double[] {
-		// 5,
-		// 10, 25, 10, 5 });
-
+		
 		SampleData sd = DataFactory.eINSTANCE.createSampleData();
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
-		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
+		sdBase.setDataSetRepresentation("");
 		sd.getBaseSampleData().add(sdBase);
 
 		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE.createOrthogonalSampleData();
-		sdOrthogonal1.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal1.setDataSetRepresentation("");
 		sdOrthogonal1.setSeriesDefinitionIndex(0);
 		sd.getOrthogonalSampleData().add(sdOrthogonal1);
 
@@ -122,14 +127,12 @@ public class BarChartGenerator {
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
 		bs1.getLabel().setVisible(true);
-		bs1.setLabelPosition(Position.INSIDE_LITERAL);
+		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
 
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
-		// sdY.getSeries( ).add( bs2 );
 
 		return cwaBar;
-
 	}
 }
