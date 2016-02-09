@@ -24,7 +24,7 @@ public class ChartGenerator {
 
 	public final static Chart createBubble(List<BubbleDataContainer> input) {
 
-		return new TaxonomyBubbleChart().createBubble(input);
+		return new BubbleChartGenerator().createBubble(input);
 	}
 
 }
