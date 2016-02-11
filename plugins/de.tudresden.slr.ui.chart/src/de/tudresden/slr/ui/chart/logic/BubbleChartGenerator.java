@@ -1,19 +1,15 @@
 package de.tudresden.slr.ui.chart.logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.OptionalInt;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
-import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
+import org.eclipse.birt.chart.model.attribute.MarkerType;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
@@ -22,68 +18,44 @@ import org.eclipse.birt.chart.model.component.Scale;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
-import org.eclipse.birt.chart.model.data.BubbleDataSet;
 import org.eclipse.birt.chart.model.data.DataFactory;
 import org.eclipse.birt.chart.model.data.OrthogonalSampleData;
 import org.eclipse.birt.chart.model.data.SampleData;
 import org.eclipse.birt.chart.model.data.SeriesDefinition;
 import org.eclipse.birt.chart.model.data.TextDataSet;
-import org.eclipse.birt.chart.model.data.impl.BubbleDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.NumberDataElementImpl;
+import org.eclipse.birt.chart.model.data.impl.NumberDataSetImpl;
 import org.eclipse.birt.chart.model.data.impl.SeriesDefinitionImpl;
 import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
-import org.eclipse.birt.chart.model.layout.Plot;
-import org.eclipse.birt.chart.model.type.BubbleSeries;
-import org.eclipse.birt.chart.model.type.impl.BubbleSeriesImpl;
-
-import de.tudresden.slr.model.taxonomy.Term;
+import org.eclipse.birt.chart.model.type.ScatterSeries;
+import org.eclipse.birt.chart.model.type.impl.ScatterSeriesImpl;
 
 public class BubbleChartGenerator {
-
-	private Map<Term, Integer> scriptMappings = new HashMap<Term, Integer>();
-	Map<Term, List<BubbleDataContainer>> ySeriesMap;
-
-	private String createScriptString(Map<Term, Integer> scriptMappings) {
-		String formatSeriesLabels = "\nfunction beforeDrawDataPointLabel( dataPointHint, label, iChartScriptContext){\n"
-				+ "\tvar oldLabel = label.getCaption().getValue();\n"
-				+ "\tvar newLabel = oldLabel.match(/S(\\d*)\\./);\n"
-				+ "\tlabel.getCaption().setValue(newLabel[1]);\n}\n";
-		// here i get rid of 0 and also the highest value in the script mapping
-		// + 1 so no numbers are displayed on the y-axis
-		int max = Collections.max(scriptMappings.values()) + 1;
-		String output = "\nfunction beforeDrawAxisLabel(axis, label, scriptContext){\n";
-		output += "\tif (label.getCaption().getValue() >= "	+ max + " || label.getCaption().getValue() <= 0) {\n\t\tlabel.getCaption().setValue(\"\");\n\t} ";
-		for (Term t : scriptMappings.keySet()) {
-			output += "\telse if (label.getCaption( ).getValue( ) == "
-					+ formatForJS(String.valueOf(scriptMappings.get(t))) + "){\n"
-					+ "\t\tlabel.getCaption().setValue("
-					+ formatForJS(t.getName()) + " )\n\t}\n";
-		}
-		output += "}\n" + formatSeriesLabels;
-		return output;
-	}
-
+	/**
+	 * Creates a scatter plot that emulates a bubble chart with non-overlapping bubbles.
+	 * @param input
+	 * @return Scatter plot
+	 */
 	public final Chart createBubble(List<BubbleDataContainer> input) {
-		createScriptMappingsForYAxis(input);
-		ChartWithAxes cwaBubble = ChartWithAxesImpl.create();
-
-		cwaBubble.setType("Bubble Chart");
-		cwaBubble.setSubType("Standard Bubble Chart");
+		ChartWithAxes cwaScatter = ChartWithAxesImpl.create();
+		StringBuilder jsScript = new StringBuilder();
+		cwaScatter.setType("Scatter Chart");
+		cwaScatter.setSubType("Standard Scatter Chart");
+		
 		// Plot
-		cwaBubble.getBlock().setBackground(ColorDefinitionImpl.WHITE());
-		cwaBubble.getBlock().getOutline().setVisible(false);
-		Plot p = cwaBubble.getPlot();
-		p.getClientArea().setBackground(ColorDefinitionImpl.WHITE());
+		cwaScatter.getBlock().setBackground(ColorDefinitionImpl.WHITE());
+		cwaScatter.getPlot().getClientArea().getOutline().setVisible( false );
+		cwaScatter.getPlot().getClientArea().setBackground(ColorDefinitionImpl.WHITE());
 
 		// Title
-		cwaBubble.getTitle().getLabel().getCaption().setValue("Sub class comparison");
+		cwaScatter.getTitle().getLabel().getCaption().setValue("Sub class comparison");
 
 		// Legend
-		cwaBubble.getLegend().setVisible(false);
-
+		cwaScatter.getLegend().setVisible(false);
+		
 		// X-Axis
-		Axis xAxisPrimary = cwaBubble.getPrimaryBaseAxes()[0];
+		Axis xAxisPrimary = ((ChartWithAxesImpl)cwaScatter).getPrimaryBaseAxes()[0];
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
@@ -101,15 +73,14 @@ public class BubbleChartGenerator {
 		xAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
 
 		// Y-Axis
-		int max = Collections.max(scriptMappings.values()) + 1;
 		long numberOfYTerms = input.stream().map(x -> x.getyTerm().getName()).distinct().count();
-		Axis yAxisPrimary = cwaBubble.getPrimaryOrthogonalAxis(xAxisPrimary);
+		Axis yAxisPrimary = cwaScatter.getPrimaryOrthogonalAxis(xAxisPrimary);
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
 		yAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		Scale yScale = yAxisPrimary.getScale();
 		yScale.setStep(1);
 		yScale.setMin(NumberDataElementImpl.create(0));
-		yScale.setMax(NumberDataElementImpl.create(max));
+		yScale.setMax(NumberDataElementImpl.create(numberOfYTerms + 1));
 		if(numberOfYTerms <= 10){
 			yAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
 			yAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
@@ -122,7 +93,8 @@ public class BubbleChartGenerator {
 		OptionalInt maxStringLength = input.stream().map(x -> x.getyTerm().getName().length()).mapToInt(Integer::intValue).max();
 		if(maxStringLength.isPresent()){
 			double factor = yAxisPrimary.getLabel().getCaption().getFont().getRotation() != 0 ? 1 : 1.4;
-			yAxisPrimary.setLabelSpan(maxStringLength.getAsInt() * 4.2 * factor);
+			double margin = maxStringLength.getAsInt() * 4.2 * factor;
+			yAxisPrimary.setLabelSpan(margin >= 20 ? margin : 20);
 		} else {
 			yAxisPrimary.setLabelSpan(75);
 		}
@@ -130,94 +102,185 @@ public class BubbleChartGenerator {
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		yAxisPrimary.setLabelPosition(Position.LEFT_LITERAL);
 		yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
-
-		SampleData sd = DataFactory.eINSTANCE.createSampleData();
-		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData();
-		sdBase.setDataSetRepresentation("");
+		
+		List<String> xTerms = createXTerms(input, jsScript);
+		TextDataSet dsNumericValues1 = TextDataSetImpl.create(xTerms);
+		OptionalInt maxValue = input.stream().mapToInt(x -> x.getBubbleSize()).max();
+		jsScript.append("var maxValue = " + maxValue.getAsInt() + ";\n");
+		
+		SampleData sd = DataFactory.eINSTANCE.createSampleData( );
+		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData( );
+		sdBase.setDataSetRepresentation("");//$NON-NLS-1$
 		sd.getBaseSampleData().add(sdBase);
 
-		OrthogonalSampleData sdOrthogonal1 = DataFactory.eINSTANCE.createOrthogonalSampleData();
-		sdOrthogonal1.setDataSetRepresentation("");
-		sdOrthogonal1.setSeriesDefinitionIndex(0);
-		sd.getOrthogonalSampleData().add(sdOrthogonal1);
-
-		cwaBubble.setSampleData(sd);
+		OrthogonalSampleData sdOrthogonal = DataFactory.eINSTANCE.createOrthogonalSampleData( );
+		sdOrthogonal.setDataSetRepresentation("");//$NON-NLS-1$
+		sdOrthogonal.setSeriesDefinitionIndex(0);
+		sd.getOrthogonalSampleData().add(sdOrthogonal);
+		
+		cwaScatter.setSampleData( sd );
 
 		// X-Series
+		Series seBase = SeriesImpl.create( );
+		seBase.setDataSet(dsNumericValues1);
+
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
-
-		// Set script for Chart
-		cwaBubble.setScript(createScriptString(scriptMappings));
-		List<String> xValues = createXLabels(input);
-
-		Series seCategory = SeriesImpl.create();
-		TextDataSet categoryValues = TextDataSetImpl.create(xValues);
-		seCategory.setDataSet(categoryValues);
-		sdX.getSeriesPalette().shift(0);
-		xAxisPrimary.getSeriesDefinitions().add(sdX);
-		sdX.getSeries().add(seCategory);
-
+		xAxisPrimary.getSeriesDefinitions( ).add(sdX);
+		sdX.getSeries().add( seBase );
+		
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
-		sdY.getSeriesPalette().shift(-1);
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
+		createYSeries(input, xTerms, sdY, jsScript);
+		
+		//Add JS
+		appendJsScript(jsScript);
+		cwaScatter.setScript(jsScript.toString());
 
-		ySeriesMap = createYSeriesMap(input);
-		addSeries(ySeriesMap, sdY);
-		return cwaBubble;
+		return cwaScatter;
 	}
 
-	private List<String> createXLabels(List<BubbleDataContainer> input) {
-		SortedSet<String> xValues = new TreeSet<>();
-		for (BubbleDataContainer b : input) {
-			xValues.add(b.getxTerm().getName());
+	/**
+	 * Gets a sorted list of distinct terms for the x-axis.
+	 * Also writes JS variables to a StringBuilder
+	 * @param input
+	 * @param jsScript StrinBuilder for JS variables
+	 * @return A sorted list of distinct terms.
+	 */
+	private List<String> createXTerms(List<BubbleDataContainer> input, StringBuilder jsScript) {
+		List<String> xTerms = input.stream().map(x -> x.getxTerm().getName()).distinct().sorted().collect(Collectors.toList());
+		jsScript.append("\n");
+		jsScript.append("var seriesLength = " + xTerms.size() + ";\n");
+		jsScript.append("var columns = " + xTerms.size() + ";\n");
+		return xTerms;
+	}
+
+	/**
+	 * Creates y-series. Each data point in each series uses the same value (1.0 for the first series, 2.0 for the second etc.).
+	 * Also builds JS code in a StringBuilder.
+	 * @param input
+	 * @param xTerms Terms of the x-axis
+	 * @param sd Series definition for y-axis.
+	 * @param jsScript StringBuilder for JS variables.
+	 */
+	private void createYSeries(List<BubbleDataContainer> input, List<String> xTerms, SeriesDefinition sd, StringBuilder jsScript) {
+		int xTermsLength = xTerms.size();
+		List<String> yTerms = input.stream().map(x -> x.getyTerm().getName()).distinct().sorted().collect(Collectors.toList());
+		StringBuilder jsLabels = new StringBuilder();
+		
+		jsLabels.append("var labels = {\"0\" : \"\", ");
+		jsScript.append("var rows = " + (yTerms.size() + 1)  + ";\n");
+		jsScript.append("var seriesPosition = {");
+		int count = 1;
+		for(String yTerm : yTerms){
+			ScatterSeries ss = (ScatterSeries) ScatterSeriesImpl.create( );
+			ss.getMarkers().stream().forEach(m -> m.setType(MarkerType.CIRCLE_LITERAL));
+			ss.getLabel().setVisible(true);
+			ss.setDataSet(NumberDataSetImpl.create(DoubleStream.iterate(count, i -> i).limit(xTermsLength).toArray()));
+			String jsonKey = sanitizeJsonKey(yTerm);
+			ss.setSeriesIdentifier(jsonKey);
+			sd.getSeries().add(ss);
+			
+			jsScript.append("\"" + jsonKey +"\": [");
+			input.stream().filter(x -> x.getyTerm().getName().equals(yTerm))
+							.sorted((a, b) -> a.getxTerm().getName().compareTo(b.getxTerm().getName()))
+							.mapToInt(y -> y.getBubbleSize()).forEach(z -> {jsScript.append(z);	jsScript.append(",");});
+			jsScript.append("],");
+			
+			jsLabels.append("\"" + count + "\": \"");
+			jsLabels.append(yTerms.get(count - 1));
+			jsLabels.append("\", ");
+			count++;
 		}
-		return new ArrayList<String>(xValues);
-
+		jsLabels.append("\"" + (yTerms.size() + 1) + "\": \"\"};\n");
+		jsScript.append("};\n");
+		jsScript.append(jsLabels);
 	}
 
-	private Map<Term, List<BubbleDataContainer>> createYSeriesMap(List<BubbleDataContainer> input) {
-		Map<Term, List<BubbleDataContainer>> yMap = new HashMap<>();
-		for (BubbleDataContainer b : input) {
-			if (yMap.get(b.getyTerm()) == null) {
-				yMap.put(b.getyTerm(), new ArrayList<BubbleDataContainer>());
-			}
-			if (yMap.containsKey(b.getyTerm())) {
-				yMap.get(b.getyTerm()).add(b);
-			}
-		}
-		return yMap;
+	/**
+	 * Sanitize term names (or any other string) for use as JSON key.
+	 * @param Any string
+	 * @return Sanitized string
+	 */
+	private String sanitizeJsonKey(String str) {
+		return str.replaceAll("[^\\w]", "_");
 	}
 
-	private void addSeries(Map<Term, List<BubbleDataContainer>> yMap,
-			SeriesDefinition sdY) {
-		for (Term t : yMap.keySet()) {
-			List<BubbleEntry> yValues = new ArrayList<>();
-			for (BubbleDataContainer b : yMap.get(t)) {
-				// I need to retrieve the Mapping from yTerm to Integer here
-				yValues.add(new BubbleEntry(Integer.valueOf(scriptMappings.get(b.getyTerm())), Integer.valueOf(b.getBubbleSize())));
-			}
-			BubbleDataSet values = BubbleDataSetImpl.create(yValues);
-			BubbleSeries bs = (BubbleSeries) BubbleSeriesImpl.create();
-			bs.getLabel().setVisible(true);
-			bs.setLabelPosition(Position.INSIDE_LITERAL);
-			bs.setDataSet(values);
-			sdY.getSeries().add(bs);
-
-		}
+	/**
+	 * Add JS code.
+	 * @param jsValues
+	 */
+	private void appendJsScript(StringBuilder jsValues) {
+		jsValues.append("var count = 0;\n");
+		jsValues.append("var labelCount = 0;\n");
+		jsValues.append("var resizeFactor;\n");
+		jsValues.append("/**\n");
+		jsValues.append(" * Called before drawing each marker.\n");
+		jsValues.append(" * \n");
+		jsValues.append(" * @param marker\n");
+		jsValues.append(" *            Marker\n");
+		jsValues.append(" * @param dph\n");
+		jsValues.append(" *            DataPointHints\n");
+		jsValues.append(" * @param icsc\n");
+		jsValues.append(" *            IChartScriptContext\n");
+		jsValues.append(" */\n");
+		jsValues.append("function beforeDrawMarker( marker, dph, icsc ) {\n");
+		jsValues.append("\tvar seriesValue = dph.getSeriesValue();\n");
+		jsValues.append("\tvar size = 1;\n");
+		jsValues.append("\tif(seriesPosition[seriesValue] != void 0 && seriesPosition[seriesValue][count%seriesLength] != void 0){\n");
+		jsValues.append("\t\tsize = seriesPosition[seriesValue][count%seriesLength];\n");
+		jsValues.append("\t}\n");
+		jsValues.append("\tif(resizeFactor == void 0){\n");
+		jsValues.append("\t\tvar chart = icsc.getChartInstance()\n");
+		jsValues.append("\t\tvar bounds =  chart.getBlock().getBounds();\n");
+		jsValues.append("\t\tvar width = bounds.getWidth();\n");
+		jsValues.append("\t\tvar height = bounds.getHeight();\n");
+		jsValues.append("\t\tvar maxSize = width/columns;\n");
+		jsValues.append("\t\tif(height/rows < maxSize){\n");
+		jsValues.append("\t\t\tmaxSize = height/columns;\n");
+		jsValues.append("\t\t}\n");
+		jsValues.append("\t\n");
+		jsValues.append("\t\tresizeFactor = ((maxSize/2)/maxValue) * 0.9;\n");
+		jsValues.append("\t}\n");
+		jsValues.append("\tmarker.setSize(size * resizeFactor);\n");
+		jsValues.append("\tcount++;\n");
+		jsValues.append("}\n");
+		jsValues.append("/**\n");
+		jsValues.append(" * Called before rendering each label on a given Axis.\n");
+		jsValues.append(" * \n");
+		jsValues.append(" * @param axis\n");
+		jsValues.append(" *            Axis\n");
+		jsValues.append(" * @param label\n");
+		jsValues.append(" *            Label\n");
+		jsValues.append(" * @param icsc\n");
+		jsValues.append(" *            IChartScriptContext\n");
+		jsValues.append(" */\n");
+		jsValues.append("function beforeDrawAxisLabel( axis, label, icsc )\n");
+		jsValues.append("{\n");
+		jsValues.append("\tif(labels[label.getCaption().getValue()] != void 0){\n");
+		jsValues.append("\t\tlabel.getCaption().setValue(labels[label.getCaption().getValue()]);\n");
+		jsValues.append("\t}\n");
+		jsValues.append("}\n");
+		jsValues.append("/**\n");
+		jsValues.append(" * Called before rendering the label for each datapoint.\n");
+		jsValues.append(" * \n");
+		jsValues.append(" * @param dph\n");
+		jsValues.append(" *            DataPointHints\n");
+		jsValues.append(" * @param label\n");
+		jsValues.append(" *            Label\n");
+		jsValues.append(" * @param icsc\n");
+		jsValues.append(" *            IChartScriptContext\n");
+		jsValues.append(" */\n");
+		jsValues.append("function beforeDrawDataPointLabel( dph, label, icsc )\n");
+		jsValues.append("{\n");
+		jsValues.append("\tvar seriesValue = dph.getSeriesValue();\n");
+		jsValues.append("\tvar size = void 0;\n");
+		jsValues.append("\tif(seriesPosition[seriesValue] != void 0 && seriesPosition[seriesValue][count%seriesLength] != void 0){\n");
+		jsValues.append("\t\tsize = seriesPosition[seriesValue][labelCount%seriesLength];\n");
+		jsValues.append("\t}\n");
+		jsValues.append("\tlabel.getCaption().setValue(size);\n");
+		jsValues.append("\t(size <= 0) && label.setVisible(false);\n");
+		jsValues.append("\t(size > 0) && label.setVisible(true);\n");
+		jsValues.append("\tlabelCount++;\n");
+		jsValues.append("}\n");
 	}
-
-	private void createScriptMappingsForYAxis(List<BubbleDataContainer> input) {
-		int i = 1;
-		for (BubbleDataContainer b : input) {
-			Term yCandidate = b.getyTerm();
-			int mapping = scriptMappings.containsKey(yCandidate) ? scriptMappings.get(yCandidate) : i;
-			i++;
-			scriptMappings.put(yCandidate, mapping);
-		}
-	}
-
-	public String formatForJS(String toFormat) {
-		return "\"" + toFormat + "\"";
-	}
-
 }
