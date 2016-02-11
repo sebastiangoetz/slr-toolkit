@@ -16,9 +16,8 @@ public class DocumentStorage implements IStorage {
 		this.document = document;
 	}
 
-	@SuppressWarnings(value = { "rawtypes" })
 	@Override
-	public Object getAdapter(Class adapter) {
+	public <T> T getAdapter(Class<T> adapter) {
 		return null;
 	}
 

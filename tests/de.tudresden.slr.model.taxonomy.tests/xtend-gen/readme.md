@@ -1,1 +1,0 @@
-This file ensures that the containing directory is cloned.

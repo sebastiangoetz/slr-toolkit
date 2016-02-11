@@ -448,11 +448,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	}
 
 	/**
-	 * This is how the framework determines which interfaces we implement. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated
+	 * This is how the framework determines which interfaces we implement. 
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getAdapter(Class key) {
 		if (key.equals(IPropertySheetPage.class)) {
