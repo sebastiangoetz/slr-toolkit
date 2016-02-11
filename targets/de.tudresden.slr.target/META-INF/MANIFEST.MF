@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Target
 Bundle-SymbolicName: de.tudresden.slr.target
-Bundle-Version: 0.0.3.qualifier
+Bundle-Version: 0.0.4.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

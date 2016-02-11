@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.3" useFeatures="true" includeLaunchers="true">
+<product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.4" useFeatures="true" includeLaunchers="true">
+
 
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
-      <programArgs>-console -clean -consoleLog -clearPersistedState
+      <programArgs>-console -consoleLog
       </programArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
@@ -105,7 +106,6 @@
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <property name="eclipse.log.level" value="INFO" />
    </configurations>
 
    <preferencesInfo>
