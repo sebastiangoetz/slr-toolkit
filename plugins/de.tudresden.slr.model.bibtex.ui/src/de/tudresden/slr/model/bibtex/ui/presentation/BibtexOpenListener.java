@@ -79,9 +79,16 @@ public class BibtexOpenListener implements IOpenListener, ISelectionChangedListe
 		IWorkbenchPage page = window.getActivePage();
 		if (page != null) {
 			IEditorReference[] editorRef = page.findEditors(input, id, match_flags);
+			if (editorRef.length > 0) {
+				IEditorPart editor = editorRef[0].getEditor(false);
+    			if (editor instanceof IReusableEditor) {
+    				page.reuseEditor((IReusableEditor) editor, input);
+    				page.bringToTop(editor);
+    				return;
+    			}
+			}
 			try{
 				IEditorPart editor = page.openEditor(input, id, activate, match_flags);
-			
 				//We need to update the active document, if the document is already opened		
 				if(editor != null && Arrays.stream(editorRef).anyMatch(x -> x.getEditor(false).equals(editor))){
 					ModelRegistryPlugin.getModelRegistry().setActiveDocument(((BibtexEditor) editor).document);

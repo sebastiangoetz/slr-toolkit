@@ -257,7 +257,7 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 			localParent = parent;
 		}
 		
-		Composite container = new Composite(parent, SWT.NONE);
+		Composite container = new Composite(localParent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 
 		GridData gridData = new GridData();

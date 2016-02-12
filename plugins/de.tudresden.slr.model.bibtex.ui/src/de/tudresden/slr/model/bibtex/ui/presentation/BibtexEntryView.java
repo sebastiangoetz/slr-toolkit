@@ -87,6 +87,7 @@ public class BibtexEntryView extends ViewPart {
 
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
+	public static final String overviewId = BibtexOverviewEditor.ID;
 	public static final String confirmation = "This will close all opened documents without saving them. Do you wish to proceed?";
 	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
@@ -468,6 +469,8 @@ public class BibtexEntryView extends ViewPart {
 		IWorkbenchPage page = window.getActivePage();
 		IEditorReference[] references = page.findEditors(null, editorId, IWorkbenchPage.MATCH_ID);
 		page.closeEditors(references, false);
+		references = page.findEditors(null, overviewId, IWorkbenchPage.MATCH_ID);
+		page.closeEditors(references, false);
 	}
 
 	/**
@@ -577,7 +580,7 @@ public class BibtexEntryView extends ViewPart {
 
 	private void makeActions() {
 		openListener = new BibtexOpenListener(editorId, IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID);
-		selectionListener = openListener;
+		selectionListener = new BibtexOpenListener(overviewId, IWorkbenchPage.MATCH_ID);
 		
 		refreshAction = new Action() {
 			@Override
