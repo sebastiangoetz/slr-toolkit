@@ -69,7 +69,7 @@ public class CreateBubbleChartHandler implements IHandler {
 			Term first = selectionIterator.next();
 			Term second = selectionIterator.next();
 			List<BubbleDataContainer> bubbleChartData = provider.calculateBubbleChartData(first, second);
-			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData);
+			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData,first,second);
 			view.setAndRenderChart(bubbleChart);
 		} else {
 			view.setAndRenderChart(null);
