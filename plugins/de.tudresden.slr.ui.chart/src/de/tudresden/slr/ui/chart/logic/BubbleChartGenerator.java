@@ -31,13 +31,15 @@ import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
 import org.eclipse.birt.chart.model.type.ScatterSeries;
 import org.eclipse.birt.chart.model.type.impl.ScatterSeriesImpl;
 
+import de.tudresden.slr.model.taxonomy.Term;
+
 public class BubbleChartGenerator {
 	/**
 	 * Creates a scatter plot that emulates a bubble chart with non-overlapping bubbles.
 	 * @param input
 	 * @return Scatter plot
 	 */
-	public final Chart createBubble(List<BubbleDataContainer> input) {
+	public final Chart createBubble(List<BubbleDataContainer> input, Term first, Term second) {
 		ChartWithAxes cwaScatter = ChartWithAxesImpl.create();
 		StringBuilder jsScript = new StringBuilder();
 		cwaScatter.setType("Scatter Chart");
@@ -49,7 +51,7 @@ public class BubbleChartGenerator {
 		cwaScatter.getPlot().getClientArea().setBackground(ColorDefinitionImpl.WHITE());
 
 		// Title
-		cwaScatter.getTitle().getLabel().getCaption().setValue("Sub class comparison");
+		cwaScatter.getTitle().getLabel().getCaption().setValue(first.getName().trim()+" / "+second.getName().trim());
 
 		// Legend
 		cwaScatter.getLegend().setVisible(false);

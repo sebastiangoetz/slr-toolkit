@@ -93,11 +93,17 @@ public class BarChartGenerator {
 
 		List<String> names = new ArrayList<>();
 		List<Double> values = new ArrayList<>();
-		
-		input.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).forEach(x -> {
-			names.add(x.getKey());
-			values.add((double)x.getValue());
-		});
+		if(!title.contains("per year")) {
+			input.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).forEach(x -> {
+				names.add(x.getKey());
+				values.add((double)x.getValue());
+			});
+		} else {
+			input.entrySet().stream().forEach(x -> {
+				names.add(x.getKey());
+				values.add((double)x.getValue());
+			});
+		}
 		
 		TextDataSet categoryValues = TextDataSetImpl.create(names);
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
