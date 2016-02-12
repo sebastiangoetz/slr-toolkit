@@ -8,31 +8,27 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermComparer;
+import de.tudresden.slr.model.taxonomy.util.TermUtils;
 
 public class SearchUtils {
-	private static TermComparer termComparator = new TermComparer();
 	
 	public static Term findTermInDocument(Document document, Term other) {
 		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
 		Stream<Term> stream = StreamSupport.stream(iter.spliterator(), false);
-		Optional<Term> result = stream.filter(
-				term -> termComparator.equals(term, other)).findAny();
+		Optional<Term> result = stream.filter(term -> TermUtils.equals(term, other)).findAny();
 		return result.isPresent() ? result.get() : null;
 	}
 
 	public static Term findTermInTaxonomy(Term other) {
-		Optional<Model> taxonomy = ModelRegistryPlugin.getModelRegistry()
-				.getActiveTaxonomy();
+		Optional<Model> taxonomy = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 		if (taxonomy.isPresent()) {
 			TaxonomyIterator iter = new TaxonomyIterator(taxonomy.get());
 			for (Term term : iter) {
-				if (termComparator.equals(term, other)) {
+				if (TermUtils.equals(term, other)) {
 					if (term.eContainer() instanceof Model) {
 						return term;
 					} else {
-						if (term.eContainer() instanceof Term
-								&& other.eContainer() instanceof Term) {
+						if (term.eContainer() instanceof Term && other.eContainer() instanceof Term) {
 							// compare the parents
 							Term parent = (Term) term.eContainer();
 							Term otherParent = (Term) other.eContainer();

@@ -12,7 +12,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermComparer;
+import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 
 public class ChartDataProvider {
@@ -20,7 +20,6 @@ public class ChartDataProvider {
 	private Optional<AdapterFactoryEditingDomain> domainOptional;
 	private AdapterFactoryEditingDomain adapterFactoryEditingDomain;
 	private ArrayList<Resource> resources;
-	private TermComparer termComparator = new TermComparer();
 
 	public ChartDataProvider() {
 		domainOptional = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
@@ -61,7 +60,7 @@ public class ChartDataProvider {
 	private boolean isTermIncludedInTaxonomy(Term startNode, Term searchTerm) {
 		
 		//if (startNode.hashCode() == searchTerm.hashCode())
-		if(termComparator.equals(startNode, searchTerm)){
+		if(TermUtils.equals(startNode, searchTerm)){
 			return true;
 		}
 		ArrayList<Term> subclasses = new ArrayList<>(startNode.getSubclasses());
@@ -90,12 +89,10 @@ public class ChartDataProvider {
 			// TODO: just working for a single bibtex file at the moment
 			for (Document d : getDocumentList(resources.get(0))) {
 				for (Term t : getDimensionsForDocument(d)) {
-					boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(
-							t, searchTerm);
+					boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
 					if (isTermFoundInPaperTaxonomy) {
 						String name = searchTerm.getName();
-						int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm
-								.get(name) : 0;
+						int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm.get(name) : 0;
 						countOfPapersPerSubTerm.put(name, count + 1);
 					}
 				}
@@ -104,17 +101,14 @@ public class ChartDataProvider {
 		return countOfPapersPerSubTerm;
 	}
 
-	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(
-			Term inputTerm) {
+	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(Term inputTerm) {
 		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
 		boolean isTermFoundInPaperTaxonomy = false;
 		for (Document d : getDocumentList(resources.get(0))) {
-			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d,
-					inputTerm) != null;
+			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
 			if (isTermFoundInPaperTaxonomy) {
 				String year = d.getYear();
-				int count = citesPerYear.containsKey(year) ? citesPerYear
-						.get(year) : 0;
+				int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
 				citesPerYear.put(year, count + d.getCites());
 
 			}
