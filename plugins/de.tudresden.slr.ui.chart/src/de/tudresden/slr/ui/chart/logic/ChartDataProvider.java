@@ -172,7 +172,9 @@ public class ChartDataProvider {
 			Term firstTerm, Term secondTerm) {
 		ArrayList<BubbleDataContainer> bubbleChartData = new ArrayList<>();
 		for (Term subclassFromFirst : firstTerm.getSubclasses()) {
+			if(subclassFromFirst.getName().equals("none")) continue;
 			for (Term subclassFromSecond : secondTerm.getSubclasses()) {
+				if(subclassFromSecond.getName().equals("none")) continue;
 				bubbleChartData.add(new BubbleDataContainer(subclassFromFirst,
 						subclassFromSecond, 0));
 			}
