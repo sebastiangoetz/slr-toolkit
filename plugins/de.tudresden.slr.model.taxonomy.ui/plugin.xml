@@ -162,7 +162,22 @@
             defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.CreateCiteHandler"
             id="de.tudresden.slr.model.taxonomy.ui.createcitebar"
             name="Create Cite Bar">
+      </command>   
+      <command
+      		defaulthandler="de.tudresden.slr.model.taxonomy.ui.handlers.RenameTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.renameterm"
+      		name="Rename this term">
+      </command> 
+      <command
+      		defaulthandler="de.tudresden.slr.model.taxonomy.ui.handlers.DeleteTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+      		name="Delete this term">
       </command>
+      <command
+      		defaulthandler="de.tudresden.slr.model.taxonomy.ui.handlers.SplitTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.renameterm"
+      		name="Split this term">
+      </command>     		
     </extension>
     <extension point="org.eclipse.ui.menus">
         <menuContribution
@@ -224,6 +239,21 @@
                   style="push"
                   tooltip="Create Cite Barchart">
             </command>
+         </menuContribution>
+         <menuContribution
+         		locationURI="popup:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+     		<command
+     		 	commandId="de.tudresden.slr.model.taxonomy.ui.renameterm"
+     		 	tooltip="Rename this term">
+     		</command>     
+     		<command
+     		 	commandId="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+     		 	tooltip="Delete this term">
+     		</command>   
+     		<command
+     		 	commandId="de.tudresden.slr.model.taxonomy.ui.splitterm"
+     		 	tooltip="Split this term">
+     		</command>   		 	
          </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">

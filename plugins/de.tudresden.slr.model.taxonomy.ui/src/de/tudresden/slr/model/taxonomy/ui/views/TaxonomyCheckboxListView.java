@@ -12,6 +12,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -20,6 +21,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -114,6 +116,11 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		}
 		viewer.expandAll();
 
+		//Create right-click menu
+        MenuManager menuManager = new MenuManager();
+        Menu menu = menuManager.createContextMenu(viewer.getTree());
+        viewer.getTree().setMenu(menu);
+        getSite().registerContextMenu(menuManager, viewer);
 		getSite().setSelectionProvider(viewer);
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "de.tudresden.slr.model.taxonomy.ui.viewer");
