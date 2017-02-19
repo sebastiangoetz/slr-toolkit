@@ -1,8 +1,20 @@
 package de.tudresden.slr.model.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -41,5 +53,51 @@ public class SearchUtils {
 			}
 		}
 		return other;
+	}
+	
+	public static List<Term> findTermInAllDocuments(Term other) {	
+		Collection<Term> terms = findDocumentsWithTerm(other).values();
+		return Arrays.asList(terms.toArray(new Term[terms.size()]));
+	}
+	
+	public static Map<Document, Term> findDocumentsWithTerm(Term other) {
+		Map<Document, Term> result = new HashMap<>();
+		for (Document d : getDocumentList()) {
+			Term current = findTermInDocument(d, other);
+			if (other != current && current != null) {
+				result.put(d, current);
+			}
+		}
+		return result;
+	}
+	
+	public static Optional<Model> getConainingModel(Term t) {
+		EObject currentNode = t;
+		while (!(currentNode instanceof Model) && currentNode.eContainer() != null) {
+			currentNode = ((Term) currentNode).eContainer();
+		}
+		return currentNode instanceof Model ? Optional.of((Model) currentNode) : Optional.empty();
+	}
+	
+	/**
+	 * Helper function to get a list of documents from a resource
+	 * 
+	 * @param r
+	 *            The resource
+	 * @return
+	 */
+	public static List<Document> getDocumentList() {
+		ArrayList<Document> results = new ArrayList<>();
+		ArrayList<Resource> resources = null;
+		Optional<AdapterFactoryEditingDomain> oDomain = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
+		if (oDomain.isPresent()) {
+			resources = new ArrayList<>(oDomain.get().getResourceSet().getResources());
+			for (EObject e : resources.get(0).getContents()) {
+				if (e instanceof Document) {
+					results.add((Document) e);
+				}
+			}
+		}
+		return results;
 	}
 }
