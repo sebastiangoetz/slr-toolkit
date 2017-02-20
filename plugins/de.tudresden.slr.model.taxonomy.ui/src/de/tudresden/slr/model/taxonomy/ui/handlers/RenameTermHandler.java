@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -39,6 +40,7 @@ public class RenameTermHandler extends AbstractHandler {
 					Model newTaxonomy = EcoreUtil.copy((Model) model.get());
 					entry.getKey().setTaxonomy(newTaxonomy);
 				}
+				Utils.updateBibtexFileForDocument(document);
 				
 			}
 			Optional<Model> model = SearchUtils.getConainingModel(term);

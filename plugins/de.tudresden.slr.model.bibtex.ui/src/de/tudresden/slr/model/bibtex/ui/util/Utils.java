@@ -1,7 +1,13 @@
 package de.tudresden.slr.model.bibtex.ui.util;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -13,6 +19,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.util.TaxonomyToStringConverter;
 
 /**
  * Helpful functions.
@@ -144,6 +152,36 @@ public class Utils {
 			return f.exists();
 		}
 		return false;
+	}
+	
+	public static void updateBibtexFileForDocument(Document document) {
+		IFile iFile = getIFilefromDocument(document);
+		File file = iFile.getRawLocation().makeAbsolute().toFile();
+		try {
+			String content = new String(Files.readAllBytes(file.toPath()));
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String bibRef = document.getKey();
+		Model taxonomy = document.getTaxonomy();
+		String taxonomyRepresentation = TaxonomyToStringConverter.convertToBib(taxonomy);
+		try (Scanner scanner = new Scanner(file)){
+			StringBuilder result = new StringBuilder();
+			String currentLine = null;
+			while (scanner.hasNextLine()) {
+				currentLine = scanner.nextLine();
+				if (currentLine.contains(bibRef)) { 
+					
+				} else {
+					result.append(currentLine).append("\n");
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
