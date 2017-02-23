@@ -68,6 +68,7 @@ public class RenameTermHandler extends AbstractHandler {
 			Model newTaxonomy = EcoreUtil.copy((Model) model.get());
 			ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
 			try {					
+				if (newTaxonomy.getResource() == null) newTaxonomy.setResource(model.get().eResource());
 				newTaxonomy.getResource().save(Collections.EMPTY_MAP);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
