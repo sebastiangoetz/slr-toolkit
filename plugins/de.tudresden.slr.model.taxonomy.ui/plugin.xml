@@ -260,6 +260,16 @@
      		<command
  		 		commandId="de.tudresden.slr.model.taxonomy.ui.createterm"
      		 	tooltip="New Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
      		</command>
      		<command
  		 		commandId="de.tudresden.slr.model.taxonomy.ui.renameterm"
