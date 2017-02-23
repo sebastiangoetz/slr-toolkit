@@ -1,9 +1,8 @@
 package de.tudresden.slr.model.taxonomy.ui.handlers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +24,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.model.utils.TaxonomyUtils;
 
 public class DeleteTermHandler extends AbstractHandler {
 
@@ -74,15 +73,7 @@ public class DeleteTermHandler extends AbstractHandler {
 			Optional<Model> model = SearchUtils.getConainingModel(term);
 			EcoreUtil.remove(term);			
 			if (model.isPresent()) {
-				Model newTaxonomy = EcoreUtil.copy((Model) model.get());
-				ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
-				try {					
-					if (newTaxonomy.getResource() == null) newTaxonomy.setResource(model.get().eResource());
-					newTaxonomy.getResource().save(Collections.EMPTY_MAP);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				TaxonomyUtils.saveTaxonomy(model.get());
 			}
 		}
 		Set<Resource> resourcesToUpdate = new TreeSet<>(

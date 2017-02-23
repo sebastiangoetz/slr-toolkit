@@ -1,24 +1,21 @@
 package de.tudresden.slr.model.taxonomy.ui.handlers;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Optional;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.impl.TaxonomyFactoryImpl;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.model.utils.TaxonomyUtils;
 import dialog.CreateTermDialog;
 import dialog.CreateTermDialog.TermPosition;
 
@@ -50,15 +47,7 @@ public class CreateTermHandler extends AbstractHandler {
 				}
 				Optional<Model> model = SearchUtils.getConainingModel(term);
 				if (model.isPresent()) {
-					Model newTaxonomy = EcoreUtil.copy(model.get());
-					ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
-					try {					
-						if (newTaxonomy.getResource() == null) newTaxonomy.setResource(model.get().eResource());
-						newTaxonomy.getResource().save(Collections.EMPTY_MAP);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					TaxonomyUtils.saveTaxonomy(model.get());
 				}
 			}
 		}	

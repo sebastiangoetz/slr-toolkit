@@ -1,7 +1,5 @@
 package de.tudresden.slr.model.taxonomy.ui.handlers;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -19,10 +17,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.model.utils.TaxonomyUtils;
 
 public class RenameTermHandler extends AbstractHandler {
 
@@ -62,18 +60,10 @@ public class RenameTermHandler extends AbstractHandler {
 			}				
 			resourcesToUpdate.add(entry.getKey().eResource());			
 		}			
-		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));
+		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));		
 		Optional<Model> model = SearchUtils.getConainingModel(term);
 		if (model.isPresent()) {
-			Model newTaxonomy = EcoreUtil.copy((Model) model.get());
-			ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
-			try {					
-				if (newTaxonomy.getResource() == null) newTaxonomy.setResource(model.get().eResource());
-				newTaxonomy.getResource().save(Collections.EMPTY_MAP);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			TaxonomyUtils.saveTaxonomy(model.get());			
 		}
 	}
 
