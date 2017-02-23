@@ -1,17 +1,22 @@
 package de.tudresden.slr.model.taxonomy.ui.handlers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -23,7 +28,6 @@ import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 
 public class DeleteTermHandler extends AbstractHandler {
@@ -50,38 +54,45 @@ public class DeleteTermHandler extends AbstractHandler {
 					0);
 			dialog.setBlockOnOpen(true);
 			if (dialog.open() == MessageDialog.OK && dialog.getReturnCode() == MessageDialog.OK) {
-				Iterator iter = currentSelection.iterator();
-				while (iter.hasNext()) {
-					Term currentTerm = (Term) iter.next();
-					Map<Document, Term> termsInDocuments = SearchUtils.findDocumentsWithTerm(currentTerm);
-					for (Map.Entry<Document, Term> entry : termsInDocuments.entrySet()) {
-						EcoreUtil.remove(entry.getValue());
-						Optional<Model> model = SearchUtils.getConainingModel(entry.getValue());
-						if (model.isPresent()) {
-							Model newTaxonomy = EcoreUtil.copy((Model) model.get());
-							entry.getKey().setTaxonomy(newTaxonomy);					
-						}				
-						BibtexFileWriter.updateBibtexFile(entry.getKey().eResource());
-					}
-					Optional<Model> model = SearchUtils.getConainingModel(currentTerm);
-					EcoreUtil.remove(currentTerm);					
-					if (model.isPresent()) {
-						Model newTaxonomy = EcoreUtil.copy((Model) model.get());
-						ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
-						try {					
-							// TODO save once per resource
-							newTaxonomy.getResource().save(Collections.EMPTY_MAP);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}	
-					
-				}
+				List<Term> termsToDelete = new ArrayList<>(currentSelection.size());
+				currentSelection.toList().stream().filter(s -> s instanceof Term).forEach(s -> termsToDelete.add((Term) s));;
+				deleteTerm(termsToDelete);
 			}
 		}
 		
 		return null;
+	}
+	
+	private void deleteTerm(List<Term> termsToDelete) {
+		Map<Document, List<Term>> termsInDocuments = new HashMap<>(); 
+		for (Term term : termsToDelete) {
+			Map<Document, Term> termInDocuments = SearchUtils.findDocumentsWithTerm(term);
+			termInDocuments.forEach((k, v) -> {
+					if (termsInDocuments.containsKey(k)) termsInDocuments.get(k).add(v);
+					else termsInDocuments.put(k, new LinkedList<Term>(Arrays.asList(v)));
+			});  
+			Optional<Model> model = SearchUtils.getConainingModel(term);
+			EcoreUtil.remove(term);			
+			if (model.isPresent()) {
+				Model newTaxonomy = EcoreUtil.copy((Model) model.get());
+				ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(newTaxonomy);
+				try {					
+					if (newTaxonomy.getResource() == null) newTaxonomy.setResource(model.get().eResource());
+					newTaxonomy.getResource().save(Collections.EMPTY_MAP);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		Set<Resource> resourcesToUpdate = new TreeSet<>(
+				(Resource r1, Resource r2) -> r1 == r2 ? 0 : 1);
+		for (Map.Entry<Document, List<Term>> entry : termsInDocuments.entrySet()) {	
+			entry.getValue().forEach(t -> EcoreUtil.remove(t));
+			Model newTaxonomy = EcoreUtil.copy(entry.getKey().getTaxonomy());
+			resourcesToUpdate.add(entry.getKey().eResource());
+		}
+		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));
 	}
 
 }
