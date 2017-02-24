@@ -12,8 +12,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.impl.TaxonomyFactoryImpl;
 import de.tudresden.slr.model.taxonomy.ui.dialog.CreateTermDialog;
 import de.tudresden.slr.model.taxonomy.ui.dialog.CreateTermDialog.TermPosition;
 import de.tudresden.slr.model.utils.SearchUtils;
@@ -33,7 +33,8 @@ public class CreateTermHandler extends AbstractHandler {
 			CreateTermDialog dialog = new CreateTermDialog(null, term.getName());
 			dialog.setBlockOnOpen(true);
 			if (dialog.open() == InputDialog.OK) {
-				Term createdTerm = TaxonomyFactoryImpl.eINSTANCE.createTerm();
+				// Some reflections to get factory
+				Term createdTerm = TaxonomyFactory.eINSTANCE.createTerm();
 				createdTerm.setName(dialog.getTermName());
 				if (dialog.getTermPosition() == TermPosition.SUBTERM) {
 					term.getSubclasses().add(createdTerm);
