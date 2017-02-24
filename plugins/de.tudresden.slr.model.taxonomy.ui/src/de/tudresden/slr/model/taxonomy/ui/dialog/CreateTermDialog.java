@@ -1,4 +1,4 @@
-package dialog;
+package de.tudresden.slr.model.taxonomy.ui.dialog;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
