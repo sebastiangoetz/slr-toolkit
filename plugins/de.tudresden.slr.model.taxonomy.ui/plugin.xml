@@ -176,7 +176,7 @@
       <command
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.DeleteTermHandler"
       		id="de.tudresden.slr.model.taxonomy.ui.deleteterm"
-      		name="Delete Selected Term">
+      		name="Delete Selected Term(s)">
       </command>
       <command
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.MoveTermHandler"
