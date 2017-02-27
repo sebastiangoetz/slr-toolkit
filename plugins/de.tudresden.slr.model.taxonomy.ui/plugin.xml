@@ -181,7 +181,7 @@
       <command
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.MoveTermHandler"
       		id="de.tudresden.slr.model.taxonomy.ui.moveterm"
-      		name="Move Selected Term">
+      		name="Move Selected Term(s)">
       </command>    
       <command
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.MergeTermsHandler"
