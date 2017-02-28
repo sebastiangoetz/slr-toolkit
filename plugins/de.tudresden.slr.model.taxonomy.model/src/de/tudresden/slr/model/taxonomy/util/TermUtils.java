@@ -1,5 +1,10 @@
 package de.tudresden.slr.model.taxonomy.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.EObject;
+
 import de.tudresden.slr.model.taxonomy.Term;
 
 public class TermUtils {
@@ -21,4 +26,15 @@ public class TermUtils {
 		}
 		return equals((Term)obj1.eContainer(), (Term)obj2.eContainer());
 	}
+
+	public static boolean contains(Term container, Term containee) {
+		EObject c = containee;
+		while ((c = c.eContainer()) != null) {
+			if (c instanceof Term && equals(container, (Term) c)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
