@@ -79,17 +79,18 @@ public class MoveTermHandler extends AbstractHandler {
 			EcoreUtil.remove(termToMove);
 			// store the term at the new position
 			// TODO extract logic
-			if (position == TermPosition.SUBTERM) {
-				target.getSubclasses().add(termToMove);
-			} else if (position == TermPosition.NEIGHBOR) {
-				EObject container = target.eContainer();
-				if (container instanceof Term) {
-					((Term) container).getSubclasses().add(termToMove);
-				} else if (container instanceof Model) {
-					((Model) container).getDimensions().add(termToMove);
-				}
-			}
 			if (model.isPresent()) {
+				Term targetInModel = SearchUtils.findTermInTaxonomy(model.get(), target);
+				if (position == TermPosition.SUBTERM) {
+					targetInModel.getSubclasses().add(termToMove);
+				} else if (position == TermPosition.NEIGHBOR) {
+					EObject container = targetInModel.eContainer();
+					if (container instanceof Term) {
+						((Term) container).getSubclasses().add(termToMove);
+					} else if (container instanceof Model) {
+						((Model) container).getDimensions().add(termToMove);
+					}
+				}
 				TaxonomyUtils.saveTaxonomy(model.get());
 			}						
 		}															
@@ -98,11 +99,12 @@ public class MoveTermHandler extends AbstractHandler {
 		// update each bibtex entry
 		for (Map.Entry<Document, List<Term>> entry : termsInDocuments.entrySet()) {
 			for (Term termToMove : entry.getValue()) {
-				Term targetInDocument = SearchUtils.findTermInDocument(entry.getKey(), termToMove);
+				Term targetInDocument = SearchUtils.findTermInDocument(entry.getKey(), target);
 				// remove the original term from the taxonomy
 				EcoreUtil.remove(termToMove);
 				// store the term at the new position
 				// TODO extract logic
+				// TODO !!! targetInDocument can be null
 				if (position == TermPosition.SUBTERM) {
 					targetInDocument.getSubclasses().add(termToMove);
 				} else if (position == TermPosition.NEIGHBOR) {

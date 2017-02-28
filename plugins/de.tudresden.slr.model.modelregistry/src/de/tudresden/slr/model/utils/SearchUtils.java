@@ -34,19 +34,26 @@ public class SearchUtils {
 	public static Term findTermInTaxonomy(Term other) {
 		Optional<Model> taxonomy = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 		if (taxonomy.isPresent()) {
-			TaxonomyIterator iter = new TaxonomyIterator(taxonomy.get());
-			for (Term term : iter) {
-				if (TermUtils.equals(term, other)) {
-					if (term.eContainer() instanceof Model) {
-						return term;
-					} else {
-						if (term.eContainer() instanceof Term && other.eContainer() instanceof Term) {
-							// compare the parents
-							Term parent = (Term) term.eContainer();
-							Term otherParent = (Term) other.eContainer();
-							if (parent.getName().equals(otherParent.getName())) {
-								return term;
-							}
+			return findTermInTaxonomy(taxonomy.get(), other);
+			
+			
+		}
+		return other;
+	}
+	
+	public static Term findTermInTaxonomy(Model taxonomy, Term other) {
+		TaxonomyIterator iter = new TaxonomyIterator(taxonomy);
+		for (Term term : iter) {
+			if (TermUtils.equals(term, other)) {
+				if (term.eContainer() instanceof Model) {
+					return term;
+				} else {
+					if (term.eContainer() instanceof Term && other.eContainer() instanceof Term) {
+						// compare the parents
+						Term parent = (Term) term.eContainer();
+						Term otherParent = (Term) other.eContainer();
+						if (parent.getName().equals(otherParent.getName())) {
+							return term;
 						}
 					}
 				}
