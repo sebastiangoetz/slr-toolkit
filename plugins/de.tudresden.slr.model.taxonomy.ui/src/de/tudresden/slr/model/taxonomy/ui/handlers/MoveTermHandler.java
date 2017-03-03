@@ -2,6 +2,7 @@ package de.tudresden.slr.model.taxonomy.ui.handlers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.ui.dialog.MoveTermDialog;
 import de.tudresden.slr.model.taxonomy.ui.dialog.MoveTermDialog.TermPosition;
@@ -98,25 +100,47 @@ public class MoveTermHandler extends AbstractHandler {
 				(Resource r1, Resource r2) -> r1 == r2 ? 0 : 1);
 		// update each bibtex entry
 		for (Map.Entry<Document, List<Term>> entry : termsInDocuments.entrySet()) {
+			Document doc = entry.getKey();			
 			for (Term termToMove : entry.getValue()) {
-				Term targetInDocument = SearchUtils.findTermInDocument(entry.getKey(), target);
-				// remove the original term from the taxonomy
+				if (SearchUtils.findTermInDocument(doc, target) == null) {
+					// build structure in document										
+					Term targetDuplicate = EcoreUtil.copy(target);
+					Deque<Term> taxonomyRebuild = new LinkedList<>();
+					do {
+						taxonomyRebuild.offerFirst(TaxonomyFactory.eINSTANCE.createTerm());
+						taxonomyRebuild.peekFirst().setName(targetDuplicate.getName());
+						targetDuplicate = targetDuplicate.eContainer() instanceof Term ? (Term) targetDuplicate.eContainer() : null;
+					} while (targetDuplicate != null && SearchUtils.findTermInDocument(doc, targetDuplicate) == null);
+					Term rebuild = taxonomyRebuild.pollFirst();
+					Term last = rebuild;
+					while (taxonomyRebuild.peekFirst() != null) {						
+						last.getSubclasses().add(taxonomyRebuild.peekFirst());
+						last = taxonomyRebuild.pollFirst();						
+					}
+					if (targetDuplicate == null) {
+						// dimension is missing
+						doc.getTaxonomy().getDimensions().add(rebuild);
+					} else {
+						// term is missing
+						SearchUtils.findTermInDocument(doc, targetDuplicate).getSubclasses().add(rebuild);
+					}										
+				}									
 				EcoreUtil.remove(termToMove);
 				// store the term at the new position
 				// TODO extract logic
-				// TODO !!! targetInDocument can be null
+				Term targetInModel = SearchUtils.findTermInDocument(doc, target);
 				if (position == TermPosition.SUBTERM) {
-					targetInDocument.getSubclasses().add(termToMove);
+					targetInModel.getSubclasses().add(termToMove);
 				} else if (position == TermPosition.NEIGHBOR) {
-					EObject container = targetInDocument.eContainer();
+					EObject container = targetInModel.eContainer();
 					if (container instanceof Term) {
 						((Term) container).getSubclasses().add(termToMove);
 					} else if (container instanceof Model) {
 						((Model) container).getDimensions().add(termToMove);
 					}
-				}
+				}				
 			}
-			Model newTaxonomy = EcoreUtil.copy(entry.getKey().getTaxonomy());
+			Model newTaxonomy = EcoreUtil.copy(doc.getTaxonomy());
 			resourcesToUpdate.add(entry.getKey().eResource());		
 		}
 		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));
