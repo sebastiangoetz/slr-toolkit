@@ -73,20 +73,20 @@ public class TermMerger {
 			}
 		}
 		
-		// now merge all terms for the main taxonomy as well as for the taxonomies of the documents
-		// first for the main taxonomy
-		Optional<Model> model = SearchUtils.getConainingModel(targetTerm);		
-		if (model.isPresent()) {			
-			TaxonomyUtils.saveTaxonomy(doMerge(model.get(), termsToMerge, targetTerm));
-		}
-		// secondly, for each document
+		// now merge all terms for the main taxonomy as well as for the taxonomies of the documents		
+		// first, for each document, otherwise the terms would be manipulated
 		Set<Resource> resourcesToUpdate = new TreeSet<>(
 				(Resource r1, Resource r2) -> r1 == r2 ? 0 : 1);
 		for (Map.Entry<Document, Term> entry : documentsWithTarget.entrySet()) {
 			entry.getKey().setTaxonomy(doMerge(entry.getKey().getTaxonomy(), termsToMerge, entry.getValue()));
 			resourcesToUpdate.add(entry.getKey().eResource());
-		}
+		}		
 		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));
+		// secondly, for the main taxonomy
+				Optional<Model> model = SearchUtils.getConainingModel(targetTerm);		
+				if (model.isPresent()) {			
+					TaxonomyUtils.saveTaxonomy(doMerge(model.get(), termsToMerge, targetTerm));
+				}
 		return SearchUtils.findTermInTaxonomy(targetTerm);
 	}
 	
