@@ -29,6 +29,6 @@ terminal ID:
 
 Term:
 	name = ID ('{'
-		(subclasses += Term ','?)*
+		(subclasses += Term (',' subclasses += Term)*)?
 	'}')?
 ;

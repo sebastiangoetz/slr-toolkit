@@ -99,11 +99,11 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public void setName(String newName) {
 		String oldName = name;
-		name = newName;
+		name = newName != null ? newName.trim() : newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, TaxonomyPackage.TERM__NAME, oldName, name));
 	}
