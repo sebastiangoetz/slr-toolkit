@@ -8,8 +8,11 @@ import java.util.stream.Collectors;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -21,6 +24,7 @@ import de.tudresden.slr.model.taxonomy.ui.dialog.MoveTermDialog;
 import de.tudresden.slr.model.taxonomy.ui.manipulation.TermMover;
 import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.ui.chart.views.Activator;
 
 public class MoveTermHandler extends AbstractHandler {
 
@@ -45,7 +49,7 @@ public class MoveTermHandler extends AbstractHandler {
 					TermMover.move(termsToMove, (Term) dialog.getResult()[0], dialog.getTermPosition());
 				}
 			} else {
-				// TODO warning
+				ErrorDialog.openError(null, "Error", null, new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Invalid selection. The selected terms must not share their paths.", null));
 			}
 		}
 		
