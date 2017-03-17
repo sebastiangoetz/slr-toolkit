@@ -22,7 +22,6 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
 import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.util.ModelComparer;
 import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 public class ModelRegistry extends Observable {
@@ -30,7 +29,6 @@ public class ModelRegistry extends Observable {
 	private Model activeTaxonomy;
 	private AdapterFactoryEditingDomain sharedEditingDomain;
 	private TaxonomyStandaloneParser taxonomyParser = new TaxonomyStandaloneParser();
-	private ModelComparer modelComparer = new ModelComparer();
 
 	public ModelRegistry() {
 		createEditingDomain();
@@ -91,11 +89,6 @@ public class ModelRegistry extends Observable {
 	}
 
 	public void setActiveTaxonomy(Model taxonomy) {
-		//Comparing large models is rather expensive, maybe we can avoid it more often.
-		if(activeTaxonomy == taxonomy || modelComparer.equals(activeTaxonomy, taxonomy)){
-			return;
-		}
-
 		activeTaxonomy = taxonomy;
 		setChanged();
 		notifyObservers(activeTaxonomy);
