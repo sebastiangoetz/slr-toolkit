@@ -1,13 +1,18 @@
-package de.tudresden.slr.model.taxonomy.ui.dialog;
+package de.tudresden.slr.model.taxonomy.ui.util;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 
-public class TermContentProvider implements ITreeContentProvider {
+public class TermContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+	
+	public TermContentProvider() {}
+	
+	public TermContentProvider(Viewer v) {}
 	
 	@Override
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {}

@@ -16,9 +16,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -40,6 +37,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.ui.util.TermContentProvider;
 import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyIterator;
@@ -47,49 +45,7 @@ import de.tudresden.slr.model.utils.TaxonomyIterator;
 public class TaxonomyCheckboxListView extends ViewPart implements ISelectionListener, Observer, ICheckStateListener {
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
 	private ContainerCheckedTreeViewer viewer;
-	private ViewContentProvider contentProvider;
-
-	class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
-		public ViewContentProvider(Viewer v) {}
-		
-		@Override
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {}
-
-		@Override
-		public void dispose() {}
-
-		@Override
-		public Object[] getElements(Object parent) {
-			return getChildren(parent);
-		}
-
-		@Override
-		public Object getParent(Object child) {
-			if (child instanceof EObject) {
-				return ((EObject) child).eContainer();
-			}
-			return null;
-		}
-
-		@Override
-		public Object[] getChildren(Object parent) {
-			if (parent instanceof Model) {
-				return ((Model) parent).getDimensions().toArray();
-			}
-			if (parent instanceof Term) {
-				return ((Term) parent).getSubclasses().toArray();
-			}
-			throw new IllegalArgumentException("parent");
-		}
-
-		@Override
-		public boolean hasChildren(Object parent) {
-			if (parent instanceof EObject) {
-				return getChildren(parent).length > 0;
-			}
-			return false;
-		}
-	}
+	private TermContentProvider contentProvider;
 
 	/**
 	 * The constructor.
@@ -105,7 +61,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	@Override
 	public void createPartControl(Composite parent) {
 		Optional<Model> m = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
-		contentProvider = new ViewContentProvider(viewer);
+		contentProvider = new TermContentProvider(viewer);
 		viewer = new ContainerCheckedTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new DefaultEObjectLabelProvider());
