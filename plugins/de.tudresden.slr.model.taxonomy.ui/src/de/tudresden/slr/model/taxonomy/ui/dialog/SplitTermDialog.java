@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -42,20 +44,20 @@ public class SplitTermDialog extends Dialog {
             new Label(container, SWT.NONE).setText("Split Term: ");
             new Label(container, SWT.NONE).setText(this.selectedTermName);
             
-            new Label(container, SWT.NONE).setText("Default Term: ");
+            new Label(container, SWT.NONE).setText("Default Term*: ");
             this.defaultTermNameText = new Text(container, SWT.BORDER);
             this.defaultTermNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             this.defaultTermNameText.setText("");
-            /*this.defaultTermNameText.addModifyListener((e) -> {
-            	defaultTermName = ((Text) e.getSource()).getText();
-            }); */         
+            this.defaultTermNameText.addModifyListener((e) -> {
+            	if (((Text) e.getSource()).getText() == null || ((Text) e.getSource()).getText().isEmpty()) {
+            		getButton(IDialogConstants.OK_ID).setEnabled(false);
+            	} else {
+            		getButton(IDialogConstants.OK_ID).setEnabled(true);
+            	}
+            }); 
             
             new Label(container, SWT.NONE).setText("Further Terms (comma-seperated): ");
-            this.furtherTermNamesText = new Text(container, SWT.BORDER | SWT.V_SCROLL);
-            /*this.furtherTermNamesText.addModifyListener((e) -> {
-            	furtherTermNames = ((Text) e.getSource()).getText();
-            });  */                  
-            
+            this.furtherTermNamesText = new Text(container, SWT.BORDER | SWT.V_SCROLL);                		
             return container;
     }
 	
@@ -63,7 +65,19 @@ public class SplitTermDialog extends Dialog {
 		this.defaultTermName = this.defaultTermNameText.getText();
 		this.furtherTermNames = new ArrayList<>();
 		Stream.of(this.furtherTermNamesText.getText().split(",")).forEach(n -> furtherTermNames.add(n.trim()));
-}
+	}
+	
+	@Override
+	protected Button createButton(Composite parent,
+            int id,
+            String label,
+            boolean defaultButton) {
+		Button button = super.createButton(parent, id, label, defaultButton);
+		if (id == IDialogConstants.OK_ID) {
+			button.setEnabled(false);
+		}
+		return button;
+	}
 	
 	@Override
     protected void okPressed() {
