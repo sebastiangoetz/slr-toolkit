@@ -1,0 +1,34 @@
+Type of Research {
+	Applied {
+		Level of Abstraction {
+			architecture, none, component, context, goals, code, process, requirements, gui
+		},
+		Model type {
+			structure, behavior, quality, none, goal, variability, design, feedback loop, requirement, physical, metamodel
+		},	
+		Purpose {
+			self-adaptation, development, assurance, evolution, none, self-optimization and organization, interoperability, fault-tolerance, prediction
+		},	
+		Techniques {
+			model-transformation, reflection, analysis, none, reasoning, monitoring, variability-modelling, reqeng, machinelearning, model-comparison, workflow
+		}
+	},	
+	Fundamental {
+		none, characteristics, causal-connection, distributed-mrt, processing
+	},
+	Application Domains {
+		none, enterprise, cloud, communication, energy, home automation, monitoring, cyber-physical systems, ecommerce, embedded systems, games, healthcare, robotics, crisis management, iot, traffic, travel, dbms, it-management, office, ambient assisted living, mobile, egovernment, java virtual machine, scientific computing, social networks
+	},
+	Research areas {
+		sas, mda, none, soa, cbse, distributed systems, cloud, formal methods, evolution, resource management, security, fault tolerance, middleware, programming languages, ac, aop, architecture, interoperability, modelling, spl, databases, goals, mas, performance, business processes, embedded systems, hci, optimization, requirements, safety, social sciences
+	},
+	Initiative {
+		none, nsf, ibm, diva, feder, inria, care, fapeg, haec, luxembourg, pku, sfi, sintef, alive, anr, cnpq, hpi, ideas-erc, kevoree, milano, morisia, optimaal, paasage, ramses, remics, salty, smscom, snf, spp1593, triskell, vmware, addis, arm, artemis ju, aston, bmbf, capes foundation, cappucino, caramelos, carnegie mellon, chess, china, choose, choreos, cito, cmu, connect, coolsoftware, cost, cpsf, crc912, cube, d-base, daase, dfg, diversify, dms, eins, ercim, faros, fct, fwo, gendata2020, giocoso, hasler foundation, ibm cas, ireland, italy, jacquard, kit, koblenz, krakow, laquila, lancaster, leuven, lsc-its, lucretius, pronex, lums, mais, massif, michigan, micinn, milan, minerva, modacloud, modaclouds, modelplex, motorola, music, nakajima, nasa, necs, nfs, nhtrd, norway, nsfc, persist, po-fesr, precise, recognition, relate, rosi, runes, s-cube, sesamo, spain, spes2020, suzuki, swinburne, sysplace, tno, topcy, trader, value-cloud, victoria, york
+	},
+	Venue {
+		mrt, seams, icac, models, rrt, saso, dagstuhl2011, computer, cbse, icse, ramse, wicsa, re, computing, sac, taas, tse, ecsa, jss, splc, ase, fcs, jnca, lassy, mdsec, messa, modularity, oopsla, pesos, qosa, science of computer programming, sose, ieee software
+	},
+	Venue Type {
+		c, w, j, b
+	}
+}
