@@ -40,7 +40,7 @@
 <repository location="https://dl.bintray.com/lschuetze/org.jbibtex"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.draw2d.feature.group" version="3.10.1.201508170204"/>
+<unit id="org.eclipse.draw2d.feature.group"/>
 <repository location="http://download.eclipse.org/tools/gef/updates/releases/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
