@@ -40,8 +40,8 @@
 <repository location="https://dl.bintray.com/lschuetze/org.jbibtex"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.draw2d.feature.group"/>
-<repository location="http://download.eclipse.org/tools/gef/updates/releases/"/>
+<unit id="org.eclipse.draw2d.feature.group" version="3.10.1.201508170204"/>
+<repository location="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
 </location>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <repository location="http://download.eclipse.org/rt/ecf/3.12.0/site.p2"/>
