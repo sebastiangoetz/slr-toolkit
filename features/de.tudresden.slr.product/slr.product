@@ -3,7 +3,6 @@
 
 <product name="app" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.4" useFeatures="true" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -16,14 +15,13 @@
 
    <windowImages i16="/de.tudresden.slr.app/icons/icon_16.png" i32="/de.tudresden.slr.app/icons/icon_32.png" i48="/de.tudresden.slr.app/icons/icon_48.png" i64="/de.tudresden.slr.app/icons/icon_64.png" i128="/de.tudresden.slr.app/icons/icon_128.png" i256="/de.tudresden.slr.app/icons/icon_256.png"/>
 
-
+   <splash
+      location="de.tudresden.slr.app" />
    <launcher>
-      <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>
