@@ -8,8 +8,8 @@ import org.eclipse.jface.viewers.Viewer;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 
-class ViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
-	public ViewContentProvider(Viewer v) {}
+class TreeContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+	public TreeContentProvider(Viewer v) {}
 	
 	@Override
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {}

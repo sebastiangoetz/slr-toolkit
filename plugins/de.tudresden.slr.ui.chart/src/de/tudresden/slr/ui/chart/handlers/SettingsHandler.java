@@ -6,8 +6,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import de.tudresden.slr.ui.chart.settings.Settings;
+import de.tudresden.slr.ui.chart.settings.SettingsDialog;
 
 public class SettingsHandler implements IHandler {
 
@@ -25,8 +24,8 @@ public class SettingsHandler implements IHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Settings settings  = new Settings(HandlerUtil.getActiveShell(event), SWT.DIALOG_TRIM);
-		settings.open();
+		SettingsDialog settingsDialog = new SettingsDialog(HandlerUtil.getActiveShell(event), SWT.DIALOG_TRIM);
+		settingsDialog.open();
 		return null;
 	}
 
