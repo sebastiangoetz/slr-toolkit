@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tudresden.slr.model.mendeley.preferences.MendeleyPreferencePage"
+            id="de.tudresden.slr.model.mendeley.preferences.MendeleyPreferencePage"
+            name="Mendeley">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tudresden.slr.model.mendeley.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+</plugin>

@@ -1338,4 +1338,30 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.tudresden.slr.model.mendeley"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.json"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.library.oauth2.client"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.tudresden.slr.library.oauth"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
