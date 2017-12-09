@@ -29,6 +29,11 @@ import org.eclipse.birt.chart.model.layout.ClientArea;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
+import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
+import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
+import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
+import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
+
 public class ChartConfiguration {
 	
 	private ChartConfiguration() {
@@ -37,49 +42,37 @@ public class ChartConfiguration {
 	public static ChartConfiguration get() {
 		return CHARTCONFIGURATION;
 	}
+	public static PlotSettings getPlotSettings() {
+		return ps;
+	}
+	public static ChartSettings getGraphSettings() {
+		return gs;
+	}
+	public static LegendSettings getLegendSettings() {
+		return ls;
+	}
+	public static BlockSettings getBlockSettings() {
+		return bs;
+	}
 
-	private static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
+	static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
+	static PlotSettings ps = PlotSettings.get();
+	static ChartSettings gs = ChartSettings.get();
+	static LegendSettings ls = LegendSettings.get();
+	static BlockSettings bs = BlockSettings.get();
+ 
+	
 	//Graph Variables
-	private String chartType;
-	private String chartSubType;
-	private String chartDescription;
-	private Interactivity chartInteractivity;
-	private Orientation chartOrientation;
-	private Rotation3D chartRotation;
-	private double chartUnitSpacing;
+
 	//Plot Variables
-	private ColorDefinition plotBackground;
-	private int horizontalSpacing;
-	private int verticalSpacing;
+
+	
 	//Block Variables 
-	private Anchor chartAnchor;
-	private Fill chartBackground;
-	private Bounds chartBounds;
-	private int chartColumns;
-	private int chartColumnspan;
-	private Insets chartInsets;
-	private Size chartMinSize;
-	private Size chartPrefferedSize;
-	private LineAttributes chartOutlines;
-	private int chartRows;
-	private int chartRowspan;
+	
 	//Title Variables
-	String chartTitle;
+	
 	//Legend Variables
-	private ClientArea legendArea;
-	private Direction legendDirection;
-	private int legendEllipsis;
-	private int legendHorizontalSpacing;
-	private int legendVerticalSpacing;
-	private LegendItemType legendItemType;
-	private double legendMaxPercent;
-	private Orientation legendOrientation;
-	private Position legendPosition;
-	private LineAttributes legendSeparator;
-	private Text legendText;
-	private Label legendTitle;
-	private double legendTitleMaxPercent;
-	private double legendWrappingSize;
+	
 	//X-Axis Variables
 	private int xAxisMaxPercent;
 	private double xAxisGapWidth;
@@ -132,6 +125,12 @@ public class ChartConfiguration {
 
 	private Label seriesLabel;
 	private Position seriesPosition;
+	
+	
+	
+	
+	
+	
 	
 	
 
