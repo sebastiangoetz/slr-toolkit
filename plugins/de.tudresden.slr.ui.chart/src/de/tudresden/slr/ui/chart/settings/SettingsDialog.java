@@ -37,10 +37,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
 
-	protected Object result;
-	protected Shell shell;
+	private Object result;
+	private Shell shell;
 	private Composite stackComposite;
-	private Combo combo;
+	private Combo comboChartSelect;
 	private StackLayout sl_stackComposite;
 	private Composite pageBarChart;
 	private Composite pageBubbleChart;
@@ -49,20 +49,12 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private List list;
 	private Optional<Model> m;
 
-	/**
-	 * Create the dialog.
-	 * @param parent
-	 * @param style
-	 */
+	
 	public SettingsDialog(Shell parent, int style) {
 		super(parent, style);
 		setText("Chart Settings");
 	}
-
-	/**
-	 * Open the dialog.
-	 * @return the result
-	 */
+	
 	public Object open() {
 		m = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 		if(!m.isPresent()) {
@@ -81,48 +73,50 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		return result;
 	}
 
-	/**
-	 * Create contents of the dialog.
-	 */
 	private void createContents() {
-		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.RESIZE);
-		shell.setSize(750, 600);
-		shell.setText(getText());
-		shell.setLayout(new GridLayout(1, false));
+		createShell();
 		
-		Composite northComposite = new Composite(shell, SWT.NONE);
-		northComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		northComposite.setLayout(new GridLayout(2, false));
+		createNorth();
 		
-		Label lblNewLabel = new Label(northComposite, SWT.NONE);
-		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("Please select your chart type: ");
+		createCenter();
 		
-		combo = new Combo(northComposite, SWT.NONE | SWT.READ_ONLY);
-		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		combo.add("Bar");
-		combo.add("Bubble");
-		combo.add("Heat");
-		combo.select(-1);
+		createSouth();
+	}
+
+	@Override
+	public void widgetSelected(SelectionEvent e) {
+		switch (comboChartSelect.getSelectionIndex()) {
+		case 0:
+			sl_stackComposite.topControl = pageBarChart;
+			stackComposite.layout();
+			break;
+		case 1:
+			sl_stackComposite.topControl = pageBubbleChart;
+			stackComposite.layout();
+			break;
+		case 2:
+			sl_stackComposite.topControl = pageHeatChart;
+			stackComposite.layout();
+			break;
+		}
 		
-		stackComposite = new Composite(shell, SWT.NONE);
-		stackComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		sl_stackComposite = new StackLayout();
-		stackComposite.setLayout(sl_stackComposite);
+	}
+
+	@Override
+	public void widgetDefaultSelected(SelectionEvent e) {
+		sl_stackComposite.topControl = pageBarChart;
 		
-		pageBarChart = new Composite (stackComposite, SWT.NONE);
-		pageBubbleChart = new Composite (stackComposite, SWT.NONE);
-		pageHeatChart = new Composite (stackComposite, SWT.NONE);
+	}
+	
+	private void buildBarSettings() {
 		
-		pageBarChart.setLayout(new FillLayout());
+		TabFolder folderBarChart = new TabFolder(pageBarChart, SWT.NONE);
 		
-		TabFolder tabFolder1 = new TabFolder(pageBarChart, SWT.NONE);
+		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
+		itemFolderBarChart_1.setText("X - Data selection");
 		
-		TabItem tbtmNewItem = new TabItem(tabFolder1, SWT.NONE);
-		tbtmNewItem.setText("X - Data selection");
-		
-		Composite barDataCompositeContainer = new Composite(tabFolder1, SWT.NONE);
-		tbtmNewItem.setControl(barDataCompositeContainer);
+		Composite barDataCompositeContainer = new Composite(folderBarChart, SWT.NONE);
+		itemFolderBarChart_1.setControl(barDataCompositeContainer);
 		barDataCompositeContainer.setLayout(new GridLayout(1, false));
 		
 		Composite barDataComposite_North = new Composite(barDataCompositeContainer, SWT.BORDER);
@@ -139,7 +133,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		barDataSash_Centre.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		TreeViewer treeViewer = new TreeViewer(barDataSash_Centre, SWT.BORDER);
-		Tree tree = treeViewer.getTree();
+		
 		
 		buildTree(treeViewer);
 		
@@ -173,32 +167,96 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		Button lockButton = new Button(barDataComposite_South, SWT.NONE);
 		lockButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lockButton.setBounds(0, 0, 75, 25);
-		lockButton.setText("Lock");
+		lockButton.setText("      Lock      ");
 		
 		
 		
-		TabItem tbtmNewItem_1 = new TabItem(tabFolder1, SWT.NONE);
-		tbtmNewItem_1.setText("Stuff");	
+		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
+		itemFolderBarChart_2.setText("Stuff");	
 		
+	}
+	
+	private void buildBubbleSettings() {
 		pageBubbleChart.setLayout(new FillLayout());
-		TabFolder tabFolder2 = new TabFolder(pageBubbleChart, SWT.NONE);
+		TabFolder folderBubbleChart = new TabFolder(pageBubbleChart, SWT.NONE);
 		
-		TabItem tbtmNewItem21 = new TabItem(tabFolder2, SWT.NONE);
+		TabItem tbtmNewItem21 = new TabItem(folderBubbleChart, SWT.NONE);
 		tbtmNewItem21.setText("Test 3");
 		
-		TabItem tbtmNewItem22 = new TabItem(tabFolder2, SWT.NONE);
+		TabItem tbtmNewItem22 = new TabItem(folderBubbleChart, SWT.NONE);
 		tbtmNewItem22.setText("Test 4");
-		
+	}
+	
+	private void buildHeatSettings() {
 		pageHeatChart.setLayout(new FillLayout());
-		TabFolder tabFolder3 = new TabFolder(pageHeatChart, SWT.NONE);
+		TabFolder folderHeatChart = new TabFolder(pageHeatChart, SWT.NONE);
 		
-		TabItem tbtmNewItem31 = new TabItem(tabFolder3, SWT.NONE);
+		TabItem tbtmNewItem31 = new TabItem(folderHeatChart, SWT.NONE);
 		tbtmNewItem31.setText("Test 5");
 		
-		TabItem tbtmNewItem32 = new TabItem(tabFolder3, SWT.NONE);
+		TabItem tbtmNewItem32 = new TabItem(folderHeatChart, SWT.NONE);
 		tbtmNewItem32.setText("Test 6");
 		
+	}
+	
+	private void buildTree(TreeViewer treeViewer) {	
 		
+		contentProvider = new TreeContentProvider(treeViewer);		
+		treeViewer.setContentProvider(contentProvider);
+		treeViewer.setLabelProvider(new DefaultEObjectLabelProvider());
+		treeViewer.setSorter(null);
+		treeViewer.setInput(m.get());
+				
+	}
+	
+	private void createShell() {
+		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.RESIZE);
+		shell.setSize(750, 600);
+		shell.setText(getText());
+		shell.setLayout(new GridLayout(1, false));
+	}
+	
+	private void createNorth() {
+		
+		Composite northComposite = new Composite(shell, SWT.NONE);
+		northComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		northComposite.setLayout(new GridLayout(2, false));
+		
+		Label comboLabel = new Label(northComposite, SWT.NONE);
+		comboLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		comboLabel.setText("Please select your chart type: ");
+		
+		comboChartSelect = new Combo(northComposite, SWT.NONE | SWT.READ_ONLY);
+		comboChartSelect.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		comboChartSelect.add("Bar");
+		comboChartSelect.add("Bubble");
+		comboChartSelect.add("Heat");
+		comboChartSelect.select(-1);
+
+		comboChartSelect.addSelectionListener(this);
+		
+	}
+	
+	private void createCenter() {
+		
+		stackComposite = new Composite(shell, SWT.NONE);
+		stackComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		sl_stackComposite = new StackLayout();
+		stackComposite.setLayout(sl_stackComposite);
+		
+		pageBarChart = new Composite (stackComposite, SWT.NONE);
+		pageBubbleChart = new Composite (stackComposite, SWT.NONE);
+		pageHeatChart = new Composite (stackComposite, SWT.NONE);
+		
+		pageBarChart.setLayout(new FillLayout());
+		
+		buildBarSettings();
+		buildBubbleSettings();
+		buildHeatSettings();
+		
+	}
+	
+	private void createSouth() {
 		Composite southComposite = new Composite(shell, SWT.NONE);
 		southComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		southComposite.setLayout(new GridLayout(3, false));
@@ -211,7 +269,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			}
 		});
 		okButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		okButton.setText("New Button");
+		okButton.setText("        OK        ");
 		
 		Button applyButton = new Button(southComposite, SWT.NONE);
 		applyButton.addSelectionListener(new SelectionAdapter() {
@@ -220,63 +278,10 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 				list.setEnabled(true);
 			}
 		});
-		applyButton.setText("New Button");
+		applyButton.setText("    Apply    ");
 		
 		Button closeButton = new Button(southComposite, SWT.NONE);
-		closeButton.setText("New Button");
-		
-		buildBarSettings();
-		buildBubbleSettings();
-		buildHeatSettings();
-		
-		combo.addSelectionListener(this);
-
-	}
-
-	@Override
-	public void widgetSelected(SelectionEvent e) {
-		switch (combo.getSelectionIndex()) {
-		case 0:
-			sl_stackComposite.topControl = pageBarChart;
-			stackComposite.layout();
-			break;
-		case 1:
-			sl_stackComposite.topControl = pageBubbleChart;
-			stackComposite.layout();
-			break;
-		case 2:
-			sl_stackComposite.topControl = pageHeatChart;
-			stackComposite.layout();
-			break;
-		}
-		
-	}
-
-	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
-		sl_stackComposite.topControl = pageBarChart;
-		
-	}
-	
-	private void buildBarSettings() {
-	
-	}
-	
-	private void buildBubbleSettings() {
-		
-	}
-	
-	private void buildHeatSettings() {
-	
-	}
-	
-	private void buildTree(TreeViewer treeViewer) {	
-		
-		contentProvider = new TreeContentProvider(treeViewer);		
-		treeViewer.setContentProvider(contentProvider);
-		treeViewer.setLabelProvider(new DefaultEObjectLabelProvider());
-		treeViewer.setSorter(null);
-		treeViewer.setInput(m.get());
-				
+		closeButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		closeButton.setText("    Close    ");
 	}
 }
