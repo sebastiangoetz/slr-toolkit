@@ -12,6 +12,7 @@
 
 package de.tudresden.slr.ui.chart.logic;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,10 @@ import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
+import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
+import org.eclipse.birt.chart.model.attribute.Stretch;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
@@ -43,7 +46,14 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
+import org.eclipse.ui.internal.themes.ColorDefinition;
+import org.eclipse.birt.chart.model.attribute.Text;
 
+import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
+import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
+import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
+import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 public class BarChartGenerator {
 
 	/**
@@ -54,23 +64,71 @@ public class BarChartGenerator {
 	 */
 	public final Chart createBar(Map<String, Integer> input, String title) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
-
+		
+		ChartConfiguration cc = ChartConfiguration.get(); //
+		PlotSettings ps = cc.getPlotSettings().get();
+		ChartSettings gs = cc.getGraphSettings();
+		LegendSettings ls = cc.getLegendSettings();
+		BlockSettings bs = cc.getBlockSettings();
+		
+		
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
-		cwaBar.setType("Bar Chart");
-		cwaBar.setSubType("Side-by-side"); //$NON-NLS-1$
+		cwaBar.setType(gs.getChartType());
+		cwaBar.setSubType(gs.getChartSubType()); //$NON-NLS-1$
 		// Plot
-		cwaBar.getBlock().setBackground(ColorDefinitionImpl.WHITE());
-		cwaBar.getBlock().getOutline().setVisible(true);
+		cwaBar.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRed(), bs.getBlockBackgroundGreen(), bs.getBlockBackgroundBlue()));
+		cwaBar.getBlock().getOutline().setVisible(bs.isBlockShowOutline());
+		cwaBar.getBlock().getOutline().setStyle(bs.getBlockOutlineStyle());
+		cwaBar.getBlock().getOutline().setThickness(bs.getBlockOutlineThickness());
+		cwaBar.getBlock().getOutline().setColor(ColorDefinitionImpl.create(bs.getBlockOutlineRed(), bs.getBlockOutlineGreen(), bs.getBlockOutlineBlue()));
+	
+		
 		Plot p = cwaBar.getPlot();
-		p.getClientArea().setBackground(ColorDefinitionImpl.WHITE());
-
+		p.getClientArea().setBackground(ColorDefinitionImpl.create(ps.getPlotBackgroundRed(), ps.getPlotBackgroundGreen(), ps.getPlotBackgroundBlue()));
+		p.getClientArea().setShadowColor(ColorDefinitionImpl.create(ps.getPlotShadowRed(), ps.getPlotShadowGreen(), ps.getPlotShadowBlue()));
+		p.getClientArea().getInsets().set(ps.getPlotInsetTop(), ps.getPlotInsetLeft(), ps.getPlotInsetBottom(), ps.getPlotInsetRight());
+		p.setHorizontalSpacing(ps.getPlotHorizontalSpacing());
+		p.setVerticalSpacing(ps.getPlotVerticalSpacing());
 		// Title
-		cwaBar.getTitle().getLabel().getCaption().setValue(title); //$NON-NLS-1$
+		cwaBar.getTitle().getLabel().getCaption().setValue(gs.getChartTitle()); //$NON-NLS-1$
 
 		// Legend
 		Legend lg = cwaBar.getLegend();
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
-
+		
+		lg.setBackground(ColorDefinitionImpl.create(ls.getLegendBackgroundRed(), ls.getLegendBackgroundGreen(), ls.getLegendBackgroundBlue()));
+		lg.getOutline().setVisible(ls.isLegendShowOutline());
+		lg.getOutline().setStyle(ls.getLegendOutlineStyle());
+		lg.getOutline().setThickness(ls.getLegendOutlineThickness());
+		lg.getOutline().setColor(ColorDefinitionImpl.create(ls.getLegendOutlineRed(), ls.getLegendOutlineGreen(), ls.getLegendOutlineBlue()));
+		
+		lg.getClientArea().setShadowColor(ColorDefinitionImpl.create(ls.getLegendShadowRed(), ls.getLegendShadowGreen(), ls.getLegendShadowBlue()));
+		lg.getClientArea().getInsets().set(ls.getLegendInsetTop(), ls.getLegendInsetLeft(), ls.getLegendInsetBottom(), ls.getLegendInsetRight());
+		//lg.setDirection(ls.getLegendDirection());
+		lg.setItemType(ls.getLegendItemType());
+		lg.setMaxPercent(ls.getLegendMaxPercent());
+		lg.setOrientation(ls.getLegendOrientation());
+		lg.setPosition(ls.getLegendPosition());
+		
+		lg.getSeparator().setVisible(ls.isLegendShowSeparator());
+		lg.getSeparator().setStyle(ls.getLegendSeparatorStyle());
+		lg.getSeparator().setThickness(ls.getLegendSeparatorThickness());
+		lg.getSeparator().setColor(ColorDefinitionImpl.create(ls.getLegendSeparatorRed(), ls.getLegendSeparatorGreen(), ls.getLegendSeparatorBlue()));
+		
+		lg.getText().getFont().getAlignment().setHorizontalAlignment(ls.getLegendHorizontalAlignment());
+		lg.getText().getFont().getAlignment().setVerticalAlignment(ls.getLegendVerticalAlignment());
+		lg.getText().getFont().setBold(ls.isLegendTextBold());
+		lg.getText().getFont().setItalic(ls.isLegendTextItalic());
+		lg.getText().getFont().setRotation(ls.getLegendTextRotation());
+		lg.getText().getFont().setSize(ls.getLegendTextSize());
+		lg.getText().getFont().setStrikethrough(ls.isLegendTextStrikeThrough());
+		lg.getText().getFont().setUnderline(ls.isLegendTextUnderline());
+		lg.getText().getFont().setWordWrap(ls.isLegendWordWrap());
+		lg.setTitlePercent(ls.getLegendTitlePercent());
+		lg.setTitlePosition(ls.getLegendTitlePosition());
+		lg.setWrappingSize(ls.getLegendWrappingSize());
+		
+		lg.getTitle().getCaption().setValue("Hallo");
 		// X-Axis
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
 

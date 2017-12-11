@@ -1,0 +1,69 @@
+Blockvariables
+#Chartbackground
+setBlockBackgroundRed(int blockBackgroundRed)
+setBlockBackgroundGreen(int blockBackgroundGreen)
+setBlockBackgroundBlue(int blockBackgroundBlue)
+#Outline = Umrandung Block
+public void setBlockShowOutline(boolean blockShowOutline)
+public void setBlockOutlineStyle(LineStyle blockOutlineStyle) ->DASH_DOTTED_LITERAL, DASHED_LITERAL, DOTTED_LITERAL, SOLID_LITERAL(default)
+public void setBlockOutlineThickness(int blockOutlineThickness)
+public void setBlockOutlineRed(int blockOutlineRed)
+public void setBlockOutlineGreen(int blockOutlineGreen)
+public void setBlockOutlineBlue(int blockOutlineBlue)
+
+Plotvariables
+#background
+setPlotBackgroundRed(int plotBackgroundRed)
+setPlotBackgroundRed(int plotBackgroundGreen)
+setPlotBackgroundRed(int plotBackgroundBlue)
+#Shadow
+public void setPlotShadowRed(int plotShadowRed)
+public void setPlotShadowGreen(int plotShadowGreen)
+public void setPlotShadowBlue(int plotShadowBlue)
+#Insets = Einrücken Diagram
+public void setPlotInsetTop(double plotInsetTop)
+public void setPlotInsetLeft(double plotInsetLeft)
+public void setPlotInsetBottom(double plotInsetBottom)
+public void setPlotInsetRight(double plotInsetRight)
+#Spacing = Einrücken der Werte
+public void setPlotHorizontalSpacing(int plotHorizontalSpacing)
+public void setPlotVerticalSpacing(int plotVerticalSpacing)
+
+Legendvariables
+#background
+setLegendBackgroundRed(int legendBackgroundRed)
+setLegendBackgroundRed(int legendBackgroundGreen)
+setLegendBackgroundRed(int legendBackgroundBlue)
+#Shadow
+public void setLegendShadowRed(int legendShadowRed)
+public void setLegendShadowGreen(int legendShadowGreen)
+public void setLegendShadowBlue(int legendShadowBlue)
+#Insets = Einrücken Diagram
+public void setLegendInsetTop(double legendInsetTop)
+public void setLegendInsetLeft(double legendInsetLeft)
+public void setLegendInsetBottom(double legendInsetBottom)
+public void setLegendInsetRight(double legendInsetRight)
+#Outline = Umrandung Legende
+public void setLegendShowOutline(boolean legendShowOutline)
+public void setLegendOutlineStyle(LineStyle legendOutlineStyle) ->DASH_DOTTED_LITERAL, DASHED_LITERAL, DOTTED_LITERAL, SOLID_LITERAL(default)
+public void setLegendOutlineThickness(int legendOutlineThickness)
+public void setLegendOutlineRed(int legendOutlineRed)
+public void setLegendOutlineGreen(int legendOutlineGreen)
+public void setLegendOutlineBlue(int legendOutlineBlue)
+#weiteres
+public void setLegendMaxPercent(double legendMaxPercent) -> Default 0,3333
+public void setLegendOrientation(Orientation legendOrientation) -> Orientation.VERTICAL_LITERAL | HORIZONTAL
+public void setLegendPosition(Position legendPosition) -> Position.ABOVE, .BELOW, .INSIDE, .LEFT, .OUTSIDE, .RIGHT(Default) + _LITERAL
+#Text der Legende
+public void setLegendHorizontalAlignment(HorizontalAlignment legendHorizontalAlignment) -> HorizontalAlignment. CENTER, LEFT(Defaul), RIGHT + _LITERAL
+public void setLegendVerticalAlignment(VerticalAlignment legendVerticalAlignment) -> VerticalAlignment. BOTTOM, CENTER, TOP + _LITERAL
+public void setLegendTextRotation(double legendTextRotation)
+public void setLegendTextSize(float legendTextSize)
+public void setLegendTextBold(boolean legendTextBold)
+public void setLegendTextItalic(boolean legendTextItalic)
+public void setLegendTextStrikeThrough(boolean legendTextStrikeThrough)
+public void setLegendTextUnderline(boolean legendTextUnderline)
+public void setLegendWordWrap(boolean legendWordWrap)
+public void setLegendTitlePercent(double legendTitlePercent) -> 0.6 default
+public void setLegendTitlePosition(Position legendTitlePosition) -> Position Element siehe oben
+public void setLegendWrappingSize(double legendWrappingSize) -> wv Zeichen bis Zeilenumbruch 

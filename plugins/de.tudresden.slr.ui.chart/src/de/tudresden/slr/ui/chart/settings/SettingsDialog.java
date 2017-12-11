@@ -265,6 +265,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		okButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				ChartConfiguration.get().setSeriesDataDefinitionIndex(2342);
 				list.setEnabled(false);
 			}
 		});
