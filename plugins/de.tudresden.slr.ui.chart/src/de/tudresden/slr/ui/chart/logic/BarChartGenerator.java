@@ -55,7 +55,7 @@ import org.eclipse.birt.chart.model.attribute.Text;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
-import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
+import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 public class BarChartGenerator {
@@ -70,8 +70,8 @@ public class BarChartGenerator {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 		
 		ChartConfiguration cc = ChartConfiguration.get(); //
-		PlotSettings ps = cc.getPlotSettings().get();
-		ChartSettings gs = cc.getGraphSettings();
+		PlotSettings ps = cc.getPlotSettings();
+		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
 		AxisSettings as = cc.getAxisSettings();

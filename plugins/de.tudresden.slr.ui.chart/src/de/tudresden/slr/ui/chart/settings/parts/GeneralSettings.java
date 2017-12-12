@@ -5,16 +5,16 @@ import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Rotation3D;
 import org.eclipse.swt.graphics.RGB;
 
-public class ChartSettings {
+public class GeneralSettings {
 	
-	private ChartSettings() {
+	private GeneralSettings() {
 	}
 	
-	public static ChartSettings get() {
+	public static GeneralSettings get() {
 		return GRAPHSETTINGS;
 	}
 
-	private static ChartSettings GRAPHSETTINGS= new ChartSettings();
+	private static GeneralSettings GRAPHSETTINGS= new GeneralSettings();
 
 	private String chartType = "Bar Chart";
 	private String chartSubType = "Side-By-Side";

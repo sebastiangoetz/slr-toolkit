@@ -31,7 +31,7 @@ import org.eclipse.emf.common.util.EMap;
 
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
-import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
+import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 
@@ -46,7 +46,7 @@ public class ChartConfiguration {
 	public static PlotSettings getPlotSettings() {
 		return ps;
 	}
-	public static ChartSettings getGraphSettings() {
+	public static GeneralSettings getGeneralSettings() {
 		return gs;
 	}
 	public static LegendSettings getLegendSettings() {
@@ -61,7 +61,7 @@ public class ChartConfiguration {
 
 	static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
 	static PlotSettings ps = PlotSettings.get();
-	static ChartSettings gs = ChartSettings.get();
+	static GeneralSettings gs = GeneralSettings.get();
 	static LegendSettings ls = LegendSettings.get();
 	static BlockSettings bs = BlockSettings.get();
 	static AxisSettings as = AxisSettings.get();
