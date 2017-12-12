@@ -24,6 +24,8 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -32,7 +34,6 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.events.SelectionAdapter;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
@@ -48,6 +49,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private TreeContentProvider contentProvider;
 	private List list;
 	private Optional<Model> m;
+	private Button okButton;
+	private Button applyButton;
+	private Button closeButton;
 
 	
 	public SettingsDialog(Shell parent, int style) {
@@ -85,6 +89,18 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
+		if(e.getSource() == closeButton) {
+			shell.close();
+			return;
+		}
+		if(e.getSource() == applyButton) {
+			System.out.println("alpppppy");
+			return;
+		}
+		if(e.getSource() == okButton) {
+			System.out.println("OKAAAy");
+			return;
+		}
 		switch (comboChartSelect.getSelectionIndex()) {
 		case 0:
 			sl_stackComposite.topControl = pageBarChart;
@@ -115,64 +131,67 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
 		itemFolderBarChart_1.setText("X - Data selection");
 		
-		Composite barDataCompositeContainer = new Composite(folderBarChart, SWT.NONE);
-		itemFolderBarChart_1.setControl(barDataCompositeContainer);
-		barDataCompositeContainer.setLayout(new GridLayout(1, false));
+		BarFolder barFolder = new BarFolder();
+		barFolder.build(folderBarChart);
 		
-		Composite barDataComposite_North = new Composite(barDataCompositeContainer, SWT.BORDER);
-		barDataComposite_North.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		barDataComposite_North.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
-		Label lblNewLabel_1 = new Label(barDataComposite_North, SWT.CENTER);
-		lblNewLabel_1.setText("Select a therm");
-		
-		Label lblNewLabel_2 = new Label(barDataComposite_North, SWT.CENTER);
-		lblNewLabel_2.setText("Select a therm");
-		
-		SashForm barDataSash_Centre = new SashForm(barDataCompositeContainer, SWT.NONE);
-		barDataSash_Centre.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
-		TreeViewer treeViewer = new TreeViewer(barDataSash_Centre, SWT.BORDER);
-		
-		
-		buildTree(treeViewer);
-		
-		list = new List(barDataSash_Centre, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI);
-		barDataSash_Centre.setWeights(new int[] {1, 1});
-		
-		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				
-				ISelection selection = treeViewer.getSelection();
-				if (selection == null || !(selection instanceof IStructuredSelection)) {
-					return;
-				}
-				IStructuredSelection currentSelection = (IStructuredSelection) selection;
-				Term t = (Term) currentSelection.getFirstElement();
-				list.removeAll();
-				if(!t.getSubclasses().isEmpty()) {
-					for(Term term : t.getSubclasses())
-						list.add(term.getName());
-				}
-			}
-		});
-		
-		Composite barDataComposite_South = new Composite(barDataCompositeContainer, SWT.BORDER);
-		barDataComposite_South.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		barDataComposite_South.setLayout(new GridLayout(2, false));
-		new Label(barDataComposite_South, SWT.NONE);
-		
-		Button lockButton = new Button(barDataComposite_South, SWT.NONE);
-		lockButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		lockButton.setBounds(0, 0, 75, 25);
-		lockButton.setText("      Lock      ");
-		
-		
-		
-		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
-		itemFolderBarChart_2.setText("Stuff");	
+//		Composite barDataCompositeContainer = new Composite(folderBarChart, SWT.NONE);
+//		itemFolderBarChart_1.setControl(barDataCompositeContainer);
+//		barDataCompositeContainer.setLayout(new GridLayout(1, false));
+//		
+//		Composite barDataComposite_North = new Composite(barDataCompositeContainer, SWT.BORDER);
+//		barDataComposite_North.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+//		barDataComposite_North.setLayout(new FillLayout(SWT.HORIZONTAL));
+//		
+//		Label lblNewLabel_1 = new Label(barDataComposite_North, SWT.CENTER);
+//		lblNewLabel_1.setText("Select a therm");
+//		
+//		Label lblNewLabel_2 = new Label(barDataComposite_North, SWT.CENTER);
+//		lblNewLabel_2.setText("Select a therm");
+//		
+//		SashForm barDataSash_Centre = new SashForm(barDataCompositeContainer, SWT.NONE);
+//		barDataSash_Centre.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+//		
+//		TreeViewer treeViewer = new TreeViewer(barDataSash_Centre, SWT.BORDER);
+//		
+//		
+//		buildTree(treeViewer);
+//		
+//		list = new List(barDataSash_Centre, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI);
+//		barDataSash_Centre.setWeights(new int[] {1, 1});
+//		
+//		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+//			
+//			@Override
+//			public void selectionChanged(SelectionChangedEvent event) {
+//				
+//				ISelection selection = treeViewer.getSelection();
+//				if (selection == null || !(selection instanceof IStructuredSelection)) {
+//					return;
+//				}
+//				IStructuredSelection currentSelection = (IStructuredSelection) selection;
+//				Term t = (Term) currentSelection.getFirstElement();
+//				list.removeAll();
+//				if(!t.getSubclasses().isEmpty()) {
+//					for(Term term : t.getSubclasses())
+//						list.add(term.getName());
+//				}
+//			}
+//		});
+//		
+//		Composite barDataComposite_South = new Composite(barDataCompositeContainer, SWT.BORDER);
+//		barDataComposite_South.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+//		barDataComposite_South.setLayout(new GridLayout(2, false));
+//		new Label(barDataComposite_South, SWT.NONE);
+//		
+//		Button lockButton = new Button(barDataComposite_South, SWT.NONE);
+//		lockButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+//		lockButton.setBounds(0, 0, 75, 25);
+//		lockButton.setText("      Lock      ");
+//		
+//		
+//		
+//		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
+//		itemFolderBarChart_2.setText("Stuff");	
 		
 	}
 	
@@ -261,28 +280,19 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		southComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		southComposite.setLayout(new GridLayout(3, false));
 		
-		Button okButton = new Button(southComposite, SWT.NONE);
-		okButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ChartConfiguration.get().setSeriesDataDefinitionIndex(2342);
-				list.setEnabled(false);
-			}
-		});
+		okButton = new Button(southComposite, SWT.NONE);
+		
 		okButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		okButton.setText("        OK        ");
+		okButton.addSelectionListener(this);
 		
-		Button applyButton = new Button(southComposite, SWT.NONE);
-		applyButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				list.setEnabled(true);
-			}
-		});
+		applyButton = new Button(southComposite, SWT.NONE);
+		applyButton.addSelectionListener(this);
 		applyButton.setText("    Apply    ");
 		
-		Button closeButton = new Button(southComposite, SWT.NONE);
+		closeButton = new Button(southComposite, SWT.NONE);
 		closeButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		closeButton.setText("    Close    ");
+		closeButton.addSelectionListener(this);
 	}
 }
