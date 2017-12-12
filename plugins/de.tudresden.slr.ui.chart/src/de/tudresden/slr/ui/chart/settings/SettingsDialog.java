@@ -207,12 +207,11 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		okButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ChartConfiguration.get().setSeriesDataDefinitionIndex(2342);
 				list.setEnabled(false);
 			}
 		});
 		okButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		okButton.setText("New Buttonf dsfs");
+		okButton.setText("New Button");
 		
 		Button applyButton = new Button(southComposite, SWT.NONE);
 		applyButton.addSelectionListener(new SelectionAdapter() {

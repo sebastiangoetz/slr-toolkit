@@ -1,5 +1,6 @@
 package de.tudresden.slr.ui.chart.settings.parts;
 
+import org.eclipse.swt.graphics.RGB;
 
 public class PlotSettings {
 
@@ -14,13 +15,9 @@ public class PlotSettings {
 	
 
 	//Background
-	private int plotBackgroundRed = 255;
-	private int plotBackgroundGreen = 255;
-	private int plotBackgroundBlue = 255;
+	private RGB plotBackgroundRGB = new RGB(255,255,255);
 	//Shadow
-	private int plotShadowRed = 190;
-	private int plotShadowGreen = 190;
-	private int plotShadowBlue = 190;
+	private RGB plotShadowRGB = new RGB(255,255,255);
 	//Insets
 	private double plotInsetTop = 000;
 	private double plotInsetLeft = 0;
@@ -34,47 +31,23 @@ public class PlotSettings {
 
 //Plotvariables Getter + Setter
 
-	public int getPlotBackgroundRed() {
-		return plotBackgroundRed;
-	}
-	public void setPlotBackgroundRed(int plotBackgroundRed) {
-		this.plotBackgroundRed = plotBackgroundRed;
-	}
-	public int getPlotBackgroundGreen() {
-		return plotBackgroundGreen;
-	}
-	public void setPlotBackgroundGreen(int plotBackgroundGreen) {
-		this.plotBackgroundGreen = plotBackgroundGreen;
-	}
-	public int getPlotBackgroundBlue() {
-		return plotBackgroundBlue;
-	}
-	public void setPlotBackgroundBlue(int plotBackgroundBlue) {
-		this.plotBackgroundBlue = plotBackgroundBlue;
+	
+	
+
+	public RGB getPlotBackgroundRGB() {
+		return plotBackgroundRGB;
 	}
 
-	public int getPlotShadowRed() {
-		return plotShadowRed;
+	public RGB getPlotShadowRGB() {
+		return plotShadowRGB;
 	}
 
-	public void setPlotShadowRed(int plotShadowRed) {
-		this.plotShadowRed = plotShadowRed;
+	public void setPlotShadowRGB(RGB plotShadowRGB) {
+		this.plotShadowRGB = plotShadowRGB;
 	}
 
-	public int getPlotShadowGreen() {
-		return plotShadowGreen;
-	}
-
-	public void setPlotShadowGreen(int plotShadowGreen) {
-		this.plotShadowGreen = plotShadowGreen;
-	}
-
-	public int getPlotShadowBlue() {
-		return plotShadowBlue;
-	}
-
-	public void setPlotShadowBlue(int plotShadowBlue) {
-		this.plotShadowBlue = plotShadowBlue;
+	public void setPlotBackgroundRGB(RGB plotBackgroundRGB) {
+		this.plotBackgroundRGB = plotBackgroundRGB;
 	}
 
 	public double getPlotInsetTop() {

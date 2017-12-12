@@ -13,6 +13,7 @@
 package de.tudresden.slr.ui.chart.logic;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +47,13 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.internal.themes.ColorDefinition;
 import org.eclipse.birt.chart.model.attribute.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
@@ -70,39 +74,49 @@ public class BarChartGenerator {
 		ChartSettings gs = cc.getGraphSettings();
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
+		AxisSettings as = cc.getAxisSettings();
 		
-		
+		RGB rgb = new RGB(0,255,0);
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType(gs.getChartType());
 		cwaBar.setSubType(gs.getChartSubType()); //$NON-NLS-1$
+		cwaBar.setOrientation(Orientation.VERTICAL_LITERAL);
 		// Plot
-		cwaBar.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRed(), bs.getBlockBackgroundGreen(), bs.getBlockBackgroundBlue()));
+		cwaBar.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRGB().red, bs.getBlockBackgroundRGB().green, bs.getBlockBackgroundRGB().blue));
 		cwaBar.getBlock().getOutline().setVisible(bs.isBlockShowOutline());
 		cwaBar.getBlock().getOutline().setStyle(bs.getBlockOutlineStyle());
 		cwaBar.getBlock().getOutline().setThickness(bs.getBlockOutlineThickness());
-		cwaBar.getBlock().getOutline().setColor(ColorDefinitionImpl.create(bs.getBlockOutlineRed(), bs.getBlockOutlineGreen(), bs.getBlockOutlineBlue()));
-	
+		cwaBar.getBlock().getOutline().setColor(ColorDefinitionImpl.create(bs.getBlockOutlineRGB().red, bs.getBlockOutlineRGB().green, bs.getBlockOutlineRGB().blue));
+		
 		
 		Plot p = cwaBar.getPlot();
-		p.getClientArea().setBackground(ColorDefinitionImpl.create(ps.getPlotBackgroundRed(), ps.getPlotBackgroundGreen(), ps.getPlotBackgroundBlue()));
-		p.getClientArea().setShadowColor(ColorDefinitionImpl.create(ps.getPlotShadowRed(), ps.getPlotShadowGreen(), ps.getPlotShadowBlue()));
+		p.getClientArea().setBackground(ColorDefinitionImpl.create(ps.getPlotBackgroundRGB().red, ps.getPlotBackgroundRGB().green, ps.getPlotBackgroundRGB().blue));
+		p.getClientArea().setShadowColor(ColorDefinitionImpl.create(ps.getPlotShadowRGB().red, ps.getPlotShadowRGB().green, ps.getPlotShadowRGB().blue));
 		p.getClientArea().getInsets().set(ps.getPlotInsetTop(), ps.getPlotInsetLeft(), ps.getPlotInsetBottom(), ps.getPlotInsetRight());
 		p.setHorizontalSpacing(ps.getPlotHorizontalSpacing());
 		p.setVerticalSpacing(ps.getPlotVerticalSpacing());
+		
+		
 		// Title
 		cwaBar.getTitle().getLabel().getCaption().setValue(gs.getChartTitle()); //$NON-NLS-1$
-
+		cwaBar.getTitle().getLabel().getCaption().getFont().setSize(gs.getChartTitleSize());
+		cwaBar.getTitle().getLabel().getCaption().setColor(ColorDefinitionImpl.create(gs.getChartTitleColor().red, gs.getChartTitleColor().green, gs.getChartTitleColor().blue));
+		cwaBar.getTitle().getLabel().getCaption().getFont().setBold(gs.isChartTitleBold());
+		cwaBar.getTitle().getLabel().getCaption().getFont().setItalic(gs.isChartTitleItalic());
+		cwaBar.getTitle().getLabel().getCaption().getFont().setUnderline(gs.isChartTitleUnderline());
+		
+		
 		// Legend
 		Legend lg = cwaBar.getLegend();
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
 		
-		lg.setBackground(ColorDefinitionImpl.create(ls.getLegendBackgroundRed(), ls.getLegendBackgroundGreen(), ls.getLegendBackgroundBlue()));
+		lg.setBackground(ColorDefinitionImpl.create(ls.getLegendBackgroundRGB().red, ls.getLegendBackgroundRGB().green, ls.getLegendBackgroundRGB().blue));
 		lg.getOutline().setVisible(ls.isLegendShowOutline());
 		lg.getOutline().setStyle(ls.getLegendOutlineStyle());
 		lg.getOutline().setThickness(ls.getLegendOutlineThickness());
-		lg.getOutline().setColor(ColorDefinitionImpl.create(ls.getLegendOutlineRed(), ls.getLegendOutlineGreen(), ls.getLegendOutlineBlue()));
+		lg.getOutline().setColor(ColorDefinitionImpl.create(ls.getLegendOutlineRGB().red, ls.getLegendOutlineRGB().green, ls.getLegendOutlineRGB().blue));
 		
-		lg.getClientArea().setShadowColor(ColorDefinitionImpl.create(ls.getLegendShadowRed(), ls.getLegendShadowGreen(), ls.getLegendShadowBlue()));
+		lg.getClientArea().setShadowColor(ColorDefinitionImpl.create(ls.getLegendShadowRGB().red, ls.getLegendShadowRGB().green, ls.getLegendShadowRGB().blue));
 		lg.getClientArea().getInsets().set(ls.getLegendInsetTop(), ls.getLegendInsetLeft(), ls.getLegendInsetBottom(), ls.getLegendInsetRight());
 		//lg.setDirection(ls.getLegendDirection());
 		lg.setItemType(ls.getLegendItemType());
@@ -113,7 +127,7 @@ public class BarChartGenerator {
 		lg.getSeparator().setVisible(ls.isLegendShowSeparator());
 		lg.getSeparator().setStyle(ls.getLegendSeparatorStyle());
 		lg.getSeparator().setThickness(ls.getLegendSeparatorThickness());
-		lg.getSeparator().setColor(ColorDefinitionImpl.create(ls.getLegendSeparatorRed(), ls.getLegendSeparatorGreen(), ls.getLegendSeparatorBlue()));
+		lg.getSeparator().setColor(ColorDefinitionImpl.create(ls.getLegendSeparatorRGB().red, ls.getLegendSeparatorRGB().green, ls.getLegendSeparatorRGB().blue));
 		
 		lg.getText().getFont().getAlignment().setHorizontalAlignment(ls.getLegendHorizontalAlignment());
 		lg.getText().getFont().getAlignment().setVerticalAlignment(ls.getLegendVerticalAlignment());
@@ -131,11 +145,15 @@ public class BarChartGenerator {
 		lg.getTitle().getCaption().setValue("Hallo");
 		// X-Axis
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
+		
 
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
-		xAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
+		xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
+		xAxisPrimary.getTitle().getCaption().setValue("Hallo");
+		xAxisPrimary.getTitle().getCaption().getFont().setSize(30);
+		//xAxisPrimary.getSubTitle().getCaption().setValue("Jürgen");
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
 		if(input.size() > 15){

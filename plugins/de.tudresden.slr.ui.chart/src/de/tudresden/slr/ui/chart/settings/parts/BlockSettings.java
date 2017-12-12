@@ -1,6 +1,7 @@
 package de.tudresden.slr.ui.chart.settings.parts;
 
 import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.swt.graphics.RGB;
 
 
 public class BlockSettings {
@@ -14,10 +15,7 @@ public class BlockSettings {
 
 	private static BlockSettings BLOCKSETTINGS= new BlockSettings();
 
-	
-	private int blockBackgroundRed = 255;
-	private int blockBackgroundGreen = 255;
-	private int blockBackgroundBlue = 255;
+	private RGB blockBackgroundRGB = new RGB(255,255,255);
 	/*
 	 * private Anchor chartAnchor;
 	 * private Bounds chartBounds;
@@ -34,38 +32,22 @@ public class BlockSettings {
 	private boolean blockShowOutline = true;
 	private LineStyle blockOutlineStyle = LineStyle.SOLID_LITERAL;
 	private int blockOutlineThickness = 1;
-	private int blockOutlineRed = 0;
-	private int blockOutlineGreen = 0;
-	private int blockOutlineBlue = 0;
+	private RGB blockOutlineRGB = new RGB(0,0,0);
+
 	
 	//Blockvariables Get + Setter
 	
-	public int getBlockBackgroundRed() {
-		return blockBackgroundRed;
-	}
-
-	public void setBlockBackgroundRed(int chartBackgroundRed) {
-		this.blockBackgroundRed = chartBackgroundRed;
-	}
-
-	public int getBlockBackgroundGreen() {
-		return blockBackgroundGreen;
-	}
-
-	public void setBlockBackgroundGreen(int chartBackgroundGreen) {
-		this.blockBackgroundGreen = chartBackgroundGreen;
-	}
-
-	public int getBlockBackgroundBlue() {
-		return blockBackgroundBlue;
-	}
-
-	public void setBlockBackgroundBlue(int chartBackgroundBlue) {
-
-		this.blockBackgroundBlue = chartBackgroundBlue;
-	}
+	
 	public boolean isBlockShowOutline() {
 		return blockShowOutline;
+	}
+
+	public RGB getBlockBackgroundRGB() {
+		return blockBackgroundRGB;
+	}
+
+	public void setBlockBackgroundRGB(RGB blockBackgroundRGB) {
+		this.blockBackgroundRGB = blockBackgroundRGB;
 	}
 
 	public void setBlockShowOutline(boolean plotShowOutline) {
@@ -87,30 +69,16 @@ public class BlockSettings {
 	public void setBlockOutlineThickness(int plotThickness) {
 		this.blockOutlineThickness = plotThickness;
 	}
+
+	public RGB getBlockOutlineRGB() {
+		return blockOutlineRGB;
+	}
+
+	public void setBlockOutlineRGB(RGB blockOutlineRGB) {
+		this.blockOutlineRGB = blockOutlineRGB;
+	}
+	
 	
 
-	public int getBlockOutlineRed() {
-		return blockOutlineRed;
-	}
-
-	public void setBlockOutlineRed(int plotOutlineRed) {
-		this.blockOutlineRed = plotOutlineRed;
-	}
-
-	public int getBlockOutlineGreen() {
-		return blockOutlineGreen;
-	}
-
-	public void setBlockOutlineGreen(int plotOutlineGreen) {
-		this.blockOutlineGreen = plotOutlineGreen;
-	}
-
-	public int getBlockOutlineBlue() {
-		return blockOutlineBlue;
-	}
-
-	public void setBlockOutlineBlue(int plotOutlineBlue) {
-		this.blockOutlineBlue = plotOutlineBlue;
-	}
 
 }

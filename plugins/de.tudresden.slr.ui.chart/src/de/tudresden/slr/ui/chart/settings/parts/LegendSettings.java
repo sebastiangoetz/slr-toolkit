@@ -11,6 +11,7 @@ import org.eclipse.birt.chart.model.attribute.Text;
 import org.eclipse.birt.chart.model.attribute.VerticalAlignment;
 import org.eclipse.birt.chart.model.component.Label;
 import org.eclipse.birt.chart.model.layout.ClientArea;
+import org.eclipse.swt.graphics.RGB;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 
@@ -42,13 +43,10 @@ public class LegendSettings {
 		private double legendWrappingSize;
 		*/
 		//Background
-		private int legendBackgroundRed = 155;
-		private int legendBackgroundGreen = 155;
-		private int legendBackgroundBlue = 155;
+
+		private RGB legendBackgroundRGB = new RGB(155,155,155);
 		//Shadow
-		private int legendShadowRed = 190;
-		private int legendShadowGreen = 190;
-		private int legendShadowBlue = 190;
+		private RGB legendShadowRGB = new RGB(190,190,190);
 		//Insets
 		private double legendInsetTop = 000;
 		private double legendInsetLeft = 0;
@@ -58,9 +56,8 @@ public class LegendSettings {
 		private boolean legendShowOutline = true;
 		private LineStyle legendOutlineStyle = LineStyle.SOLID_LITERAL;
 		private int legendOutlineThickness = 1;
-		private int legendOutlineRed = 0;
-		private int legendOutlineGreen = 0;
-		private int legendOutlineBlue = 0;
+		private RGB legendOutlineRGB = new RGB(0,0,0);
+
 		//Misc
 		//private Direction legendDirection = Direction.TOP_BOTTOM_LITERAL;
 		private LegendItemType legendItemType = LegendItemType.CATEGORIES_LITERAL; //Andere Einstellung ist Abfuck? :D
@@ -71,9 +68,7 @@ public class LegendSettings {
 		private boolean legendShowSeparator = false;
 		private LineStyle legendSeparatorStyle = LineStyle.SOLID_LITERAL;
 		private int legendSeparatorThickness = 5;
-		private int legendSeparatorRed = 0;
-		private int legendSeparatorGreen = 0;
-		private int legendSeparatorBlue = 0;
+		private RGB legendSeparatorRGB = new RGB(0,0,0);
 		//Text
 		private HorizontalAlignment legendHorizontalAlignment = HorizontalAlignment.LEFT_LITERAL;
 		private VerticalAlignment legendVerticalAlignment = VerticalAlignment.TOP_LITERAL;
@@ -86,58 +81,11 @@ public class LegendSettings {
 		private boolean legendWordWrap = true;
 		private double legendTitlePercent = 0.6; //Default
 		private Position legendTitlePosition = Position.ABOVE_LITERAL;
-		private double legendWrappingSize = 30;
+		private double legendWrappingSize = 100;
 		
 		
 		
 		
-		public int getLegendBackgroundRed() {
-			return legendBackgroundRed;
-		}
-
-		public void setLegendBackgroundRed(int legendBackgroundRed) {
-			this.legendBackgroundRed = legendBackgroundRed;
-		}
-
-		public int getLegendBackgroundGreen() {
-			return legendBackgroundGreen;
-		}
-
-		public void setLegendBackgroundGreen(int legendBackgroundGreen) {
-			this.legendBackgroundGreen = legendBackgroundGreen;
-		}
-
-		public int getLegendBackgroundBlue() {
-			return legendBackgroundBlue;
-		}
-
-		public void setLegendBackgroundBlue(int legendBackgroundBlue) {
-			this.legendBackgroundBlue = legendBackgroundBlue;
-		}
-
-		public int getLegendShadowRed() {
-			return legendShadowRed;
-		}
-
-		public void setLegendShadowRed(int legendShadowRed) {
-			this.legendShadowRed = legendShadowRed;
-		}
-
-		public int getLegendShadowGreen() {
-			return legendShadowGreen;
-		}
-
-		public void setLegendShadowGreen(int legendShadowGreen) {
-			this.legendShadowGreen = legendShadowGreen;
-		}
-
-		public int getLegendShadowBlue() {
-			return legendShadowBlue;
-		}
-
-		public void setLegendShadowBlue(int legendShadowBlue) {
-			this.legendShadowBlue = legendShadowBlue;
-		}
 
 		public double getLegendInsetTop() {
 			return legendInsetTop;
@@ -195,29 +143,6 @@ public class LegendSettings {
 			this.legendOutlineThickness = legendOutlineThickness;
 		}
 
-		public int getLegendOutlineRed() {
-			return legendOutlineRed;
-		}
-
-		public void setLegendOutlineRed(int legendOutlineRed) {
-			this.legendOutlineRed = legendOutlineRed;
-		}
-
-		public int getLegendOutlineGreen() {
-			return legendOutlineGreen;
-		}
-
-		public void setLegendOutlineGreen(int legendOutlineGreen) {
-			this.legendOutlineGreen = legendOutlineGreen;
-		}
-
-		public int getLegendOutlineBlue() {
-			return legendOutlineBlue;
-		}
-
-		public void setLegendOutlineBlue(int legendOutlineBlue) {
-			this.legendOutlineBlue = legendOutlineBlue;
-		}
 
 		public LegendItemType getLegendItemType() {
 			return legendItemType;
@@ -273,30 +198,6 @@ public class LegendSettings {
 
 		public void setLegendSeparatorThickness(int legendSeparatorThickness) {
 			this.legendSeparatorThickness = legendSeparatorThickness;
-		}
-
-		public int getLegendSeparatorRed() {
-			return legendSeparatorRed;
-		}
-
-		public void setLegendSeparatorRed(int legendSeparatorRed) {
-			this.legendSeparatorRed = legendSeparatorRed;
-		}
-
-		public int getLegendSeparatorGreen() {
-			return legendSeparatorGreen;
-		}
-
-		public void setLegendSeparatorGreen(int legendSeparatorGreen) {
-			this.legendSeparatorGreen = legendSeparatorGreen;
-		}
-
-		public int getLegendSeparatorBlue() {
-			return legendSeparatorBlue;
-		}
-
-		public void setLegendSeparatorBlue(int legendSeparatorBlue) {
-			this.legendSeparatorBlue = legendSeparatorBlue;
 		}
 
 		public HorizontalAlignment getLegendHorizontalAlignment() {
@@ -393,6 +294,38 @@ public class LegendSettings {
 
 		public void setLegendWrappingSize(double legendWrappingSize) {
 			this.legendWrappingSize = legendWrappingSize;
+		}
+
+		public RGB getLegendBackgroundRGB() {
+			return legendBackgroundRGB;
+		}
+
+		public void setLegendBackgroundRGB(RGB legendBackgroundRGB) {
+			this.legendBackgroundRGB = legendBackgroundRGB;
+		}
+
+		public RGB getLegendShadowRGB() {
+			return legendShadowRGB;
+		}
+
+		public void setLegendShadowRGB(RGB legendShadowRGB) {
+			this.legendShadowRGB = legendShadowRGB;
+		}
+
+		public RGB getLegendOutlineRGB() {
+			return legendOutlineRGB;
+		}
+
+		public void setLegendOutlineRGB(RGB legendOutlineRGB) {
+			this.legendOutlineRGB = legendOutlineRGB;
+		}
+
+		public RGB getLegendSeparatorRGB() {
+			return legendSeparatorRGB;
+		}
+
+		public void setLegendSeparatorRGB(RGB legendSeparatorRGB) {
+			this.legendSeparatorRGB = legendSeparatorRGB;
 		}
 
 		/*public Direction getLegendDirection() {

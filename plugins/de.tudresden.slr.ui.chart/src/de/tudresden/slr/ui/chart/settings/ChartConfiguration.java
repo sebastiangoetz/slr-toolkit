@@ -29,6 +29,7 @@ import org.eclipse.birt.chart.model.layout.ClientArea;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
+import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.ChartSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
@@ -54,12 +55,16 @@ public class ChartConfiguration {
 	public static BlockSettings getBlockSettings() {
 		return bs;
 	}
+	public static AxisSettings getAxisSettings() {
+		return as;
+	}
 
 	static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
 	static PlotSettings ps = PlotSettings.get();
 	static ChartSettings gs = ChartSettings.get();
 	static LegendSettings ls = LegendSettings.get();
 	static BlockSettings bs = BlockSettings.get();
+	static AxisSettings as = AxisSettings.get();
  
 	
 	//Graph Variables
