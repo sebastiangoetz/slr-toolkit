@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -95,31 +96,32 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			shell.close();
 			return;
 		}
-		if(e.getSource() == applyButton) {
-			
-			ChartConfiguration.get().getGeneralSettings().setChartTitle(barFolder.titleEdit.getText());
-			System.out.println("alpppppy");
+		
+		if(e.getSource() == applyButton) {			
+			collectAndSaveSettings();
 			return;
-		}
-		if(e.getSource() == okButton) {
-			System.out.println("OKAAAy");
-			return;
-		}
-		switch (comboChartSelect.getSelectionIndex()) {
-		case 0:
-			sl_stackComposite.topControl = pageBarChart;
-			stackComposite.layout();
-			break;
-		case 1:
-			sl_stackComposite.topControl = pageBubbleChart;
-			stackComposite.layout();
-			break;
-		case 2:
-			sl_stackComposite.topControl = pageHeatChart;
-			stackComposite.layout();
-			break;
 		}
 		
+		if(e.getSource() == okButton) {
+			return;
+		}
+		
+		if(e.getSource() == comboChartSelect) {
+			switch (comboChartSelect.getSelectionIndex()) {
+				case 0:
+					sl_stackComposite.topControl = pageBarChart;
+					stackComposite.layout();
+					break;
+				case 1:
+					sl_stackComposite.topControl = pageBubbleChart;
+					stackComposite.layout();
+					break;
+				case 2:
+					sl_stackComposite.topControl = pageHeatChart;
+					stackComposite.layout();
+					break;
+			}
+		}		
 	}
 
 	@Override
@@ -133,7 +135,8 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabFolder folderBarChart = new TabFolder(pageBarChart, SWT.NONE);
 		
 		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
-		itemFolderBarChart_1.setText("X - Data selection");
+		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
+		TabItem itemFolderBarChart_3 = new TabItem(folderBarChart, SWT.NONE);
 		
 		barFolder = new BarFolder();
 		barFolder.build(folderBarChart);
@@ -299,4 +302,75 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		closeButton.setText("    Close    ");
 		closeButton.addSelectionListener(this);
 	}
+	
+	private void collectAndSaveSettings() {		
+		
+		//Title
+		ChartConfiguration.get().getGeneralSettings().setChartTitle(barFolder.titleEdit.getText());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleColor(barFolder.colorTitle);
+		ChartConfiguration.get().getGeneralSettings().setChartTitleSize(Integer.valueOf(barFolder.comboTitleSize.getItem(barFolder.comboTitleSize.getSelectionIndex())));
+		ChartConfiguration.get().getGeneralSettings().setChartTitleBold(barFolder.checkBoxBolt.getSelection());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleItalic(barFolder.checkBoxItalic.getSelection());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleUnderline(barFolder.checkBoxUnderline.getSelection());
+		
+		
+		//Block
+		ChartConfiguration.get().getBlockSettings().setBlockBackgroundRGB(barFolder.colorBackground);
+		
+		if(setLineStyle(barFolder.comboBlockOutline.getSelectionIndex()) == null)
+			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(false);
+		else {
+			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(true);
+			ChartConfiguration.get().getBlockSettings().setBlockOutlineStyle(setLineStyle(barFolder.comboBlockOutline.getSelectionIndex()));
+		}
+		
+		//Legend
+		if(setLineStyle(barFolder.comboOutline.getSelectionIndex()) == null)
+			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(false);
+		else {
+			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(true);
+			ChartConfiguration.get().getLegendSettings().setLegendOutlineStyle(setLineStyle(barFolder.comboOutline.getSelectionIndex()));
+		}
+		
+		if(setLineStyle(barFolder.comboSeparator.getSelectionIndex()) == null)
+			ChartConfiguration.get().getLegendSettings().setLegendShowSeparator(false);
+		else{
+			ChartConfiguration.get().getLegendSettings().setLegendShowSeparator(true);
+			ChartConfiguration.get().getLegendSettings().setLegendSeparatorStyle(setLineStyle(barFolder.comboSeparator.getSelectionIndex()));
+		}
+		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(barFolder.colorLegend);
+		
+		
+		
+	}
+	
+	private LineStyle setLineStyle(int style) {
+		switch (style) {
+		case 0:
+			return null;
+		
+		case 1:
+			return LineStyle.DOTTED_LITERAL;
+		
+		case 2:
+			return LineStyle.DASH_DOTTED_LITERAL;
+		
+		case 3:
+			return LineStyle.DOTTED_LITERAL;		
+		
+		case 4:
+			return LineStyle.SOLID_LITERAL;
+			
+		}
+		return null;
+	}
+		
 }
+	
+	
+	
+	
+	
+	
+	
+	
