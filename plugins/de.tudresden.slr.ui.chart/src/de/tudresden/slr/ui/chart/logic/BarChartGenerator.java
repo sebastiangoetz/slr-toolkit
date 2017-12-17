@@ -219,11 +219,6 @@ public class BarChartGenerator {
 		Series seCategory = SeriesImpl.create();
 		seCategory.setDataSet(categoryValues);
 		
-		ArrayList col1 = new ArrayList<Fill>();
-		col1.add(ColorDefinitionImpl.create(0, 0, 255));
-		col1.add(ColorDefinitionImpl.create(0, 255, 0));
-		col1.add(ColorDefinitionImpl.create(255, 0, 0));
-		ss.setSeriesColor(col1);
 		
 		
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();

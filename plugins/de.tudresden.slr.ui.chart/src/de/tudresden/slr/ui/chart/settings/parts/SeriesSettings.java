@@ -20,7 +20,7 @@ public class SeriesSettings {
 	
 	//Y-Series
 	private boolean seriesTranslucent = false;
-	private boolean seriesStacked = false; //Alle Werte abbilden
+	private boolean seriesStacked = false; //Als Stacked rendern
 	private boolean seriesShowLabels = true; //Zeigt Labels der Balken an
 	private boolean seriesUseCustomColors = true; //false=no Custom Color, true=custom Colors
 	private ArrayList<Fill> seriesColor = new ArrayList<Fill>();
