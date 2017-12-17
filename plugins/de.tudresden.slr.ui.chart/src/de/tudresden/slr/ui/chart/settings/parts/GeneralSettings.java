@@ -25,7 +25,7 @@ public class GeneralSettings {
 	private double chartUnitSpacing;
 	private String chartTitle = "LoLoLo";
 	//TitleFont
-	private int chartTitleSize = 12;
+	private int chartTitleSize = 34;
 	private RGB chartTitleColor = new RGB(0,0,0);
 	private boolean chartTitleItalic = false;
 	private boolean chartTitleBold = false;

@@ -34,6 +34,7 @@ import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
+import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
 public class ChartConfiguration {
 	
@@ -58,6 +59,9 @@ public class ChartConfiguration {
 	public static AxisSettings getAxisSettings() {
 		return as;
 	}
+	public static SeriesSettings getSeriesSettings() {
+		return ss;
+	}
 
 	static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
 	static PlotSettings ps = PlotSettings.get();
@@ -65,6 +69,7 @@ public class ChartConfiguration {
 	static LegendSettings ls = LegendSettings.get();
 	static BlockSettings bs = BlockSettings.get();
 	static AxisSettings as = AxisSettings.get();
+	static SeriesSettings ss = SeriesSettings.get();
  
 	
 	//Graph Variables

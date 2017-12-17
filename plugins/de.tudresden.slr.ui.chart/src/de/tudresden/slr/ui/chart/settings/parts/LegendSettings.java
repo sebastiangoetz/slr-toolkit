@@ -46,7 +46,7 @@ public class LegendSettings {
 
 		private RGB legendBackgroundRGB = new RGB(155,155,155);
 		//Shadow
-		private RGB legendShadowRGB = new RGB(190,190,190);
+		private RGB legendShadowRGB = new RGB(155,155,155);
 		//Insets
 		private double legendInsetTop = 000;
 		private double legendInsetLeft = 0;
@@ -73,7 +73,7 @@ public class LegendSettings {
 		private HorizontalAlignment legendHorizontalAlignment = HorizontalAlignment.LEFT_LITERAL;
 		private VerticalAlignment legendVerticalAlignment = VerticalAlignment.TOP_LITERAL;
 		private double legendTextRotation = 0;
-		private float legendTextSize = 12;
+		private float legendTextSize = 10;
 		private boolean legendTextBold = false;
 		private boolean legendTextItalic = false;
 		private boolean legendTextStrikeThrough = false;
@@ -81,7 +81,7 @@ public class LegendSettings {
 		private boolean legendWordWrap = true;
 		private double legendTitlePercent = 0.6; //Default
 		private Position legendTitlePosition = Position.ABOVE_LITERAL;
-		private double legendWrappingSize = 100;
+		private double legendWrappingSize = 200;
 		
 		
 		
