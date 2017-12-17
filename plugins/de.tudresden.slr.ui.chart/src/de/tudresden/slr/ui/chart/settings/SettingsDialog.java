@@ -2,6 +2,7 @@ package de.tudresden.slr.ui.chart.settings;
 
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -28,7 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -339,6 +342,14 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			ChartConfiguration.get().getLegendSettings().setLegendSeparatorStyle(setLineStyle(barFolder.comboSeparator.getSelectionIndex()));
 		}
 		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(barFolder.colorLegend);
+		
+		ArrayList<Fill> fillList = new ArrayList<>();
+		
+		for (RGB u : barFolder.colorList) {
+			fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
+		}
+		
+		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
 		
 		
 		

@@ -26,7 +26,7 @@ public class BarFolder extends ChartFolder{
 	Composite composite, composite_1, composite_2;
 	Button btnNewButton;
 	List list;
-	java.util.List<RGB> colorList = new ArrayList<>();
+	protected java.util.List<RGB> colorList = new ArrayList<>();
 	Label lblNewLabel;
 	Button btnNewButton_1;
 
