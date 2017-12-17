@@ -70,4 +70,26 @@ Allgemeine Variablen(Seite 1)
 - Titlefarbe
 Blocksettings: Background, Outline, OutlineColor, OutlineStyle, OutlineThickness, OutlineRGB -> siehe oben
 
+#x-Axis
+public void setAxisFontSize(float axisFontSize)
+public void setxAxisRotation(int xAxisRotation)
+public void setxAxisTitleActive(boolean xAxisTitleActive)
+public void setxAxisTitle(String xAxisTitle)
+public void setxAxisTitleSize(int xAxisTitleSize)
+public void setxAxisTickStyle(TickStyle xAxisTickStyle) -> .ABOVE_LITERAL, .ACROSS_LITERAL, .BELOW_LITERAL
+public void setxAxisIntersectionType(IntersectionType xAxisIntersectionStyle) -> IntersectionStyle.MIN_LITERAL oder .VALUE_LITERAL
+public void setxAxisGapWidth(double xAxisGapWidth) -> Abstand von vorne bzw. hinten in %
+'
+#SeriesVariablen
 
+public void setSeriesTranslucent(boolean seriesTranslucent){ //"Durchscheinende" Farben
+public void setSeriesStacked(boolean seriesStacked) { //Als "Stacked" rendern
+public void setSeriesShowLabels(boolean seriesShowLabels) { //Zeigt Labels der Balken an
+public void setSeriesUseCustomColors(boolean seriesUseCustomColors) { //false=no Custom Color, true=custom Colors
+
+public void setSeriesColor(ArrayList<Fill> seriesColor) {
+		/*
+		seriesColor.add(ColorDefinitionImpl.create(0, 0, 255));
+		seriesColor.add(ColorDefinitionImpl.create(0, 255, 0));
+		seriesColor.add(ColorDefinitionImpl.create(255, 0, 0));
+		 */

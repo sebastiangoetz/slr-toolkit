@@ -9,10 +9,7 @@
  *  Actuate Corporation  - initial API and implementation
  *******************************************************************************/
 
-
 package de.tudresden.slr.ui.chart.logic;
-
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +17,19 @@ import java.util.Map;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
+import org.eclipse.birt.chart.model.attribute.AttributePackage;
 import org.eclipse.birt.chart.model.attribute.AxisType;
+import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Orientation;
+import org.eclipse.birt.chart.model.attribute.Palette;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.Stretch;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
+import org.eclipse.birt.chart.model.attribute.impl.PaletteImpl;
 import org.eclipse.birt.chart.model.component.Axis;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
@@ -47,6 +48,7 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.internal.themes.ColorDefinition;
@@ -58,6 +60,8 @@ import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
+import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
+
 public class BarChartGenerator {
 
 	/**
@@ -75,12 +79,14 @@ public class BarChartGenerator {
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
 		AxisSettings as = cc.getAxisSettings();
+		SeriesSettings ss = cc.getSeriesSettings();
 		
 		RGB rgb = new RGB(0,255,0);
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType(gs.getChartType());
 		cwaBar.setSubType(gs.getChartSubType()); //$NON-NLS-1$
 		cwaBar.setOrientation(Orientation.VERTICAL_LITERAL);
+
 		// Plot
 		cwaBar.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRGB().red, bs.getBlockBackgroundRGB().green, bs.getBlockBackgroundRGB().blue));
 		cwaBar.getBlock().getOutline().setVisible(bs.isBlockShowOutline());
@@ -148,11 +154,16 @@ public class BarChartGenerator {
 		
 
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
-		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
-		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(as.getxAxisTickStyle());
+		xAxisPrimary.getOrigin().setType(as.getxAxisIntersectionType());
+		
+		xAxisPrimary.getLabel().getCaption().getFont().setSize(as.getAxisFontSize());
 		xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
-		xAxisPrimary.getTitle().getCaption().setValue("Hallo");
-		xAxisPrimary.getTitle().getCaption().getFont().setSize(30);
+		xAxisPrimary.getTitle().getCaption().setValue(as.getxAxisTitle());
+		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getAxisFontSize());
+		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
+		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
+
 		//xAxisPrimary.getSubTitle().getCaption().setValue("Jürgen");
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
@@ -166,7 +177,15 @@ public class BarChartGenerator {
 		yAxisPrimary.getMajorGrid().setTickStyle(TickStyle.RIGHT_LITERAL);
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
 		yAxisPrimary.setOrientation(Orientation.VERTICAL_LITERAL);
-
+		
+		yAxisPrimary.getLabel().getCaption().getFont().setSize(as.getAxisFontSize());
+		yAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getyAxisRotation());
+		yAxisPrimary.getTitle().setVisible(as.isyAxisTitleActive());
+		yAxisPrimary.getTitle().getCaption().setValue(as.getyAxisTitle());
+		yAxisPrimary.getTitle().getCaption().getFont().setSize(as.getyAxisTitleSize());
+		yAxisPrimary.getScale().setStep(as.getyAxisScaleStep());
+		
+		
 		List<String> names = new ArrayList<>();
 		List<Double> values = new ArrayList<>();
 		if(!title.contains("per year")) {
@@ -199,22 +218,39 @@ public class BarChartGenerator {
 		// X-Series
 		Series seCategory = SeriesImpl.create();
 		seCategory.setDataSet(categoryValues);
-
+		
+		
+		
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
-		sdX.getSeriesPalette().shift(0);
+		
+		if(ss.isSeriesUseCustomColors()) {
+			sdX.getSeriesPalette().eSet(sdX.getSeriesPalette().eContainingFeature(), ss.getSeriesColor());
+		} else {
+			sdX.getSeriesPalette().shift(1);
+		}
+		
+		//sdX.getSeriesPalette().update(ColorDefinitionImpl.create(20, 20, 10));
+		////SHIFT COLOR PALETTE
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
-
+		
+		
+		
+		
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
-		bs1.getLabel().setVisible(true);
+		bs1.getLabel().setVisible(ss.isSeriesShowLabels());
 		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
-
+		bs1.setTranslucent(ss.isSeriesTranslucent());
+		bs1.setStacked(ss.isSeriesStacked());
+		
+		
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
 		yAxisPrimary.getSeriesDefinitions().add(sdY);
 		sdY.getSeries().add(bs1);
 
 		return cwaBar;
 	}
+	
 }
