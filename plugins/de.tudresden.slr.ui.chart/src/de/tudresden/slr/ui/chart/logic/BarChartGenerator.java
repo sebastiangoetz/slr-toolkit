@@ -115,6 +115,7 @@ public class BarChartGenerator {
 		// Legend
 		Legend lg = cwaBar.getLegend();
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
+		lg.getTitle().getCaption().setValue(ls.getLegendTitle());
 		
 		lg.setBackground(ColorDefinitionImpl.create(ls.getLegendBackgroundRGB().red, ls.getLegendBackgroundRGB().green, ls.getLegendBackgroundRGB().blue));
 		lg.getOutline().setVisible(ls.isLegendShowOutline());
@@ -234,8 +235,14 @@ public class BarChartGenerator {
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
 		
+		/*ArrayList<Fill> col1 = new ArrayList<Fill>();
 		
-		
+		col1.add(ColorDefinitionImpl.create(0, 0, 255));
+		col1.add(ColorDefinitionImpl.create(0, 255, 0));
+		col1.add(ColorDefinitionImpl.create(255, 0, 0));
+		col1.add(ColorDefinitionImpl.create(0, 255, 0));
+		ss.setSeriesColor(col1);
+		*/
 		
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
@@ -243,7 +250,7 @@ public class BarChartGenerator {
 		bs1.getLabel().setVisible(ss.isSeriesShowLabels());
 		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
 		bs1.setTranslucent(ss.isSeriesTranslucent());
-		bs1.setStacked(ss.isSeriesStacked());
+
 		
 		
 		SeriesDefinition sdY = SeriesDefinitionImpl.create();
