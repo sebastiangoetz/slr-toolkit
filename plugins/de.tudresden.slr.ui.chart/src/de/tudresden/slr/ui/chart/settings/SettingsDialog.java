@@ -351,7 +351,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		for (RGB u : barFolder.colorList) {
 			fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
 		}
-		
+		ChartConfiguration.getSeriesSettings().setSeriesUseCustomColors(barFolder.btnRadioButton.getSelection());
 		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
 		// ChartConfiguration.get().getLegendSettings().setLegendTitle(barFolder.textTitel.getText())
 		ChartConfiguration.get().getLegendSettings().setLegendMaxPercent( (double) barFolder.scalePercent.getSelection()/100);
