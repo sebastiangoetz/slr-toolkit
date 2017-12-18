@@ -23,7 +23,7 @@ public class GeneralSettings {
 	private Orientation chartOrientation;
 	private Rotation3D chartRotation;
 	private double chartUnitSpacing;
-	private String chartTitle = "LoLoLo";
+	private String chartTitle = "Title";
 	//TitleFont
 	private int chartTitleSize = 34;
 	private RGB chartTitleColor = new RGB(0,0,0);

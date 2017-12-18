@@ -31,7 +31,7 @@ public class BlockSettings {
 	//Outline
 	private boolean blockShowOutline = true;
 	private LineStyle blockOutlineStyle = LineStyle.SOLID_LITERAL;
-	private int blockOutlineThickness = 1;
+	private int blockOutlineThickness = 3;
 	private RGB blockOutlineRGB = new RGB(0,0,0);
 
 	

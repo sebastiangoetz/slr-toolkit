@@ -1,6 +1,7 @@
 package de.tudresden.slr.ui.chart.settings;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -17,18 +18,21 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.handlers.HandlerUtil;
-
-import de.tudresden.slr.model.taxonomy.Term;
 
 public class BarFolder extends ChartFolder{
 	
-	Composite composite, composite_1, composite_2;
-	Button btnNewButton;
-	List list;
+	protected Composite composite, composite_1, composite_2;
+	protected Button btnNewButton;
+	protected List list;
 	protected java.util.List<RGB> colorList = new ArrayList<>();
-	Label lblNewLabel;
-	Button btnNewButton_1;
+	protected Label lblNewLabel;
+	protected Button btnNewButton_1;
+	
+	protected Button btnRadioButton;
+	protected Button btnRadioButton_1;
+	protected Button btnRadioButton_2;
+	
+	Random random = new Random();
 
 	@Override
 	protected void build(TabFolder tabFolder) {
@@ -85,7 +89,9 @@ public class BarFolder extends ChartFolder{
 		}
 		
 		if(e.getSource() == btnNewButton) {
-			for(int i = 0; i < 5; i++) {
+			list.removeAll();
+			colorList.clear();
+			for(int i = 0; i < 10; i++) {
 				list.add(Integer.toString(i));
 				colorList.add(new RGB(255,255,255));
 			}
@@ -105,6 +111,21 @@ public class BarFolder extends ChartFolder{
 	        	colorList.set(list.getSelectionIndex(), rgb);	        	
 	        	lblNewLabel.setBackground(new Color(btnNewButton_1.getShell().getDisplay(), rgb));
 	        }
+		}
+		
+		if(e.getSource() == btnRadioButton) {
+			btnNewButton_1.setEnabled(false);
+		}
+		
+		if(e.getSource() == btnRadioButton_1) {
+			btnNewButton_1.setEnabled(true);
+		}
+
+		if(e.getSource() == btnRadioButton_2) {
+			btnNewButton_1.setEnabled(false);
+			for(int i = 0; i< colorList.size(); i++) {
+				colorList.set(i, new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+			}
 		}
 	}
 
@@ -127,15 +148,18 @@ public class BarFolder extends ChartFolder{
 		btnNewButton.setText("Select Items");
 		btnNewButton.addSelectionListener(this);
 		
-		Button btnRadioButton = new Button(composite_1, SWT.RADIO);
-		btnRadioButton.setSelection(true);
+		btnRadioButton = new Button(composite_1, SWT.RADIO);		
 		btnRadioButton.setText("Standard Colors");
+		btnRadioButton.addSelectionListener(this);
 		
-		Button btnRadioButton_1 = new Button(composite_1, SWT.RADIO);
+		btnRadioButton_1 = new Button(composite_1, SWT.RADIO);
 		btnRadioButton_1.setText("Custom Colors");
+		btnRadioButton_1.setSelection(true);
+		btnRadioButton_1.addSelectionListener(this);
 		
-		Button btnRadioButton_2 = new Button(composite_1, SWT.RADIO);
-		btnRadioButton_2.setText("Black - White");
+		btnRadioButton_2 = new Button(composite_1, SWT.RADIO);
+		btnRadioButton_2.setText("Random Colors");
+		btnRadioButton_2.addSelectionListener(this);
 		
 		list = new List(parent, SWT.BORDER);
 		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1);

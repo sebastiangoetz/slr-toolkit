@@ -192,6 +192,8 @@ public abstract class ChartFolder implements SelectionListener{
 		labelLegendColor.setBackground(new Color(parent.getShell().getDisplay(), new RGB(255,255,255)));
 		labelLegendColor.setText("                             ");
 		
+		colorLegend = labelLegendColor.getBackground().getRGB();
+		
 		buttonSetColorBackground = new Button(composite, SWT.NONE);
 		buttonSetColorBackground.setText("Set Color");
 		buttonSetColorBackground.addSelectionListener(this);
@@ -243,7 +245,7 @@ public abstract class ChartFolder implements SelectionListener{
 		lblTitel.setText("Titel");
 		
 		
-		Text textTitel = new Text(parent, SWT.BORDER);
+		textTitel = new Text(parent, SWT.BORDER);
 		textTitel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));	
 		
 		

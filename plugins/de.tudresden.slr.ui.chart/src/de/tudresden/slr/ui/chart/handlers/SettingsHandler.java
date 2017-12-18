@@ -7,7 +7,6 @@ import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.handlers.HandlerUtil;
 import de.tudresden.slr.ui.chart.settings.SettingsDialog;
-import de.tudresden.slr.ui.chart.settings.lkhjlk;
 
 public class SettingsHandler implements IHandler {
 

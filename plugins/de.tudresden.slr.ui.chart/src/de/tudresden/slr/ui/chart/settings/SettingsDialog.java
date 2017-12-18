@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -320,6 +321,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		//Block
 		ChartConfiguration.get().getBlockSettings().setBlockBackgroundRGB(barFolder.colorBackground);
 		
+		
 		if(setLineStyle(barFolder.comboBlockOutline.getSelectionIndex()) == null)
 			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(false);
 		else {
@@ -341,6 +343,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			ChartConfiguration.get().getLegendSettings().setLegendShowSeparator(true);
 			ChartConfiguration.get().getLegendSettings().setLegendSeparatorStyle(setLineStyle(barFolder.comboSeparator.getSelectionIndex()));
 		}
+		ChartConfiguration.get().getLegendSettings().setLegendShadowRGB(barFolder.colorLegend);
 		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(barFolder.colorLegend);
 		
 		ArrayList<Fill> fillList = new ArrayList<>();
@@ -350,8 +353,10 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		}
 		
 		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
+		// ChartConfiguration.get().getLegendSettings().setLegendTitle(barFolder.textTitel.getText())
+		ChartConfiguration.get().getLegendSettings().setLegendMaxPercent( (double) barFolder.scalePercent.getSelection()/100);
 		
-		
+		ChartConfiguration.get().getLegendSettings().setLegendPosition(setPosition(barFolder.comboPosition.getSelectionIndex()));
 		
 	}
 	
@@ -372,6 +377,20 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		case 4:
 			return LineStyle.SOLID_LITERAL;
 			
+		}
+		return null;
+	}
+	
+	private Position setPosition(int i) {
+		switch(i) {
+		case 0:
+			return Position.RIGHT_LITERAL;
+		case 1:
+			return Position.LEFT_LITERAL;
+		case 2:
+			return Position.BELOW_LITERAL;
+		case 3:
+			return Position.ABOVE_LITERAL;
 		}
 		return null;
 	}
