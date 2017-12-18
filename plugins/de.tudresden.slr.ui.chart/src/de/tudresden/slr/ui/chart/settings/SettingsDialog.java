@@ -348,8 +348,6 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		ArrayList<Fill> fillList = new ArrayList<>();
 		
-		if(barFolder.btnRadioButton.getSelection())
-			
 		for (RGB u : barFolder.colorList) {
 			fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
 		}

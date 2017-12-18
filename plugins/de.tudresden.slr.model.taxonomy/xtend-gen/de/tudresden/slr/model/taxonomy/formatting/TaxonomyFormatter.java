@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess;
 import java.util.List;
 import org.eclipse.xtext.Keyword;
+import org.eclipse.xtext.TerminalRule;
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
 import org.eclipse.xtext.formatting.impl.FormattingConfig;
 import org.eclipse.xtext.util.Pair;
@@ -31,22 +32,39 @@ public class TaxonomyFormatter extends AbstractDeclarativeFormatter {
     List<Pair<Keyword, Keyword>> _findKeywordPairs = this._taxonomyGrammarAccess.findKeywordPairs("{", "}");
     for (final Pair<Keyword, Keyword> pair : _findKeywordPairs) {
       {
-        c.setIndentation(pair.getFirst(), pair.getSecond());
-        c.setLinewrap(1).after(pair.getFirst());
-        c.setLinewrap(1).before(pair.getSecond());
-        c.setLinewrap(1).after(pair.getSecond());
+        Keyword _first = pair.getFirst();
+        Keyword _second = pair.getSecond();
+        c.setIndentation(_first, _second);
+        FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(1);
+        Keyword _first_1 = pair.getFirst();
+        _setLinewrap.after(_first_1);
+        FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap(1);
+        Keyword _second_1 = pair.getSecond();
+        _setLinewrap_1.before(_second_1);
+        FormattingConfig.LinewrapLocator _setLinewrap_2 = c.setLinewrap(1);
+        Keyword _second_2 = pair.getSecond();
+        _setLinewrap_2.after(_second_2);
       }
     }
     List<Keyword> _findKeywords = this._taxonomyGrammarAccess.findKeywords(",");
     for (final Keyword comma : _findKeywords) {
       {
-        c.setNoLinewrap().before(comma);
-        c.setNoSpace().before(comma);
-        c.setLinewrap().after(comma);
+        FormattingConfig.NoLinewrapLocator _setNoLinewrap = c.setNoLinewrap();
+        _setNoLinewrap.before(comma);
+        FormattingConfig.NoSpaceLocator _setNoSpace = c.setNoSpace();
+        _setNoSpace.before(comma);
+        FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap();
+        _setLinewrap.after(comma);
       }
     }
-    c.setLinewrap(0, 1, 2).before(this._taxonomyGrammarAccess.getSL_COMMENTRule());
-    c.setLinewrap(0, 1, 2).before(this._taxonomyGrammarAccess.getML_COMMENTRule());
-    c.setLinewrap(0, 1, 1).after(this._taxonomyGrammarAccess.getML_COMMENTRule());
+    FormattingConfig.LinewrapLocator _setLinewrap = c.setLinewrap(0, 1, 2);
+    TerminalRule _sL_COMMENTRule = this._taxonomyGrammarAccess.getSL_COMMENTRule();
+    _setLinewrap.before(_sL_COMMENTRule);
+    FormattingConfig.LinewrapLocator _setLinewrap_1 = c.setLinewrap(0, 1, 2);
+    TerminalRule _mL_COMMENTRule = this._taxonomyGrammarAccess.getML_COMMENTRule();
+    _setLinewrap_1.before(_mL_COMMENTRule);
+    FormattingConfig.LinewrapLocator _setLinewrap_2 = c.setLinewrap(0, 1, 1);
+    TerminalRule _mL_COMMENTRule_1 = this._taxonomyGrammarAccess.getML_COMMENTRule();
+    _setLinewrap_2.after(_mL_COMMENTRule_1);
   }
 }
