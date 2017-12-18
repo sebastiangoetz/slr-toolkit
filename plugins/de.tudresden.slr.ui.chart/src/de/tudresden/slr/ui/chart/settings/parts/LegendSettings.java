@@ -43,7 +43,7 @@ public class LegendSettings {
 		private double legendWrappingSize;
 		*/
 		//Background
-
+		
 		private RGB legendBackgroundRGB = new RGB(155,155,155);
 		//Shadow
 		private RGB legendShadowRGB = new RGB(155,155,155);
@@ -59,6 +59,7 @@ public class LegendSettings {
 		private RGB legendOutlineRGB = new RGB(0,0,0);
 
 		//Misc
+		private String legendTitle = "Test";
 		//private Direction legendDirection = Direction.TOP_BOTTOM_LITERAL;
 		private LegendItemType legendItemType = LegendItemType.CATEGORIES_LITERAL; //Andere Einstellung ist Abfuck? :D
 		private double LegendMaxPercent = 0.3333; //Default 0,3333
@@ -326,6 +327,14 @@ public class LegendSettings {
 
 		public void setLegendSeparatorRGB(RGB legendSeparatorRGB) {
 			this.legendSeparatorRGB = legendSeparatorRGB;
+		}
+
+		public String getLegendTitle() {
+			return legendTitle;
+		}
+
+		public void setLegendTitle(String legendTitle) {
+			this.legendTitle = legendTitle;
 		}
 
 		/*public Direction getLegendDirection() {
