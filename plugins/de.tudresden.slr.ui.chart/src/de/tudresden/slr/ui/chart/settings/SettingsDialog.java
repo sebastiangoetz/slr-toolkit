@@ -24,6 +24,9 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.settings.pages.GeneralPage;
+import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,9 +144,24 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_3 = new TabItem(folderBarChart, SWT.NONE);
+		TabItem itemFolderBarChart_4 = new TabItem(folderBarChart,SWT.NONE);
+		TabItem itemFolderBarChart_5 = new TabItem(folderBarChart,SWT.NONE);
+		TabItem itemFolderBarChart_6 = new TabItem(folderBarChart,SWT.NONE);
 		
 		barFolder = new BarFolder();
 		barFolder.build(folderBarChart);
+		
+		GeneralPage generalPage = new GeneralPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_4.setControl(generalPage);
+		itemFolderBarChart_4.setText("lolosdofds");
+		
+		LegendPage legendPage = new LegendPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_5.setControl(legendPage);
+		itemFolderBarChart_5.setText("sdfsdf");
+		
+		SeriesPage seriesPage = new SeriesPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_6.setControl(seriesPage);
+		itemFolderBarChart_6.setText("sdfsdf2");
 		
 //		Composite barDataCompositeContainer = new Composite(folderBarChart, SWT.NONE);
 //		itemFolderBarChart_1.setControl(barDataCompositeContainer);

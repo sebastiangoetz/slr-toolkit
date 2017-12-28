@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 
-class TreeContentProvider implements IStructuredContentProvider, ITreeContentProvider {
+public class TreeContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 	public TreeContentProvider(Viewer v) {}
 	
 	@Override

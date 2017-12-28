@@ -8,21 +8,26 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.Term;
 
 import java.util.Optional;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 
-public class TreeDialog extends Dialog {
+public class TreeDialog extends Dialog implements SelectionListener{
 
 	protected Object result;
 	protected Shell shell;
 	TreeViewer treeViewer;
+	Term selectedTerm;
+	Tree tree;
 
 	/**
 	 * Create the dialog.
@@ -30,7 +35,7 @@ public class TreeDialog extends Dialog {
 	 * @param style
 	 */
 	public TreeDialog(Shell parent, int style) {
-		super(parent, style);
+		super(parent, SWT.DIALOG_TRIM | SWT.PRIMARY_MODAL);
 		setText("SWT Dialog");
 	}
 
@@ -48,7 +53,7 @@ public class TreeDialog extends Dialog {
 				display.sleep();
 			}
 		}
-		return treeViewer.getSelection();
+		return selectedTerm;
 	}
 
 	/**
@@ -60,13 +65,15 @@ public class TreeDialog extends Dialog {
 		shell.setText(getText());
 		
 		treeViewer = new TreeViewer(shell, SWT.BORDER);
-		Tree tree = treeViewer.getTree();
-		tree.setBounds(10, 30, 346, 307);
+		tree = treeViewer.getTree();
+		tree.addSelectionListener(this);
+		tree.setBounds(10, 39, 346, 298);
 		buildTree(treeViewer);
 		
+		
 		Label lblPleaseSelect = new Label(shell, SWT.NONE);
-		lblPleaseSelect.setBounds(10, 10, 79, 15);
-		lblPleaseSelect.setText("Please Select");
+		lblPleaseSelect.setBounds(10, 10, 244, 23);
+		lblPleaseSelect.setText("Please select a term:");
 		
 		Button btnNewButton = new Button(shell, SWT.NONE);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
@@ -88,6 +95,23 @@ public class TreeDialog extends Dialog {
 		treeViewer.setLabelProvider(new DefaultEObjectLabelProvider());
 		treeViewer.setSorter(null);
 		treeViewer.setInput(m.get());	
+		
+	}
+
+	@Override
+	public void widgetSelected(SelectionEvent e) {
+		if(e.getSource() == tree ) {
+			if(!(tree.getSelectionCount() > 1)) {
+				ISelection currentSelection = treeViewer.getSelection();
+				selectedTerm = (Term) tree.getSelection()[0];
+			}
+		}
+		
+	}
+
+	@Override
+	public void widgetDefaultSelected(SelectionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }
