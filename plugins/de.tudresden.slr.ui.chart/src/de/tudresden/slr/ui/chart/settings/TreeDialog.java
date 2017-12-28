@@ -12,7 +12,6 @@ import de.tudresden.slr.model.taxonomy.Term;
 
 import java.util.Optional;
 
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -114,8 +113,5 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	}
 
 	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void widgetDefaultSelected(SelectionEvent e) {}
 }

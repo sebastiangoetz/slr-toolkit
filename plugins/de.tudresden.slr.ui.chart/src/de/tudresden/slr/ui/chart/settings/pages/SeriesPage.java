@@ -13,16 +13,26 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.List;
 
+import java.util.*;
+
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.settings.TreeDialog;
 
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 public class SeriesPage extends Composite implements SelectionListener, MouseListener{
 
 	Button btnRadioButtonWhite,btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
+	Button btnCheckButton;
 	List list;
+	java.util.List<RGB> colorList = new ArrayList<>();
+	java.util.List<Boolean> visibleList = new ArrayList<>();
+	
+	Random random = new Random();
+	
+	
 	private Label labelShowColor;
 	/**
 	 * Create the composite.
@@ -45,15 +55,20 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		btnRadioButtonWhite = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonWhite.setText("White");
+		btnRadioButtonWhite.addSelectionListener(this);
+		btnRadioButtonWhite.setSelection(true);
 		
 		btnRadioButtonGrey = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonGrey.setText("Grey");
+		btnRadioButtonGrey.addSelectionListener(this);
 		
 		btnRadioButtonCustom = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonCustom.setText("Custom");
+		btnRadioButtonCustom.addSelectionListener(this);
 		
 		btnRadioButtonRandom = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonRandom.setText("Random");
+		btnRadioButtonRandom.addSelectionListener(this);
 		
 		Composite compositeCentre = new Composite(this, SWT.NONE);
 		compositeCentre.setLayout(new GridLayout(1, false));
@@ -64,14 +79,16 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		gd_list.widthHint = 400;
 		list.setLayoutData(gd_list);
 		list.setBounds(0, 0, 71, 68);
+		list.addSelectionListener(this);
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
 		compositeSouth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		compositeSouth.setLayout(new GridLayout(5, false));
 		
-		Button btnCheckButton = new Button(compositeSouth, SWT.CHECK);
+		btnCheckButton = new Button(compositeSouth, SWT.CHECK);
 		btnCheckButton.setBounds(0, 0, 111, 20);
-		btnCheckButton.setText("Check Button");
+		btnCheckButton.setText("Show in Chart");
+		btnCheckButton.addSelectionListener(this);
 		
 		labelShowColor = new Label(compositeSouth, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -87,9 +104,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	}
 
 	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
-	}
+	protected void checkSubclass() {}
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
@@ -98,39 +113,79 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
 			Term term = (Term) treeDialog.open();
 			list.removeAll();
+			colorList.clear();
+			visibleList.clear();			
+			btnRadioButtonWhite.setEnabled(true);
+			
 			if(term != null) {
 				EList<Term> subclasses = term.getSubclasses();				
 				for(Term t : subclasses) {
 					list.add(t.getName());
+					colorList.add(new RGB(255,255,255));
+					visibleList.add(true);
 				}
 			}
-				
+			list.setSelection(0);
+		}
+		
+		if(e.getSource() == list) {			
+			refresh();			
+		}
+		
+		if(e.getSource() == btnCheckButton) {
+			visibleList.set(list.getSelectionIndex(),btnCheckButton.getSelection());
+		}
+		
+		if(e.getSource() == btnRadioButtonWhite && list.getItemCount() > 0) {
+			for(int i = 0; i < colorList.size(); i++) {
+				colorList.set(i, new RGB(255,255,255));
+			}			
+			refresh();
+		}
+		
+		if(e.getSource() == btnRadioButtonGrey && list.getItemCount() > 0) {
+			
+			int step = 255/colorList.size();
+			int rgbValue = 0;
+			for(int i = 0; i < colorList.size(); i++) {
+				rgbValue = rgbValue + step;
+				colorList.set(i, new RGB(rgbValue ,rgbValue, rgbValue));
+			}
+			refresh();
+		}
+		
+		if(e.getSource() == btnRadioButtonRandom && list.getItemCount() > 0) {
+			for(int i = 0; i < colorList.size(); i++) {
+				colorList.set(i, new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+			}
+			refresh();
 		}
 		
 	}
-
-	@Override
-	public void widgetDefaultSelected(SelectionEvent e) {
-		// TODO Auto-generated method stub
-		
+	
+	private void refresh() {
+		int index = list.getSelectionIndex();
+		labelShowColor.setBackground(new Color(this.getShell().getDisplay(), colorList.get(index)));
+		btnCheckButton.setSelection(visibleList.get(index));
+		this.layout();
 	}
-
-	@Override
-	public void mouseDoubleClick(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseDown(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void mouseUp(MouseEvent e) {
-		if(e.getSource() == labelShowColor) {
+		if(e.getSource() == labelShowColor && list.getItemCount() > 0 && btnRadioButtonCustom.getSelection()) {
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
+			colorList.set(list.getSelectionIndex(), rgb);
 		}
 	}
+	
+	@Override
+	public void widgetDefaultSelected(SelectionEvent e) {}
+
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {}
+
+	@Override
+	public void mouseDown(MouseEvent e) {}
+
+	
 }
