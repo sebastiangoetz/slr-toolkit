@@ -13,6 +13,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 import java.util.Optional;
 
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -102,8 +103,11 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	public void widgetSelected(SelectionEvent e) {
 		if(e.getSource() == tree ) {
 			if(!(tree.getSelectionCount() > 1)) {
-				ISelection currentSelection = treeViewer.getSelection();
-				selectedTerm = (Term) tree.getSelection()[0];
+				
+				IStructuredSelection currentSelection = (IStructuredSelection) treeViewer.getSelection();
+				
+				selectedTerm = (Term) currentSelection.getFirstElement();
+				
 			}
 		}
 		

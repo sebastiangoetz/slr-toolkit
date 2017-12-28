@@ -12,8 +12,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.settings.TreeDialog;
@@ -61,7 +59,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		compositeCentre.setLayout(new GridLayout(1, false));
 		compositeCentre.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true, 1, 1));
 		
-		list = new List(compositeCentre, SWT.BORDER);
+		list = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
 		GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
 		gd_list.widthHint = 400;
 		list.setLayoutData(gd_list);
@@ -81,6 +79,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		labelShowColor.setLayoutData(gd_labelShowColor);
 		labelShowColor.setBounds(0, 0, 70, 20);
 		labelShowColor.setText(" ");
+		labelShowColor.addMouseListener(this);
 		new Label(compositeSouth, SWT.NONE);
 		new Label(compositeSouth, SWT.NONE);
 		new Label(compositeSouth, SWT.NONE);
@@ -98,8 +97,9 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		if(e.getSource() == btnNewButton) {
 			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
 			Term term = (Term) treeDialog.open();
+			list.removeAll();
 			if(term != null) {
-				EList<Term> subclasses = term.getSubclasses();
+				EList<Term> subclasses = term.getSubclasses();				
 				for(Term t : subclasses) {
 					list.add(t.getName());
 				}
