@@ -6,7 +6,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.birt.chart.model.attribute.Fill;
+import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridLayout;
@@ -16,6 +17,8 @@ import org.eclipse.swt.widgets.List;
 import java.util.*;
 
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
+import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialog;
 
 import org.eclipse.swt.widgets.Label;
@@ -24,16 +27,20 @@ import org.eclipse.swt.graphics.RGB;
 
 public class SeriesPage extends Composite implements SelectionListener, MouseListener{
 
-	Button btnRadioButtonWhite,btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
-	Button btnCheckButton;
-	List list;
-	java.util.List<RGB> colorList = new ArrayList<>();
-	java.util.List<Boolean> visibleList = new ArrayList<>();
+	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
+	private Button btnCheckButton;
+	private List list;
+	private java.util.List<RGB> colorList = new ArrayList<>();
+	public SortedMap<String, Boolean> visibleMap = new TreeMap<String, Boolean>();
+	public Term selectedTerm;
+	public static boolean perSubTerm = true;
 	
-	Random random = new Random();
+	private Random random = new Random();
 	
 	
 	private Label labelShowColor;
+	private Composite compositeFirst;
+	private Label lblSelectedTermIs;
 	/**
 	 * Create the composite.
 	 * @param parent
@@ -43,32 +50,21 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 		
-		Composite compositeNorth = new Composite(this, SWT.NONE);
-		compositeNorth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		FillLayout fl_compositeNorth = new FillLayout(SWT.HORIZONTAL);
-		fl_compositeNorth.spacing = 5;
-		compositeNorth.setLayout(fl_compositeNorth);
+		compositeFirst = new Composite(this, SWT.NONE);
+		compositeFirst.setLayout(new GridLayout(2, false));
+		compositeFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
-		btnNewButton = new Button(compositeNorth, SWT.NONE);
-		btnNewButton.setText("Get Items");
+		btnNewButton = new Button(compositeFirst, SWT.NONE);
+		btnNewButton.setText("Get Term");
+		
+		lblSelectedTermIs = new Label(compositeFirst, SWT.NONE);
+		GridData gd_lblSelectedTermIs = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblSelectedTermIs.widthHint = 367;
+		lblSelectedTermIs.setLayoutData(gd_lblSelectedTermIs);
+		lblSelectedTermIs.setText("No Term Selected");
 		btnNewButton.addSelectionListener(this);
 		
-		btnRadioButtonWhite = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonWhite.setText("White");
-		btnRadioButtonWhite.addSelectionListener(this);
-		btnRadioButtonWhite.setSelection(true);
 		
-		btnRadioButtonGrey = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonGrey.setText("Grey");
-		btnRadioButtonGrey.addSelectionListener(this);
-		
-		btnRadioButtonCustom = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonCustom.setText("Custom");
-		btnRadioButtonCustom.addSelectionListener(this);
-		
-		btnRadioButtonRandom = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonRandom.setText("Random");
-		btnRadioButtonRandom.addSelectionListener(this);
 		
 		Composite compositeCentre = new Composite(this, SWT.NONE);
 		compositeCentre.setLayout(new GridLayout(1, false));
@@ -80,6 +76,25 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		list.setLayoutData(gd_list);
 		list.setBounds(0, 0, 71, 68);
 		list.addSelectionListener(this);
+		
+		Composite compositeNorth = new Composite(this, SWT.NONE);
+		compositeNorth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		FillLayout fl_compositeNorth = new FillLayout(SWT.HORIZONTAL);
+		fl_compositeNorth.spacing = 5;
+		compositeNorth.setLayout(fl_compositeNorth);
+		
+		btnRadioButtonGrey = new Button(compositeNorth, SWT.RADIO);
+		btnRadioButtonGrey.setText("Grey");
+		btnRadioButtonGrey.addSelectionListener(this);
+		
+		btnRadioButtonCustom = new Button(compositeNorth, SWT.RADIO);
+		btnRadioButtonCustom.setText("Custom");
+		btnRadioButtonCustom.addSelectionListener(this);
+		
+		btnRadioButtonRandom = new Button(compositeNorth, SWT.RADIO);
+		btnRadioButtonRandom.setSelection(true);
+		btnRadioButtonRandom.setText("Random");
+		btnRadioButtonRandom.addSelectionListener(this);
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
 		compositeSouth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -111,21 +126,35 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		if(e.getSource() == btnNewButton) {
 			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
-			Term term = (Term) treeDialog.open();
+			selectedTerm = (Term) treeDialog.open();
+			
+			lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
 			list.removeAll();
 			colorList.clear();
-			visibleList.clear();			
-			btnRadioButtonWhite.setEnabled(true);
+			visibleMap.clear();			
+			btnRadioButtonRandom.setEnabled(true);
+			ChartDataProvider chartDataProvider = new ChartDataProvider();
 			
-			if(term != null) {
-				EList<Term> subclasses = term.getSubclasses();				
-				for(Term t : subclasses) {
-					list.add(t.getName());
-					colorList.add(new RGB(255,255,255));
-					visibleList.add(true);
+			if(selectedTerm != null && perSubTerm) {
+				SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(selectedTerm);	
+				for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+					list.add(entry.getKey());
+					colorList.add(new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+					visibleMap.put(entry.getKey(), true);
 				}
 			}
+			else {
+				
+				SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);				
+				for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+					list.add(entry.getKey());
+					colorList.add(new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+					visibleMap.put(entry.getKey(), true);
+				}
+			}
+			
 			list.setSelection(0);
+			refresh();
 		}
 		
 		if(e.getSource() == list) {			
@@ -133,16 +162,9 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		}
 		
 		if(e.getSource() == btnCheckButton) {
-			visibleList.set(list.getSelectionIndex(),btnCheckButton.getSelection());
+			visibleMap.put(list.getItem(list.getSelectionIndex()),btnCheckButton.getSelection());
 		}
-		
-		if(e.getSource() == btnRadioButtonWhite && list.getItemCount() > 0) {
-			for(int i = 0; i < colorList.size(); i++) {
-				colorList.set(i, new RGB(255,255,255));
-			}			
-			refresh();
-		}
-		
+			
 		if(e.getSource() == btnRadioButtonGrey && list.getItemCount() > 0) {
 			
 			int step = 255/colorList.size();
@@ -166,7 +188,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	private void refresh() {
 		int index = list.getSelectionIndex();
 		labelShowColor.setBackground(new Color(this.getShell().getDisplay(), colorList.get(index)));
-		btnCheckButton.setSelection(visibleList.get(index));
+		btnCheckButton.setSelection(visibleMap.get(list.getItem(index)));
 		this.layout();
 	}
 	
@@ -176,6 +198,26 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
 			colorList.set(list.getSelectionIndex(), rgb);
 		}
+	}
+	
+	public void saveSettings() {
+		
+		ArrayList<Fill> fillList = new ArrayList<>();
+		int i = 0;
+		for(Map.Entry<String, Boolean> entry : visibleMap.entrySet()) {
+			if(entry.getValue()) {
+				RGB u = colorList.get(i);
+				fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
+			}
+			i = i+1;	
+		}
+		
+		ChartConfiguration.getSeriesSettings().setSeriesUseCustomColors(true);
+		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
+	}
+	
+	public void loadSettings() {
+		
 	}
 	
 	@Override

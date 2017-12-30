@@ -4,16 +4,25 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
+
+import java.util.ArrayList;
+
+import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Position;
+import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
+
+import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+
 import org.eclipse.swt.widgets.Scale;
 
 public class LegendPage extends Composite implements SelectionListener, MouseListener{
@@ -87,18 +96,24 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 		comboPosition.add("Top");
 		comboPosition.select(0);		
 
+		loadSettings();
 	}
 
 	
-	public String getTitle() {return text.getText();}
+	private String getTitle() {return text.getText();}
+	private void setTitle(String title) {text.setText(title);}
 	
-	public RGB getColor() {return labelColorShow.getBackground().getRGB();}
+	private RGB getColor() {return labelColorShow.getBackground().getRGB();}
+	private void setColor(RGB rgb) {labelColorShow.setBackground(new Color(this.getDisplay(),rgb));}
 	
-	public Position getPosition() {return PageSupport.getPosition(comboPosition.getSelectionIndex());}
+	private Position getPosition() {return PageSupport.getPosition(comboPosition.getSelectionIndex());}
+	private void setPosition(Position position) {comboPosition.select(PageSupport.setPosition(position));}
 	
-	public LineStyle getOutline() {return PageSupport.getLineStyle(comboOutline.getSelectionIndex());}
+	private LineStyle getOutline() {return PageSupport.getLineStyle(comboOutline.getSelectionIndex());}
+	private void setOutline(LineStyle lineStyle) {comboOutline.select(PageSupport.setLineStyle(lineStyle));};
 	
-	public double getPercent() {return (double) scale.getSelection()/100;}
+	private double getPercent() {return (double) scale.getSelection()/100;}
+	private void setPercent(double value) {scale.setSelection((int)(value*100));}
 	
 	@Override
 	public void widgetSelected(SelectionEvent e) {
@@ -115,6 +130,33 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 		if(e.getSource() == labelColorShow) {
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelColorShow);
 		}
+		
+	}
+	
+	public void saveSettings() {
+		if(getOutline() == null)
+			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(false);
+		else {
+			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(true);
+			ChartConfiguration.get().getLegendSettings().setLegendOutlineStyle(getOutline());
+		}
+		
+		ChartConfiguration.get().getLegendSettings().setLegendShadowRGB(getColor());
+		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(getColor());		
+		ChartConfiguration.get().getLegendSettings().setLegendPosition(getPosition());		
+		ChartConfiguration.get().getLegendSettings().setLegendMaxPercent(getPercent());		
+		ChartConfiguration.get().getLegendSettings().setLegendTitle(getTitle());				
+	}
+	
+	public void loadSettings() {
+		setTitle(ChartConfiguration.get().getLegendSettings().getLegendTitle());
+		setColor(ChartConfiguration.get().getLegendSettings().getLegendBackgroundRGB());
+		setPosition(ChartConfiguration.get().getLegendSettings().getLegendPosition());
+		setPercent(ChartConfiguration.get().getLegendSettings().getLegendMaxPercent());
+		if(ChartConfiguration.get().getLegendSettings().isLegendShowOutline())
+			setOutline(ChartConfiguration.get().getLegendSettings().getLegendOutlineStyle());
+		else
+			setOutline(null);
 		
 	}
 

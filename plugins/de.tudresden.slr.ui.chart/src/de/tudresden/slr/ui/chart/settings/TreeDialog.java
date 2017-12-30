@@ -9,6 +9,7 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
 
 import java.util.Optional;
 
@@ -61,13 +62,13 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	 */
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(371, 404);
+		shell.setSize(371, 409);
 		shell.setText(getText());
 		
 		treeViewer = new TreeViewer(shell, SWT.BORDER);
 		tree = treeViewer.getTree();
 		tree.addSelectionListener(this);
-		tree.setBounds(10, 39, 346, 298);
+		tree.setBounds(10, 36, 346, 298);
 		buildTree(treeViewer);
 		
 		
@@ -75,15 +76,31 @@ public class TreeDialog extends Dialog implements SelectionListener{
 		lblPleaseSelect.setBounds(10, 10, 244, 23);
 		lblPleaseSelect.setText("Please select a term:");
 		
-		Button btnNewButton = new Button(shell, SWT.NONE);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
+		Button btnYear = new Button(shell, SWT.NONE);
+		btnYear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				SeriesPage.perSubTerm = false;
 				shell.dispose();
 			}
 		});
-		btnNewButton.setBounds(281, 340, 75, 25);
-		btnNewButton.setText("Ok");
+		btnYear.setBounds(281, 345, 75, 25);
+		btnYear.setText("Year");
+		
+		Button btnSubclasses = new Button(shell, SWT.NONE);
+		btnSubclasses.setBounds(200, 345, 75, 25);
+		btnSubclasses.setText("Subclasses");
+		btnSubclasses.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SeriesPage.perSubTerm = true;
+				shell.dispose();
+			}
+		});
+		
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setBounds(102, 350, 92, 15);
+		lblNewLabel.setText("Group Series Per: ");
 
 	}
 	

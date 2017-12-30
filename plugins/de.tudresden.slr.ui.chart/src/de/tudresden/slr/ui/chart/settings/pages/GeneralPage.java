@@ -14,6 +14,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
+
+import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+
 import org.eclipse.swt.widgets.Combo;
 
 public class GeneralPage extends Composite implements MouseListener{
@@ -119,6 +122,8 @@ public class GeneralPage extends Composite implements MouseListener{
 		labelShowColor2.setText(" ");
 		labelShowColor2.setBackground(PageSupport.getColor(parent, 0));
 		labelShowColor2.addMouseListener(this);
+		
+		loadSettings();
 
 	}
 	@Override
@@ -130,21 +135,64 @@ public class GeneralPage extends Composite implements MouseListener{
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor2);
 		}		
 	}
-	public boolean getBolt() {return btnBolt.getSelection();}
 	
-	public boolean getItalic() {return btnItalic.getSelection();}
+	public void saveSettings() {
+		
+		ChartConfiguration.get().getGeneralSettings().setChartTitle(getTitle());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleColor(getTitleColor());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleSize(getTitleSize());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleBold(getBolt());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleItalic(getItalic());
+		ChartConfiguration.get().getGeneralSettings().setChartTitleUnderline(getUnterline());
 	
-	public boolean getUnterline() {return btnUnderline.getSelection();}
+		ChartConfiguration.get().getBlockSettings().setBlockBackgroundRGB(getBlockColor());
+		
+		if(getBlockOutline() == null)
+			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(false);
+		else {
+			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(true);
+			ChartConfiguration.get().getBlockSettings().setBlockOutlineStyle(getBlockOutline());
+		}
+	}
 	
-	public String getTitle() {return text.getText();}
+	public void loadSettings() {
+		setTitle(ChartConfiguration.get().getGeneralSettings().getChartTitle());
+		setTitleColor(ChartConfiguration.get().getGeneralSettings().getChartTitleColor());
+		setTitleSize(ChartConfiguration.get().getGeneralSettings().getChartTitleSize());
+		setBolt(ChartConfiguration.get().getGeneralSettings().isChartTitleBold());
+		setItalic(ChartConfiguration.get().getGeneralSettings().isChartTitleItalic());
+		setUnterline(ChartConfiguration.get().getGeneralSettings().isChartTitleUnderline());
+		setBlockColor(ChartConfiguration.get().getBlockSettings().getBlockBackgroundRGB());
+		
+		if(ChartConfiguration.get().getBlockSettings().isBlockShowOutline())
+			setBlockOutline(ChartConfiguration.get().getBlockSettings().getBlockOutlineStyle());
+		else
+			setBlockOutline(null);
+	}
 	
-	public int getTitleSize() {return Integer.valueOf(comboTitleSize.getItem(comboTitleSize.getSelectionIndex()));}
+	private boolean getBolt() {return btnBolt.getSelection();}
+	private void setBolt(boolean value) {btnBolt.setSelection(value);}
 	
-	public LineStyle getBlockOutline() {return PageSupport.getLineStyle(comboBlockOutline.getSelectionIndex());}
+	private boolean getItalic() {return btnItalic.getSelection();}
+	private void setItalic(boolean value) {btnItalic.setSelection(value);}
 	
-	public RGB getTitleColor() {return labelShowColor.getBackground().getRGB();}
+	private boolean getUnterline() {return btnUnderline.getSelection();}
+	private void setUnterline(boolean value) {btnUnderline.setSelection(value);}
 	
-	public RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
+	private String getTitle() {return text.getText();}
+	private void setTitle(String title) {text.setText(title);}
+	
+	private int getTitleSize() {return Integer.valueOf(comboTitleSize.getItem(comboTitleSize.getSelectionIndex()));}
+	private void setTitleSize(int size) {comboTitleSize.select(PageSupport.setFontSize(size));}
+	
+	private LineStyle getBlockOutline() {return PageSupport.getLineStyle(comboBlockOutline.getSelectionIndex());}
+	private void setBlockOutline(LineStyle lineStyle) {comboBlockOutline.select((PageSupport.setLineStyle(lineStyle)));}
+	
+	private RGB getTitleColor() {return labelShowColor.getBackground().getRGB();}
+	private void setTitleColor(RGB rgb) {labelShowColor.setBackground(new Color(this.getDisplay(), rgb));}
+	
+	private RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
+	private void setBlockColor(RGB rgb) {labelShowColor2.setBackground(new Color(this.getDisplay(), rgb));}
 
 	@Override
 	protected void checkSubclass() {}

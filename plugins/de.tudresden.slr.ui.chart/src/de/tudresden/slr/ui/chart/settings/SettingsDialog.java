@@ -19,19 +19,29 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
+import de.tudresden.slr.ui.chart.logic.ChartGenerator;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPage;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
+import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Position;
@@ -48,20 +58,22 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 
 	private Object result;
 	private Shell shell;
-	private Composite stackComposite;
+	
 	private Combo comboChartSelect;
 	private StackLayout sl_stackComposite;
-	private Composite pageBarChart;
-	private Composite pageBubbleChart;
-	private Composite pageHeatChart; 
-	private TreeContentProvider contentProvider;
-	private List list;
+	private Composite pageBarChart, pageBubbleChart, stackComposite, pageHeatChart; 
+;
 	private Optional<Model> m;
-	private Button okButton;
-	private Button applyButton;
-	private Button closeButton;
+	private Button okButton, applyButton, closeButton;
 	
-	BarFolder barFolder;
+	private GeneralPage generalPage;
+	private LegendPage legendPage;
+	private SeriesPage seriesPage;
+	
+	private ICommunicationView view;
+	
+	private BarFolder barFolder;
+	private IViewPart part;
 
 	
 	public SettingsDialog(Shell parent, int style) {
@@ -105,11 +117,13 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		}
 		
 		if(e.getSource() == applyButton) {			
-			collectAndSaveSettings();
+			collectAndSaveSettings();			
 			return;
 		}
 		
 		if(e.getSource() == okButton) {
+			collectAndSaveSettings();
+			shell.close();
 			return;
 		}
 		
@@ -144,83 +158,18 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_3 = new TabItem(folderBarChart, SWT.NONE);
-		TabItem itemFolderBarChart_4 = new TabItem(folderBarChart,SWT.NONE);
-		TabItem itemFolderBarChart_5 = new TabItem(folderBarChart,SWT.NONE);
-		TabItem itemFolderBarChart_6 = new TabItem(folderBarChart,SWT.NONE);
 		
-		barFolder = new BarFolder();
-		barFolder.build(folderBarChart);
+		generalPage = new GeneralPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_1.setControl(generalPage);
+		itemFolderBarChart_1.setText("General");
 		
-		GeneralPage generalPage = new GeneralPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_4.setControl(generalPage);
-		itemFolderBarChart_4.setText("lolosdofds");
+		legendPage = new LegendPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_2.setControl(legendPage);
+		itemFolderBarChart_2.setText("Legend");
 		
-		LegendPage legendPage = new LegendPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_5.setControl(legendPage);
-		itemFolderBarChart_5.setText("sdfsdf");
-		
-		SeriesPage seriesPage = new SeriesPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_6.setControl(seriesPage);
-		itemFolderBarChart_6.setText("sdfsdf2");
-		
-//		Composite barDataCompositeContainer = new Composite(folderBarChart, SWT.NONE);
-//		itemFolderBarChart_1.setControl(barDataCompositeContainer);
-//		barDataCompositeContainer.setLayout(new GridLayout(1, false));
-//		
-//		Composite barDataComposite_North = new Composite(barDataCompositeContainer, SWT.BORDER);
-//		barDataComposite_North.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-//		barDataComposite_North.setLayout(new FillLayout(SWT.HORIZONTAL));
-//		
-//		Label lblNewLabel_1 = new Label(barDataComposite_North, SWT.CENTER);
-//		lblNewLabel_1.setText("Select a therm");
-//		
-//		Label lblNewLabel_2 = new Label(barDataComposite_North, SWT.CENTER);
-//		lblNewLabel_2.setText("Select a therm");
-//		
-//		SashForm barDataSash_Centre = new SashForm(barDataCompositeContainer, SWT.NONE);
-//		barDataSash_Centre.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-//		
-//		TreeViewer treeViewer = new TreeViewer(barDataSash_Centre, SWT.BORDER);
-//		
-//		
-//		buildTree(treeViewer);
-//		
-//		list = new List(barDataSash_Centre, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI);
-//		barDataSash_Centre.setWeights(new int[] {1, 1});
-//		
-//		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-//			
-//			@Override
-//			public void selectionChanged(SelectionChangedEvent event) {
-//				
-//				ISelection selection = treeViewer.getSelection();
-//				if (selection == null || !(selection instanceof IStructuredSelection)) {
-//					return;
-//				}
-//				IStructuredSelection currentSelection = (IStructuredSelection) selection;
-//				Term t = (Term) currentSelection.getFirstElement();
-//				list.removeAll();
-//				if(!t.getSubclasses().isEmpty()) {
-//					for(Term term : t.getSubclasses())
-//						list.add(term.getName());
-//				}
-//			}
-//		});
-//		
-//		Composite barDataComposite_South = new Composite(barDataCompositeContainer, SWT.BORDER);
-//		barDataComposite_South.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-//		barDataComposite_South.setLayout(new GridLayout(2, false));
-//		new Label(barDataComposite_South, SWT.NONE);
-//		
-//		Button lockButton = new Button(barDataComposite_South, SWT.NONE);
-//		lockButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-//		lockButton.setBounds(0, 0, 75, 25);
-//		lockButton.setText("      Lock      ");
-//		
-//		
-//		
-//		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
-//		itemFolderBarChart_2.setText("Stuff");	
+		seriesPage = new SeriesPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_3.setControl(seriesPage);
+		itemFolderBarChart_3.setText("Series");
 		
 	}
 	
@@ -245,16 +194,6 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem tbtmNewItem32 = new TabItem(folderHeatChart, SWT.NONE);
 		tbtmNewItem32.setText("Test 6");
 		
-	}
-	
-	private void buildTree(TreeViewer treeViewer) {	
-		
-		contentProvider = new TreeContentProvider(treeViewer);		
-		treeViewer.setContentProvider(contentProvider);
-		treeViewer.setLabelProvider(new DefaultEObjectLabelProvider());
-		treeViewer.setSorter(null);
-		treeViewer.setInput(m.get());
-				
 	}
 	
 	private void createShell() {
@@ -312,7 +251,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		okButton = new Button(southComposite, SWT.NONE);
 		
 		okButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		okButton.setText("        OK        ");
+		okButton.setText("        Save and Close        ");
 		okButton.addSelectionListener(this);
 		
 		applyButton = new Button(southComposite, SWT.NONE);
@@ -326,91 +265,26 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	}
 	
 	private void collectAndSaveSettings() {		
+
+		generalPage.saveSettings();
+		legendPage.saveSettings();
+		seriesPage.saveSettings();
 		
-		//Title
-		ChartConfiguration.get().getGeneralSettings().setChartTitle(barFolder.titleEdit.getText());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleColor(barFolder.colorTitle);
-		ChartConfiguration.get().getGeneralSettings().setChartTitleSize(Integer.valueOf(barFolder.comboTitleSize.getItem(barFolder.comboTitleSize.getSelectionIndex())));
-		ChartConfiguration.get().getGeneralSettings().setChartTitleBold(barFolder.checkBoxBolt.getSelection());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleItalic(barFolder.checkBoxItalic.getSelection());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleUnderline(barFolder.checkBoxUnderline.getSelection());
+		ChartDataProvider provider = new ChartDataProvider();			
+		Map<String, Integer> citeChartData;
+		if(SeriesPage.perSubTerm)
+			citeChartData = provider.calculateNumberOfPapersPerClass(seriesPage.selectedTerm, seriesPage.visibleMap);
 		
-		
-		//Block
-		ChartConfiguration.get().getBlockSettings().setBlockBackgroundRGB(barFolder.colorBackground);
-		
-		
-		if(setLineStyle(barFolder.comboBlockOutline.getSelectionIndex()) == null)
-			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(false);
-		else {
-			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(true);
-			ChartConfiguration.get().getBlockSettings().setBlockOutlineStyle(setLineStyle(barFolder.comboBlockOutline.getSelectionIndex()));
-		}
-		
-		//Legend
-		if(setLineStyle(barFolder.comboOutline.getSelectionIndex()) == null)
-			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(false);
-		else {
-			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(true);
-			ChartConfiguration.get().getLegendSettings().setLegendOutlineStyle(setLineStyle(barFolder.comboOutline.getSelectionIndex()));
-		}
-		
-		if(setLineStyle(barFolder.comboSeparator.getSelectionIndex()) == null)
-			ChartConfiguration.get().getLegendSettings().setLegendShowSeparator(false);
-		else{
-			ChartConfiguration.get().getLegendSettings().setLegendShowSeparator(true);
-			ChartConfiguration.get().getLegendSettings().setLegendSeparatorStyle(setLineStyle(barFolder.comboSeparator.getSelectionIndex()));
-		}
-		ChartConfiguration.get().getLegendSettings().setLegendShadowRGB(barFolder.colorLegend);
-		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(barFolder.colorLegend);
-		
-		ArrayList<Fill> fillList = new ArrayList<>();
-		
-		for (RGB u : barFolder.colorList) {
-			fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
-		}
-		ChartConfiguration.getSeriesSettings().setSeriesUseCustomColors(barFolder.btnRadioButton.getSelection());
-		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
-		// ChartConfiguration.get().getLegendSettings().setLegendTitle(barFolder.textTitel.getText())
-		ChartConfiguration.get().getLegendSettings().setLegendMaxPercent( (double) barFolder.scalePercent.getSelection()/100);
-		
-		ChartConfiguration.get().getLegendSettings().setLegendPosition(setPosition(barFolder.comboPosition.getSelectionIndex()));
+		else
+			citeChartData = provider.calculateNumberOfCitesPerYearForClass(seriesPage.selectedTerm, seriesPage.visibleMap);
+		Chart citeChart = ChartGenerator.createCiteBar(citeChartData);			
+		view = (ICommunicationView) part;		
+		view.setAndRenderChart(citeChart);	
 		
 	}
 	
-	private LineStyle setLineStyle(int style) {
-		switch (style) {
-		case 0:
-			return null;
-		
-		case 1:
-			return LineStyle.DOTTED_LITERAL;
-		
-		case 2:
-			return LineStyle.DASH_DOTTED_LITERAL;
-		
-		case 3:
-			return LineStyle.DOTTED_LITERAL;		
-		
-		case 4:
-			return LineStyle.SOLID_LITERAL;
-			
-		}
-		return null;
-	}
-	
-	private Position setPosition(int i) {
-		switch(i) {
-		case 0:
-			return Position.RIGHT_LITERAL;
-		case 1:
-			return Position.LEFT_LITERAL;
-		case 2:
-			return Position.BELOW_LITERAL;
-		case 3:
-			return Position.ABOVE_LITERAL;
-		}
-		return null;
+	public void setViewPart(IViewPart part) {
+		this.part = part;
 	}
 		
 }
