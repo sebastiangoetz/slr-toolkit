@@ -276,8 +276,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		List<BarDataTerm> data = ChartConfiguration.get().getBarTermList();
 		SortedMap<String, Integer> citeChartData = new TreeMap<>();
-		if(data.isEmpty())
+		if(data.isEmpty()) {
 			return;
+			}
 		for(BarDataTerm term: data) {
 			if(term.isDisplayed())
 				citeChartData.put(term.getTerm(), term.getSize());

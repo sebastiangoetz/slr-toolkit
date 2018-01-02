@@ -64,10 +64,9 @@ public final class ChartConfiguration {
 		return SeriesSettings.get();
 	}
 	
-	private static final ChartConfiguration CHARTCONFIGURATION = new ChartConfiguration();;
- 
+	private static final ChartConfiguration CHARTCONFIGURATION = new ChartConfiguration();
 	
-	private List<BarDataTerm> barTermList= new ArrayList<>();
+	private List<BarDataTerm> barTermList = new ArrayList<>();
 	private Term selectedTerm = null;
 	private TermSort termSort = TermSort.YEAR;
 	

@@ -231,10 +231,11 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	}
 	
 	private void loadSettings() {
-		if(!barTermList.isEmpty()) {
-			barTermList = settings.getBarTermList();
-			selectedTerm = settings.getSelectedTerm();
-			termSort = settings.getTermSort();
+		barTermList = settings.getBarTermList();
+		selectedTerm = settings.getSelectedTerm();
+		termSort = settings.getTermSort();
+		
+		if(!barTermList.isEmpty()) {			
 			for(BarDataTerm entry :barTermList) {
 				list.add(entry.getTerm()+ " (" +entry.getSize()+ ")");
 			}
