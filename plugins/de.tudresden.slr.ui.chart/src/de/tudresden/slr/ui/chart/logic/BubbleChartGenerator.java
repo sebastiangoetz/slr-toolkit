@@ -59,7 +59,8 @@ public class BubbleChartGenerator {
 		// X-Axis
 		Axis xAxisPrimary = ((ChartWithAxesImpl)cwaScatter).getPrimaryBaseAxes()[0];
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
-		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.ABOVE_LITERAL);
+		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
+		xAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		Scale xScale = xAxisPrimary.getScale();
 		long numberOfXTerms = input.stream().map(x -> x.getxTerm().getName()).distinct().count();
@@ -102,6 +103,7 @@ public class BubbleChartGenerator {
 		}
 		
 		yAxisPrimary.setType(AxisType.LINEAR_LITERAL);
+		yAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
 		yAxisPrimary.setLabelPosition(Position.LEFT_LITERAL);
 		yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 		
@@ -137,7 +139,7 @@ public class BubbleChartGenerator {
 		//Add JS
 		appendJsScript(jsScript);
 		cwaScatter.setScript(jsScript.toString());
-
+System.out.println(jsScript.toString());
 		return cwaScatter;
 	}
 

@@ -10,13 +10,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
-
-import java.util.ArrayList;
-
-import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
@@ -157,7 +152,7 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 			setOutline(ChartConfiguration.get().getLegendSettings().getLegendOutlineStyle());
 		else
 			setOutline(null);
-		
+				
 	}
 
 	@Override

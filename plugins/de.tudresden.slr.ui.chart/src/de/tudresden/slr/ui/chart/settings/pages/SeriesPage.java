@@ -214,9 +214,21 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		ChartConfiguration.getSeriesSettings().setSeriesUseCustomColors(true);
 		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
+		
+		ChartConfiguration.getDataSettings().setColorList(colorList);
+		ChartConfiguration.getDataSettings().setSelectedTerm(selectedTerm);
+		ChartConfiguration.getDataSettings().setVisibleMap(visibleMap);
+		ChartConfiguration.getDataSettings().setPerSubTerm(perSubTerm);
 	}
 	
 	public void loadSettings() {
+		colorList = ChartConfiguration.getDataSettings().getColorList();
+		selectedTerm = ChartConfiguration.getDataSettings().getSelectedTerm();
+		visibleMap = ChartConfiguration.getDataSettings().getVisibleMap();
+		perSubTerm = ChartConfiguration.getDataSettings().isPerSubTerm();
+	}
+	
+	private void displaySettings() {
 		
 	}
 	
