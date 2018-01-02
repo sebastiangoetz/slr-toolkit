@@ -1,5 +1,8 @@
 package de.tudresden.slr.ui.chart.settings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.birt.chart.computation.withaxes.Grid;
 import org.eclipse.birt.chart.model.attribute.Anchor;
 import org.eclipse.birt.chart.model.attribute.AxisOrigin;
@@ -29,9 +32,12 @@ import org.eclipse.birt.chart.model.layout.ClientArea;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
+import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.parts.*;
 
-public class ChartConfiguration {
+public final class ChartConfiguration {
 	
 	private ChartConfiguration() {
 	}
@@ -39,50 +45,33 @@ public class ChartConfiguration {
 	public static ChartConfiguration get() {
 		return CHARTCONFIGURATION;
 	}
-	public static PlotSettings getPlotSettings() {
-		return ps;
+	public PlotSettings getPlotSettings() {
+		return PlotSettings.get();
 	}
-	public static GeneralSettings getGeneralSettings() {
-		return gs;
+	public GeneralSettings getGeneralSettings() {
+		return GeneralSettings.get();
 	}
-	public static LegendSettings getLegendSettings() {
-		return ls;
+	public LegendSettings getLegendSettings() {
+		return LegendSettings.get();
 	}
-	public static BlockSettings getBlockSettings() {
-		return bs;
+	public BlockSettings getBlockSettings() {
+		return BlockSettings.get();
 	}
-	public static AxisSettings getAxisSettings() {
-		return as;
+	public AxisSettings getAxisSettings() {
+		return  AxisSettings.get();
 	}
-	public static SeriesSettings getSeriesSettings() {
-		return ss;
+	public SeriesSettings getSeriesSettings() {
+		return SeriesSettings.get();
 	}
-	public static DataSettings getDataSettings() {
-		return ds;
-	}
-
-	static ChartConfiguration CHARTCONFIGURATION= new ChartConfiguration();
-	static PlotSettings ps = PlotSettings.get();
-	static GeneralSettings gs = GeneralSettings.get();
-	static LegendSettings ls = LegendSettings.get();
-	static BlockSettings bs = BlockSettings.get();
-	static AxisSettings as = AxisSettings.get();
-	static SeriesSettings ss = SeriesSettings.get();
-	static DataSettings ds = DataSettings.get();
+	
+	private static final ChartConfiguration CHARTCONFIGURATION = new ChartConfiguration();;
  
 	
-	//Graph Variables
-
-	//Plot Variables
-
+	private List<BarDataTerm> barTermList= new ArrayList<>();
+	private Term selectedTerm = null;
+	private TermSort termSort = TermSort.YEAR;
 	
-	//Block Variables 
 	
-	//Title Variables
-	
-	//Legend Variables
-	
-	//X-Axis Variables
 	private int xAxisMaxPercent;
 	private double xAxisGapWidth;
 	private int xAxisInterval;
@@ -134,14 +123,30 @@ public class ChartConfiguration {
 
 	private Label seriesLabel;
 	private Position seriesPosition;
-	
-	
-	
-	
-	
-	
-	
-	
 
+	public List<BarDataTerm> getBarTermList() {
+		return barTermList;
+	}
+
+	public void setBarTermList(List<BarDataTerm> barTermList) {
+		this.barTermList = barTermList;
+	}
+
+	public Term getSelectedTerm() {
+		return selectedTerm;
+	}
+
+	public void setSelectedTerm(Term selectedTerm) {
+		this.selectedTerm = selectedTerm;
+	}
+
+	public TermSort getTermSort() {
+		return termSort;
+	}
+
+	public void setTermSort(TermSort termSort) {
+		this.termSort = termSort;
+	}	
+	
 	
 }

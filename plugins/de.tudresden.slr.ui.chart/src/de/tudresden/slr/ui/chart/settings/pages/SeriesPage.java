@@ -17,12 +17,13 @@ import org.eclipse.swt.widgets.List;
 import java.util.*;
 
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
+import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialog;
 
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 public class SeriesPage extends Composite implements SelectionListener, MouseListener{
@@ -30,22 +31,18 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
 	private Button btnCheckButton;
 	private List list;
-	private java.util.List<RGB> colorList = new ArrayList<>();
-	public SortedMap<String, Boolean> visibleMap = new TreeMap<String, Boolean>();
+	private java.util.List<BarDataTerm> barTermList= new ArrayList<>();
 	public Term selectedTerm;
-	public static boolean perSubTerm = true;
-	
-	private Random random = new Random();
-	
+	public TermSort termSort = TermSort.YEAR;
+	private ChartDataProvider chartDataProvider = new ChartDataProvider();
 	
 	private Label labelShowColor;
 	private Composite compositeFirst;
 	private Label lblSelectedTermIs;
-	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
-	 */
+	
+	private ChartConfiguration settings = ChartConfiguration.get();
+	
+	
 	public SeriesPage(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
@@ -115,6 +112,8 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		new Label(compositeSouth, SWT.NONE);
 		new Label(compositeSouth, SWT.NONE);
 		new Label(compositeSouth, SWT.NONE);
+		
+		loadSettings();
 
 	}
 
@@ -126,35 +125,27 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		if(e.getSource() == btnNewButton) {
 			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
-			selectedTerm = (Term) treeDialog.open();
+			selectedTerm = (Term) treeDialog.open(this);		
 			
-			lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
-			list.removeAll();
-			colorList.clear();
-			visibleMap.clear();			
-			btnRadioButtonRandom.setEnabled(true);
-			ChartDataProvider chartDataProvider = new ChartDataProvider();
-			
-			if(selectedTerm != null && perSubTerm) {
-				SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(selectedTerm);	
-				for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-					list.add(entry.getKey());
-					colorList.add(new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-					visibleMap.put(entry.getKey(), true);
+			if(selectedTerm != null) {
+				lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
+				barTermList.clear();
+				list.removeAll();
+				btnRadioButtonRandom.setEnabled(true);
+				switch(termSort) {
+					case YEAR:{
+						buildListPerYear();
+						break;
+					}
+					case SUBCLASS:{
+						buildListPerSubclass();
+						break;
+					}
 				}
-			}
-			else {
-				
-				SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);				
-				for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-					list.add(entry.getKey());
-					colorList.add(new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
-					visibleMap.put(entry.getKey(), true);
-				}
-			}
-			
-			list.setSelection(0);
-			refresh();
+				list.setSelection(0);
+				refresh();
+			}	
+						
 		}
 		
 		if(e.getSource() == list) {			
@@ -162,33 +153,53 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		}
 		
 		if(e.getSource() == btnCheckButton) {
-			visibleMap.put(list.getItem(list.getSelectionIndex()),btnCheckButton.getSelection());
+			int selectedItem = list.getSelectionIndex();
+			barTermList.get(selectedItem).setDisplayed(btnCheckButton.getSelection());
 		}
 			
 		if(e.getSource() == btnRadioButtonGrey && list.getItemCount() > 0) {
 			
-			int step = 255/colorList.size();
+			int step = 255/barTermList.size();
+			
 			int rgbValue = 0;
-			for(int i = 0; i < colorList.size(); i++) {
+			for(BarDataTerm barDataTerm: barTermList) {
 				rgbValue = rgbValue + step;
-				colorList.set(i, new RGB(rgbValue ,rgbValue, rgbValue));
+				barDataTerm.setRgb(new RGB(rgbValue, rgbValue, rgbValue));				
 			}
 			refresh();
 		}
 		
 		if(e.getSource() == btnRadioButtonRandom && list.getItemCount() > 0) {
-			for(int i = 0; i < colorList.size(); i++) {
-				colorList.set(i, new RGB(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+			
+			for(BarDataTerm barDataTerm: barTermList) {
+				barDataTerm.setRGBRandom();;				
 			}
 			refresh();
 		}
 		
 	}
 	
+	private void buildListPerSubclass() {
+		SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(selectedTerm);	
+		for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+			barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
+			list.add(entry.getKey() + " (" +entry.getValue() + ")");
+		}
+		
+	}
+
+	private void buildListPerYear() {		
+		SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);	
+		for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+			barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
+			list.add(entry.getKey() + " (" +entry.getValue() + "");
+		}		
+	}
+
 	private void refresh() {
 		int index = list.getSelectionIndex();
-		labelShowColor.setBackground(new Color(this.getShell().getDisplay(), colorList.get(index)));
-		btnCheckButton.setSelection(visibleMap.get(list.getItem(index)));
+		labelShowColor.setBackground(barTermList.get(index).getColor(this.getDisplay()));
+		btnCheckButton.setSelection(barTermList.get(index).isDisplayed());
 		this.layout();
 	}
 	
@@ -196,7 +207,8 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	public void mouseUp(MouseEvent e) {
 		if(e.getSource() == labelShowColor && list.getItemCount() > 0 && btnRadioButtonCustom.getSelection()) {
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
-			colorList.set(list.getSelectionIndex(), rgb);
+			int index = list.getSelectionIndex();
+			barTermList.get(index).setRgb(rgb);
 		}
 	}
 	
@@ -204,32 +216,29 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		ArrayList<Fill> fillList = new ArrayList<>();
 		int i = 0;
-		for(Map.Entry<String, Boolean> entry : visibleMap.entrySet()) {
-			if(entry.getValue()) {
-				RGB u = colorList.get(i);
+		for(BarDataTerm entry : barTermList) {
+			if(entry.isDisplayed()) {
+				RGB u = entry.getRgb();
 				fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
-			}
-			i = i+1;	
+			}	
 		}
 		
-		ChartConfiguration.getSeriesSettings().setSeriesUseCustomColors(true);
-		ChartConfiguration.getSeriesSettings().setSeriesColor(fillList);
-		
-		ChartConfiguration.getDataSettings().setColorList(colorList);
-		ChartConfiguration.getDataSettings().setSelectedTerm(selectedTerm);
-		ChartConfiguration.getDataSettings().setVisibleMap(visibleMap);
-		ChartConfiguration.getDataSettings().setPerSubTerm(perSubTerm);
+		settings.getSeriesSettings().setSeriesUseCustomColors(true);
+		settings.getSeriesSettings().setSeriesColor(fillList);
+		settings.setBarTermList(barTermList);
+		settings.setSelectedTerm(selectedTerm);
+		settings.setTermSort(termSort);
 	}
 	
-	public void loadSettings() {
-		colorList = ChartConfiguration.getDataSettings().getColorList();
-		selectedTerm = ChartConfiguration.getDataSettings().getSelectedTerm();
-		visibleMap = ChartConfiguration.getDataSettings().getVisibleMap();
-		perSubTerm = ChartConfiguration.getDataSettings().isPerSubTerm();
-	}
-	
-	private void displaySettings() {
-		
+	private void loadSettings() {
+		if(!barTermList.isEmpty()) {
+			barTermList = settings.getBarTermList();
+			selectedTerm = settings.getSelectedTerm();
+			termSort = settings.getTermSort();
+			for(BarDataTerm entry :barTermList) {
+				list.add(entry.getTerm()+ " (" +entry.getSize()+ ")");
+			}
+		}		
 	}
 	
 	@Override

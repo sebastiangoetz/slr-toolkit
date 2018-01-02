@@ -26,6 +26,8 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 	private Label labelColorShow, lblMaxPercent;
 	private Scale scale;
 	
+	ChartConfiguration settings = ChartConfiguration.get();
+	
 	/**
 	 * Create the composite.
 	 * @param parent
@@ -130,26 +132,26 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 	
 	public void saveSettings() {
 		if(getOutline() == null)
-			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(false);
+			settings.getLegendSettings().setLegendShowOutline(false);
 		else {
-			ChartConfiguration.get().getLegendSettings().setLegendShowOutline(true);
-			ChartConfiguration.get().getLegendSettings().setLegendOutlineStyle(getOutline());
+			settings.getLegendSettings().setLegendShowOutline(true);
+			settings.getLegendSettings().setLegendOutlineStyle(getOutline());
 		}
 		
-		ChartConfiguration.get().getLegendSettings().setLegendShadowRGB(getColor());
-		ChartConfiguration.get().getLegendSettings().setLegendBackgroundRGB(getColor());		
-		ChartConfiguration.get().getLegendSettings().setLegendPosition(getPosition());		
-		ChartConfiguration.get().getLegendSettings().setLegendMaxPercent(getPercent());		
-		ChartConfiguration.get().getLegendSettings().setLegendTitle(getTitle());				
+		settings.getLegendSettings().setLegendShadowRGB(getColor());
+		settings.getLegendSettings().setLegendBackgroundRGB(getColor());		
+		settings.getLegendSettings().setLegendPosition(getPosition());		
+		settings.getLegendSettings().setLegendMaxPercent(getPercent());		
+		settings.getLegendSettings().setLegendTitle(getTitle());				
 	}
 	
 	public void loadSettings() {
-		setTitle(ChartConfiguration.get().getLegendSettings().getLegendTitle());
-		setColor(ChartConfiguration.get().getLegendSettings().getLegendBackgroundRGB());
-		setPosition(ChartConfiguration.get().getLegendSettings().getLegendPosition());
-		setPercent(ChartConfiguration.get().getLegendSettings().getLegendMaxPercent());
-		if(ChartConfiguration.get().getLegendSettings().isLegendShowOutline())
-			setOutline(ChartConfiguration.get().getLegendSettings().getLegendOutlineStyle());
+		setTitle(settings.getLegendSettings().getLegendTitle());
+		setColor(settings.getLegendSettings().getLegendBackgroundRGB());
+		setPosition(settings.getLegendSettings().getLegendPosition());
+		setPercent(settings.getLegendSettings().getLegendMaxPercent());
+		if(settings.getLegendSettings().isLegendShowOutline())
+			setOutline(settings.getLegendSettings().getLegendOutlineStyle());
 		else
 			setOutline(null);
 				

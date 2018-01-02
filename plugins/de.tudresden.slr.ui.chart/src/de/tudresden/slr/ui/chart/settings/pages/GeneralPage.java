@@ -26,6 +26,8 @@ public class GeneralPage extends Composite implements MouseListener{
 	private Combo comboTitleSize, comboBlockOutline;
 	private Button btnUnderline, btnBolt, btnItalic;
 	
+	private ChartConfiguration settings = ChartConfiguration.get();
+	
 	public GeneralPage(Composite parent, int style) {
 		
 		super(parent, SWT.NONE);
@@ -138,34 +140,34 @@ public class GeneralPage extends Composite implements MouseListener{
 	
 	public void saveSettings() {
 		
-		ChartConfiguration.get().getGeneralSettings().setChartTitle(getTitle());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleColor(getTitleColor());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleSize(getTitleSize());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleBold(getBolt());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleItalic(getItalic());
-		ChartConfiguration.get().getGeneralSettings().setChartTitleUnderline(getUnterline());
+		settings.getGeneralSettings().setChartTitle(getTitle());
+		settings.getGeneralSettings().setChartTitleColor(getTitleColor());
+		settings.getGeneralSettings().setChartTitleSize(getTitleSize());
+		settings.getGeneralSettings().setChartTitleBold(getBolt());
+		settings.getGeneralSettings().setChartTitleItalic(getItalic());
+		settings.getGeneralSettings().setChartTitleUnderline(getUnterline());
 	
-		ChartConfiguration.get().getBlockSettings().setBlockBackgroundRGB(getBlockColor());
+		settings.getBlockSettings().setBlockBackgroundRGB(getBlockColor());
 		
 		if(getBlockOutline() == null)
-			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(false);
+			settings.getBlockSettings().setBlockShowOutline(false);
 		else {
-			ChartConfiguration.get().getBlockSettings().setBlockShowOutline(true);
-			ChartConfiguration.get().getBlockSettings().setBlockOutlineStyle(getBlockOutline());
+			settings.getBlockSettings().setBlockShowOutline(true);
+			settings.getBlockSettings().setBlockOutlineStyle(getBlockOutline());
 		}
 	}
 	
 	public void loadSettings() {
-		setTitle(ChartConfiguration.get().getGeneralSettings().getChartTitle());
-		setTitleColor(ChartConfiguration.get().getGeneralSettings().getChartTitleColor());
-		setTitleSize(ChartConfiguration.get().getGeneralSettings().getChartTitleSize());
-		setBolt(ChartConfiguration.get().getGeneralSettings().isChartTitleBold());
-		setItalic(ChartConfiguration.get().getGeneralSettings().isChartTitleItalic());
-		setUnterline(ChartConfiguration.get().getGeneralSettings().isChartTitleUnderline());
-		setBlockColor(ChartConfiguration.get().getBlockSettings().getBlockBackgroundRGB());
+		setTitle(settings.getGeneralSettings().getChartTitle());
+		setTitleColor(settings.getGeneralSettings().getChartTitleColor());
+		setTitleSize(settings.getGeneralSettings().getChartTitleSize());
+		setBolt(settings.getGeneralSettings().isChartTitleBold());
+		setItalic(settings.getGeneralSettings().isChartTitleItalic());
+		setUnterline(settings.getGeneralSettings().isChartTitleUnderline());
+		setBlockColor(settings.getBlockSettings().getBlockBackgroundRGB());
 		
-		if(ChartConfiguration.get().getBlockSettings().isBlockShowOutline())
-			setBlockOutline(ChartConfiguration.get().getBlockSettings().getBlockOutlineStyle());
+		if(settings.getBlockSettings().isBlockShowOutline())
+			setBlockOutline(settings.getBlockSettings().getBlockOutlineStyle());
 		else
 			setBlockOutline(null);
 	}

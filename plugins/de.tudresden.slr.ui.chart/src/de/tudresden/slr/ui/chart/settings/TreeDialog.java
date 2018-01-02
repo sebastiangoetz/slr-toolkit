@@ -9,6 +9,7 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
 
 import java.util.Optional;
@@ -26,9 +27,10 @@ public class TreeDialog extends Dialog implements SelectionListener{
 
 	protected Object result;
 	protected Shell shell;
-	TreeViewer treeViewer;
-	Term selectedTerm;
-	Tree tree;
+	private TreeViewer treeViewer;
+	private Term selectedTerm;
+	private Tree tree;
+	private SeriesPage seriesPageParent;
 
 	/**
 	 * Create the dialog.
@@ -44,7 +46,8 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open() {
+	public Object open(SeriesPage seriesPageParent) {
+		this.seriesPageParent = seriesPageParent;
 		createContents();
 		shell.open();
 		shell.layout();
@@ -80,7 +83,7 @@ public class TreeDialog extends Dialog implements SelectionListener{
 		btnYear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SeriesPage.perSubTerm = false;
+				seriesPageParent.termSort = TermSort.YEAR;
 				shell.dispose();
 			}
 		});
@@ -93,7 +96,7 @@ public class TreeDialog extends Dialog implements SelectionListener{
 		btnSubclasses.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				SeriesPage.perSubTerm = true;
+				seriesPageParent.termSort  = TermSort.SUBCLASS;
 				shell.dispose();
 			}
 		});

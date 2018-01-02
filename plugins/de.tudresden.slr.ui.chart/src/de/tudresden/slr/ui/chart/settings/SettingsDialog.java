@@ -29,6 +29,8 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
+import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPage;
@@ -40,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.attribute.Fill;
@@ -270,16 +274,20 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		legendPage.saveSettings();
 		seriesPage.saveSettings();
 		
-		ChartDataProvider provider = new ChartDataProvider();			
-		Map<String, Integer> citeChartData;
-		if(SeriesPage.perSubTerm)
-			citeChartData = provider.calculateNumberOfPapersPerClass(seriesPage.selectedTerm, seriesPage.visibleMap);
-		
-		else
-			citeChartData = provider.calculateNumberOfCitesPerYearForClass(seriesPage.selectedTerm, seriesPage.visibleMap);
-		Chart citeChart = ChartGenerator.createCiteBar(citeChartData);			
-		view = (ICommunicationView) part;		
-		view.setAndRenderChart(citeChart);	
+		List<BarDataTerm> data = ChartConfiguration.get().getBarTermList();
+		SortedMap<String, Integer> citeChartData = new TreeMap<>();
+		if(data.isEmpty())
+			return;
+		for(BarDataTerm term: data) {
+			if(term.isDisplayed())
+				citeChartData.put(term.getTerm(), term.getSize());
+		}
+		if(!citeChartData.isEmpty()) {
+			view = (ICommunicationView) part;
+			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
+			view.getPreview().setDataPresent(true);
+			view.setAndRenderChart(citeChart);	
+		}
 		
 	}
 	
