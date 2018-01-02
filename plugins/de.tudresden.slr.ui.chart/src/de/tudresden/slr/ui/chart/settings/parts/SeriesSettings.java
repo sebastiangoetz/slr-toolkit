@@ -1,9 +1,13 @@
 package de.tudresden.slr.ui.chart.settings.parts;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
+import org.eclipse.swt.graphics.RGB;
+
+import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 
 public class SeriesSettings {
 	
@@ -56,13 +60,18 @@ public class SeriesSettings {
 		return seriesColor;
 	}
 
-	public void setSeriesColor(ArrayList<Fill> seriesColor) {
-		/*
-		col1.add(ColorDefinitionImpl.create(0, 0, 255));
-		col1.add(ColorDefinitionImpl.create(0, 255, 0));
-		col1.add(ColorDefinitionImpl.create(255, 0, 0));
-		 */
-		this.seriesColor = seriesColor;
+	public void setSeriesColor(List<BarDataTerm> barTermList) {
+		ArrayList<Fill> fillList = new ArrayList<>();
+		for(BarDataTerm entry: barTermList) {
+			if(entry.isDisplayed()) {
+				RGB series = entry.getRgb();
+				fillList.add(ColorDefinitionImpl.create(series.red, series.green, series.blue));				
+				
+			}
+		}
+		this.seriesColor = fillList;
+
+
 	}
 
 	public boolean isSeriesUseCustomColors() {
