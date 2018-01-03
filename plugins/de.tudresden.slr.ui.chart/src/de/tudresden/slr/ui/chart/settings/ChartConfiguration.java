@@ -129,6 +129,7 @@ public final class ChartConfiguration {
 
 	public void setBarTermList(List<BarDataTerm> barTermList) {
 		this.barTermList = barTermList;
+		SeriesSettings.get().setSeriesColor(barTermList);
 	}
 
 	public Term getSelectedTerm() {

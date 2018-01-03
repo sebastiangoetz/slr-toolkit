@@ -214,17 +214,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	
 	public void saveSettings() {
 		
-		ArrayList<Fill> fillList = new ArrayList<>();
-		int i = 0;
-		for(BarDataTerm entry : barTermList) {
-			if(entry.isDisplayed()) {
-				RGB u = entry.getRgb();
-				fillList.add(ColorDefinitionImpl.create(u.red, u.green, u.blue));
-			}	
-		}
 		
-		settings.getSeriesSettings().setSeriesUseCustomColors(true);
-		settings.getSeriesSettings().setSeriesColor(fillList);
 		settings.setBarTermList(barTermList);
 		settings.setSelectedTerm(selectedTerm);
 		settings.setTermSort(termSort);
