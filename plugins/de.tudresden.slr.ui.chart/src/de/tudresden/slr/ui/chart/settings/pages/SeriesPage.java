@@ -26,7 +26,7 @@ import de.tudresden.slr.ui.chart.settings.TreeDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.RGB;
 
-public class SeriesPage extends Composite implements SelectionListener, MouseListener{
+public class SeriesPage extends Composite implements SelectionListener, MouseListener, Pages{
 
 	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
 	private Button btnCheckButton;
@@ -40,8 +40,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	private Composite compositeFirst;
 	private Label lblSelectedTermIs;
 	
-	private ChartConfiguration settings = ChartConfiguration.get();
-	
+	private ChartConfiguration settings = ChartConfiguration.get();	
 	
 	public SeriesPage(Composite parent, int style) {
 		super(parent, style);
@@ -211,16 +210,16 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 			barTermList.get(index).setRgb(rgb);
 		}
 	}
-	
+	@Override
 	public void saveSettings() {
-		
 		
 		settings.setBarTermList(barTermList);
 		settings.setSelectedTerm(selectedTerm);
 		settings.setTermSort(termSort);
+			
 	}
-	
-	private void loadSettings() {
+	@Override
+	public void loadSettings() {
 		barTermList = settings.getBarTermList();
 		selectedTerm = settings.getSelectedTerm();
 		termSort = settings.getTermSort();

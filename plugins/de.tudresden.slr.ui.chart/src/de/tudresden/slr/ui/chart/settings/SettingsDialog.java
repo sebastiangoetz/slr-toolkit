@@ -33,6 +33,7 @@ import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.settings.pages.AxisPage;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPage;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
@@ -73,6 +74,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private GeneralPage generalPage;
 	private LegendPage legendPage;
 	private SeriesPage seriesPage;
+	private AxisPage axisPage;
 	
 	private ICommunicationView view;
 	
@@ -162,6 +164,8 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBarChart_1 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_2 = new TabItem(folderBarChart, SWT.NONE);
 		TabItem itemFolderBarChart_3 = new TabItem(folderBarChart, SWT.NONE);
+		TabItem itemFolderBarChart_4 = new TabItem(folderBarChart, SWT.NONE);
+		
 		
 		generalPage = new GeneralPage(folderBarChart, SWT.NONE);
 		itemFolderBarChart_1.setControl(generalPage);
@@ -175,6 +179,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		itemFolderBarChart_3.setControl(seriesPage);
 		itemFolderBarChart_3.setText("Series");
 		
+		axisPage = new AxisPage(folderBarChart, SWT.NONE);
+		itemFolderBarChart_4.setControl(axisPage);
+		itemFolderBarChart_4.setText("Axis");
 	}
 	
 	private void buildBubbleSettings() {
@@ -273,10 +280,13 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		generalPage.saveSettings();
 		legendPage.saveSettings();
 		seriesPage.saveSettings();
+		axisPage.saveSettings();
 		
+
 		List<BarDataTerm> data = ChartConfiguration.get().getBarTermList();
 		SortedMap<String, Integer> citeChartData = new TreeMap<>();
 		if(data.isEmpty()) {
+			MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
 			return;
 			}
 		for(BarDataTerm term: data) {

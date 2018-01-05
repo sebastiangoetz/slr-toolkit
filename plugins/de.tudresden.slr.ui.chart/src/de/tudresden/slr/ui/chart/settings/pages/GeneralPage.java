@@ -19,7 +19,7 @@ import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 
 import org.eclipse.swt.widgets.Combo;
 
-public class GeneralPage extends Composite implements MouseListener{
+public class GeneralPage extends Composite implements MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2;
 	private Text text;
@@ -137,7 +137,7 @@ public class GeneralPage extends Composite implements MouseListener{
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor2);
 		}		
 	}
-	
+	@Override
 	public void saveSettings() {
 		
 		settings.getGeneralSettings().setChartTitle(getTitle());
@@ -156,7 +156,7 @@ public class GeneralPage extends Composite implements MouseListener{
 			settings.getBlockSettings().setBlockOutlineStyle(getBlockOutline());
 		}
 	}
-	
+	@Override
 	public void loadSettings() {
 		setTitle(settings.getGeneralSettings().getChartTitle());
 		setTitleColor(settings.getGeneralSettings().getChartTitleColor());
