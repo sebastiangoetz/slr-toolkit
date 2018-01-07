@@ -20,7 +20,7 @@ import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 
 import org.eclipse.swt.widgets.Scale;
 
-public class LegendPage extends Composite implements SelectionListener, MouseListener{
+public class LegendPage extends Composite implements SelectionListener, MouseListener, Pages{
 	private Text text;
 	private Combo comboOutline, comboPosition;
 	private Label labelColorShow, lblMaxPercent;
@@ -130,6 +130,7 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 		
 	}
 	
+	@Override
 	public void saveSettings() {
 		if(getOutline() == null)
 			settings.getLegendSettings().setLegendShowOutline(false);
@@ -145,6 +146,7 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 		settings.getLegendSettings().setLegendTitle(getTitle());				
 	}
 	
+	@Override
 	public void loadSettings() {
 		setTitle(settings.getLegendSettings().getLegendTitle());
 		setColor(settings.getLegendSettings().getLegendBackgroundRGB());
