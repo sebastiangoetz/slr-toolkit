@@ -19,6 +19,7 @@ public class AxisSettings {
 	//x-Axis
 	
 	private int xAxisRotation = 45;
+	private boolean xAxisAutoRotation = true;
 	private boolean xAxisTitleActive = true;
 	private String xAxisTitle = "Hallo";
 	private int xAxisTitleSize = 12;
@@ -26,21 +27,16 @@ public class AxisSettings {
 	private IntersectionType xAxisIntersectionType = IntersectionType.MIN_LITERAL;
 	private boolean xAxisTickBetweenCategories = true;
 	//y-Axis
-	private int yAxisRotation = 0;
+	private int yAxisRotation = 0;//raus
 	private boolean yAxisTitleActive = true;
 	private String yAxisTitle = "hallo";
 	private int yAxisTitleSize = 12;
 	private int yAxisScaleStep = 20;
+	private boolean yAxisAutoStep = true;
 
 	
 	//x-Axis Getter + Setter
-	public float getAxisFontSize() {
-		return axisFontSize;
-	}
-
-	public void setAxisFontSize(float axisFontSize) {
-		this.axisFontSize = axisFontSize;
-	}
+	
 
 	public int getxAxisRotation() {
 		return xAxisRotation;
@@ -48,6 +44,14 @@ public class AxisSettings {
 
 	public void setxAxisRotation(int xAxisRotation) {
 		this.xAxisRotation = xAxisRotation;
+	}
+	
+	public boolean isxAxisAutoRotation() {
+		return xAxisAutoRotation;
+	}
+
+	public void setxAxisAutoRotation(boolean xAxisRotationActive) {
+		this.xAxisAutoRotation = xAxisRotationActive;
 	}
 
 	public boolean isxAxisTitleActive() {
@@ -58,6 +62,14 @@ public class AxisSettings {
 		this.xAxisTitleActive = xAxisTitleActive;
 	}
 
+	public float getAxisFontSize() {
+		return axisFontSize;
+	}
+
+	public void setAxisFontSize(float axisFontSize) {
+		this.axisFontSize = axisFontSize;
+	}
+	
 	public String getxAxisTitle() {
 		return xAxisTitle;
 	}
@@ -133,12 +145,20 @@ public class AxisSettings {
 		this.yAxisScaleStep = yAxisScaleStep;
 	}
 
-	public int getyAxisRotation() {
+	public boolean isyAxisAutoStep() {
+		return yAxisAutoStep;
+	}
+
+	public void setyAxisAutoStep(boolean yAxisStepActive) {
+		this.yAxisAutoStep = yAxisStepActive;
+	}
+	
+	
+	/*public int getyAxisRotation() {
 		return yAxisRotation;
 	}
 
 	public void setyAxisRotation(int yAxisRotation) {
 		this.yAxisRotation = yAxisRotation;
-	}
-
+	}*/
 }

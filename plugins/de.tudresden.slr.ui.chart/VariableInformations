@@ -12,12 +12,12 @@ Plotvariables
 setPlotBackgroundRGB(RGB plotBackgroundRGB)
 #Shadow
 public void setPlotShadowRGB(RGB plotShadowRGB)
-#Insets = Einrücken Diagram
+#Insets = Einrï¿½cken Diagram
 public void setPlotInsetTop(double plotInsetTop)
 public void setPlotInsetLeft(double plotInsetLeft)
 public void setPlotInsetBottom(double plotInsetBottom)
 public void setPlotInsetRight(double plotInsetRight)
-#Spacing = Einrücken der Werte
+#Spacing = Einrï¿½cken der Werte
 public void setPlotHorizontalSpacing(int plotHorizontalSpacing)
 public void setPlotVerticalSpacing(int plotVerticalSpacing)
 
@@ -26,7 +26,7 @@ Legendvariables
 setLegendBackgroundRGB(RGB legendBackgroundRGB)
 #Shadow
 public void setLegendShadowRGB(RGB legendShadowRGB)
-#Insets = Einrücken Diagram
+#Insets = Einrï¿½cken Diagram
 public void setLegendInsetTop(double legendInsetTop)
 public void setLegendInsetLeft(double legendInsetLeft)
 public void setLegendInsetBottom(double legendInsetBottom)
@@ -71,13 +71,13 @@ Allgemeine Variablen(Seite 1)
 Blocksettings: Background, Outline, OutlineColor, OutlineStyle, OutlineThickness, OutlineRGB -> siehe oben
 
 #x-Axis
-public void setAxisFontSize(float axisFontSize)
-public void setxAxisRotation(int xAxisRotation)
+public void setAxisFontSize(float axisFontSize)/raus
+public void setxAxisRotation(int xAxisRotation)/raus
 public void setxAxisTitleActive(boolean xAxisTitleActive)
 public void setxAxisTitle(String xAxisTitle)
 public void setxAxisTitleSize(int xAxisTitleSize)
-public void setxAxisTickStyle(TickStyle xAxisTickStyle) -> .ABOVE_LITERAL, .ACROSS_LITERAL, .BELOW_LITERAL
-public void setxAxisIntersectionType(IntersectionType xAxisIntersectionStyle) -> IntersectionStyle.MIN_LITERAL oder .VALUE_LITERAL
+public void setxAxisTickStyle(TickStyle xAxisTickStyle) -> .ABOVE_LITERAL, .ACROSS_LITERAL, .BELOW_LITERAL/raus
+public void setxAxisIntersectionType(IntersectionType xAxisIntersectionStyle) -> IntersectionStyle.MIN_LITERAL oder .VALUE_LITERAL/raus
 public void setxAxisGapWidth(double xAxisGapWidth) -> Abstand von vorne bzw. hinten in %
 '
 #SeriesVariablen

@@ -17,8 +17,10 @@ import java.util.Map;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
+import org.eclipse.birt.chart.model.attribute.Anchor;
 import org.eclipse.birt.chart.model.attribute.AttributePackage;
 import org.eclipse.birt.chart.model.attribute.AxisType;
+import org.eclipse.birt.chart.model.attribute.Direction;
 import org.eclipse.birt.chart.model.attribute.Fill;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
@@ -73,7 +75,7 @@ public class BarChartGenerator {
 	public final Chart createBar(Map<String, Integer> input, String title) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 		
-		ChartConfiguration cc = ChartConfiguration.get(); //
+		ChartConfiguration cc = ChartConfiguration.BARCHARTCONFIG;//
 		PlotSettings ps = cc.getPlotSettings();
 		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
@@ -128,8 +130,10 @@ public class BarChartGenerator {
 		//lg.setDirection(ls.getLegendDirection());
 		lg.setItemType(ls.getLegendItemType());
 		lg.setMaxPercent(ls.getLegendMaxPercent());
-		lg.setOrientation(ls.getLegendOrientation());
 		lg.setPosition(ls.getLegendPosition());
+		lg.setOrientation(ls.getLegendOrientation());
+		
+		
 		
 		lg.getSeparator().setVisible(ls.isLegendShowSeparator());
 		lg.getSeparator().setStyle(ls.getLegendSeparatorStyle());
@@ -165,11 +169,17 @@ public class BarChartGenerator {
 		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
 		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
 
-		//xAxisPrimary.getSubTitle().getCaption().setValue("Jürgen");
+		//xAxisPrimary.getSubTitle().getCaption().setValue("Jï¿½rgen");
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
-		if(input.size() > 15){
-			xAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
+		if(as.isxAxisAutoRotation()) {
+			xAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
+			if(input.size() > 15){
+				xAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
+			}
+			else {
+				xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
+			}
 		}
 		xAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
 
@@ -180,11 +190,15 @@ public class BarChartGenerator {
 		yAxisPrimary.setOrientation(Orientation.VERTICAL_LITERAL);
 		
 		yAxisPrimary.getLabel().getCaption().getFont().setSize(as.getAxisFontSize());
-		yAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getyAxisRotation());
+		//yAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getyAxisRotation());
 		yAxisPrimary.getTitle().setVisible(as.isyAxisTitleActive());
 		yAxisPrimary.getTitle().getCaption().setValue(as.getyAxisTitle());
 		yAxisPrimary.getTitle().getCaption().getFont().setSize(as.getyAxisTitleSize());
-		yAxisPrimary.getScale().setStep(as.getyAxisScaleStep());
+		//yAxisPrimary.getScale().setStep(as.getyAxisScaleStep()); -> LÃ¶st Problem mit Scaling bei Jahresanzeigen
+		if(as.isyAxisAutoStep()==false) {
+			yAxisPrimary.getScale().setStep(as.getyAxisScaleStep());
+		}
+	
 		
 		
 		List<String> names = new ArrayList<>();
