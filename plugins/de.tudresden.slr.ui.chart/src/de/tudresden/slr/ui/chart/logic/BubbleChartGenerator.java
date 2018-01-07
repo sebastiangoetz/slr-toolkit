@@ -9,11 +9,13 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
+import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.MarkerType;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
+import org.eclipse.birt.chart.model.component.Label;
 import org.eclipse.birt.chart.model.component.Scale;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
@@ -30,6 +32,7 @@ import org.eclipse.birt.chart.model.data.impl.TextDataSetImpl;
 import org.eclipse.birt.chart.model.impl.ChartWithAxesImpl;
 import org.eclipse.birt.chart.model.type.ScatterSeries;
 import org.eclipse.birt.chart.model.type.impl.ScatterSeriesImpl;
+
 
 import de.tudresden.slr.model.taxonomy.Term;
 
@@ -60,13 +63,16 @@ public class BubbleChartGenerator {
 		Axis xAxisPrimary = ((ChartWithAxesImpl)cwaScatter).getPrimaryBaseAxes()[0];
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(TickStyle.BELOW_LITERAL);
-		xAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
+		xAxisPrimary.getMajorGrid().getLineAttributes().setVisible(false);
+		xAxisPrimary.getMinorGrid().getLineAttributes().setVisible(true);
+		xAxisPrimary.getMinorGrid().getLineAttributes().setThickness(2);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		Scale xScale = xAxisPrimary.getScale();
 		long numberOfXTerms = input.stream().map(x -> x.getxTerm().getName()).distinct().count();
 		xScale.setStep(1);
 		xScale.setMin(NumberDataElementImpl.create(0));
 		xScale.setMax(NumberDataElementImpl.create(numberOfXTerms));
+		xScale.setMinorGridsPerUnit(2);
 		xAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
 		if(numberOfXTerms > 15){
 			xAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
@@ -106,6 +112,8 @@ public class BubbleChartGenerator {
 		yAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
 		yAxisPrimary.setLabelPosition(Position.LEFT_LITERAL);
 		yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
+		//yAxisPrimary.getScale().setMajorGridsStepNumber(2);
+		
 		
 		List<String> xTerms = createXTerms(input, jsScript);
 		TextDataSet dsNumericValues1 = TextDataSetImpl.create(xTerms);
@@ -139,7 +147,14 @@ public class BubbleChartGenerator {
 		//Add JS
 		appendJsScript(jsScript);
 		cwaScatter.setScript(jsScript.toString());
-System.out.println(jsScript.toString());
+		
+		//System.out.println(xAxisPrimary.getSeriesDefinitions());
+		//System.out.println(sdX.getSeries());
+		//System.out.println(yAxisPrimary.getScale());
+		//System.out.println(xAxisPrimary.getScale());
+		System.out.println(jsScript.toString());
+		//System.out.println(sdY.getSeries());
+		//System.out.println(sdX.getSeries());
 		return cwaScatter;
 	}
 
@@ -179,10 +194,14 @@ System.out.println(jsScript.toString());
 			ScatterSeries ss = (ScatterSeries) ScatterSeriesImpl.create( );
 			ss.getMarkers().stream().forEach(m -> m.setType(MarkerType.CIRCLE_LITERAL));
 			ss.getLabel().setVisible(true);
+			//ss.setLabelPosition(Position.BELOW_LITERAL);
+			//System.out.println(ss.getLabel());
 			ss.setDataSet(NumberDataSetImpl.create(DoubleStream.iterate(count, i -> i).limit(xTermsLength).toArray()));
 			String jsonKey = sanitizeJsonKey(yTerm);
+			//System.out.println(jsonKey);
 			ss.setSeriesIdentifier(jsonKey);
 			sd.getSeries().add(ss);
+			
 			
 			jsScript.append("\"" + jsonKey +"\": [");
 			input.stream().filter(x -> x.getyTerm().getName().equals(yTerm))
@@ -198,6 +217,7 @@ System.out.println(jsScript.toString());
 		jsLabels.append("\"" + (yTerms.size() + 1) + "\": \"\"};\n");
 		jsScript.append("};\n");
 		jsScript.append(jsLabels);
+		
 	}
 
 	/**
@@ -282,8 +302,8 @@ System.out.println(jsScript.toString());
 		jsValues.append("\t\tsize = seriesPosition[seriesValue][labelCount%seriesLength];\n");
 		jsValues.append("\t}\n");
 		jsValues.append("\tlabel.getCaption().setValue(size);\n");
-		jsValues.append("\t(size <= 0) && label.setVisible(false);\n");
-		jsValues.append("\t(size > 0) && label.setVisible(true);\n");
+		jsValues.append("\t(size <= 10) && label.setVisible(false);\n");
+		jsValues.append("\t(size > 10) && label.setVisible(true);\n");
 		jsValues.append("\tlabelCount++;\n");
 		jsValues.append("}\n");
 	}

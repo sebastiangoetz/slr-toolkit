@@ -63,7 +63,6 @@ public class LegendSettings {
 		//private Direction legendDirection = Direction.TOP_BOTTOM_LITERAL;
 		private LegendItemType legendItemType = LegendItemType.CATEGORIES_LITERAL; //Andere Einstellung ist Abfuck? :D
 		private double LegendMaxPercent = 0.3333; //Default 0,3333
-		private Orientation LegendOrientation = Orientation.VERTICAL_LITERAL;
 		private Position LegendPosition = Position.RIGHT_LITERAL;
 		//Separator
 		private boolean legendShowSeparator = false;
@@ -71,7 +70,7 @@ public class LegendSettings {
 		private int legendSeparatorThickness = 5;
 		private RGB legendSeparatorRGB = new RGB(0,0,0);
 		//Text
-		private HorizontalAlignment legendHorizontalAlignment = HorizontalAlignment.LEFT_LITERAL;
+		private HorizontalAlignment legendHorizontalAlignment = HorizontalAlignment.CENTER_LITERAL;
 		private VerticalAlignment legendVerticalAlignment = VerticalAlignment.TOP_LITERAL;
 		private double legendTextRotation = 0;
 		private float legendTextSize = 10;
@@ -162,11 +161,10 @@ public class LegendSettings {
 		}
 
 		public Orientation getLegendOrientation() {
-			return LegendOrientation;
-		}
-
-		public void setLegendOrientation(Orientation legendOrientation) {
-			LegendOrientation = legendOrientation;
+			if(LegendPosition==Position.BELOW_LITERAL || LegendPosition==Position.ABOVE_LITERAL)
+				return Orientation.HORIZONTAL_LITERAL;
+			
+			return Orientation.VERTICAL_LITERAL;
 		}
 
 		public Position getLegendPosition() {

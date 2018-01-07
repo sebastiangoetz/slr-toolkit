@@ -41,10 +41,6 @@ public final class ChartConfiguration {
 	
 	private ChartConfiguration() {
 	}
-	
-	public static ChartConfiguration get() {
-		return CHARTCONFIGURATION;
-	}
 	public PlotSettings getPlotSettings() {
 		return PlotSettings.get();
 	}
@@ -64,7 +60,8 @@ public final class ChartConfiguration {
 		return SeriesSettings.get();
 	}
 	
-	private static final ChartConfiguration CHARTCONFIGURATION = new ChartConfiguration();
+	public static ChartConfiguration BARCHARTCONFIG = new ChartConfiguration();
+	public static ChartConfiguration BUBBLECHARTCONFIG = new ChartConfiguration();
 	
 	private List<BarDataTerm> barTermList = new ArrayList<>();
 	private Term selectedTerm = null;
@@ -146,7 +143,8 @@ public final class ChartConfiguration {
 
 	public void setTermSort(TermSort termSort) {
 		this.termSort = termSort;
-	}	
+	}
+
 	
 	
 }
