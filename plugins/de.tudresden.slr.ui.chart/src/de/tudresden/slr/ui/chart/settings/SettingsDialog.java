@@ -283,7 +283,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		axisPage.saveSettings();
 		
 
-		List<BarDataTerm> data = ChartConfiguration.get().getBarTermList();
+		List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();
 		SortedMap<String, Integer> citeChartData = new TreeMap<>();
 		if(data.isEmpty()) {
 			MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");

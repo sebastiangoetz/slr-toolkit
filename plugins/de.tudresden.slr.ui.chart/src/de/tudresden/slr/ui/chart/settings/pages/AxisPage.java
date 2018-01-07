@@ -4,7 +4,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -32,7 +31,7 @@ public class AxisPage extends Composite implements Pages, SelectionListener{
 	private Spinner spinner;
 	private Label lblNewLabel;
 	
-	private AxisSettings settings = ChartConfiguration.get().getAxisSettings();
+	private AxisSettings settings = ChartConfiguration.BARCHARTCONFIG.getAxisSettings();
 
 	/**
 	 * Create the composite.
@@ -170,12 +169,46 @@ public class AxisPage extends Composite implements Pages, SelectionListener{
 		settings.setyAxisTitle(getyTitle());
 		settings.setxAxisTitleSize(getxSize());
 		settings.setyAxisTitleSize(getySize());
+		//settings.setxAxisGapWidth(((double) getScale()) / 100);
+		if(btnAutoX.getSelection())
+			settings.setxAxisAutoRotation(true);
+		else {
+			settings.setxAxisAutoRotation(false);
+			settings.setxAxisRotation(getRotation());
+		}
+		
+		if(btnAutoY.getSelection())
+			settings.setyAxisAutoStep(true);
+		else {
+			settings.setyAxisAutoStep(false);
+			settings.setyAxisScaleStep(getScale());
+		}
 		
 	}
 
 	@Override
 	public void loadSettings() {
+		setxTitle(settings.getxAxisTitle());
+		setyTitle(settings.getyAxisTitle());
 		
+		setxSize(settings.getxAxisTitleSize());
+		setySize(settings.getyAxisTitleSize());
+		
+		//setScale(settings.getxAxisGapWidth());
+		
+		if(settings.isxAxisAutoRotation()){
+			btnAutoX.setSelection(true);
+		}
+		else
+			setRotation(settings.getxAxisRotation());
+		
+		if(settings.isyAxisAutoStep()){
+			btnAutoY.setSelection(true);
+		}
+		else {
+			setScale(settings.getyAxisScaleStep());
+			btnCustom.setSelection(true);
+		}
 	}
 
 	private String getxTitle() {return xTitle.getText();}

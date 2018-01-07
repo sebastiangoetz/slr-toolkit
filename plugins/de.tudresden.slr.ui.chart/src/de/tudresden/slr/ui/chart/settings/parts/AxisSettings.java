@@ -24,7 +24,7 @@ public class AxisSettings {
 	private String xAxisTitle = "Hallo";
 	private int xAxisTitleSize = 12;
 	private TickStyle xAxisTickStyle = TickStyle.ABOVE_LITERAL;
-	private IntersectionType xAxisIntersectionType = IntersectionType.MAX_LITERAL;
+	private IntersectionType xAxisIntersectionType = IntersectionType.MIN_LITERAL;
 	private boolean xAxisTickBetweenCategories = true;
 	//y-Axis
 	private int yAxisRotation = 0;//raus

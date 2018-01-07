@@ -40,7 +40,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	private Composite compositeFirst;
 	private Label lblSelectedTermIs;
 	
-	private ChartConfiguration settings = ChartConfiguration.get();	
+	private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
 	
 	public SeriesPage(Composite parent, int style) {
 		super(parent, style);
