@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 
 import org.eclipse.swt.widgets.Scale;
 
@@ -26,7 +27,7 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 	private Label labelColorShow, lblMaxPercent;
 	private Scale scale;
 	
-	ChartConfiguration settings = ChartConfiguration.get();
+	LegendSettings settings = ChartConfiguration.BARCHARTCONFIG.getLegendSettings();
 	
 	/**
 	 * Create the composite.
@@ -133,27 +134,27 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 	@Override
 	public void saveSettings() {
 		if(getOutline() == null)
-			settings.getLegendSettings().setLegendShowOutline(false);
+			settings.setLegendShowOutline(false);
 		else {
-			settings.getLegendSettings().setLegendShowOutline(true);
-			settings.getLegendSettings().setLegendOutlineStyle(getOutline());
+			settings.setLegendShowOutline(true);
+			settings.setLegendOutlineStyle(getOutline());
 		}
 		
-		settings.getLegendSettings().setLegendShadowRGB(getColor());
-		settings.getLegendSettings().setLegendBackgroundRGB(getColor());		
-		settings.getLegendSettings().setLegendPosition(getPosition());		
-		settings.getLegendSettings().setLegendMaxPercent(getPercent());		
-		settings.getLegendSettings().setLegendTitle(getTitle());				
+		settings.setLegendShadowRGB(getColor());
+		settings.setLegendBackgroundRGB(getColor());		
+		settings.setLegendPosition(getPosition());		
+		settings.setLegendMaxPercent(getPercent());		
+		settings.setLegendTitle(getTitle());				
 	}
 	
 	@Override
 	public void loadSettings() {
-		setTitle(settings.getLegendSettings().getLegendTitle());
-		setColor(settings.getLegendSettings().getLegendBackgroundRGB());
-		setPosition(settings.getLegendSettings().getLegendPosition());
-		setPercent(settings.getLegendSettings().getLegendMaxPercent());
-		if(settings.getLegendSettings().isLegendShowOutline())
-			setOutline(settings.getLegendSettings().getLegendOutlineStyle());
+		setTitle(settings.getLegendTitle());
+		setColor(settings.getLegendBackgroundRGB());
+		setPosition(settings.getLegendPosition());
+		setPercent(settings.getLegendMaxPercent());
+		if(settings.isLegendShowOutline())
+			setOutline(settings.getLegendOutlineStyle());
 		else
 			setOutline(null);
 				
