@@ -262,7 +262,7 @@ public class BarChartGenerator {
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
-		bs1.getLabel().setVisible(ss.isSeriesShowLabels());
+		bs1.getLabel().setVisible(gs.isChartShowLabels());
 		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
 		bs1.setTranslucent(ss.isSeriesTranslucent());
 

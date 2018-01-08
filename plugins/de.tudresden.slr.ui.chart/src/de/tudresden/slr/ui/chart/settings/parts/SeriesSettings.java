@@ -25,7 +25,6 @@ public class SeriesSettings {
 	//Y-Series
 	private boolean seriesTranslucent = false;
 	private boolean seriesStacked = false; //Als Stacked rendern
-	private boolean seriesShowLabels = true; //Zeigt Labels der Balken a
 	private boolean seriesUseCustomColors = true; //false=no Custom Color, true=custom Colors
 	private ArrayList<Fill> seriesColor = new ArrayList<Fill>();
 	
@@ -48,13 +47,6 @@ public class SeriesSettings {
 		this.seriesStacked = seriesStacked;
 	}
 
-	public boolean isSeriesShowLabels() {
-		return seriesShowLabels;
-	}
-
-	public void setSeriesShowLabels(boolean seriesShowLabels) {
-		this.seriesShowLabels = seriesShowLabels;
-	}
 
 	public ArrayList<Fill> getSeriesColor() {
 		return seriesColor;
