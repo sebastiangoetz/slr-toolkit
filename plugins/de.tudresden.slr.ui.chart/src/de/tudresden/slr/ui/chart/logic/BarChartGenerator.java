@@ -168,8 +168,8 @@ public class BarChartGenerator {
 		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getAxisFontSize());
 		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
 		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
-
-		//xAxisPrimary.getSubTitle().getCaption().setValue("J�rgen");
+		xAxisPrimary.setGapWidth(as.getxAxisGapWidth());
+		
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
 		if(as.isxAxisAutoRotation()) {
@@ -177,9 +177,10 @@ public class BarChartGenerator {
 			if(input.size() > 15){
 				xAxisPrimary.getLabel().getCaption().getFont().setRotation(90);
 			}
-			else {
-				xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
-			}
+		}
+		else {
+			xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
+			
 		}
 		xAxisPrimary.getLabel().getCaption().getFont().setName("Arial");
 
