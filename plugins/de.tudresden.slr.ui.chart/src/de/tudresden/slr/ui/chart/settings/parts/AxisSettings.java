@@ -14,22 +14,23 @@ public class AxisSettings {
 
 	private static AxisSettings AXISSETTINGS= new AxisSettings();
 	//Every Axis
-	private float axisFontSize = 16;
+	private int axisFontSize = 16;
 	
 	//x-Axis
 	
 	private int xAxisRotation = 45;
 	private boolean xAxisAutoRotation = true;
 	private boolean xAxisTitleActive = true;
-	private String xAxisTitle = "Hallo";
+	private String xAxisTitle = "x-Axis";
 	private int xAxisTitleSize = 12;
 	private TickStyle xAxisTickStyle = TickStyle.ABOVE_LITERAL;
 	private IntersectionType xAxisIntersectionType = IntersectionType.MIN_LITERAL;
 	private boolean xAxisTickBetweenCategories = true;
+	private double xAxisGapWidth = 0.1;
 	//y-Axis
 	private int yAxisRotation = 0;//raus
 	private boolean yAxisTitleActive = true;
-	private String yAxisTitle = "hallo";
+	private String yAxisTitle = "y-Axis";
 	private int yAxisTitleSize = 12;
 	private int yAxisScaleStep = 20;
 	private boolean yAxisAutoStep = true;
@@ -62,11 +63,11 @@ public class AxisSettings {
 		this.xAxisTitleActive = xAxisTitleActive;
 	}
 
-	public float getAxisFontSize() {
+	public int getAxisFontSize() {
 		return axisFontSize;
 	}
 
-	public void setAxisFontSize(float axisFontSize) {
+	public void setAxisFontSize(int axisFontSize) {
 		this.axisFontSize = axisFontSize;
 	}
 	
@@ -109,9 +110,15 @@ public class AxisSettings {
 	public void setxAxisTickBetweenCategories(boolean xAxisTickBetweenCategories) {
 		this.xAxisTickBetweenCategories = xAxisTickBetweenCategories;
 	}
+	
+	public double getxAxisGapWidth() {
+		return xAxisGapWidth;
+	}
 
-	
-	
+	public void setxAxisGapWidth(double xAxisGapWidth) {
+		this.xAxisGapWidth = xAxisGapWidth;
+	}
+
 	//y-Axis Getter + Setter
 	public boolean isyAxisTitleActive() {
 		return yAxisTitleActive;

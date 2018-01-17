@@ -31,6 +31,7 @@ public class GeneralSettings {
 	private boolean chartTitleBold = false;
 	private boolean chartTitleUnderline = false;
 	
+	private boolean chartShowLabels = false;
 	//Graphvariables Getter + Setter
 	public String getChartType() {
 		return chartType;
@@ -94,6 +95,14 @@ public class GeneralSettings {
 
 	public void setChartTitleUnderline(boolean chartTitleUnderline) {
 		this.chartTitleUnderline = chartTitleUnderline;
+	}
+
+	public boolean isChartShowLabels() {
+		return chartShowLabels;
+	}
+
+	public void setChartShowLabels(boolean chartShowLabels) {
+		this.chartShowLabels = chartShowLabels;
 	}
 	
 }

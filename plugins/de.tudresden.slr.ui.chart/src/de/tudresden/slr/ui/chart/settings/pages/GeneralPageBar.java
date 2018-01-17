@@ -26,7 +26,7 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 	private Label labelShowColor, labelShowColor2;
 	private Text text;
 	private Combo comboTitleSize, comboBlockOutline;
-	private Button btnUnderline, btnBolt, btnItalic;
+	private Button btnUnderline, btnBolt, btnItalic, btnShowLables;
 	
 	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
 	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
@@ -130,7 +130,7 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		Label lblLables = new Label(grpBlockSettings, SWT.NONE);
 		lblLables.setText("Lables");
 		
-		Button btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
+		btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
 		btnShowLables.setText("Show Lables");
 		labelShowColor2.addMouseListener(this);
 		
@@ -155,6 +155,8 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		settingsGeneral.setChartTitleBold(getBolt());
 		settingsGeneral.setChartTitleItalic(getItalic());
 		settingsGeneral.setChartTitleUnderline(getUnterline());
+		
+		settingsGeneral.setChartShowLabels(isChartShowLabels());//
 	
 		settingsBlock.setBlockBackgroundRGB(getBlockColor());
 		
@@ -174,6 +176,8 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		setItalic(settingsGeneral.isChartTitleItalic());
 		setUnterline(settingsGeneral.isChartTitleUnderline());
 		setBlockColor(settingsBlock.getBlockBackgroundRGB());
+		
+		setChartShowLabels(settingsGeneral.isChartShowLabels());//
 		
 		if(settingsBlock.isBlockShowOutline())
 			setBlockOutline(settingsBlock.getBlockOutlineStyle());
@@ -204,6 +208,9 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 	
 	private RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
 	private void setBlockColor(RGB rgb) {labelShowColor2.setBackground(new Color(this.getDisplay(), rgb));}
+	
+	private boolean isChartShowLabels() {return btnShowLables.getSelection();}
+	private void setChartShowLabels(boolean value) {btnShowLables.setSelection(value);}
 
 	@Override
 	protected void checkSubclass() {}
