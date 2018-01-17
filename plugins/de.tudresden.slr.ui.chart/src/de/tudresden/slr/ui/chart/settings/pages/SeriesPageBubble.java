@@ -26,7 +26,7 @@ import de.tudresden.slr.ui.chart.settings.TreeDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.graphics.RGB;
 
-public class SeriesPage extends Composite implements SelectionListener, MouseListener, Pages{
+public class SeriesPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
 
 	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
 	private Button btnCheckButton;
@@ -41,8 +41,9 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 	private Label lblSelectedTermIs;
 	
 	private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
+	private List list_1;
 	
-	public SeriesPage(Composite parent, int style) {
+	public SeriesPageBubble(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(1, false));
 		
@@ -63,14 +64,15 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		
 		Composite compositeCentre = new Composite(this, SWT.NONE);
-		compositeCentre.setLayout(new GridLayout(1, false));
-		compositeCentre.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true, 1, 1));
+		compositeCentre.setLayout(new FillLayout(SWT.HORIZONTAL));
+		GridData gd_compositeCentre = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_compositeCentre.widthHint = 218;
+		compositeCentre.setLayoutData(gd_compositeCentre);
 		
 		list = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
-		GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
-		gd_list.widthHint = 400;
-		list.setLayoutData(gd_list);
 		list.setBounds(0, 0, 71, 68);
+		
+		list_1 = new List(compositeCentre, SWT.BORDER);
 		list.addSelectionListener(this);
 		
 		Composite compositeNorth = new Composite(this, SWT.NONE);
@@ -124,7 +126,7 @@ public class SeriesPage extends Composite implements SelectionListener, MouseLis
 		
 		if(e.getSource() == btnNewButton) {
 			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
-			selectedTerm = (Term) treeDialog.open(this);		
+			selectedTerm = (Term) treeDialog.open(new SeriesPageBar(this.getParent(), SWT.None));		
 			
 			if(selectedTerm != null) {
 				lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");

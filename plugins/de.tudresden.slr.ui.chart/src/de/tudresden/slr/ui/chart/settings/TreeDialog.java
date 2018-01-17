@@ -10,7 +10,7 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
 
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	private TreeViewer treeViewer;
 	private Term selectedTerm;
 	private Tree tree;
-	private SeriesPage seriesPageParent;
+	private SeriesPageBar seriesPageParent;
 
 	/**
 	 * Create the dialog.
@@ -46,7 +46,7 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open(SeriesPage seriesPageParent) {
+	public Object open(SeriesPageBar seriesPageParent) {
 		this.seriesPageParent = seriesPageParent;
 		createContents();
 		shell.open();

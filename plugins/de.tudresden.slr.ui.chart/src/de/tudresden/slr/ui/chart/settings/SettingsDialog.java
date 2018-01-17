@@ -1,63 +1,39 @@
 package de.tudresden.slr.ui.chart.settings;
 
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
-
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
-import de.tudresden.slr.ui.chart.logic.BarDataTerm;
-import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
-import de.tudresden.slr.ui.chart.logic.ChartGenerator;
-import de.tudresden.slr.ui.chart.settings.pages.AxisPage;
-import de.tudresden.slr.ui.chart.settings.pages.GeneralPage;
-import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
-import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
-import de.tudresden.slr.ui.chart.views.ICommunicationView;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.eclipse.birt.chart.model.Chart;
-import org.eclipse.birt.chart.model.attribute.Fill;
-import org.eclipse.birt.chart.model.attribute.LineStyle;
-import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.ui.IViewPart;
+
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
+import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
 
@@ -71,10 +47,10 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private Optional<Model> m;
 	private Button okButton, applyButton, closeButton;
 	
-	private GeneralPage generalPage;
+	private GeneralPageBar generalPageBar;
 	private LegendPage legendPage;
-	private SeriesPage seriesPage;
-	private AxisPage axisPage;
+	private SeriesPageBar seriesPageBar;
+	private AxisPageBar axisPageBar;
 	
 	private ICommunicationView view;
 	
@@ -167,20 +143,20 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBarChart_4 = new TabItem(folderBarChart, SWT.NONE);
 		
 		
-		generalPage = new GeneralPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_1.setControl(generalPage);
+		generalPageBar = new GeneralPageBar(folderBarChart, SWT.NONE);
+		itemFolderBarChart_1.setControl(generalPageBar);
 		itemFolderBarChart_1.setText("General");
 		
 		legendPage = new LegendPage(folderBarChart, SWT.NONE);
 		itemFolderBarChart_2.setControl(legendPage);
 		itemFolderBarChart_2.setText("Legend");
 		
-		seriesPage = new SeriesPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_3.setControl(seriesPage);
+		seriesPageBar = new SeriesPageBar(folderBarChart, SWT.NONE);
+		itemFolderBarChart_3.setControl(seriesPageBar);
 		itemFolderBarChart_3.setText("Series");
 		
-		axisPage = new AxisPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_4.setControl(axisPage);
+		axisPageBar = new AxisPageBar(folderBarChart, SWT.NONE);
+		itemFolderBarChart_4.setControl(axisPageBar);
 		itemFolderBarChart_4.setText("Axis");
 	}
 	
@@ -277,10 +253,10 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	
 	private void collectAndSaveSettings() {		
 
-		generalPage.saveSettings();
+		generalPageBar.saveSettings();
 		legendPage.saveSettings();
-		seriesPage.saveSettings();
-		axisPage.saveSettings();
+		seriesPageBar.saveSettings();
+		axisPageBar.saveSettings();
 		
 
 		List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();

@@ -21,7 +21,7 @@ import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 
 import org.eclipse.swt.widgets.Combo;
 
-public class GeneralPage extends Composite implements MouseListener, Pages{
+public class GeneralPageBar extends Composite implements MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2;
 	private Text text;
@@ -31,7 +31,7 @@ public class GeneralPage extends Composite implements MouseListener, Pages{
 	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
 	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
 	
-	public GeneralPage(Composite parent, int style) {
+	public GeneralPageBar(Composite parent, int style) {
 		
 		super(parent, SWT.NONE);
 		
