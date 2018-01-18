@@ -32,7 +32,6 @@ public class TreeDialogBubble extends Dialog implements SelectionListener{
 	private TreeViewer treeViewer;
 	private Term selectedTerm;
 	private Tree tree;
-	private SeriesPageBar seriesPageParent;
 
 	/**
 	 * Create the dialog.
@@ -48,8 +47,7 @@ public class TreeDialogBubble extends Dialog implements SelectionListener{
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open(SeriesPageBar seriesPageParent) {
-		this.seriesPageParent = seriesPageParent;
+	public Object open() {
 		createContents();
 		shlTerms.open();
 		shlTerms.layout();
@@ -105,7 +103,6 @@ public class TreeDialogBubble extends Dialog implements SelectionListener{
 		btnSubclasses.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				seriesPageParent.termSort  = TermSort.SUBCLASS;
 				shlTerms.dispose();
 			}
 		});

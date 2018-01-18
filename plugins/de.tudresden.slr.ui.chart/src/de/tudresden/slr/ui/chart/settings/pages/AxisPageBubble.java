@@ -28,7 +28,7 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 	private Spinner spinner;
 	private Label lblNewLabel;
 	
-	private AxisSettings settings = ChartConfiguration.BARCHARTCONFIG.getAxisSettings();
+	private AxisSettings settings = ChartConfiguration.BUBBLECHARTCONFIG.getAxisSettings();
 
 	/**
 	 * Create the composite.

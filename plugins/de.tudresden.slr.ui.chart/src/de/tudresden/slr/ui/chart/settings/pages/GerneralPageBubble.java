@@ -27,8 +27,8 @@ public class GerneralPageBubble extends Composite implements MouseListener, Page
 	private Combo comboTitleSize, comboBlockOutline;
 	private Button btnUnderline, btnBolt, btnItalic;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
+	private GeneralSettings settingsGeneral = ChartConfiguration.BUBBLECHARTCONFIG.getGeneralSettings();
+	private BlockSettings settingsBlock = ChartConfiguration.BUBBLECHARTCONFIG.getBlockSettings();
 	
 	public GerneralPageBubble(Composite parent, int style) {
 		
