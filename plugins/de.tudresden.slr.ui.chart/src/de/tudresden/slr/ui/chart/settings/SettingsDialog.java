@@ -30,9 +30,12 @@ import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.AxisPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.GerneralPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBubble;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
@@ -52,9 +55,11 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private SeriesPageBar seriesPageBar;
 	private AxisPageBar axisPageBar;
 	
-	private ICommunicationView view;
+	private GerneralPageBubble gerneralPageBubble;
+	private SeriesPageBubble seriesPageBubble;
+	private AxisPageBubble axisPageBubble;
 	
-	private BarFolder barFolder;
+	private ICommunicationView view;
 	private IViewPart part;
 
 	
@@ -164,11 +169,21 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		pageBubbleChart.setLayout(new FillLayout());
 		TabFolder folderBubbleChart = new TabFolder(pageBubbleChart, SWT.NONE);
 		
-		TabItem tbtmNewItem21 = new TabItem(folderBubbleChart, SWT.NONE);
-		tbtmNewItem21.setText("Test 3");
+		TabItem itemFolderBubbleChart_1 = new TabItem(folderBubbleChart, SWT.NONE);
+		TabItem itemFolderBubbleChart_2 = new TabItem(folderBubbleChart, SWT.NONE);
+		TabItem itemFolderBubbleChart_3 = new TabItem(folderBubbleChart, SWT.NONE);
 		
-		TabItem tbtmNewItem22 = new TabItem(folderBubbleChart, SWT.NONE);
-		tbtmNewItem22.setText("Test 4");
+		gerneralPageBubble = new GerneralPageBubble(folderBubbleChart, SWT.NONE);
+		seriesPageBubble = new SeriesPageBubble(folderBubbleChart, SWT.NONE);
+		axisPageBubble = new AxisPageBubble(folderBubbleChart, SWT.NONE);
+		
+		itemFolderBubbleChart_1.setControl(gerneralPageBubble);
+		itemFolderBubbleChart_2.setControl(seriesPageBubble);
+		itemFolderBubbleChart_3.setControl(axisPageBubble);
+		
+		itemFolderBubbleChart_1.setText("General");
+		itemFolderBubbleChart_2.setText("Series");
+		itemFolderBubbleChart_3.setText("Axis");
 	}
 	
 	private void buildHeatSettings() {

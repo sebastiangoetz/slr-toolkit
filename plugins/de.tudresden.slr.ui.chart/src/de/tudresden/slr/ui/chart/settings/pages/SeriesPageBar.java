@@ -1,30 +1,29 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.SortedMap;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.birt.chart.model.attribute.Fill;
-import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-
-import java.util.*;
 
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
-import de.tudresden.slr.ui.chart.settings.TreeDialog;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.graphics.RGB;
+import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 
 public class SeriesPageBar extends Composite implements SelectionListener, MouseListener, Pages{
 
@@ -123,8 +122,8 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 	public void widgetSelected(SelectionEvent e) {
 		
 		if(e.getSource() == btnNewButton) {
-			TreeDialog treeDialog = new TreeDialog(this.getShell(), SWT.NONE);
-			selectedTerm = (Term) treeDialog.open(this);		
+			TreeDialogBar treeDialogBar = new TreeDialogBar(this.getShell(), SWT.NONE);
+			selectedTerm = (Term) treeDialogBar.open(this);		
 			
 			if(selectedTerm != null) {
 				lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");

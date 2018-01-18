@@ -1,25 +1,24 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
+import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.birt.chart.model.attribute.Position;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.birt.chart.model.attribute.LineStyle;
-import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
-
-import org.eclipse.swt.widgets.Scale;
 
 public class LegendPage extends Composite implements SelectionListener, MouseListener, Pages{
 	private Text text;

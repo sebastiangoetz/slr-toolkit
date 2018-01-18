@@ -1,25 +1,24 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.birt.chart.model.attribute.LineStyle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
-
-import org.eclipse.swt.widgets.Combo;
 
 public class GeneralPageBar extends Composite implements MouseListener, Pages{
 

@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
+
 import de.tudresden.slr.ui.chart.settings.SettingsDialog;
 
 public class SettingsHandler implements IHandler {

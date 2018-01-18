@@ -1,25 +1,22 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.FillLayout;
-
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
-
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Spinner;
 
 public class AxisPageBar extends Composite implements Pages, SelectionListener{
 	private Text xTitle;
@@ -194,7 +191,7 @@ public class AxisPageBar extends Composite implements Pages, SelectionListener{
 		setxSize(settings.getxAxisTitleSize());
 		setySize(settings.getyAxisTitleSize());
 		
-		//setScale(settings.getxAxisGapWidth());
+		//setDistance(settings.getxAxisGapWidth());
 		
 		if(settings.isxAxisAutoRotation()){
 			btnAutoX.setSelection(true);
