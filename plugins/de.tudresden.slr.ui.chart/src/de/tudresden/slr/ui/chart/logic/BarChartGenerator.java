@@ -116,6 +116,7 @@ public class BarChartGenerator {
 		
 		// Legend
 		Legend lg = cwaBar.getLegend();
+		//lg.setVisible(false);
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
 		lg.getTitle().getCaption().setValue(ls.getLegendTitle());
 		
@@ -169,6 +170,8 @@ public class BarChartGenerator {
 		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
 		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
 		xAxisPrimary.setGapWidth(as.getxAxisGapWidth());
+		System.out.println(xAxisPrimary.isSetGapWidth());
+		System.out.println(xAxisPrimary.getGapWidth());
 		
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
@@ -244,6 +247,12 @@ public class BarChartGenerator {
 		} else {
 			sdX.getSeriesPalette().shift(1);
 		}
+		/*sdX.getSeriesPalette().getEntries().clear();
+		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
+		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
+		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
+		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
+		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());*/
 		
 		//sdX.getSeriesPalette().update(ColorDefinitionImpl.create(20, 20, 10));
 		////SHIFT COLOR PALETTE
@@ -263,7 +272,7 @@ public class BarChartGenerator {
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
 		bs1.getLabel().setVisible(gs.isChartShowLabels());
-		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
+		bs1.setLabelPosition(Position.INSIDE_LITERAL);
 		bs1.setTranslucent(ss.isSeriesTranslucent());
 
 		

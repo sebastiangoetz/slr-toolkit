@@ -34,6 +34,7 @@ import org.eclipse.emf.common.util.EMap;
 
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.parts.*;
 
@@ -64,8 +65,16 @@ public final class ChartConfiguration {
 	public static ChartConfiguration BUBBLECHARTCONFIG = new ChartConfiguration();
 	
 	private List<BarDataTerm> barTermList = new ArrayList<>();
+
 	private Term selectedTerm = null;
 	private TermSort termSort = TermSort.YEAR;
+	
+	private List<BubbleDataTerm> bubbleTermListX = new ArrayList<>();
+	private List<BubbleDataTerm> bubbleTermListY = new ArrayList<>();
+	private Term selectedTermX = null;
+	private Term selectedTermY = null;
+	
+	
 	
 	
 	private int xAxisMaxPercent;
@@ -143,6 +152,30 @@ public final class ChartConfiguration {
 
 	public void setTermSort(TermSort termSort) {
 		this.termSort = termSort;
+	}
+	public List<BubbleDataTerm> getBubbleTermListX() {
+		return bubbleTermListX;
+	}
+	public void setBubbleTermListX(List<BubbleDataTerm> bubbleTermListX) {
+		this.bubbleTermListX = bubbleTermListX;
+	}
+	public List<BubbleDataTerm> getBubbleTermListY() {
+		return bubbleTermListY;
+	}
+	public void setBubbleTermListY(List<BubbleDataTerm> bubbleTermListY) {
+		this.bubbleTermListY = bubbleTermListY;
+	}
+	public Term getSelectedTermX() {
+		return selectedTermX;
+	}
+	public void setSelectedTermX(Term selectedTermX) {
+		this.selectedTermX = selectedTermX;
+	}
+	public Term getSelectedTermY() {
+		return selectedTermY;
+	}
+	public void setSelectedTermY(Term selectedTermY) {
+		this.selectedTermY = selectedTermY;
 	}
 
 	
