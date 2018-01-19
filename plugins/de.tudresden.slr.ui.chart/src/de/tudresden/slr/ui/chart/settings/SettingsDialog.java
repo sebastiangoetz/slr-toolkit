@@ -269,56 +269,87 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		closeButton.addSelectionListener(this);
 	}
 	
-	private void collectAndSaveSettings() {		
-
-		generalPageBar.saveSettings();
-		legendPage.saveSettings();
-		seriesPageBar.saveSettings();
-		axisPageBar.saveSettings();
+	private void collectAndSaveSettings() {
 		
+		switch (comboChartSelect.getSelectionIndex()) {
+		case 0:{
+			generalPageBar.saveSettings();
+			legendPage.saveSettings();
+			seriesPageBar.saveSettings();
+			axisPageBar.saveSettings();
+			
 
-		List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();
-		SortedMap<String, Integer> citeChartData = new TreeMap<>();
-		if(data.isEmpty()) {
-			MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
-			return;
+			List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();
+			SortedMap<String, Integer> citeChartData = new TreeMap<>();
+			if(data.isEmpty()) {
+				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
+				return;
 			}
-		for(BarDataTerm term: data) {
-			if(term.isDisplayed())
-				citeChartData.put(term.getTerm(), term.getSize());
+			for(BarDataTerm term: data) {
+				if(term.isDisplayed())
+					citeChartData.put(term.getTerm(), term.getSize());
+			}
+			if(!citeChartData.isEmpty()) {
+				view = (ICommunicationView) part;
+				Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
+				view.getPreview().setDataPresent(true);
+				view.setAndRenderChart(citeChart);	
+			}			
 		}
-		if(!citeChartData.isEmpty()) {
-			view = (ICommunicationView) part;
-			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
-			view.getPreview().setDataPresent(true);
-			view.setAndRenderChart(citeChart);	
-		}
-		
-		ChartConfiguration bubbleSettings = ChartConfiguration.BUBBLECHARTCONFIG;
-		
-		List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
-		List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
-		ChartDataProvider chartDataProvider = new ChartDataProvider();
-		List<BubbleDataContainer> bubbleChartData = chartDataProvider.calculateBubbleChartData(bubbleSettings.getSelectedTermX(), 
-				bubbleSettings.getSelectedTermY());
-		
-		for(BubbleDataTerm term: xdata) {
-			if(!term.isDisplayed()) {
-				for(BubbleDataContainer item : bubbleChartData) {
-					if(item.getxTerm().getName().equals(term.getTerm().getName()))
-						bubbleChartData.remove(item);
+		case 1:{
+			
+			gerneralPageBubble.saveSettings();
+			seriesPageBubble.saveSettings();
+			axisPageBubble.saveSettings();
+			
+			ChartConfiguration bubbleSettings = ChartConfiguration.BUBBLECHARTCONFIG;
+			
+			List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
+			List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
+			System.out.println(xdata);
+			System.out.println(ydata);
+			if(xdata.isEmpty() || ydata.isEmpty()) {
+				System.out.println("truuuuue");
+				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
+				return;
+			}
+			
+			ChartDataProvider chartDataProvider = new ChartDataProvider();
+			List<BubbleDataContainer> bubbleChartData = chartDataProvider.calculateBubbleChartData(bubbleSettings.getSelectedTermX(), 
+					bubbleSettings.getSelectedTermY());			
+			
+			for(BubbleDataTerm term: xdata) {
+				if(!term.isDisplayed()) {
+					for(BubbleDataContainer item : bubbleChartData) {
+						if(item.getxTerm().getName().equals(term.getTerm().getName()))
+							bubbleChartData.remove(item);
+					}
 				}
 			}
+			
+			for(BubbleDataTerm term: ydata) {
+				if(!term.isDisplayed()) {
+					for(BubbleDataContainer item : bubbleChartData) {
+						if(item.getyTerm().getName().equals(term.getTerm().getName()))
+							bubbleChartData.remove(item);
+					}
+				}		
+			}
+			
+			if(!bubbleChartData.isEmpty()) {
+				view = (ICommunicationView) part;
+				Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData, bubbleSettings.getSelectedTermX(), bubbleSettings.getSelectedTermY());
+				view.getPreview().setDataPresent(true);
+				view.setAndRenderChart(bubbleChart);	
+			}
+			
+		}
+		case 2:{
+			
+		}
 		}
 		
-		for(BubbleDataTerm term: ydata) {
-			if(!term.isDisplayed()) {
-				for(BubbleDataContainer item : bubbleChartData) {
-					if(item.getyTerm().getName().equals(term.getTerm().getName()))
-						bubbleChartData.remove(item);
-				}
-			}		
-		}
+		
 		
 	}
 	
