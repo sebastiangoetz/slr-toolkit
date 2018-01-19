@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.RGB;
 public class BarDataTerm {
 	
 	private static Random random;
+	
 	static {
 		random = new Random();
 	}

@@ -1,9 +1,6 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.SortedMap;
-
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -19,7 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
@@ -27,17 +24,20 @@ import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
 public class SeriesPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
 
 	// UI
-	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton_1, btnNewButton, btnCheckButton;
-	private List list_x, list_y;	
-	private Label labelShowColor, lblNewLabel, lblSelectedTermIs;
+	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnGetXTerm, btnGetYTerm, btnShowInChartY;
+	private List list_y, list_x;	
+	private Label labelShowColor, lblxNewLabel, lblySelectedTermIs;
 	private Composite compositeFirst;
 	
 	// Data
-	private java.util.List<BarDataTerm> barTermList= new ArrayList<>();
 	public Term selectedTerm_X;
 	public Term selectedTerm_Y;
 	private ChartDataProvider chartDataProvider = new ChartDataProvider();	
 	private ChartConfiguration settings = ChartConfiguration.BUBBLECHARTCONFIG;
+	private java.util.List<BubbleDataTerm> termDataY;
+	private java.util.List<BubbleDataTerm> termDataX;
+	private Button btnShowInChartX;
+	
 	
 	public SeriesPageBubble(Composite parent, int style) {
 		super(parent, style);
@@ -47,25 +47,23 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		compositeFirst.setLayout(new GridLayout(4, true));
 		compositeFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		btnNewButton = new Button(compositeFirst, SWT.NONE);
-		btnNewButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnNewButton.setText("Get X Terms");
-		btnNewButton.addSelectionListener(this);
+		btnGetYTerm = new Button(compositeFirst, SWT.NONE);
+		btnGetYTerm.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnGetYTerm.setText("Get Y Terms");
+		btnGetYTerm.addSelectionListener(this);
 		
-		lblSelectedTermIs = new Label(compositeFirst, SWT.NONE);
-		lblSelectedTermIs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		lblSelectedTermIs.setText("No Term Selected");
+		lblySelectedTermIs = new Label(compositeFirst, SWT.NONE);
+		lblySelectedTermIs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		lblySelectedTermIs.setText("No Term Selected");
 		
-		btnNewButton_1 = new Button(compositeFirst, SWT.NONE);
-		btnNewButton_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnNewButton_1.setText("Get Y Terms");
-		btnNewButton_1.addSelectionListener(this);
+		btnGetXTerm = new Button(compositeFirst, SWT.NONE);
+		btnGetXTerm.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnGetXTerm.setText("Get X Terms");
+		btnGetXTerm.addSelectionListener(this);
 		
-		lblNewLabel = new Label(compositeFirst, SWT.NONE);
-		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		lblNewLabel.setText("No Term Selected");
-		btnNewButton.addSelectionListener(this);
-		
+		lblxNewLabel = new Label(compositeFirst, SWT.NONE);
+		lblxNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		lblxNewLabel.setText("No Term Selected");
 		
 		
 		Composite compositeCentre = new Composite(this, SWT.NONE);
@@ -74,39 +72,30 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		gd_compositeCentre.widthHint = 218;
 		compositeCentre.setLayoutData(gd_compositeCentre);
 		
-		list_x = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
-		list_x.setBounds(0, 0, 71, 68);
-		
 		list_y = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
+		list_y.setBounds(0, 0, 71, 68);
+		list_y.addSelectionListener(this);
+		
+		list_x = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
 		list_x.addSelectionListener(this);
 		
 		Composite compositeNorth = new Composite(this, SWT.NONE);
-		compositeNorth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		FillLayout fl_compositeNorth = new FillLayout(SWT.HORIZONTAL);
-		fl_compositeNorth.spacing = 5;
-		compositeNorth.setLayout(fl_compositeNorth);
+		compositeNorth.setLayout(new GridLayout(2, false));
+		compositeNorth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
-		btnRadioButtonGrey = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonGrey.setText("Grey");
-		btnRadioButtonGrey.addSelectionListener(this);
+		btnShowInChartY = new Button(compositeNorth, SWT.CHECK);
+		btnShowInChartY.setBounds(0, 0, 111, 20);
+		btnShowInChartY.setText("Show in Chart");
+		btnShowInChartY.addSelectionListener(this);
 		
-		btnRadioButtonCustom = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonCustom.setText("Custom");
-		btnRadioButtonCustom.addSelectionListener(this);
-		
-		btnRadioButtonRandom = new Button(compositeNorth, SWT.RADIO);
-		btnRadioButtonRandom.setSelection(true);
-		btnRadioButtonRandom.setText("Random");
-		btnRadioButtonRandom.addSelectionListener(this);
+		btnShowInChartX = new Button(compositeNorth, SWT.CHECK);
+		btnShowInChartX.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		btnShowInChartX.setText("Show in Chart");
+		btnShowInChartX.addSelectionListener(this);
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
 		compositeSouth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		compositeSouth.setLayout(new GridLayout(5, false));
-		
-		btnCheckButton = new Button(compositeSouth, SWT.CHECK);
-		btnCheckButton.setBounds(0, 0, 111, 20);
-		btnCheckButton.setText("Show in Chart");
-		btnCheckButton.addSelectionListener(this);
+		compositeSouth.setLayout(new GridLayout(4, false));
 		
 		labelShowColor = new Label(compositeSouth, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -114,10 +103,20 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		labelShowColor.setLayoutData(gd_labelShowColor);
 		labelShowColor.setBounds(0, 0, 70, 20);
 		labelShowColor.setText(" ");
+		
+		btnRadioButtonGrey = new Button(compositeSouth, SWT.RADIO);
+		btnRadioButtonGrey.setText("Grey");
+		
+		btnRadioButtonCustom = new Button(compositeSouth, SWT.RADIO);
+		btnRadioButtonCustom.setText("Custom");
+		
+		btnRadioButtonRandom = new Button(compositeSouth, SWT.RADIO);
+		btnRadioButtonRandom.setSelection(true);
+		btnRadioButtonRandom.setText("Random");
+		btnRadioButtonRandom.addSelectionListener(this);
+		btnRadioButtonCustom.addSelectionListener(this);
+		btnRadioButtonGrey.addSelectionListener(this);
 		labelShowColor.addMouseListener(this);
-		new Label(compositeSouth, SWT.NONE);
-		new Label(compositeSouth, SWT.NONE);
-		new Label(compositeSouth, SWT.NONE);
 		
 		loadSettings();
 
@@ -129,111 +128,132 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		
-		if(e.getSource() == btnNewButton) {
+		if(e.getSource() == btnGetXTerm) {
 			TreeDialogBubble treeDialogBubble = new TreeDialogBubble(this.getShell(), SWT.NONE);
 			selectedTerm_X = (Term) treeDialogBubble.open();		
 			
 			if(selectedTerm_X != null) {
-				lblSelectedTermIs.setText("'" + selectedTerm_X.getName()+"'");
-				barTermList.clear();
+				lblxNewLabel.setText("'" + selectedTerm_X.getName()+"'");
+				termDataX.clear();
 				list_x.removeAll();
 				btnRadioButtonRandom.setEnabled(true);
-				buildListPerSubclass(selectedTerm_X, list_x);
+				buildListPerSubclass(selectedTerm_X, list_x, termDataX);
 				list_x.setSelection(0);
-				refresh();
+				refresh(list_x);
 			}	
 						
 		}
 		
-		if(e.getSource() == btnNewButton_1) {
+		if(e.getSource() == btnGetYTerm) {
 			TreeDialogBubble treeDialogBubble = new TreeDialogBubble(this.getShell(), SWT.NONE);
 			selectedTerm_Y = (Term) treeDialogBubble.open();		
 			
-			if(selectedTerm_Y != null) {
-				lblSelectedTermIs.setText("'" + selectedTerm_Y.getName()+"'");
-				barTermList.clear();
+			if(selectedTerm_Y != null) {				
+				lblySelectedTermIs.setText("'" + selectedTerm_Y.getName()+"'");
+				termDataY.clear();
 				list_y.removeAll();
 				btnRadioButtonRandom.setEnabled(true);
-				buildListPerSubclass(selectedTerm_Y,list_y);
+				buildListPerSubclass(selectedTerm_Y,list_y,termDataY);
 				list_y.setSelection(0);
-				refresh();
+				refresh(list_y);
 			}	
 						
 		}
 		
+		if(e.getSource() == list_y) {			
+			refresh(list_y);			
+		}
 		if(e.getSource() == list_x) {			
-			refresh();			
+			refresh(list_x);			
 		}
 		
-		if(e.getSource() == btnCheckButton) {
+		if(e.getSource() == btnShowInChartY) {
+			int selectedItem = list_y.getSelectionIndex();
+			termDataY.get(selectedItem).setDisplayed(btnShowInChartY.getSelection());
+		}
+		if(e.getSource() == btnShowInChartX) {
 			int selectedItem = list_x.getSelectionIndex();
-			barTermList.get(selectedItem).setDisplayed(btnCheckButton.getSelection());
+			termDataX.get(selectedItem).setDisplayed(btnShowInChartX.getSelection());
 		}
 			
-		if(e.getSource() == btnRadioButtonGrey && list_x.getItemCount() > 0) {
+		if(e.getSource() == btnRadioButtonGrey && list_y.getItemCount() > 0) {
 			
-			int step = 255/barTermList.size();
+			int step = 255/termDataY.size();
 			
 			int rgbValue = 0;
-			for(BarDataTerm barDataTerm: barTermList) {
+			for(BubbleDataTerm bubbleDataTerm: termDataY) {
 				rgbValue = rgbValue + step;
-				barDataTerm.setRgb(new RGB(rgbValue, rgbValue, rgbValue));				
+				bubbleDataTerm.setRGB(new RGB(rgbValue, rgbValue, rgbValue));				
 			}
-			refresh();
+			refresh(list_y);
 		}
 		
-		if(e.getSource() == btnRadioButtonRandom && list_x.getItemCount() > 0) {
+		if(e.getSource() == btnRadioButtonRandom && list_y.getItemCount() > 0) {
 			
-			for(BarDataTerm barDataTerm: barTermList) {
-				barDataTerm.setRGBRandom();;				
+			for(BubbleDataTerm bubbleDataTerm: termDataY) {
+				bubbleDataTerm.setRGBRandom();;				
 			}
-			refresh();
+			refresh(list_y);
 		}
 		
 	}
 	
-	private void buildListPerSubclass(Term t, List l) {
-		SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(t);	
-		for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-			l.add(entry.getKey() + " (" +entry.getValue() + ")");
-		}
-		
+	private void buildListPerSubclass(Term t, List l, java.util.List<BubbleDataTerm> templist) {		
+		EList<Term> subterms = t.getSubclasses();
+		for(Term subterm : subterms) {
+			templist.add(new BubbleDataTerm(t));
+			l.add(subterm.getName());
+		}		
 	}
 
-	private void refresh() {
-		int index = list_x.getSelectionIndex();
-		labelShowColor.setBackground(barTermList.get(index).getColor(this.getDisplay()));
-		btnCheckButton.setSelection(barTermList.get(index).isDisplayed());
+	private void refresh(List l) {
+		int index = l.getSelectionIndex();
+		if(l == list_x) {
+			btnShowInChartX.setSelection(termDataX.get(index).isDisplayed());
+		}
+		else {
+			labelShowColor.setBackground(termDataY.get(index).getColor(this.getDisplay()));
+			btnShowInChartY.setSelection(termDataY.get(index).isDisplayed());
+		}		
 		this.layout();
 	}
 	
 	@Override
 	public void mouseUp(MouseEvent e) {
-		if(e.getSource() == labelShowColor && list_x.getItemCount() > 0 && btnRadioButtonCustom.getSelection()) {
+		if(e.getSource() == labelShowColor && list_y.getItemCount() > 0 && btnRadioButtonCustom.getSelection()) {
 			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
-			int index = list_x.getSelectionIndex();
-			barTermList.get(index).setRgb(rgb);
+			int index = list_y.getSelectionIndex();
+			termDataY.get(index).setRGB(rgb);
 		}
 	}
 	@Override
 	public void saveSettings() {
 		
-		settings.setBarTermList(barTermList);
-		//settings.setSelectedTerm(selectedTerm);
-		//settings.setTermSort(termSort);
+		settings.setBubbleTermListX(termDataX);
+		settings.setBubbleTermListY(termDataY);
+		settings.setSelectedTermX(selectedTerm_X);
+		settings.setSelectedTermY(selectedTerm_Y);	
 			
 	}
 	@Override
 	public void loadSettings() {
-		barTermList = settings.getBarTermList();
-		//selectedTerm = settings.getSelectedTerm();
-		//termSort = settings.getTermSort();
+		termDataX  = settings.getBubbleTermListX();
+		termDataY  = settings.getBubbleTermListY();
 		
-		if(!barTermList.isEmpty()) {			
-			for(BarDataTerm entry :barTermList) {
-				list_x.add(entry.getTerm()+ " (" +entry.getSize()+ ")");
+		selectedTerm_X = settings.getSelectedTermX();
+		selectedTerm_Y = settings.getSelectedTermY();
+		
+		if(!termDataX.isEmpty()) {			
+			for(BubbleDataTerm entry :termDataX) {
+				list_x.add(entry.getTerm().getName());
 			}
-		}		
+		}
+		
+		if(!termDataY.isEmpty()) {			
+			for(BubbleDataTerm entry :termDataY) {
+				list_y.add(entry.getTerm().getName());
+			}
+		}
 	}
 	
 	@Override
