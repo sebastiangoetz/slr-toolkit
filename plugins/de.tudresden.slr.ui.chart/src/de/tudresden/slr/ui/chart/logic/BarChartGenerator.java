@@ -229,10 +229,12 @@ public class BarChartGenerator {
 		
 		SeriesDefinition sdX = SeriesDefinitionImpl.create();
 		
-		if(ss.isSeriesUseCustomColors()) {
-			sdX.getSeriesPalette().eSet(sdX.getSeriesPalette().eContainingFeature(), ss.getSeriesColor());
-		} else {
-			sdX.getSeriesPalette().shift(1);
+		sdX.getSeriesPalette().getEntries().clear();
+		for(BarDataTerm item : cc.getBarTermList()) {
+			if(item.isDisplayed()) {
+				sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.create(
+						item.getRgb().red, item.getRgb().green, item.getRgb().blue));
+			}
 		}
 		/*sdX.getSeriesPalette().getEntries().clear();
 		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());

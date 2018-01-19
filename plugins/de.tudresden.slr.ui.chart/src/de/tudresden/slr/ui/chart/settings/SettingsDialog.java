@@ -319,6 +319,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 				}
 			}		
 		}
+		
 	}
 	
 	public void setViewPart(IViewPart part) {

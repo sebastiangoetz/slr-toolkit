@@ -17,3 +17,5 @@ plugins/de\.tudresden\.slr\.model\.taxonomy/xtend-gen/de/tudresden/slr/model/tax
 plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model/taxonomy/ui/labeling/
 
 *._trace
+
+\.recommenders/

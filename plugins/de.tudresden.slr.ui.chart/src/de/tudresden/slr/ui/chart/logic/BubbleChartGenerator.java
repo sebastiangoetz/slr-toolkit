@@ -1,22 +1,16 @@
 package de.tudresden.slr.ui.chart.logic;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.eclipse.birt.chart.extension.datafeed.BubbleEntry;
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithAxes;
 import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.ColorDefinition;
-import org.eclipse.birt.chart.model.attribute.Fill;
-import org.eclipse.birt.chart.model.attribute.Insets;
 import org.eclipse.birt.chart.model.attribute.IntersectionType;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
-import org.eclipse.birt.chart.model.attribute.LineAttributes;
-import org.eclipse.birt.chart.model.attribute.Text;
 import org.eclipse.birt.chart.model.attribute.TickStyle;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Axis;
-import org.eclipse.birt.chart.model.component.Label;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
 import org.eclipse.birt.chart.model.data.BaseSampleData;
@@ -35,16 +29,8 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BubbleSeries;
 import org.eclipse.birt.chart.model.type.impl.BubbleSeriesImpl;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
+
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * 
@@ -53,7 +39,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 public class BubbleChartGenerator
 {
 
-	public final static Chart createBubble( )
+	public final static Chart createBubble(List<BubbleDataContainer> input, Term first, Term second )
 	{
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create( );
 		cwaBubble.setType( "Bubble Chart" ); //$NON-NLS-1$
@@ -80,6 +66,7 @@ public class BubbleChartGenerator
 		Axis xAxisPrimary = cwaBubble.getPrimaryBaseAxes( )[0];
 		xAxisPrimary.setType( AxisType.LINEAR_LITERAL );
 		xAxisPrimary.getMajorGrid( ).setTickStyle( TickStyle.BELOW_LITERAL );
+		xAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
 		xAxisPrimary.getOrigin( ).setType( IntersectionType.MIN_LITERAL );
 		xAxisPrimary.getScale( ).setMin( NumberDataElementImpl.create( 0 ) );
 		xAxisPrimary.getScale( ).setMax( NumberDataElementImpl.create( 140 ) );
@@ -87,6 +74,7 @@ public class BubbleChartGenerator
 		// Y-Axis
 		Axis yAxisPrimary = cwaBubble.getPrimaryOrthogonalAxis( xAxisPrimary );
 		yAxisPrimary.getMajorGrid( ).setTickStyle( TickStyle.LEFT_LITERAL );
+		yAxisPrimary.getMajorGrid().getLineAttributes().setVisible(true);
 		yAxisPrimary.setType( AxisType.LINEAR_LITERAL );
 		yAxisPrimary.getLabel( ).getCaption( ).getFont( ).setRotation( 90 );
 		
