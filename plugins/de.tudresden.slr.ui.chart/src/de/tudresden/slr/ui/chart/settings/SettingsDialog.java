@@ -28,6 +28,9 @@ import org.eclipse.ui.IViewPart;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.BubbleDataContainer;
+import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
+import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBubble;
@@ -289,6 +292,32 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
 			view.getPreview().setDataPresent(true);
 			view.setAndRenderChart(citeChart);	
+		}
+		
+		ChartConfiguration bubbleSettings = ChartConfiguration.BUBBLECHARTCONFIG;
+		
+		List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
+		List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
+		ChartDataProvider chartDataProvider = new ChartDataProvider();
+		List<BubbleDataContainer> bubbleChartData = chartDataProvider.calculateBubbleChartData(bubbleSettings.getSelectedTermX(), 
+				bubbleSettings.getSelectedTermY());
+		
+		for(BubbleDataTerm term: xdata) {
+			if(!term.isDisplayed()) {
+				for(BubbleDataContainer item : bubbleChartData) {
+					if(item.getxTerm().getName().equals(term.getTerm().getName()))
+						bubbleChartData.remove(item);
+				}
+			}
+		}
+		
+		for(BubbleDataTerm term: ydata) {
+			if(!term.isDisplayed()) {
+				for(BubbleDataContainer item : bubbleChartData) {
+					if(item.getyTerm().getName().equals(term.getTerm().getName()))
+						bubbleChartData.remove(item);
+				}
+			}		
 		}
 		
 	}

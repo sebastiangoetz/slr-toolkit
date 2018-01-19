@@ -177,6 +177,7 @@ public class ChartDataProvider {
 			Term secondTerm) {
 		List<BubbleDataContainer> inputList = generatePairsForBubbleChart(
 				firstTerm, secondTerm);
+		
 		for (BubbleDataContainer b : inputList) {
 			for (Document d : getDocumentList(resources.get(0))) {
 				if ((SearchUtils.findTermInDocument(d, b.getxTerm()) != null)

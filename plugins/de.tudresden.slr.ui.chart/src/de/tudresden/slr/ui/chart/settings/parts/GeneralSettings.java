@@ -31,7 +31,7 @@ public class GeneralSettings {
 	private boolean chartTitleBold = false;
 	private boolean chartTitleUnderline = false;
 	
-	private boolean chartShowLabels = false;
+	private boolean chartShowLabels = true;
 	//Graphvariables Getter + Setter
 	public String getChartType() {
 		return chartType;
