@@ -1,37 +1,36 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.birt.chart.model.attribute.LineStyle;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.birt.chart.model.attribute.LineStyle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 
-import org.eclipse.swt.widgets.Combo;
-
-public class GeneralPage extends Composite implements MouseListener, Pages{
+public class GerneralPageBubble extends Composite implements MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2;
 	private Text text;
 	private Combo comboTitleSize, comboBlockOutline;
-	private Button btnUnderline, btnBolt, btnItalic, btnShowLables;
+	private Button btnUnderline, btnBolt, btnItalic;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
+	private GeneralSettings settingsGeneral = ChartConfiguration.BUBBLECHARTCONFIG.getGeneralSettings();
+	private BlockSettings settingsBlock = ChartConfiguration.BUBBLECHARTCONFIG.getBlockSettings();
 	
-	public GeneralPage(Composite parent, int style) {
+	public GerneralPageBubble(Composite parent, int style) {
 		
 		super(parent, SWT.NONE);
 		
@@ -130,7 +129,7 @@ public class GeneralPage extends Composite implements MouseListener, Pages{
 		Label lblLables = new Label(grpBlockSettings, SWT.NONE);
 		lblLables.setText("Lables");
 		
-		btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
+		Button btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
 		btnShowLables.setText("Show Lables");
 		labelShowColor2.addMouseListener(this);
 		
@@ -155,8 +154,6 @@ public class GeneralPage extends Composite implements MouseListener, Pages{
 		settingsGeneral.setChartTitleBold(getBolt());
 		settingsGeneral.setChartTitleItalic(getItalic());
 		settingsGeneral.setChartTitleUnderline(getUnterline());
-		
-		settingsGeneral.setChartShowLabels(isChartShowLabels());//
 	
 		settingsBlock.setBlockBackgroundRGB(getBlockColor());
 		
@@ -176,8 +173,6 @@ public class GeneralPage extends Composite implements MouseListener, Pages{
 		setItalic(settingsGeneral.isChartTitleItalic());
 		setUnterline(settingsGeneral.isChartTitleUnderline());
 		setBlockColor(settingsBlock.getBlockBackgroundRGB());
-		
-		setChartShowLabels(settingsGeneral.isChartShowLabels());//
 		
 		if(settingsBlock.isBlockShowOutline())
 			setBlockOutline(settingsBlock.getBlockOutlineStyle());
@@ -208,9 +203,6 @@ public class GeneralPage extends Composite implements MouseListener, Pages{
 	
 	private RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
 	private void setBlockColor(RGB rgb) {labelShowColor2.setBackground(new Color(this.getDisplay(), rgb));}
-	
-	private boolean isChartShowLabels() {return btnShowLables.getSelection();}
-	private void setChartShowLabels(boolean value) {btnShowLables.setSelection(value);}
 
 	@Override
 	protected void checkSubclass() {}

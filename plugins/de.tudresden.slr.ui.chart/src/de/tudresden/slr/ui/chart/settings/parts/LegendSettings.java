@@ -1,19 +1,12 @@
 package de.tudresden.slr.ui.chart.settings.parts;
 
-import org.eclipse.birt.chart.model.attribute.Direction;
 import org.eclipse.birt.chart.model.attribute.HorizontalAlignment;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
-import org.eclipse.birt.chart.model.attribute.LineAttributes;
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.Text;
 import org.eclipse.birt.chart.model.attribute.VerticalAlignment;
-import org.eclipse.birt.chart.model.component.Label;
-import org.eclipse.birt.chart.model.layout.ClientArea;
 import org.eclipse.swt.graphics.RGB;
-
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 
 public class LegendSettings {
 

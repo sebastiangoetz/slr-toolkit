@@ -4,23 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.birt.chart.computation.withaxes.Grid;
-import org.eclipse.birt.chart.model.attribute.Anchor;
 import org.eclipse.birt.chart.model.attribute.AxisOrigin;
 import org.eclipse.birt.chart.model.attribute.AxisType;
-import org.eclipse.birt.chart.model.attribute.Bounds;
-import org.eclipse.birt.chart.model.attribute.ColorDefinition;
 import org.eclipse.birt.chart.model.attribute.DataPoint;
-import org.eclipse.birt.chart.model.attribute.Direction;
-import org.eclipse.birt.chart.model.attribute.Fill;
-import org.eclipse.birt.chart.model.attribute.Insets;
-import org.eclipse.birt.chart.model.attribute.Interactivity;
-import org.eclipse.birt.chart.model.attribute.LegendItemType;
-import org.eclipse.birt.chart.model.attribute.LineAttributes;
 import org.eclipse.birt.chart.model.attribute.Orientation;
 import org.eclipse.birt.chart.model.attribute.Position;
-import org.eclipse.birt.chart.model.attribute.Rotation3D;
-import org.eclipse.birt.chart.model.attribute.Size;
-import org.eclipse.birt.chart.model.attribute.Text;
 import org.eclipse.birt.chart.model.component.CurveFitting;
 import org.eclipse.birt.chart.model.component.Label;
 import org.eclipse.birt.chart.model.component.MarkerLine;
@@ -28,7 +16,6 @@ import org.eclipse.birt.chart.model.component.MarkerRange;
 import org.eclipse.birt.chart.model.component.Scale;
 import org.eclipse.birt.chart.model.data.DataSet;
 import org.eclipse.birt.chart.model.data.Query;
-import org.eclipse.birt.chart.model.layout.ClientArea;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
@@ -36,7 +23,12 @@ import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.parts.*;
+import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
+import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
+import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
+import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
+import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
+import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
 public final class ChartConfiguration {
 	

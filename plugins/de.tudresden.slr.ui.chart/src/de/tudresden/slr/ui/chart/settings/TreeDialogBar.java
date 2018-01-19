@@ -1,7 +1,20 @@
 package de.tudresden.slr.ui.chart.settings;
 
+import java.util.Optional;
+
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
@@ -10,34 +23,23 @@ import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.pages.SeriesPage;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
 
-import java.util.Optional;
-
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-
-public class TreeDialog extends Dialog implements SelectionListener{
+public class TreeDialogBar extends Dialog implements SelectionListener{
 
 	protected Object result;
-	protected Shell shell;
+	protected Shell shlTerms;
 	private TreeViewer treeViewer;
 	private Term selectedTerm;
 	private Tree tree;
-	private SeriesPage seriesPageParent;
+	private SeriesPageBar seriesPageParent;
 
 	/**
 	 * Create the dialog.
 	 * @param parent
 	 * @param style
 	 */
-	public TreeDialog(Shell parent, int style) {
+	public TreeDialogBar(Shell parent, int style) {
 		super(parent, SWT.DIALOG_TRIM | SWT.PRIMARY_MODAL);
 		setText("SWT Dialog");
 	}
@@ -46,13 +48,13 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open(SeriesPage seriesPageParent) {
+	public Object open(SeriesPageBar seriesPageParent) {
 		this.seriesPageParent = seriesPageParent;
 		createContents();
-		shell.open();
-		shell.layout();
+		shlTerms.open();
+		shlTerms.layout();
 		Display display = getParent().getDisplay();
-		while (!shell.isDisposed()) {
+		while (!shlTerms.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -64,46 +66,59 @@ public class TreeDialog extends Dialog implements SelectionListener{
 	 * Create contents of the dialog.
 	 */
 	private void createContents() {
-		shell = new Shell(getParent(), getStyle());
-		shell.setSize(371, 409);
-		shell.setText(getText());
+		shlTerms = new Shell(getParent(), getStyle());
+		shlTerms.setSize(309, 441);
+		shlTerms.setText("Terms");
+		shlTerms.setLayout(new GridLayout(1, false));
 		
-		treeViewer = new TreeViewer(shell, SWT.BORDER);
-		tree = treeViewer.getTree();
-		tree.addSelectionListener(this);
-		tree.setBounds(10, 36, 346, 298);
-		buildTree(treeViewer);
+		Composite composite = new Composite(shlTerms, SWT.NONE);
+		composite.setLayout(new GridLayout(1, false));
 		
 		
-		Label lblPleaseSelect = new Label(shell, SWT.NONE);
-		lblPleaseSelect.setBounds(10, 10, 244, 23);
+		Label lblPleaseSelect = new Label(composite, SWT.NONE);
+		lblPleaseSelect.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		lblPleaseSelect.setText("Please select a term:");
 		
-		Button btnYear = new Button(shell, SWT.NONE);
+		Composite composite_1 = new Composite(shlTerms, SWT.NONE);
+		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_composite_1.widthHint = 107;
+		composite_1.setLayoutData(gd_composite_1);
+		composite_1.setLayout(new GridLayout(1, false));
+		
+		treeViewer = new TreeViewer(composite_1, SWT.BORDER);
+		tree = treeViewer.getTree();
+		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		tree.addSelectionListener(this);
+		buildTree(treeViewer);
+		
+		Composite composite_2 = new Composite(shlTerms, SWT.NONE);
+		composite_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		composite_2.setLayout(new GridLayout(3, false));
+		
+		Label lblNewLabel = new Label(composite_2, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblNewLabel.setSize(92, 15);
+		lblNewLabel.setText("Group Series Per: ");
+		
+		Button btnYear = new Button(composite_2, SWT.NONE);
 		btnYear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				seriesPageParent.termSort = TermSort.YEAR;
-				shell.dispose();
+				shlTerms.dispose();
 			}
 		});
-		btnYear.setBounds(281, 345, 75, 25);
 		btnYear.setText("Year");
 		
-		Button btnSubclasses = new Button(shell, SWT.NONE);
-		btnSubclasses.setBounds(200, 345, 75, 25);
+		Button btnSubclasses = new Button(composite_2, SWT.NONE);
 		btnSubclasses.setText("Subclasses");
 		btnSubclasses.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				seriesPageParent.termSort  = TermSort.SUBCLASS;
-				shell.dispose();
+				shlTerms.dispose();
 			}
 		});
-		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(102, 350, 92, 15);
-		lblNewLabel.setText("Group Series Per: ");
 
 	}
 	
