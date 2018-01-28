@@ -21,7 +21,7 @@ public class AxisSettings {
 	private int xAxisRotation = 45;
 	private boolean xAxisAutoRotation = true;
 	private boolean xAxisTitleActive = true;
-	private String xAxisTitle = "x-Axis";
+	private String xAxisTitle = "";
 	private int xAxisTitleSize = 12;
 	private TickStyle xAxisTickStyle = TickStyle.ABOVE_LITERAL;
 	private IntersectionType xAxisIntersectionType = IntersectionType.MIN_LITERAL;
@@ -30,7 +30,7 @@ public class AxisSettings {
 	//y-Axis
 	private int yAxisRotation = 0;//raus
 	private boolean yAxisTitleActive = true;
-	private String yAxisTitle = "y-Axis";
+	private String yAxisTitle = "";
 	private int yAxisTitleSize = 12;
 	private int yAxisScaleStep = 20;
 	private boolean yAxisAutoStep = true;
