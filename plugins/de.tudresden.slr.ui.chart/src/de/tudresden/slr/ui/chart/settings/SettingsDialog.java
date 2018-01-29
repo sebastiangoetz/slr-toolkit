@@ -1,5 +1,6 @@
 package de.tudresden.slr.ui.chart.settings;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.SortedMap;
@@ -39,6 +40,7 @@ import de.tudresden.slr.ui.chart.settings.pages.GerneralPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBubble;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPageHeat;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
@@ -54,6 +56,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private Button okButton, applyButton, closeButton;
 	
 	private GeneralPageBar generalPageBar;
+	private SeriesPageHeat  seriesPageHeat;
 	private LegendPage legendPage;
 	private SeriesPageBar seriesPageBar;
 	private AxisPageBar axisPageBar;
@@ -195,10 +198,8 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		TabItem tbtmNewItem31 = new TabItem(folderHeatChart, SWT.NONE);
 		tbtmNewItem31.setText("Test 5");
-		
-		TabItem tbtmNewItem32 = new TabItem(folderHeatChart, SWT.NONE);
-		tbtmNewItem32.setText("Test 6");
-		
+		seriesPageHeat = new SeriesPageHeat(folderHeatChart, SWT.NONE);
+		tbtmNewItem31.setControl(seriesPageHeat);
 	}
 	
 	private void createShell() {
@@ -294,7 +295,8 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 				Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
 				view.getPreview().setDataPresent(true);
 				view.setAndRenderChart(citeChart);	
-			}			
+			}
+			break;
 		}
 		case 1:{
 			
@@ -306,8 +308,6 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			
 			List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
 			List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
-			System.out.println(xdata);
-			System.out.println(ydata);
 			if(xdata.isEmpty() || ydata.isEmpty()) {
 				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
 				return;
@@ -315,13 +315,13 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			
 			ChartDataProvider chartDataProvider = new ChartDataProvider();
 			List<BubbleDataContainer> bubbleChartData = chartDataProvider.calculateBubbleChartData(bubbleSettings.getSelectedTermX(), 
-					bubbleSettings.getSelectedTermY());			
+					bubbleSettings.getSelectedTermY());	
+			List<BubbleDataContainer> removeList = new ArrayList<>();
 			for(BubbleDataTerm term: xdata) {
 				if(!term.isDisplayed()) {
 					for(BubbleDataContainer item : bubbleChartData) {
 						if(item.getxTerm().getName().equals(term.getTerm().getName())) {
-							bubbleChartData.remove(item);
-							System.out.println(term.getTerm().getName());
+							removeList.add(item);
 						}
 					}	
 				}
@@ -331,13 +331,14 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 				if(!term.isDisplayed()) {
 					for(BubbleDataContainer item : bubbleChartData) {
 						if(item.getyTerm().getName().equals(term.getTerm().getName())) {
-							bubbleChartData.remove(item);
-							
+							removeList.add(item);							
 						}
 					}
 				}		
 			}
-
+			
+			
+			bubbleChartData.removeAll(removeList);
 			
 			if(!bubbleChartData.isEmpty()) {
 				view = (ICommunicationView) part;
@@ -345,6 +346,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 				view.getPreview().setDataPresent(true);
 				view.setAndRenderChart(bubbleChart);	
 			}
+			break;
 			
 		}
 		case 2:{

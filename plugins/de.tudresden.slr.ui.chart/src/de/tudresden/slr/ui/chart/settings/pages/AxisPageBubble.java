@@ -23,10 +23,7 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 	private Combo comboTitleSizeX;
 	private Combo comboTitleSizeY;
 	private Text yTitle;
-	private Button btnAutoX, button0 , button30, button45 , button60, button90, btnAutoY, btnCustom;
-	private Scale scale;
-	private Spinner spinner;
-	private Label lblNewLabel;
+	private Button btnAutoX, button0 , button30, button45 , button60, button90;
 	
 	private AxisSettings settings = ChartConfiguration.BUBBLECHARTCONFIG.getAxisSettings();
 
@@ -71,16 +68,6 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 		comboTitleSizeX.add("48");
 		comboTitleSizeX.add("72");
 		comboTitleSizeX.select(0);
-		
-		lblNewLabel = new Label(xAxisGroup, SWT.NONE);
-		lblNewLabel.setText("Bar Distance :");
-		
-		scale = new Scale(xAxisGroup, SWT.NONE);
-		GridData gd_scale = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gd_scale.widthHint = 201;
-		scale.setLayoutData(gd_scale);
-		scale.setPageIncrement(2);
-		scale.addSelectionListener(this);
 		
 		Label lblRotation = new Label(xAxisGroup, SWT.NONE);
 		lblRotation.setText("Rotation");
@@ -139,22 +126,6 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 		comboTitleSizeY.add("72");
 		comboTitleSizeY.select(0);
 		
-		Label lblAxisSteps = new Label(yAxisGroup, SWT.NONE);
-		lblAxisSteps.setText("Axis Steps");
-		
-		Composite composite_1 = new Composite(yAxisGroup, SWT.NONE);
-		composite_1.setLayout(new GridLayout(3, false));
-		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		
-		btnAutoY = new Button(composite_1, SWT.RADIO);
-		btnAutoY.setText("Auto");
-		
-		btnCustom = new Button(composite_1, SWT.RADIO);
-		btnCustom.setText("Custom");
-		
-		spinner = new Spinner(composite_1, SWT.BORDER);
-		spinner.setMaximum(10000);
-		
 		loadSettings();
 	}
 
@@ -175,13 +146,6 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 			settings.setxAxisRotation(getRotation());
 		}
 		
-		if(btnAutoY.getSelection())
-			settings.setyAxisAutoStep(true);
-		else {
-			settings.setyAxisAutoStep(false);
-			settings.setyAxisScaleStep(getScale());
-		}
-		
 	}
 
 	@Override
@@ -200,13 +164,6 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 		else
 			setRotation(settings.getxAxisRotation());
 		
-		if(settings.isyAxisAutoStep()){
-			btnAutoY.setSelection(true);
-		}
-		else {
-			setScale(settings.getyAxisScaleStep());
-			btnCustom.setSelection(true);
-		}
 	}
 
 	private String getxTitle() {return xTitle.getText();}
@@ -221,8 +178,6 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 	private void setxSize(int size) {comboTitleSizeX.select(PageSupport.setFontSize(size));}
 	private void setySize(int size) {comboTitleSizeY.select(PageSupport.setFontSize(size));}
 	
-	private void setDistance(int value) {scale.setSelection(value);}
-	private int getDistance() {return scale.getSelection();}
 	
 	private int getRotation() {
 		if(button0.getSelection())
@@ -251,22 +206,9 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 			button90.setSelection(true);
 	}
 	
-	private void setScale(int value) {
-		btnCustom.setSelection(true);
-		spinner.setSelection(value);
-	}
-	
-	private int getScale() {
-		return spinner.getSelection();
-	}
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
-		
-		if(e.getSource() == scale) {
-			lblNewLabel.setText("Bar Distance : "+ scale.getSelection()+"%");
-			lblNewLabel.getParent().layout();
-			}
 		
 	}
 
