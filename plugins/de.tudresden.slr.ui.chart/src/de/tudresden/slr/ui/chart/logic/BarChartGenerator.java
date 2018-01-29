@@ -41,7 +41,6 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
-import org.eclipse.swt.graphics.RGB;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
@@ -69,8 +68,7 @@ public class BarChartGenerator {
 		BlockSettings bs = cc.getBlockSettings();
 		AxisSettings as = cc.getAxisSettings();
 		SeriesSettings ss = cc.getSeriesSettings();
-		
-		RGB rgb = new RGB(0,255,0);
+
 		ChartWithAxes cwaBar = ChartWithAxesImpl.create();
 		cwaBar.setType(gs.getChartType());
 		cwaBar.setSubType(gs.getChartSubType()); //$NON-NLS-1$
@@ -93,6 +91,9 @@ public class BarChartGenerator {
 		
 		
 		// Title
+		if(gs.getChartTitle().equals("")) {
+		gs.setChartTitle(title);
+		}
 		cwaBar.getTitle().getLabel().getCaption().setValue(gs.getChartTitle()); //$NON-NLS-1$
 		cwaBar.getTitle().getLabel().getCaption().getFont().setSize(gs.getChartTitleSize());
 		cwaBar.getTitle().getLabel().getCaption().setColor(ColorDefinitionImpl.create(gs.getChartTitleColor().red, gs.getChartTitleColor().green, gs.getChartTitleColor().blue));
@@ -145,20 +146,23 @@ public class BarChartGenerator {
 		// X-Axis
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
 		
-
+		
 		xAxisPrimary.setType(AxisType.TEXT_LITERAL);
 		xAxisPrimary.getMajorGrid().setTickStyle(as.getxAxisTickStyle());
 		xAxisPrimary.getOrigin().setType(as.getxAxisIntersectionType());
 		
 		xAxisPrimary.getLabel().getCaption().getFont().setSize(as.getAxisFontSize());
 		xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
+		
+		
+		if(as.getxAxisTitle().equals("")) {
+			as.setxAxisTitle(title.substring(25));
+		}
 		xAxisPrimary.getTitle().getCaption().setValue(as.getxAxisTitle());
-		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getAxisFontSize());
+		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getxAxisTitleSize());
 		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
 		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
 		xAxisPrimary.setGapWidth(as.getxAxisGapWidth());
-		System.out.println(xAxisPrimary.isSetGapWidth());
-		System.out.println(xAxisPrimary.getGapWidth());
 		
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
@@ -183,6 +187,9 @@ public class BarChartGenerator {
 		yAxisPrimary.getLabel().getCaption().getFont().setSize(as.getAxisFontSize());
 		//yAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getyAxisRotation());
 		yAxisPrimary.getTitle().setVisible(as.isyAxisTitleActive());
+		if(as.getyAxisTitle().equals("")) {
+			as.setyAxisTitle("Number of Papers");
+		}
 		yAxisPrimary.getTitle().getCaption().setValue(as.getyAxisTitle());
 		yAxisPrimary.getTitle().getCaption().getFont().setSize(as.getyAxisTitleSize());
 		//yAxisPrimary.getScale().setStep(as.getyAxisScaleStep()); -> Löst Problem mit Scaling bei Jahresanzeigen
@@ -236,26 +243,10 @@ public class BarChartGenerator {
 						item.getRgb().red, item.getRgb().green, item.getRgb().blue));
 			}
 		}
-		/*sdX.getSeriesPalette().getEntries().clear();
-		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
-		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
-		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
-		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());
-		sdX.getSeriesPalette().getEntries().add(ColorDefinitionImpl.BLACK());*/
 		
-		//sdX.getSeriesPalette().update(ColorDefinitionImpl.create(20, 20, 10));
-		////SHIFT COLOR PALETTE
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
-		
-		/*ArrayList<Fill> col1 = new ArrayList<Fill>();
-		
-		col1.add(ColorDefinitionImpl.create(0, 0, 255));
-		col1.add(ColorDefinitionImpl.create(0, 255, 0));
-		col1.add(ColorDefinitionImpl.create(255, 0, 0));
-		col1.add(ColorDefinitionImpl.create(0, 255, 0));
-		ss.setSeriesColor(col1);
-		*/
+
 		
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();

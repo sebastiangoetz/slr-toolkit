@@ -23,7 +23,7 @@ public class GeneralSettings {
 	private Orientation chartOrientation;
 	private Rotation3D chartRotation;
 	private double chartUnitSpacing;
-	private String chartTitle = "Title";
+	private String chartTitle = "";
 	//TitleFont
 	private int chartTitleSize = 34;
 	private RGB chartTitleColor = new RGB(0,0,0);
@@ -32,6 +32,7 @@ public class GeneralSettings {
 	private boolean chartTitleUnderline = false;
 	
 	private boolean chartShowLabels = true;
+	private int chartShowLabel = 10;
 	//Graphvariables Getter + Setter
 	public String getChartType() {
 		return chartType;
@@ -103,6 +104,14 @@ public class GeneralSettings {
 
 	public void setChartShowLabels(boolean chartShowLabels) {
 		this.chartShowLabels = chartShowLabels;
+	}
+
+	public int getChartShowLabel() {
+		return chartShowLabel;
+	}
+
+	public void setChartShowLabel(int chartShowLabel) {
+		this.chartShowLabel = chartShowLabel;
 	}
 	
 }

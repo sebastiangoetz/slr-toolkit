@@ -309,7 +309,6 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			System.out.println(xdata);
 			System.out.println(ydata);
 			if(xdata.isEmpty() || ydata.isEmpty()) {
-				System.out.println("truuuuue");
 				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
 				return;
 			}
@@ -317,24 +316,28 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			ChartDataProvider chartDataProvider = new ChartDataProvider();
 			List<BubbleDataContainer> bubbleChartData = chartDataProvider.calculateBubbleChartData(bubbleSettings.getSelectedTermX(), 
 					bubbleSettings.getSelectedTermY());			
-			
 			for(BubbleDataTerm term: xdata) {
 				if(!term.isDisplayed()) {
 					for(BubbleDataContainer item : bubbleChartData) {
-						if(item.getxTerm().getName().equals(term.getTerm().getName()))
+						if(item.getxTerm().getName().equals(term.getTerm().getName())) {
 							bubbleChartData.remove(item);
-					}
+							System.out.println(term.getTerm().getName());
+						}
+					}	
 				}
 			}
 			
 			for(BubbleDataTerm term: ydata) {
 				if(!term.isDisplayed()) {
 					for(BubbleDataContainer item : bubbleChartData) {
-						if(item.getyTerm().getName().equals(term.getTerm().getName()))
+						if(item.getyTerm().getName().equals(term.getTerm().getName())) {
 							bubbleChartData.remove(item);
+							
+						}
 					}
 				}		
 			}
+
 			
 			if(!bubbleChartData.isEmpty()) {
 				view = (ICommunicationView) part;
