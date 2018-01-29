@@ -28,5 +28,8 @@ public class ChartGenerator {
 
 		return new BubbleChartGenerator().createBubble(input, first, second);
 	}
+	public final static Chart createPie() {
+		return new PieChartGenerator().createPie();
+	}
 
 }

@@ -26,8 +26,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import de.tudresden.slr.ui.chart.radar.RadarTypeFactory;
-import de.tudresden.slr.ui.chart.radar.RadarTypePackage.Literals;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '

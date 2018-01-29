@@ -351,7 +351,12 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		}
 		case 2:{
 			
+			view = (ICommunicationView) part;
+			Chart radarChart = ChartGenerator.createPie();
+			view.getPreview().setDataPresent(true);
+			view.setAndRenderChart(radarChart);
 		}
+		break;
 		}
 		
 		
