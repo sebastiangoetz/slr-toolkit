@@ -37,6 +37,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 	private java.util.List<BubbleDataTerm> termDataY;
 	private java.util.List<BubbleDataTerm> termDataX;
 	private Button btnShowInChartX;
+	private Button btnOneColor;
 	
 	
 	public SeriesPageBubble(Composite parent, int style) {
@@ -95,7 +96,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
 		compositeSouth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		compositeSouth.setLayout(new GridLayout(4, false));
+		compositeSouth.setLayout(new GridLayout(5, false));
 		
 		labelShowColor = new Label(compositeSouth, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -113,6 +114,10 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		btnRadioButtonRandom = new Button(compositeSouth, SWT.RADIO);
 		btnRadioButtonRandom.setSelection(true);
 		btnRadioButtonRandom.setText("Random");
+		
+		btnOneColor = new Button(compositeSouth, SWT.RADIO);
+		btnOneColor.setText("One color");
+		btnOneColor.addSelectionListener(this);
 		btnRadioButtonRandom.addSelectionListener(this);
 		btnRadioButtonCustom.addSelectionListener(this);
 		btnRadioButtonGrey.addSelectionListener(this);
@@ -191,8 +196,18 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		if(e.getSource() == btnRadioButtonRandom && list_y.getItemCount() > 0) {
 			
 			for(BubbleDataTerm bubbleDataTerm: termDataY) {
-				bubbleDataTerm.setRGBRandom();;				
+				bubbleDataTerm.setRGBRandom();			
 			}
+			refresh(list_y);
+		}
+		
+		if(e.getSource() == btnOneColor && list_y.getItemCount() > 0 && btnOneColor.getSelection()) {
+			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
+			
+			for(BubbleDataTerm bubbleDataTerm: termDataY) {
+				bubbleDataTerm.setRGB(rgb);				
+			}
+			
 			refresh(list_y);
 		}
 		
@@ -201,7 +216,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 	private void buildListPerSubclass(Term t, List l, java.util.List<BubbleDataTerm> templist) {		
 		EList<Term> subterms = t.getSubclasses();
 		for(Term subterm : subterms) {
-			templist.add(new BubbleDataTerm(t));
+			templist.add(new BubbleDataTerm(subterm));
 			l.add(subterm.getName());
 		}		
 	}

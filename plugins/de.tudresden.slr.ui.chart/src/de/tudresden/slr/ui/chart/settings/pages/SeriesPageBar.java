@@ -40,6 +40,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 	private Label lblSelectedTermIs;
 	
 	private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
+	private Button btnOneColor;
 	
 	public SeriesPageBar(Composite parent, int style) {
 		super(parent, style);
@@ -89,6 +90,11 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		btnRadioButtonRandom = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonRandom.setSelection(true);
 		btnRadioButtonRandom.setText("Random");
+		
+		btnOneColor = new Button(compositeNorth, SWT.RADIO);
+		btnOneColor.setText("One Color");
+		btnOneColor.addSelectionListener(this);
+		
 		btnRadioButtonRandom.addSelectionListener(this);
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
@@ -170,7 +176,16 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		if(e.getSource() == btnRadioButtonRandom && list.getItemCount() > 0) {
 			
 			for(BarDataTerm barDataTerm: barTermList) {
-				barDataTerm.setRGBRandom();;				
+				barDataTerm.setRGBRandom();				
+			}
+			refresh();
+		}
+		
+		if(e.getSource() == btnOneColor && list.getItemCount() > 0 && btnOneColor.getSelection()) {
+			
+			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
+			for(BarDataTerm barDataTerm: barTermList) {
+				barDataTerm.setRgb(rgb);;				
 			}
 			refresh();
 		}
