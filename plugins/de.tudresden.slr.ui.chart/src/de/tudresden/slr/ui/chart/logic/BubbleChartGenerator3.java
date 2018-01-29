@@ -52,7 +52,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class BubbleChartGenerator3
 {
 
-	public final static Chart createBubble(List<BubbleDataContainer> input, Term first, Term second )
+	public final Chart createBubble(List<BubbleDataContainer> input, Term first, Term second )
 	{
 		StringBuilder jsScript = new StringBuilder();
 		ChartWithAxes cwaBubble = ChartWithAxesImpl.create( );
@@ -239,7 +239,7 @@ public class BubbleChartGenerator3
 		
 		}
 		
-		private static List<String> createXTerms(List<BubbleDataContainer> input, StringBuilder jsScript) {
+		private  List<String> createXTerms(List<BubbleDataContainer> input, StringBuilder jsScript) {
 			List<String> xTerms = input.stream().map(x -> x.getxTerm().getName()).distinct().sorted().collect(Collectors.toList());
 			jsScript.append("\n");
 			jsScript.append("var seriesLength = " + xTerms.size() + ";\n");
@@ -248,7 +248,7 @@ public class BubbleChartGenerator3
 		}
 		
 		
-		private static void createYSeries(List<BubbleDataContainer> input, List<String> xTerms, SeriesDefinition sd, StringBuilder jsScript) {
+		private  void createYSeries(List<BubbleDataContainer> input, List<String> xTerms, SeriesDefinition sd, StringBuilder jsScript) {
 			int xTermsLength = xTerms.size();
 			List<String> yTerms = input.stream().map(x -> x.getyTerm().getName()).distinct().sorted().collect(Collectors.toList());
 			StringBuilder jsLabels = new StringBuilder();
@@ -306,7 +306,7 @@ public class BubbleChartGenerator3
 		 * @param Any string
 		 * @return Sanitized string
 		 */
-		private static String sanitizeJsonKey(String str) {
+		private  String sanitizeJsonKey(String str) {
 			return str.replaceAll("[^\\w]", "_");
 		}
 		
@@ -315,7 +315,7 @@ public class BubbleChartGenerator3
 		 * Add JS code.
 		 * @param jsValues
 		 */
-		private static void appendJsScript(StringBuilder jsValues) {
+		private  void appendJsScript(StringBuilder jsValues) {
 			jsValues.append("var count = 0;\n");
 			jsValues.append("var labelCount = 0;\n");
 			jsValues.append("var resizeFactor;\n");
