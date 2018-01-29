@@ -4,6 +4,8 @@ import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
@@ -19,13 +21,15 @@ import org.eclipse.swt.widgets.Text;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
+import org.eclipse.swt.widgets.Spinner;
 
-public class GerneralPageBubble extends Composite implements MouseListener, Pages{
+public class GerneralPageBubble extends Composite implements  MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2;
 	private Text text;
 	private Combo comboTitleSize, comboBlockOutline;
 	private Button btnUnderline, btnBolt, btnItalic;
+	private Spinner spinnerMinSize;
 	
 	private GeneralSettings settingsGeneral = ChartConfiguration.BUBBLECHARTCONFIG.getGeneralSettings();
 	private BlockSettings settingsBlock = ChartConfiguration.BUBBLECHARTCONFIG.getBlockSettings();
@@ -129,8 +133,7 @@ public class GerneralPageBubble extends Composite implements MouseListener, Page
 		Label lblLables = new Label(grpBlockSettings, SWT.NONE);
 		lblLables.setText("Lables");
 		
-		Button btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
-		btnShowLables.setText("Show Lables");
+		spinnerMinSize = new Spinner(grpBlockSettings, SWT.BORDER);
 		labelShowColor2.addMouseListener(this);
 		
 		loadSettings();
@@ -154,6 +157,7 @@ public class GerneralPageBubble extends Composite implements MouseListener, Page
 		settingsGeneral.setChartTitleBold(getBolt());
 		settingsGeneral.setChartTitleItalic(getItalic());
 		settingsGeneral.setChartTitleUnderline(getUnterline());
+		settingsGeneral.setChartShowLabel(spinnerMinSize.getSelection());
 	
 		settingsBlock.setBlockBackgroundRGB(getBlockColor());
 		
@@ -173,6 +177,7 @@ public class GerneralPageBubble extends Composite implements MouseListener, Page
 		setItalic(settingsGeneral.isChartTitleItalic());
 		setUnterline(settingsGeneral.isChartTitleUnderline());
 		setBlockColor(settingsBlock.getBlockBackgroundRGB());
+		spinnerMinSize.setSelection(settingsGeneral.getChartShowLabel());
 		
 		if(settingsBlock.isBlockShowOutline())
 			setBlockOutline(settingsBlock.getBlockOutlineStyle());
@@ -210,4 +215,5 @@ public class GerneralPageBubble extends Composite implements MouseListener, Page
 	public void mouseDoubleClick(MouseEvent e) {}
 	@Override
 	public void mouseDown(MouseEvent e) {}
+	
 }
