@@ -55,6 +55,7 @@ public final class ChartConfiguration {
 	
 	public static ChartConfiguration BARCHARTCONFIG = new ChartConfiguration();
 	public static ChartConfiguration BUBBLECHARTCONFIG = new ChartConfiguration();
+	public static ChartConfiguration RADARCHARTCONFIG = new ChartConfiguration();
 	
 	private List<BarDataTerm> barTermList = new ArrayList<>();
 

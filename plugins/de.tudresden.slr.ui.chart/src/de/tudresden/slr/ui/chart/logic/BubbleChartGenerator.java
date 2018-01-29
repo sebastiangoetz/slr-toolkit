@@ -255,7 +255,6 @@ public class BubbleChartGenerator {
 							item.getRGB().red, item.getRGB().green, item.getRGB().blue));
 				}
 			}
-			
 			jsScript.append("\"" + jsonKey +"\": [");
 			input.stream().filter(x -> x.getyTerm().getName().equals(yTerm))
 							.sorted((a, b) -> a.getxTerm().getName().compareTo(b.getxTerm().getName()))
