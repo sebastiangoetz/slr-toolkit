@@ -1,6 +1,8 @@
 Zielgruppe {
+	unspezifisch,
 	Privatsektor{
 	unspezifisch,
+	Eigentuemer
 	Projektmanager,
 	AEC-Hintergrund
 	Facility Manager,
@@ -10,40 +12,41 @@ Zielgruppe {
 	Regierung,
 	Studenten und Professoren,
 	Oeffentliche Auftraggeber,
-	
-	}
-	
-	
+	}	
 }
 
 Veroeffentlichungsland {
-		USA,
-		UK,
-		Indien,
+		Nordamerika{
+		Vereinigte Staaten von Amerika,	
+		Kanada
+		}
+		Europa{
+		Vereinigtes Koenigreich,
 		Slovenien,
 		Niederlande,
-		Australien,
 		Irland,
-		Suedkorea,
-		Israel,
 		Spanien,
 		Deutschland,
-		Saudi-Arabien,
 		Norwegen,
-		Kanada,
-		Indonesien,
 		Rumaenien,
+		Frankreich,
+		Finnland,
+		Italien
+		}
+		Asien{
+		Indien,
+		Suedkorea,
+		Israel,
+		Saudi-Arabien,
+		Taiwan,
+		Indonesien,
 		Malaisia,
 		China,
-		Finnland,
-		Taiwan,
-		Frankreich,
-		Italien,
+		}
+
 		Neuseeland,
-		
-		
-		
-		
+		Australien,
+
 	}
 Veroeffentlichungssort {
 	 	John Wiley and Sons Inc,
@@ -85,35 +88,37 @@ Veroeffentlichungssort {
 	}
 Art{
 		Buch,
-		Workshop,
-		Conference,
-		Journal,
+		Konferenz,
+		Fachzeitschrift,
 		Uebersichtsarbeit
 	}
 Thema{
+		Informationsmanagement und Planung,
+		Informationsberechnung und Praesentation,
 		Nachhaltigkeit und Energieverbrauch,
 		Gebaeudesicherheit und Fehlermanagement,
 		Interoperabilitaet BIM und Lean,
 		Interkommunikation und Interaktion von Benutzern von BIM,
-		Innovative Forschungsthemen und Trends,
-		konzeptionelle Erweiterung von BIM,	
+		Innovative Forschungsthemen und Trends,	
 		Anwendung von BIM auf intelligente Gebaeude,
 		Luecke zwischen CAD Modellierung und 3D Modellierung,
 		Anwendung von BIM Praktiken und Software in zukuenftigen Projekten,
 		Verbesserte Lernerfahrung durch BIM,
 		Anwendung von BIM auf bereits existierende Gebaeude,
 		Echtzeitvisualisierung mit BIM und Augmented Reality,
-		Information und Anleitung zu BIM,	
+		Uebersicht und Anleitung zu BIM,	
 		Quantitative und Qualitative Gebaeudeanalyse mit BIM,
 		Qualitative und finanzielle Vorteile von BIM praesentieren,
 }
 	
 Anwendungsfeld{
 		unspezifisch,
+		Lehre,
+		Organisation,
+		Finanzierung,
 		AEC{
-			preconstruction,
-			construction,
-			lifetime
+			Vorkonstruktion,
+			Konstruktion,
 		}
 		Facility Management,
 		Modellierung,
@@ -123,10 +128,11 @@ Ergebnis{
 	praktisch{
 		Implementation,
 		Framework,
+		Beispiel
 	}
 	theoretisch{
 		Ueberblick,
-		Workflow,
+		Arbeitsfluss,
 		Analyse,
 		Bericht
 		
@@ -141,7 +147,7 @@ Methodik{Interviews,
 		Umfrage,
 		Diskussion,
 		Literaturrezension,
-		Forschungs Workshop,
+		Forschungsworkshop,
 		Analyse,
 		Bericht
 	
