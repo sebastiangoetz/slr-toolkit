@@ -70,21 +70,28 @@ public class WizardGSImportPage extends WizardPage {
 		occt.setLayout(occt_layout);
 		occt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		SelectionListener occt_selectionListener = new SelectionAdapter () {
-			public void widgetSelected(SelectionEvent event) {
-				Button button = ((Button) event.widget);
-				as_occt = (String) button.getData("value");
-			};
-		};
+		
 		Button occt_any = new Button(occt, SWT.RADIO);
 		occt_any.setText("irgendwo im Artikel");
-		occt_any.addSelectionListener(occt_selectionListener);
 		occt_any.setData("value", "any");
 		
 		Button occt_title = new Button(occt, SWT.RADIO);
 		occt_title.setText("im Titel des Artikels");
-		occt_title.addSelectionListener(occt_selectionListener);
 		occt_any.setData("value", "title");
+		
+		SelectionListener occt_selectionListener = new SelectionAdapter () {
+			public void widgetSelected(SelectionEvent event) {
+				Button button = ((Button) event.widget);
+				if(event.widget.equals(occt_any)) {
+					as_occt = "any";
+				}
+				if(event.widget.equals(occt_title)) {
+					as_occt="title";
+				}
+			};
+		};
+		occt_any.addSelectionListener(occt_selectionListener);
+		occt_title.addSelectionListener(occt_selectionListener);
 		
 		Label label6 = new Label(container, SWT.NONE);
 		label6.setText("Artikel zurückgeben, die von folgendem Autor verfasst wurden");

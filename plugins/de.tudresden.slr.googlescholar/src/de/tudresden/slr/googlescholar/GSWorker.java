@@ -1,6 +1,7 @@
 package de.tudresden.slr.googlescholar;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -8,6 +9,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
 
 import com.gargoylesoftware.htmlunit.AjaxController;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -28,13 +34,11 @@ public class GSWorker {
 	private WebClient webClient;
 	private String Scholar = "http://scholar.google.de/";
 	private String Base;
-	private boolean ready = false;
-	private List<String> results;
-	private int start = 0;
-	private Set<String> Links;
-	private Iterator<String> current;
 	
-	public GSWorker(String as_q, String as_epq, String as_oq, String as_eq, String as_occt, String as_sauthors, String as_publication, String as_ylo, String as_yhi) {
+	private PrintWriter out;
+	private SubMonitor monitor;
+	
+	public GSWorker(PrintWriter output, String as_q, String as_epq, String as_oq, String as_eq, String as_occt, String as_sauthors, String as_publication, String as_ylo, String as_yhi) {
 		webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
@@ -100,21 +104,127 @@ public class GSWorker {
 			e.printStackTrace();
 		}
 		Base += "hl=de&as_sdt=0%2C5";
+		
+		this.out = output;
+		out.write("@Comment { Base-URL: " + Base + " }\n\n");
+		out.flush();
 	}
 	
-	public void init() {
-		// load main page and do timing
-		HtmlPage page;
-		try {
-			page = webClient.getPage(Scholar);
-			waitLikeUser(3000, 10000);
-			waitForJs(page);
+	public IStatus work(SubMonitor mon) {
+		this.monitor = mon;
+		IStatus s;
+		
+		mon.setTaskName("Preparing Google Scholar Session");
+		s = this.initSession();
+		if(!s.isOK()) {
+			out.print("@Comment { Status: " + s.getMessage() + " }\n");
+			out.close();
+			return s;
+		}
+		
+		// set monitor to a maximum of 100 pages x 10 entries
+		mon.beginTask("Loading Entries", 1000);
+		
+		int last = 10;
+		int start = 0;
+		while(last > 0) {
+			// Update Monitor
+			mon.subTask("Loading Page " + ((start/10)+1));
 			
-			// select link to settings form, load settings form and do timing
+			try {
+				// Load Page
+				out.print("@Comment { PageLoad: Offset " + start + " } \n");
+				HtmlPage Results = webClient.getPage((start > 0) ? Base + "&start=" + start : Base);
+				
+				// Timeouts
+				s = waitLikeUser(3000, 10000);
+				if(!s.isOK()) {
+					out.print("@Comment { Status: " + s.getMessage() + " }\n");
+					out.close();
+					return s;
+				}
+				s = waitForJs(Results);
+				if(!s.isOK()) {
+					out.print("@Comment { Status: " + s.getMessage() + " }\n");
+					out.close();
+					return s;
+				}
+				
+				// preparing sub task monitor for entries
+				SubMonitor entries = monitor.newChild(10);
+				
+				// search for bib links
+				last = 0;
+				for(HtmlAnchor a : Results.getAnchors()) {
+					// update submonitor
+					entries.subTask("Loading Page " + ((start/10)+1) + " - Entry " + (last + 1));
+					
+					if(a.getHrefAttribute().contains("scholar.bib")) {
+						// Load entry
+						TextPage Result = webClient.getPage(a.getHrefAttribute());
+						
+						// Write entry
+						out.print(Result.getContent() + "\n");
+						
+						// Timeouts
+						s = waitLikeUser(3000, 10000);
+						if(!s.isOK()) {
+							out.print("@Comment { Status: " + s.getMessage() + " }\n");
+							out.close();
+							return s;
+						}
+						s = waitForJs(Results);
+						if(!s.isOK()) {
+							out.print("@Comment { Status: " + s.getMessage() + " }\n");
+							out.close();
+							return s;
+						}
+						
+						// Increment Counter
+						last++;
+						
+						// increment monitor
+						entries.worked(1);
+					}
+				}
+				entries.done();
+			} catch (FailingHttpStatusCodeException | IOException e) {
+				out.print("@Comment { Error: " + e.getLocalizedMessage() + " }");
+				out.close();
+				return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Could not load page or entry", e);
+			}
+			
+			// Increment Offset
+			start += 10;
+		}
+		
+		out.print("@Comment { Finished }");
+		out.close();
+		monitor.done();
+		return Status.OK_STATUS;
+	}
+	
+	private IStatus initSession() {
+		IStatus s;
+		try {
+			// load main page
+			HtmlPage page = webClient.getPage(Scholar);
+			
+			// Timeouts
+			s = waitLikeUser(3000, 10000);
+			if(!s.isOK()) return s;
+			s = waitForJs(page);
+			if(!s.isOK()) return s;
+			
+			// select link to settings form, load settings form
 			HtmlAnchor configLink = page.getFirstByXPath("//a[contains(@href, '/scholar_settings')]");
 			HtmlPage configFormPage = webClient.getPage(configLink.getBaseURI() + configLink.getHrefAttribute().substring(1));
-			waitLikeUser(3000, 10000);
-			waitForJs(configFormPage);
+			
+			// Timeouts
+			s = waitLikeUser(3000, 10000);
+			if(!s.isOK()) return s;
+			s = waitForJs(page);
+			if(!s.isOK()) return s;
 			
 			// select settings form and enable bibtex
 			HtmlForm configForm = configFormPage.getFirstByXPath("//form[@action='/scholar_setprefs']");
@@ -125,92 +235,51 @@ public class GSWorker {
 				}
 			}
 
-			// click save and do timing
+			// click save
 			HtmlButton configFormSave = configForm.getButtonByName("save");
 			HtmlPage readyForSearch = configFormSave.click();
-			waitLikeUser(3000, 10000);
-			waitForJs(readyForSearch);
 			
-			results = new ArrayList<String>();
-			loadPage();
-			ready = true;
+			// Timeouts
+			s = waitLikeUser(3000, 10000);
+			if(!s.isOK()) return s;
+			s = waitForJs(page);
+			if(!s.isOK()) return s;
 		} catch (FailingHttpStatusCodeException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Could not initialize Google Scholar session", e);
 		}
+		
+		return Status.OK_STATUS;
 	}
 	
-	private void loadPage() {
-		Links = new HashSet<String>();
-		try {
-			HtmlPage Results = webClient.getPage((start > 0) ? Base + "&start=" + start : Base);
-			waitLikeUser(3000, 10000);
-			waitForJs(Results);
-			
-			for(HtmlAnchor a : Results.getAnchors()) {
-				if(a.getHrefAttribute().contains("scholar.bib")) {
-					Links.add(a.getHrefAttribute());
-					
-				}
-			}
-			start += 10;
-			current = Links.iterator();
-		} catch (FailingHttpStatusCodeException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public boolean work() {
-		if(ready) {
-			if(!current.hasNext()) {
-				loadPage();
-			}
-			if(!current.hasNext()) {
-				ready = false;
-				return false;
-			} else {
-				try {
-					String url = current.next();
-					current.remove();
-				
-					TextPage Result;
-				
-					Result = webClient.getPage(url);
-					results.add(Result.getContent());
-					waitLikeUser(10000, 30000);
-				} catch (FailingHttpStatusCodeException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void waitForJs(HtmlPage page) {
+	private IStatus waitForJs(HtmlPage page) {
 		JavaScriptJobManager manager = page.getEnclosingWindow().getJobManager();
 		while (manager.getJobCount() > 0) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Failed to wait for Javascript processes", e);
+			}
+			
+			if(this.monitor != null && monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
 			}
 		}
+		return Status.OK_STATUS;
 	}
 	
-	public void waitLikeUser(int min, int max) {
-		try {
-			Thread.sleep((long) (min + Math.random()*(max-min)));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private IStatus waitLikeUser(int min, int max) {
+		int time = (min + ((int)Math.random()*(max-min))) / 1000;
+		for(int i = 0; i < time; i++) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Timeout Failure", e);
+			}
+			
+			if(this.monitor != null && monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
+			}
 		}
-	}
-	
-	public List<String> getResults() {
-		return this.results;
+		return Status.OK_STATUS;
 	}
 }
