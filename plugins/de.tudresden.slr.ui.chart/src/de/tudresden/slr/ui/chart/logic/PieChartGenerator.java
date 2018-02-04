@@ -8,6 +8,7 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithoutAxes;
 import org.eclipse.birt.chart.model.attribute.ChartDimension;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
+import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
@@ -39,7 +40,7 @@ public class PieChartGenerator
 
 	public final Chart createPie(Map<String, Integer> input, String title)
 	{
-		ChartConfiguration cc = ChartConfiguration.BARCHARTCONFIG;//
+		ChartConfiguration cc = ChartConfiguration.PIECHARTCONFIG;//
 		PlotSettings ps = cc.getPlotSettings();
 		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
@@ -108,6 +109,7 @@ public class PieChartGenerator
 		
 		TextDataSet categoryValues = TextDataSetImpl.create(names);
 		NumberDataSet orthoValues1 = NumberDataSetImpl.create(values);
+		//PercentileDataSet orthoValues2 = PercentileDataSetImpl.create();
 		
 		SampleData sdata = DataFactory.eINSTANCE.createSampleData( );
 		BaseSampleData sdBase = DataFactory.eINSTANCE.createBaseSampleData( );
@@ -128,7 +130,7 @@ public class PieChartGenerator
 		SeriesDefinition sd = SeriesDefinitionImpl.create( );
 		cwoaPie.getSeriesDefinitions( ).add( sd );
 		sd.getSeriesPalette().getEntries().clear();
-		for(BarDataTerm item : cc.getBarTermList()) {
+		for(PieDataTerm item : cc.getPieTermList()) {
 			if(item.isDisplayed()) {
 				sd.getSeriesPalette().getEntries().add(ColorDefinitionImpl.create(
 						item.getRgb().red, item.getRgb().green, item.getRgb().blue));
@@ -141,12 +143,20 @@ public class PieChartGenerator
 		PieSeries sePie = (PieSeries) PieSeriesImpl.create( );
 		sePie.setDataSet( orthoValues1 );
 		sePie.setSeriesIdentifier( "Cites" );//$NON-NLS-1$ 
-		sePie.setExplosion( 5 );
+		sePie.setExplosion( ss.getSeriesExplosion() );
+		sePie.getLabel().setVisible(gs.isChartShowLabels());
+		//sePie.setRatio(0.2);
+		//sePie.setRotation(0.9);
+		sePie.setLabelPosition(ss.getSeriesLabelPosition());
+		
+		
+		
+		
 		
 		SeriesDefinition sdCity = SeriesDefinitionImpl.create( );
 		sd.getSeriesDefinitions( ).add( sdCity );
 		sdCity.getSeries( ).add( sePie );
-
+		
 		
 		return cwoaPie;
 	}
