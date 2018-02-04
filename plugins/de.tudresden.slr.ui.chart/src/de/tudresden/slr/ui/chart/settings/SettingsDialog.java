@@ -366,7 +366,6 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			}
 			for(PieDataTerm term: data) {
 				if(term.isDisplayed())
-					if(term.getSize() != 0)
 					pieChartData.put(term.getTerm(), term.getSize());
 			}
 			if(!pieChartData.isEmpty()) {
