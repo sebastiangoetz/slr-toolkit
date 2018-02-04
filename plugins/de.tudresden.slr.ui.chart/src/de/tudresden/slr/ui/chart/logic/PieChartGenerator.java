@@ -75,6 +75,10 @@ public class PieChartGenerator
 		lg.getClientArea().setShadowColor(ColorDefinitionImpl.create(ls.getLegendShadowRGB().red, ls.getLegendShadowRGB().green, ls.getLegendShadowRGB().blue));
 		lg.getClientArea().getInsets().set(ls.getLegendInsetTop(), ls.getLegendInsetLeft(), ls.getLegendInsetBottom(), ls.getLegendInsetRight());
 
+		lg.setItemType(ls.getLegendItemType());
+		lg.setMaxPercent(ls.getLegendMaxPercent());
+		lg.setPosition(ls.getLegendPosition());
+		lg.setOrientation(ls.getLegendOrientation());
 		// Title
 		if(gs.getChartTitle().equals("")) {
 			gs.setChartTitle(title);
@@ -145,8 +149,7 @@ public class PieChartGenerator
 		sePie.setSeriesIdentifier( "Cites" );//$NON-NLS-1$ 
 		sePie.setExplosion( ss.getSeriesExplosion() );
 		sePie.getLabel().setVisible(gs.isChartShowLabels());
-		//sePie.setRatio(0.2);
-		//sePie.setRotation(0.9);
+		
 		sePie.setLabelPosition(ss.getSeriesLabelPosition());
 		
 		

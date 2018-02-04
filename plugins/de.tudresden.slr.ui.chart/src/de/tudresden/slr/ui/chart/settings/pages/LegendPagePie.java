@@ -26,7 +26,7 @@ public class LegendPagePie extends Composite implements SelectionListener, Mouse
 	private Label labelColorShow, lblMaxPercent;
 	private Scale scale;
 	
-	LegendSettings settings = ChartConfiguration.BARCHARTCONFIG.getLegendSettings();
+	LegendSettings settings = ChartConfiguration.PIECHARTCONFIG.getLegendSettings();
 	
 	/**
 	 * Create the composite.
