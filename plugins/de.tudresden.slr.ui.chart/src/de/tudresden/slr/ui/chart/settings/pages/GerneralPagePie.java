@@ -24,6 +24,8 @@ import org.eclipse.swt.widgets.Text;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
+import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
+
 import org.eclipse.swt.widgets.Scale;
 
 public class GerneralPagePie extends Composite implements SelectionListener, MouseListener, Pages{
@@ -34,8 +36,9 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 	private Button btnUnderline, btnBolt, btnItalic, btnShowLables;
 	private Scale explosion;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
+	private GeneralSettings settingsGeneral = ChartConfiguration.PIECHARTCONFIG.getGeneralSettings();
+	private BlockSettings settingsBlock = ChartConfiguration.PIECHARTCONFIG.getBlockSettings();
+	private SeriesSettings settingsSeries = ChartConfiguration.PIECHARTCONFIG.getSeriesSettings();
 	private Label lblLabelPosition;
 	private Combo comboLabelPosition;
 	
@@ -182,7 +185,8 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 		settingsGeneral.setChartTitleBold(getBolt());
 		settingsGeneral.setChartTitleItalic(getItalic());
 		settingsGeneral.setChartTitleUnderline(getUnterline());
-		//settingsBlock.setExplosion()
+		settingsSeries.setSeriesExplosion(getExplosion());
+		settingsSeries.setSeriesLabelPosition(getPosition());
 		
 		settingsGeneral.setChartShowLabels(isChartShowLabels());//
 	
@@ -204,7 +208,8 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 		setItalic(settingsGeneral.isChartTitleItalic());
 		setUnterline(settingsGeneral.isChartTitleUnderline());
 		setBlockColor(settingsBlock.getBlockBackgroundRGB());
-		setExplosion(5);
+		setExplosion(settingsSeries.getSeriesExplosion());
+		setPosition(settingsSeries.getSeriesLabelPosition());
 		
 		setChartShowLabels(settingsGeneral.isChartShowLabels());//
 			

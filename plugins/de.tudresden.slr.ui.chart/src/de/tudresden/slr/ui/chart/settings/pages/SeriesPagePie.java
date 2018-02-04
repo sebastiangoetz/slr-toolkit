@@ -24,6 +24,7 @@ import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
 
 public class SeriesPagePie extends Composite implements SelectionListener, MouseListener, Pages{
@@ -129,9 +130,10 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 		public void widgetSelected(SelectionEvent e) {
 			
 			if(e.getSource() == btnNewButton) {
-				TreeDialogBubble treeDialogBar = new TreeDialogBubble(this.getShell(), SWT.NONE);
-				selectedTerm = (Term) treeDialogBar.open();		
-				
+				TreeDialogBar treeDialogBar = new TreeDialogBar(this.getShell(), SWT.NONE);
+				Map.Entry<Term,TermSort> pair = treeDialogBar.open();
+				selectedTerm = pair.getKey();
+				termSort = pair.getValue();
 				if(selectedTerm != null) {
 					lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
 					pieTermList.clear();

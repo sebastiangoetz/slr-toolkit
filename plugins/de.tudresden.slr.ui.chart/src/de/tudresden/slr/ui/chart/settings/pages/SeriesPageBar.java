@@ -129,8 +129,9 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		
 		if(e.getSource() == btnNewButton) {
 			TreeDialogBar treeDialogBar = new TreeDialogBar(this.getShell(), SWT.NONE);
-			selectedTerm = (Term) treeDialogBar.open(this);		
-			
+			Map.Entry<Term,TermSort> pair = treeDialogBar.open();
+			selectedTerm = pair.getKey();
+			termSort = pair.getValue();
 			if(selectedTerm != null) {
 				lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
 				barTermList.clear();
