@@ -22,7 +22,8 @@ package de.tudresden.slr.ui.chart.settings.pages;
 	import de.tudresden.slr.model.taxonomy.Term;
 	import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 	import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
-	import de.tudresden.slr.ui.chart.logic.TermSort;
+import de.tudresden.slr.ui.chart.logic.PieDataTerm;
+import de.tudresden.slr.ui.chart.logic.TermSort;
 	import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 	import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
@@ -32,7 +33,7 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 		private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
 		private Button btnCheckButton;
 		private List list;
-		private java.util.List<BarDataTerm> barTermList= new ArrayList<>();
+		private java.util.List<PieDataTerm> pieTermList= new ArrayList<>();
 		public Term selectedTerm;
 		public TermSort termSort = TermSort.YEAR;
 		private ChartDataProvider chartDataProvider = new ChartDataProvider();
@@ -41,7 +42,7 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 		private Composite compositeFirst;
 		private Label lblSelectedTermIs;
 		
-		private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
+		private ChartConfiguration settings = ChartConfiguration.PIECHARTCONFIG;	
 		private Button btnOneColor;
 		
 		public SeriesPageHeat(Composite parent, int style) {
@@ -135,7 +136,7 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 				
 				if(selectedTerm != null) {
 					lblSelectedTermIs.setText("Selected Term is: '" + selectedTerm.getName()+"'");
-					barTermList.clear();
+					pieTermList.clear();
 					list.removeAll();
 					btnRadioButtonRandom.setEnabled(true);
 					switch(termSort) {
@@ -160,25 +161,25 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 			
 			if(e.getSource() == btnCheckButton) {
 				int selectedItem = list.getSelectionIndex();
-				barTermList.get(selectedItem).setDisplayed(btnCheckButton.getSelection());
+				pieTermList.get(selectedItem).setDisplayed(btnCheckButton.getSelection());
 			}
 				
 			if(e.getSource() == btnRadioButtonGrey && list.getItemCount() > 0) {
 				
-				int step = 255/barTermList.size();
+				int step = 255/pieTermList.size();
 				
 				int rgbValue = 0;
-				for(BarDataTerm barDataTerm: barTermList) {
+				for(PieDataTerm pieDataTerm: pieTermList) {
 					rgbValue = rgbValue + step;
-					barDataTerm.setRgb(new RGB(rgbValue, rgbValue, rgbValue));				
+					pieDataTerm.setRgb(new RGB(rgbValue, rgbValue, rgbValue));				
 				}
 				refresh();
 			}
 			
 			if(e.getSource() == btnRadioButtonRandom && list.getItemCount() > 0) {
 				
-				for(BarDataTerm barDataTerm: barTermList) {
-					barDataTerm.setRGBRandom();				
+				for(PieDataTerm pieDataTerm: pieTermList) {
+					pieDataTerm.setRGBRandom();				
 				}
 				refresh();
 			}
@@ -186,8 +187,8 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 			if(e.getSource() == btnOneColor && list.getItemCount() > 0 && btnOneColor.getSelection()) {
 				
 				RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
-				for(BarDataTerm barDataTerm: barTermList) {
-					barDataTerm.setRgb(rgb);;				
+				for(PieDataTerm pieDataTerm: pieTermList) {
+					pieDataTerm.setRgb(rgb);;				
 				}
 				refresh();
 			}
@@ -197,7 +198,7 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 		private void buildListPerSubclass() {
 			SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(selectedTerm);	
 			for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-				barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
+				pieTermList.add(new PieDataTerm(entry.getKey(), entry.getValue()));
 				list.add(entry.getKey() + " (" +entry.getValue() + ")");
 			}
 			
@@ -206,15 +207,15 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 		private void buildListPerYear() {		
 			SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);	
 			for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-				barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
+				pieTermList.add(new PieDataTerm(entry.getKey(), entry.getValue()));
 				list.add(entry.getKey() + " (" +entry.getValue() + "");
 			}		
 		}
 
 		private void refresh() {
 			int index = list.getSelectionIndex();
-			labelShowColor.setBackground(barTermList.get(index).getColor(this.getDisplay()));
-			btnCheckButton.setSelection(barTermList.get(index).isDisplayed());
+			labelShowColor.setBackground(pieTermList.get(index).getColor(this.getDisplay()));
+			btnCheckButton.setSelection(pieTermList.get(index).isDisplayed());
 			this.layout();
 		}
 		
@@ -223,25 +224,25 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 			if(e.getSource() == labelShowColor && list.getItemCount() > 0 && btnRadioButtonCustom.getSelection()) {
 				RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
 				int index = list.getSelectionIndex();
-				barTermList.get(index).setRgb(rgb);
+				pieTermList.get(index).setRgb(rgb);
 			}
 		}
 		@Override
 		public void saveSettings() {
 			
-			settings.setBarTermList(barTermList);
+			settings.setPieTermList(pieTermList);
 			settings.setSelectedTerm(selectedTerm);
 			settings.setTermSort(termSort);
 				
 		}
 		@Override
 		public void loadSettings() {
-			barTermList = settings.getBarTermList();
+			pieTermList = settings.getPieTermList();
 			selectedTerm = settings.getSelectedTerm();
 			termSort = settings.getTermSort();
 			
-			if(!barTermList.isEmpty()) {			
-				for(BarDataTerm entry :barTermList) {
+			if(!pieTermList.isEmpty()) {			
+				for(PieDataTerm entry :pieTermList) {
 					list.add(entry.getTerm()+ " (" +entry.getSize()+ ")");
 				}
 			}		

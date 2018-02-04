@@ -33,6 +33,7 @@ import de.tudresden.slr.ui.chart.logic.BubbleDataContainer;
 import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBar;
@@ -351,12 +352,31 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		}
 		case 2:{
 			
-			view = (ICommunicationView) part;
-			Chart radarChart = ChartGenerator.createPie();
-			view.getPreview().setDataPresent(true);
-			view.setAndRenderChart(radarChart);
+			generalPageBar.saveSettings();
+			legendPage.saveSettings();
+			seriesPageBar.saveSettings();
+			axisPageBar.saveSettings();
+			
+
+			List<PieDataTerm> data = ChartConfiguration.PIECHARTCONFIG.getPieTermList();
+			SortedMap<String, Integer> pieChartData = new TreeMap<>();
+			if(data.isEmpty()) {
+				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
+				return;
+			}
+			for(PieDataTerm term: data) {
+				if(term.isDisplayed())
+					if(term.getSize() != 0)
+					pieChartData.put(term.getTerm(), term.getSize());
+			}
+			if(!pieChartData.isEmpty()) {
+				view = (ICommunicationView) part;
+				Chart pieChart = ChartGenerator.createPie(pieChartData);
+				view.getPreview().setDataPresent(true);
+				view.setAndRenderChart(pieChart);	
+			}
+			break;
 		}
-		break;
 		}
 		
 		

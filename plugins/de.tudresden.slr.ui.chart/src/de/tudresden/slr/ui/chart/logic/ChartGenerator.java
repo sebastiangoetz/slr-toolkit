@@ -28,8 +28,8 @@ public class ChartGenerator {
 
 		return new BubbleChartGenerator().createBubble(input, first, second);
 	}
-	public final static Chart createPie() {
-		return new PieChartGenerator().createPie();
+	public final static Chart createPie(Map<String, Integer> input) {
+		return new PieChartGenerator().createPie(input, "Cites per year for selected Class");
 	}
 
 }

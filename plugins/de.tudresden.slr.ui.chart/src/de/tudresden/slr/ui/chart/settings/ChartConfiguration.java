@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.EMap;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
+import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
@@ -30,7 +31,7 @@ import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
-public final class ChartConfiguration {
+public class ChartConfiguration {
 	
 	private ChartConfiguration() {
 	}
@@ -55,7 +56,7 @@ public final class ChartConfiguration {
 	
 	public static ChartConfiguration BARCHARTCONFIG = new ChartConfiguration();
 	public static ChartConfiguration BUBBLECHARTCONFIG = new ChartConfiguration();
-	public static ChartConfiguration RADARCHARTCONFIG = new ChartConfiguration();
+	public static ChartConfiguration PIECHARTCONFIG = new ChartConfiguration();
 	
 	private List<BarDataTerm> barTermList = new ArrayList<>();
 
@@ -67,6 +68,10 @@ public final class ChartConfiguration {
 	private Term selectedTermX = null;
 	private Term selectedTermY = null;
 	
+	private List<PieDataTerm> pieTermList = new ArrayList<>();
+	
+	private Term pieSelectedTerm = null;
+	private TermSort pieTermSort = TermSort.YEAR;
 	
 	
 	
@@ -169,6 +174,25 @@ public final class ChartConfiguration {
 	}
 	public void setSelectedTermY(Term selectedTermY) {
 		this.selectedTermY = selectedTermY;
+	}
+	public List<PieDataTerm> getPieTermList() {
+		return pieTermList;
+	}
+	public void setPieTermList(List<PieDataTerm> pieTermList) {
+		this.pieTermList = pieTermList;
+		SeriesSettings.get().setPieSeriesColor(pieTermList);
+	}
+	public Term getPieSelectedTerm() {
+		return pieSelectedTerm;
+	}
+	public void setPieSelectedTerm(Term pieSelectedTerm) {
+		this.pieSelectedTerm = pieSelectedTerm;
+	}
+	public TermSort getPieTermSort() {
+		return pieTermSort;
+	}
+	public void setPieTermSort(TermSort pieTermSort) {
+		this.pieTermSort = pieTermSort;
 	}
 
 	

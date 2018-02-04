@@ -8,6 +8,7 @@ import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.swt.graphics.RGB;
 
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
+import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 
 public class SeriesSettings {
 	
@@ -55,6 +56,19 @@ public class SeriesSettings {
 	public void setSeriesColor(List<BarDataTerm> barTermList) {
 		ArrayList<Fill> fillList = new ArrayList<>();
 		for(BarDataTerm entry: barTermList) {
+			if(entry.isDisplayed()) {
+				RGB series = entry.getRgb();
+				fillList.add(ColorDefinitionImpl.create(series.red, series.green, series.blue));				
+				
+			}
+		}
+		this.seriesColor = fillList;
+
+
+	}
+	public void setPieSeriesColor(List<PieDataTerm> pieTermList) {
+		ArrayList<Fill> fillList = new ArrayList<>();
+		for(PieDataTerm entry: pieTermList) {
 			if(entry.isDisplayed()) {
 				RGB series = entry.getRgb();
 				fillList.add(ColorDefinitionImpl.create(series.red, series.green, series.blue));				
