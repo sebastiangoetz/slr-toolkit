@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
 
-public class LegendPage extends Composite implements SelectionListener, MouseListener, Pages{
+public class LegendPageBar extends Composite implements SelectionListener, MouseListener, Pages{
 	private Text text;
 	private Combo comboOutline, comboPosition;
 	private Label labelColorShow, lblMaxPercent;
@@ -33,7 +33,7 @@ public class LegendPage extends Composite implements SelectionListener, MouseLis
 	 * @param parent
 	 * @param style
 	 */
-	public LegendPage(Composite parent, int style) {
+	public LegendPageBar(Composite parent, int style) {
 		super(parent, style);
 		setLayout(new GridLayout(2, false));
 		

@@ -22,8 +22,6 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
 
 public class TreeDialogBubble extends Dialog implements SelectionListener{
 

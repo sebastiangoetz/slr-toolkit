@@ -38,10 +38,12 @@ import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.GerneralPageBubble;
-import de.tudresden.slr.ui.chart.settings.pages.LegendPage;
+import de.tudresden.slr.ui.chart.settings.pages.GerneralPagePie;
+import de.tudresden.slr.ui.chart.settings.pages.LegendPageBar;
+import de.tudresden.slr.ui.chart.settings.pages.LegendPagePie;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBubble;
-import de.tudresden.slr.ui.chart.settings.pages.SeriesPageHeat;
+import de.tudresden.slr.ui.chart.settings.pages.SeriesPagePie;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class SettingsDialog extends Dialog implements SelectionListener{
@@ -51,16 +53,19 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	
 	private Combo comboChartSelect;
 	private StackLayout sl_stackComposite;
-	private Composite pageBarChart, pageBubbleChart, stackComposite, pageHeatChart; 
+	private Composite pageBarChart, pageBubbleChart, stackComposite, pagePieChart; 
 ;
 	private Optional<Model> m;
 	private Button okButton, applyButton, closeButton;
 	
 	private GeneralPageBar generalPageBar;
-	private SeriesPageHeat  seriesPageHeat;
-	private LegendPage legendPage;
+	
+	private LegendPageBar legendPageBar;
 	private SeriesPageBar seriesPageBar;
 	private AxisPageBar axisPageBar;
+	private GerneralPagePie gerneralPagePie;
+	private LegendPagePie legendPagePie;
+	private SeriesPagePie  seriesPagePie;
 	
 	private GerneralPageBubble gerneralPageBubble;
 	private SeriesPageBubble seriesPageBubble;
@@ -132,7 +137,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 					stackComposite.layout();
 					break;
 				case 2:
-					sl_stackComposite.topControl = pageHeatChart;
+					sl_stackComposite.topControl = pagePieChart;
 					stackComposite.layout();
 					break;
 			}
@@ -159,8 +164,8 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		itemFolderBarChart_1.setControl(generalPageBar);
 		itemFolderBarChart_1.setText("General");
 		
-		legendPage = new LegendPage(folderBarChart, SWT.NONE);
-		itemFolderBarChart_2.setControl(legendPage);
+		legendPageBar = new LegendPageBar(folderBarChart, SWT.NONE);
+		itemFolderBarChart_2.setControl(legendPageBar);
 		itemFolderBarChart_2.setText("Legend");
 		
 		seriesPageBar = new SeriesPageBar(folderBarChart, SWT.NONE);
@@ -193,14 +198,24 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		itemFolderBubbleChart_3.setText("Axis");
 	}
 	
-	private void buildHeatSettings() {
-		pageHeatChart.setLayout(new FillLayout());
-		TabFolder folderHeatChart = new TabFolder(pageHeatChart, SWT.NONE);
+	private void buildPieSettings() {
+		pagePieChart.setLayout(new FillLayout());
+		TabFolder folderPieChart = new TabFolder(pagePieChart, SWT.NONE);
 		
-		TabItem tbtmNewItem31 = new TabItem(folderHeatChart, SWT.NONE);
-		tbtmNewItem31.setText("Test 5");
-		seriesPageHeat = new SeriesPageHeat(folderHeatChart, SWT.NONE);
-		tbtmNewItem31.setControl(seriesPageHeat);
+		TabItem itemFolderPieChart_1 = new TabItem(folderPieChart, SWT.NONE);
+		itemFolderPieChart_1.setText("General Settings");
+		TabItem itemFolderPieChart_2 = new TabItem(folderPieChart, SWT.NONE);
+		itemFolderPieChart_2.setText("Legend Settings");
+		TabItem itemFolderPieChart_3 = new TabItem(folderPieChart, SWT.NONE);
+		itemFolderPieChart_3.setText("Series Settings");
+		
+		
+		gerneralPagePie = new GerneralPagePie(folderPieChart, SWT.NONE);
+		itemFolderPieChart_1.setControl(gerneralPagePie);
+		legendPagePie = new LegendPagePie(folderPieChart, SWT.NONE);
+		itemFolderPieChart_2.setControl(legendPagePie);
+		seriesPagePie = new SeriesPagePie(folderPieChart, SWT.NONE);
+		itemFolderPieChart_3.setControl(seriesPagePie);
 	}
 	
 	private void createShell() {
@@ -240,13 +255,13 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		pageBarChart = new Composite (stackComposite, SWT.NONE);
 		pageBubbleChart = new Composite (stackComposite, SWT.NONE);
-		pageHeatChart = new Composite (stackComposite, SWT.NONE);
+		pagePieChart = new Composite (stackComposite, SWT.NONE);
 		
 		pageBarChart.setLayout(new FillLayout());
 		
 		buildBarSettings();
 		buildBubbleSettings();
-		buildHeatSettings();
+		buildPieSettings();
 		
 	}
 	
@@ -276,7 +291,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		switch (comboChartSelect.getSelectionIndex()) {
 		case 0:{
 			generalPageBar.saveSettings();
-			legendPage.saveSettings();
+			legendPageBar.saveSettings();
 			seriesPageBar.saveSettings();
 			axisPageBar.saveSettings();
 			
@@ -352,10 +367,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		}
 		case 2:{
 			
-			generalPageBar.saveSettings();
-			legendPage.saveSettings();
-			seriesPageBar.saveSettings();
-			axisPageBar.saveSettings();
+			gerneralPagePie.saveSettings();
+			legendPagePie.saveSettings();
+			seriesPagePie.saveSettings();
 			
 
 			List<PieDataTerm> data = ChartConfiguration.PIECHARTCONFIG.getPieTermList();

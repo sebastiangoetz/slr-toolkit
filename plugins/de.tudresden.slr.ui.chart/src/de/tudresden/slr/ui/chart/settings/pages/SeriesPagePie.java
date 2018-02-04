@@ -2,33 +2,31 @@ package de.tudresden.slr.ui.chart.settings.pages;
 
 
 	import java.util.ArrayList;
-	import java.util.Map;
-	import java.util.SortedMap;
+import java.util.Map;
+import java.util.SortedMap;
 
-	import org.eclipse.swt.SWT;
-	import org.eclipse.swt.events.MouseEvent;
-	import org.eclipse.swt.events.MouseListener;
-	import org.eclipse.swt.events.SelectionEvent;
-	import org.eclipse.swt.events.SelectionListener;
-	import org.eclipse.swt.graphics.RGB;
-	import org.eclipse.swt.layout.FillLayout;
-	import org.eclipse.swt.layout.GridData;
-	import org.eclipse.swt.layout.GridLayout;
-	import org.eclipse.swt.widgets.Button;
-	import org.eclipse.swt.widgets.Composite;
-	import org.eclipse.swt.widgets.Label;
-	import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 
-	import de.tudresden.slr.model.taxonomy.Term;
-	import de.tudresden.slr.ui.chart.logic.BarDataTerm;
-	import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
+import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-	import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
-	import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
+import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
 
-public class SeriesPageHeat extends Composite implements SelectionListener, MouseListener, Pages{
+public class SeriesPagePie extends Composite implements SelectionListener, MouseListener, Pages{
 
 		private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
 		private Button btnCheckButton;
@@ -45,7 +43,7 @@ public class SeriesPageHeat extends Composite implements SelectionListener, Mous
 		private ChartConfiguration settings = ChartConfiguration.PIECHARTCONFIG;	
 		private Button btnOneColor;
 		
-		public SeriesPageHeat(Composite parent, int style) {
+		public SeriesPagePie(Composite parent, int style) {
 			super(parent, style);
 			setLayout(new GridLayout(1, false));
 			
