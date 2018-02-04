@@ -153,6 +153,7 @@ public class PieChartGenerator
 		
 		
 		
+		
 		SeriesDefinition sdCity = SeriesDefinitionImpl.create( );
 		sd.getSeriesDefinitions( ).add( sdCity );
 		sdCity.getSeries( ).add( sePie );
