@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.birt.chart.model.attribute.Fill;
+import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.swt.graphics.RGB;
 
@@ -28,6 +29,8 @@ public class SeriesSettings {
 	private boolean seriesStacked = false; //Als Stacked rendern
 	private boolean seriesUseCustomColors = true; //false=no Custom Color, true=custom Colors
 	private ArrayList<Fill> seriesColor = new ArrayList<Fill>();
+	private int seriesExplosion = 5;
+	private Position seriesLabelPosition = Position.OUTSIDE_LITERAL;
 	
 	
 
@@ -87,6 +90,22 @@ public class SeriesSettings {
 	public void setSeriesUseCustomColors(boolean seriesUseCustomColors) {
 		this.seriesUseCustomColors = seriesUseCustomColors;
 	
+	}
+
+	public int getSeriesExplosion() {
+		return seriesExplosion;
+	}
+
+	public void setSeriesExplosion(int seriesExplosion) {
+		this.seriesExplosion = seriesExplosion;
+	}
+
+	public Position getSeriesLabelPosition() {
+		return seriesLabelPosition;
+	}
+
+	public void setSeriesLabelPosition(Position seriesLabelPosition) {
+		this.seriesLabelPosition = seriesLabelPosition;
 	}
 	
 	
