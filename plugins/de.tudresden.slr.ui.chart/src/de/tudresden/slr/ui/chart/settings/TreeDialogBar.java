@@ -1,5 +1,7 @@
 package de.tudresden.slr.ui.chart.settings;
 
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -32,7 +34,7 @@ public class TreeDialogBar extends Dialog implements SelectionListener{
 	private TreeViewer treeViewer;
 	private Term selectedTerm;
 	private Tree tree;
-	private SeriesPageBar seriesPageParent;
+	private TermSort termSort;
 
 	/**
 	 * Create the dialog.
@@ -48,8 +50,7 @@ public class TreeDialogBar extends Dialog implements SelectionListener{
 	 * Open the dialog.
 	 * @return the result
 	 */
-	public Object open(SeriesPageBar seriesPageParent) {
-		this.seriesPageParent = seriesPageParent;
+	public Map.Entry<Term,TermSort> open() {
 		createContents();
 		shlTerms.open();
 		shlTerms.layout();
@@ -59,7 +60,7 @@ public class TreeDialogBar extends Dialog implements SelectionListener{
 				display.sleep();
 			}
 		}
-		return selectedTerm;
+		return new  AbstractMap.SimpleEntry<Term,TermSort>(selectedTerm,termSort);
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class TreeDialogBar extends Dialog implements SelectionListener{
 		btnYear.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				seriesPageParent.termSort = TermSort.YEAR;
+				termSort = TermSort.YEAR;
 				shlTerms.dispose();
 			}
 		});
@@ -115,7 +116,7 @@ public class TreeDialogBar extends Dialog implements SelectionListener{
 		btnSubclasses.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				seriesPageParent.termSort  = TermSort.SUBCLASS;
+				termSort  = TermSort.SUBCLASS;
 				shlTerms.dispose();
 			}
 		});
