@@ -162,19 +162,19 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		generalPageBar = new GeneralPageBar(folderBarChart, SWT.NONE);
 		itemFolderBarChart_1.setControl(generalPageBar);
-		itemFolderBarChart_1.setText("General");
+		itemFolderBarChart_1.setText("General Settings");
 		
 		legendPageBar = new LegendPageBar(folderBarChart, SWT.NONE);
 		itemFolderBarChart_2.setControl(legendPageBar);
-		itemFolderBarChart_2.setText("Legend");
+		itemFolderBarChart_2.setText("Legend Settings");
 		
 		seriesPageBar = new SeriesPageBar(folderBarChart, SWT.NONE);
 		itemFolderBarChart_3.setControl(seriesPageBar);
-		itemFolderBarChart_3.setText("Series");
+		itemFolderBarChart_3.setText("Series Settings");
 		
 		axisPageBar = new AxisPageBar(folderBarChart, SWT.NONE);
 		itemFolderBarChart_4.setControl(axisPageBar);
-		itemFolderBarChart_4.setText("Axis");
+		itemFolderBarChart_4.setText("Axis Settings");
 	}
 	
 	private void buildBubbleSettings() {
@@ -193,9 +193,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		itemFolderBubbleChart_2.setControl(seriesPageBubble);
 		itemFolderBubbleChart_3.setControl(axisPageBubble);
 		
-		itemFolderBubbleChart_1.setText("General");
-		itemFolderBubbleChart_2.setText("Series");
-		itemFolderBubbleChart_3.setText("Axis");
+		itemFolderBubbleChart_1.setText("General Settings");
+		itemFolderBubbleChart_2.setText("Series Settings");
+		itemFolderBubbleChart_3.setText("Axis Settings");
 	}
 	
 	private void buildPieSettings() {
@@ -237,9 +237,9 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		
 		comboChartSelect = new Combo(northComposite, SWT.NONE | SWT.READ_ONLY);
 		comboChartSelect.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		comboChartSelect.add("Bar");
-		comboChartSelect.add("Bubble");
-		comboChartSelect.add("Heat");
+		comboChartSelect.add("Bar Chart");
+		comboChartSelect.add("Bubble Chart");
+		comboChartSelect.add("Pie Chart");
 		comboChartSelect.select(-1);
 
 		comboChartSelect.addSelectionListener(this);

@@ -247,7 +247,8 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 		private void setChartShowLabels(boolean value) {btnShowLables.setSelection(value);}
 		
 		private int getExplosion() {return explosion.getSelection();}
-		private void setExplosion(int explosion) {this.explosion.setSelection(explosion);}
+		private void setExplosion(int explosion) {this.explosion.setSelection(explosion);
+		lblExplosion.setText("Explosion: " + String.valueOf(this.explosion.getSelection()));}
 		
 		private void setPosition(Position position) {
 			if(position == Position.INSIDE_LITERAL) {
@@ -255,6 +256,7 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 			}
 			else {
 				comboLabelPosition.select(1);
+				
 			}
 		}
 		
@@ -276,7 +278,7 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			if(e.getSource() == explosion) {
-				lblExplosion.setText("Explotion: " + explosion.getSelection());
+				lblExplosion.setText("Explosion: " + String.valueOf(explosion.getSelection()));
 			}
 			
 		}
