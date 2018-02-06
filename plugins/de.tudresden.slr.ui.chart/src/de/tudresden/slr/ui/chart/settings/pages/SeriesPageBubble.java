@@ -50,7 +50,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		
 		btnGetYTerm = new Button(compositeFirst, SWT.NONE);
 		btnGetYTerm.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnGetYTerm.setText("Get Y Terms");
+		btnGetYTerm.setText("Select Y Term");
 		btnGetYTerm.addSelectionListener(this);
 		
 		lblySelectedTermIs = new Label(compositeFirst, SWT.NONE);
@@ -59,7 +59,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		
 		btnGetXTerm = new Button(compositeFirst, SWT.NONE);
 		btnGetXTerm.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnGetXTerm.setText("Get X Terms");
+		btnGetXTerm.setText("Select X Term");
 		btnGetXTerm.addSelectionListener(this);
 		
 		lblxNewLabel = new Label(compositeFirst, SWT.NONE);

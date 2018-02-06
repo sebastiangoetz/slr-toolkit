@@ -220,7 +220,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	
 	private void createShell() {
 		shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.RESIZE);
-		shell.setSize(750, 600);
+		shell.setSize(600, 500);
 		shell.setText(getText());
 		shell.setLayout(new GridLayout(1, false));
 	}
@@ -299,7 +299,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();
 			SortedMap<String, Integer> citeChartData = new TreeMap<>();
 			if(data.isEmpty()) {
-				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
+				MessageDialog.openError(shell, "No Items Selected", "No items selected, please select items at the 'Series Settings'.");
 				return;
 			}
 			for(BarDataTerm term: data) {
@@ -325,7 +325,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
 			List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
 			if(xdata.isEmpty() || ydata.isEmpty()) {
-				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");
+				MessageDialog.openError(shell, "No Items Selected", "No items selected, please select items at the 'Series Settings'.");
 				return;
 			}
 			

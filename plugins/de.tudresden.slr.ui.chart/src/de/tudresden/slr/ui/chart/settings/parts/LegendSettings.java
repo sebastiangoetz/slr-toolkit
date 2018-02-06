@@ -48,7 +48,7 @@ public class LegendSettings {
 		//Outline
 		private boolean legendShowOutline = true;
 		private LineStyle legendOutlineStyle = LineStyle.SOLID_LITERAL;
-		private int legendOutlineThickness = 1;
+		private int legendOutlineThickness = 3;
 		private RGB legendOutlineRGB = new RGB(0,0,0);
 
 		//Misc

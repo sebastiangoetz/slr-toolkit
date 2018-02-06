@@ -113,8 +113,7 @@ public class ChartDataProvider {
 		
 		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
 		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
-		for (Term searchTerm : subclasses) {
-			// TODO: just working for a single bibtex file at the moment			
+		for (Term searchTerm : subclasses) {		
 				for (Document d : getDocumentList(resources.get(0))) {
 					for (Term t : getDimensionsForDocument(d)) {
 						boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
@@ -124,7 +123,10 @@ public class ChartDataProvider {
 							countOfPapersPerSubTerm.put(name, count + 1);
 						}
 					}
-				}			
+				}
+				if(!countOfPapersPerSubTerm.containsKey(searchTerm.getName())) {
+					countOfPapersPerSubTerm.put(searchTerm.getName(), 0);
+				}
 		}
 		return countOfPapersPerSubTerm;
 	}

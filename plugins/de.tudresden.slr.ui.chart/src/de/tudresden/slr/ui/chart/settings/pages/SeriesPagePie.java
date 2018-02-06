@@ -53,9 +53,9 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 			compositeFirst.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 			
 			btnNewButton = new Button(compositeFirst, SWT.NONE);
-			btnNewButton.setText("Get Term");
+			btnNewButton.setText("Select Term");
 			
-			lblSelectedTermIs = new Label(compositeFirst, SWT.NONE);
+			lblSelectedTermIs = new Label(compositeFirst, SWT.CENTER);
 			GridData gd_lblSelectedTermIs = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 			gd_lblSelectedTermIs.widthHint = 367;
 			lblSelectedTermIs.setLayoutData(gd_lblSelectedTermIs);
@@ -208,15 +208,18 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 			SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);	
 			for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
 				pieTermList.add(new PieDataTerm(entry.getKey(), entry.getValue()));
-				list.add(entry.getKey() + " (" +entry.getValue() + "");
+				list.add(entry.getKey() + " (" +entry.getValue() + ")");
 			}		
 		}
 
 		private void refresh() {
 			int index = list.getSelectionIndex();
+			if(index >= 0) {
 			labelShowColor.setBackground(pieTermList.get(index).getColor(this.getDisplay()));
 			btnCheckButton.setSelection(pieTermList.get(index).isDisplayed());
 			this.layout();
+			}
+			
 		}
 		
 		@Override
