@@ -16,15 +16,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
-import org.eclipse.swt.widgets.Scale;
 
-public class GerneralPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
+public class GeneralPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2, lblBubbles;
 	private Text text;
@@ -33,10 +33,10 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 	private Spinner spinnerMinSize;
 	private Scale bubbleScale;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.BUBBLECHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.BUBBLECHARTCONFIG.getBlockSettings();
+	private GeneralSettings settingsGeneral = BubbleChartConfiguration.get().getGeneralSettings();
+	private BlockSettings settingsBlock = BubbleChartConfiguration.get().getBlockSettings();
 	
-	public GerneralPageBubble(Composite parent, int style) {
+	public GeneralPageBubble(Composite parent, int style) {
 		
 		super(parent, SWT.NONE);
 		
@@ -156,10 +156,10 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if(e.getSource() == labelShowColor) {
-			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor);
+			PageSupport.openAndGetColor(this.getParent(), labelShowColor);
 		}
 		if(e.getSource() == labelShowColor2) {
-			RGB rgb = PageSupport.openAndGetColor(this.getParent(), labelShowColor2);
+			PageSupport.openAndGetColor(this.getParent(), labelShowColor2);
 		}		
 	}
 	@Override
@@ -172,7 +172,8 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 		settingsGeneral.setChartTitleItalic(getItalic());
 		settingsGeneral.setChartTitleUnderline(getUnterline());
 		settingsGeneral.setChartShowLabel(spinnerMinSize.getSelection());
-	
+		settingsGeneral.setChartBubbleScaling(getScalingFactor());
+		
 		settingsBlock.setBlockBackgroundRGB(getBlockColor());
 		
 		if(getBlockOutline() == null)
@@ -192,6 +193,7 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 		setUnterline(settingsGeneral.isChartTitleUnderline());
 		setBlockColor(settingsBlock.getBlockBackgroundRGB());
 		spinnerMinSize.setSelection(settingsGeneral.getChartShowLabel());
+		setScalingFactor(settingsGeneral.getChartBubbleScaling());
 		
 		if(settingsBlock.isBlockShowOutline())
 			setBlockOutline(settingsBlock.getBlockOutlineStyle());
@@ -223,8 +225,8 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 	private RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
 	private void setBlockColor(RGB rgb) {labelShowColor2.setBackground(new Color(this.getDisplay(), rgb));}
 	
-	private void setScalingFactor(double value) {bubbleScale.setSelection((int)value*20);}
-	private double getScatlingFactor() {
+	private void setScalingFactor(double value) {bubbleScale.setSelection((int)(value*20));}
+	private double getScalingFactor() {
 		int selection = bubbleScale.getSelection();
 		double value = selection / 20.0;
 		return value+0.05;
@@ -239,7 +241,7 @@ public class GerneralPageBubble extends Composite implements SelectionListener, 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		if(e.getSource() == bubbleScale) {
-			lblBubbles.setText("Bubbles Scaling Factor: "+ String.format("%.2f", getScatlingFactor()));
+			lblBubbles.setText("Bubbles Scaling Factor: "+ String.format("%.2f", getScalingFactor()));
 		}
 		
 	}

@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.List;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BubbleDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
 
 public class SeriesPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
@@ -33,7 +33,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 	public Term selectedTerm_X;
 	public Term selectedTerm_Y;
 	private ChartDataProvider chartDataProvider = new ChartDataProvider();	
-	private ChartConfiguration settings = ChartConfiguration.BUBBLECHARTCONFIG;
+	private BubbleChartConfiguration settings = BubbleChartConfiguration.get();
 	private java.util.List<BubbleDataTerm> termDataY;
 	private java.util.List<BubbleDataTerm> termDataX;
 	private Button btnShowInChartX;

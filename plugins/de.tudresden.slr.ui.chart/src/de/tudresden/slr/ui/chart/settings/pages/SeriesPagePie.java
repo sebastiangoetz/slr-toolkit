@@ -23,9 +23,8 @@ import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.PieChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
-import de.tudresden.slr.ui.chart.settings.TreeDialogBubble;
 
 public class SeriesPagePie extends Composite implements SelectionListener, MouseListener, Pages{
 
@@ -41,7 +40,7 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 		private Composite compositeFirst;
 		private Label lblSelectedTermIs;
 		
-		private ChartConfiguration settings = ChartConfiguration.PIECHARTCONFIG;	
+		private PieChartConfiguration settings = PieChartConfiguration.get();	
 		private Button btnOneColor;
 		private Label lblColor;
 		
@@ -240,15 +239,15 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 		public void saveSettings() {
 			
 			settings.setPieTermList(pieTermList);
-			settings.setSelectedTerm(selectedTerm);
-			settings.setTermSort(termSort);
+			settings.setPieSelectedTerm(selectedTerm);
+			settings.setPieTermSort(termSort);
 				
 		}
 		@Override
 		public void loadSettings() {
 			pieTermList = settings.getPieTermList();
-			selectedTerm = settings.getSelectedTerm();
-			termSort = settings.getTermSort();
+			selectedTerm = settings.getPieSelectedTerm();
+			termSort = settings.getPieTermSort();
 			
 			if(!pieTermList.isEmpty()) {								
 				if(termSort == TermSort.YEAR)

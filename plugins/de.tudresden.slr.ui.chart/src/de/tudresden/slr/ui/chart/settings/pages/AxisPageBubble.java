@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 
 public class AxisPageBubble extends Composite implements Pages, SelectionListener{
@@ -23,7 +23,7 @@ public class AxisPageBubble extends Composite implements Pages, SelectionListene
 	private Text yTitle;
 	private Button btnAutoX, button0 , button30, button45 , button60, button90;
 	
-	private AxisSettings settings = ChartConfiguration.BUBBLECHARTCONFIG.getAxisSettings();
+	private AxisSettings settings = BubbleChartConfiguration.get().getAxisSettings();
 
 	/**
 	 * Create the composite.

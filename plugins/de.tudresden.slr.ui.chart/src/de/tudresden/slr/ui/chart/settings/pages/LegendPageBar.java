@@ -11,21 +11,21 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
-import org.eclipse.swt.widgets.Button;
 
 public class LegendPageBar extends Composite implements SelectionListener, MouseListener, Pages{
 	private Combo comboOutline, comboPosition;
 	private Label labelColorShow, lblMaxPercent;
 	private Scale scale;
 	
-	LegendSettings settings = ChartConfiguration.BARCHARTCONFIG.getLegendSettings();
+	LegendSettings settings = BarChartConfiguration.get().getLegendSettings();
 	private Label lblLegend;
 	private Button btnEnableLegend;
 	
@@ -135,7 +135,7 @@ public class LegendPageBar extends Composite implements SelectionListener, Mouse
 			settings.setLegendShowOutline(true);
 			settings.setLegendOutlineStyle(getOutline());
 		}
-		
+		settings.setLegendisActive(btnEnableLegend.getSelection());
 		settings.setLegendShadowRGB(getColor());
 		settings.setLegendBackgroundRGB(getColor());		
 		settings.setLegendPosition(getPosition());		
@@ -145,10 +145,11 @@ public class LegendPageBar extends Composite implements SelectionListener, Mouse
 	
 	@Override
 	public void loadSettings() {
+		
 		setColor(settings.getLegendBackgroundRGB());
 		setPosition(settings.getLegendPosition());
 		setPercent(settings.getLegendMaxPercent());
-		//btnEnableLegend.setSelection(settings.getLegendEnable());
+		btnEnableLegend.setSelection(settings.isLegendisActive());
 		if(settings.isLegendShowOutline())
 			setOutline(settings.getLegendOutlineStyle());
 		else

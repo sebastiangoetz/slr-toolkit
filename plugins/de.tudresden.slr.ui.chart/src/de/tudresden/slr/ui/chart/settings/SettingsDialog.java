@@ -37,8 +37,8 @@ import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.AxisPageBubble;
 import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBar;
-import de.tudresden.slr.ui.chart.settings.pages.GerneralPageBubble;
-import de.tudresden.slr.ui.chart.settings.pages.GerneralPagePie;
+import de.tudresden.slr.ui.chart.settings.pages.GeneralPageBubble;
+import de.tudresden.slr.ui.chart.settings.pages.GeneralPagePie;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPageBar;
 import de.tudresden.slr.ui.chart.settings.pages.LegendPagePie;
 import de.tudresden.slr.ui.chart.settings.pages.SeriesPageBar;
@@ -63,11 +63,11 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private LegendPageBar legendPageBar;
 	private SeriesPageBar seriesPageBar;
 	private AxisPageBar axisPageBar;
-	private GerneralPagePie gerneralPagePie;
+	private GeneralPagePie gerneralPagePie;
 	private LegendPagePie legendPagePie;
 	private SeriesPagePie  seriesPagePie;
 	
-	private GerneralPageBubble gerneralPageBubble;
+	private GeneralPageBubble gerneralPageBubble;
 	private SeriesPageBubble seriesPageBubble;
 	private AxisPageBubble axisPageBubble;
 	
@@ -185,7 +185,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		TabItem itemFolderBubbleChart_2 = new TabItem(folderBubbleChart, SWT.NONE);
 		TabItem itemFolderBubbleChart_3 = new TabItem(folderBubbleChart, SWT.NONE);
 		
-		gerneralPageBubble = new GerneralPageBubble(folderBubbleChart, SWT.NONE);
+		gerneralPageBubble = new GeneralPageBubble(folderBubbleChart, SWT.NONE);
 		seriesPageBubble = new SeriesPageBubble(folderBubbleChart, SWT.NONE);
 		axisPageBubble = new AxisPageBubble(folderBubbleChart, SWT.NONE);
 		
@@ -210,7 +210,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 		itemFolderPieChart_3.setText("Series Settings");
 		
 		
-		gerneralPagePie = new GerneralPagePie(folderPieChart, SWT.NONE);
+		gerneralPagePie = new GeneralPagePie(folderPieChart, SWT.NONE);
 		itemFolderPieChart_1.setControl(gerneralPagePie);
 		legendPagePie = new LegendPagePie(folderPieChart, SWT.NONE);
 		itemFolderPieChart_2.setControl(legendPagePie);
@@ -296,7 +296,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			axisPageBar.saveSettings();
 			
 
-			List<BarDataTerm> data = ChartConfiguration.BARCHARTCONFIG.getBarTermList();
+			List<BarDataTerm> data = BarChartConfiguration.get().getBarTermList();
 			SortedMap<String, Integer> citeChartData = new TreeMap<>();
 			if(data.isEmpty()) {
 				MessageDialog.openError(shell, "No Items Selected", "No items selected, please select items at the 'Series Settings'.");
@@ -320,7 +320,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			seriesPageBubble.saveSettings();
 			axisPageBubble.saveSettings();
 			
-			ChartConfiguration bubbleSettings = ChartConfiguration.BUBBLECHARTCONFIG;
+			BubbleChartConfiguration bubbleSettings = BubbleChartConfiguration.get();
 			
 			List<BubbleDataTerm> xdata = bubbleSettings.getBubbleTermListX();
 			List<BubbleDataTerm> ydata = bubbleSettings.getBubbleTermListY();
@@ -372,7 +372,7 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 			seriesPagePie.saveSettings();
 			
 
-			List<PieDataTerm> data = ChartConfiguration.PIECHARTCONFIG.getPieTermList();
+			List<PieDataTerm> data = PieChartConfiguration.get().getPieTermList();
 			SortedMap<String, Integer> pieChartData = new TreeMap<>();
 			if(data.isEmpty()) {
 				MessageDialog.openError(shell, "No Items Selected", "No Items Selected, please select items at the Series-Page ");

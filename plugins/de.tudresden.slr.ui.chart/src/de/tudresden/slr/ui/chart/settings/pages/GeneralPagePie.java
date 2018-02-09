@@ -1,7 +1,5 @@
 package de.tudresden.slr.ui.chart.settings.pages;
 
-import javax.print.attribute.standard.RequestingUserName;
-
 import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.swt.SWT;
@@ -19,16 +17,15 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.PieChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
-import org.eclipse.swt.widgets.Scale;
-
-public class GerneralPagePie extends Composite implements SelectionListener, MouseListener, Pages{
+public class GeneralPagePie extends Composite implements SelectionListener, MouseListener, Pages{
 
 	private Label labelShowColor, labelShowColor2, lblExplosion;
 	private Text text;
@@ -36,13 +33,13 @@ public class GerneralPagePie extends Composite implements SelectionListener, Mou
 	private Button btnUnderline, btnBolt, btnItalic, btnShowLables;
 	private Scale explosion;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.PIECHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.PIECHARTCONFIG.getBlockSettings();
-	private SeriesSettings settingsSeries = ChartConfiguration.PIECHARTCONFIG.getSeriesSettings();
+	private GeneralSettings settingsGeneral = PieChartConfiguration.get().getGeneralSettings();
+	private BlockSettings settingsBlock = PieChartConfiguration.get().getBlockSettings();
+	private SeriesSettings settingsSeries = PieChartConfiguration.get().getSeriesSettings();
 	private Label lblLabelPosition;
 	private Combo comboLabelPosition;
 	
-	public GerneralPagePie(Composite parent, int style) {
+	public GeneralPagePie(Composite parent, int style) {
 		
 		super(parent, SWT.NONE);
 		

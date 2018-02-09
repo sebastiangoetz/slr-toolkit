@@ -11,7 +11,7 @@ import org.eclipse.swt.graphics.RGB;
 public class LegendSettings {
 
 		
-		private LegendSettings() {
+		public LegendSettings() {
 		}
 		
 		public static LegendSettings get() {
@@ -19,22 +19,7 @@ public class LegendSettings {
 		}
 
 		private static LegendSettings LEGENDSETTINGS= new LegendSettings();
-		/*
-		private ClientArea legendArea;
-		private Direction legendDirection;
-		private int legendEllipsis;
-		private int legendHorizontalSpacing;
-		private int legendVerticalSpacing;
-		private LegendItemType legendItemType;
-		private double legendMaxPercent;
-		private Orientation legendOrientation;
-		private Position legendPosition;
-		private LineAttributes legendSeparator;
-		private Text legendText;
-		private Label legendTitle;
-		private double legendTitleMaxPercent;
-		private double legendWrappingSize;
-		*/
+
 		//Background
 		
 		private RGB legendBackgroundRGB = new RGB(155,155,155);
@@ -52,10 +37,11 @@ public class LegendSettings {
 		private RGB legendOutlineRGB = new RGB(0,0,0);
 
 		//Misc
+		private boolean legendisActive = true;
 		private String legendTitle = "Test";
-		//private Direction legendDirection = Direction.TOP_BOTTOM_LITERAL;
-		private LegendItemType legendItemType = LegendItemType.CATEGORIES_LITERAL; //Andere Einstellung ist Abfuck? :D
-		private double LegendMaxPercent = 0.3333; //Default 0,3333
+
+		private LegendItemType legendItemType = LegendItemType.CATEGORIES_LITERAL; 
+		private double LegendMaxPercent = 0.3333; 
 		private Position LegendPosition = Position.RIGHT_LITERAL;
 		//Separator
 		private boolean legendShowSeparator = false;
@@ -328,14 +314,15 @@ public class LegendSettings {
 			this.legendTitle = legendTitle;
 		}
 
-		/*public Direction getLegendDirection() {
-			return legendDirection;
+		public boolean isLegendisActive() {
+			return legendisActive;
 		}
 
-		public void setLegendDirection(Direction legendDirection) {
-			this.legendDirection = legendDirection;
+		public void setLegendisActive(boolean legendisActive) {
+			this.legendisActive = legendisActive;
 		}
-		*/
+
+
 		
 		
 }

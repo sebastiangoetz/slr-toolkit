@@ -5,7 +5,7 @@ import org.eclipse.birt.chart.model.attribute.TickStyle;
 
 public class AxisSettings {
 	
-	private AxisSettings() {
+	public AxisSettings() {
 	}
 	
 	public static AxisSettings get() {
@@ -28,7 +28,6 @@ public class AxisSettings {
 	private boolean xAxisTickBetweenCategories = true;
 	private double xAxisGapWidth = 0.1;
 	//y-Axis
-	private int yAxisRotation = 0;//raus
 	private boolean yAxisTitleActive = true;
 	private String yAxisTitle = "";
 	private int yAxisTitleSize = 12;
@@ -160,12 +159,5 @@ public class AxisSettings {
 		this.yAxisAutoStep = yAxisStepActive;
 	}
 	
-	
-	/*public int getyAxisRotation() {
-		return yAxisRotation;
-	}
 
-	public void setyAxisRotation(int yAxisRotation) {
-		this.yAxisRotation = yAxisRotation;
-	}*/
 }

@@ -42,12 +42,11 @@ import org.eclipse.birt.chart.model.layout.Plot;
 import org.eclipse.birt.chart.model.type.BarSeries;
 import org.eclipse.birt.chart.model.type.impl.BarSeriesImpl;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
-import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
 public class BarChartGenerator {
@@ -61,8 +60,7 @@ public class BarChartGenerator {
 	public final Chart createBar(Map<String, Integer> input, String title) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 		
-		ChartConfiguration cc = ChartConfiguration.BARCHARTCONFIG;//
-		PlotSettings ps = cc.getPlotSettings();
+		BarChartConfiguration cc = BarChartConfiguration.get();//
 		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
@@ -73,7 +71,7 @@ public class BarChartGenerator {
 		cwaBar.setType(gs.getChartType());
 		cwaBar.setSubType(gs.getChartSubType()); //$NON-NLS-1$
 		cwaBar.setOrientation(Orientation.VERTICAL_LITERAL);
-
+		
 		// Plot
 		cwaBar.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRGB().red, bs.getBlockBackgroundRGB().green, bs.getBlockBackgroundRGB().blue));
 		cwaBar.getBlock().getOutline().setVisible(bs.isBlockShowOutline());
@@ -83,13 +81,7 @@ public class BarChartGenerator {
 		
 		
 		Plot p = cwaBar.getPlot();
-		p.getClientArea().setBackground(ColorDefinitionImpl.create(ps.getPlotBackgroundRGB().red, ps.getPlotBackgroundRGB().green, ps.getPlotBackgroundRGB().blue));
-		p.getClientArea().setShadowColor(ColorDefinitionImpl.create(ps.getPlotShadowRGB().red, ps.getPlotShadowRGB().green, ps.getPlotShadowRGB().blue));
-		p.getClientArea().getInsets().set(ps.getPlotInsetTop(), ps.getPlotInsetLeft(), ps.getPlotInsetBottom(), ps.getPlotInsetRight());
-		p.setHorizontalSpacing(ps.getPlotHorizontalSpacing());
-		p.setVerticalSpacing(ps.getPlotVerticalSpacing());
-		
-		
+
 		// Title
 		if(gs.getChartTitle().equals("")) {
 		gs.setChartTitle(title);
@@ -104,6 +96,7 @@ public class BarChartGenerator {
 		
 		// Legend
 		Legend lg = cwaBar.getLegend();
+		lg.setVisible(ls.isLegendisActive());
 		//lg.setVisible(false);
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
 		lg.getTitle().getCaption().setValue(ls.getLegendTitle());
@@ -142,7 +135,7 @@ public class BarChartGenerator {
 		lg.setTitlePosition(ls.getLegendTitlePosition());
 		lg.setWrappingSize(ls.getLegendWrappingSize());
 		
-		lg.getTitle().getCaption().setValue("Hallo");
+		
 		// X-Axis
 		Axis xAxisPrimary = cwaBar.getPrimaryBaseAxes()[0];
 		
@@ -155,14 +148,13 @@ public class BarChartGenerator {
 		xAxisPrimary.getLabel().getCaption().getFont().setRotation(as.getxAxisRotation());
 		
 		
-		if(as.getxAxisTitle().equals("")) {
-			as.setxAxisTitle(title.substring(25));
-		}
+		
+		System.out.println();
 		xAxisPrimary.getTitle().getCaption().setValue(as.getxAxisTitle());
 		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getxAxisTitleSize());
 		xAxisPrimary.getTitle().setVisible(as.isxAxisTitleActive());
 		xAxisPrimary.getScale().setTickBetweenCategories(as.isxAxisTickBetweenCategories());
-		xAxisPrimary.setGapWidth(as.getxAxisGapWidth());
+		
 		
 		//TODO: Find a more intelligent way to set the rotation...
 		//Rotate labels even further if we have many bars
@@ -246,7 +238,7 @@ public class BarChartGenerator {
 		
 		xAxisPrimary.getSeriesDefinitions().add(sdX);
 		sdX.getSeries().add(seCategory);
-
+		
 		
 		// Y-Series
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();

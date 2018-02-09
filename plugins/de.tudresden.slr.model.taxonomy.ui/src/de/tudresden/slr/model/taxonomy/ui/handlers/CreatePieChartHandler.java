@@ -75,7 +75,7 @@ public class CreatePieChartHandler implements IHandler {
 			view.getPreview().setDataPresent(true);
 			ChartDataProvider provider = new ChartDataProvider();
 			Term input = (Term) currentSelection.getFirstElement();
-			Map<String, Integer> citeChartData = provider.calculateNumberOfCitesPerYearForClass(input);
+			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
 			Chart citeChart = ChartGenerator.createPie(citeChartData);
 			view.setAndRenderChart(citeChart);
 		} else {

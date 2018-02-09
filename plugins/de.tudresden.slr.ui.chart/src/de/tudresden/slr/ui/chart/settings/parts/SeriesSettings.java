@@ -13,7 +13,7 @@ import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 
 public class SeriesSettings {
 	
-	private SeriesSettings() {
+	public SeriesSettings() {
 	}
 	
 	public static SeriesSettings get() {
@@ -26,12 +26,12 @@ public class SeriesSettings {
 	
 	//Y-Series
 	private boolean seriesTranslucent = false;
-	private boolean seriesStacked = false; //Als Stacked rendern
+	private boolean seriesStacked = false;
 	private boolean seriesUseCustomColors = true; //false=no Custom Color, true=custom Colors
 	private ArrayList<Fill> seriesColor = new ArrayList<Fill>();
 	private int seriesExplosion = 5;
 	private Position seriesLabelPosition = Position.OUTSIDE_LITERAL;
-	
+
 	
 
 
@@ -107,6 +107,7 @@ public class SeriesSettings {
 	public void setSeriesLabelPosition(Position seriesLabelPosition) {
 		this.seriesLabelPosition = seriesLabelPosition;
 	}
-	
+
+
 	
 }
