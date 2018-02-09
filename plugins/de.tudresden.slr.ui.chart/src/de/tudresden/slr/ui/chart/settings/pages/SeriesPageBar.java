@@ -41,6 +41,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 	
 	private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
 	private Button btnOneColor;
+	private Label lblColor;
 	
 	public SeriesPageBar(Composite parent, int style) {
 		super(parent, style);
@@ -67,7 +68,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		compositeCentre.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true, 1, 1));
 		
 		list = new List(compositeCentre, SWT.BORDER | SWT.V_SCROLL);
-		GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
+		GridData gd_list = new GridData(SWT.LEFT, SWT.FILL, true, true, 1, 1);
 		gd_list.widthHint = 400;
 		list.setLayoutData(gd_list);
 		list.setBounds(0, 0, 71, 68);
@@ -76,8 +77,12 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		Composite compositeNorth = new Composite(this, SWT.NONE);
 		compositeNorth.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
 		FillLayout fl_compositeNorth = new FillLayout(SWT.HORIZONTAL);
+		fl_compositeNorth.marginWidth = 5;
 		fl_compositeNorth.spacing = 5;
 		compositeNorth.setLayout(fl_compositeNorth);
+		
+		lblColor = new Label(compositeNorth, SWT.NONE);
+		lblColor.setText("Color: ");
 		
 		btnRadioButtonGrey = new Button(compositeNorth, SWT.RADIO);
 		btnRadioButtonGrey.setText("Grey");
@@ -148,6 +153,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 					}
 				}
 				list.setSelection(0);
+				btnRadioButtonRandom.setSelection(true);
 				refresh();
 			}	
 						
@@ -197,7 +203,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfPapersPerClass(selectedTerm);	
 		for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
 			barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
-			list.add(entry.getKey() + " (" +entry.getValue() + ")");
+			list.add("Subterm:    " + entry.getKey() +"     (" +entry.getValue()+" entries)");
 		}
 		
 	}
@@ -206,7 +212,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		SortedMap<String, Integer> sortedMap = chartDataProvider.calculateNumberOfCitesPerYearForClass(selectedTerm);	
 		for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
 			barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
-			list.add(entry.getKey() + " (" +entry.getValue() + ")");
+			list.add("Year:    "+ entry.getKey() + "    (" +entry.getValue() + " entries)");
 		}		
 	}
 
@@ -242,9 +248,10 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		termSort = settings.getTermSort();
 		
 		if(!barTermList.isEmpty()) {			
-			for(BarDataTerm entry :barTermList) {
-				list.add(entry.getTerm()+ " (" +entry.getSize()+ ")");
-			}
+			if(termSort == TermSort.YEAR)
+				buildListPerYear();
+			else
+				buildListPerSubclass();
 		}		
 	}
 	

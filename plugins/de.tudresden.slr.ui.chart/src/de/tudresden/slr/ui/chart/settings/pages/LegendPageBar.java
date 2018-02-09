@@ -15,18 +15,19 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
-import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
+import org.eclipse.swt.widgets.Button;
 
 public class LegendPageBar extends Composite implements SelectionListener, MouseListener, Pages{
-	private Text text;
 	private Combo comboOutline, comboPosition;
 	private Label labelColorShow, lblMaxPercent;
 	private Scale scale;
 	
 	LegendSettings settings = ChartConfiguration.BARCHARTCONFIG.getLegendSettings();
+	private Label lblLegend;
+	private Button btnEnableLegend;
 	
 	/**
 	 * Create the composite.
@@ -37,16 +38,16 @@ public class LegendPageBar extends Composite implements SelectionListener, Mouse
 		super(parent, style);
 		setLayout(new GridLayout(2, false));
 		
-		Label lblSetTitle = new Label(this, SWT.NONE);
-		GridData gd_lblSetTitle = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
-		gd_lblSetTitle.widthHint = 150;
-		lblSetTitle.setLayoutData(gd_lblSetTitle);
-		lblSetTitle.setText("Set Title");
+		lblLegend = new Label(this, SWT.NONE);
+		lblLegend.setText("Legend ");
 		
-		text = new Text(this, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		btnEnableLegend = new Button(this, SWT.CHECK);
+		btnEnableLegend.setText("Enable Legend");
 		
 		Label lblBackgroundColor = new Label(this, SWT.NONE);
+		GridData gd_lblBackgroundColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblBackgroundColor.widthHint = 150;
+		lblBackgroundColor.setLayoutData(gd_lblBackgroundColor);
 		lblBackgroundColor.setText("Background Color");
 		
 		labelColorShow = new Label(this, SWT.BORDER);
@@ -95,10 +96,6 @@ public class LegendPageBar extends Composite implements SelectionListener, Mouse
 
 		loadSettings();
 	}
-
-	
-	private String getTitle() {return text.getText();}
-	private void setTitle(String title) {text.setText(title);}
 	
 	private RGB getColor() {return labelColorShow.getBackground().getRGB();}
 	private void setColor(RGB rgb) {labelColorShow.setBackground(new Color(this.getDisplay(),rgb));}
@@ -142,16 +139,16 @@ public class LegendPageBar extends Composite implements SelectionListener, Mouse
 		settings.setLegendShadowRGB(getColor());
 		settings.setLegendBackgroundRGB(getColor());		
 		settings.setLegendPosition(getPosition());		
-		settings.setLegendMaxPercent(getPercent());		
-		settings.setLegendTitle(getTitle());				
+		settings.setLegendMaxPercent(getPercent());
+		//settings.setLegendEnable(btnEnableLegend.getSelection())
 	}
 	
 	@Override
 	public void loadSettings() {
-		setTitle(settings.getLegendTitle());
 		setColor(settings.getLegendBackgroundRGB());
 		setPosition(settings.getLegendPosition());
 		setPercent(settings.getLegendMaxPercent());
+		//btnEnableLegend.setSelection(settings.getLegendEnable());
 		if(settings.isLegendShowOutline())
 			setOutline(settings.getLegendOutlineStyle());
 		else

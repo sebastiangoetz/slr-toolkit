@@ -285,7 +285,7 @@ public class BubbleChartGenerator {
 	private void appendJsScript(StringBuilder jsValues, int a) {
 		jsValues.append("var count = 0;\n");
 		jsValues.append("var labelCount = 0;\n");
-		jsValues.append("var resizeFactor;\n");
+		jsValues.append("var resizeFactor = 0.5;\n");
 		jsValues.append("/**\n");
 		jsValues.append(" * Called before drawing each marker.\n");
 		jsValues.append(" * \n");

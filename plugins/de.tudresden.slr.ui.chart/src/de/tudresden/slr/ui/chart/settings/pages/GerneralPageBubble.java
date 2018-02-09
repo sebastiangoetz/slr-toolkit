@@ -4,6 +4,8 @@ import org.eclipse.birt.chart.model.attribute.LineStyle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
@@ -20,14 +22,16 @@ import org.eclipse.swt.widgets.Text;
 import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
+import org.eclipse.swt.widgets.Scale;
 
-public class GerneralPageBubble extends Composite implements  MouseListener, Pages{
+public class GerneralPageBubble extends Composite implements SelectionListener, MouseListener, Pages{
 
-	private Label labelShowColor, labelShowColor2;
+	private Label labelShowColor, labelShowColor2, lblBubbles;
 	private Text text;
 	private Combo comboTitleSize, comboBlockOutline;
 	private Button btnUnderline, btnBolt, btnItalic;
 	private Spinner spinnerMinSize;
+	private Scale bubbleScale;
 	
 	private GeneralSettings settingsGeneral = ChartConfiguration.BUBBLECHARTCONFIG.getGeneralSettings();
 	private BlockSettings settingsBlock = ChartConfiguration.BUBBLECHARTCONFIG.getBlockSettings();
@@ -46,13 +50,13 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 		grpTitleSettings.setLayout(new GridLayout(2, false));
 		
 		Label lblSetTitle = new Label(grpTitleSettings, SWT.NONE);
-		lblSetTitle.setText("Set Title");
+		lblSetTitle.setText("Chart Title");
 		
 		text = new Text(grpTitleSettings, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblFontSize = new Label(grpTitleSettings, SWT.NONE);
-		lblFontSize.setText("Font Size");
+		lblFontSize.setText("Title Font Size");
 		
 		comboTitleSize = new Combo(grpTitleSettings, SWT.READ_ONLY);
 		comboTitleSize.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -74,7 +78,7 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 		GridData gd_lblColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblColor.widthHint = 150;
 		lblColor.setLayoutData(gd_lblColor);
-		lblColor.setText("Color");
+		lblColor.setText("Title Color");
 		
 		labelShowColor = new Label(grpTitleSettings, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -107,7 +111,7 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 		GridData gd_lblNewLabel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblNewLabel.widthHint = 150;
 		lblNewLabel.setLayoutData(gd_lblNewLabel);
-		lblNewLabel.setText("Outline Style");
+		lblNewLabel.setText("Block Outline Style");
 		
 		comboBlockOutline = new Combo(grpBlockSettings, SWT.READ_ONLY);
 		comboBlockOutline.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -119,7 +123,7 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 		comboBlockOutline.select(0);
 		
 		Label lblColor_1 = new Label(grpBlockSettings, SWT.NONE);
-		lblColor_1.setText("Color");
+		lblColor_1.setText("Block Color");
 		
 		labelShowColor2 = new Label(grpBlockSettings, SWT.BORDER);
 		GridData gd_labelShowColor2 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -129,9 +133,21 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 		labelShowColor2.setBackground(PageSupport.getColor(parent, 0));
 		
 		Label lblLables = new Label(grpBlockSettings, SWT.NONE);
-		lblLables.setText("Lables");
+		lblLables.setText("Min. Label Value");
 		
 		spinnerMinSize = new Spinner(grpBlockSettings, SWT.BORDER);
+		spinnerMinSize.setPageIncrement(1);
+		spinnerMinSize.setMaximum(10000);
+		
+		lblBubbles = new Label(grpBlockSettings, SWT.NONE);
+		lblBubbles.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		lblBubbles.setText("Bubbles Scaling Factor");
+		
+		bubbleScale = new Scale(grpBlockSettings, SWT.NONE);
+		bubbleScale.setPageIncrement(1);
+		bubbleScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		bubbleScale.setMaximum(39);
+		bubbleScale.addSelectionListener(this);
 		labelShowColor2.addMouseListener(this);
 		
 		loadSettings();
@@ -206,6 +222,13 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 	
 	private RGB getBlockColor() {return labelShowColor2.getBackground().getRGB();}
 	private void setBlockColor(RGB rgb) {labelShowColor2.setBackground(new Color(this.getDisplay(), rgb));}
+	
+	private void setScalingFactor(double value) {bubbleScale.setSelection((int)value*20);}
+	private double getScatlingFactor() {
+		int selection = bubbleScale.getSelection();
+		double value = selection / 20.0;
+		return value+0.05;
+		}
 
 	@Override
 	protected void checkSubclass() {}
@@ -213,5 +236,17 @@ public class GerneralPageBubble extends Composite implements  MouseListener, Pag
 	public void mouseDoubleClick(MouseEvent e) {}
 	@Override
 	public void mouseDown(MouseEvent e) {}
+	@Override
+	public void widgetSelected(SelectionEvent e) {
+		if(e.getSource() == bubbleScale) {
+			lblBubbles.setText("Bubbles Scaling Factor: "+ String.format("%.2f", getScatlingFactor()));
+		}
+		
+	}
+	@Override
+	public void widgetDefaultSelected(SelectionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

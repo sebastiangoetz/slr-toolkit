@@ -38,6 +38,7 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 	private java.util.List<BubbleDataTerm> termDataX;
 	private Button btnShowInChartX;
 	private Button btnOneColor;
+	private Label lblColorYSeries;
 	
 	
 	public SeriesPageBubble(Composite parent, int style) {
@@ -96,7 +97,13 @@ public class SeriesPageBubble extends Composite implements SelectionListener, Mo
 		
 		Composite compositeSouth = new Composite(this, SWT.NONE);
 		compositeSouth.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		compositeSouth.setLayout(new GridLayout(5, false));
+		compositeSouth.setLayout(new GridLayout(6, false));
+		
+		lblColorYSeries = new Label(compositeSouth, SWT.NONE);
+		GridData gd_lblColorYSeries = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_lblColorYSeries.widthHint = 100;
+		lblColorYSeries.setLayoutData(gd_lblColorYSeries);
+		lblColorYSeries.setText("Color Y Series:");
 		
 		labelShowColor = new Label(compositeSouth, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);

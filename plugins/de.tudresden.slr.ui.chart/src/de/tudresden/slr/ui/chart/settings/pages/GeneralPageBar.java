@@ -44,13 +44,13 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		grpTitleSettings.setLayout(new GridLayout(2, false));
 		
 		Label lblSetTitle = new Label(grpTitleSettings, SWT.NONE);
-		lblSetTitle.setText("Set Title");
+		lblSetTitle.setText("Chart Title");
 		
 		text = new Text(grpTitleSettings, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblFontSize = new Label(grpTitleSettings, SWT.NONE);
-		lblFontSize.setText("Font Size");
+		lblFontSize.setText("Title Font Size");
 		
 		comboTitleSize = new Combo(grpTitleSettings, SWT.READ_ONLY);
 		comboTitleSize.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -72,7 +72,7 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		GridData gd_lblColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblColor.widthHint = 150;
 		lblColor.setLayoutData(gd_lblColor);
-		lblColor.setText("Color");
+		lblColor.setText("Title Color");
 		
 		labelShowColor = new Label(grpTitleSettings, SWT.BORDER);
 		GridData gd_labelShowColor = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -105,7 +105,7 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		GridData gd_lblNewLabel = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblNewLabel.widthHint = 150;
 		lblNewLabel.setLayoutData(gd_lblNewLabel);
-		lblNewLabel.setText("Outline Style");
+		lblNewLabel.setText("Block Outline Style");
 		
 		comboBlockOutline = new Combo(grpBlockSettings, SWT.READ_ONLY);
 		comboBlockOutline.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
@@ -117,7 +117,7 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		comboBlockOutline.select(0);
 		
 		Label lblColor_1 = new Label(grpBlockSettings, SWT.NONE);
-		lblColor_1.setText("Color");
+		lblColor_1.setText("Background Color");
 		
 		labelShowColor2 = new Label(grpBlockSettings, SWT.BORDER);
 		GridData gd_labelShowColor2 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -127,10 +127,10 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 		labelShowColor2.setBackground(PageSupport.getColor(parent, 0));
 		
 		Label lblLables = new Label(grpBlockSettings, SWT.NONE);
-		lblLables.setText("Lables");
+		lblLables.setText("Bar Labels");
 		
 		btnShowLables = new Button(grpBlockSettings, SWT.CHECK);
-		btnShowLables.setText("Show Lables");
+		btnShowLables.setText("Show Labels in Chart");
 		labelShowColor2.addMouseListener(this);
 		
 		loadSettings();
