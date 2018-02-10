@@ -1,6 +1,7 @@
 package de.tudresden.slr.ui.chart.logic;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -82,26 +83,56 @@ public class ChartDataProvider {
 	 *         assigned to
 	 */
 
-	public SortedMap<String, Integer> calculateNumberOfPapersPerClass(Term inputTerm) {
+	public SortedMap<String, Integer> calculateNumberOfPapersPerClass(Term inputTerm, SortedMap<String,Boolean> visibleMap) {
+		
 		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
 		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
 		for (Term searchTerm : subclasses) {
-			// TODO: just working for a single bibtex file at the moment
-			for (Document d : getDocumentList(resources.get(0))) {
-				for (Term t : getDimensionsForDocument(d)) {
-					boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
-					if (isTermFoundInPaperTaxonomy) {
-						String name = searchTerm.getName();
-						int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm.get(name) : 0;
-						countOfPapersPerSubTerm.put(name, count + 1);
+			// TODO: just working for a single bibtex file at the moment			
+				for (Document d : getDocumentList(resources.get(0))) {
+					for (Term t : getDimensionsForDocument(d)) {
+						boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
+						if (isTermFoundInPaperTaxonomy) {
+							String name = searchTerm.getName();
+							int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm.get(name) : 0;
+							countOfPapersPerSubTerm.put(name, count + 1);
+							
+						}
+					}
+				}			
+		}
+		
+		for(Map.Entry<String, Boolean> entry : visibleMap.entrySet())
+			if(!entry.getValue())
+				countOfPapersPerSubTerm.remove(entry.getKey());
+		
+		return countOfPapersPerSubTerm;
+	}
+	
+	public SortedMap<String, Integer> calculateNumberOfPapersPerClass(Term inputTerm) {
+		
+		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
+		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
+		for (Term searchTerm : subclasses) {		
+				for (Document d : getDocumentList(resources.get(0))) {
+					for (Term t : getDimensionsForDocument(d)) {
+						boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
+						if (isTermFoundInPaperTaxonomy) {
+							String name = searchTerm.getName();
+							int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm.get(name) : 0;
+							countOfPapersPerSubTerm.put(name, count + 1);
+						}
 					}
 				}
-			}
+				if(!countOfPapersPerSubTerm.containsKey(searchTerm.getName())) {
+					countOfPapersPerSubTerm.put(searchTerm.getName(), 0);
+				}
 		}
 		return countOfPapersPerSubTerm;
 	}
 
 	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(Term inputTerm) {
+		
 		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
 		boolean isTermFoundInPaperTaxonomy = false;
 		for (Document d : getDocumentList(resources.get(0))) {
@@ -113,6 +144,27 @@ public class ChartDataProvider {
 
 			}
 		}
+		return citesPerYear;
+	}
+	
+	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(Term inputTerm, SortedMap<String,Boolean> visibleMap) {
+		
+		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
+		boolean isTermFoundInPaperTaxonomy = false;
+		for (Document d : getDocumentList(resources.get(0))) {
+			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
+			if (isTermFoundInPaperTaxonomy) {
+				String year = d.getYear();
+				int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
+				citesPerYear.put(year, count + d.getCites());
+
+			}
+		}
+		
+		for(Map.Entry<String, Boolean> entry : visibleMap.entrySet())
+			if(!entry.getValue())
+				citesPerYear.remove(entry.getKey());
+		
 		return citesPerYear;
 	}
 
@@ -127,6 +179,7 @@ public class ChartDataProvider {
 			Term secondTerm) {
 		List<BubbleDataContainer> inputList = generatePairsForBubbleChart(
 				firstTerm, secondTerm);
+		
 		for (BubbleDataContainer b : inputList) {
 			for (Document d : getDocumentList(resources.get(0))) {
 				if ((SearchUtils.findTermInDocument(d, b.getxTerm()) != null)

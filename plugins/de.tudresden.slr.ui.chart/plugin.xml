@@ -27,6 +27,12 @@
                icon="icons/pdf_export.png"
                style="push">
          </command>
+         <command
+               commandId="de.tudresden.slr.ui.chart.settings"
+               icon="icons/settings.png"
+               label="Custom Settings"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -36,6 +42,11 @@
             defaultHandler="de.tudresden.slr.ui.chart.handlers.SaveAsPDFHandler"
             id="de.tudresden.slr.ui.chart.savechartaspdf"
             name="Save as PDF">
+      </command>
+      <command
+            defaultHandler="de.tudresden.slr.ui.chart.handlers.SettingsHandler"
+            id="de.tudresden.slr.ui.chart.settings"
+            name="Settings">
       </command>
    </extension>
 </plugin>
