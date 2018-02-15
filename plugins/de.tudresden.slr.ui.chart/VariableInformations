@@ -1,0 +1,95 @@
+Blockvariables
+#Chartbackground
+setBlockBackgroundRGB(RGB blockBackgroundRGB)
+#Outline = Umrandung Block
+public void setBlockShowOutline(boolean blockShowOutline)
+public void setBlockOutlineStyle(LineStyle blockOutlineStyle) ->DASH_DOTTED_LITERAL, DASHED_LITERAL, DOTTED_LITERAL, SOLID_LITERAL(default)
+public void setBlockOutlineThickness(int blockOutlineThickness)
+public void setBlockOutlineRGB(RGB blockOutlineRGB)
+
+Plotvariables
+#background
+setPlotBackgroundRGB(RGB plotBackgroundRGB)
+#Shadow
+public void setPlotShadowRGB(RGB plotShadowRGB)
+#Insets = Einr�cken Diagram
+public void setPlotInsetTop(double plotInsetTop)
+public void setPlotInsetLeft(double plotInsetLeft)
+public void setPlotInsetBottom(double plotInsetBottom)
+public void setPlotInsetRight(double plotInsetRight)
+#Spacing = Einr�cken der Werte
+public void setPlotHorizontalSpacing(int plotHorizontalSpacing)
+public void setPlotVerticalSpacing(int plotVerticalSpacing)
+
+Legendvariables
+#background
+setLegendBackgroundRGB(RGB legendBackgroundRGB)
+#Shadow
+public void setLegendShadowRGB(RGB legendShadowRGB)
+#Insets = Einr�cken Diagram
+public void setLegendInsetTop(double legendInsetTop)
+public void setLegendInsetLeft(double legendInsetLeft)
+public void setLegendInsetBottom(double legendInsetBottom)
+public void setLegendInsetRight(double legendInsetRight)
+#Outline = Umrandung Legende
+public void setLegendShowOutline(boolean legendShowOutline)
+public void setLegendOutlineStyle(LineStyle legendOutlineStyle) ->DASH_DOTTED_LITERAL, DASHED_LITERAL, DOTTED_LITERAL, SOLID_LITERAL(default)
+public void setLegendOutlineThickness(int legendOutlineThickness)
+public void setLegendOutlineRGB(RGB legendOutlineRGB)
+#Separator
+public void setLegendShowSeparator(boolean legendShowSeparator)
+public void setLegendSeparatorRGB(RGB legendSeparatorRGB)
+public void setLegendSeparatorStyle(LineStyle legendSeparatorStyle)
+public void setLegendSeparatorThickness(int legendSeparatorThickness)
+#weiteres
+public void setLegendMaxPercent(double legendMaxPercent) -> Default 0,3333
+public void setLegendOrientation(Orientation legendOrientation) -> Orientation.VERTICAL_LITERAL | HORIZONTAL
+public void setLegendPosition(Position legendPosition) -> Position.ABOVE, .BELOW, .INSIDE, .LEFT, .OUTSIDE, .RIGHT(Default) + _LITERAL
+#Text der Legende
+public void setLegendHorizontalAlignment(HorizontalAlignment legendHorizontalAlignment) -> HorizontalAlignment. CENTER, LEFT(Defaul), RIGHT + _LITERAL
+public void setLegendVerticalAlignment(VerticalAlignment legendVerticalAlignment) -> VerticalAlignment. BOTTOM, CENTER, TOP + _LITERAL
+public void setLegendTextRotation(double legendTextRotation)
+public void setLegendTextSize(float legendTextSize)
+public void setLegendTextBold(boolean legendTextBold)
+public void setLegendTextItalic(boolean legendTextItalic)
+public void setLegendTextStrikeThrough(boolean legendTextStrikeThrough)
+public void setLegendTextUnderline(boolean legendTextUnderline)
+public void setLegendWordWrap(boolean legendWordWrap)
+public void setLegendTitlePercent(double legendTitlePercent) -> 0.6 default
+public void setLegendTitlePosition(Position legendTitlePosition) -> Position Element siehe oben
+public void setLegendWrappingSize(double legendWrappingSize) -> wv Zeichen bis Zeilenumbruch 
+
+
+
+Allgemeine Variablen(Seite 1)
+
+- Type
+- SubType
+- Title -> chartTitleValue
+- Titleschrifteinstellungen: chartTitleSize, chartTitleItalic, chartTitleBold, chartTitleUnderline, chartTitleColor
+- Titlefarbe
+Blocksettings: Background, Outline, OutlineColor, OutlineStyle, OutlineThickness, OutlineRGB -> siehe oben
+
+#x-Axis
+public void setAxisFontSize(float axisFontSize)/raus
+public void setxAxisRotation(int xAxisRotation)/raus
+public void setxAxisTitleActive(boolean xAxisTitleActive)
+public void setxAxisTitle(String xAxisTitle)
+public void setxAxisTitleSize(int xAxisTitleSize)
+public void setxAxisTickStyle(TickStyle xAxisTickStyle) -> .ABOVE_LITERAL, .ACROSS_LITERAL, .BELOW_LITERAL/raus
+public void setxAxisIntersectionType(IntersectionType xAxisIntersectionStyle) -> IntersectionStyle.MIN_LITERAL oder .VALUE_LITERAL/raus
+public void setxAxisGapWidth(double xAxisGapWidth) -> Abstand von vorne bzw. hinten in %
+'
+#SeriesVariablen
+
+public void setSeriesTranslucent(boolean seriesTranslucent){ //"Durchscheinende" Farben
+public void setSeriesStacked(boolean seriesStacked) { //Als "Stacked" rendern
+public void setSeriesShowLabels(boolean seriesShowLabels) { //Zeigt Labels der Balken an
+public void setSeriesUseCustomColors(boolean seriesUseCustomColors) { //false=no Custom Color, true=custom Colors
+
+public void setSeriesColor(ArrayList<Fill> seriesColor) {
+		/*
+		seriesColor.add(ColorDefinitionImpl.create(0, 0, 255));
+		seriesColor.add(ColorDefinitionImpl.create(0, 255, 0));
+		seriesColor.add(ColorDefinitionImpl.create(255, 0, 0));
+		 */
