@@ -1,0 +1,578 @@
+package de.tudresden.slr.model.mendeley.api.authentication;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Map;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.jbibtex.BibTeXDatabase;
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.BibTeXParser;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+import org.jbibtex.TokenMgrException;
+import org.jbibtex.Value;
+
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
+import com.google.api.client.auth.oauth2.BrowserClientRequestUrl;
+import com.google.api.client.auth.oauth2.RefreshTokenRequest;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.auth.oauth2.TokenResponseException;
+import com.google.api.client.http.BasicAuthentication;
+import com.google.api.client.http.ByteArrayContent;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpContent;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.api.client.http.apache.ApacheHttpTransport;
+
+import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
+import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
+import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
+import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
+
+public class MendeleyClient {
+
+	private static final String oauth_request_url = "https://api.mendeley.com/oauth/authorize";
+	/**
+     * URL for requesting OAuth access tokens.
+     */
+    private static final String token_request_url = "https://api.mendeley.com/oauth/token";
+
+    /**
+     * Client ID of your client credential.  Change this to match whatever credential you have created.
+     */
+    private static final String client_id = "4335";
+
+    /**
+     * Client secret of your client credential.  Change this to match whatever credential you have created.
+     */
+    private static final String client_secret = "sSFcbUA38RS9Cpm7";
+    
+    /**
+     * Redirect URI
+     */
+    private static final String redirect_uri = "https://localhost";
+    
+    /*
+     * Authorization Code
+     */
+    private String auth_code = "";
+    
+    /*
+     * Access Token
+     */
+    private String access_token;
+    
+    /*
+     * Refresh Token
+     */
+    private String refresh_token;
+    
+    /*
+     * Expires At
+     */
+    private Calendar expires_at;
+    
+    protected AdapterFactoryEditingDomain editingDomain;
+    
+    private static final class InstanceHolder {
+      static final MendeleyClient INSTANCE = new MendeleyClient();
+      
+    }
+
+    // Verhindere die Erzeugung des Objektes über andere Methoden
+    private MendeleyClient () {}
+    // Eine nicht synchronisierte Zugriffsmethode auf Klassenebene.
+    public static MendeleyClient getInstance () {
+      return InstanceHolder.INSTANCE;
+    }
+    
+    public void setAccess_token(String access_token) {
+		this.access_token = access_token;
+	}
+    
+    public String getAccess_token() {
+		return access_token;
+	}
+    
+    public void setRefresh_token(String refresh_token) {
+		this.refresh_token = refresh_token;
+	}
+    
+    public String getRefresh_token() {
+		return refresh_token;
+	}
+    
+    public String getAuth_code() {
+		return auth_code;
+	}
+    
+    public void setAuth_code(String auth_code) {
+		this.auth_code = auth_code;
+	}
+    
+    public final String getAuthURL(){
+    	return 	oauth_request_url + "?" +
+    			"&client_id=" + client_id +
+    			"&redirect_uri=" + redirect_uri +
+    			"&response_type=code&scope=all";
+    }
+    
+    public String getAllDocumentsBibTex() {
+    	String resource_url = "https://api.mendeley.com/documents";
+    	
+    	HttpURLConnection resource_cxn;
+		try {
+			resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+			resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+	        resource_cxn.setRequestMethod("GET");
+	        resource_cxn.setRequestProperty("Accept","application/x-bibtex");
+	        
+	        InputStream resource = resource_cxn.getInputStream();
+	    	
+	        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+	        String line = null;
+	        String bibtex_str = "";
+	        while ((line = r.readLine()) != null) {
+	        	bibtex_str = bibtex_str + line;
+	        }
+	        return bibtex_str;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+		
+    }
+    
+    public String getAllDocumentsJSON() throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents";
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        
+        InputStream resource = resource_cxn.getInputStream();
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String json_str = "";
+        while ((line = r.readLine()) != null) {
+        	json_str = json_str + line;
+            //System.out.println(line);
+        }
+        
+        //parseDocumentStream(bibtex);
+        
+    	return json_str;
+    }
+    
+    public String getDocumentBibTex( String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents/" + id;
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        resource_cxn.setRequestProperty("Accept","application/x-bibtex");
+        
+        InputStream resource = resource_cxn.getInputStream();
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String json_str = "";
+        while ((line = r.readLine()) != null) {
+        	json_str = json_str + line;
+            //System.out.println(line);
+        }
+        
+        //parseDocumentStream(bibtex);
+        
+    	return json_str;
+    }
+    
+    public String getAllFolders() throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/folders";
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        
+        InputStream resource = resource_cxn.getInputStream();
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String json_str = "";
+        while ((line = r.readLine()) != null) {
+        	json_str = json_str + line;
+        }
+        
+    	return json_str;
+    }
+    
+    public MendeleyFolder[] getAllMendeleyFolders() throws MalformedURLException, TokenMgrException, IOException, ParseException{
+    	
+        String folders_str = this.getAllFolders();
+        Gson gson = new Gson();
+        MendeleyFolder[] m_folders = gson.fromJson(folders_str, MendeleyFolder[].class);
+		for(int i = 0; i < m_folders.length;i++){
+			String folder_content_str;
+			String folder_content_bibtex_str;
+			try {
+				folder_content_str = this.getDocumentsByFolderJSON(m_folders[i].getId());
+				folder_content_bibtex_str = this.getDocumentsByFolderBibTex(m_folders[i].getId());
+				BibTeXDatabase bibdb = this.parseStringToJBibTex(folder_content_bibtex_str);
+				m_folders[i].setBibtexDatabase(bibdb);
+				
+				MendeleyDocument[] folder_content = gson.fromJson(folder_content_str, MendeleyDocument[].class);
+				m_folders[i].setDocuments(folder_content);
+				m_folders[i].setType("Folder");
+			} catch (TokenMgrException | IOException | ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+		return m_folders;
+    }
+ 
+    
+    public String getDocumentsByFolderJSON(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id;
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        InputStream resource = resource_cxn.getInputStream();
+        
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String json_str = "";
+        while ((line = r.readLine()) != null) {
+        	json_str = json_str + line;
+            //System.out.println(line);
+        }
+        
+        //parseDocumentStream(bibtex);
+        System.out.println("Folder with id: " + id);
+        System.out.println(json_str);
+    	return json_str;
+    }
+    
+    public String getDocumentsByFolderBibTex(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id;
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        resource_cxn.setRequestProperty("Accept","application/x-bibtex");
+        InputStream resource = resource_cxn.getInputStream();
+        
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String bibtex_str = "";
+        while ((line = r.readLine()) != null) {
+        	bibtex_str = bibtex_str + line;
+            //System.out.println(line);
+        }
+        
+        //parseDocumentStream(bibtex);
+        System.out.println("Folder with id: " + id);
+        System.out.println(bibtex_str);
+    	return bibtex_str;
+    }
+    
+    public void displayAuthorizationUserInterface(Shell shell){
+    	/*
+    	MendeleyOAuthDialog oauth_D = new MendeleyOAuthDialog(shell);
+		oauth_D.create();
+		oauth_D.open();
+		*/
+    	String url = new BrowserClientRequestUrl(
+    		      "https://server.example.com/authorize", "s6BhdRkqt3").setState("xyz")
+    		      .setRedirectUri("https://client.example.com/cb").build();
+		WizardDialog wizardDialog = new WizardDialog(shell,
+	            new MSyncWizard());
+        if (wizardDialog.open() == Window.OK) {
+            System.out.println("Ok pressed");
+        } else {
+            System.out.println("Cancel pressed");
+        }
+    }
+    
+    public void requestAccessToken(String code) throws IOException, TokenMgrException, ParseException {
+	    try {
+	      TokenResponse response =
+	          new AuthorizationCodeTokenRequest(new NetHttpTransport(), new JacksonFactory(),
+	              new GenericUrl("https://api.mendeley.com/oauth/token"),code)
+	              .setRedirectUri("https://localhost")
+	              .setGrantType("authorization_code")
+	              .setClientAuthentication(
+	                  new BasicAuthentication("4335", "sSFcbUA38RS9Cpm7")).execute();
+	      System.out.println("Access token: " + response.getAccessToken());
+	      this.access_token = response.getAccessToken();
+	      this.refresh_token = response.getRefreshToken();
+	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
+	      refreshTokenIfNecessary();
+	      System.out.println("Access Token successfully acquired");
+	      initializeEditingDomain();
+	    } catch (TokenResponseException e) {
+	      if (e.getDetails() != null) {
+	        System.err.println("Error: " + e.getDetails().getError());
+	        if (e.getDetails().getErrorDescription() != null) {
+	          System.err.println(e.getDetails().getErrorDescription());
+	        }
+	        if (e.getDetails().getErrorUri() != null) {
+	          System.err.println(e.getDetails().getErrorUri());
+	        }
+	      } else {
+	        System.err.println(e.getMessage());
+	      }
+	    }
+    }
+    
+    public void requestRefreshAccessToken(String code) throws IOException, TokenMgrException, ParseException {
+	    try {
+	      RefreshTokenRequest request =
+	          new RefreshTokenRequest(new NetHttpTransport(), new JacksonFactory(),
+	              new GenericUrl("https://api.mendeley.com/oauth/token"),code)
+	          	  .setRefreshToken(code)
+	          	  .set("redirect_uri", "https://localhost")
+	              .setGrantType("refresh_token")
+	              .setClientAuthentication(
+	                  new BasicAuthentication("4335", "sSFcbUA38RS9Cpm7"));
+	      TokenResponse response = request.execute();
+	      System.out.println("Access token: " + response.getAccessToken());
+	      this.access_token = response.getAccessToken();
+	      this.refresh_token = response.getRefreshToken();
+	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
+	      refreshTokenIfNecessary();
+	      System.out.println("Access Token successfully acquired");
+	    } catch (TokenResponseException e) {
+	      if (e.getDetails() != null) {
+	        System.err.println("Error: " + e.getDetails().getError());
+	        if (e.getDetails().getErrorDescription() != null) {
+	          System.err.println(e.getDetails().getErrorDescription());
+	        }
+	        if (e.getDetails().getErrorUri() != null) {
+	          System.err.println(e.getDetails().getErrorUri());
+	        }
+	      } else {
+	        System.err.println(e.getMessage());
+	      }
+	    }
+    }
+    
+    private Calendar generateExpiresAtFromExpiresIn(int expiresIn) {
+        final Calendar c = Calendar.getInstance();
+        c.add(Calendar.SECOND, expiresIn);
+        return c;
+    }
+    
+    private void refreshTokenIfNecessary(){
+    	final Calendar now = Calendar.getInstance();
+    	System.out.println("It is " + now.getTime());
+    	System.out.println("Key will expire at: " + expires_at.getTime() );
+    	if(now.before(expires_at)){
+    		final Calendar refresh_due = Calendar.getInstance();
+    		refresh_due.setTimeInMillis(expires_at.getTimeInMillis());
+    		refresh_due.add(Calendar.SECOND, -1200);
+    		System.out.print("Refresh Token will be used afer " + refresh_due.getTime());
+    		if(now.after(refresh_due)){
+    			System.out.println("This Key Must be Refreshed Maaaan");
+    			try {
+					this.requestRefreshAccessToken(this.refresh_token);
+				} catch (TokenMgrException | IOException | ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		} 		
+    	}
+    	
+    	if(now.after(expires_at)){
+    		// TODO open MendeleyOAUthDialog
+    	}
+    }
+    
+    protected void initializeEditingDomain() {
+		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
+		AdapterFactoryContentProvider contentProvider = new AdapterFactoryContentProvider(editingDomain.getAdapterFactory());
+		for (Resource resource : editingDomain.getResourceSet().getResources()) {
+			if(resource instanceof BibtexResourceImpl){
+				BibtexResourceImpl bibResource = (BibtexResourceImpl)resource;
+				for(EObject econ : bibResource.getContents()){
+					DocumentImpl document = (DocumentImpl) econ;
+					System.out.println("Hallo");
+				}
+			}
+			System.out.println("Hallo");
+		}
+		System.out.println("Hallo");
+	}
+    
+    public BibTeXDatabase parseStringToJBibTex(String inputAPI){
+    	
+    	BibTeXDatabase db = new BibTeXDatabase();
+    	try(Reader reader = new StringReader(inputAPI)){
+    		BibTeXParser parser = new BibTeXParser();
+    		db = parser.parse(reader);
+    		
+    		//TODO: Mendeley API parsing error - Parameter: title - additional characters '{' and '}'
+    		for(BibTeXEntry entry: db.getEntries().values()){
+    			String fixedTitleStr = entry.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
+    			Title fixedTitleValue = new Title(fixedTitleStr);
+    			entry.removeField(new Key("title"));
+    			entry.addField(new Key("title"), fixedTitleValue);
+    		}
+    		
+    	}catch (TokenMgrException | IOException |ParseException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+    	Map<Key, BibTeXEntry> entryMap = Collections.emptyMap();
+		entryMap = db.getEntries();
+		
+		System.out.println("-- List of Keys from Mendeley Documens:");
+		for(BibTeXEntry entry : entryMap.values()){
+			System.out.println(entry.getKey().getValue());
+			
+		}
+		
+		return db;
+    	
+    }
+    
+    public void updateDocument(MendeleyDocument document ){
+    	HttpRequestFactory requestFactory = new ApacheHttpTransport().createRequestFactory();
+    	HttpRequest request;
+    	HttpRequest patch_request;
+    	
+    	Gson gson = new GsonBuilder().create();
+    	String json_body = gson.toJson(document);
+    	String document_id = document.getId();
+    	String resource_url = "https://api.mendeley.com/documents/" + document_id;
+    	GenericUrl gen_url = new GenericUrl(resource_url);
+    	
+    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
+    	
+		try {
+			patch_request = requestFactory.buildPatchRequest(gen_url, content);
+			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
+			
+			patch_request.getHeaders().setContentType("application/vnd.mendeley-document.1+json");
+			String rawResponse = patch_request.execute().parseAsString();
+			System.out.println(rawResponse);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public MendeleyDocument addDocument(BibTeXEntry entry ){
+    	HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
+    	HttpRequest request;
+    	HttpRequest patch_request;
+    	MendeleyDocument document = null;
+    	
+    	MendeleyDocument document_to_add = new MendeleyDocument(entry);
+    	
+    	
+    	Gson gson = new GsonBuilder().create();
+    	String json_body = gson.toJson(document_to_add);
+    	String resource_url = "https://api.mendeley.com/documents";
+    	GenericUrl gen_url = new GenericUrl(resource_url);
+    	
+    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
+    	
+		try {
+			patch_request = requestFactory.buildPostRequest(gen_url, content);
+			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
+			patch_request.getHeaders().setContentType("application/vnd.mendeley-document.1+json");
+			String rawResponse = patch_request.execute().parseAsString();
+			document = gson.fromJson(rawResponse, MendeleyDocument.class);
+			System.out.println(rawResponse);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return document;
+    	
+    }
+    
+    public void addDocumentToFolder(MendeleyDocument document, String folder_id){
+    	HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
+    	HttpRequest request;
+    	HttpRequest patch_request;
+    	
+    	Gson gson = new GsonBuilder().create();
+    	String json_body = "{\"id\": \""+ document.getId() + "\" }";
+    	String resource_url = "https://api.mendeley.com/folders/"+ folder_id + "/documents";
+    	GenericUrl gen_url = new GenericUrl(resource_url);
+    	
+    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
+    	
+		try {
+			patch_request = requestFactory.buildPostRequest(gen_url, content);
+			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
+			patch_request.getHeaders().setContentType("application/vnd.mendeley-document.1+json");
+			String rawResponse = patch_request.execute().parseAsString();
+			System.out.println(rawResponse);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+    public Title getValueFromString(String s){
+    	return new Title(s);
+    }
+    
+    public class Title extends Value {
+		  private final String title;
+		 
+		  public Title(String title) {
+		    this.title = title;
+		  }
+		 
+		  public String getName () {
+		    return title;
+		  }
+
+		  @Override
+		  public String toUserString() {
+				// TODO Auto-generated method stub
+			return title;
+		  }
+
+		  @Override
+		  protected String format() {
+			  // TODO Auto-generated method stub
+			return null;
+		  }
+    	}
+}

@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Libs
+Bundle-SymbolicName: de.tudresden.slr.authentication.libs
+Bundle-Version: 1.0.0
+Bundle-ClassPath: org.apache.oltu.oauth2.common-1.0.2 (1).jar,
+ org.apache.oltu.oauth2.client-1.0.2.jar
+Export-Package: org.apache.oltu.oauth2.client,
+ org.apache.oltu.oauth2.client.request,
+ org.apache.oltu.oauth2.client.response,
+ org.apache.oltu.oauth2.client.validator,
+ org.apache.oltu.oauth2.common,
+ org.apache.oltu.oauth2.common.domain.client,
+ org.apache.oltu.oauth2.common.domain.credentials,
+ org.apache.oltu.oauth2.common.error,
+ org.apache.oltu.oauth2.common.exception,
+ org.apache.oltu.oauth2.common.message,
+ org.apache.oltu.oauth2.common.message.types,
+ org.apache.oltu.oauth2.common.parameters,
+ org.apache.oltu.oauth2.common.token,
+ org.apache.oltu.oauth2.common.utils,
+ org.apache.oltu.oauth2.common.validators
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

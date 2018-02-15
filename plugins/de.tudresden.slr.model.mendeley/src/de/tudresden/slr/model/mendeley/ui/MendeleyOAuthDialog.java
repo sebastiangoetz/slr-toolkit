@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
@@ -28,10 +28,11 @@ import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 
 import de.tudresden.slr.model.mendeley.Activator;
-import de.tudresden.slr.model.mendeley.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
 import de.tudresden.slr.model.mendeley.preferences.PreferenceConstants;
 
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 
 public class MendeleyOAuthDialog extends Dialog {
 	MendeleyClient mendeley_client = MendeleyClient.getInstance();
@@ -52,9 +53,19 @@ public class MendeleyOAuthDialog extends Dialog {
     	GridLayout gridLayout = (GridLayout) container.getLayout();
     	gridLayout.marginWidth = 0;
     	gridLayout.marginHeight = 0;
-		
-
-        Browser browser = new Browser(container, SWT.NONE);
+    	Browser browser;
+    	try{
+    		
+    		System.setProperty("org.eclipse.swt.browser.XULRunnerPath", "/usr/bin/xulrunner");
+    		browser = new Browser(container, SWT.NONE);
+    		
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		System.out.println("what?");
+    		System.setProperty("org.eclipse.swt.browser.XULRunnerPath", "/usr/bin/xulrunner");
+            browser = new Browser(container, SWT.MOZILLA);
+		}
+        
         GridData gd_browser = new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1);
         gd_browser.heightHint = 439;
         gd_browser.widthHint = 644;
@@ -83,7 +94,9 @@ public class MendeleyOAuthDialog extends Dialog {
 						mendeley_client.requestAccessToken(auth_code);
 						store.setValue(PreferenceConstants.P_TOKEN, mendeley_client.getAccess_token());
 						store.setValue(PreferenceConstants.P_REFRESH_TOKEN, mendeley_client.getRefresh_token());
-						close();
+						
+					        
+					     close();
 					}
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block

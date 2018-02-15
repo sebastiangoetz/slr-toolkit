@@ -3,10 +3,13 @@ package de.tudresden.slr.model.mendeley.preferences;
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import de.tudresden.slr.model.mendeley.Activator;
-import de.tudresden.slr.model.mendeley.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
 import de.tudresden.slr.model.mendeley.ui.MendeleyOAuthDialog;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,32 +48,6 @@ public class MendeleyPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-	/*	addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, 
-				"&Directory preference:", getFieldEditorParent()));
-		addField(
-			new BooleanFieldEditor(
-				PreferenceConstants.P_BOOLEAN,
-				"&An example of a boolean preference",
-				getFieldEditorParent()));
-
-		addField(new RadioGroupFieldEditor(
-				PreferenceConstants.P_CHOICE,
-			"An example of a multiple-choice preference",
-			1,
-			new String[][] { { "&Choice 1", "choice1" }, {
-				"C&hoice 2", "choice2" }
-				}, getFieldEditorParent()));
-		addField(
-			new StringFieldEditor(PreferenceConstants.P_STRING, "A &text preference:", getFieldEditorParent()));
-		
-		addField(new RadioGroupFieldEditor(
-				PreferenceConstants.P_CHOICE,
-			"An example of a multiple-choice preference",
-			1,
-			new String[][] { { "&Choice 1", "choice1" }, {
-				"C&hoice 2", "choice2" }
-		}, getFieldEditorParent()));
-		*/
 		addField(new RadioGroupFieldEditor(PreferenceConstants.P_MENDELEY, 
 				"Activate Mendeley Integration", 
 				1, 
