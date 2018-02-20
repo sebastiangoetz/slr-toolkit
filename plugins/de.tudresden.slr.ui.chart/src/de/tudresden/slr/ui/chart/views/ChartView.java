@@ -58,7 +58,7 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
-					myChart = new BarChartGenerator().createBar(myValues, "# Papers per Subclass of " + ((Term)o).getName());
+					myChart = new BarChartGenerator().createBar(myValues);
 					preview.setDataPresent(true);
 				} else {
 					preview.setTextToShow(noDataToDisplay);

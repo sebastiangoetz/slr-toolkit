@@ -21,7 +21,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class ChartGenerator {
 
 	public final static Chart createCiteBar(Map<String, Integer> input) {
-		return new BarChartGenerator().createBar(input, "Cites per year for selected Class");
+		return new BarChartGenerator().createBar(input);
 	}
 
 	public final static Chart createBubble(List<BubbleDataContainer> input, Term first, Term second) {
@@ -29,7 +29,7 @@ public class ChartGenerator {
 		return new BubbleChartGenerator().createBubble(input, first, second);
 	}
 	public final static Chart createPie(Map<String, Integer> input) {
-		return new PieChartGenerator().createPie(input, "Cites per year for selected Class");
+		return new PieChartGenerator().createPie(input);
 	}
 
 }
