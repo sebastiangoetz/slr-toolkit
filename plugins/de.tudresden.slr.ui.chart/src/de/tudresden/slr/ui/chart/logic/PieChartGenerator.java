@@ -36,7 +36,7 @@ import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 public class PieChartGenerator
 {
 
-	public final Chart createPie(Map<String, Integer> input, String title)
+	public final Chart createPie(Map<String, Integer> input)
 	{
 		PieChartConfiguration cc = PieChartConfiguration.get();//
 		GeneralSettings gs = cc.getGeneralSettings();
@@ -78,9 +78,7 @@ public class PieChartGenerator
 		lg.setPosition(ls.getLegendPosition());
 		lg.setOrientation(ls.getLegendOrientation());
 		// Title
-		if(gs.getChartTitle().equals("")) {
-			gs.setChartTitle(title);
-			}
+		
 		cwoaPie.getTitle().getLabel().getCaption().setValue(gs.getChartTitle()); //$NON-NLS-1$
 		cwoaPie.getTitle().getLabel().getCaption().getFont().setSize(gs.getChartTitleSize());
 		cwoaPie.getTitle().getLabel().getCaption().setColor(ColorDefinitionImpl.create(gs.getChartTitleColor().red, gs.getChartTitleColor().green, gs.getChartTitleColor().blue));
@@ -97,7 +95,7 @@ public class PieChartGenerator
 		} );*/
 		List<String> names = new ArrayList<>();
 		List<Double> values = new ArrayList<>();
-		if(!title.contains("per year")) {
+		if(cc.getPieTermSort() == TermSort.SUBCLASS) {
 			input.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).forEach(x -> {
 				names.add(x.getKey());
 				values.add((double)x.getValue());
