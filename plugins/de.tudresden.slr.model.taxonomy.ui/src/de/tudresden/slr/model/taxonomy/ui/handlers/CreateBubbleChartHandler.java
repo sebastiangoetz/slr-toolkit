@@ -20,6 +20,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BubbleDataContainer;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class CreateBubbleChartHandler implements IHandler {
@@ -69,6 +70,7 @@ public class CreateBubbleChartHandler implements IHandler {
 			Term first = selectionIterator.next();
 			Term second = selectionIterator.next();
 			List<BubbleDataContainer> bubbleChartData = provider.calculateBubbleChartData(first, second);
+			BubbleChartConfiguration.get().getGeneralSettings().setChartTitle("Intersection of " + first.getName() + " and " + second.getName());
 			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData,first,second);
 			view.setAndRenderChart(bubbleChart);
 		} else {

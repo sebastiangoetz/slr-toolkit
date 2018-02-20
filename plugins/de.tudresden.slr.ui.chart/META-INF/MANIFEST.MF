@@ -20,5 +20,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.ui.chart.logic,
  de.tudresden.slr.ui.chart.settings,
+ de.tudresden.slr.ui.chart.settings.parts,
  de.tudresden.slr.ui.chart.views
 Import-Package: org.eclipse.xtext.ui.label

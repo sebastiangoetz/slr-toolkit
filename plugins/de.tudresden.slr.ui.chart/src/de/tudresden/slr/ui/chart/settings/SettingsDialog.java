@@ -58,16 +58,16 @@ public class SettingsDialog extends Dialog implements SelectionListener{
 	private Optional<Model> m;
 	private Button okButton, applyButton, closeButton;
 	
-	private GeneralPageBar generalPageBar;
+	public static GeneralPageBar generalPageBar;
 	
 	private LegendPageBar legendPageBar;
 	private SeriesPageBar seriesPageBar;
 	private AxisPageBar axisPageBar;
-	private GeneralPagePie gerneralPagePie;
+	public static GeneralPagePie gerneralPagePie;
 	private LegendPagePie legendPagePie;
 	private SeriesPagePie  seriesPagePie;
 	
-	private GeneralPageBubble gerneralPageBubble;
+	public static GeneralPageBubble gerneralPageBubble;
 	private SeriesPageBubble seriesPageBubble;
 	private AxisPageBubble axisPageBubble;
 	

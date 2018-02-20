@@ -78,6 +78,7 @@ public class CreatePieChartHandler implements IHandler {
 			ChartDataProvider provider = new ChartDataProvider();
 			Term input = (Term) currentSelection.getFirstElement();
 			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
+			PieChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + input.getName());
 			PieChartConfiguration.get().setPieTermSort(TermSort.SUBCLASS);
 			Chart citeChart = ChartGenerator.createPie(citeChartData);
 			view.setAndRenderChart(citeChart);

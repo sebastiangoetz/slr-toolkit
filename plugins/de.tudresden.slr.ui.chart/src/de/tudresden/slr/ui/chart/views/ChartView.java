@@ -28,6 +28,8 @@ import com.ibm.icu.util.ULocale;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
+import de.tudresden.slr.ui.chart.logic.TermSort;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 
 public class ChartView extends ViewPart implements ICommunicationView {
 	private final String noDataToDisplay = "There is no Data to display at the moment.\n Try clicking a Term with subclasses.";
@@ -58,6 +60,8 @@ public class ChartView extends ViewPart implements ICommunicationView {
 
 				myValues = getNumberOfPapersPerClass(termToPresent);
 				if (myValues.size() > 0) {
+					BarChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + termToPresent.getName());
+					BarChartConfiguration.get().setTermSort(TermSort.SUBCLASS);
 					myChart = new BarChartGenerator().createBar(myValues);
 					preview.setDataPresent(true);
 				} else {

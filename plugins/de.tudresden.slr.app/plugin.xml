@@ -202,10 +202,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="de.tudresden.slr.app.application"
-            name="app">
+            name="slr-toolkit">
          <property
                name="appName"
-               value="app">
+               value="slr-toolkit">
          </property>
          <property
                name="windowImages"

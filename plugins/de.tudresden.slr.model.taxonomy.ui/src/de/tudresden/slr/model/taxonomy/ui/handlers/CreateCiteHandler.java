@@ -74,6 +74,7 @@ public class CreateCiteHandler implements IHandler {
 			ChartDataProvider provider = new ChartDataProvider();
 			Term input = (Term) currentSelection.getFirstElement();
 			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
+			BarChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + input.getName());
 			BarChartConfiguration.get().setTermSort(TermSort.SUBCLASS);
 			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
 			view.setAndRenderChart(citeChart);
