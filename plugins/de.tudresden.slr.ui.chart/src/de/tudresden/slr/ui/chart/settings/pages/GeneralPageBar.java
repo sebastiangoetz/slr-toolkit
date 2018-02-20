@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 
@@ -27,8 +27,8 @@ public class GeneralPageBar extends Composite implements MouseListener, Pages{
 	private Combo comboTitleSize, comboBlockOutline;
 	private Button btnUnderline, btnBolt, btnItalic, btnShowLables;
 	
-	private GeneralSettings settingsGeneral = ChartConfiguration.BARCHARTCONFIG.getGeneralSettings();
-	private BlockSettings settingsBlock = ChartConfiguration.BARCHARTCONFIG.getBlockSettings();
+	private GeneralSettings settingsGeneral = BarChartConfiguration.get().getGeneralSettings();
+	private BlockSettings settingsBlock = BarChartConfiguration.get().getBlockSettings();
 	
 	public GeneralPageBar(Composite parent, int style) {
 		

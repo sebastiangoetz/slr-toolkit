@@ -1,13 +1,10 @@
 package de.tudresden.slr.ui.chart.settings.parts;
 
-import org.eclipse.birt.chart.model.attribute.Interactivity;
-import org.eclipse.birt.chart.model.attribute.Orientation;
-import org.eclipse.birt.chart.model.attribute.Rotation3D;
 import org.eclipse.swt.graphics.RGB;
 
 public class GeneralSettings {
 	
-	private GeneralSettings() {
+	public GeneralSettings() {
 	}
 	
 	public static GeneralSettings get() {
@@ -15,17 +12,14 @@ public class GeneralSettings {
 	}
 
 	private static GeneralSettings GRAPHSETTINGS= new GeneralSettings();
+	
+	private double chartBubbleScaling = 0.5;
 
 	private String chartType = "Bar Chart";
 	private String chartSubType = "Side-By-Side";
-	private String chartDescription;
-	private Interactivity chartInteractivity;
-	private Orientation chartOrientation;
-	private Rotation3D chartRotation;
-	private double chartUnitSpacing;
 	private String chartTitle = "";
 	//TitleFont
-	private int chartTitleSize = 34;
+	private int chartTitleSize = 16;
 	private RGB chartTitleColor = new RGB(0,0,0);
 	private boolean chartTitleItalic = false;
 	private boolean chartTitleBold = false;
@@ -112,6 +106,13 @@ public class GeneralSettings {
 
 	public void setChartShowLabel(int chartShowLabel) {
 		this.chartShowLabel = chartShowLabel;
+	}
+	public double getChartBubbleScaling() {
+		return chartBubbleScaling;
+	}
+
+	public void setChartBubbleScaling(double chartBubbleScaling) {
+		this.chartBubbleScaling = chartBubbleScaling;
 	}
 	
 }

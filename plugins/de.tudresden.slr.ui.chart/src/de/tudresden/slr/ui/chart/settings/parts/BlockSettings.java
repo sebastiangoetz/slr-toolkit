@@ -6,7 +6,7 @@ import org.eclipse.swt.graphics.RGB;
 
 public class BlockSettings {
 	
-	private BlockSettings() {
+	public BlockSettings() {
 	}
 	
 	public static BlockSettings get() {
@@ -16,18 +16,7 @@ public class BlockSettings {
 	private static BlockSettings BLOCKSETTINGS= new BlockSettings();
 
 	private RGB blockBackgroundRGB = new RGB(255,255,255);
-	/*
-	 * private Anchor chartAnchor;
-	 * private Bounds chartBounds;
-	private int chartColumns;
-	private int chartColumnspan;
-	private Insets chartInsets;
-	private Size chartMinSize;
-	private Size chartPrefferedSize;
-	private LineAttributes chartOutlines;
-	private int chartRows;
-	private int chartRowspan;
-	*/
+
 	//Outline
 	private boolean blockShowOutline = true;
 	private LineStyle blockOutlineStyle = LineStyle.SOLID_LITERAL;

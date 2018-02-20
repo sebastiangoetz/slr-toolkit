@@ -22,7 +22,7 @@ import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarDataTerm;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 
 public class SeriesPageBar extends Composite implements SelectionListener, MouseListener, Pages{
@@ -39,7 +39,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 	private Composite compositeFirst;
 	private Label lblSelectedTermIs;
 	
-	private ChartConfiguration settings = ChartConfiguration.BARCHARTCONFIG;	
+	private BarChartConfiguration settings = BarChartConfiguration.get();	
 	private Button btnOneColor;
 	private Label lblColor;
 	

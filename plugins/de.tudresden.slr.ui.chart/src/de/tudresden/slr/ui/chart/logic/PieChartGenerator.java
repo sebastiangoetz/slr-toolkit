@@ -8,7 +8,6 @@ import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.birt.chart.model.ChartWithoutAxes;
 import org.eclipse.birt.chart.model.attribute.ChartDimension;
 import org.eclipse.birt.chart.model.attribute.LegendItemType;
-import org.eclipse.birt.chart.model.attribute.Position;
 import org.eclipse.birt.chart.model.attribute.impl.ColorDefinitionImpl;
 import org.eclipse.birt.chart.model.component.Series;
 import org.eclipse.birt.chart.model.component.impl.SeriesImpl;
@@ -27,12 +26,11 @@ import org.eclipse.birt.chart.model.layout.Legend;
 import org.eclipse.birt.chart.model.type.PieSeries;
 import org.eclipse.birt.chart.model.type.impl.PieSeriesImpl;
 
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.PieChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
-import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
 public class PieChartGenerator
@@ -40,8 +38,7 @@ public class PieChartGenerator
 
 	public final Chart createPie(Map<String, Integer> input, String title)
 	{
-		ChartConfiguration cc = ChartConfiguration.PIECHARTCONFIG;//
-		PlotSettings ps = cc.getPlotSettings();
+		PieChartConfiguration cc = PieChartConfiguration.get();//
 		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
@@ -63,6 +60,7 @@ public class PieChartGenerator
 		
 		// Legend
 		Legend lg = cwoaPie.getLegend( );
+		lg.setVisible(ls.isLegendisActive());
 		lg.setItemType(LegendItemType.CATEGORIES_LITERAL);
 		lg.getTitle().getCaption().setValue(ls.getLegendTitle());
 		

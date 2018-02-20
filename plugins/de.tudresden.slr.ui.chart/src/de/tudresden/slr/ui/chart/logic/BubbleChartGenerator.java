@@ -32,12 +32,11 @@ import org.eclipse.birt.chart.model.type.ScatterSeries;
 import org.eclipse.birt.chart.model.type.impl.ScatterSeriesImpl;
 
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.settings.ChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
 import de.tudresden.slr.ui.chart.settings.parts.AxisSettings;
 import de.tudresden.slr.ui.chart.settings.parts.BlockSettings;
 import de.tudresden.slr.ui.chart.settings.parts.GeneralSettings;
 import de.tudresden.slr.ui.chart.settings.parts.LegendSettings;
-import de.tudresden.slr.ui.chart.settings.parts.PlotSettings;
 import de.tudresden.slr.ui.chart.settings.parts.SeriesSettings;
 
 public class BubbleChartGenerator {
@@ -52,8 +51,7 @@ public class BubbleChartGenerator {
 		cwaScatter.setType("Scatter Chart");
 		cwaScatter.setSubType("Standard Scatter Chart");
 		
-		ChartConfiguration cc = ChartConfiguration.BUBBLECHARTCONFIG;//
-		PlotSettings ps = cc.getPlotSettings();
+		BubbleChartConfiguration cc = BubbleChartConfiguration.get();//
 		GeneralSettings gs = cc.getGeneralSettings();
 		LegendSettings ls = cc.getLegendSettings();
 		BlockSettings bs = cc.getBlockSettings();
@@ -62,10 +60,9 @@ public class BubbleChartGenerator {
 		
 		List<BubbleDataTerm> yTermData = cc.getBubbleTermListY();
 		int a = gs.getChartShowLabel();
+		double b = gs.getChartBubbleScaling();
 		
 		// Plot
-		cwaScatter.getPlot().getClientArea().getOutline().setVisible( false );
-		cwaScatter.getPlot().getClientArea().setBackground(ColorDefinitionImpl.WHITE());
 		cwaScatter.getBlock().setBackground(ColorDefinitionImpl.create(bs.getBlockBackgroundRGB().red, bs.getBlockBackgroundRGB().green, bs.getBlockBackgroundRGB().blue));
 		cwaScatter.getBlock().getOutline().setVisible(bs.isBlockShowOutline());
 		cwaScatter.getBlock().getOutline().setStyle(bs.getBlockOutlineStyle());
@@ -196,7 +193,7 @@ public class BubbleChartGenerator {
 		createYSeries(input, xTerms, sdY, jsScript, yTermData);
 		
 		//Add JS
-		appendJsScript(jsScript, a);
+		appendJsScript(jsScript, a, b);
 		cwaScatter.setScript(jsScript.toString());
 
 		return cwaScatter;
@@ -282,10 +279,10 @@ public class BubbleChartGenerator {
 	 * Add JS code.
 	 * @param jsValues
 	 */
-	private void appendJsScript(StringBuilder jsValues, int a) {
+	private void appendJsScript(StringBuilder jsValues, int a, double b) {
 		jsValues.append("var count = 0;\n");
 		jsValues.append("var labelCount = 0;\n");
-		jsValues.append("var resizeFactor = 0.5;\n");
+		jsValues.append("var resizeFactor = "+b+";\n");
 		jsValues.append("/**\n");
 		jsValues.append(" * Called before drawing each marker.\n");
 		jsValues.append(" * \n");
