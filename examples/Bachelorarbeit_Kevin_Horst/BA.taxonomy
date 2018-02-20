@@ -55,8 +55,10 @@ Veroeffentlichungssort {
 	 	Journal of Information Technology in Construction,
 	 	International Conference on 3D Web Technology,
 	 	Automation in Construction,
+	 	Construction Lawyer,
 	 	Journal of Management in Engineering,
 	 	ASHRAE Journal,
+	 	Portland International Center for Management of Engineering and Technology,
 	 	International Conference on Smart City and Systems Engineering,
 	 	Transmission and Distribution Conference and Exposition,
 	 	Leadership and Management in Engineering,
@@ -72,8 +74,6 @@ Veroeffentlichungssort {
 		IEEE International Conference on Industrial Engineering and Engineering Management,
 		International Conference on Research and Innovation in Information Systems,
 		International Conference on Compututational Intelligence and Security,
-		IEEE-PES Transmission and Distibution Conference and Exposition,
-		IEEE Frontiers in Education Conference,
 		Winter Simulation Conference,
 		Frontiers in Education Conference 
 		International Conference on Intelligent Systems Design and Engineering Applications,
@@ -82,7 +82,7 @@ Veroeffentlichungssort {
 		Hawaii International Conference on System Science,
 		Digital Heritage International Congress,
 		International Conference on Smart Grid and Electrical Automation,
-		International Conference on Optimization of Electrical and Electronic Equipment,
+		International Conference on Optimization of Electrical and Electronic Equipment and
 		International Aegean Conference on Electrical Machines and Power Electronics,
 		International Symposium on Mixed and Augmented Reality 
 	}
@@ -90,12 +90,11 @@ Art{
 		Buch,
 		Konferenz,
 		Fachzeitschrift,
-		Uebersichtsarbeit
 	}
 Thema{
 		Informationsmanagement und Planung,
 		Informationsberechnung und Praesentation,
-		Nachhaltigkeit und Energieverbrauch,
+		Gebaeudeanalyse Nachhaltigkeit und Energieverbrauch,
 		Gebaeudesicherheit und Fehlermanagement,
 		Interoperabilitaet BIM und Lean,
 		Interkommunikation und Interaktion von Benutzern von BIM,
@@ -107,7 +106,6 @@ Thema{
 		Anwendung von BIM auf bereits existierende Gebaeude,
 		Echtzeitvisualisierung mit BIM und Augmented Reality,
 		Uebersicht und Anleitung zu BIM,	
-		Quantitative und Qualitative Gebaeudeanalyse mit BIM,
 		Qualitative und finanzielle Vorteile von BIM praesentieren,
 }
 	
