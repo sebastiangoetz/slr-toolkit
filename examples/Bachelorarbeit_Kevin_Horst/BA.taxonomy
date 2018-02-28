@@ -29,7 +29,6 @@ Veroeffentlichungsland {
 		Deutschland,
 		Norwegen,
 		Rumaenien,
-		Frankreich,
 		Finnland,
 		Italien
 		}
@@ -38,7 +37,6 @@ Veroeffentlichungsland {
 		Suedkorea,
 		Israel,
 		Saudi-Arabien,
-		Taiwan,
 		Indonesien,
 		Malaisia,
 		China,
@@ -92,21 +90,21 @@ Art{
 		Fachzeitschrift,
 	}
 Thema{
-		Informationsmanagement und Planung,
+		Ablaufplanung,
 		Informationsberechnung und Praesentation,
 		Gebaeudeanalyse Nachhaltigkeit und Energieverbrauch,
 		Gebaeudesicherheit und Fehlermanagement,
-		Interoperabilitaet BIM und Lean,
-		Interkommunikation und Interaktion von Benutzern von BIM,
+		Interoperabilitaet BIM und Lean Construction,
+		Kommunikation und Interaktion,
 		Innovative Forschungsthemen und Trends,	
 		Anwendung von BIM auf intelligente Gebaeude,
-		Luecke zwischen CAD Modellierung und 3D Modellierung,
+		Luecke zwischen CAD und 3D Modellierung,
 		Anwendung von BIM Praktiken und Software in zukuenftigen Projekten,
-		Verbesserte Lernerfahrung durch BIM,
+		Veraenderter Lehrfokus und Lernerfahrung durch BIM,
 		Anwendung von BIM auf bereits existierende Gebaeude,
 		Echtzeitvisualisierung mit BIM und Augmented Reality,
 		Uebersicht und Anleitung zu BIM,	
-		Qualitative und finanzielle Vorteile von BIM praesentieren,
+		Qualitative und finanzielle Vorteile von BIM,
 }
 	
 Anwendungsfeld{
@@ -119,7 +117,7 @@ Anwendungsfeld{
 			Konstruktion,
 		}
 		Facility Management,
-		Modellierung,
+		IT,
 		
 	}
 Ergebnis{
