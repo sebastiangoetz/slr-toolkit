@@ -68,6 +68,11 @@ public class MendeleyFolder {
     public void setType(String type) {
 		this.type = type;
 	}
+    
+    public void setId(String id) {
+		this.id = id;
+	}
+    
     /*
     public void addDocument(MendeleyDocument md){
     	if(md != null){

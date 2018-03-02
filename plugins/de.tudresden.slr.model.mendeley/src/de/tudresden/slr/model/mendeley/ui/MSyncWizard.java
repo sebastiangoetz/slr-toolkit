@@ -1,6 +1,7 @@
 package de.tudresden.slr.model.mendeley.ui;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -9,6 +10,9 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.jbibtex.BibTeXEntry;
+import org.jbibtex.ParseException;
+import org.jbibtex.TokenMgrException;
+
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
 import de.tudresden.slr.model.mendeley.api.model.*;
@@ -30,7 +34,7 @@ public class MSyncWizard extends Wizard {
         super();
         setNeedsProgressMonitor(true);
         mc = MendeleyClient.getInstance();
-        wm.getInstance();
+        wm = WorkspaceManager.getInstance();
     }
 
     @Override
@@ -53,17 +57,11 @@ public class MSyncWizard extends Wizard {
     @Override
     public boolean performFinish() {
     	List<SyncItem> syncItems = three.getSyncItems();
-    	
-		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
-		Resource resource  = editingDomain.getResourceSet().getResources().get(0);
-		BibtexResourceImpl bibResource = (BibtexResourceImpl)resource;
-		URI uri = bibResource.getURI();
-    	
 		
 		for(SyncItem si : syncItems){
     		MendeleyDocument document = one.getFolder_selected().getDocumentById(si.getId());
     		document.updateFields(si.getSelectedFields());
-    		mc.updateDocument(document);
+    		//mc.updateDocument(document);
     	}
     	
     	List<BibTeXEntry> entries = two.getMissingInMendeley();
@@ -74,7 +72,12 @@ public class MSyncWizard extends Wizard {
     	}
     	
     	
-		this.zero.getResourceSelected().setMendeleyFolder(one.getFolder_selected());
+		try {
+			MendeleyFolder mf = mc.getMendeleyFolder(one.getFolder_selected().getId());
+			this.zero.getResourceSelected().setMendeleyFolder(mf);
+		} catch (TokenMgrException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
     	wm.addWorkspaceBibtexEntry(this.zero.getResourceSelected());
     	wm.updateWorkspaceBibTexEntry(this.zero.getResourceSelected());
    

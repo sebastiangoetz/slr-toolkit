@@ -68,13 +68,10 @@ public class MSyncWizardPageOne extends WizardPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
 		mc = MendeleyClient.getInstance();
 		try {
-			mc.requestAccessToken("kvQ4pO7zgovBPQaM5bQV0PE8YUY");
-			System.out.println(mc.getAllDocumentsBibTex());
-			System.out.println(mc.getAllDocumentsJSON());
-			System.out.println(mc.getAllFolders());
+			//mc.displayAuthorizationUserInterface(getShell());
+			mc.requestAccessToken("dTtjLfriFNsx03uw-yK9-pVTb3o");
 			folders_str = mc.getAllFolders();
 		} catch (TokenMgrException | IOException | ParseException e) {
 			e.printStackTrace();
@@ -115,8 +112,6 @@ public class MSyncWizardPageOne extends WizardPage {
 					setPageComplete(true);
 				}
 				isSelectionValidated = false;
-				
-				
 			}
 		});	
         

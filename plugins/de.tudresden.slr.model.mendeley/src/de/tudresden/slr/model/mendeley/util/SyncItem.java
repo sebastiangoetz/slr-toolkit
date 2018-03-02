@@ -1,30 +1,40 @@
 package de.tudresden.slr.model.mendeley.util;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.Key;
+import org.jbibtex.StringValue;
 import org.jbibtex.Value;
+
+import de.tudresden.slr.model.mendeley.api.model.MendeleyAnnotation;
+import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 
 public class SyncItem {
 	private String id;
 	private Key type;
 	private String title;
+	private MendeleyDocument mendeley;
 	private BibTeXEntry mendeleyDoc;
 	private BibTeXEntry workspaceDoc;
 	private Map<Key, ArrayList<Value>> fields;
 	private Map<Key, Value> selectedFields;
 	
-	public SyncItem(String id, BibTeXEntry mendeleyDoc, BibTeXEntry workspaceDoc) {
+	public SyncItem(MendeleyDocument mendeley, BibTeXEntry mendeleyDoc, BibTeXEntry workspaceDoc) {
 		// TODO Auto-generated constructor stub
-		this.id = id;
+		this.id = mendeley.getId();
+		this.mendeley = mendeley;
 		this.mendeleyDoc = mendeleyDoc;
 		this.workspaceDoc = workspaceDoc;
 		this.type = mendeleyDoc.getType();
 		this.fields = new HashMap<>();
 		this.selectedFields = new HashMap<>();
+		addToolkitFields();
 		initTitle();
 		initFields();
 	}
@@ -35,6 +45,25 @@ public class SyncItem {
 	
 	public String getTitle() {
 		return title;
+	}
+	
+	public void addToolkitFields(){
+		
+		String notes = mendeley.getNotes();
+		if(notes != null){
+			Pattern pattern = Pattern.compile("\\[classes\\](.*?)\\[/classes\\]");
+			Matcher matcher = pattern.matcher(notes);
+			String classes_str = "";
+			
+			if(matcher.find()){
+				classes_str = matcher.group(1);
+				System.out.println(classes_str);
+				StringValue classes = new StringValue(classes_str, StringValue.Style.BRACED);
+				mendeleyDoc.addField(new Key("classes"), classes);
+			}
+		}
+		
+		
 	}
 	
 	private void initTitle(){
@@ -87,6 +116,28 @@ public class SyncItem {
 			if(!v1.toUserString().equals(v2.toUserString())) return true;
 		}
 		return false;
+	}
+	
+	public class ToolkitValue extends Value {
+		  private final String value;
+		 
+		  public ToolkitValue(String value) {
+		    this.value = value;
+		  }
+		 
+		  public String getValue () {
+		    return value;
+		  }
+
+		  @Override
+		  public String toUserString() {
+			return value;
+		  }
+
+		  @Override
+		  protected String format() {
+			return null;
+		  }
 	}
 	
 	 

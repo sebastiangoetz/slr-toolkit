@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -23,8 +25,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXParser;
+import org.jbibtex.CharacterFilterReader;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
+import org.jbibtex.StringValue;
+import org.jbibtex.StringValue.Style;
 import org.jbibtex.TokenMgrException;
 import org.jbibtex.Value;
 
@@ -45,9 +50,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 
+import de.tudresden.slr.model.mendeley.api.model.MendeleyAnnotation;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
 import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
+import de.tudresden.slr.model.mendeley.ui.MendeleyOAuthDialog;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
@@ -141,7 +148,7 @@ public class MendeleyClient {
     }
     
     public String getAllDocumentsBibTex() {
-    	String resource_url = "https://api.mendeley.com/documents";
+    	String resource_url = "https://api.mendeley.com/documents?&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn;
 		try {
@@ -167,7 +174,7 @@ public class MendeleyClient {
     }
     
     public String getAllDocumentsJSON() throws MalformedURLException, IOException, TokenMgrException, ParseException{
-    	String resource_url = "https://api.mendeley.com/documents";
+    	String resource_url = "https://api.mendeley.com/documents?&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
         resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
@@ -180,16 +187,36 @@ public class MendeleyClient {
         String json_str = "";
         while ((line = r.readLine()) != null) {
         	json_str = json_str + line;
-            //System.out.println(line);
         }
-        
-        //parseDocumentStream(bibtex);
         
     	return json_str;
     }
     
-    public String getDocumentBibTex( String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
-    	String resource_url = "https://api.mendeley.com/documents/" + id;
+    public MendeleyAnnotation[] getAnnotations(MendeleyDocument document) throws MalformedURLException, IOException{
+    	String result = "";
+    	String resource_url = "https://api.mendeley.com/annotations?document_id=" + document.getId();
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        
+        InputStream resource = resource_cxn.getInputStream();
+        
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        while ((line = r.readLine()) != null) {
+        	result = result + line;
+        }
+        
+        Gson gson = new Gson();
+        MendeleyAnnotation[] annotations = gson.fromJson(result, MendeleyAnnotation[].class);
+        
+        return annotations;
+    }
+    
+    
+    public BibTeXDatabase getDocumentBibTex( String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents/" + id + "?view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
         resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
@@ -199,16 +226,27 @@ public class MendeleyClient {
         InputStream resource = resource_cxn.getInputStream();
     	
         BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
-        String line = null;
-        String json_str = "";
-        while ((line = r.readLine()) != null) {
-        	json_str = json_str + line;
-            //System.out.println(line);
-        }
+        BibTeXDatabase db = new BibTeXDatabase();
+    	try(Reader reader = r){
+    		CharacterFilterReader filterReader = new CharacterFilterReader(reader);
+    		BibTeXParser parser = new BibTeXParser();
+    		db = parser.parse(filterReader);
+    		
+    		//TODO: Mendeley API parsing error - Parameter: title - additional characters '{' and '}'
+    		for(BibTeXEntry entry: db.getEntries().values()){
+    			String fixedTitleStr = entry.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
+    			StringValue fixedTitleValue = new StringValue(fixedTitleStr, StringValue.Style.BRACED);
+    			entry.removeField(new Key("title"));
+    			entry.addField(new Key("title"), fixedTitleValue);
+    			
+    		}
+    		
+    	}catch (TokenMgrException | IOException |ParseException e) {
+			e.printStackTrace();
+		}
+  
         
-        //parseDocumentStream(bibtex);
-        
-    	return json_str;
+    	return db;
     }
     
     public String getAllFolders() throws MalformedURLException, IOException, TokenMgrException, ParseException{
@@ -237,27 +275,38 @@ public class MendeleyClient {
         MendeleyFolder[] m_folders = gson.fromJson(folders_str, MendeleyFolder[].class);
 		for(int i = 0; i < m_folders.length;i++){
 			String folder_content_str;
-			String folder_content_bibtex_str;
 			try {
 				folder_content_str = this.getDocumentsByFolderJSON(m_folders[i].getId());
-				folder_content_bibtex_str = this.getDocumentsByFolderBibTex(m_folders[i].getId());
-				BibTeXDatabase bibdb = this.parseStringToJBibTex(folder_content_bibtex_str);
+			
+				BibTeXDatabase bibdb = this.getDocumentsByFolderBibTex(m_folders[i]);
 				m_folders[i].setBibtexDatabase(bibdb);
 				
 				MendeleyDocument[] folder_content = gson.fromJson(folder_content_str, MendeleyDocument[].class);
 				m_folders[i].setDocuments(folder_content);
 				m_folders[i].setType("Folder");
+				
+				for(MendeleyDocument md : m_folders[i].getDocuments()){
+					String notes = md.getNotes();
+					MendeleyAnnotation[] annotations = getAnnotations(md);
+					for(MendeleyAnnotation annotation: annotations){
+						if(annotation.getType().equals("note")){
+							notes = annotation.getText();
+						}
+					}
+					md.setNotes(notes);
+					
+				}
+				
 			} catch (TokenMgrException | IOException | ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
 		return m_folders;
     }
- 
     
-    public String getDocumentsByFolderJSON(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
-    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id;
+    public MendeleyFolder getMendeleyFolder(String folderId) throws MalformedURLException, TokenMgrException, IOException, ParseException{
+    	
+    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + folderId + "&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
         resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
@@ -270,37 +319,116 @@ public class MendeleyClient {
         String json_str = "";
         while ((line = r.readLine()) != null) {
         	json_str = json_str + line;
-            //System.out.println(line);
         }
         
-        //parseDocumentStream(bibtex);
+        Gson gson = new Gson();
+        MendeleyDocument[] documents = gson.fromJson(json_str, MendeleyDocument[].class);
+        
+	    
+	    MendeleyFolder m_folder = new MendeleyFolder();
+	    m_folder.setId(folderId);
+	    m_folder.setDocuments(documents);
+	    
+        try {
+			String folder_content_str = this.getDocumentsByFolderJSON(m_folder.getId());
+			
+			MendeleyDocument[] folder_content = gson.fromJson(folder_content_str, MendeleyDocument[].class);
+			m_folder.setDocuments(folder_content);
+			m_folder.setType("Folder");
+			
+			for(MendeleyDocument md : m_folder.getDocuments()){
+				String notes = md.getNotes();
+				MendeleyAnnotation[] annotations = getAnnotations(md);
+				for(MendeleyAnnotation annotation: annotations){
+					if(annotation.getType().equals("note")){
+						notes = annotation.getText();
+					}
+				}
+				md.setNotes(notes);
+			}
+			BibTeXDatabase bibdb = this.getDocumentsByFolderBibTex(m_folder);
+			m_folder.setBibtexDatabase(bibdb);
+			
+		} catch (TokenMgrException | IOException | ParseException e) {
+			e.printStackTrace();
+		}
+        return m_folder;
+        
+    }
+ 
+    
+    public String getDocumentsByFolderJSON(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id + "&view=bib&limit=500";
+    	
+    	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
+        resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
+        resource_cxn.setRequestMethod("GET");
+        InputStream resource = resource_cxn.getInputStream();
+        
+    	
+        BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
+        String line = null;
+        String json_str = "";
+        while ((line = r.readLine()) != null) {
+        	json_str = json_str + line;
+        }
+        
         System.out.println("Folder with id: " + id);
         System.out.println(json_str);
     	return json_str;
     }
     
-    public String getDocumentsByFolderBibTex(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
-    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id;
+    public BibTeXDatabase getDocumentsByFolderBibTex(MendeleyFolder mf) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	String resource_url = "https://api.mendeley.com/documents?folder_id=" + mf.getId() + "&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
         resource_cxn.addRequestProperty("Authorization", "Bearer " + this.access_token);
         resource_cxn.setRequestMethod("GET");
         resource_cxn.setRequestProperty("Accept","application/x-bibtex");
         InputStream resource = resource_cxn.getInputStream();
-        
-    	
+            	
         BufferedReader r = new BufferedReader(new InputStreamReader(resource, "UTF-8"));
-        String line = null;
-        String bibtex_str = "";
-        while ((line = r.readLine()) != null) {
-        	bibtex_str = bibtex_str + line;
-            //System.out.println(line);
-        }
-        
-        //parseDocumentStream(bibtex);
-        System.out.println("Folder with id: " + id);
-        System.out.println(bibtex_str);
-    	return bibtex_str;
+
+        BibTeXDatabase db = new BibTeXDatabase();
+    	try(Reader reader = r){
+    		CharacterFilterReader filterReader = new CharacterFilterReader(reader);
+    		BibTeXParser parser = new BibTeXParser();
+    		db = parser.parse(filterReader);
+    		
+    		//TODO: Mendeley API parsing error - Parameter: title - additional characters '{' and '}'
+    		for(BibTeXEntry entry: db.getEntries().values()){
+    			String fixedTitleStr = entry.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
+    			StringValue fixedTitleValue = new StringValue(fixedTitleStr, StringValue.Style.BRACED);
+    			entry.removeField(new Key("title"));
+    			entry.addField(new Key("title"), fixedTitleValue);
+    			
+    			Value value = entry.getField(new Key("title"));
+    			if(value != null){
+    				MendeleyDocument document = mf.getDocumentByTitle(value.toUserString());
+    				if(document != null){
+    					String notes = document.getNotes();
+    					if(notes != null){
+    						Pattern pattern = Pattern.compile("\\[classes\\](.*?)\\[/classes\\]");
+    						Matcher matcher = pattern.matcher(notes);
+    						String classes_str = "";
+    						
+    						if(matcher.find()){
+    							classes_str = matcher.group(1);
+    							System.out.println(classes_str);
+    							StringValue classes = new StringValue(classes_str, StringValue.Style.BRACED);
+    							entry.addField(new Key("classes"), classes);
+    						}
+    					}
+    				}
+    			}
+    			
+    			
+    		}
+    		
+    	}catch (TokenMgrException | IOException |ParseException e) {
+			e.printStackTrace();
+		}
+    	return db;
     }
     
     public void displayAuthorizationUserInterface(Shell shell){
@@ -308,7 +436,14 @@ public class MendeleyClient {
     	MendeleyOAuthDialog oauth_D = new MendeleyOAuthDialog(shell);
 		oauth_D.create();
 		oauth_D.open();
-		*/
+		
+		if (oauth_D.open() == Window.OK) {
+            System.out.println("Ok pressed");
+        } else {
+            System.out.println("Cancel pressed");
+        }
+		*/	
+    	
     	String url = new BrowserClientRequestUrl(
     		      "https://server.example.com/authorize", "s6BhdRkqt3").setState("xyz")
     		      .setRedirectUri("https://client.example.com/cb").build();
@@ -319,6 +454,7 @@ public class MendeleyClient {
         } else {
             System.out.println("Cancel pressed");
         }
+        
     }
     
     public void requestAccessToken(String code) throws IOException, TokenMgrException, ParseException {
@@ -431,39 +567,6 @@ public class MendeleyClient {
 		System.out.println("Hallo");
 	}
     
-    public BibTeXDatabase parseStringToJBibTex(String inputAPI){
-    	
-    	BibTeXDatabase db = new BibTeXDatabase();
-    	try(Reader reader = new StringReader(inputAPI)){
-    		BibTeXParser parser = new BibTeXParser();
-    		db = parser.parse(reader);
-    		
-    		//TODO: Mendeley API parsing error - Parameter: title - additional characters '{' and '}'
-    		for(BibTeXEntry entry: db.getEntries().values()){
-    			String fixedTitleStr = entry.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
-    			Title fixedTitleValue = new Title(fixedTitleStr);
-    			entry.removeField(new Key("title"));
-    			entry.addField(new Key("title"), fixedTitleValue);
-    		}
-    		
-    	}catch (TokenMgrException | IOException |ParseException e) {
-			e.printStackTrace();
-		}
-    	
-    	
-    	Map<Key, BibTeXEntry> entryMap = Collections.emptyMap();
-		entryMap = db.getEntries();
-		
-		System.out.println("-- List of Keys from Mendeley Documens:");
-		for(BibTeXEntry entry : entryMap.values()){
-			System.out.println(entry.getKey().getValue());
-			
-		}
-		
-		return db;
-    	
-    }
-    
     public void updateDocument(MendeleyDocument document ){
     	HttpRequestFactory requestFactory = new ApacheHttpTransport().createRequestFactory();
     	HttpRequest request;
@@ -542,37 +645,8 @@ public class MendeleyClient {
 			String rawResponse = patch_request.execute().parseAsString();
 			System.out.println(rawResponse);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
     }
-    
-    public Title getValueFromString(String s){
-    	return new Title(s);
-    }
-    
-    public class Title extends Value {
-		  private final String title;
-		 
-		  public Title(String title) {
-		    this.title = title;
-		  }
-		 
-		  public String getName () {
-		    return title;
-		  }
-
-		  @Override
-		  public String toUserString() {
-				// TODO Auto-generated method stub
-			return title;
-		  }
-
-		  @Override
-		  protected String format() {
-			  // TODO Auto-generated method stub
-			return null;
-		  }
-    	}
 }

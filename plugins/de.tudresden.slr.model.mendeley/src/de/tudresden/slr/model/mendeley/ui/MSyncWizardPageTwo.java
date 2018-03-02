@@ -112,6 +112,7 @@ public class MSyncWizardPageTwo extends WizardPage {
     	IWizardPage[] wpages = myWiz.getPages();
     	this.folder_page = (MSyncWizardPageOne)wpages[1];
     	this.folder_selected = folder_page.getFolder_selected();
+    	((MSyncWizardPage)getWizard().getStartingPage()).getResourceSelected().setMendeleyFolder(folder_selected);
     }
     
     private void initDiscription(){
@@ -210,14 +211,6 @@ public class MSyncWizardPageTwo extends WizardPage {
     
     private void initWorkspaceBib(){
     	this.workspaceBib = ((MSyncWizardPage) this.getWizard().getPages()[0]).getResourceSelected().getBibTexDB();
-    	
-			//this.workspaceBib = mc.parseDocumentJSONToJBibTex(mc.getDocumentsByFolderBibTex("e6c9bf22-0a55-41ef-9954-8aa45378544e"));
-			
-		for(BibTeXEntry entry : workspaceBib.getEntries().values()){
-			entry.removeField(new Key("year"));
-			entry.addField(new Key("year"), mc.getValueFromString("2250"));
-		}
-		
     }
     
     public void findDocumentsToSync(){
@@ -235,9 +228,9 @@ public class MSyncWizardPageTwo extends WizardPage {
     		else{
 				BibTeXDatabase new_db;
 				try {
-					new_db = mc.parseStringToJBibTex(mc.getDocumentBibTex(md.getId()));
+					new_db = mc.getDocumentBibTex(md.getId());
 					for(BibTeXEntry mendeley_bib : new_db.getEntries().values()){
-						SyncItem syncItem = new SyncItem(md.getId(), mendeley_bib , bib);
+						SyncItem syncItem = new SyncItem(md, mendeley_bib , bib);
 						this.syncItems.add(syncItem);
 					}
 					
@@ -264,7 +257,7 @@ public class MSyncWizardPageTwo extends WizardPage {
     		if(!exists){
     			BibTeXDatabase new_db;
 				try {
-					new_db = mc.parseStringToJBibTex(mc.getDocumentBibTex(md.getId()));
+					new_db = mc.getDocumentBibTex(md.getId());
 					for(BibTeXEntry bibEntry : new_db.getEntries().values()){
 						this.missingInWorkspace.add(bibEntry);
 					}

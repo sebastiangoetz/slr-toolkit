@@ -54,17 +54,8 @@ public class MendeleyOAuthDialog extends Dialog {
     	gridLayout.marginWidth = 0;
     	gridLayout.marginHeight = 0;
     	Browser browser;
-    	try{
-    		
-    		System.setProperty("org.eclipse.swt.browser.XULRunnerPath", "/usr/bin/xulrunner");
-    		browser = new Browser(container, SWT.NONE);
-    		
-    	}catch (Exception e) {
-			// TODO: handle exception
-    		System.out.println("what?");
-    		System.setProperty("org.eclipse.swt.browser.XULRunnerPath", "/usr/bin/xulrunner");
-            browser = new Browser(container, SWT.MOZILLA);
-		}
+    	
+    	browser = new Browser(container, SWT.NONE);
         
         GridData gd_browser = new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1);
         gd_browser.heightHint = 439;

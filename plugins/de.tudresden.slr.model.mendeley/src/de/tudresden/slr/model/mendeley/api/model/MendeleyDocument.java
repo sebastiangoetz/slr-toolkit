@@ -1,10 +1,19 @@
 package de.tudresden.slr.model.mendeley.api.model;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.Key;
+import org.jbibtex.LaTeXObject;
+import org.jbibtex.LaTeXParser;
+import org.jbibtex.LaTeXPrinter;
+import org.jbibtex.ParseException;
+import org.jbibtex.StringValue;
+import org.jbibtex.TokenMgrException;
 import org.jbibtex.Value;
 
 import com.google.api.client.util.Maps;
@@ -95,7 +104,29 @@ public class MendeleyDocument {
 
 		for(Key key : fields.keySet()){
 			String key_str = key.toString();
-			String value_str = fields.get(key).toUserString();
+			Value value = fields.get(key);
+			String value_str = "";
+			
+			if(value != null){
+				value_str = value.toUserString().replaceAll("(\\r|\\n)", " ");;
+				if(!key_str.equals("classes")){
+					try {
+						LaTeXParser latexParser = new LaTeXParser();
+						List<LaTeXObject> latexObjects = latexParser.parse(value_str);
+						LaTeXPrinter latexPrinter = new org.jbibtex.LaTeXPrinter();
+						value_str = latexPrinter.print(latexObjects);
+						
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (TokenMgrException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+				}
+				
+				
+			}
 			
 			if(	key_str.toLowerCase().equals("author") || 
 				key_str.toLowerCase().equals("bookauthor")){
@@ -109,6 +140,13 @@ public class MendeleyDocument {
 			if(key_str.toLowerCase().equals("keywords") ){
 				// Could be List of Names. Mendeley doesn't support Name List for 'patent_owner'
 				this.keywords = value_str.split(", ");
+				if(keywords.length < 2){
+					this.keywords = value_str.split(";");
+				}
+				if(keywords.length < 2){
+					this.keywords = value_str.split("; ");
+				}
+				
 			}
 			
 			if(key_str.toLowerCase().equals("holder") ){
@@ -165,6 +203,10 @@ public class MendeleyDocument {
 					this.source = value_str;
 			}
 			
+			if(	key_str.toLowerCase().equals("abstract")){
+				this.mAbstract = value_str;
+		}
+			
 			if(	key_str.toLowerCase().equals("eventdate") || 
 				key_str.toLowerCase().equals("eventtitle") || 
 				key_str.toLowerCase().equals("eventtitleaddon")){
@@ -172,15 +214,54 @@ public class MendeleyDocument {
 			}
 			
 			if(key_str.toLowerCase().equals("date") || key_str.equals("year") ){
-				this.year = Integer.parseInt(value_str);
+				try{
+					this.year = Integer.parseInt(value_str);
+				}catch(NumberFormatException e){
+					this.year = 0;
+				}
 			}
 			
 			if(key_str.toLowerCase().equals("month") ){
-				this.month = Integer.parseInt(value_str);
+				try{
+					this.month = Integer.parseInt(value_str);
+				}catch(NumberFormatException e){
+					switch(value_str.toLowerCase()){
+						case "january": 	this.month=1;
+											break;
+						case "february": 	this.month=2;
+											break;
+						case "march": 		this.month=3;
+											break;
+						case "april": 		this.month=4;
+											break;
+						case "may": 		this.month=5;
+											break;
+						case "june": 		this.month=6;
+											break;
+						case "juli": 		this.month=7;
+											break;
+						case "august": 		this.month=8;
+											break;
+						case "september": 	this.month=9;
+											break;
+						case "october": 	this.month=10;
+											break;
+						case "november": 	this.month=11;
+											break;
+						case "december": 	this.month=12;
+											break;
+						default: 			this.month=0;
+											break;
+					}
+				}
 			}
 			
 			if(key_str.toLowerCase().equals("day") ){
-				this.day = Integer.parseInt(value_str);
+				try{
+					this.day = Integer.parseInt(value_str);
+				}catch(NumberFormatException e){
+					this.day = 0;
+				}
 			}
 			
 			if(key_str.toLowerCase().equals("edition") ){
@@ -310,8 +391,25 @@ public class MendeleyDocument {
 				//Not yet supported by Mendeley
 			}	
 			
-			if(key_str.toLowerCase().equals("class") ){
-				this.notes = value_str;
+			if(key_str.toLowerCase().equals("classes") ){
+				
+				String text = this.notes;
+				
+				if(text == null){
+					text = "";
+				}
+				Pattern pattern = Pattern.compile("\\[classes\\](.*?)\\[/classes\\]");
+				Matcher matcher = pattern.matcher(text);
+				if(matcher.find()){
+					System.out.println(matcher.group(0));
+					text = text.replace(matcher.group(0), "");
+					text = text + "\n[classes]" + value_str + "[/classes]";
+					
+				}
+				else{
+					text = "\n[classes]" + value_str + "[/classes]";
+				}
+				this.notes = text;
 			}	
 		}
 	}
@@ -397,4 +495,8 @@ public class MendeleyDocument {
     public void setNotes(String notes) {
 		this.notes = notes;
 	}
+    
+    public StringValue getClasses(){
+    	return new StringValue(this.notes, StringValue.Style.BRACED);
+    }
 }
