@@ -70,9 +70,7 @@ public class BubbleChartGenerator {
 		cwaScatter.getBlock().getOutline().setColor(ColorDefinitionImpl.create(bs.getBlockOutlineRGB().red, bs.getBlockOutlineRGB().green, bs.getBlockOutlineRGB().blue));
 
 		// Title
-		if(gs.getChartTitle().equals("")) {
-		gs.setChartTitle(first.getName().trim()+" / "+second.getName().trim());
-		}
+		
 		//cwaScatter.getTitle().getLabel().getCaption().setValue(first.getName().trim()+" / "+second.getName().trim());
 		cwaScatter.getTitle().getLabel().getCaption().setValue(gs.getChartTitle());
 		cwaScatter.getTitle().getLabel().getCaption().getFont().setSize(gs.getChartTitleSize());
@@ -93,9 +91,7 @@ public class BubbleChartGenerator {
 		xAxisPrimary.getMinorGrid().getLineAttributes().setThickness(2);
 		xAxisPrimary.getOrigin().setType(IntersectionType.MIN_LITERAL);
 		
-		if(as.getxAxisTitle().equals("")) {
-		as.setxAxisTitle(first.getName().trim());
-		}
+		
 		xAxisPrimary.getTitle().getCaption().setValue(as.getxAxisTitle());
 		//xAxisPrimary.getTitle().getCaption().setValue(first.getName().trim());
 		xAxisPrimary.getTitle().getCaption().getFont().setSize(as.getxAxisTitleSize());
@@ -154,9 +150,7 @@ public class BubbleChartGenerator {
 		yAxisPrimary.setLabelPosition(Position.LEFT_LITERAL);
 		yAxisPrimary.getLabel().getCaption().getFont().setWordWrap(true);
 		
-		if(as.getyAxisTitle().equals("")) {
-		as.setyAxisTitle(second.getName().trim());
-		}
+		
 		yAxisPrimary.getTitle().getCaption().setValue(as.getyAxisTitle());
 		//yAxisPrimary.getTitle().getCaption().setValue(second.getName().trim());
 		yAxisPrimary.getTitle().getCaption().getFont().setSize(as.getyAxisTitleSize());

@@ -24,6 +24,7 @@ import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.PieDataTerm;
 import de.tudresden.slr.ui.chart.logic.TermSort;
 import de.tudresden.slr.ui.chart.settings.PieChartConfiguration;
+import de.tudresden.slr.ui.chart.settings.SettingsDialog;
 import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 
 public class SeriesPagePie extends Composite implements SelectionListener, MouseListener, Pages{
@@ -145,10 +146,12 @@ public class SeriesPagePie extends Composite implements SelectionListener, Mouse
 					btnRadioButtonRandom.setEnabled(true);
 					switch(termSort) {
 						case YEAR:{
+							SettingsDialog.generalPageBar.setTitle("Number of cites per year of " + selectedTerm.getName());
 							buildListPerYear();
 							break;
 						}
 						case SUBCLASS:{
+							SettingsDialog.generalPageBar.setTitle("Number of cites per subclass of " + selectedTerm.getName());
 							buildListPerSubclass();
 							break;
 						}

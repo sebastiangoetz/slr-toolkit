@@ -57,7 +57,7 @@ public class BarChartGenerator {
 	 * @param title Chart title
 	 * @return The bar chart
 	 */
-	public final Chart createBar(Map<String, Integer> input, String title) {
+	public final Chart createBar(Map<String, Integer> input) {
 		// See: http://www.eclipsezone.com/eclipse/forums/t67188.html
 		
 		BarChartConfiguration cc = BarChartConfiguration.get();//
@@ -83,9 +83,9 @@ public class BarChartGenerator {
 		Plot p = cwaBar.getPlot();
 
 		// Title
-		if(gs.getChartTitle().equals("")) {
-		gs.setChartTitle(title);
-		}
+		//if(gs.getChartTitle().equals("")) {
+		//gs.setChartTitle(title);
+		//}
 		cwaBar.getTitle().getLabel().getCaption().setValue(gs.getChartTitle()); //$NON-NLS-1$
 		cwaBar.getTitle().getLabel().getCaption().getFont().setSize(gs.getChartTitleSize());
 		cwaBar.getTitle().getLabel().getCaption().setColor(ColorDefinitionImpl.create(gs.getChartTitleColor().red, gs.getChartTitleColor().green, gs.getChartTitleColor().blue));
@@ -193,7 +193,7 @@ public class BarChartGenerator {
 		
 		List<String> names = new ArrayList<>();
 		List<Double> values = new ArrayList<>();
-		if(!title.contains("per year")) {
+		if(cc.getTermSort() == TermSort.SUBCLASS) {
 			input.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByValue().reversed()).forEach(x -> {
 				names.add(x.getKey());
 				values.add((double)x.getValue());
@@ -244,7 +244,7 @@ public class BarChartGenerator {
 		BarSeries bs1 = (BarSeries) BarSeriesImpl.create();
 		bs1.setDataSet(orthoValues1);
 		bs1.getLabel().setVisible(gs.isChartShowLabels());
-		bs1.setLabelPosition(Position.INSIDE_LITERAL);
+		bs1.setLabelPosition(Position.OUTSIDE_LITERAL);
 		bs1.setTranslucent(ss.isSeriesTranslucent());
 
 		

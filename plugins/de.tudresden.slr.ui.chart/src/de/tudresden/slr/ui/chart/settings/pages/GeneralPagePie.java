@@ -229,7 +229,7 @@ public class GeneralPagePie extends Composite implements SelectionListener, Mous
 		private void setUnterline(boolean value) {btnUnderline.setSelection(value);}
 		
 		private String getTitle() {return text.getText();}
-		private void setTitle(String title) {text.setText(title);}
+		public void setTitle(String title) {text.setText(title);}
 		
 		private int getTitleSize() {return Integer.valueOf(comboTitleSize.getItem(comboTitleSize.getSelectionIndex()));}
 		private void setTitleSize(int size) {comboTitleSize.select(PageSupport.setFontSize(size));}

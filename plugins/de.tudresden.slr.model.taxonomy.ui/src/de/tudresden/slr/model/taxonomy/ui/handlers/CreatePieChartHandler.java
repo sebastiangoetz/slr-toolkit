@@ -18,6 +18,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.logic.TermSort;
+import de.tudresden.slr.ui.chart.settings.PieChartConfiguration;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class CreatePieChartHandler implements IHandler {
@@ -76,6 +78,8 @@ public class CreatePieChartHandler implements IHandler {
 			ChartDataProvider provider = new ChartDataProvider();
 			Term input = (Term) currentSelection.getFirstElement();
 			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
+			PieChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + input.getName());
+			PieChartConfiguration.get().setPieTermSort(TermSort.SUBCLASS);
 			Chart citeChart = ChartGenerator.createPie(citeChartData);
 			view.setAndRenderChart(citeChart);
 		} else {
