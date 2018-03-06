@@ -3,6 +3,13 @@
 
 <product name="slr-toolkit" uid="product" id="de.tudresden.slr.app.product" application="de.tudresden.slr.app.application" version="0.0.9" useFeatures="true" includeLaunchers="true">
 
+   <aboutInfo>
+      <image path="/de.tudresden.slr.app/book.png"/>
+      <text>
+         The SLR Toolkit is continuously developed in student projects at the Software Technology Group of Technische Universität Dresden.
+      </text>
+   </aboutInfo>
+
    <configIni use="default">
    </configIni>
 
@@ -16,12 +23,18 @@
    <windowImages i16="/de.tudresden.slr.app/icons/icon_16.png" i32="/de.tudresden.slr.app/icons/icon_32.png" i48="/de.tudresden.slr.app/icons/icon_48.png" i64="/de.tudresden.slr.app/icons/icon_64.png" i128="/de.tudresden.slr.app/icons/icon_128.png" i256="/de.tudresden.slr.app/icons/icon_256.png"/>
 
    <splash
-      location="de.tudresden.slr.app" />
-   <launcher>
+      location="de.tudresden.slr.app"
+      startupProgressRect="5,275,445,15" />
+   <launcher name="slr-toolkit">
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/de.tudresden.slr.app/icons/book-16.bmp"
+            winMediumHigh="/de.tudresden.slr.app/icons/book-32.bmp"
+            winLargeHigh="/de.tudresden.slr.app/icons/book-48.bmp"
+            winExtraLargeHigh="/de.tudresden.slr.app/icons/book-256.bmp"/>
       </win>
    </launcher>
+
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8</windows>

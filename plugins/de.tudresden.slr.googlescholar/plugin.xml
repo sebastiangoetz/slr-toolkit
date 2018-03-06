@@ -17,5 +17,25 @@
             name="Google Scholar">
       </category>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tudresden.slr.googlescholar.preferences.GSPreferencePage"
+            id="de.tudresden.slr.googlescholar.preferences.GSPreferencePage"
+            name="Google Scholar Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tudresden.slr.googlescholar.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.resources.teamHook">
+      <teamHook
+            class="de.tudresden.slr.googlescholar.TeamHook1">
+      </teamHook>
+   </extension>
 
 </plugin>

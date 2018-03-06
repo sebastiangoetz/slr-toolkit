@@ -21,3 +21,4 @@ Bundle-ClassPath: src/,
  .,
  lib/htmlunit-2.29-OSG.jar
 Import-Package: de.tudresden.slr.googlescholar
+Bundle-Activator: de.tudresden.slr.googlescholar.Activator

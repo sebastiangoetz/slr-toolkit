@@ -14,6 +14,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import com.gargoylesoftware.htmlunit.AjaxController;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -29,6 +32,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.javascript.background.JavaScriptJobManager;
 
+import de.tudresden.slr.googlescholar.preferences.PreferenceConstants;
+
 public class GSWorker {
 
 	private WebClient webClient;
@@ -37,6 +42,10 @@ public class GSWorker {
 	
 	private PrintWriter out;
 	private SubMonitor monitor;
+	
+	private final static IPreferenceStore store = new ScopedPreferenceStore( InstanceScope.INSTANCE, "de.tudresden.slr.googlescholar");
+	private final static int MIN_WAIT =  store.getInt(PreferenceConstants.P_MIN_WAIT);
+	private final static int MAX_WAIT =  store.getInt(PreferenceConstants.P_MAX_WAIT);
 	
 	public GSWorker(PrintWriter output, String as_q, String as_epq, String as_oq, String as_eq, String as_occt, String as_sauthors, String as_publication, String as_ylo, String as_yhi) {
 		webClient = new WebClient(BrowserVersion.CHROME);
@@ -137,7 +146,7 @@ public class GSWorker {
 				HtmlPage Results = webClient.getPage((start > 0) ? Base + "&start=" + start : Base);
 				
 				// Timeouts
-				s = waitLikeUser(3000, 10000);
+				s = waitLikeUser();
 				if(!s.isOK()) {
 					out.print("@Comment { Status: " + s.getMessage() + " }\n");
 					out.close();
@@ -167,7 +176,7 @@ public class GSWorker {
 						out.print(Result.getContent() + "\n");
 						
 						// Timeouts
-						s = waitLikeUser(3000, 10000);
+						s = waitLikeUser();
 						if(!s.isOK()) {
 							out.print("@Comment { Status: " + s.getMessage() + " }\n");
 							out.close();
@@ -211,7 +220,7 @@ public class GSWorker {
 			HtmlPage page = webClient.getPage(Scholar);
 			
 			// Timeouts
-			s = waitLikeUser(3000, 10000);
+			s = waitLikeUser();
 			if(!s.isOK()) return s;
 			s = waitForJs(page);
 			if(!s.isOK()) return s;
@@ -221,7 +230,7 @@ public class GSWorker {
 			HtmlPage configFormPage = webClient.getPage(configLink.getBaseURI() + configLink.getHrefAttribute().substring(1));
 			
 			// Timeouts
-			s = waitLikeUser(3000, 10000);
+			s = waitLikeUser();
 			if(!s.isOK()) return s;
 			s = waitForJs(page);
 			if(!s.isOK()) return s;
@@ -240,7 +249,7 @@ public class GSWorker {
 			HtmlPage readyForSearch = configFormSave.click();
 			
 			// Timeouts
-			s = waitLikeUser(3000, 10000);
+			s = waitLikeUser();
 			if(!s.isOK()) return s;
 			s = waitForJs(page);
 			if(!s.isOK()) return s;
@@ -267,8 +276,8 @@ public class GSWorker {
 		return Status.OK_STATUS;
 	}
 	
-	private IStatus waitLikeUser(int min, int max) {
-		int time = (min + ((int)Math.random()*(max-min))) / 1000;
+	private IStatus waitLikeUser() {
+		int time = (MIN_WAIT + ((int)Math.random()*(MAX_WAIT-MIN_WAIT))) / 1000;
 		for(int i = 0; i < time; i++) {
 			try {
 				Thread.sleep(1000);
