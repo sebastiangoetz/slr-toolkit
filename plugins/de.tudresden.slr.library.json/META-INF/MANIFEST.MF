@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Json
-Bundle-SymbolicName: de.tudresden.slr.library.json
-Bundle-Version: 1.0.0
-Bundle-ClassPath: json-20171018.jar
-Export-Package: org.json;version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8

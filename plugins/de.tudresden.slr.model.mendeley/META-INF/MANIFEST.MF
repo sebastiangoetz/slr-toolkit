@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mendeley
 Bundle-SymbolicName: de.tudresden.slr.model.mendeley;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: de.tudresden.slr.model.mendeley.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
@@ -11,10 +11,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;bundle-version="2.10.1",
  org.eclipse.emf.edit.ui;bundle-version="2.10.1",
  org.jbibtex;bundle-version="1.0.15",
- de.tudresden.slr.library.auth;bundle-version="1.0.0"
+ com.google.code.gson;bundle-version="2.8.0",
+ com.google.oauth-client.google-oauth-client;bundle-version="1.20.0",
+ com.google.http-client.google-http-client;bundle-version="1.20.0",
+ com.google.http-client.google-http-client-jackson2;bundle-version="1.20.0"
 Bundle-ActivationPolicy: lazy
-Import-Package: com.google.gson,
- com.google.gson.internal;version="2.7.0",
+Import-Package: 
  de.tudresden.slr.model.modelregistry,
  org.eclipse.core.resources,
  org.eclipse.emf.ecore,

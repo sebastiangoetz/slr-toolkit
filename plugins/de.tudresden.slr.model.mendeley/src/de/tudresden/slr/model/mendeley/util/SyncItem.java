@@ -117,28 +117,5 @@ public class SyncItem {
 		}
 		return false;
 	}
-	
-	public class ToolkitValue extends Value {
-		  private final String value;
-		 
-		  public ToolkitValue(String value) {
-		    this.value = value;
-		  }
-		 
-		  public String getValue () {
-		    return value;
-		  }
-
-		  @Override
-		  public String toUserString() {
-			return value;
-		  }
-
-		  @Override
-		  protected String format() {
-			return null;
-		  }
-	}
-	
 	 
 }
