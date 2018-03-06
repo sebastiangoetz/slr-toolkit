@@ -13,8 +13,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.birt.chart.engine,
  org.eclipse.birt.chart.engine.extension,
  de.tudresden.slr.model.taxonomy.model,
- de.tudresden.slr.model.taxonomy
+ de.tudresden.slr.model.taxonomy,
+ org.eclipse.swt,
+ org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.ui.chart.logic,
+ de.tudresden.slr.ui.chart.settings,
+ de.tudresden.slr.ui.chart.settings.parts,
  de.tudresden.slr.ui.chart.views
+Import-Package: org.eclipse.xtext.ui.label

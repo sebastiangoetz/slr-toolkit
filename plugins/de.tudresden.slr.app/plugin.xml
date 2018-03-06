@@ -202,14 +202,30 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="de.tudresden.slr.app.application"
-            name="app">
+            name="slr-toolkit">
          <property
                name="appName"
-               value="app">
+               value="slr-toolkit">
          </property>
          <property
                name="windowImages"
                value="icons/icon_16.png,icons/icon_32.png,icons/icon_48.png,icons/icon_64.png,icons/icon_128.png,icons/icon_256.png">
+         </property>
+         <property
+               name="aboutImage"
+               value="book.png">
+         </property>
+         <property
+               name="aboutText"
+               value="The SLR Toolkit is continuously developed in student projects at the Software Technology Group of Technische Universität Dresden.">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>
