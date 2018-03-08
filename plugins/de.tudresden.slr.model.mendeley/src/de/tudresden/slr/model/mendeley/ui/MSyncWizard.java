@@ -4,7 +4,7 @@ package de.tudresden.slr.model.mendeley.ui;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
+import java.net.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -29,12 +29,24 @@ public class MSyncWizard extends Wizard {
     protected AdapterFactoryEditingDomain editingDomain;
     private MendeleyClient mc;
     private WorkspaceManager wm;
+    private boolean preSelected;
+    private URI uri;
 
     public MSyncWizard() {
         super();
         setNeedsProgressMonitor(true);
         mc = MendeleyClient.getInstance();
         wm = WorkspaceManager.getInstance();
+        preSelected = false;
+    }
+    
+    public MSyncWizard(URI uri) {
+        super();
+        setNeedsProgressMonitor(true);
+        mc = MendeleyClient.getInstance();
+        wm = WorkspaceManager.getInstance();
+        preSelected = true;
+        this.uri = uri;
     }
 
     @Override
@@ -44,7 +56,13 @@ public class MSyncWizard extends Wizard {
 
     @Override
     public void addPages() {
-    	zero = new MSyncWizardPage();
+    	if(preSelected) {
+    		zero = new MSyncWizardPage(uri);
+    	}
+    	else {
+    		zero = new MSyncWizardPage();
+    	}
+    	
     	one = new MSyncWizardPageOne();
         two = new MSyncWizardPageTwo();
         three = new MSyncWizardPageThree();
@@ -89,5 +107,7 @@ public class MSyncWizard extends Wizard {
     public IWizardPage getNextPage(IWizardPage page) {
     	return super.getNextPage(page);
     }  
+    
+    
     
 }

@@ -102,21 +102,21 @@ public class MSyncWizardPageThree extends WizardPage {
 		});
         
         Tree tree = treeViewer.getTree();
-        tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
         
         Label lblNewLabel_1 = new Label(container, SWT.NONE);
         lblNewLabel_1.setText("Attributes of selected document:");
         
         tableViewer = new TableViewer(container, SWT.BORDER | SWT.FULL_SELECTION);
         table = tableViewer.getTable();
-        table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+        table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
         table.setLinesVisible(true);
         table.setHeaderVisible(true);
         
         TableColumn tColumnLabel = new TableColumn(table, SWT.NONE);
-        tColumnLabel.setWidth(125);
+        tColumnLabel.setWidth(142);
         TableColumn tColumnValue = new TableColumn(table, SWT.NONE);
-        tColumnValue.setWidth(125);
+        tColumnValue.setWidth(410);
         TableViewerColumn labelColumn = new TableViewerColumn(tableViewer, tColumnLabel);
         
         labelColumn.getColumn().setText("Label");

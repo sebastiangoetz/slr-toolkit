@@ -11,7 +11,10 @@ import de.tudresden.slr.model.mendeley.Activator;
 import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
 import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
 import de.tudresden.slr.model.mendeley.ui.MendeleyOAuthDialog;
+
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
 
 /**
  * This class represents a preference page that
@@ -81,6 +84,23 @@ public class MendeleyPreferencePage
 		if(event.getOldValue().toString().equals("mendeley_off") && event.getNewValue().toString().equals("mendeley_on")){
 			System.out.println("Mendeley Support Activated");
 			mendeley_client.displayAuthorizationUserInterface(getFieldEditorParent().getShell());
+			// create a dialog with ok and cancel buttons and a question icon
+			MessageBox dialog =
+			    new MessageBox(this.getShell(), SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
+			dialog.setText("Login");
+			dialog.setMessage("Login was successfull. Do you want to start the Mendeley Synchronization Wizard?");
+			// open dialog and await user selection
+			int returnCode = dialog.open();
+			
+			if(returnCode == SWT.OK) {
+				WizardDialog wizardDialog = new WizardDialog(this.getShell(),
+			            new MSyncWizard());
+		        if (wizardDialog.open() == Window.OK) {
+		            System.out.println("Ok pressed");
+		        } else {
+		            System.out.println("Cancel pressed");
+		        }
+			}
 		}
 		
 		super.propertyChange(event);

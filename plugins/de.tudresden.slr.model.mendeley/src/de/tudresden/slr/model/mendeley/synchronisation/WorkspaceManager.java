@@ -65,6 +65,15 @@ public class WorkspaceManager {
 		}
 	}
 	
+	public WorkspaceBibTexEntry getWorkspaceBibTexEntryByUri(URI uri){
+		for(WorkspaceBibTexEntry entry : this.workspaceEntries){
+			if(entry.getUri().equals(uri)){
+				return entry;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<WorkspaceBibTexEntry> getBibEntriesByProject(IProject project){
 		ArrayList<WorkspaceBibTexEntry> results = new ArrayList<WorkspaceBibTexEntry>();
 		for(WorkspaceBibTexEntry entry: this.workspaceEntries){
@@ -72,6 +81,12 @@ public class WorkspaceManager {
 				results.add(entry);
 			}
 		}
+		return results;
+	}
+	
+	public ArrayList<WorkspaceBibTexEntry> getBibEntriesByWorkspaceEntry(WorkspaceBibTexEntry wEntry){
+		ArrayList<WorkspaceBibTexEntry> results = new ArrayList<WorkspaceBibTexEntry>();
+		results.add(wEntry);
 		return results;
 	}
 	

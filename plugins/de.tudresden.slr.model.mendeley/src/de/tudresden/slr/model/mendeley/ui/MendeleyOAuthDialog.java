@@ -85,7 +85,6 @@ public class MendeleyOAuthDialog extends Dialog {
 						mendeley_client.requestAccessToken(auth_code);
 						store.setValue(PreferenceConstants.P_TOKEN, mendeley_client.getAccess_token());
 						store.setValue(PreferenceConstants.P_REFRESH_TOKEN, mendeley_client.getRefresh_token());
-						
 					        
 					     close();
 					}
@@ -102,9 +101,6 @@ public class MendeleyOAuthDialog extends Dialog {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-					
-							
-				
 			}
 		});
         

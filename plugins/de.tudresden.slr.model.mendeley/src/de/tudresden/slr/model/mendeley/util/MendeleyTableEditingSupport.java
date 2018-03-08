@@ -43,6 +43,18 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 		MSyncWizardTableEntry entry = (MSyncWizardTableEntry) element;
+		
+		if(entry.getSelected()== null){
+			if(entry.getValue1() == null) {
+				return 0;
+			}
+			else {
+				return 1;
+			}
+			
+		}
+		
+		
 		if(entry.getSelected().equals(entry.getValue1())) 
 			return 0;
 		else 

@@ -15,5 +15,120 @@
             class="de.tudresden.slr.model.mendeley.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
+         <command
+               commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand"
+               icon="icons/sample.png"
+               label="Synchronize with Mendeley Folder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+                  <with variable="activeMenuSelection">
+				      <iterate
+				           ifEmpty="false">
+				         <adapt type="org.eclipse.core.resources.IResource">
+				              <test property="org.eclipse.core.resources.extension" value="bib" />
+				         </adapt>
+				      </iterate>
+				   </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="de.tudresden.slr.model.mendeley.menus.sampleMenu"
+               label="Mendeley"
+               mnemonic="M">
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.commands.startWizardCommand"
+                  id="de.tudresden.slr.model.mendeley.menus.startWizardCommand"
+                  label="Synchronization Wizard"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="de.tudresden.slr.model.mendeley.toolbars.sampleToolbar">
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.commands.sampleCommand"
+                  icon="icons/sample.png"
+                  id="de.tudresden.slr.model.mendeley.toolbars.sampleCommand"
+                  tooltip="Say hello world">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.tudresden.slr.model.mendeley.commands.category"
+            name="Sample Category">
+      </category>
+      <command
+            categoryId="de.tudresden.slr.model.mendeley.commands.category"
+            id="de.tudresden.slr.model.mendeley.commands.startWizardCommand"
+            name="Start Wizard Command">
+      </command>
+      <command
+            id="de.tudresden.slr.model.mendeley.startContextWizardCommand"
+            name="Start Context Wizard Command">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.tudresden.slr.model.mendeley.handlers.WizardHandler"
+            commandId="de.tudresden.slr.model.mendeley.commands.startWizardCommand">
+      </handler>
+      <handler
+            class="de.tudresden.slr.model.mendeley.handlers.ContextWizardHandler"
+            commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.tudresden.slr.model.mendeley.commands.startWizardCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            class="de.tudresden.slr.model.mendeley.decorators.MendeleyDecorator"
+            icon="icons/sample_decorator.gif"
+            id="de.tudresden.slr.model.mendeley.decorator"
+            label="Resource Decorator"
+            lightweight="false"
+            location="BOTTOM_RIGHT"
+            state="false">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IResource">
+               </objectClass>
+               <or>
+                  <objectClass
+                        name="org.eclipse.core.resources.IProject">
+                  </objectClass>
+                  <objectClass
+                        name="org.eclipse.core.resources.IFile">
+                  </objectClass>
+               </or>
+            </and>
+         </enablement>
+      </decorator>
+   </extension>
+   <!-- locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additionsde.tudresden.slr.model.mendeley.menuContribution1"> -->
 
 </plugin>

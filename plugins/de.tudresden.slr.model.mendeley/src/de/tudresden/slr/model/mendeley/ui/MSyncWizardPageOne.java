@@ -71,7 +71,7 @@ public class MSyncWizardPageOne extends WizardPage {
 		mc = MendeleyClient.getInstance();
 		try {
 			//mc.displayAuthorizationUserInterface(getShell());
-			mc.requestAccessToken("dTtjLfriFNsx03uw-yK9-pVTb3o");
+			//mc.requestAccessToken("dTtjLfriFNsx03uw-yK9-pVTb3o");
 			folders_str = mc.getAllFolders();
 		} catch (TokenMgrException | IOException | ParseException e) {
 			e.printStackTrace();

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +16,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.apache.http.entity.StringEntity;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -148,6 +152,8 @@ public class MendeleyClient {
     }
     
     public String getAllDocumentsBibTex() {
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/documents?&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn;
@@ -174,6 +180,8 @@ public class MendeleyClient {
     }
     
     public String getAllDocumentsJSON() throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/documents?&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
@@ -193,6 +201,8 @@ public class MendeleyClient {
     }
     
     public MendeleyAnnotation[] getAnnotations(MendeleyDocument document) throws MalformedURLException, IOException{
+    	refreshTokenIfNecessary();
+    	
     	String result = "";
     	String resource_url = "https://api.mendeley.com/annotations?document_id=" + document.getId();
     	
@@ -216,6 +226,8 @@ public class MendeleyClient {
     
     
     public BibTeXDatabase getDocumentBibTex( String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/documents/" + id + "?view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
@@ -250,6 +262,8 @@ public class MendeleyClient {
     }
     
     public String getAllFolders() throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/folders";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
@@ -269,6 +283,7 @@ public class MendeleyClient {
     }
     
     public MendeleyFolder[] getAllMendeleyFolders() throws MalformedURLException, TokenMgrException, IOException, ParseException{
+    	refreshTokenIfNecessary();
     	
         String folders_str = this.getAllFolders();
         Gson gson = new Gson();
@@ -305,6 +320,7 @@ public class MendeleyClient {
     }
     
     public MendeleyFolder getMendeleyFolder(String folderId) throws MalformedURLException, TokenMgrException, IOException, ParseException{
+    	refreshTokenIfNecessary();
     	
     	String resource_url = "https://api.mendeley.com/documents?folder_id=" + folderId + "&view=bib&limit=500";
     	
@@ -358,6 +374,8 @@ public class MendeleyClient {
  
     
     public String getDocumentsByFolderJSON(String id) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/documents?folder_id=" + id + "&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
@@ -379,6 +397,8 @@ public class MendeleyClient {
     }
     
     public BibTeXDatabase getDocumentsByFolderBibTex(MendeleyFolder mf) throws MalformedURLException, IOException, TokenMgrException, ParseException{
+    	refreshTokenIfNecessary();
+    	
     	String resource_url = "https://api.mendeley.com/documents?folder_id=" + mf.getId() + "&view=bib&limit=500";
     	
     	HttpURLConnection resource_cxn = (HttpURLConnection)(new URL(resource_url).openConnection());
@@ -431,22 +451,21 @@ public class MendeleyClient {
     	return db;
     }
     
-    public void displayAuthorizationUserInterface(Shell shell){
-    	/*
+    public boolean displayAuthorizationUserInterface(Shell shell){
+    	
     	MendeleyOAuthDialog oauth_D = new MendeleyOAuthDialog(shell);
 		oauth_D.create();
-		oauth_D.open();
 		
 		if (oauth_D.open() == Window.OK) {
             System.out.println("Ok pressed");
+            return true;
         } else {
             System.out.println("Cancel pressed");
+            return false;
         }
-		*/	
+		
     	
-    	String url = new BrowserClientRequestUrl(
-    		      "https://server.example.com/authorize", "s6BhdRkqt3").setState("xyz")
-    		      .setRedirectUri("https://client.example.com/cb").build();
+		/*
 		WizardDialog wizardDialog = new WizardDialog(shell,
 	            new MSyncWizard());
         if (wizardDialog.open() == Window.OK) {
@@ -454,7 +473,7 @@ public class MendeleyClient {
         } else {
             System.out.println("Cancel pressed");
         }
-        
+        */	
     }
     
     public void requestAccessToken(String code) throws IOException, TokenMgrException, ParseException {
@@ -466,12 +485,15 @@ public class MendeleyClient {
 	              .setGrantType("authorization_code")
 	              .setClientAuthentication(
 	                  new BasicAuthentication("4335", "sSFcbUA38RS9Cpm7")).execute();
-	      System.out.println("Access token: " + response.getAccessToken());
+	      
 	      this.access_token = response.getAccessToken();
 	      this.refresh_token = response.getRefreshToken();
 	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
+	      
 	      refreshTokenIfNecessary();
+	      
 	      System.out.println("Access Token successfully acquired");
+	      
 	      initializeEditingDomain();
 	    } catch (TokenResponseException e) {
 	      if (e.getDetails() != null) {
@@ -498,12 +520,15 @@ public class MendeleyClient {
 	              .setGrantType("refresh_token")
 	              .setClientAuthentication(
 	                  new BasicAuthentication("4335", "sSFcbUA38RS9Cpm7"));
+	      
 	      TokenResponse response = request.execute();
-	      System.out.println("Access token: " + response.getAccessToken());
+	      
 	      this.access_token = response.getAccessToken();
 	      this.refresh_token = response.getRefreshToken();
 	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
+	      
 	      refreshTokenIfNecessary();
+	      
 	      System.out.println("Access Token successfully acquired");
 	    } catch (TokenResponseException e) {
 	      if (e.getDetails() != null) {
@@ -527,27 +552,37 @@ public class MendeleyClient {
     }
     
     private void refreshTokenIfNecessary(){
-    	final Calendar now = Calendar.getInstance();
-    	System.out.println("It is " + now.getTime());
-    	System.out.println("Key will expire at: " + expires_at.getTime() );
-    	if(now.before(expires_at)){
-    		final Calendar refresh_due = Calendar.getInstance();
-    		refresh_due.setTimeInMillis(expires_at.getTimeInMillis());
-    		refresh_due.add(Calendar.SECOND, -1200);
-    		System.out.print("Refresh Token will be used afer " + refresh_due.getTime());
-    		if(now.after(refresh_due)){
-    			System.out.println("This Key Must be Refreshed Maaaan");
-    			try {
-					this.requestRefreshAccessToken(this.refresh_token);
-				} catch (TokenMgrException | IOException | ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		} 		
-    	}
     	
-    	if(now.after(expires_at)){
-    		// TODO open MendeleyOAUthDialog
+    	if(expires_at == null) {
+    		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+    		displayAuthorizationUserInterface(shell);
+    	}
+    	else {
+    		final Calendar now = Calendar.getInstance();
+        	System.out.println("It is " + now.getTime());
+        	System.out.println("Key will expire at: " + expires_at.getTime() );
+        	
+        	if(now.before(expires_at)){
+        		final Calendar refresh_due = Calendar.getInstance();
+        		refresh_due.setTimeInMillis(expires_at.getTimeInMillis());
+        		refresh_due.add(Calendar.SECOND, -1200);
+        		System.out.print("Refresh Token will be used afer " + refresh_due.getTime());
+        		if(now.after(refresh_due)){
+        			System.out.println("This Key Must be Refreshed Maaaan");
+        			try {
+    					this.requestRefreshAccessToken(this.refresh_token);
+    				} catch (TokenMgrException | IOException | ParseException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+        		} 		
+        	}
+        	
+        	if(now.after(expires_at)){
+        		// TODO open MendeleyOAUthDialog
+        		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        		displayAuthorizationUserInterface(shell);
+        	}
     	}
     }
     
@@ -559,15 +594,14 @@ public class MendeleyClient {
 				BibtexResourceImpl bibResource = (BibtexResourceImpl)resource;
 				for(EObject econ : bibResource.getContents()){
 					DocumentImpl document = (DocumentImpl) econ;
-					System.out.println("Hallo");
 				}
 			}
-			System.out.println("Hallo");
 		}
-		System.out.println("Hallo");
 	}
     
     public void updateDocument(MendeleyDocument document ){
+    	refreshTokenIfNecessary();
+    	
     	HttpRequestFactory requestFactory = new ApacheHttpTransport().createRequestFactory();
     	HttpRequest request;
     	HttpRequest patch_request;
@@ -578,9 +612,8 @@ public class MendeleyClient {
     	String resource_url = "https://api.mendeley.com/documents/" + document_id;
     	GenericUrl gen_url = new GenericUrl(resource_url);
     	
-    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
-    	
 		try {
+			final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes("UTF8") );
 			patch_request = requestFactory.buildPatchRequest(gen_url, content);
 			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
 			
@@ -588,13 +621,14 @@ public class MendeleyClient {
 			String rawResponse = patch_request.execute().parseAsString();
 			System.out.println(rawResponse);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
     }
     
     public MendeleyDocument addDocument(BibTeXEntry entry ){
+    	refreshTokenIfNecessary();
+    	
     	HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
     	HttpRequest request;
     	HttpRequest patch_request;
@@ -605,19 +639,20 @@ public class MendeleyClient {
     	
     	Gson gson = new GsonBuilder().create();
     	String json_body = gson.toJson(document_to_add);
-    	String resource_url = "https://api.mendeley.com/documents";
-    	GenericUrl gen_url = new GenericUrl(resource_url);
     	
-    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
+    	String resource_url = "https://api.mendeley.com/documents";
+    	GenericUrl gen_url = new GenericUrl(resource_url); 	
     	
 		try {
+			final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes("UTF8") );
+			
 			patch_request = requestFactory.buildPostRequest(gen_url, content);
 			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
 			patch_request.getHeaders().setContentType("application/vnd.mendeley-document.1+json");
 			String rawResponse = patch_request.execute().parseAsString();
 			document = gson.fromJson(rawResponse, MendeleyDocument.class);
 			System.out.println(rawResponse);
-		} catch (IOException e) {
+		} catch (IOException e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -627,6 +662,8 @@ public class MendeleyClient {
     }
     
     public void addDocumentToFolder(MendeleyDocument document, String folder_id){
+    	refreshTokenIfNecessary();
+    	
     	HttpRequestFactory requestFactory = new NetHttpTransport().createRequestFactory();
     	HttpRequest request;
     	HttpRequest patch_request;
@@ -635,10 +672,9 @@ public class MendeleyClient {
     	String json_body = "{\"id\": \""+ document.getId() + "\" }";
     	String resource_url = "https://api.mendeley.com/folders/"+ folder_id + "/documents";
     	GenericUrl gen_url = new GenericUrl(resource_url);
-    	
-    	final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes() );
-    	
+    		
 		try {
+			final HttpContent content = new ByteArrayContent("application/json", json_body.getBytes("UTF8") );
 			patch_request = requestFactory.buildPostRequest(gen_url, content);
 			patch_request.getHeaders().setAuthorization("Bearer " + access_token);
 			patch_request.getHeaders().setContentType("application/vnd.mendeley-document.1+json");

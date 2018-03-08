@@ -39,6 +39,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -76,13 +77,34 @@ public class MSyncWizardPage extends WizardPage {
 		selectedProject = null;
 		wm = WorkspaceManager.getInstance();
 		setPageComplete(false);
+		createWorkspaceContent();
+		resourceSelected = null;
+		selectedProject = null;
+	}
+	
+	public MSyncWizardPage(URI uri) {
+		super("wizardPage");
+		setTitle("Wizard Page title");
+		setDescription("Wizard Page description");
+		initializeEditingDomain();
+		selectedProject = null;
+		wm = WorkspaceManager.getInstance();
+		setPageComplete(false);
+		createWorkspaceContent();
+		WorkspaceBibTexEntry entry = wm.getWorkspaceBibTexEntryByUri(uri);
+		if(entry != null) {
+			resourceSelected = entry;
+			selectedProject = entry.getProject();
+		}
+		
+		System.out.println("ok?");
 	}
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		createWorkspaceContent();
+		
 		
 		Composite container = new Composite(parent, SWT.NULL);
 		
@@ -105,9 +127,12 @@ public class MSyncWizardPage extends WizardPage {
 		});
 		comboViewer.addSelectionChangedListener(createProjectListener());
 		comboViewer.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
+		
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		combo.setText("-- Select a Project --");
+		
+		
 		
 		
 		
@@ -188,6 +213,14 @@ public class MSyncWizardPage extends WizardPage {
 				}
 			}
 		});
+		
+		if(resourceSelected != null) {
+			ArrayList<WorkspaceBibTexEntry> wEntries = new ArrayList<WorkspaceBibTexEntry>();
+			wEntries.add(resourceSelected);
+			treeViewer.setInput(wEntries);
+			treeViewer.expandAll();
+			comboViewer.getCombo().setVisible(false);
+		}
 	}
 	
 	protected void initializeEditingDomain() {

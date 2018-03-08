@@ -31,11 +31,11 @@ public class MendeleyTreeLabelProvider implements ILabelProvider {
 
 	    try {
 	    	System.out.println(System.getProperty("user.dir"));
-	    	file = new Image(null, new FileInputStream("plugins/de.tudresden.slr.model.mendeley/images/file.png"));
-	    	dir = new Image(null, new FileInputStream("plugins/de.tudresden.slr.model.mendeley/images/directory.png"));
-	    	upload = new Image(null, new FileInputStream("plugins/de.tudresden.slr.model.mendeley/images/upload.png"));
-	    	download = new Image(null, new FileInputStream("plugins/de.tudresden.slr.model.mendeley/images/download.png"));
-	    	edit = new Image(null, new FileInputStream("plugins/de.tudresden.slr.model.mendeley/images/edit.png"));
+	    	file = new Image(null, new FileInputStream("/images/file.png"));
+	    	dir = new Image(null, new FileInputStream("/images/directory.png"));
+	    	upload = new Image(null, new FileInputStream("/images/upload.png"));
+	    	download = new Image(null, new FileInputStream("/images/download.png"));
+	    	edit = new Image(null, new FileInputStream("/images/edit.png"));
 	    } catch (FileNotFoundException e) {
 	    }
 	  }
