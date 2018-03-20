@@ -1,8 +1,13 @@
 package de.tudresden.slr.model.mendeley;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
 
 /**
  * The activator class controls the plug-in life cycle
@@ -19,6 +24,9 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+		//ILabelProvider lp = (ILabelProvider) new MendeleyDecorator(); // your basic label provider implementing ILabelProvider
+		//ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
+		//viewer.setLabelProvider(new DecoratingLabelProvider(lp, decorator));
 	}
 
 	/*

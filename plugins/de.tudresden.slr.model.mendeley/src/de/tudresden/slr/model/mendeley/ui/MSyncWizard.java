@@ -5,10 +5,20 @@ import java.io.IOException;
 import java.util.List;
 
 import java.net.URI;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.IDecoratorManager;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.UIJob;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
@@ -51,7 +61,7 @@ public class MSyncWizard extends Wizard {
 
     @Override
     public String getWindowTitle() {
-        return "Export My Data";
+        return "Mendeley Synchronisation Wizard";
     }
 
     @Override
@@ -74,14 +84,16 @@ public class MSyncWizard extends Wizard {
 
     @Override
     public boolean performFinish() {
-    	List<SyncItem> syncItems = three.getSyncItems();
+    	
+		List<SyncItem> syncItems = three.getSyncItems();
 		
 		for(SyncItem si : syncItems){
     		MendeleyDocument document = one.getFolder_selected().getDocumentById(si.getId());
     		document.updateFields(si.getSelectedFields());
-    		//mc.updateDocument(document);
+    		mc.updateDocument(document);
     	}
-    	
+
+
     	List<BibTeXEntry> entries = two.getMissingInMendeley();
     	
     	for(BibTeXEntry entry : entries){
@@ -89,25 +101,25 @@ public class MSyncWizard extends Wizard {
     		mc.addDocumentToFolder(document, one.getFolder_selected().getId());
     	}
     	
-    	
 		try {
 			MendeleyFolder mf = mc.getMendeleyFolder(one.getFolder_selected().getId());
-			this.zero.getResourceSelected().setMendeleyFolder(mf);
+			mf.setName(one.getFolder_selected().getName());
+			zero.getResourceSelected().setMendeleyFolder(mf);
 		} catch (TokenMgrException | IOException | ParseException e) {
 			e.printStackTrace();
 		}
-    	wm.addWorkspaceBibtexEntry(this.zero.getResourceSelected());
-    	wm.updateWorkspaceBibTexEntry(this.zero.getResourceSelected());
+    	wm.addWorkspaceBibtexEntry(zero.getResourceSelected());
+    	wm.updateWorkspaceBibTexEntry(zero.getResourceSelected());
    
-    	
+    	IDecoratorManager decoratorManager = PlatformUI.getWorkbench().getDecoratorManager();
+		decoratorManager.update("de.tudresden.slr.model.mendeley.decorators.MendeleyOverlayDecorator");   	
+		
         return true;
     }
     
     @Override
     public IWizardPage getNextPage(IWizardPage page) {
     	return super.getNextPage(page);
-    }  
-    
-    
+    }   
     
 }

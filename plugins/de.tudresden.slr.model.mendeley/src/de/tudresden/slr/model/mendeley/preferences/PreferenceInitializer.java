@@ -2,6 +2,8 @@ package de.tudresden.slr.model.mendeley.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 import de.tudresden.slr.model.mendeley.Activator;
 
@@ -21,8 +23,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
 		store.setDefault(PreferenceConstants.P_STRING, "Default value");
 		store.setDefault(PreferenceConstants.P_MENDELEY, "mendeley_off");
-		store.setDefault(PreferenceConstants.P_TOKEN, "");
-		store.setDefault(PreferenceConstants.P_REFRESH_TOKEN, "");
+		//store.setDefault(PreferenceConstants.P_TOKEN, "");
+		//store.setDefault(PreferenceConstants.P_REFRESH_TOKEN, "");
 	}
 
 }

@@ -65,7 +65,7 @@ public class MSyncWizardPageThree extends WizardPage {
 	private List<SyncItem> syncItems;
 
     public MSyncWizardPageThree() {
-        super("Third Page");
+        super("conflictPage");
         setTitle("Resolve Document Conflicts");
         setDescription("Select a document to see if conflicts between Mendeley and your project have occured");
         System.out.println(getName());

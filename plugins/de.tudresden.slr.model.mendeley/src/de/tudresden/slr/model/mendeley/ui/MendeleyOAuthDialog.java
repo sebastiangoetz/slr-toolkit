@@ -83,8 +83,6 @@ public class MendeleyOAuthDialog extends Dialog {
 						mendeley_client.setAuth_code(auth_code);
 						System.out.println("Auth Code set");
 						mendeley_client.requestAccessToken(auth_code);
-						store.setValue(PreferenceConstants.P_TOKEN, mendeley_client.getAccess_token());
-						store.setValue(PreferenceConstants.P_REFRESH_TOKEN, mendeley_client.getRefresh_token());
 					        
 					     close();
 					}

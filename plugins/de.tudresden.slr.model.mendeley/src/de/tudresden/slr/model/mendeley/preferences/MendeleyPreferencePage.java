@@ -1,11 +1,14 @@
 package de.tudresden.slr.model.mendeley.preferences;
 
+import java.io.IOException;
+
 import org.eclipse.jface.preference.*;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.eclipse.ui.IWorkbench;
 import de.tudresden.slr.model.mendeley.Activator;
 import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
@@ -36,6 +39,7 @@ public class MendeleyPreferencePage
 
 	MendeleyClient mendeley_client;
 	private StringFieldEditor documentfield;
+	private IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 	
 	public MendeleyPreferencePage() {
 		super(GRID);
@@ -83,24 +87,11 @@ public class MendeleyPreferencePage
 		
 		if(event.getOldValue().toString().equals("mendeley_off") && event.getNewValue().toString().equals("mendeley_on")){
 			System.out.println("Mendeley Support Activated");
-			mendeley_client.displayAuthorizationUserInterface(getFieldEditorParent().getShell());
-			// create a dialog with ok and cancel buttons and a question icon
-			MessageBox dialog =
-			    new MessageBox(this.getShell(), SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
-			dialog.setText("Login");
-			dialog.setMessage("Login was successfull. Do you want to start the Mendeley Synchronization Wizard?");
-			// open dialog and await user selection
-			int returnCode = dialog.open();
-			
-			if(returnCode == SWT.OK) {
-				WizardDialog wizardDialog = new WizardDialog(this.getShell(),
-			            new MSyncWizard());
-		        if (wizardDialog.open() == Window.OK) {
-		            System.out.println("Ok pressed");
-		        } else {
-		            System.out.println("Cancel pressed");
-		        }
-			}
+			mendeley_client.refreshTokenIfNecessary();
+		}
+		
+		if(event.getOldValue().toString().equals("mendeley_on") && event.getNewValue().toString().equals("mendeley_off")){
+			mendeley_client.logout();
 		}
 		
 		super.propertyChange(event);

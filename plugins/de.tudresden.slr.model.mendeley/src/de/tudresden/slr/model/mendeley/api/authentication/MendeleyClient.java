@@ -16,13 +16,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.naming.ldap.PagedResultsControl;
+
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.apache.http.entity.StringEntity;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -54,9 +59,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 
+import de.tudresden.slr.model.mendeley.Activator;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyAnnotation;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
+import de.tudresden.slr.model.mendeley.preferences.PreferenceConstants;
 import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
 import de.tudresden.slr.model.mendeley.ui.MendeleyOAuthDialog;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -105,6 +112,10 @@ public class MendeleyClient {
      * Expires At
      */
     private Calendar expires_at;
+    
+    private MendeleyFolder[] mendeleyFolders = null;
+    
+    private IPreferenceStore store = Activator.getDefault().getPreferenceStore();
     
     protected AdapterFactoryEditingDomain editingDomain;
     
@@ -489,7 +500,7 @@ public class MendeleyClient {
 	      this.access_token = response.getAccessToken();
 	      this.refresh_token = response.getRefreshToken();
 	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
-	      
+	      updatePreferenceStore();
 	      refreshTokenIfNecessary();
 	      
 	      System.out.println("Access Token successfully acquired");
@@ -510,7 +521,7 @@ public class MendeleyClient {
 	    }
     }
     
-    public void requestRefreshAccessToken(String code) throws IOException, TokenMgrException, ParseException {
+    public boolean requestRefreshAccessToken(String code) throws IOException, TokenMgrException, ParseException {
 	    try {
 	      RefreshTokenRequest request =
 	          new RefreshTokenRequest(new NetHttpTransport(), new JacksonFactory(),
@@ -526,10 +537,11 @@ public class MendeleyClient {
 	      this.access_token = response.getAccessToken();
 	      this.refresh_token = response.getRefreshToken();
 	      this.expires_at = this.generateExpiresAtFromExpiresIn(response.getExpiresInSeconds().intValue());
+	      updatePreferenceStore();
 	      
 	      refreshTokenIfNecessary();
 	      
-	      System.out.println("Access Token successfully acquired");
+	      return true;
 	    } catch (TokenResponseException e) {
 	      if (e.getDetails() != null) {
 	        System.err.println("Error: " + e.getDetails().getError());
@@ -542,6 +554,7 @@ public class MendeleyClient {
 	      } else {
 	        System.err.println(e.getMessage());
 	      }
+	      return false;
 	    }
     }
     
@@ -551,11 +564,30 @@ public class MendeleyClient {
         return c;
     }
     
-    private void refreshTokenIfNecessary(){
+    public boolean refreshTokenIfNecessary(){
+    	
+    	long date = store.getLong(PreferenceConstants.P_EXPIRE_DATE);
+    	if(date != 0) {
+    		Calendar preference_date = convertCalender(date);
+    		if(expires_at == null) {
+    			expires_at = preference_date;
+    			access_token = store.getString(PreferenceConstants.P_TOKEN);
+    			refresh_token = store.getString(PreferenceConstants.P_REFRESH_TOKEN);
+    		}
+    		else {
+    			if(preference_date.before(expires_at)) {
+        			expires_at = preference_date;
+        			access_token = store.getString(PreferenceConstants.P_TOKEN);
+        			refresh_token = store.getString(PreferenceConstants.P_REFRESH_TOKEN);
+        		}
+    		}
+    		
+    	}
+    	
     	
     	if(expires_at == null) {
     		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-    		displayAuthorizationUserInterface(shell);
+    		return displayAuthorizationUserInterface(shell);
     	}
     	else {
     		final Calendar now = Calendar.getInstance();
@@ -570,7 +602,7 @@ public class MendeleyClient {
         		if(now.after(refresh_due)){
         			System.out.println("This Key Must be Refreshed Maaaan");
         			try {
-    					this.requestRefreshAccessToken(this.refresh_token);
+    					return this.requestRefreshAccessToken(this.refresh_token);
     				} catch (TokenMgrException | IOException | ParseException e) {
     					// TODO Auto-generated catch block
     					e.printStackTrace();
@@ -581,8 +613,10 @@ public class MendeleyClient {
         	if(now.after(expires_at)){
         		// TODO open MendeleyOAUthDialog
         		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-        		displayAuthorizationUserInterface(shell);
+        		return displayAuthorizationUserInterface(shell);
         	}
+        	
+        	return true;
     	}
     }
     
@@ -685,4 +719,52 @@ public class MendeleyClient {
 		}
     	
     }
+    
+    private void updatePreferenceStore() {
+    	store.setValue(PreferenceConstants.P_TOKEN, access_token);
+		store.setValue(PreferenceConstants.P_REFRESH_TOKEN, refresh_token);
+		store.setValue(PreferenceConstants.P_EXPIRE_DATE, expires_at.getTimeInMillis());
+		store.setValue(PreferenceConstants.P_MENDELEY, "mendeley_on");
+		try {
+			if(store instanceof ScopedPreferenceStore) {
+				((ScopedPreferenceStore) store).save();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    private Calendar convertCalender(long milliseconds) {
+    	Calendar c = Calendar.getInstance();
+    	c.setTimeInMillis(milliseconds);
+		return c;
+    }
+    
+    public void logout() {
+    	access_token = "";
+    	refresh_token = "";
+    	expires_at = null;
+   
+    	store.setValue(PreferenceConstants.P_TOKEN, access_token);
+		store.setValue(PreferenceConstants.P_REFRESH_TOKEN, refresh_token);
+		store.setValue(PreferenceConstants.P_EXPIRE_DATE, 0L);
+		store.setValue(PreferenceConstants.P_MENDELEY, "mendeley_off");
+		try {
+			if(store instanceof ScopedPreferenceStore) {
+				((ScopedPreferenceStore) store).save();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void updateMendeleyFolders() throws MalformedURLException, TokenMgrException, IOException, ParseException {
+    	mendeleyFolders = getAllMendeleyFolders();
+    }
+    
+    public MendeleyFolder[] getMendeleyFolders() {
+		return mendeleyFolders;
+	}
 }

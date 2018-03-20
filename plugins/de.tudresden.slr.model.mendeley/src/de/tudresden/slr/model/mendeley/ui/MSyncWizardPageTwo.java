@@ -50,9 +50,9 @@ public class MSyncWizardPageTwo extends WizardPage {
     private List<BibTeXEntry> missingInWorkspace;
     
     public MSyncWizardPageTwo() {
-        super("First Page");
-        setTitle("First Page");
-        System.out.println(getName());
+        super("overviewPage");
+        setTitle("Processing Overview");
+        setDescription("Overview of pending tasks");
         mc = mc.getInstance();
         syncItems = new ArrayList<>();
         missingInMendeley = new ArrayList();
@@ -162,7 +162,7 @@ public class MSyncWizardPageTwo extends WizardPage {
     	}
     	
     	MendeleyFolder ignore_folder = new MendeleyFolder();
-    	ignore_folder.setName("Documents with synchronized Content");
+    	ignore_folder.setName("Documents with identical Content");
     	ignore_folder.setType("Comparison");
     	
     	MendeleyFolder comparison_folder = new MendeleyFolder();
@@ -182,6 +182,9 @@ public class MSyncWizardPageTwo extends WizardPage {
     	
     	if(!comparison_folder.getDocuments().isEmpty()){
     		this.tree_list.add(comparison_folder);
+    	}
+    	else {
+    		comparison_folder.setName("There are no Documents with Conflict");
     	}
     	
     	if(!ignore_folder.getDocuments().isEmpty()){
@@ -277,7 +280,6 @@ public class MSyncWizardPageTwo extends WizardPage {
     public List<BibTeXEntry> getMissingInWorkspace() {
 		return missingInWorkspace;
 	}
-    
     
     
     

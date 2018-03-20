@@ -70,9 +70,9 @@ public class MSyncWizardPage extends WizardPage {
 	 * Create the wizard.
 	 */
 	public MSyncWizardPage() {
-		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		super("selectFile");
+		setTitle("File Selection");
+		setDescription("Select a Bib-File you want to synchronize with Mendeley");
 		initializeEditingDomain();
 		selectedProject = null;
 		wm = WorkspaceManager.getInstance();
@@ -96,8 +96,6 @@ public class MSyncWizardPage extends WizardPage {
 			resourceSelected = entry;
 			selectedProject = entry.getProject();
 		}
-		
-		System.out.println("ok?");
 	}
 	/**
 	 * Create contents of the wizard.
@@ -131,10 +129,6 @@ public class MSyncWizardPage extends WizardPage {
 		Combo combo = comboViewer.getCombo();
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		combo.setText("-- Select a Project --");
-		
-		
-		
-		
 		
 		treeViewer = new TreeViewer(container, SWT.BORDER);
 		Tree tree = treeViewer.getTree();
@@ -264,7 +258,7 @@ public class MSyncWizardPage extends WizardPage {
 					if(resource.getFileExtension().equals("bib")){
 						URI uri = resource.getLocationURI();
 						WorkspaceBibTexEntry entry = new WorkspaceBibTexEntry(uri, project);
-						wm.addWorkspaceBibtexEntry(entry);
+						wm.updateFileBibTex(entry);
 					}
 				}
 			} catch (CoreException e) {

@@ -56,8 +56,8 @@ public class MSyncWizardPageOne extends WizardPage {
 	public MSyncWizardPageOne() {
 		super("FolderPage");
 		folders_str = "";
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("Mendeley Folder Selection");
+		setDescription("Choose a Folder from your Mendeley Profile");
 		folder_list = new ArrayList();
 		isSelectionValidated = false;
 		setPageComplete(false);
@@ -88,8 +88,8 @@ public class MSyncWizardPageOne extends WizardPage {
 		treeViewer.setLabelProvider(new MendeleyTreeLabelProvider());
 		
         try {
-			treeViewer.setInput(mc.getAllMendeleyFolders());
-		} catch (TokenMgrException | IOException | ParseException e) {
+			treeViewer.setInput(mc.getMendeleyFolders());
+		} catch (TokenMgrException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  

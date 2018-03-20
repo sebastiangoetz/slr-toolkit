@@ -51,6 +51,23 @@ public class WorkspaceBibTexEntry {
 		
 	}
 	
+	public void updateBibTexEntry() {
+		try (Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(uri.getPath())))) {
+			BibTeXParser parser = new BibTeXParser();
+			bibTexDB = parser.parse(reader);
+			bibEntries = bibTexDB.getEntries();
+		} catch (TokenMgrException | ParseException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	
 	public Map<Key, BibTeXEntry> getBibEntries() {
 		return bibEntries;
 	}

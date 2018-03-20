@@ -18,8 +18,11 @@ import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 
+import com.google.gson.Gson;
+
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 
@@ -123,6 +126,60 @@ public class WorkspaceManager {
 					}
 				}
 			}
+		}
+	}
+	
+	public void updateSyncFolders() {
+		for(WorkspaceBibTexEntry entry : workspaceEntries) {
+			this.updateSyncFolder(entry);
+		}
+	}
+	
+	public void updateSyncFolder(WorkspaceBibTexEntry entry) {
+		if(entry.getMendeleyFolder() != null) {
+			entry.updateBibTexEntry();
+			try {
+				Gson gson = new Gson();
+				String documents_string = mc.getDocumentsByFolderJSON(entry.getMendeleyFolder().getId());
+				MendeleyDocument[] documents = gson.fromJson(documents_string, MendeleyDocument[].class);
+				
+				for(BibTeXEntry bib_entry : entry.getBibTexDB().getEntries().values()) {
+					boolean exists = false;
+					for(MendeleyDocument document : documents) {
+						if(bib_entry.getField(new Key("title")).toUserString().equals(document.getTitle())) {
+							document.updateFields(bib_entry.getFields());
+							mc.updateDocument(document);
+							exists = true;
+						}
+					}
+					if(!exists) {
+						MendeleyDocument document = mc.addDocument(bib_entry);
+						mc.addDocumentToFolder(document, entry.getMendeleyFolder().getId());
+					}
+				}
+				
+				this.updateWorkspaceBibTexEntry(entry);
+				
+			} catch (TokenMgrException | IOException | ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateFileBibTex(WorkspaceBibTexEntry wEntry) {
+		boolean exists = false;
+		
+		for(WorkspaceBibTexEntry entry : this.workspaceEntries){
+			if(entry.getUri().equals(wEntry.getUri())){
+				exists = true;
+				entry.setBibEntries(wEntry.getBibEntries());
+				entry.setBibTexDB(wEntry.getBibTexDB());
+			}
+		}
+		
+		if(!exists){
+			 addWorkspaceBibtexEntry(wEntry);
 		}
 	}
     

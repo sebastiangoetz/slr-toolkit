@@ -20,23 +20,43 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu">
-         <command
-               commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand"
-               icon="icons/sample.png"
-               label="Synchronize with Mendeley Folder"
-               style="push">
+         <menu
+               icon="icons/mendeley.png"
+               id="de.tudresden.slr.model.mendeley.menus.popupMenu"
+               label="Mendeley Sync">
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand"
+                  label="Synchronize with Mendeley Folder"
+                  style="push">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.SyncFolder"
+                  icon="icons/refresh.png"
+                  label="Update Folder"
+                  style="push">
+            </command>
             <visibleWhen
                   checkEnabled="false">
-                  <with variable="activeMenuSelection">
-				      <iterate
-				           ifEmpty="false">
-				         <adapt type="org.eclipse.core.resources.IResource">
-				              <test property="org.eclipse.core.resources.extension" value="bib" />
-				         </adapt>
-				      </iterate>
-				   </with>
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <test
+                              property="org.eclipse.core.resources.extension"
+                              value="bib">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
             </visibleWhen>
-         </command>
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.RemoveConnection"
+                  label="Remove Conection"
+                  style="push">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
@@ -49,6 +69,12 @@
                   id="de.tudresden.slr.model.mendeley.menus.startWizardCommand"
                   label="Synchronization Wizard"
                   mnemonic="S">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.mendeley.SyncFolders"
+                  icon="icons/refresh.png"
+                  label="Update Folders"
+                  style="push">
             </command>
          </menu>
       </menuContribution>
@@ -80,6 +106,18 @@
             id="de.tudresden.slr.model.mendeley.startContextWizardCommand"
             name="Start Context Wizard Command">
       </command>
+      <command
+            id="de.tudresden.slr.model.mendeley.SyncFolders"
+            name="Synchronize Folders">
+      </command>
+      <command
+            id="de.tudresden.slr.model.mendeley.SyncFolder"
+            name="Syncronize Folder">
+      </command>
+      <command
+            id="de.tudresden.slr.model.mendeley.RemoveConnection"
+            name="Remove Connection">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -90,6 +128,18 @@
       <handler
             class="de.tudresden.slr.model.mendeley.handlers.ContextWizardHandler"
             commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand">
+      </handler>
+      <handler
+            class="de.tudresden.slr.model.mendeley.handlers.SyncHandler"
+            commandId="de.tudresden.slr.model.mendeley.SyncFolders">
+      </handler>
+      <handler
+            class="de.tudresden.slr.model.mendeley.handlers.SyncContextHandler"
+            commandId="de.tudresden.slr.model.mendeley.SyncFolder">
+      </handler>
+      <handler
+            class="de.tudresden.slr.model.mendeley.handlers.RemoveConnectionHandler"
+            commandId="de.tudresden.slr.model.mendeley.RemoveConnection">
       </handler>
    </extension>
    <extension
@@ -105,22 +155,19 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            class="de.tudresden.slr.model.mendeley.decorators.MendeleyDecorator"
+            class="de.tudresden.slr.model.mendeley.decorators.MendeleyOverlayDecorator"
             icon="icons/sample_decorator.gif"
-            id="de.tudresden.slr.model.mendeley.decorator"
-            label="Resource Decorator"
+            id="de.tudresden.slr.model.mendeley.decorators.MendeleyOverlayDecorator"
+            label="Mendeley Decorator"
             lightweight="false"
             location="BOTTOM_RIGHT"
-            state="false">
+            state="true">
          <enablement>
             <and>
                <objectClass
                      name="org.eclipse.core.resources.IResource">
                </objectClass>
                <or>
-                  <objectClass
-                        name="org.eclipse.core.resources.IProject">
-                  </objectClass>
                   <objectClass
                         name="org.eclipse.core.resources.IFile">
                   </objectClass>

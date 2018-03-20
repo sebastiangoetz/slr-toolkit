@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
@@ -28,16 +30,11 @@ public class MendeleyTreeLabelProvider implements ILabelProvider {
 	  
 	  public MendeleyTreeLabelProvider() {
 	    listeners = new ArrayList();
-
-	    try {
-	    	System.out.println(System.getProperty("user.dir"));
-	    	file = new Image(null, new FileInputStream("/images/file.png"));
-	    	dir = new Image(null, new FileInputStream("/images/directory.png"));
-	    	upload = new Image(null, new FileInputStream("/images/upload.png"));
-	    	download = new Image(null, new FileInputStream("/images/download.png"));
-	    	edit = new Image(null, new FileInputStream("/images/edit.png"));
-	    } catch (FileNotFoundException e) {
-	    }
+	    file = AbstractUIPlugin.imageDescriptorFromPlugin("de.tudresden.slr.model.mendeley", "images/file.png").createImage();
+		dir = AbstractUIPlugin.imageDescriptorFromPlugin("de.tudresden.slr.model.mendeley", "images/directory.png").createImage();
+		upload = AbstractUIPlugin.imageDescriptorFromPlugin("de.tudresden.slr.model.mendeley", "images/upload.png").createImage();
+		download = AbstractUIPlugin.imageDescriptorFromPlugin("de.tudresden.slr.model.mendeley", "images/download.png").createImage();
+		edit = AbstractUIPlugin.imageDescriptorFromPlugin("de.tudresden.slr.model.mendeley", "images/edit.png").createImage();
 	  }
 
 	  public Image getImage(Object arg0) {
