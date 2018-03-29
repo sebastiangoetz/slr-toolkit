@@ -248,6 +248,7 @@
 		<module>../de.tudresden.slr.model.taxonomy.model</module>
 		<module>../../features/de.tudresden.slr.model.taxonomy.sdk</module>
 		<module>../de.tudresden.slr.model.taxonomy.ui</module>
+		<module>../de.tudresden.slr.model.mendeley</module>
 		<module>../de.tudresden.slr.googlescholar</module>
 	</modules>
 </project>
