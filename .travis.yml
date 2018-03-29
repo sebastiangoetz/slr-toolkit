@@ -9,6 +9,7 @@ cache:
     - $HOME/.m2
 
 deploy:
+  skip_cleanup: true
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file_glob: true
