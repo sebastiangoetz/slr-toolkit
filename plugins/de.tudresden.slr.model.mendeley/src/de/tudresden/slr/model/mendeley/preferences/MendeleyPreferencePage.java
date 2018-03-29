@@ -1,26 +1,18 @@
 package de.tudresden.slr.model.mendeley.preferences;
 
-import java.io.IOException;
-
-import org.eclipse.jface.preference.*;
-import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
-import org.eclipse.ui.IWorkbench;
-import de.tudresden.slr.model.mendeley.Activator;
-import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
-import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
-import de.tudresden.slr.model.mendeley.ui.MendeleyOAuthDialog;
-
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
+import de.tudresden.slr.model.mendeley.Activator;
+import de.tudresden.slr.model.mendeley.api.client.MendeleyClient;
 
 /**
- * This class represents a preference page that
+ * This class represents the Mendeley preference page that
  * is contributed to the Preferences dialog. By 
  * subclassing <samp>FieldEditorPreferencePage</samp>, we
  * can use the field support built into JFace that allows
@@ -38,7 +30,6 @@ public class MendeleyPreferencePage
 	implements IWorkbenchPreferencePage {
 
 	MendeleyClient mendeley_client;
-	private StringFieldEditor documentfield;
 	private IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 	
 	public MendeleyPreferencePage() {
@@ -55,6 +46,7 @@ public class MendeleyPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
+		// only a radiobutto is needed to remember the state of your mendeley login
 		addField(new RadioGroupFieldEditor(PreferenceConstants.P_MENDELEY, 
 				"Activate Mendeley Integration", 
 				1, 
@@ -63,34 +55,20 @@ public class MendeleyPreferencePage
 		{
 			Composite composite = getFieldEditorParent();
 			
-			documentfield = new StringFieldEditor("DocumenField", "Username", -1, StringFieldEditor.VALIDATE_ON_KEY_STROKE, composite);
-			documentfield.getLabelControl(composite).setText("Access Token (Debug)");
-			documentfield.getTextControl(composite).setEditable(false);
-			addField(documentfield);
-			
 		}
 		
-		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(new IPropertyChangeListener() {
-			
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				if (event.getProperty().equals(PreferenceConstants.P_TOKEN)) {
-					documentfield.setStringValue(store.getString(PreferenceConstants.P_TOKEN));
-                }
-			}
-		});
 	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		
 		if(event.getOldValue().toString().equals("mendeley_off") && event.getNewValue().toString().equals("mendeley_on")){
-			System.out.println("Mendeley Support Activated");
+			// Mendeley Support activated
 			mendeley_client.refreshTokenIfNecessary();
 		}
 		
 		if(event.getOldValue().toString().equals("mendeley_on") && event.getNewValue().toString().equals("mendeley_off")){
+			// Mendeley Support dectivated
 			mendeley_client.logout();
 		}
 		

@@ -1,45 +1,18 @@
 package de.tudresden.slr.model.mendeley.ui;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.PlatformUI;
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.Key;
-
-import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
-import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
-import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
-import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
-import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
-import de.tudresden.slr.model.mendeley.synchronisation.WorkspaceBibTexEntry;
-import de.tudresden.slr.model.mendeley.synchronisation.WorkspaceManager;
-import de.tudresden.slr.model.mendeley.util.WorkspaceTreeLabelProvider;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
-
 import java.net.URI;
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IPathVariableManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ILabelDecorator;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -49,31 +22,61 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.Key;
 
-public class MSyncWizardPage extends WizardPage {
+import de.tudresden.slr.model.mendeley.api.client.MendeleyClient;
+import de.tudresden.slr.model.mendeley.synchronisation.WorkspaceBibTexEntry;
+import de.tudresden.slr.model.mendeley.synchronisation.WorkspaceManager;
+import de.tudresden.slr.model.mendeley.util.WorkspaceTreeLabelProvider;
+
+/**
+ * This class implements the file page of the MSyncWizard which is used to
+ * select between Bib-files from different Projects
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ * @see org.eclipse.jface.wizard.WizardPage
+ */
+public class MSyncWizardFilePage extends WizardPage {
 
 	protected AdapterFactoryEditingDomain editingDomain;
+	
 	protected AdapterFactory adapterFactory;
+	
 	private WorkspaceBibTexEntry resourceSelected; 
+	
+	/**
+	 * Project that contains selected Bib-File
+	 */
 	private IProject selectedProject;
+	
+	/**
+	 * TreeViewer that displays Bib-Files of a selected Project
+	 */
 	private TreeViewer treeViewer;
+	
 	private WorkspaceManager wm;
+	
 	private MendeleyClient mc;
 	
 	/**
 	 * Create the wizard.
+	 * @wbp.parser.constructor
 	 */
-	public MSyncWizardPage() {
+	public MSyncWizardFilePage() {
 		super("selectFile");
 		setTitle("File Selection");
 		setDescription("Select a Bib-File you want to synchronize with Mendeley");
-		initializeEditingDomain();
 		selectedProject = null;
 		wm = WorkspaceManager.getInstance();
 		setPageComplete(false);
@@ -82,11 +85,15 @@ public class MSyncWizardPage extends WizardPage {
 		selectedProject = null;
 	}
 	
-	public MSyncWizardPage(URI uri) {
-		super("wizardPage");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
-		initializeEditingDomain();
+	/**
+	 * Creates a Page that already has a Bib-File selected
+	 * 
+	 * @param uri URI of the Bib-File that needs to be connected
+	 */
+	public MSyncWizardFilePage(URI uri) {
+		super("selectFile");
+		setTitle("File Selection");
+		setDescription("Select a Bib-File you want to synchronize with Mendeley");
 		selectedProject = null;
 		wm = WorkspaceManager.getInstance();
 		setPageComplete(false);
@@ -97,8 +104,9 @@ public class MSyncWizardPage extends WizardPage {
 			selectedProject = entry.getProject();
 		}
 	}
+	
 	/**
-	 * Create contents of the wizard.
+	 * Creates contents of the wizard.
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
@@ -132,19 +140,20 @@ public class MSyncWizardPage extends WizardPage {
 		
 		treeViewer = new TreeViewer(container, SWT.BORDER);
 		Tree tree = treeViewer.getTree();
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		GridData gd_tree = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		gd_tree.minimumHeight = 350;
+		tree.setLayoutData(gd_tree);
 		
 		treeViewer.setContentProvider(new ITreeContentProvider() {
 			
 			@Override
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void dispose() {
-				// TODO Auto-generated method stub
+				
 				
 			}
 			
@@ -153,13 +162,11 @@ public class MSyncWizardPage extends WizardPage {
 				if(element instanceof WorkspaceBibTexEntry){
 					return true;
 				}
-				// TODO Auto-generated method stub
 				return false;
 			}
 			
 			@Override
 			public Object getParent(Object element) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
@@ -168,7 +175,6 @@ public class MSyncWizardPage extends WizardPage {
 				ArrayList<WorkspaceBibTexEntry> list = (ArrayList<WorkspaceBibTexEntry>) inputElement;
 				WorkspaceBibTexEntry[] array = new WorkspaceBibTexEntry[list.size()];
 				array = list.toArray(array);
-				// TODO Auto-generated method stub
 				return array;
 			}
 			
@@ -188,7 +194,8 @@ public class MSyncWizardPage extends WizardPage {
 		});
 		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
 		treeViewer.setLabelProvider(new WorkspaceTreeLabelProvider());
-		//treeViewer.setSorter(new ViewerSorter());
+
+		// Set Page Complete if File is selected
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			
 			@Override
@@ -217,15 +224,10 @@ public class MSyncWizardPage extends WizardPage {
 		}
 	}
 	
-	protected void initializeEditingDomain() {
-		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
-		adapterFactory = editingDomain.getAdapterFactory();
-		AdapterFactoryContentProvider contentProvider = new AdapterFactoryContentProvider(editingDomain.getAdapterFactory());
-	}
 	
 	/**
-	 * create a listener for listening the comboviewer.
-	 * 
+	 * Creates a listener for listening the comboviewer.
+	 * Sets input of TreeViewer when Project gets selected
 	 * @return the listener
 	 */
 	private ISelectionChangedListener createProjectListener() {
@@ -242,13 +244,18 @@ public class MSyncWizardPage extends WizardPage {
 						selectedProject = (IProject) ((StructuredSelection) event.getSelection()).getFirstElement();
 						treeViewer.setInput(wm.getBibEntriesByProject(selectedProject));
 					}
-					
 				}
 			}
 		};
 		return result;
 	}
 	
+	/**
+	 * This methods searches for all Bib-Files.
+	 * For each Bib-File a WorkspaceBibTexEntry will be created/updated.
+	 * In order to do that the content of each Bib-File will be parsed
+	 * with the JBibTeX Library and put into the WorkspaceBibTexEntry
+	 */
 	private void createWorkspaceContent(){
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
@@ -262,7 +269,6 @@ public class MSyncWizardPage extends WizardPage {
 					}
 				}
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -271,6 +277,5 @@ public class MSyncWizardPage extends WizardPage {
 	public WorkspaceBibTexEntry getResourceSelected() {
 		return resourceSelected;
 	}
-	
 
 }

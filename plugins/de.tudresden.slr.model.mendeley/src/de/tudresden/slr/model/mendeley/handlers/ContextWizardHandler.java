@@ -1,16 +1,14 @@
 package de.tudresden.slr.model.mendeley.handlers;
+import java.io.IOException;
+
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,24 +24,44 @@ import org.eclipse.ui.progress.UIJob;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 
-import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.client.MendeleyClient;
 import de.tudresden.slr.model.mendeley.ui.MSyncWizard;
 import de.tudresden.slr.model.mendeley.util.MutexRule;
 
-import java.io.IOException;
-
-import org.eclipse.core.commands.AbstractHandler;
-
-
+/**
+ * This Class implements the command handler for starting the Mendeley Synchronization Wizard
+ * with a specific context. Will be triggered by clicking the 'Mendeley Sync Wizard' entry in
+ * the popup menu that appears after performing a right click on a Bib-File in the Project Explorer.
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ * @see org.eclipse.core.commands.AbstractHandler
+ * @see org.eclipse.core.commands.IHandler
+ */
 public class ContextWizardHandler extends AbstractHandler {
 
-	MendeleyClient mc = MendeleyClient.getInstance();
+	private MendeleyClient mc = MendeleyClient.getInstance();
+	
+	/**
+	 * A flag that returns if the user is logged into his Mendeley Profile
+	 */
 	private boolean loggedIn;
+	
+	/**
+	 * A flag that returns if the latest state of your Mendeley Folder have been downloaded
+	 */
+	private boolean isReady;
+	
+	private final String ID = "de.tudresden.slr.model.mendeley.startContextWizardCommand";
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		loggedIn = false;
+		isReady = false;
 		
+		/*
+		 * command is only available if entry in Project explorer is a .bib file
+		 */
 		Display display = Display.getCurrent();
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event)
@@ -53,10 +71,17 @@ public class ContextWizardHandler extends AbstractHandler {
 			if(treeSelection.getFirstElement() instanceof File) {
 				File file = (File) treeSelection.getFirstElement();
 				if(file.getFileExtension().equals("bib")){
-					
+					/*
+					 * Starting the wizard is separated in 3 jobs
+					 * 	1.	Checking if the current login is valid
+					 * 		-	if that's not the case a login screen will be displayed
+					 * 	2.	Downloading the latest state of your Mendeley Folders
+					 * 	3.	Executing the Wizard
+					 */
 					UIJob job1 = new UIJob(display, "Validating Mendeley Login") {
 			            @Override
 						public IStatus runInUIThread(IProgressMonitor monitor) {
+			            	//checks if somebody is logged in
 			            	if(mc.refreshTokenIfNecessary()) {
 			            		loggedIn = true;
 			            	}
@@ -65,7 +90,6 @@ public class ContextWizardHandler extends AbstractHandler {
 			            		MessageDialog.openError(activeShell, "Error", "Login Failed. Wizard will be closed.");
 			            		return Status.CANCEL_STATUS;
 			            	}
-			            	
 			            	return Status.OK_STATUS;
 			            }
 			        };
@@ -75,12 +99,16 @@ public class ContextWizardHandler extends AbstractHandler {
 			            	SubProgressMonitor subMonitor = new SubProgressMonitor(monitor, 1);
 			            	subMonitor.setTaskName("Downloading latest Mendeley Folders");
 							try {
-								if(loggedIn)
-									mc.updateMendeleyFolders();
+								// only executes if previous job was successful
+								if(loggedIn) {
+									if(!monitor.isCanceled())
+										mc.updateMendeleyFolders(monitor);
+										if(!monitor.isCanceled())
+											isReady = true;
+								}
 								else
 									return Status.CANCEL_STATUS;
 							} catch (TokenMgrException | IOException | ParseException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							
@@ -91,22 +119,23 @@ public class ContextWizardHandler extends AbstractHandler {
 			        UIJob job3 = new UIJob("Starting Mendeley UI Wizard") {
 			            @Override
 						public IStatus runInUIThread(IProgressMonitor monitor) {
-			            	if(loggedIn) {
+			            	// only executes if both previous job were successful
+			            	if(loggedIn & isReady) {
 			            		WizardDialog wizardDialog = new WizardDialog(window.getShell(),
 							            new MSyncWizard(file.getLocationURI()));
 						        if (wizardDialog.open() == Window.OK) {
-						            System.out.println("Ok pressed");
+						            
 						        } else {
-						            System.out.println("Cancel pressed");
+						           
 						        }
 			            	}
 			            	else {
 			            		return Status.CANCEL_STATUS;
 			            	}
-							
 			            	return Status.OK_STATUS;
 			            }
 			        };
+			        // a rule is instantiated to oppress parallel execution of jobs
 			        MutexRule rule = new MutexRule();
 			        
 			        job2.setUser(true);

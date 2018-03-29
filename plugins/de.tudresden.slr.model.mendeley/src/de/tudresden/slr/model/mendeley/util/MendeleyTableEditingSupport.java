@@ -1,11 +1,18 @@
 package de.tudresden.slr.model.mendeley.util;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 
+/**
+ * This class implements the EdditingSupport of the conflict table
+ * so that it is possible to choose between two different field Values
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ *
+ */
 public class MendeleyTableEditingSupport extends EditingSupport {
 	
 	TableViewer tableViewer;
@@ -14,7 +21,6 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 	public MendeleyTableEditingSupport(TableViewer viewer) {
 		super(viewer);
 		tableViewer = viewer;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -37,7 +43,6 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 		}
 		
 		tableViewer.update(element, null);
-		System.out.println("setValue in Editing Support");
 	}
 
 	@Override
@@ -50,10 +55,8 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 			}
 			else {
 				return 1;
-			}
-			
+			}	
 		}
-		
 		
 		if(entry.getSelected().equals(entry.getValue1())) 
 			return 0;
@@ -68,24 +71,24 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 		if(entry.getValue1() != null && entry.getValue2() != null){
 			cbce = new ComboBoxCellEditor(
 					tableViewer.getTable(), 
-					new String[] { 	entry.getValue1().toUserString() + "\t@Mendeley", 
-									entry.getValue2().toUserString() + "\t@Workspace" }, 
+					new String[] { 	entry.getValue1().toUserString() + " \t     @Mendeley", 
+									entry.getValue2().toUserString() + " \t     @Workspace" }, 
 					SWT.BORDER | SWT.READ_ONLY);
 		}
 		
 		if(entry.getValue1() != null && entry.getValue2() == null){
 			cbce = new ComboBoxCellEditor(
 					tableViewer.getTable(), 
-					new String[] {	entry.getValue1().toUserString() + "\t@Mendeley", 
-									"--[empty]--\t@Workspace" }, 
+					new String[] {	entry.getValue1().toUserString() + " \t     @Mendeley", 
+									"--[empty]-- \t     @Workspace" }, 
 					SWT.BORDER | SWT.READ_ONLY);
 		}
 		
 		if(entry.getValue1() == null && entry.getValue2() != null){
 			cbce = new ComboBoxCellEditor(
 					tableViewer.getTable(), 
-					new String[] { 	"--[empty]--\t@Mendeley", 
-									entry.getValue2().toUserString() + "\t@Workspace" }, 
+					new String[] { 	"--[empty]-- \t     @Mendeley", 
+									entry.getValue2().toUserString() + " \t     @Workspace" }, 
 					SWT.BORDER | SWT.READ_ONLY);
 		}
 	
@@ -94,7 +97,6 @@ public class MendeleyTableEditingSupport extends EditingSupport {
 
 	@Override
 	protected boolean canEdit(Object element) {
-		System.out.println("canEdit in Editing Support");
 		MSyncWizardTableEntry entry = (MSyncWizardTableEntry) element;
 		if(entry.getValue1() != null && entry.getValue2() != null){
 			if(entry.getValue1().toUserString().equals(entry.getValue2().toUserString()) ){

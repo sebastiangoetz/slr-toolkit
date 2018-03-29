@@ -1,6 +1,5 @@
 package de.tudresden.slr.model.mendeley.api.model;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -16,13 +15,19 @@ import org.jbibtex.StringValue;
 import org.jbibtex.TokenMgrException;
 import org.jbibtex.Value;
 
-import com.google.api.client.util.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.internal.LinkedTreeMap;
 
+/**
+ * This class implements the Document Class Model retrieved via the https://api.mendeley.com/documents endpoint.
+ * It is used to convert the raw JSON response of a GET/POST Request to an appropriate Object.
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ *
+ */
 public class MendeleyDocument {
+	// attribute names have to resemble JSON Model of Documents in Mendeley
 	private String profile_id;
 	private String group_id;
 	private String last_modified;
@@ -60,8 +65,6 @@ public class MendeleyDocument {
 	private String source;
 	private String title;
 	private String revision;
-	
-	//TODO: Add Mendeley Attribute: Identifiers
 	private Map<String, String> identifiers;
 	
 	@SerializedName("abstract") private String mAbstract;
@@ -82,6 +85,10 @@ public class MendeleyDocument {
 	private String publisher;
 	private String type;
 	
+	/**
+	 * A constructor that offers to create a MendeleyDocument from a BibTeXEntry
+	 * @param entry
+	 */
 	public MendeleyDocument(BibTeXEntry entry){
 		this.citation_key = entry.getKey().toString();
 		this.source_type = entry.getType().toString();
@@ -93,12 +100,12 @@ public class MendeleyDocument {
 		
 	}
 	
-
-    // Getters and setters are not required for this example.
-    // GSON sets the fields directly using reflection.
-	
-	/*
-	 * Entry types in .bib files known by biblatex and field types supported
+	/**
+	 * This method is used to update the object attributes by passing a Map of Key-Value-Pairs found in
+	 * a BibTeXEntry. The richness of the Mendley Document Model is not sufficient to to cover all
+	 * possible Keys of a BibTeXEntry, so that information might get discarded.
+	 * 
+	 * @param fields This method takes Key-Value-Pairs of a BibTeXEntry
 	 */
 	public void updateFields(Map<Key, Value> fields){
 
@@ -108,37 +115,38 @@ public class MendeleyDocument {
 			String value_str = "";
 			
 			if(value != null){
-				value_str = value.toUserString().replaceAll("(\\r|\\n)", " ");;
+				// JBibTex can't handle escape Sequences
+				value_str = value.toUserString().replaceAll("(\\r|\\n)", " ");
+				// the classes field contains bracket that shouldn't be removed
 				if(!key_str.equals("classes")){
 					try {
+						// the LaTeXParser resolves special characters
 						LaTeXParser latexParser = new LaTeXParser();
 						List<LaTeXObject> latexObjects = latexParser.parse(value_str);
 						LaTeXPrinter latexPrinter = new org.jbibtex.LaTeXPrinter();
 						value_str = latexPrinter.print(latexObjects);
 						
 					} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (TokenMgrException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} 
 				}
-				
-				
 			}
+			
+			/*
+			 * This is the manual mapping of BibTeXEntries to the Mendeley Document Model.
+			 */
 			
 			if(	key_str.toLowerCase().equals("author") || 
 				key_str.toLowerCase().equals("bookauthor")){
 				this.authors = this.parseAuthorsBibTeX(value_str);
 			}
 			
-			if(key_str.toLowerCase().equals("editor") ){
+			if(key_str.toLowerCase().equals("editor") )
 				this.editors = this.parseAuthorsBibTeX(value_str);
-			}
 			
 			if(key_str.toLowerCase().equals("keywords") ){
-				// Could be List of Names. Mendeley doesn't support Name List for 'patent_owner'
 				this.keywords = value_str.split(", ");
 				if(keywords.length < 2){
 					this.keywords = value_str.split(";");
@@ -146,7 +154,6 @@ public class MendeleyDocument {
 				if(keywords.length < 2){
 					this.keywords = value_str.split("; ");
 				}
-				
 			}
 			
 			if(key_str.toLowerCase().equals("holder") ){
@@ -205,7 +212,7 @@ public class MendeleyDocument {
 			
 			if(	key_str.toLowerCase().equals("abstract")){
 				this.mAbstract = value_str;
-		}
+			}
 			
 			if(	key_str.toLowerCase().equals("eventdate") || 
 				key_str.toLowerCase().equals("eventtitle") || 
@@ -349,6 +356,7 @@ public class MendeleyDocument {
 			}
 			
 			if(	key_str.toLowerCase().equals("location") ){
+				// locations can be separated into city and country if split is possible
 				String[] locations = value_str.split(", ");
 				switch(locations.length){
 					case 1:
@@ -391,20 +399,27 @@ public class MendeleyDocument {
 				//Not yet supported by Mendeley
 			}	
 			
+			/*
+			 *  classes are used by the taxonomy plugin but have no place in the Mendeley Document Model.
+			 *  So classes will be extracted from this field and will then be put in the notes attribute.
+			 *  By updating the 'notes' attribute via the UPDATE /documents/{id} enpoint, the private
+			 *  Annotation of this document will automatically be overwritten. 
+			 */
 			if(key_str.toLowerCase().equals("classes") ){
 				
+				// get current notes
 				String text = this.notes;
-				
 				if(text == null){
 					text = "";
 				}
+				
+				// get content of [classes]
 				Pattern pattern = Pattern.compile("\\[classes\\](.*?)\\[/classes\\]");
 				Matcher matcher = pattern.matcher(text);
 				if(matcher.find()){
-					System.out.println(matcher.group(0));
+					// replace old content of [classes] with new values
 					text = text.replace(matcher.group(0), "");
 					text = text + "\n[classes]" + value_str + "[/classes]";
-					
 				}
 				else{
 					text = "\n[classes]" + value_str + "[/classes]";
@@ -419,19 +434,39 @@ public class MendeleyDocument {
         return title + " - ";
     }
     
+    /**
+     * 
+     * @return title of Document (String)
+     */
     public String getTitle() {
 		return title;
 	}
     
+    /**
+     * 
+     * @return ID of Mendeley Document (String)
+     */
     public String getId() {
 		return id;
 	}
     
+    /**
+     * 
+     * @param title set title of document
+     */
     public void setTitle(String title) {
 		this.title = title;
 	}
     
-    public MendeleyPerson[] parseAuthorsBibTeX(String authors_str){
+    /**
+     * This method takes a String of Persons (Authors, Contributers etc.) and converts
+     * these into MendeleyPerson objects. Persons should be devided by ' and '.
+     * First name and last name should be devided by ', '
+     * 
+     * @param authors_str This takes the a String of authors and other persons
+     * @return Returns MendeleyPerson array
+     */
+    private MendeleyPerson[] parseAuthorsBibTeX(String authors_str){
     	String authors[] = authors_str.split(" and ");
     	ArrayList<MendeleyPerson> m_authors= new ArrayList<>();
     	for(String author : authors){
@@ -449,7 +484,14 @@ public class MendeleyDocument {
     	return m_authors_array;
     }
     
-    public String parseMendeleyType(String type_str){
+    /**
+     * This method is used to manually map the known Types of BibTeXEntries (ARTICLE, INPROCEEDING, etc) to
+     * a type that is compatible with the Mendeley Document Model.
+     * 
+     * @param type_str Type of BibTeXEntry
+     * @return This returns the type of Document that is used in Mendeley Documents
+     */
+    private String parseMendeleyType(String type_str){
     	//TODO: Improve Parsing BibTeXEntry types to Mendeley Types; Fallback solution for now is 'journal'
     	String return_type = "journal";
     	String[] mendeley_types = new String[] { 	"journal", "book", "generic", "book_section", "conference_proceedings", 
@@ -468,6 +510,12 @@ public class MendeleyDocument {
     	return return_type;
     }
     
+    /**
+     * This is a Helper Function of parseMendeleyType. It is used to map a certain type of
+     * BibTeXEntry to a Mendeley Document Type
+     *     
+     * @param type BibTeXEntry type
+     */
     public void assignEntryType(String type){
     	switch(type.toLowerCase()){
     		case "article": 
@@ -488,14 +536,26 @@ public class MendeleyDocument {
     	}
     }
     
+    /**
+     * 
+     * @return get private note of Mendeley Document
+     */
     public String getNotes() {
 		return notes;
 	}
     
+    /**
+     * 
+     * @param notes set private note of Mendeley Document
+     */
     public void setNotes(String notes) {
 		this.notes = notes;
 	}
     
+    /**
+     * This method is used to get the [classes] field of this document
+     * @return This returns a StringValue of the classes field
+     */
     public StringValue getClasses(){
     	return new StringValue(this.notes, StringValue.Style.BRACED);
     }

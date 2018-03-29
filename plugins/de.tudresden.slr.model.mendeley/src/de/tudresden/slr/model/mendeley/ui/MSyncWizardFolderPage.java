@@ -1,59 +1,49 @@
 package de.tudresden.slr.model.mendeley.ui;
-import org.eclipse.jface.wizard.IWizardPage;
+import java.util.ArrayList;
 
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jbibtex.BibTeXDatabase;
-import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TableTreeViewer;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import com.google.gson.Gson;
-
-import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
-import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.client.MendeleyClient;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
 import de.tudresden.slr.model.mendeley.util.MendeleyTreeLabelProvider;
 import de.tudresden.slr.model.mendeley.util.TreeContentProvider;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
-public class MSyncWizardPageOne extends WizardPage {
 
-	/**
-	 * Create the wizard.
-	 */
+/**
+ * This class implements the folder page of the MSyncWizard which is used to
+ * select a MendeleyFolder in order to synchronize its content with a Bib-File.
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ * @see org.eclipse.jface.wizard.WizardPage
+ */
+public class MSyncWizardFolderPage extends WizardPage {
+
 	public boolean isSelectionValidated;
+
 	private MendeleyClient mc;
+	
 	private MendeleyFolder folder_selected = null;
+	
 	private ArrayList<String>folder_list;
+	
 	private String folders_str;
+	
 	protected AdapterFactoryEditingDomain editingDomain;
 	
-	public MSyncWizardPageOne() {
+	public MSyncWizardFolderPage() {
 		super("FolderPage");
 		folders_str = "";
 		setTitle("Mendeley Folder Selection");
@@ -69,13 +59,7 @@ public class MSyncWizardPageOne extends WizardPage {
 	 */
 	public void createControl(Composite parent) {
 		mc = MendeleyClient.getInstance();
-		try {
-			//mc.displayAuthorizationUserInterface(getShell());
-			//mc.requestAccessToken("dTtjLfriFNsx03uw-yK9-pVTb3o");
-			folders_str = mc.getAllFolders();
-		} catch (TokenMgrException | IOException | ParseException e) {
-			e.printStackTrace();
-		}
+		
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
@@ -88,12 +72,14 @@ public class MSyncWizardPageOne extends WizardPage {
 		treeViewer.setLabelProvider(new MendeleyTreeLabelProvider());
 		
         try {
+        	// TreeViewer takes Array of MendeleyFolders
 			treeViewer.setInput(mc.getMendeleyFolders());
 		} catch (TokenMgrException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
         
+        // add a Listener that makes sure that only Folders can be selected
+        // if a Folder is selected, the page will be set to complete
         treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			
 			@Override
@@ -102,7 +88,6 @@ public class MSyncWizardPageOne extends WizardPage {
 				if(selection.getFirstElement() instanceof MendeleyDocument){
 					
 					TreeItem[] item = treeViewer.getTree().getSelection();
-					System.out.print(item[0].getParentItem());
 					tree.select(item[0].getParentItem());
 					folder_selected = (MendeleyFolder)item[0].getParentItem().getData();
 					setPageComplete(true);
@@ -116,6 +101,7 @@ public class MSyncWizardPageOne extends WizardPage {
 		});	
         
 	}
+	
 	public MendeleyFolder getFolder_selected() {
 		return folder_selected;
 	}

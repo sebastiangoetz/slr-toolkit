@@ -26,13 +26,13 @@
                label="Mendeley Sync">
             <command
                   commandId="de.tudresden.slr.model.mendeley.startContextWizardCommand"
-                  label="Synchronize with Mendeley Folder"
+                  label="Mendeley Sync Wizard"
                   style="push">
             </command>
             <command
                   commandId="de.tudresden.slr.model.mendeley.SyncFolder"
                   icon="icons/refresh.png"
-                  label="Update Folder"
+                  label="Update Folders"
                   style="push">
             </command>
             <visibleWhen
@@ -53,7 +53,8 @@
             </visibleWhen>
             <command
                   commandId="de.tudresden.slr.model.mendeley.RemoveConnection"
-                  label="Remove Conection"
+                  icon="icons/remove.png"
+                  label="Remove Connection"
                   style="push">
             </command>
          </menu>
@@ -61,7 +62,7 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               id="de.tudresden.slr.model.mendeley.menus.sampleMenu"
+               id="de.tudresden.slr.model.mendeley.menus.mainMenu"
                label="Mendeley"
                mnemonic="M">
             <command
@@ -77,18 +78,6 @@
                   style="push">
             </command>
          </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="de.tudresden.slr.model.mendeley.toolbars.sampleToolbar">
-            <command
-                  commandId="de.tudresden.slr.model.mendeley.commands.sampleCommand"
-                  icon="icons/sample.png"
-                  id="de.tudresden.slr.model.mendeley.toolbars.sampleCommand"
-                  tooltip="Say hello world">
-            </command>
-         </toolbar>
       </menuContribution>
    </extension>
    <extension

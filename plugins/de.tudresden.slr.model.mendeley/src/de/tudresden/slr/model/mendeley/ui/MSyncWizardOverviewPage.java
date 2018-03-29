@@ -1,55 +1,81 @@
 package de.tudresden.slr.model.mendeley.ui;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
-import org.jbibtex.BibTeXString;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 import org.jbibtex.Value;
 
-import de.tudresden.slr.model.mendeley.api.authentication.MendeleyClient;
+import de.tudresden.slr.model.mendeley.api.client.MendeleyClient;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyDocument;
 import de.tudresden.slr.model.mendeley.api.model.MendeleyFolder;
 import de.tudresden.slr.model.mendeley.util.MendeleyTreeLabelProvider;
 import de.tudresden.slr.model.mendeley.util.SyncItem;
 import de.tudresden.slr.model.mendeley.util.TreeContentProvider;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
-
-public class MSyncWizardPageTwo extends WizardPage {
-    private Composite container;
-    protected MSyncWizardPageOne folder_page;
-    private MendeleyFolder folder_selected;
-    private List<MendeleyFolder> tree_list;
-    private TreeViewer treeViewer;
-    private MendeleyFolder conflicts;
-    private MendeleyFolder[] treeInput;
-    private BibTeXDatabase workspaceBib;
-    private MendeleyClient mc;
-    private List<SyncItem> syncItems;
-    private List<BibTeXEntry> missingInMendeley;
-    private List<BibTeXEntry> missingInWorkspace;
+/**
+ * This class implements the overview page of the MSyncWizard which is used to
+ * display what steps needs to be executed to synchronize the Bib-File with
+ * the Mendeley Folder.
+ * Documents can automatically be downloaded from an online Mendeley Folder when 
+ * they are missing in the Bib-File or uploaded to the online Mendeley Folder.
+ * There are also documents with conflicts which needs to be resolved in the
+ * next page.
+ * 
+ * @author Johannes Pflugmacher
+ * @version 1.0
+ * @see org.eclipse.jface.wizard.WizardPage
+ */
+public class MSyncWizardOverviewPage extends WizardPage {
     
-    public MSyncWizardPageTwo() {
+	private Composite container;
+    
+	protected MSyncWizardFolderPage folder_page;
+    
+	private MendeleyFolder folder_selected;
+    
+	private List<MendeleyFolder> tree_list;
+    
+	private TreeViewer treeViewer;
+    
+	private MendeleyFolder conflicts;
+    
+	private MendeleyFolder[] treeInput;
+    
+	private BibTeXDatabase workspaceBib;
+    
+	private MendeleyClient mc;
+    
+	/**
+	 * List of SyncItems
+	 */
+	private List<SyncItem> syncItems;
+    
+	/**
+	 * List of BibTexEntries that are Missing in Mendeley and need to be uploaded
+	 */
+	private List<BibTeXEntry> missingInMendeley;
+    
+	/**
+	 * List of BibTexEntries that are Missing in the Bib-File and need to be downloaded
+	 */
+	private List<BibTeXEntry> missingInWorkspace;
+    
+    public MSyncWizardOverviewPage() {
         super("overviewPage");
         setTitle("Processing Overview");
         setDescription("Overview of pending tasks");
@@ -88,9 +114,8 @@ public class MSyncWizardPageTwo extends WizardPage {
     
     @Override
     public void setVisible(boolean visible) {
-    	System.out.println(getName() + " is set " + visible );
     	
-    	if(visible && !((MSyncWizardPageOne)this.getPreviousPage()).isSelectionValidated){
+    	if(visible && !((MSyncWizardFolderPage)this.getPreviousPage()).isSelectionValidated){
     		
     		syncItems = new ArrayList<>();
             missingInMendeley = new ArrayList();
@@ -99,28 +124,48 @@ public class MSyncWizardPageTwo extends WizardPage {
 	    	this.syncFolderSelection();
 	    	this.initWorkspaceBib();
 	    	this.findDocumentsToSync();
-	    	this.initDiscription();
+	    	this.initDescription();
 	    	this.createTreeInput();
-	    	((MSyncWizardPageOne)this.getPreviousPage()).isSelectionValidated = true;
+	    	((MSyncWizardFolderPage)this.getPreviousPage()).isSelectionValidated = true;
     	}
     	
     	super.setVisible(visible);
     }
     
+    /**
+     * This methods gets the chosen Bib-File and MendeleyFolder Selections.
+     */
     private void syncFolderSelection(){
     	MSyncWizard myWiz = (MSyncWizard) this.getWizard();
     	IWizardPage[] wpages = myWiz.getPages();
-    	this.folder_page = (MSyncWizardPageOne)wpages[1];
+    	this.folder_page = (MSyncWizardFolderPage)wpages[1];
     	this.folder_selected = folder_page.getFolder_selected();
-    	((MSyncWizardPage)getWizard().getStartingPage()).getResourceSelected().setMendeleyFolder(folder_selected);
+    	((MSyncWizardFilePage)getWizard().getStartingPage()).getResourceSelected().setMendeleyFolder(folder_selected);
     }
     
-    private void initDiscription(){
+    /**
+     * This method adds the name of the selected mendeley folder to the description of this Wizard
+     */
+    private void initDescription(){
         if(folder_selected != null){	
         	setDescription("Synchronisation of Folder: " + this.folder_selected.getName());
         }
     }
     
+    /**
+     * This method creates the Treeinput by dividing documents into different categories: <br />
+     * <ul>
+     * 	<li>Docs that are exist in MendeleyFolder but are missing in Bib-File</li>
+     * 	<li>Docs that are exist in Bib-File but are missing in Mendeley</li>
+     * 	<li>Documents that exist in Bib-File and also in Mendeley
+     * 		<ul>
+     * 			<li>Documents with conflicts that have different fields and/or Values</li>
+     * 		<li>Documents with identical fields</li>
+     * 		</ul>
+     * 	</li>
+     * </ul>	
+     * 
+     */
     private void createTreeInput(){
     	this.tree_list = new ArrayList<MendeleyFolder>();
     	
@@ -131,7 +176,7 @@ public class MSyncWizardPageTwo extends WizardPage {
     	BibTeXDatabase dbToM = new BibTeXDatabase();
     	for(BibTeXEntry bib : this.missingInMendeley){
     		MendeleyDocument md = new MendeleyDocument();
-    		md.setTitle(bib.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", ""));
+    		md.setTitle(bib.getField(new Key("title")).toUserString());
     		dbToM.addObject(bib);
     		add_to_mendeley_folder.addDocument(md);
     	}
@@ -142,7 +187,6 @@ public class MSyncWizardPageTwo extends WizardPage {
     		this.tree_list.add(add_to_mendeley_folder);
     	}
     	
-    	
     	MendeleyFolder add_to_workspace_folder = new MendeleyFolder();
     	add_to_workspace_folder.setName("Download Documents from Mendeley to Workspace (automatically)");
     	add_to_workspace_folder.setType("AddToWorkspace");
@@ -150,7 +194,7 @@ public class MSyncWizardPageTwo extends WizardPage {
     	BibTeXDatabase dbToW = new BibTeXDatabase();
     	for(BibTeXEntry bib : this.missingInWorkspace){
     		MendeleyDocument md = new MendeleyDocument();
-    		md.setTitle(bib.getField(new Key("title")).toUserString().replaceAll("\\{", "").replaceAll("\\}", ""));
+    		md.setTitle(bib.getField(new Key("title")).toUserString());
     		dbToW.addObject(bib);
     		add_to_workspace_folder.addDocument(md);
     	}
@@ -197,7 +241,6 @@ public class MSyncWizardPageTwo extends WizardPage {
     	treeInput = tree_list.toArray(treeInput);
     	this.treeViewer.setInput(treeInput);
     	this.treeViewer.expandAll();
-    	
     }
     
     public MendeleyFolder getConflicts() {
@@ -212,19 +255,39 @@ public class MSyncWizardPageTwo extends WizardPage {
 		return syncItems;
 	}
     
+    /**
+     * this method sets the WorkspaceBibTexEntry that was selected
+     */
     private void initWorkspaceBib(){
-    	this.workspaceBib = ((MSyncWizardPage) this.getWizard().getPages()[0]).getResourceSelected().getBibTexDB();
+    	this.workspaceBib = ((MSyncWizardFilePage) this.getWizard().getPages()[0]).getResourceSelected().getBibTexDB();
     }
     
+    /**
+     * This method finds differences between Bib-File and Mendeley documents and divides them into different categories: <br />
+     * <ul>
+     * 	<li>Docs that are exist in MendeleyFolder but are missing in Bib-File</li>
+     * 	<li>Docs that are exist in Bib-File but are missing in Mendeley</li>
+     * 	<li>Documents that exist in Bib-File and also in Mendeley
+     * 		<ul>
+     * 			<li>Documents with conflicts that have different fields and/or Values</li>
+     * 		<li>Documents with identical fields</li>
+     * 		</ul>
+     * 	</li>
+     * </ul>	
+     * 
+     * If a Document in a Bib-File is basically the same one as in an online Mendeley Folder is decided
+     * by its 'title' attribute
+     */
     public void findDocumentsToSync(){
+    	// find mendeley documents to add or update by looking at the bib-file entries
     	for(BibTeXEntry bib : workspaceBib.getEntries().values()){
     		Value titleBib = bib.getField(new Key("title"));
 			String workspaceTitle = titleBib.toUserString();
-			workspaceTitle = workspaceTitle.replaceAll("\\{", "");
-			workspaceTitle = workspaceTitle.replaceAll("\\}", "");
 			
     		MendeleyDocument md = folder_selected.getDocumentByTitle(workspaceTitle);
     		
+    		//if there is no Mendeley Document with the same Title as the doc in the bib-file
+    		//add it to the mendeley folder
     		if(md == null){
     			this.missingInMendeley.add(bib);
     		}
@@ -232,13 +295,13 @@ public class MSyncWizardPageTwo extends WizardPage {
 				BibTeXDatabase new_db;
 				try {
 					new_db = mc.getDocumentBibTex(md.getId());
+							
 					for(BibTeXEntry mendeley_bib : new_db.getEntries().values()){
 						SyncItem syncItem = new SyncItem(md, mendeley_bib , bib);
 						this.syncItems.add(syncItem);
 					}
 					
 				} catch (TokenMgrException | IOException | ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -246,11 +309,13 @@ public class MSyncWizardPageTwo extends WizardPage {
     		}
     	}
     	
+    	// find mendeley documents that are missing in the bib-file
     	for(MendeleyDocument md : this.folder_selected.getDocuments()){
     		boolean exists = false;
     		for(BibTeXEntry bib : this.workspaceBib.getEntries().values()){
     			Value titleBib = bib.getField(new Key("title"));
-    			String workspaceTitle = titleBib.toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
+    			//String workspaceTitle = titleBib.toUserString().replaceAll("\\{", "").replaceAll("\\}", "");
+    			String workspaceTitle = titleBib.toUserString();
     			
     			if(md.getTitle().equals(workspaceTitle)){
     				exists = true;
@@ -265,7 +330,6 @@ public class MSyncWizardPageTwo extends WizardPage {
 						this.missingInWorkspace.add(bibEntry);
 					}
 				} catch (TokenMgrException | IOException | ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
