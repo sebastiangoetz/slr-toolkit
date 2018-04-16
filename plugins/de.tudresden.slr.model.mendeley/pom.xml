@@ -11,6 +11,16 @@
   </parent>
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+     <resource>
+      <directory>icons</directory>
+      <targetPath>icons</targetPath>
+     </resource>
+     <resource>
+      <directory>images</directory>
+      <targetPath>images</targetPath>
+     </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -30,6 +40,11 @@
 		    <groupId>com.google.code.gson</groupId>
 		    <artifactId>gson</artifactId>
 		    <version>2.8.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.9.5</version>
 		</dependency>
 		
     </dependencies>
