@@ -17,3 +17,13 @@
   * de.tudresden.slr.model.mendeley - Mendeley Synchronization
   * de.tudresden.slr.ui.charts - BIRT-based Charting
   * de.tudresden.slr.wizards - Wizards for SLR Projects
+
+## Setup Instructions ##
+
+* Download Eclipse Modeling Tools
+* Install 
+  * Xtext
+  * BIRT
+  * Maven Integration
+  * Maven Tycho Utils
+  * Tycho Configurators
