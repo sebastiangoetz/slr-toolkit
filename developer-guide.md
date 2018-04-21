@@ -20,10 +20,11 @@
 
 ## Setup Instructions ##
 
-* Download Eclipse Modeling Tools
+* Download Eclipse Modeling Tools (Oxygen)
 * Install 
-  * Xtext
-  * BIRT
-  * Maven Integration
-  * Maven Tycho Utils
-  * Tycho Configurators
+  * Xtext 
+  * BIRT 
+  * Maven Integration (m2e)
+  * Maven Tycho Utils 
+  * Tycho Project Configurators 
+* Set Target Platform to .target provided in de.tudresden.slr.target
