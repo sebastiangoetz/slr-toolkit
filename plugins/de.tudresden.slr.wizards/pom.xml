@@ -8,4 +8,12 @@
   	<version>0.0.4-SNAPSHOT</version>
   	<relativePath>../de.tudresden.slr.parent/pom.xml</relativePath>
   </parent>
+  <build>
+   <resources>
+    <resource>
+     <directory>icons</directory>
+     <targetPath>icons</targetPath>
+    </resource>
+   </resources>
+  </build>
 </project>

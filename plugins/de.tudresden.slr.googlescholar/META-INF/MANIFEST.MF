@@ -17,8 +17,7 @@ Export-Package: de.tudresden.slr.googlescholar;
    org.eclipse.ui.dialogs,
    org.eclipse.jface.wizard,
    org.eclipse.jface.viewers"
-Bundle-ClassPath: src/,
- .,
+Bundle-ClassPath:  .,
  lib/htmlunit-2.29-OSG.jar
 Import-Package: de.tudresden.slr.googlescholar
 Bundle-Activator: de.tudresden.slr.googlescholar.Activator
