@@ -28,3 +28,5 @@
   * Maven Tycho Utils 
   * Tycho Project Configurators 
 * Set Target Platform to .target provided in de.tudresden.slr.target
+* Execute Xtext Build
+  * (Project) de.tudresden.slr.model.taxonomy -> (Right-Click) src/de/tudresden/slr/model/taxonomy/GenerateTaxonomy.mwe2 -> Run As.. -> MWE2 Workflow
