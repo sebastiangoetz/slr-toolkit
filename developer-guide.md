@@ -30,3 +30,14 @@
 * Set Target Platform to .target provided in de.tudresden.slr.target
 * Execute Xtext Build
   * (Project) de.tudresden.slr.model.taxonomy -> (Right-Click) src/de/tudresden/slr/model/taxonomy/GenerateTaxonomy.mwe2 -> Run As.. -> MWE2 Workflow
+
+## BibTeX Views ##
+
+* Implemented as EMF Project: de.tudresden.slr.model.bibtex
+* Bibtex Files are parsed using JBibTeX into the EMF Model
+  * Model: model/bibtex.ecore
+  * .bib Parsing/Pretty-Printing: src/de.tudresden.slr.model.bibtex.util/BibTexResourceImpl.java
+    * doLoad(..)
+    * doSave(..)
+    * parseClasses(String taxonomyString) - build Taxonomy Model from string representation
+    * serializeTaxonomy(..) - build string representation from Taxonomy Model
