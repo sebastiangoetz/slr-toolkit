@@ -2,7 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         id="de.tudresden.slr.wizards"
          point="org.eclipse.ui.newWizards">
       <category
             id="de.tudresden.slr.wizards.slr"
