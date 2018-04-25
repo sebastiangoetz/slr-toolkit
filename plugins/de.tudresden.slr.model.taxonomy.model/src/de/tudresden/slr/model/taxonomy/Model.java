@@ -5,6 +5,7 @@ package de.tudresden.slr.model.taxonomy;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * <!-- begin-user-doc -->
@@ -16,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link de.tudresden.slr.model.taxonomy.Model#getDimensions <em>Dimensions</em>}</li>
+ *   <li>{@link de.tudresden.slr.model.taxonomy.Model#getResource <em>Resource</em>}</li>
  * </ul>
  *
  * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getModel()
@@ -38,5 +40,31 @@ public interface Model extends EObject {
 	 * @generated
 	 */
 	EList<Term> getDimensions();
+
+	/**
+	 * Returns the value of the '<em><b>Resource</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Resource</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Resource</em>' attribute.
+	 * @see #setResource(Resource)
+	 * @see de.tudresden.slr.model.taxonomy.TaxonomyPackage#getModel_Resource()
+	 * @model transient="true"
+	 * @generated
+	 */
+	Resource getResource();
+
+	/**
+	 * Sets the value of the '{@link de.tudresden.slr.model.taxonomy.Model#getResource <em>Resource</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Resource</em>' attribute.
+	 * @see #getResource()
+	 * @generated
+	 */
+	void setResource(Resource value);
 
 } // Model

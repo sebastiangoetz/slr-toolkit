@@ -120,6 +120,15 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getModel_Resource() {
+		return (EAttribute)modelEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getTerm() {
 		return termEClass;
 	}
@@ -181,6 +190,7 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		// Create classes and their features
 		modelEClass = createEClass(MODEL);
 		createEReference(modelEClass, MODEL__DIMENSIONS);
+		createEAttribute(modelEClass, MODEL__RESOURCE);
 
 		termEClass = createEClass(TERM);
 		createEAttribute(termEClass, TERM__NAME);
@@ -220,6 +230,7 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		// Initialize classes, features, and operations; add parameters
 		initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getModel_Dimensions(), this.getTerm(), null, "dimensions", null, 0, -1, Model.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getModel_Resource(), ecorePackage.getEResource(), "resource", null, 0, 1, Model.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(termEClass, Term.class, "Term", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTerm_Name(), ecorePackage.getEString(), "name", null, 0, 1, Term.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

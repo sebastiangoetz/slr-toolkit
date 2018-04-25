@@ -30,6 +30,7 @@ public final class TaxonomyStandaloneParser {
 			resource.load(stream, Collections.EMPTY_MAP);
 			if(contents != null && !contents.isEmpty()){
 				model = (Model)contents.get(0);
+				model.setResource(resource);
 			}
 			
 		} catch (IOException e) {

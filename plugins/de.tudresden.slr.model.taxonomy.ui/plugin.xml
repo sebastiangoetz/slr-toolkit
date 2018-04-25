@@ -168,6 +168,36 @@
             id="de.tudresden.slr.model.taxonomy.ui.createpiechart"
             name="Create Pie Chart">
       </command>
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.CreateTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.createterm"
+      		name="New Term">
+      </command>    
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.RenameTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.renameterm"
+      		name="Rename Selected Term">
+      </command> 
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.DeleteTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+      		name="Delete Selected Term(s)">
+      </command>
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.MoveTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.moveterm"
+      		name="Move Selected Term(s)">
+      </command>    
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.MergeTermsHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.mergeterms"
+      		name="Merge Selected Terms">
+      </command> 
+      <command
+      		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.SplitTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.splitterm"
+      		name="Split Selected Term">
+      </command>  		
     </extension>
     <extension point="org.eclipse.ui.menus">
         <menuContribution
@@ -235,6 +265,91 @@
                   style="push"
                   tooltip="Create PieChart">
             </command>
+         </menuContribution>
+         <menuContribution
+         		locationURI="popup:de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.createterm"
+     		 	tooltip="New Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.renameterm"
+     		 	tooltip="Rename Selected Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command> 
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+     		 	tooltip="Delete Selected Term(s)">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>  
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.moveterm"
+     		 	tooltip="Move Selected Term(s)">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command> 
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.mergeterms"
+     		 	tooltip="Merge Selected Terms">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="(1-"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.splitterm"
+     		 	tooltip="Split Selected Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>                    				 
          </menuContribution>
     </extension>
     <extension point="org.eclipse.ui.menus">

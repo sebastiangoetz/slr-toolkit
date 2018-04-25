@@ -77,13 +77,22 @@ public interface TaxonomyPackage extends EPackage {
 	int MODEL__DIMENSIONS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Resource</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODEL__RESOURCE = 1;
+
+	/**
 	 * The number of structural features of the '<em>Model</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MODEL_FEATURE_COUNT = 1;
+	int MODEL_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Model</em>' class.
@@ -172,6 +181,17 @@ public interface TaxonomyPackage extends EPackage {
 	EReference getModel_Dimensions();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.tudresden.slr.model.taxonomy.Model#getResource <em>Resource</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Resource</em>'.
+	 * @see de.tudresden.slr.model.taxonomy.Model#getResource()
+	 * @see #getModel()
+	 * @generated
+	 */
+	EAttribute getModel_Resource();
+
+	/**
 	 * Returns the meta object for class '{@link de.tudresden.slr.model.taxonomy.Term <em>Term</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -253,6 +273,14 @@ public interface TaxonomyPackage extends EPackage {
 		 * @generated
 		 */
 		EReference MODEL__DIMENSIONS = eINSTANCE.getModel_Dimensions();
+
+		/**
+		 * The meta object literal for the '<em><b>Resource</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute MODEL__RESOURCE = eINSTANCE.getModel_Resource();
 
 		/**
 		 * The meta object literal for the '{@link de.tudresden.slr.model.taxonomy.impl.TermImpl <em>Term</em>}' class.
