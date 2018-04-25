@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chart
 Bundle-SymbolicName: de.tudresden.slr.ui.chart;singleton:=true
-Bundle-Version: 0.0.4.qualifier
+Bundle-Version: 0.2.1.qualifier
 Bundle-Activator: de.tudresden.slr.ui.chart.views.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,8 +13,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.birt.chart.engine,
  org.eclipse.birt.chart.engine.extension,
  de.tudresden.slr.model.taxonomy.model,
- de.tudresden.slr.model.taxonomy
+ de.tudresden.slr.model.taxonomy,
+ org.eclipse.swt,
+ org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.ui.chart.logic,
+ de.tudresden.slr.ui.chart.settings,
+ de.tudresden.slr.ui.chart.settings.parts,
  de.tudresden.slr.ui.chart.views
+Import-Package: org.eclipse.xtext.ui.label

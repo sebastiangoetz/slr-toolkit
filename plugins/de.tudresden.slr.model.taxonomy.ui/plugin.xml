@@ -164,6 +164,11 @@
             name="Create Cite Bar">
       </command>
       <command
+            defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.CreatePieChartHandler"
+            id="de.tudresden.slr.model.taxonomy.ui.createpiechart"
+            name="Create Pie Chart">
+      </command>
+      <command
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.CreateTermHandler"
       		id="de.tudresden.slr.model.taxonomy.ui.createterm"
       		name="New Term">
@@ -253,6 +258,12 @@
                   label="Create Cite Barchart"
                   style="push"
                   tooltip="Create Cite Barchart">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.createpiechart"
+                  icon="icons/pie_chart.png"
+                  style="push"
+                  tooltip="Create PieChart">
             </command>
          </menuContribution>
          <menuContribution

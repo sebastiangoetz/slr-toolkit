@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="de.tudresden.slr.googlescholar"
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="de.tudresden.slr.googlescholar.slrgooglescholar"
+            class="de.tudresden.slr.googlescholar.GSImportWizard"
+            hasPages="true"
+            id="de.tudresden.slr.googlescholar.gsimportwizard"
+            name="Google Scholar Import"
+            project="false">
+      </wizard>
+      <category
+            id="de.tudresden.slr.googlescholar.slrgooglescholar"
+            name="Google Scholar">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="de.tudresden.slr.googlescholar.preferences.GSPreferencePage"
+            id="de.tudresden.slr.googlescholar.preferences.GSPreferencePage"
+            name="Google Scholar Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="de.tudresden.slr.googlescholar.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.resources.teamHook">
+      <teamHook
+            class="de.tudresden.slr.googlescholar.TeamHook1">
+      </teamHook>
+   </extension>
+
+</plugin>

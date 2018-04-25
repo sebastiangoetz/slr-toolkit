@@ -1,5 +1,5 @@
 [![Join the chat at https://gitter.im/sebastiangoetz/slr-toolkit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sebastiangoetz/slr-toolkit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub issues](https://img.shields.io/github/issues/sebastiangoetz/slr-toolkit.svg)](https://github.com/sebastiangoetz/slr-toolkit/issues) [![GitHub license](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/sebastiangoetz/slr-toolkit/master/LICENSE) [![Build Status](https://travis-ci.org/sebastiangoetz/slr-toolkit.svg?branch=master)](https://travis-ci.org/sebastiangoetz/slr-toolkit)
-# slr-toolkit
+# SLR Toolkit
 
 A Toolkit for Systematic Literature Reviews
 

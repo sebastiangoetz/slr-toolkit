@@ -43,6 +43,7 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -152,6 +153,7 @@ public class BibtexEntryView extends ViewPart {
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(editingDomain.getResourceSet());
 		viewer.getTree().addKeyListener(createDeleteListener());
+		viewer.getTree().addKeyListener(createRefreshListener());
 		viewer.expandAll();
 		
 		// this is needed to let other views know what is currently selected
@@ -170,6 +172,29 @@ public class BibtexEntryView extends ViewPart {
 		}
 	}
 	
+	private KeyListener createRefreshListener() {
+		KeyListener refresher = new KeyListener() {
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.keyCode == SWT.F5) {
+					ISelection s = combo.getSelection();
+					if(s != null && s instanceof IStructuredSelection) {
+						IProject p = (IProject)(((IStructuredSelection)s).getFirstElement());
+						deleteResources();
+						registerResources(p);
+						viewer.refresh();
+					}
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			}
+		};
+		return refresher;
+	}
+
 	@Override
 	public void dispose(){
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -586,6 +611,13 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				refreshProjectCombo();
+				if(combo.getSelection() != null) {
+					if(combo.getSelection() instanceof IStructuredSelection) {
+						IProject project = (IProject)((IStructuredSelection)combo.getSelection()).getFirstElement();
+						deleteResources();
+						registerResources(project);
+					}
+				}
 				viewer.refresh();
 			}
 		};

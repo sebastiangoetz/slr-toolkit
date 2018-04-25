@@ -1,0 +1,150 @@
+Zielgruppe {
+	unspezifisch,
+	Privatsektor{
+	unspezifisch,
+	Eigentuemer
+	Projektmanager,
+	AEC-Hintergrund
+	Facility Manager,
+	IT-Hintergrund
+}
+	Oeffentlicher Sektor{
+	Regierung,
+	Studenten und Professoren,
+	Oeffentliche Auftraggeber,
+	}	
+}
+
+Veroeffentlichungsland {
+		Nordamerika{
+		Vereinigte Staaten von Amerika,	
+		Kanada
+		}
+		Europa{
+		Vereinigtes Koenigreich,
+		Slovenien,
+		Niederlande,
+		Irland,
+		Spanien,
+		Deutschland,
+		Norwegen,
+		Rumaenien,
+		Finnland,
+		Italien
+		}
+		Asien{
+		Indien,
+		Suedkorea,
+		Israel,
+		Saudi-Arabien,
+		Indonesien,
+		Malaisia,
+		China,
+		}
+
+		Neuseeland,
+		Australien,
+
+	}
+Veroeffentlichungssort {
+	 	John Wiley and Sons Inc,
+	 	SYBEX Inc,
+	 	International Smart Cities Conference,
+	 	Journal of Information Technology in Construction,
+	 	International Conference on 3D Web Technology,
+	 	Automation in Construction,
+	 	Construction Lawyer,
+	 	Journal of Management in Engineering,
+	 	ASHRAE Journal,
+	 	Portland International Center for Management of Engineering and Technology,
+	 	International Conference on Smart City and Systems Engineering,
+	 	Transmission and Distribution Conference and Exposition,
+	 	Leadership and Management in Engineering,
+	 	International Conference on Information System and Artificial Intelligence,
+	 	Renewable and Sustainable Energy Reviews,
+	 	International Conference on Power System Technology,
+	 	International Conference on Construction in Developing Countries,
+		Journal of Construction Engineering and Management,
+		International Journal of Project Management,
+		Journal of Professional Issues in Engineering Education and Practice,
+		Journal of Building Engineering,
+		International Conference on Virtual Systems and Multimedia,
+		IEEE International Conference on Industrial Engineering and Engineering Management,
+		International Conference on Research and Innovation in Information Systems,
+		International Conference on Compututational Intelligence and Security,
+		Winter Simulation Conference,
+		Frontiers in Education Conference 
+		International Conference on Intelligent Systems Design and Engineering Applications,
+		International Conference on Management Science and Engineering,
+		International Conference on Computer Supported Cooperative Work in Design,
+		Hawaii International Conference on System Science,
+		Digital Heritage International Congress,
+		International Conference on Smart Grid and Electrical Automation,
+		International Conference on Optimization of Electrical and Electronic Equipment and
+		International Aegean Conference on Electrical Machines and Power Electronics,
+		International Symposium on Mixed and Augmented Reality 
+	}
+Art{
+		Buch,
+		Konferenz,
+		Fachzeitschrift,
+	}
+Thema{
+		Ablaufplanung,
+		Informationsberechnung und Praesentation,
+		Gebaeudeanalyse Nachhaltigkeit und Energieverbrauch,
+		Gebaeudesicherheit und Fehlermanagement,
+		Interoperabilitaet BIM und Lean Construction,
+		Kommunikation und Interaktion,
+		Innovative Forschungsthemen und Trends,	
+		Anwendung von BIM auf intelligente Gebaeude,
+		Luecke zwischen CAD und 3D Modellierung,
+		Anwendung von BIM Praktiken und Software in zukuenftigen Projekten,
+		Veraenderter Lehrfokus und Lernerfahrung durch BIM,
+		Anwendung von BIM auf bereits existierende Gebaeude,
+		Echtzeitvisualisierung mit BIM und Augmented Reality,
+		Uebersicht und Anleitung zu BIM,	
+		Qualitative und finanzielle Vorteile von BIM,
+}
+	
+Anwendungsfeld{
+		unspezifisch,
+		Lehre,
+		Organisation,
+		Finanzierung,
+		AEC{
+			Vorkonstruktion,
+			Konstruktion,
+		}
+		Facility Management,
+		IT,
+		
+	}
+Ergebnis{
+	praktisch{
+		Implementation,
+		Framework,
+		Beispiel
+	}
+	theoretisch{
+		Ueberblick,
+		Arbeitsfluss,
+		Analyse,
+		Bericht
+		
+	}
+	}
+	
+Methodik{Interviews,
+		Entwurf,
+		Fallstudie
+		Argumentation,
+		Experiment,
+		Umfrage,
+		Diskussion,
+		Literaturrezension,
+		Forschungsworkshop,
+		Analyse,
+		Bericht
+	
+}

@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>de.tudresden</groupId>
 		<artifactId>de.tudresden.slr.parent</artifactId>
-		<version>0.0.4-SNAPSHOT</version>
+		<version>0.2.1-SNAPSHOT</version>
 		<relativePath>../de.tudresden.slr.parent/pom.xml</relativePath>
 	</parent>
 

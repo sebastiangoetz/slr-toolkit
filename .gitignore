@@ -5,3 +5,17 @@
 plugins/de.tudresden.slr.app/target/xtend/*
 *.jar
 /**/target/
+
+*.xtendbin
+
+plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model/taxonomy/ui/contentassist/\.TaxonomyProposalProvider\.java\._trace
+
+plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model/taxonomy/ui/contentassist/
+
+plugins/de\.tudresden\.slr\.model\.taxonomy/xtend-gen/de/tudresden/slr/model/taxonomy/scoping/
+
+plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model/taxonomy/ui/labeling/
+
+*._trace
+
+\.recommenders/

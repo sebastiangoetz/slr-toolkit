@@ -16,8 +16,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
+import de.tudresden.slr.ui.chart.logic.TermSort;
+import de.tudresden.slr.ui.chart.settings.*;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class CreateCiteHandler implements IHandler {
@@ -70,7 +73,9 @@ public class CreateCiteHandler implements IHandler {
 			view.getPreview().setDataPresent(true);
 			ChartDataProvider provider = new ChartDataProvider();
 			Term input = (Term) currentSelection.getFirstElement();
-			Map<String, Integer> citeChartData = provider.calculateNumberOfCitesPerYearForClass(input);
+			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
+			BarChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + input.getName());
+			BarChartConfiguration.get().setTermSort(TermSort.SUBCLASS);
 			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
 			view.setAndRenderChart(citeChart);
 		} else {
