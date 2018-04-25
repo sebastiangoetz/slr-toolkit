@@ -21,13 +21,11 @@ import org.eclipse.xtext.serializer.sequencer.AbstractSyntacticSequencer;
 public abstract class AbstractTaxonomySyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected TaxonomyGrammarAccess grammarAccess;
-	protected AbstractElementAlias match_Term_CommaKeyword_1_1_1_q;
 	protected AbstractElementAlias match_Term___LeftCurlyBracketKeyword_1_0_RightCurlyBracketKeyword_1_2__q;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (TaxonomyGrammarAccess) access;
-		match_Term_CommaKeyword_1_1_1_q = new TokenAlias(false, true, grammarAccess.getTermAccess().getCommaKeyword_1_1_1());
 		match_Term___LeftCurlyBracketKeyword_1_0_RightCurlyBracketKeyword_1_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getTermAccess().getLeftCurlyBracketKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_1_2()));
 	}
 	
@@ -43,26 +41,12 @@ public abstract class AbstractTaxonomySyntacticSequencer extends AbstractSyntact
 		List<INode> transitionNodes = collectNodes(fromNode, toNode);
 		for (AbstractElementAlias syntax : transition.getAmbiguousSyntaxes()) {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
-			if (match_Term_CommaKeyword_1_1_1_q.equals(syntax))
-				emit_Term_CommaKeyword_1_1_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_Term___LeftCurlyBracketKeyword_1_0_RightCurlyBracketKeyword_1_2__q.equals(syntax))
+			if (match_Term___LeftCurlyBracketKeyword_1_0_RightCurlyBracketKeyword_1_2__q.equals(syntax))
 				emit_Term___LeftCurlyBracketKeyword_1_0_RightCurlyBracketKeyword_1_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
 
-	/**
-	 * Ambiguous syntax:
-	 *     ','?
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     subclasses+=Term (ambiguity) '}' (rule end)
-	 *     subclasses+=Term (ambiguity) subclasses+=Term
-	 */
-	protected void emit_Term_CommaKeyword_1_1_1_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
 	/**
 	 * Ambiguous syntax:
 	 *     ('{' '}')?

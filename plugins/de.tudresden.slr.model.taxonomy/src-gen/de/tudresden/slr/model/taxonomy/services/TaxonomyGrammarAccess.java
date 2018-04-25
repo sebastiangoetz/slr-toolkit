@@ -19,18 +19,38 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public class ModelElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.tudresden.slr.model.taxonomy.Taxonomy.Model");
-		private final Assignment cDimensionsAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cDimensionsTermParserRuleCall_0 = (RuleCall)cDimensionsAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cDimensionsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cDimensionsTermParserRuleCall_0_0 = (RuleCall)cDimensionsAssignment_0.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cCommaKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cDimensionsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cDimensionsTermParserRuleCall_1_1_0 = (RuleCall)cDimensionsAssignment_1_1.eContents().get(0);
 		
 		//Model:
-		//	dimensions+=Term*;
+		//	(dimensions+=Term (',' dimensions+=Term)*)?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//dimensions+=Term*
-		public Assignment getDimensionsAssignment() { return cDimensionsAssignment; }
+		//(dimensions+=Term (',' dimensions+=Term)*)?
+		public Group getGroup() { return cGroup; }
+
+		//dimensions+=Term
+		public Assignment getDimensionsAssignment_0() { return cDimensionsAssignment_0; }
 
 		//Term
-		public RuleCall getDimensionsTermParserRuleCall_0() { return cDimensionsTermParserRuleCall_0; }
+		public RuleCall getDimensionsTermParserRuleCall_0_0() { return cDimensionsTermParserRuleCall_0_0; }
+
+		//(',' dimensions+=Term)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//','
+		public Keyword getCommaKeyword_1_0() { return cCommaKeyword_1_0; }
+
+		//dimensions+=Term
+		public Assignment getDimensionsAssignment_1_1() { return cDimensionsAssignment_1_1; }
+
+		//Term
+		public RuleCall getDimensionsTermParserRuleCall_1_1_0() { return cDimensionsTermParserRuleCall_1_1_0; }
 	}
 
 	public class TermElements extends AbstractParserRuleElementFinder {
@@ -43,15 +63,17 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
 		private final Assignment cSubclassesAssignment_1_1_0 = (Assignment)cGroup_1_1.eContents().get(0);
 		private final RuleCall cSubclassesTermParserRuleCall_1_1_0_0 = (RuleCall)cSubclassesAssignment_1_1_0.eContents().get(0);
-		private final Keyword cCommaKeyword_1_1_1 = (Keyword)cGroup_1_1.eContents().get(1);
+		private final Group cGroup_1_1_1 = (Group)cGroup_1_1.eContents().get(1);
+		private final Keyword cCommaKeyword_1_1_1_0 = (Keyword)cGroup_1_1_1.eContents().get(0);
+		private final Assignment cSubclassesAssignment_1_1_1_1 = (Assignment)cGroup_1_1_1.eContents().get(1);
+		private final RuleCall cSubclassesTermParserRuleCall_1_1_1_1_0 = (RuleCall)cSubclassesAssignment_1_1_1_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//Term:
-		//	name=ID ('{' (subclasses+=Term ','?)*
-		//	'}')?;
+		//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//name=ID ('{' (subclasses+=Term ','?)* '}')?
+		//name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?
 		public Group getGroup() { return cGroup; }
 
 		//name=ID
@@ -60,13 +82,13 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_0_0() { return cNameIDTerminalRuleCall_0_0; }
 
-		//('{' (subclasses+=Term ','?)* '}')?
+		//('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?
 		public Group getGroup_1() { return cGroup_1; }
 
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_1_0() { return cLeftCurlyBracketKeyword_1_0; }
 
-		//(subclasses+=Term ','?)*
+		//(subclasses+=Term (',' subclasses+=Term)*)?
 		public Group getGroup_1_1() { return cGroup_1_1; }
 
 		//subclasses+=Term
@@ -75,8 +97,17 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 		//Term
 		public RuleCall getSubclassesTermParserRuleCall_1_1_0_0() { return cSubclassesTermParserRuleCall_1_1_0_0; }
 
-		//','?
-		public Keyword getCommaKeyword_1_1_1() { return cCommaKeyword_1_1_1; }
+		//(',' subclasses+=Term)*
+		public Group getGroup_1_1_1() { return cGroup_1_1_1; }
+
+		//','
+		public Keyword getCommaKeyword_1_1_1_0() { return cCommaKeyword_1_1_1_0; }
+
+		//subclasses+=Term
+		public Assignment getSubclassesAssignment_1_1_1_1() { return cSubclassesAssignment_1_1_1_1; }
+
+		//Term
+		public RuleCall getSubclassesTermParserRuleCall_1_1_1_1_0() { return cSubclassesTermParserRuleCall_1_1_1_1_0; }
 
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_1_2() { return cRightCurlyBracketKeyword_1_2; }
@@ -129,7 +160,7 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//Model:
-	//	dimensions+=Term*;
+	//	(dimensions+=Term (',' dimensions+=Term)*)?;
 	public ModelElements getModelAccess() {
 		return pModel;
 	}
@@ -145,7 +176,7 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//terminal ML_COMMENT:
-	//	'/ *'->'* /';
+	//	'/*'->'*/';
 	public TerminalRule getML_COMMENTRule() {
 		return tML_COMMENT;
 	} 
@@ -169,8 +200,7 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//Term:
-	//	name=ID ('{' (subclasses+=Term ','?)*
-	//	'}')?;
+	//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?;
 	public TermElements getTermAccess() {
 		return pTerm;
 	}

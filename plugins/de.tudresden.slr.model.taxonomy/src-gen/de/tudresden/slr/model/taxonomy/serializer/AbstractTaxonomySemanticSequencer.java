@@ -47,7 +47,7 @@ public abstract class AbstractTaxonomySemanticSequencer extends AbstractDelegati
 	 *     Model returns Model
 	 *
 	 * Constraint:
-	 *     dimensions+=Term+
+	 *     (dimensions+=Term dimensions+=Term*)
 	 */
 	protected void sequence_Model(ISerializationContext context, Model semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -59,7 +59,7 @@ public abstract class AbstractTaxonomySemanticSequencer extends AbstractDelegati
 	 *     Term returns Term
 	 *
 	 * Constraint:
-	 *     (name=ID subclasses+=Term*)
+	 *     (name=ID (subclasses+=Term subclasses+=Term*)?)
 	 */
 	protected void sequence_Term(ISerializationContext context, Term semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

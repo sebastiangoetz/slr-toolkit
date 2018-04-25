@@ -1,6 +1,6 @@
-','=11
-'{'=9
-'}'=10
+','=9
+'{'=10
+'}'=11
 RULE_ID=4
 RULE_ML_COMMENT=6
 RULE_NEWLINE=8

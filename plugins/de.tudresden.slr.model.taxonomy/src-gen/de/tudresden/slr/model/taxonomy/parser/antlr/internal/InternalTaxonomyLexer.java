@@ -40,10 +40,10 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = T__9;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:11:6: ( '{' )
-            // InternalTaxonomy.g:11:8: '{'
+            // InternalTaxonomy.g:11:6: ( ',' )
+            // InternalTaxonomy.g:11:8: ','
             {
-            match('{'); 
+            match(','); 
 
             }
 
@@ -60,10 +60,10 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = T__10;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:12:7: ( ',' )
-            // InternalTaxonomy.g:12:9: ','
+            // InternalTaxonomy.g:12:7: ( '{' )
+            // InternalTaxonomy.g:12:9: '{'
             {
-            match(','); 
+            match('{'); 
 
             }
 
@@ -100,8 +100,8 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:174:17: ( '//' )
-            // InternalTaxonomy.g:174:19: '//'
+            // InternalTaxonomy.g:214:17: ( '//' )
+            // InternalTaxonomy.g:214:19: '//'
             {
             match("//"); 
 
@@ -121,12 +121,12 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:176:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // InternalTaxonomy.g:176:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // InternalTaxonomy.g:216:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // InternalTaxonomy.g:216:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // InternalTaxonomy.g:176:24: ( options {greedy=false; } : . )*
+            // InternalTaxonomy.g:216:24: ( options {greedy=false; } : . )*
             loop1:
             do {
                 int alt1=2;
@@ -151,7 +151,7 @@ public class InternalTaxonomyLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // InternalTaxonomy.g:176:52: .
+            	    // InternalTaxonomy.g:216:52: .
             	    {
             	    matchAny(); 
 
@@ -181,10 +181,10 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:178:9: ( ( ' ' | '\\t' )+ )
-            // InternalTaxonomy.g:178:11: ( ' ' | '\\t' )+
+            // InternalTaxonomy.g:218:9: ( ( ' ' | '\\t' )+ )
+            // InternalTaxonomy.g:218:11: ( ' ' | '\\t' )+
             {
-            // InternalTaxonomy.g:178:11: ( ' ' | '\\t' )+
+            // InternalTaxonomy.g:218:11: ( ' ' | '\\t' )+
             int cnt2=0;
             loop2:
             do {
@@ -238,10 +238,10 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = RULE_NEWLINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:180:14: ( ( '\\r' )? '\\n' )
-            // InternalTaxonomy.g:180:16: ( '\\r' )? '\\n'
+            // InternalTaxonomy.g:220:14: ( ( '\\r' )? '\\n' )
+            // InternalTaxonomy.g:220:16: ( '\\r' )? '\\n'
             {
-            // InternalTaxonomy.g:180:16: ( '\\r' )?
+            // InternalTaxonomy.g:220:16: ( '\\r' )?
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -250,7 +250,7 @@ public class InternalTaxonomyLexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // InternalTaxonomy.g:180:16: '\\r'
+                    // InternalTaxonomy.g:220:16: '\\r'
                     {
                     match('\r'); 
 
@@ -276,8 +276,8 @@ public class InternalTaxonomyLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // InternalTaxonomy.g:182:9: ( ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )* )
-            // InternalTaxonomy.g:182:11: ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
+            // InternalTaxonomy.g:222:9: ( ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )* )
+            // InternalTaxonomy.g:222:11: ( 'A' .. 'Z' | 'a' .. 'z' ) ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -288,7 +288,7 @@ public class InternalTaxonomyLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // InternalTaxonomy.g:182:31: ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
+            // InternalTaxonomy.g:222:31: ( 'A' .. 'Z' | 'a' .. 'z' | '_' | '-' | '0' .. '9' | ' ' )*
             loop4:
             do {
                 int alt4=2;
@@ -413,7 +413,7 @@ public class InternalTaxonomyLexer extends Lexer {
     static final String DFA5_specialS =
         "\12\uffff}>";
     static final String[] DFA5_transitionS = {
-            "\1\5\1\6\2\uffff\1\6\22\uffff\1\5\13\uffff\1\2\2\uffff\1\4\21\uffff\32\7\6\uffff\32\7\1\1\1\uffff\1\3",
+            "\1\5\1\6\2\uffff\1\6\22\uffff\1\5\13\uffff\1\1\2\uffff\1\4\21\uffff\32\7\6\uffff\32\7\1\2\1\uffff\1\3",
             "",
             "",
             "",

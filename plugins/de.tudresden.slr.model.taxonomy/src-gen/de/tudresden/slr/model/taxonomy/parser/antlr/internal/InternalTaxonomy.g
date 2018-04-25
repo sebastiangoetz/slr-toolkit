@@ -77,10 +77,10 @@ ruleModel returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_0()); 
+	        newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_0_0()); 
 	    }
 		lv_dimensions_0_0=ruleTerm		{
 	        if ($current==null) {
@@ -95,7 +95,29 @@ ruleModel returns [EObject current=null]
 	    }
 
 )
-)*
+)(	otherlv_1=',' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getModelAccess().getCommaKeyword_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getModelAccess().getDimensionsTermParserRuleCall_1_1_0()); 
+	    }
+		lv_dimensions_2_0=ruleTerm		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getModelRule());
+	        }
+       		add(
+       			$current, 
+       			"dimensions",
+        		lv_dimensions_2_0, 
+        		"de.tudresden.slr.model.taxonomy.Taxonomy.Term");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?
 ;
 
 
@@ -158,11 +180,29 @@ ruleTerm returns [EObject current=null]
 )
 )(	otherlv_3=',' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getTermAccess().getCommaKeyword_1_1_1());
+    	newLeafNode(otherlv_3, grammarAccess.getTermAccess().getCommaKeyword_1_1_1_0());
     }
-)?)*	otherlv_4='}' 
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getTermAccess().getSubclassesTermParserRuleCall_1_1_1_1_0()); 
+	    }
+		lv_subclasses_4_0=ruleTerm		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getTermRule());
+	        }
+       		add(
+       			$current, 
+       			"subclasses",
+        		lv_subclasses_4_0, 
+        		"de.tudresden.slr.model.taxonomy.Taxonomy.Term");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_5='}' 
     {
-    	newLeafNode(otherlv_4, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_1_2());
+    	newLeafNode(otherlv_5, grammarAccess.getTermAccess().getRightCurlyBracketKeyword_1_2());
     }
 )?)
 ;

@@ -37,12 +37,17 @@ public class TaxonomyParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
+					put(grammarAccess.getModelAccess().getGroup(), "rule__Model__Group__0");
+					put(grammarAccess.getModelAccess().getGroup_1(), "rule__Model__Group_1__0");
 					put(grammarAccess.getTermAccess().getGroup(), "rule__Term__Group__0");
 					put(grammarAccess.getTermAccess().getGroup_1(), "rule__Term__Group_1__0");
 					put(grammarAccess.getTermAccess().getGroup_1_1(), "rule__Term__Group_1_1__0");
-					put(grammarAccess.getModelAccess().getDimensionsAssignment(), "rule__Model__DimensionsAssignment");
+					put(grammarAccess.getTermAccess().getGroup_1_1_1(), "rule__Term__Group_1_1_1__0");
+					put(grammarAccess.getModelAccess().getDimensionsAssignment_0(), "rule__Model__DimensionsAssignment_0");
+					put(grammarAccess.getModelAccess().getDimensionsAssignment_1_1(), "rule__Model__DimensionsAssignment_1_1");
 					put(grammarAccess.getTermAccess().getNameAssignment_0(), "rule__Term__NameAssignment_0");
 					put(grammarAccess.getTermAccess().getSubclassesAssignment_1_1_0(), "rule__Term__SubclassesAssignment_1_1_0");
+					put(grammarAccess.getTermAccess().getSubclassesAssignment_1_1_1_1(), "rule__Term__SubclassesAssignment_1_1_1_1");
 				}
 			};
 		}
