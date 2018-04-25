@@ -58,8 +58,8 @@ import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
  */
 public class BibtexResourceImpl extends ResourceImpl {
 	private static final Key KEY_ABSTRACT = new Key("abstract");
-	private static final Key KEY_FILE = new Key("file");
-	private static final Key KEY_CITES = new Key("cites");
+	private static final Key KEY_FILE = new Key("howpublished");
+	private static final Key KEY_CITES = new Key("citations");
 	private static final Key KEY_CLASSES = new Key("classes");
 
 	/**
@@ -87,10 +87,10 @@ public class BibtexResourceImpl extends ResourceImpl {
 		Map<Key, BibTeXEntry> entryMap = Collections.emptyMap();
 		try (Reader reader = new BufferedReader(new InputStreamReader(in))) {
 			BibTeXParser parser = new BibTeXParser();
-			BibTeXDatabase db = parser.parse(reader);
+			BibTeXDatabase db = parser.parseFully(reader);
 			entryMap = db.getEntries();
 		} catch (TokenMgrException | ParseException e) {
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		for (BibTeXEntry entry : entryMap.values()) {
 			Document document = BibtexFactory.eINSTANCE.createDocument();
@@ -116,7 +116,13 @@ public class BibtexResourceImpl extends ResourceImpl {
 			document.setDoi(safeGetField(entry, KEY_DOI));
 			document.setUrl(safeGetField(entry, KEY_URL));
 			document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
-			document.setFile(safeGetField(entry, KEY_FILE));
+			String url = safeGetField(entry, KEY_FILE);
+			if(url.contains("url{")) {
+				url = url.substring("\\url{".length());
+				url = url.substring(0,url.length()-1);
+			}
+			document.setFile(url);
+			document.setUrl(url);
 			document.setTaxonomy(parseClasses(safeGetField(entry, KEY_CLASSES)));
 
 			getContents().add(document);
@@ -218,7 +224,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 
 		for (int i = 0; i < dimensions.size(); ++i) {
 			Term term = dimensions.get(i);
-			if (i > 0 && term.eContainer() instanceof Term) {
+			if (i > 0 && term instanceof Term) {
 				result.append(", ");
 			}
 			result.append(term.getName());
