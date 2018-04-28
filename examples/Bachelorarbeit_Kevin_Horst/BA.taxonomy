@@ -2,24 +2,24 @@ Zielgruppe {
 	unspezifisch,
 	Privatsektor{
 	unspezifisch,
-	Eigentuemer
+	Eigentuemer,
 	Projektmanager,
-	AEC-Hintergrund
+	AEC-Hintergrund,
 	Facility Manager,
 	IT-Hintergrund
-}
+},
 	Oeffentlicher Sektor{
 	Regierung,
 	Studenten und Professoren,
-	Oeffentliche Auftraggeber,
-	}	
-}
+	Oeffentliche Auftraggeber
+	}
+},
 
 Veroeffentlichungsland {
 		Nordamerika{
 		Vereinigte Staaten von Amerika,	
 		Kanada
-		}
+		},
 		Europa{
 		Vereinigtes Koenigreich,
 		Slovenien,
@@ -31,7 +31,7 @@ Veroeffentlichungsland {
 		Rumaenien,
 		Finnland,
 		Italien
-		}
+		},
 		Asien{
 		Indien,
 		Suedkorea,
@@ -39,13 +39,13 @@ Veroeffentlichungsland {
 		Saudi-Arabien,
 		Indonesien,
 		Malaisia,
-		China,
-		}
+		China
+		},
 
 		Neuseeland,
-		Australien,
+		Australien
 
-	}
+	},
 Veroeffentlichungssort {
 	 	John Wiley and Sons Inc,
 	 	SYBEX Inc,
@@ -73,22 +73,22 @@ Veroeffentlichungssort {
 		International Conference on Research and Innovation in Information Systems,
 		International Conference on Compututational Intelligence and Security,
 		Winter Simulation Conference,
-		Frontiers in Education Conference 
+		Frontiers in Education Conference ,
 		International Conference on Intelligent Systems Design and Engineering Applications,
 		International Conference on Management Science and Engineering,
 		International Conference on Computer Supported Cooperative Work in Design,
 		Hawaii International Conference on System Science,
 		Digital Heritage International Congress,
 		International Conference on Smart Grid and Electrical Automation,
-		International Conference on Optimization of Electrical and Electronic Equipment and
+		International Conference on Optimization of Electrical and Electronic Equipment and,
 		International Aegean Conference on Electrical Machines and Power Electronics,
 		International Symposium on Mixed and Augmented Reality 
-	}
+	},
 Art{
 		Buch,
 		Konferenz,
-		Fachzeitschrift,
-	}
+		Fachzeitschrift
+	},
 Thema{
 		Ablaufplanung,
 		Informationsberechnung und Praesentation,
@@ -104,8 +104,8 @@ Thema{
 		Anwendung von BIM auf bereits existierende Gebaeude,
 		Echtzeitvisualisierung mit BIM und Augmented Reality,
 		Uebersicht und Anleitung zu BIM,	
-		Qualitative und finanzielle Vorteile von BIM,
-}
+		Qualitative und finanzielle Vorteile von BIM
+},
 	
 Anwendungsfeld{
 		unspezifisch,
@@ -114,18 +114,17 @@ Anwendungsfeld{
 		Finanzierung,
 		AEC{
 			Vorkonstruktion,
-			Konstruktion,
-		}
+			Konstruktion
+		},
 		Facility Management,
-		IT,
-		
-	}
+		IT	
+	},
 Ergebnis{
 	praktisch{
 		Implementation,
 		Framework,
 		Beispiel
-	}
+	},
 	theoretisch{
 		Ueberblick,
 		Arbeitsfluss,
@@ -133,11 +132,11 @@ Ergebnis{
 		Bericht
 		
 	}
-	}
+	},
 	
 Methodik{Interviews,
 		Entwurf,
-		Fallstudie
+		Fallstudie,
 		Argumentation,
 		Experiment,
 		Umfrage,
