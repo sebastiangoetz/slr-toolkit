@@ -71,7 +71,10 @@ public class ModelRegistry extends Observable {
 
 	public void setActiveDocument(Document document) {
 		if (activeDocument != document) {
-			setTaxonomyFile(getTaxonomyFileInProject(document.eResource()));
+			Optional<Model> currentModel = getActiveTaxonomy();
+			Model model =  taxonomyParser.parseTaxonomyFile(getTaxonomyFileInProject(document.eResource()));
+			if(!model.getResource().getURI().equals(currentModel.get().eResource().getURI()))
+				setActiveTaxonomy(model);
 			
 			activeDocument = document;
 			setChanged();
