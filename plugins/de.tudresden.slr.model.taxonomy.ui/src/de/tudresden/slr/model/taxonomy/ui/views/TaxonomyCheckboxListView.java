@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
@@ -64,7 +65,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		contentProvider = new TermContentProvider(viewer);
 		viewer = new ContainerCheckedTreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(contentProvider);
-		viewer.setLabelProvider(new DefaultEObjectLabelProvider());
+		DecoratingLabelProvider p = new DecoratingLabelProvider(new DefaultEObjectLabelProvider(), new TaxonomyLabelDecorator());
+		viewer.setLabelProvider(p);
 		viewer.addCheckStateListener(this);
 		viewer.setSorter(null);
 		if(m.isPresent()){
@@ -145,6 +147,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 			};
 			executeCommand(changeCommand);
 		}
+		viewer.update(event.getElement(), null);
 	}
 
 	private void setTermChanged(Document document, Term element, boolean add) {

@@ -88,18 +88,18 @@ public class ChartDataProvider {
 		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
 		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
 		for (Term searchTerm : subclasses) {
-			// TODO: just working for a single bibtex file at the moment			
-				for (Document d : getDocumentList(resources.get(0))) {
+			for(Resource r : resources) {			
+				for (Document d : getDocumentList(r)) {
 					for (Term t : getDimensionsForDocument(d)) {
 						boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
 						if (isTermFoundInPaperTaxonomy) {
 							String name = searchTerm.getName();
 							int count = countOfPapersPerSubTerm.containsKey(name) ? countOfPapersPerSubTerm.get(name) : 0;
 							countOfPapersPerSubTerm.put(name, count + 1);
-							
 						}
 					}
-				}			
+				}		
+			}
 		}
 		
 		for(Map.Entry<String, Boolean> entry : visibleMap.entrySet())
@@ -113,8 +113,9 @@ public class ChartDataProvider {
 		
 		SortedMap<String, Integer> countOfPapersPerSubTerm = new TreeMap<>();
 		ArrayList<Term> subclasses = new ArrayList<>(inputTerm.getSubclasses());
-		for (Term searchTerm : subclasses) {		
-				for (Document d : getDocumentList(resources.get(0))) {
+		for (Term searchTerm : subclasses) {	
+			for(Resource r : resources) {
+				for (Document d : getDocumentList(r)) {
 					for (Term t : getDimensionsForDocument(d)) {
 						boolean isTermFoundInPaperTaxonomy = isTermIncludedInTaxonomy(t, searchTerm);
 						if (isTermFoundInPaperTaxonomy) {
@@ -124,9 +125,10 @@ public class ChartDataProvider {
 						}
 					}
 				}
-				if(!countOfPapersPerSubTerm.containsKey(searchTerm.getName())) {
-					countOfPapersPerSubTerm.put(searchTerm.getName(), 0);
-				}
+			}
+			if(!countOfPapersPerSubTerm.containsKey(searchTerm.getName())) {
+				countOfPapersPerSubTerm.put(searchTerm.getName(), 0);
+			}
 		}
 		return countOfPapersPerSubTerm;
 	}
@@ -135,13 +137,15 @@ public class ChartDataProvider {
 		
 		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
 		boolean isTermFoundInPaperTaxonomy = false;
-		for (Document d : getDocumentList(resources.get(0))) {
-			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
-			if (isTermFoundInPaperTaxonomy) {
-				String year = d.getYear();
-				int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
-				citesPerYear.put(year, count + d.getCites());
-
+		for(Resource r : resources) {
+			for (Document d : getDocumentList(r)) {
+				isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
+				if (isTermFoundInPaperTaxonomy) {
+					String year = d.getYear();
+					int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
+					citesPerYear.put(year, count + d.getCites());
+	
+				}
 			}
 		}
 		return citesPerYear;
@@ -151,13 +155,15 @@ public class ChartDataProvider {
 		
 		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
 		boolean isTermFoundInPaperTaxonomy = false;
-		for (Document d : getDocumentList(resources.get(0))) {
-			isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
-			if (isTermFoundInPaperTaxonomy) {
-				String year = d.getYear();
-				int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
-				citesPerYear.put(year, count + d.getCites());
-
+		for(Resource r : resources) {
+			for (Document d : getDocumentList(r)) {
+				isTermFoundInPaperTaxonomy = SearchUtils.findTermInDocument(d, inputTerm) != null;
+				if (isTermFoundInPaperTaxonomy) {
+					String year = d.getYear();
+					int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
+					citesPerYear.put(year, count + d.getCites());
+	
+				}
 			}
 		}
 		
@@ -181,12 +187,14 @@ public class ChartDataProvider {
 				firstTerm, secondTerm);
 		
 		for (BubbleDataContainer b : inputList) {
-			for (Document d : getDocumentList(resources.get(0))) {
+			for(Resource r : resources) {
+			for (Document d : getDocumentList(r)) {
 				if ((SearchUtils.findTermInDocument(d, b.getxTerm()) != null)
 						&& (SearchUtils.findTermInDocument(d, b.getyTerm()) != null)) {
 					b.setBubbleSize(b.getBubbleSize() + 1);
 
 				}
+			}
 			}
 		}
 

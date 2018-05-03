@@ -99,9 +99,11 @@ public class SearchUtils {
 		Optional<AdapterFactoryEditingDomain> oDomain = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
 		if (oDomain.isPresent()) {
 			resources = new ArrayList<>(oDomain.get().getResourceSet().getResources());
-			for (EObject e : resources.get(0).getContents()) {
-				if (e instanceof Document) {
-					results.add((Document) e);
+			for(Resource r : resources) {
+				for (EObject e : r.getContents()) {
+					if (e instanceof Document) {
+						results.add((Document) e);
+					}
 				}
 			}
 		}
