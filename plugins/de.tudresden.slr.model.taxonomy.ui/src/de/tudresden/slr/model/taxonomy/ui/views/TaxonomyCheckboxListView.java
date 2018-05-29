@@ -13,13 +13,27 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.TreeViewerEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
@@ -47,6 +61,7 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
 	private ContainerCheckedTreeViewer viewer;
 	private TermContentProvider contentProvider;
+	private TextCellEditor cellEditor;
 
 	/**
 	 * The constructor.
@@ -69,6 +84,17 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		viewer.setLabelProvider(p);
 		viewer.addCheckStateListener(this);
 		viewer.setSorter(null);
+
+		cellEditor = new MyTextCellEditor(viewer.getTree());
+
+		TreeViewerEditor.create(viewer, new ColumnViewerEditorActivationStrategy(viewer){
+			protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+				return event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION;
+			}
+
+		}, TreeViewerEditor.DEFAULT);
+		enableEditing();
+
 		if(m.isPresent()){
 			viewer.setInput(m.get());
 		}
@@ -84,7 +110,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(viewer.getControl(), "de.tudresden.slr.model.taxonomy.ui.viewer");
 		getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener(this);
 	}
-
 
 	@Override
 	public void setFocus() {
@@ -210,4 +235,75 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 				.collect(Collectors.toList());
 		viewer.setCheckedElements(checkedTerms.toArray());
 	}
+
+	private void enableEditing () {
+		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.NONE);
+		column.setLabelProvider(new TreeLabelProvider());
+		column.setEditingSupport(new EditingSupport(viewer) {
+
+			@Override
+			protected void setValue(Object element, Object value) {
+				//TODO
+				viewer.update(element, null);
+			}
+
+			@Override
+			protected Object getValue(Object element) {
+				return element.toString();
+			}
+
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return cellEditor;
+			}
+
+			@Override
+			protected boolean canEdit(Object element) {
+				return true;
+			}
+		});
+
+		viewer.getControl().addControlListener(new ControlListener() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				column.getColumn().setWidth(((Tree)e.getSource()).getBounds().width);
+			}
+
+			@Override
+			public void controlMoved(ControlEvent e) {}
+
+		});
+
+	}
+
+	class TreeLabelProvider extends ColumnLabelProvider {
+		public String getText(Object element) {
+			return element.toString();
+		}
+	}
+
+	class MyTextCellEditor extends TextCellEditor {
+		int minHeight = 0;
+
+		public MyTextCellEditor(Tree tree) {
+			super(tree, SWT.BORDER);
+			Text txt = (Text)getControl();
+
+			Font fnt = txt.getFont();
+			FontData[] fontData = fnt.getFontData();
+			if (fontData != null && fontData.length > 0) {
+				minHeight = fontData[0].getHeight() + 10;
+			}
+		}
+
+		public LayoutData getLayoutData() {
+			LayoutData data = super.getLayoutData();
+			if (minHeight > 0) {
+				data.minimumHeight = minHeight;
+			}
+			return data;
+	    }
+	}
+
 }
