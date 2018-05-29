@@ -1,6 +1,7 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -279,6 +280,10 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 	class TreeLabelProvider extends ColumnLabelProvider {
 		public String getText(Object element) {
+			if(element instanceof Term) {
+				Map<Document, Term> termsInDocuments = SearchUtils.findDocumentsWithTerm((Term)element);
+				return ((Term) element).getName() + " ("+termsInDocuments.size()+")";
+			}
 			return element.toString();
 		}
 	}
