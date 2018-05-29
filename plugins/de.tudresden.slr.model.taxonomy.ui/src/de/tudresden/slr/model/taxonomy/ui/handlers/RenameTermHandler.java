@@ -22,10 +22,11 @@ public class RenameTermHandler extends AbstractHandler {
 		IStructuredSelection currentSelection = (IStructuredSelection) selection;
 		if (currentSelection.size() == 1) {
 			Term term = (Term) currentSelection.getFirstElement();	
-			InputDialog dialog = new InputDialog(null, 
+			InputDialog dialog = new InputDialog(
+					null,
 					"Rename Term", 
 					"Rename Term: " + term.getName() + " to:",
-					null,
+					term.getName(),
 					null);
 			dialog.setBlockOnOpen(true);
 			if (dialog.open() == InputDialog.OK) {
