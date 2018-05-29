@@ -53,6 +53,7 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.ui.manipulation.TermRenamer;
 import de.tudresden.slr.model.taxonomy.ui.util.TermContentProvider;
 import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
@@ -244,13 +245,18 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 			@Override
 			protected void setValue(Object element, Object value) {
-				//TODO
-				viewer.update(element, null);
+				if (!value.toString().equals("")) {
+					TermRenamer.rename((Term) element, value.toString());
+					viewer.refresh();
+				}
 			}
 
 			@Override
 			protected Object getValue(Object element) {
-				return element.toString();
+				if(element instanceof Term) {
+					return ((Term) element).getName();
+				}
+				return "";
 			}
 
 			@Override
