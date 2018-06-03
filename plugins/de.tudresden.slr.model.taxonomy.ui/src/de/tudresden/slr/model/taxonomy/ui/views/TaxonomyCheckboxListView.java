@@ -89,12 +89,17 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 		cellEditor = new MyTextCellEditor(viewer.getTree());
 
-		TreeViewerEditor.create(viewer, new ColumnViewerEditorActivationStrategy(viewer){
-			protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
-				return event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION;
-			}
-
-		}, TreeViewerEditor.DEFAULT);
+		TreeViewerEditor.create(
+				viewer,
+				new ColumnViewerEditorActivationStrategy(viewer){
+					protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+						System.out.println("event arrived ("+event.eventType+")");
+						return event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION ||
+								(event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.F2);
+					}
+				},
+				TreeViewerEditor.DEFAULT
+		);
 		enableEditing();
 
 		if(m.isPresent()){
@@ -238,6 +243,9 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		viewer.setCheckedElements(checkedTerms.toArray());
 	}
 
+	/*
+	 * enable in-place renaming of taxonomy terms
+	 */
 	private void enableEditing () {
 		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.NONE);
 		column.setLabelProvider(new TreeLabelProvider());
