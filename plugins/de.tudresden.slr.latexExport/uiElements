@@ -1,0 +1,10 @@
+workbench - collection of windows
+	
+window hat
+	menu bar
+	toolbar
+	shortcut bar
+	1...* perspective (visual container für views und content editors)
+		view
+		content editor
+	

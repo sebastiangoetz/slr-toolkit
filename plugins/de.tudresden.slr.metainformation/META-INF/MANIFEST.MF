@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Metainformation
+Bundle-SymbolicName: de.tudresden.slr.metainformation;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.tudresden.slr.metainformation.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.forms
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: de.tudresden.slr.metainformation
+Bundle-ActivationPolicy: lazy

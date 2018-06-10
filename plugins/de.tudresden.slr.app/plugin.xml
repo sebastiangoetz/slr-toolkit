@@ -76,6 +76,12 @@
                relationship="bottom"
                relative="org.eclipse.ui.editorss">
          </view>
+         <view
+               id="de.tudresden.slr.metainformation.view"
+               minimized="false"
+               relationship="stack"
+               relative="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension

@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
+import de.tudresden.slr.wizards.pages.WizardSetupMetainformationPage;
 import de.tudresden.slr.wizards.pages.WizardSetupPage;
 import de.tudresden.slr.wizards.pages.WizardSetupTaxonomyPage;
 import de.tudresden.slr.wizards.projects.SlrProjectSupport;
@@ -24,10 +25,13 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
 	private static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
 	private static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
+	private static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrmi";
 
+	
 	private WizardNewProjectCreationPage firstPage;
 	private WizardSetupBibtexPage secondPage;
 	private WizardSetupTaxonomyPage thirdPage;
+	private WizardSetupMetainformationPage fourthPage;
 
 	public NewSlrProjectWizard() {
 		setWindowTitle("New SLR Project");
@@ -37,6 +41,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
 		secondPage = new WizardSetupBibtexPage("Setup bibtex");
 		thirdPage = new WizardSetupTaxonomyPage("Setup taxonomy");
+		fourthPage = new WizardSetupMetainformationPage("Setup metainformation");
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 		addPage(firstPage);
 		addPage(secondPage);
 		addPage(thirdPage);
+		addPage(fourthPage);
 	}
 
 	@Override
@@ -61,6 +67,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 			project.open(null);
 			createResourceFile(project, secondPage, BIBTEX_RESOURCE);
 			createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
+			createResourceFile(project, fourthPage, METAINFORMATION_RESOURCE);
 			SlrProjectSupport.addNature(project);
 		} catch (CoreException e) {
 			e.printStackTrace();

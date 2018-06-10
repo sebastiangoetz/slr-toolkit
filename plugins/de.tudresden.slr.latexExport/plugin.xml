@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="LaTex Export"
+            id="de.tudresden.slr.latexExport.commands.category">
+      </category>
+      <command
+            name="Create LaTex Skeleton"
+            categoryId="de.tudresden.slr.latexExport.commands.category"
+            id="de.tudresden.slr.latexExport.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.tudresden.slr.latexExport.commands.sampleCommand"
+            class="de.tudresden.slr.latexexport.handlers.exportHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="LaTex Export"
+               id="de.tudresden.slr.latexExport.menus.latexExport">
+            <command
+                  commandId="de.tudresden.slr.latexExport.commands.sampleCommand"
+                  mnemonic="S"
+                  id="de.tudresden.slr.latexExport.menus.sampleCommand">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="de.tudresden.slr.latexexport.views.SampleView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+
+</plugin>

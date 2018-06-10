@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="de.tudresden.slr.metainformation.commands.category">
+      </category>
+      <command
+            name="Sample Command"
+            categoryId="de.tudresden.slr.metainformation.commands.category"
+            id="de.tudresden.slr.metainformation.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.tudresden.slr.metainformation.commands.sampleCommand"
+            class="de.tudresden.slr.metainformation.handlers.SampleHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.tudresden.slr.metainformation.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="de.tudresden.slr.metainformation.views.MetainformationView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.tudresden.slr.views"
+            name="SLR Toolkit">
+      </category>
+      <view
+            category="de.tudresden.slr.metainformation"
+            class="de.tudresden.slr.metainformation.views.MetainformationView"
+            icon="icons/sample.png"
+            id="de.tudresden.slr.metainformation.view"
+            inject="true"
+            name="Metainformation">
+      </view>
+   </extension>
+
+</plugin>
