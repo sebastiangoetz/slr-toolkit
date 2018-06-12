@@ -5,6 +5,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.*;
+
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -96,6 +99,8 @@ public class MetainformationView extends ViewPart {
 		// hookContextMenu();
 		// hookDoubleClickAction();
 		// contributeToActionBars();
+		
+		//SlrProjectMetainformation data = new SlrProjectMetainformation();
 
 		toolkit = new FormToolkit(parent.getDisplay());
 		form = toolkit.createScrolledForm(parent);
