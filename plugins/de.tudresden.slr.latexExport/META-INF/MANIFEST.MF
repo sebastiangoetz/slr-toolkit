@@ -2,15 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LatexExport
 Bundle-SymbolicName: de.tudresden.slr.latexExport;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.2.1.qualifier
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime;bundle-version="3.11.1",
+ org.eclipse.core.runtime,
  org.eclipse.emf.ecore,
  de.tudresden.slr.model.bibtex,
- de.tudresden.slr.model.taxonomy
+ de.tudresden.slr.model.taxonomy,
+ org.eclipse.jface.text
 Automatic-Module-Name: de.tudresden.slr.latexExport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: de.tudresden.slr.model.modelregistry,
  de.tudresden.slr.model.utils,
  org.eclipse.emf.edit.domain,
  org.eclipse.jface.text
+Export-Package: de.tudresden.slr.latexexport.handlers,
+ de.tudresden.slr.latexexport.logic,
+ de.tudresden.slr.latexexport.wizard
