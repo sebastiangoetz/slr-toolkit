@@ -96,6 +96,7 @@ public class BibtexEntryView extends ViewPart {
 	private Action refreshAction;
 	private Action markingAction;
 	private Action openingAction;
+	private Action mergingAction;
 	private ComboViewer combo;
 	private BibtexOpenListener openListener, selectionListener;
 
@@ -596,6 +597,8 @@ public class BibtexEntryView extends ViewPart {
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(openingAction);
 		manager.add(new Separator());
+		manager.add(mergingAction);
+		manager.add(new Separator());
 		manager.add(markingAction);
 	}
 
@@ -652,6 +655,21 @@ public class BibtexEntryView extends ViewPart {
 		};
 		openingAction.setText("Open");
 		openingAction.setToolTipText("Open document in an editor");
+		
+		mergingAction = new Action() {
+			@Override
+			public void run() {
+				TreeSelection select = (TreeSelection) viewer.getSelection();
+				// TODO: check if selection elements BibTeX files
+				if (select == null || !(select.getFirstElement() instanceof Document)) {
+					return;
+				}
+				// TODO: make mergeListener and use it here to open merge dialog
+				openListener.openEditor(select, true);
+			}
+		};
+		mergingAction.setText("Merge");
+		mergingAction.setToolTipText("Merge two (or more) BibTeX files");
 	}
 
 	private void hookActions() {
