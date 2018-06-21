@@ -63,5 +63,15 @@
             name="Metainformation">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="de.tudresden.slr.metainformation.editors.MetainformationEditor"
+            default="false"
+            extensions="slrproject"
+            id="de.tudresden.slr.metainformation.editor1"
+            name="Metainformation Editor">
+      </editor>
+   </extension>
 
 </plugin>

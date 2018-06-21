@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.latexexport.logic.DataProvider;
+import de.tudresden.slr.latexexport.data.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
 
 public class LatexExportWizardPageOne extends WizardPage {
@@ -41,6 +41,8 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
+
+		
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
@@ -52,6 +54,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 		//
 		filename = new Text(container, SWT.BORDER | SWT.SINGLE);
+		filename.setEditable(false);
 		filename.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button button = new Button(container, SWT.PUSH);
@@ -63,38 +66,35 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 				//if file exists, ask for permission to overwrite, if permission not given - repeat and ask for new path
 				boolean canContinueFileCheck = false;
+				FileDialog dialog = new FileDialog(container.getShell(), SWT.OPEN);
+				dialog.setFilterExtensions(new String[] { "*.tex" });
+				
 				while (!canContinueFileCheck) {
-					
-					FileDialog dialog = new FileDialog(container.getShell(), SWT.OPEN);
-					dialog.setFilterExtensions(new String[] { "*.tex" });
-
 					String path = dialog.open();
 					if (path != null) {
-						//ensure, that file ends with .tex
-						if(!path.endsWith(".tex")) {
+						// ensure, that file ends with .tex
+						if (!path.endsWith(".tex")) {
 							path = path + ".tex";
 						}
-						//TODO workflow
+						// TODO workflow
 						File file = new File(path);
 						if (file.exists()) {
 							MessageBox mb = new MessageBox(dialog.getParent(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
 							mb.setMessage(file + " already exists. Do you want to replace it?");
-							canContinueFileCheck = mb.open() == SWT.YES;
-							
-							if(mb.open() == SWT.YES) {
+
+							if (mb.open() == SWT.YES) {
 								canContinueFileCheck = true;
-							}
-							else {
+							} else {
 								continue;
 							}
-							
+
 						}
-						
+
 						filename.setText(path);
 						canContinueFileCheck = true;
 						setPageComplete(true);
-					}else {
-						//if no file is selected, exit loop
+					} else {
+						// if no file is selected, exit loop
 						canContinueFileCheck = true;
 					}
 				}
@@ -104,27 +104,6 @@ public class LatexExportWizardPageOne extends WizardPage {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
-		//
-
-//		text1 = new Text(container, SWT.BORDER | SWT.SINGLE);
-//		text1.setText("");
-//		text1.addKeyListener(new KeyListener() {
-//
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//			}
-//
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				if (!text1.getText().isEmpty()) {
-//					setPageComplete(true);
-//
-//				}
-//			}
-//
-//		});
-//		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-//		text1.setLayoutData(gd);
 
 		Label labelTitle = new Label(container, SWT.NONE);
 		labelTitle.setText("Include Title");

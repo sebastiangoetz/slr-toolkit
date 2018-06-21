@@ -1,23 +1,32 @@
-package de.tudresden.slr.latexexport.logic;
+package de.tudresden.slr.latexexport.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
+import org.eclipse.birt.chart.api.ChartEngine;
+import org.eclipse.birt.chart.device.IDeviceRenderer;
+import org.eclipse.birt.chart.exception.ChartException;
+import org.eclipse.birt.chart.factory.GeneratedChartState;
+import org.eclipse.birt.chart.factory.Generator;
+import org.eclipse.birt.chart.factory.RunTimeContext;
+import org.eclipse.birt.chart.model.Chart;
+import org.eclipse.birt.chart.model.attribute.Bounds;
+import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
+import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import com.ibm.icu.util.ULocale;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 
 public class DataProvider {
 //	private Optional<AdapterFactoryEditingDomain> domainOptional;
@@ -46,6 +55,10 @@ public class DataProvider {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return number of documents which are in the current SLR project
+	 */
 	public int getNumberOfDocuments() {
 		return documents.size();
 	}
@@ -124,6 +137,35 @@ public class DataProvider {
 		
 		return toReturn;
 	}
+	
+	public void generatePDFOutput(String output) {
+		PlatformConfig config = new PlatformConfig();
+		try {
+			SortedMap<String, Integer> myValues = new TreeMap<>();
+
+			myValues.put("asd", 123);
+			Chart myChart = new BarChartGenerator().createBar(myValues);
+			
+			IDeviceRenderer idr = null;
+			idr = ChartEngine.instance(config).getRenderer("dv.PDF");
+			RunTimeContext rtc = new RunTimeContext();
+			rtc.setULocale(ULocale.getDefault());
+
+			Generator gr = Generator.instance();
+			GeneratedChartState gcs = null;
+			Bounds bo = BoundsImpl.create(0, 0, 600, 400);
+			//TODO: returns null?
+			gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
+
+			idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, output);
+			//idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
+
+			gr.render(idr, gcs);
+		} catch (ChartException gex) {
+			gex.printStackTrace();
+		}
+	}
+	
 	
 
 }

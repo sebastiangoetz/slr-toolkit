@@ -1,12 +1,13 @@
 package de.tudresden.slr.metainformation.views;
 
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.*;
 
-import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation_NONXML;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
@@ -24,6 +25,9 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+
 import javax.inject.Inject;
 
 /**
@@ -99,8 +103,8 @@ public class MetainformationView extends ViewPart {
 		// hookContextMenu();
 		// hookDoubleClickAction();
 		// contributeToActionBars();
-		
-		//SlrProjectMetainformation data = new SlrProjectMetainformation();
+
+		// SlrProjectMetainformation data = new SlrProjectMetainformation();
 
 		toolkit = new FormToolkit(parent.getDisplay());
 		form = toolkit.createScrolledForm(parent);
@@ -117,6 +121,8 @@ public class MetainformationView extends ViewPart {
 		// }
 		// });
 
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+
 		layout.numColumns = 2;
 		GridData gd = new GridData();
 		gd.horizontalSpan = 2;
@@ -124,9 +130,11 @@ public class MetainformationView extends ViewPart {
 
 		Label label = new Label(form.getBody(), SWT.NULL);
 		label.setText("Title");
-		Text text = new Text(form.getBody(), SWT.BORDER | SWT.H_SCROLL );
+		Text text = new Text(form.getBody(), SWT.BORDER | SWT.H_SCROLL);
 		text.insert("Title of the paper");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		text.setBounds(100, 100, 100, 100);
 
 		Label label2 = new Label(form.getBody(), SWT.NULL);
 		label2.setText("Authors");
@@ -148,9 +156,18 @@ public class MetainformationView extends ViewPart {
 
 		Label label5 = new Label(form.getBody(), SWT.NULL);
 		label5.setText("Description of\nthe Taxonomy");
-		Text text5 = new Text(form.getBody(), SWT.BORDER  | SWT.H_SCROLL | SWT.V_SCROLL);
+		Text text5 = new Text(form.getBody(), SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		text5.insert("Description of the taxonomy of the project.");
 		text5.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+
+		text5.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent event) {
+				// Get the widget whose text was modified
+				Text text = (Text) event.widget;
+				System.out.println(text.getText());
+			}
+		});
 
 		// Button button = new Button(form.getBody(), SWT.CHECK);
 		// button.setText("An example of a checkbox in a form");

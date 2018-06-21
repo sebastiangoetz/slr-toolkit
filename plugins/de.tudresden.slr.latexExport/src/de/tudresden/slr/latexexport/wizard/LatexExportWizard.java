@@ -1,5 +1,9 @@
 package de.tudresden.slr.latexexport.wizard;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -8,7 +12,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import de.tudresden.slr.latexexport.logic.DataProvider;
+import de.tudresden.slr.latexexport.data.DataProvider;
+import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
 
 
 public class LatexExportWizard extends Wizard implements INewWizard {
@@ -40,14 +45,28 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     		popupError("No path was specified.");
     	}
     	else {
-    		performExport();
+    		try {
+				performExport();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	
         return true;
     }
 
-	private void performExport() {
+	private void performExport() throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println(dataprovider.getAllDimensionsAndMetainformation(true));
+		
+		PrintWriter writer = new PrintWriter(one.getFilename(), "UTF-8");
+		writer.print(LatexDocumentHelper.getExample1());
+		writer.print(dataprovider.getAllDimensionsAndMetainformation(true).size() + "\n");
+		writer.print(LatexDocumentHelper.getExample2());
+		writer.close();
 		
 	}
 
