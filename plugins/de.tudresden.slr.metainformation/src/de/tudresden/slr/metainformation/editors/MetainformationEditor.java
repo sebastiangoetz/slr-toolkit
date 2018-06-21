@@ -25,6 +25,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+import de.tudresden.slr.metainformation.util.MetainformationUtil;
 
 public class MetainformationEditor extends EditorPart implements IEditorPart {
 
@@ -35,7 +36,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		setDirty(false);
 		try {
 
 			File file = new File(activeFilePath.toOSString());
@@ -53,9 +53,11 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			toSave.setTitle(textboxTitle.getText());
 
 			jaxbMarshaller.marshal(toSave, file);
-			jaxbMarshaller.marshal(toSave, System.out);
+			
+			setDirty(false);
 		} catch (JAXBException e) {
 			e.printStackTrace();
+			//TODO error message
 		}
 	}
 
@@ -74,10 +76,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	public void initTextFields() {
 		try {
 			File file = new File(activeFilePath.toOSString());
-			JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
-
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			metainformation = (SlrProjectMetainformation) jaxbUnmarshaller.unmarshal(file);
+			metainformation = MetainformationUtil.getMetainformationFromFile(file);
 
 			textboxTitle.setText(metainformation.getTitle());
 			textboxAuthors.setText(metainformation.getAuthors());
