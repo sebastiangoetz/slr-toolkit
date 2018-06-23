@@ -4,21 +4,26 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class MetainformationActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "de.tudresden.slr.metainformation"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activator plugin;
+	private static MetainformationActivator plugin;
+	
+	private static SlrProjectMetainformation metainformation;
+	private static String currentFilepath = null;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public MetainformationActivator() {
 	}
 
 	/*
@@ -44,7 +49,7 @@ public class Activator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static MetainformationActivator getDefault() {
 		return plugin;
 	}
 
@@ -57,5 +62,21 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	public static SlrProjectMetainformation getMetainformation() {
+		return metainformation;
+	}
+
+	public static void setMetainformation(SlrProjectMetainformation metainformation) {
+		MetainformationActivator.metainformation = metainformation;
+	}
+
+	public static String getCurrentFilepath() {
+		return currentFilepath;
+	}
+
+	public static void setCurrentFilepath(String currentFilepath) {
+		MetainformationActivator.currentFilepath = currentFilepath;
 	}
 }

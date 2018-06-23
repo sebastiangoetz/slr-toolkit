@@ -12,11 +12,18 @@ Require-Bundle: org.eclipse.ui,
  de.tudresden.slr.ui.chart,
  org.eclipse.birt.core,
  org.eclipse.birt.chart.engine,
- com.ibm.icu
+ com.ibm.icu,
+ de.tudresden.slr.metainformation,
+ org.eclipse.emf.common,
+ org.eclipse.swt,
+ org.eclipse.ui.ide,
+ org.eclipse.jface,
+ org.eclipse.core.resources
 Automatic-Module-Name: de.tudresden.slr.latexExport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: de.tudresden.slr.model.modelregistry,
  de.tudresden.slr.model.utils,
+ org.eclipse.emf.common,
  org.eclipse.emf.edit.domain,
  org.eclipse.jface.text
 Export-Package: de.tudresden.slr.latexexport.data,

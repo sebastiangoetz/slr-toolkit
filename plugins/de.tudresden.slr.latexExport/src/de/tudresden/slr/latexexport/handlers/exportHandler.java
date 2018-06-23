@@ -41,11 +41,11 @@ public class exportHandler extends AbstractHandler {
 		DataProvider dataprovider = new DataProvider();
   		
   		
-  		for(Term t : dataprovider.getAllDimensionsOrdered()) {
-  			System.out.println(t.getName() + dataprovider.getNumberOfElementsInDimension(t));
-  		}
+//  		for(Term t : dataprovider.getAllDimensionsOrdered()) {
+//  			System.out.println(t.getName() + dataprovider.getNumberOfElementsInDimension(t));
+//  		}
 		
-		
+  		
 		Shell activeShell = HandlerUtil.getActiveShell(event);
 		IWizard wizard = new LatexExportWizard();
 		WizardDialog wizardDialog = new WizardDialog(activeShell, wizard);

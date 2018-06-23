@@ -13,6 +13,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.DataProvider;
+import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
 import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
 
 
@@ -47,6 +48,7 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     	else {
     		try {
 				performExport();
+				LatexExportChartGenerator.generatePDFOutput(one.getFilename(), dataprovider.getMainDimensions());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -59,21 +61,19 @@ public class LatexExportWizard extends Wizard implements INewWizard {
         return true;
     }
 
-	private void performExport() throws FileNotFoundException, UnsupportedEncodingException {
-		System.out.println(dataprovider.getAllDimensionsAndMetainformation(true));
-		
+	private void performExport() throws FileNotFoundException, UnsupportedEncodingException {		
 		PrintWriter writer = new PrintWriter(one.getFilename(), "UTF-8");
 		writer.print(LatexDocumentHelper.getExample1());
 		writer.print(dataprovider.getAllDimensionsAndMetainformation(true).size() + "\n");
 		writer.print(LatexDocumentHelper.getExample2());
 		writer.close();
 		
+		
 	}
+	
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void popupError(String message) {

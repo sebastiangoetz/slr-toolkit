@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Metainformation
 Bundle-SymbolicName: de.tudresden.slr.metainformation;singleton:=true
 Bundle-Version: 0.2.1.qualifier
-Bundle-Activator: de.tudresden.slr.metainformation.Activator
+Bundle-Activator: de.tudresden.slr.metainformation.MetainformationActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.tudresden.slr.metainformation
 Bundle-ActivationPolicy: lazy
+Export-Package: de.tudresden.slr.metainformation

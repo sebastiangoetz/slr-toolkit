@@ -3,35 +3,43 @@ package de.tudresden.slr.latexexport.wizard;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISelectionService;
+import org.eclipse.ui.internal.Workbench;
 
 import de.tudresden.slr.latexexport.data.DataProvider;
+import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.model.bibtex.Document;
 
 public class LatexExportWizardPageOne extends WizardPage {
-	private Text filename;
+	private Text textboxFilename, textboxMetainformation;
 	private Composite container;
-	
+
 	private boolean includeTitle;
 	private boolean includeAbstract;
 	private boolean includeAuthors;
 	private boolean includeKeywords;
 	private boolean includeStatistics;
 	private boolean includeTaxonomyDescription;
-	
 
 	public LatexExportWizardPageOne() {
 		super("");
@@ -41,8 +49,6 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-
-		
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
@@ -50,25 +56,43 @@ public class LatexExportWizardPageOne extends WizardPage {
 		setPageComplete(false);
 
 		layout.numColumns = 2;
-		//Label label1 = new Label(container, SWT.NONE);
+		// Label label1 = new Label(container, SWT.NONE);
 
-		//
-		filename = new Text(container, SWT.BORDER | SWT.SINGLE);
-		filename.setEditable(false);
-		filename.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Button buttonMetainformation = new Button(container, SWT.NONE);
+		buttonMetainformation.setText("Source of metainformation");
+		textboxMetainformation = new Text(container, SWT.BORDER | SWT.SINGLE);
+		textboxMetainformation.setEditable(false);
+		textboxMetainformation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		if (MetainformationActivator.getCurrentFilepath() != null) {
+			textboxMetainformation.setText(MetainformationActivator.getCurrentFilepath());
+		}
+//		textboxMetainformation.addSelectionListener(new SelectionListener() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				if(textboxMetainformation.getText() != null && !textboxMetainformation.getText().isEmpty() && )
+//			}
+//		});
+		
+		
+//		Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY);
+//		String[] items = new String[] { "", MetainformationActivator.getCurrentFilepath() };
+//		
+//		combo.setItems(items);
+
+		// textboxMetainformation = new Text(container, SWT.BORDER | SWT.SINGLE);
 
 		Button button = new Button(container, SWT.PUSH);
-		button.setText("Path");
+		button.setText("Target file for LaTex-Document");
 		button.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
 
-				//if file exists, ask for permission to overwrite, if permission not given - repeat and ask for new path
+				// if file exists, ask for permission to overwrite, if permission not given -
+				// repeat and ask for new path
 				boolean canContinueFileCheck = false;
 				FileDialog dialog = new FileDialog(container.getShell(), SWT.OPEN);
 				dialog.setFilterExtensions(new String[] { "*.tex" });
-				
+
 				while (!canContinueFileCheck) {
 					String path = dialog.open();
 					if (path != null) {
@@ -76,7 +100,6 @@ public class LatexExportWizardPageOne extends WizardPage {
 						if (!path.endsWith(".tex")) {
 							path = path + ".tex";
 						}
-						// TODO workflow
 						File file = new File(path);
 						if (file.exists()) {
 							MessageBox mb = new MessageBox(dialog.getParent(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
@@ -90,7 +113,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 						}
 
-						filename.setText(path);
+						textboxFilename.setText(path);
 						canContinueFileCheck = true;
 						setPageComplete(true);
 					} else {
@@ -100,10 +123,14 @@ public class LatexExportWizardPageOne extends WizardPage {
 				}
 
 			}
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
+		textboxFilename = new Text(container, SWT.BORDER | SWT.SINGLE);
+		textboxFilename.setEditable(false);
+		textboxFilename.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Label labelTitle = new Label(container, SWT.NONE);
 		labelTitle.setText("Include Title");
@@ -137,41 +164,57 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 		// required to avoid an error in the system
 		setControl(container);
-		
-		
-  		includeTitle = checkTitle.getSelection();
-  		includeAbstract = checkAbstract.getSelection();
-  		includeAuthors = checkAuthors.getSelection();
-  		includeKeywords = checkKeywords.getSelection();
-  		includeStatistics = checkStatistics.getSelection();
-  		includeTaxonomyDescription = checkTaxonomy.getSelection();
+
+		includeTitle = checkTitle.getSelection();
+		includeAbstract = checkAbstract.getSelection();
+		includeAuthors = checkAuthors.getSelection();
+		includeKeywords = checkKeywords.getSelection();
+		includeStatistics = checkStatistics.getSelection();
+		includeTaxonomyDescription = checkTaxonomy.getSelection();
 	}
-	
+
 	public boolean getIncludeTitle() {
 		return includeTitle;
 	}
-	
+
 	public boolean getIncludeAbstract() {
 		return includeAbstract;
 	}
-	
+
 	public boolean getIncludeAuthors() {
 		return includeAuthors;
 	}
-	
+
 	public boolean getIncludeKeywords() {
 		return includeKeywords;
 	}
-	
+
 	public boolean getIncludeStatistics() {
 		return includeStatistics;
 	}
-	
+
 	public boolean getIncludeTaxonomyDescription() {
 		return includeTaxonomyDescription;
 	}
 
 	public String getFilename() {
-		return filename.getText();
+		return textboxFilename.getText();
 	}
+
+//	public static IProject getCurrentProject() {
+//		ISelectionService selectionService = Workbench.getInstance().getActiveWorkbenchWindow().getSelectionService();
+//
+//		ISelection selection = selectionService.getSelection();
+//
+//		IProject project = null;
+//		if (selection instanceof IStructuredSelection) {
+//			Object element = ((IStructuredSelection) selection).getFirstElement();
+//
+//			if (element instanceof IResource) {
+//				project = ((IResource) element).getProject();
+//			}
+//		}
+//		return project;
+//
+//	}
 }

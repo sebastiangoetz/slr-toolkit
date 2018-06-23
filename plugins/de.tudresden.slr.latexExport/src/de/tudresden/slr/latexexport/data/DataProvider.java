@@ -27,6 +27,7 @@ import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
+import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 
 public class DataProvider {
 //	private Optional<AdapterFactoryEditingDomain> domainOptional;
@@ -138,33 +139,10 @@ public class DataProvider {
 		return toReturn;
 	}
 	
-	public void generatePDFOutput(String output) {
-		PlatformConfig config = new PlatformConfig();
-		try {
-			SortedMap<String, Integer> myValues = new TreeMap<>();
 
-			myValues.put("asd", 123);
-			Chart myChart = new BarChartGenerator().createBar(myValues);
-			
-			IDeviceRenderer idr = null;
-			idr = ChartEngine.instance(config).getRenderer("dv.PDF");
-			RunTimeContext rtc = new RunTimeContext();
-			rtc.setULocale(ULocale.getDefault());
+	
 
-			Generator gr = Generator.instance();
-			GeneratedChartState gcs = null;
-			Bounds bo = BoundsImpl.create(0, 0, 600, 400);
-			//TODO: returns null?
-			gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
-
-			idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, output);
-			//idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
-
-			gr.render(idr, gcs);
-		} catch (ChartException gex) {
-			gex.printStackTrace();
-		}
-	}
+	
 	
 	
 

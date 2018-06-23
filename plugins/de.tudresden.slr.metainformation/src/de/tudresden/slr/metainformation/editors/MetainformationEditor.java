@@ -24,6 +24,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
 
@@ -32,7 +33,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private SlrProjectMetainformation metainformation;
 	private boolean dirty = false;
 	private IPath activeFilePath;
-	private Text textboxTitle, textboxAuthors, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
+	private Text textboxFile, textboxTitle, textboxAuthors, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -77,12 +78,16 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		try {
 			File file = new File(activeFilePath.toOSString());
 			metainformation = MetainformationUtil.getMetainformationFromFile(file);
+			
+			MetainformationActivator.setMetainformation(metainformation);
+			MetainformationActivator.setCurrentFilepath(activeFilePath.toOSString());
 
 			textboxTitle.setText(metainformation.getTitle());
 			textboxAuthors.setText(metainformation.getAuthors());
 			textboxKeywords.setText(metainformation.getKeywords());
 			textboxDescriptionTaxonomy.setText(metainformation.getTaxonomyDescription());
 			textboxAbstract.setText(metainformation.getProjectAbstract());
+			textboxFile.setText(activeFilePath.toOSString());
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			// TODO error message
@@ -112,6 +117,11 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		GridLayout layout = new GridLayout(SWT.V_SCROLL, false);
 		layout.numColumns = 2;
 		parent.setLayout(layout);
+		
+		new Label(parent, SWT.NONE).setText("File");
+		textboxFile = new Text(parent, SWT.BORDER);
+		textboxFile.setEditable(false);
+		textboxFile.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
 		new Label(parent, SWT.NONE).setText("Title");
 		textboxTitle = new Text(parent, SWT.BORDER);
