@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.internal.Workbench;
 
-import de.tudresden.slr.latexexport.data.DataProvider;
 import de.tudresden.slr.metainformation.MetainformationActivator;
+import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
 
 public class LatexExportWizardPageOne extends WizardPage {
@@ -40,6 +40,9 @@ public class LatexExportWizardPageOne extends WizardPage {
 	private boolean includeKeywords;
 	private boolean includeStatistics;
 	private boolean includeTaxonomyDescription;
+	
+	private boolean selectedMetainformation = false;
+	private boolean selectedFile = false;
 
 	public LatexExportWizardPageOne() {
 		super("");
@@ -56,7 +59,6 @@ public class LatexExportWizardPageOne extends WizardPage {
 		setPageComplete(false);
 
 		layout.numColumns = 2;
-		// Label label1 = new Label(container, SWT.NONE);
 
 		Button buttonMetainformation = new Button(container, SWT.NONE);
 		buttonMetainformation.setText("Source of metainformation");
@@ -65,21 +67,20 @@ public class LatexExportWizardPageOne extends WizardPage {
 		textboxMetainformation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		if (MetainformationActivator.getCurrentFilepath() != null) {
 			textboxMetainformation.setText(MetainformationActivator.getCurrentFilepath());
+			selectedMetainformation = true;
 		}
-//		textboxMetainformation.addSelectionListener(new SelectionListener() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				if(textboxMetainformation.getText() != null && !textboxMetainformation.getText().isEmpty() && )
-//			}
-//		});
-		
-		
-//		Combo combo = new Combo(container, SWT.DROP_DOWN | SWT.READ_ONLY);
-//		String[] items = new String[] { "", MetainformationActivator.getCurrentFilepath() };
-//		
-//		combo.setItems(items);
+		textboxMetainformation.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(textboxMetainformation.getText() != null && !textboxMetainformation.getText().isEmpty() && selectedFile) {
+					setPageComplete(true);
+				}
+			}
 
-		// textboxMetainformation = new Text(container, SWT.BORDER | SWT.SINGLE);
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {				
+			}
+		});
 
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Target file for LaTex-Document");
@@ -115,7 +116,11 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 						textboxFilename.setText(path);
 						canContinueFileCheck = true;
-						setPageComplete(true);
+						
+						selectedFile = true;
+						if(selectedMetainformation) {
+							setPageComplete(true);
+						}
 					} else {
 						// if no file is selected, exit loop
 						canContinueFileCheck = true;

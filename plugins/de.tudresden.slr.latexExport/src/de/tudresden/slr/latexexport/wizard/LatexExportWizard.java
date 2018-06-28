@@ -3,6 +3,7 @@ package de.tudresden.slr.latexexport.wizard;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -12,9 +13,10 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import de.tudresden.slr.latexexport.data.DataProvider;
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
 import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
+import de.tudresden.slr.metainformation.util.DataProvider;
+import de.tudresden.slr.model.taxonomy.Term;
 
 
 public class LatexExportWizard extends Wizard implements INewWizard {
@@ -48,7 +50,9 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     	else {
     		try {
 				performExport();
-				LatexExportChartGenerator.generatePDFOutput(one.getFilename(), dataprovider.getMainDimensions());
+				Map<Term, String> pdfMap = LatexExportChartGenerator.generatePDFOutput(one.getFilename(), dataprovider.getMainDimensions());
+				
+				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -38,7 +38,7 @@ public class LatexExportChartGenerator {
 			filepath = folderCopy;
 			try {
 				
-				filepath = filepath+"/"+term.getName()+".svg";
+				filepath = filepath+File.separator+term.getName()+".svg";
 				SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
 				//TODO delete
 				//SortedMap<String, Integer> myValues = new TreeMap<String, Integer>();
@@ -73,4 +73,7 @@ public class LatexExportChartGenerator {
 		return fileName = fileName.substring(0, fileName.lastIndexOf(File.separator));
 	}
 	
+	public static String extractRelativePathFromFilepath(String filename) {
+		return filename.substring(filename.lastIndexOf((File.separator)));
+	}
 }

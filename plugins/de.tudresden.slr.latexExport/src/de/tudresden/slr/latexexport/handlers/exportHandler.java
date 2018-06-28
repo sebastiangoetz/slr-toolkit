@@ -1,7 +1,7 @@
 package de.tudresden.slr.latexexport.handlers;
 
-import de.tudresden.slr.latexexport.data.DataProvider;
 import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
+import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
