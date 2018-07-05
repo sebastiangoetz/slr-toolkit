@@ -5,21 +5,37 @@ import de.tudresden.slr.model.taxonomy.impl.TermImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SlrProjectMetainformation {
+	@XmlElement
 	private String title = "";
+	@XmlElement
 	private String authors = "";
+	@XmlElement
 	private String keywords = "";
+	@XmlElement
 	private String projectAbstract = "";
+	@XmlElement
 	private String taxonomyDescription = "";
+	@XmlElement
 	private Map<TermImpl, String> dimensionDescriptions = new HashMap<TermImpl, String>();
-	//private List<Author> authors = new ArrayList<Author>();
+	@XmlElement
+	private List<Author> authorsList = new ArrayList<Author>();
 
+
+	public List<Author> getAuthorsList() {
+		return authorsList;
+	}
+
+	public void setAuthorsList(List<Author> authorsList) {
+		this.authorsList = authorsList;
+	}
 
 	public SlrProjectMetainformation(String authors, String keywords, String projectAbstract,
 			String taxonomyDescription) {
@@ -38,7 +54,6 @@ public class SlrProjectMetainformation {
 		return title;
 	}
 
-	@XmlElement
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -47,7 +62,6 @@ public class SlrProjectMetainformation {
 		return authors;
 	}
 
-	@XmlElement
 	public void setAuthors(String authors) {
 		this.authors = authors;
 	}
@@ -56,7 +70,6 @@ public class SlrProjectMetainformation {
 		return keywords;
 	}
 
-	@XmlElement
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
@@ -65,7 +78,6 @@ public class SlrProjectMetainformation {
 		return projectAbstract;
 	}
 
-	@XmlElement
 	public void setProjectAbstract(String projectAbstract) {
 		this.projectAbstract = projectAbstract;
 	}
@@ -74,7 +86,6 @@ public class SlrProjectMetainformation {
 		return taxonomyDescription;
 	}
 
-	@XmlElement
 	public void setTaxonomyDescription(String taxonomyDescription) {
 		this.taxonomyDescription = taxonomyDescription;
 	}
@@ -87,7 +98,6 @@ public class SlrProjectMetainformation {
 		return dimensionDescriptions;
 	}
 
-	@XmlElement
 	public void setDimensionDescriptions(Map<TermImpl, String> dimensionDescriptions) {
 		this.dimensionDescriptions = dimensionDescriptions;
 	}

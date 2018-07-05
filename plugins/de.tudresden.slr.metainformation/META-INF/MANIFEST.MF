@@ -23,4 +23,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.tudresden.slr.metainformation
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.metainformation,
+ de.tudresden.slr.metainformation.data,
  de.tudresden.slr.metainformation.util

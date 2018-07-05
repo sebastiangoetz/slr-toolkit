@@ -38,50 +38,10 @@ public class exportHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		DataProvider dataprovider = new DataProvider();
-  		
-  		
-//  		for(Term t : dataprovider.getAllDimensionsOrdered()) {
-//  			System.out.println(t.getName() + dataprovider.getNumberOfElementsInDimension(t));
-//  		}
-		
-  		
 		Shell activeShell = HandlerUtil.getActiveShell(event);
 		IWizard wizard = new LatexExportWizard();
 		WizardDialog wizardDialog = new WizardDialog(activeShell, wizard);
 		wizardDialog.open();
-
-		
-		//FileDialog dialog = new FileDialog(HandlerUtil.getActiveShell(event), SWT.SAVE);
-		//dialog.setFilterExtensions(new String[] { "*.tex" });
-//		try {
-//			filename = dialog.open();
-//			if (filename != null ) {
-//				PrintWriter writer = new PrintWriter(filename, "UTF-8");
-//				writer.println("LatexDocument");
-//				writer.close();
-//				
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-
-		
-		//ZUGRIFF AUF Dokumente, Taxonomy
-//  		List<Document> documents = dataprovider.getDocuments();
-//  		for(Document d : documents) {
-//  			System.out.println(d.getTitle());
-//  		}
-//  		
-//  		Optional<Model> m = dataprovider.getTaxonomyRootNode();
-//  		System.out.println(m.get().getDimensions());
-//  		
-//  		for (Term t : m.get().getDimensions()) {
-//  			System.out.println(t.getName());
-//  		}
-//  		
-  		
-
 		return null;
 	}
 	

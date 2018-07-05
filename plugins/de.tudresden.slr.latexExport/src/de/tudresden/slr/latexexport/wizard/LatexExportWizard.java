@@ -15,6 +15,10 @@ import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
 import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
+import de.tudresden.slr.latexexport.latexdocuments.PlainArticle;
+import de.tudresden.slr.latexexport.latexdocuments.SlrLatexDocument;
+import de.tudresden.slr.metainformation.MetainformationActivator;
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 
@@ -22,7 +26,8 @@ import de.tudresden.slr.model.taxonomy.Term;
 public class LatexExportWizard extends Wizard implements INewWizard {
 
     protected LatexExportWizardPageOne one;
-    DataProvider dataprovider = new DataProvider();
+    private DataProvider dataprovider = new DataProvider();
+    SlrProjectMetainformation metainformation = MetainformationActivator.getMetainformation();
 
     public LatexExportWizard() {
         super();
@@ -50,9 +55,6 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     	else {
     		try {
 				performExport();
-				Map<Term, String> pdfMap = LatexExportChartGenerator.generatePDFOutput(one.getFilename(), dataprovider.getMainDimensions());
-				
-				
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,13 +68,8 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     }
 
 	private void performExport() throws FileNotFoundException, UnsupportedEncodingException {		
-		PrintWriter writer = new PrintWriter(one.getFilename(), "UTF-8");
-		writer.print(LatexDocumentHelper.getExample1());
-		writer.print(dataprovider.getAllDimensionsAndMetainformation(true).size() + "\n");
-		writer.print(LatexDocumentHelper.getExample2());
-		writer.close();
-		
-		
+		SlrLatexDocument document = new PlainArticle(metainformation, dataprovider, one.getFilename());
+		document.performExport();
 	}
 	
 

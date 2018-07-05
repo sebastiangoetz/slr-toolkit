@@ -16,8 +16,12 @@ import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.ui.dialogs.NewFolderDialog;
+
 import com.ibm.icu.util.ULocale;
 
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
@@ -25,29 +29,36 @@ import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 public class LatexExportChartGenerator {
 	
 	
-	public static Map<Term, String> generatePDFOutput(String folder, EList<Term> dimensions) {
+	/**
+	 * Generates barcharts (SVG) the main dimensions of an slr project
+	 * @param filepath Path of the LaTex-document which was generated
+	 * @param dataProvider DataProvider object which contains the dimensions
+	 * @return
+	 */
+	public static Map<Term, String> generatePDFOutput(String filepath, DataProvider dataProvider) {
+		EList<Term> dimensions = dataProvider.getMainDimensions();
 		ChartDataProvider chartData = new ChartDataProvider();
 		Map<Term, String> toReturn = new HashMap<Term, String>();
 		PlatformConfig config = new PlatformConfig();
-		folder = extractFolderFromFilepath(folder);
+		String folder = extractFolderFromFilepath(filepath);
 		
-		String folderCopy = folder;
-		String filepath;
+		String filepathNewSvg;
+		String imagesFolderName = "images";
+		new File(folder+File.separator+imagesFolderName).mkdir();
 		
 		for(Term term : dimensions) {
-			filepath = folderCopy;
+			filepathNewSvg = folder;
 			try {
-				
-				filepath = filepath+File.separator+term.getName()+".svg";
+				//TODO use SVG/PDF?
+				String newFileName = term.getName()+".JPG";
+				filepathNewSvg = filepathNewSvg+File.separator+imagesFolderName+File.separator+newFileName;
+				System.out.println(filepathNewSvg);
 				SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
-				//TODO delete
-				//SortedMap<String, Integer> myValues = new TreeMap<String, Integer>();
-				//myValues.put("asd", 1);
 				
 				Chart myChart = new BarChartGenerator().createBar(myValues);
 				
 				IDeviceRenderer idr = null;
-				idr = ChartEngine.instance(config).getRenderer("dv.SVG");
+				idr = ChartEngine.instance(config).getRenderer("dv.JPG");
 				RunTimeContext rtc = new RunTimeContext();
 				rtc.setULocale(ULocale.getDefault());
 
@@ -56,12 +67,13 @@ public class LatexExportChartGenerator {
 				Bounds bo = BoundsImpl.create(0, 0, 600, 400);
 				gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
 
-				idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepath);
+				idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepathNewSvg);
 				//idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
 
 				gr.render(idr, gcs);
 				
-				toReturn.put(term, filepath);
+				//TODO make path relative
+				toReturn.put(term, imagesFolderName+"/"+term.getName());
 			} catch (ChartException gex) {
 				gex.printStackTrace();
 			}

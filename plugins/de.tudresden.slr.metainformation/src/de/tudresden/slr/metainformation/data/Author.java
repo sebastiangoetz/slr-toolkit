@@ -40,5 +40,9 @@ public class Author {
 	public void setOrganisation(String organisation) {
 		this.organisation = organisation;
 	}
+	
+	public String toString() {
+		return "asdasd";
+	}
 
 }

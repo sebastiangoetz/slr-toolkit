@@ -1,6 +1,7 @@
 package de.tudresden.slr.latexexport.wizard;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -26,6 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.internal.Workbench;
 
+import de.tudresden.slr.latexexport.helpers.LatexDocumentTypes;
+import de.tudresden.slr.latexexport.helpers.LatexResourceLoader;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
@@ -34,13 +37,13 @@ public class LatexExportWizardPageOne extends WizardPage {
 	private Text textboxFilename, textboxMetainformation;
 	private Composite container;
 
-	private boolean includeTitle;
-	private boolean includeAbstract;
-	private boolean includeAuthors;
-	private boolean includeKeywords;
-	private boolean includeStatistics;
-	private boolean includeTaxonomyDescription;
-	
+//	private boolean includeTitle;
+//	private boolean includeAbstract;
+//	private boolean includeAuthors;
+//	private boolean includeKeywords;
+//	private boolean includeStatistics;
+//	private boolean includeTaxonomyDescription;
+
 	private boolean selectedMetainformation = false;
 	private boolean selectedFile = false;
 
@@ -55,7 +58,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 		container = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
-		
+
 		setPageComplete(false);
 
 		layout.numColumns = 2;
@@ -72,13 +75,14 @@ public class LatexExportWizardPageOne extends WizardPage {
 		textboxMetainformation.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(textboxMetainformation.getText() != null && !textboxMetainformation.getText().isEmpty() && selectedFile) {
+				if (textboxMetainformation.getText() != null && !textboxMetainformation.getText().isEmpty()
+						&& selectedFile) {
 					setPageComplete(true);
 				}
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {				
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
@@ -116,9 +120,9 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 						textboxFilename.setText(path);
 						canContinueFileCheck = true;
-						
+
 						selectedFile = true;
-						if(selectedMetainformation) {
+						if (selectedMetainformation) {
 							setPageComplete(true);
 						}
 					} else {
@@ -137,89 +141,98 @@ public class LatexExportWizardPageOne extends WizardPage {
 		textboxFilename.setEditable(false);
 		textboxFilename.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label labelTitle = new Label(container, SWT.NONE);
-		labelTitle.setText("Include Title");
-		Button checkTitle = new Button(container, SWT.CHECK);
-		checkTitle.setSelection(true);
-
-		Label labelAbstract = new Label(container, SWT.NONE);
-		labelAbstract.setText("Include Abstract");
-		Button checkAbstract = new Button(container, SWT.CHECK);
-		checkAbstract.setSelection(true);
-
-		Label labelAuthors = new Label(container, SWT.NONE);
-		labelAuthors.setText("Include Authors");
-		Button checkAuthors = new Button(container, SWT.CHECK);
-		checkAuthors.setSelection(true);
-
-		Label labelKeywords = new Label(container, SWT.NONE);
-		labelKeywords.setText("Inlude Keywords");
-		Button checkKeywords = new Button(container, SWT.CHECK);
-		checkKeywords.setSelection(true);
-
-		Label labelStatistics = new Label(container, SWT.NONE);
-		labelStatistics.setText("Include Statistics");
-		Button checkStatistics = new Button(container, SWT.CHECK);
-		checkStatistics.setSelection(true);
-
-		Label labelTaxonomy = new Label(container, SWT.NONE);
-		labelTaxonomy.setText("Include Taxonomy Description");
-		Button checkTaxonomy = new Button(container, SWT.CHECK);
-		checkTaxonomy.setSelection(true);
+		Label labelTemplate = new Label(container, SWT.NONE);
+		labelTemplate.setText("LaTex Template");
+		Combo comboDropDown = new Combo(container, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
+		for(String type : LatexDocumentTypes.documentTypes) {
+			comboDropDown.add(type);
+		}
+		comboDropDown.select(0);
+		
+//		Label labelTitle = new Label(container, SWT.NONE);
+//		labelTitle.setText("Include Title");
+//		Button checkTitle = new Button(container, SWT.CHECK);
+//		checkTitle.setSelection(true);
+//
+//		Label labelAbstract = new Label(container, SWT.NONE);
+//		labelAbstract.setText("Include Abstract");
+//		Button checkAbstract = new Button(container, SWT.CHECK);
+//		checkAbstract.setSelection(true);
+//
+//		Label labelAuthors = new Label(container, SWT.NONE);
+//		labelAuthors.setText("Include Authors");
+//		Button checkAuthors = new Button(container, SWT.CHECK);
+//		checkAuthors.setSelection(true);
+//
+//		Label labelKeywords = new Label(container, SWT.NONE);
+//		labelKeywords.setText("Inlude Keywords");
+//		Button checkKeywords = new Button(container, SWT.CHECK);
+//		checkKeywords.setSelection(true);
+//
+//		Label labelStatistics = new Label(container, SWT.NONE);
+//		labelStatistics.setText("Include Statistics");
+//		Button checkStatistics = new Button(container, SWT.CHECK);
+//		checkStatistics.setSelection(true);
+//
+//		Label labelTaxonomy = new Label(container, SWT.NONE);
+//		labelTaxonomy.setText("Include Taxonomy Description");
+//		Button checkTaxonomy = new Button(container, SWT.CHECK);
+//		checkTaxonomy.setSelection(true);
 
 		// required to avoid an error in the system
 		setControl(container);
 
-		includeTitle = checkTitle.getSelection();
-		includeAbstract = checkAbstract.getSelection();
-		includeAuthors = checkAuthors.getSelection();
-		includeKeywords = checkKeywords.getSelection();
-		includeStatistics = checkStatistics.getSelection();
-		includeTaxonomyDescription = checkTaxonomy.getSelection();
+//		includeTitle = checkTitle.getSelection();
+//		includeAbstract = checkAbstract.getSelection();
+//		includeAuthors = checkAuthors.getSelection();
+//		includeKeywords = checkKeywords.getSelection();
+//		includeStatistics = checkStatistics.getSelection();
+//		includeTaxonomyDescription = checkTaxonomy.getSelection();
 	}
 
-	public boolean getIncludeTitle() {
-		return includeTitle;
-	}
-
-	public boolean getIncludeAbstract() {
-		return includeAbstract;
-	}
-
-	public boolean getIncludeAuthors() {
-		return includeAuthors;
-	}
-
-	public boolean getIncludeKeywords() {
-		return includeKeywords;
-	}
-
-	public boolean getIncludeStatistics() {
-		return includeStatistics;
-	}
-
-	public boolean getIncludeTaxonomyDescription() {
-		return includeTaxonomyDescription;
-	}
+//	public boolean getIncludeTitle() {
+//		return includeTitle;
+//	}
+//
+//	public boolean getIncludeAbstract() {
+//		return includeAbstract;
+//	}
+//
+//	public boolean getIncludeAuthors() {
+//		return includeAuthors;
+//	}
+//
+//	public boolean getIncludeKeywords() {
+//		return includeKeywords;
+//	}
+//
+//	public boolean getIncludeStatistics() {
+//		return includeStatistics;
+//	}
+//
+//	public boolean getIncludeTaxonomyDescription() {
+//		return includeTaxonomyDescription;
+//	}
 
 	public String getFilename() {
 		return textboxFilename.getText();
 	}
 
-//	public static IProject getCurrentProject() {
-//		ISelectionService selectionService = Workbench.getInstance().getActiveWorkbenchWindow().getSelectionService();
-//
-//		ISelection selection = selectionService.getSelection();
-//
-//		IProject project = null;
-//		if (selection instanceof IStructuredSelection) {
-//			Object element = ((IStructuredSelection) selection).getFirstElement();
-//
-//			if (element instanceof IResource) {
-//				project = ((IResource) element).getProject();
-//			}
-//		}
-//		return project;
-//
-//	}
+	// public static IProject getCurrentProject() {
+	// ISelectionService selectionService =
+	// Workbench.getInstance().getActiveWorkbenchWindow().getSelectionService();
+	//
+	// ISelection selection = selectionService.getSelection();
+	//
+	// IProject project = null;
+	// if (selection instanceof IStructuredSelection) {
+	// Object element = ((IStructuredSelection) selection).getFirstElement();
+	//
+	// if (element instanceof IResource) {
+	// project = ((IResource) element).getProject();
+	// }
+	// }
+	// return project;
+	//
+	// }
 }
