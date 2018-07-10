@@ -15,8 +15,8 @@ import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
 import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
-import de.tudresden.slr.latexexport.latexdocuments.PlainArticle;
-import de.tudresden.slr.latexexport.latexdocuments.SlrLatexDocument;
+import de.tudresden.slr.latexexport.latexgeneration.PlainArticle;
+import de.tudresden.slr.latexexport.latexgeneration.SlrLatexDocument;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;

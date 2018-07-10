@@ -18,7 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swt,
  org.eclipse.ui.ide,
  org.eclipse.jface,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.apache.commons.lang,
+ org.eclipse.osgi
 Automatic-Module-Name: de.tudresden.slr.latexExport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: de.tudresden.slr.model.modelregistry,

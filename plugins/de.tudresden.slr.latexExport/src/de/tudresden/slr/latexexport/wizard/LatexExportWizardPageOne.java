@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.internal.Workbench;
 
-import de.tudresden.slr.latexexport.helpers.LatexDocumentTypes;
 import de.tudresden.slr.latexexport.helpers.LatexResourceLoader;
+import de.tudresden.slr.latexexport.latexgeneration.LatexDocumentTypes;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;

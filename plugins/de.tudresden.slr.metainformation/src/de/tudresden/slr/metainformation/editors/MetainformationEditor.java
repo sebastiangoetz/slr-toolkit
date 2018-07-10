@@ -200,6 +200,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 //		final org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(authorsGroup,
 //				SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
 //		list.setLayoutData(new RowData(1000, 50));
+//		list.add("asdasdasd,asdasda, asdasd");
 //		//end authors group
 		
 		Group descriptionGroup = new Group(parent, SWT.NONE);
@@ -234,7 +235,10 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		for(Term t : dimensions) {
 			comboDropDown.add(t.getName());
 		}
-
+		GridData comboLayoutData = new GridData();
+		comboLayoutData.widthHint = 100;
+		comboDropDown.setLayoutData(comboLayoutData);
+		
 		Text termAnnotation = new Text(annotateTaxonomyGroup, SWT.SINGLE | SWT.BORDER);
 		termAnnotation.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		Button refreshTaxonomy = new Button(annotateTaxonomyGroup, 0);

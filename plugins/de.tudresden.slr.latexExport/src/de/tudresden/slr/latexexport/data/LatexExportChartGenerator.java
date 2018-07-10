@@ -33,7 +33,7 @@ public class LatexExportChartGenerator {
 	 * Generates barcharts (SVG) the main dimensions of an slr project
 	 * @param filepath Path of the LaTex-document which was generated
 	 * @param dataProvider DataProvider object which contains the dimensions
-	 * @return
+	 * @return Mapping from Term to String which maps a Term to a relative path to an image which is to be used in a LaTex document
 	 */
 	public static Map<Term, String> generatePDFOutput(String filepath, DataProvider dataProvider) {
 		EList<Term> dimensions = dataProvider.getMainDimensions();
@@ -52,7 +52,6 @@ public class LatexExportChartGenerator {
 				//TODO use SVG/PDF?
 				String newFileName = term.getName()+".JPG";
 				filepathNewSvg = filepathNewSvg+File.separator+imagesFolderName+File.separator+newFileName;
-				System.out.println(filepathNewSvg);
 				SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
 				
 				Chart myChart = new BarChartGenerator().createBar(myValues);
@@ -72,7 +71,7 @@ public class LatexExportChartGenerator {
 
 				gr.render(idr, gcs);
 				
-				//TODO make path relative
+				// Separator "/" for LaTex syntag
 				toReturn.put(term, imagesFolderName+"/"+term.getName());
 			} catch (ChartException gex) {
 				gex.printStackTrace();
