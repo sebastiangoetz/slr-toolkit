@@ -26,7 +26,7 @@ public class SlrProjectMetainformation {
 	@XmlElement
 	private Map<TermImpl, String> dimensionDescriptions = new HashMap<TermImpl, String>();
 	@XmlElement
-	private List<Author> authorsList = new ArrayList<Author>();
+	private List<Author> authorsList;
 
 
 	public List<Author> getAuthorsList() {

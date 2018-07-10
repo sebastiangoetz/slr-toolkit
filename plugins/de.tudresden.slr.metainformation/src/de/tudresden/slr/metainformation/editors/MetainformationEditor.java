@@ -12,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,6 +38,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import de.tudresden.slr.metainformation.MetainformationActivator;
@@ -54,6 +56,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private boolean dirty = false;
 	private IPath activeFilePath;
 	private Text textboxFile, textboxTitle, textboxAuthors, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
+	private org.eclipse.swt.widgets.List listAuthorsList;
 	private DataProvider dataProvider;
 	
 	@Override
@@ -73,6 +76,14 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			toSave.setProjectAbstract(textboxAbstract.getText());
 			toSave.setTaxonomyDescription(textboxDescriptionTaxonomy.getText());
 			toSave.setTitle(textboxTitle.getText());
+			
+			if(metainformation.getAuthorsList() == null || metainformation.getAuthorsList().isEmpty()) {
+				Author a = new Author("John", "Doe", "University of XYZ");
+				List<Author> l = new ArrayList<Author>();
+				l.add(a);
+				metainformation.setAuthorsList(l);
+			}
+			toSave.setAuthorsList(metainformation.getAuthorsList());
 			
 			//TODO save dimension infos
 
@@ -105,7 +116,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		try {
 			File file = new File(activeFilePath.toOSString());
 			metainformation = MetainformationUtil.getMetainformationFromFile(file);
-			
+						
 			MetainformationActivator.setMetainformation(metainformation);
 			MetainformationActivator.setCurrentFilepath(activeFilePath.toOSString());
 
@@ -186,22 +197,27 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		textboxKeywords = new Text(keyFactsGroup, SWT.BORDER);
 		textboxKeywords.setLayoutData(gridSmallTextboxes);
 		
-//		//begin authorsgroup
-//		Group authorsGroup = new Group(keyFactsGroup, SWT.NONE);
-//		authorsGroup.setText("Authors");
-//		authorsGroup.setLayout(new RowLayout());
-//		GridData gridDataAuthorsGroup = new GridData(GridData.FILL, GridData.CENTER, true, false);
-//		gridDataAuthorsGroup.horizontalSpan = 2;
-//		authorsGroup.setLayoutData(gridDataAuthorsGroup);
-//		
-//		new Button(authorsGroup, 0).setText("Add");
-//		new Button(authorsGroup, 0).setText("Edit");
-//		new Button(authorsGroup, 0).setText("Delete");
-//		final org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(authorsGroup,
-//				SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-//		list.setLayoutData(new RowData(1000, 50));
-//		list.add("asdasdasd,asdasda, asdasd");
-//		//end authors group
+		//begin authorsgroup
+		Group authorsGroup = new Group(keyFactsGroup, SWT.NONE);
+		authorsGroup.setText("Authors");
+		authorsGroup.setLayout(new RowLayout());
+		GridData gridDataAuthorsGroup = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		gridDataAuthorsGroup.horizontalSpan = 2;
+		authorsGroup.setLayoutData(gridDataAuthorsGroup);
+		
+		Button buttonAddAuthor = new Button(authorsGroup, 0);
+		buttonAddAuthor.setText("Add");
+		
+		Button buttonEditAuthor = new Button(authorsGroup, 0);
+		buttonEditAuthor.setText("Edit");
+		
+		Button buttonDeleteAuthor = new Button(authorsGroup, 0);
+		buttonDeleteAuthor.setText("Delete");
+		
+		//List is initialized later on, because initialization of form fields needs to be done first
+		listAuthorsList = new org.eclipse.swt.widgets.List(authorsGroup, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+		listAuthorsList.setLayoutData(new RowData(1000, 50));
+		//end authors group
 		
 		Group descriptionGroup = new Group(parent, SWT.NONE);
 		descriptionGroup.setText("Description");
@@ -246,6 +262,42 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		
 		initTextFields();
 		
+		//initialization of list of authors
+		redrawAuthorsList();
+		
+		//Listener for author group buttons
+		buttonAddAuthor.addListener(SWT.Selection, new Listener() {
+	        public void handleEvent(Event e) {
+				switch (e.type) {
+				case SWT.Selection: {
+		        	NewAuthorDialog dialog = new NewAuthorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+		        	dialog.create();
+					if (dialog.open() == Window.OK) {
+						Author newAuthor = new Author(dialog.getName(), dialog.getMail(), dialog.getAffiliation());
+						metainformation.getAuthorsList().add(newAuthor);
+						redrawAuthorsList();
+						setDirty(true);
+					}
+				}
+					break;
+				}
+			}
+	      });
+		
+		buttonDeleteAuthor.addListener(SWT.Selection, new Listener() {
+	        public void handleEvent(Event e) {
+				switch (e.type) {
+				case SWT.Selection: {
+					metainformation.getAuthorsList().remove(listAuthorsList.getSelectionIndex());
+					setDirty(true);
+					redrawAuthorsList();
+				}
+					break;
+				}
+			}
+	      });
+
+
 		ModifyListener modifiedDirty = new ModifyListener() {
 			public void modifyText(ModifyEvent event) {
 				setDirty(true);
@@ -253,11 +305,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		};
 
 		textboxTitle.addModifyListener(modifiedDirty);
-//		textboxTitle.addModifyListener(new ModifyListener() {
-//			public void modifyText(ModifyEvent event) {
-//				setDirty(true);
-//			}
-//		});
 		textboxAuthors.addModifyListener(modifiedDirty);
 		textboxKeywords.addModifyListener(modifiedDirty);
 		textboxAbstract.addModifyListener(modifiedDirty);
@@ -287,6 +334,15 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 
 	}
 
+	protected void redrawAuthorsList() {
+		if(listAuthorsList.getItems().length != 0) {
+			listAuthorsList.removeAll();
+		}
+		for (Author a : metainformation.getAuthorsList()) {
+			listAuthorsList.add(a.toString());
+		}
+	}
+
 	@Override
 	public void setFocus() {
 	}
@@ -305,7 +361,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		authorList.add(a);
 		authorList.add(b);
 		m.setAuthorsList(authorList);
-
 
 		try {
 

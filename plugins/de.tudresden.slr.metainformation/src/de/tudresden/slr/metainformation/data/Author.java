@@ -42,7 +42,9 @@ public class Author {
 	}
 	
 	public String toString() {
-		return "asdasd";
+		String mailString = email.equals("") ? "" : ","+email;
+		String organisationString = organisation.equals("") ? "" : ","+organisation;
+		return name + mailString + organisationString;
 	}
 
 }
