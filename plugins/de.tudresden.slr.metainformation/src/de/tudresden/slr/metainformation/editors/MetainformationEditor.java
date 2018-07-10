@@ -55,7 +55,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private SlrProjectMetainformation metainformation;
 	private boolean dirty = false;
 	private IPath activeFilePath;
-	private Text textboxFile, textboxTitle, textboxAuthors, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
+	private Text textboxFile, textboxTitle, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
 	private org.eclipse.swt.widgets.List listAuthorsList;
 	private DataProvider dataProvider;
 	
@@ -71,12 +71,12 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			SlrProjectMetainformation toSave = new SlrProjectMetainformation();
-			toSave.setAuthors(textboxAuthors.getText());
 			toSave.setKeywords(textboxKeywords.getText());
 			toSave.setProjectAbstract(textboxAbstract.getText());
 			toSave.setTaxonomyDescription(textboxDescriptionTaxonomy.getText());
 			toSave.setTitle(textboxTitle.getText());
 			
+			//authors list must not be empty or null, insert dummy when it is null/empty
 			if(metainformation.getAuthorsList() == null || metainformation.getAuthorsList().isEmpty()) {
 				Author a = new Author("John", "Doe", "University of XYZ");
 				List<Author> l = new ArrayList<Author>();
@@ -85,8 +85,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			}
 			toSave.setAuthorsList(metainformation.getAuthorsList());
 			
-			//TODO save dimension infos
-
 			jaxbMarshaller.marshal(toSave, file);
 			
 			setDirty(false);
@@ -121,7 +119,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			MetainformationActivator.setCurrentFilepath(activeFilePath.toOSString());
 
 			textboxTitle.setText(metainformation.getTitle());
-			textboxAuthors.setText(metainformation.getAuthors());
 			textboxKeywords.setText(metainformation.getKeywords());
 			textboxDescriptionTaxonomy.setText(metainformation.getTaxonomyDescription());
 			textboxAbstract.setText(metainformation.getProjectAbstract());
@@ -188,10 +185,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		new Label(keyFactsGroup, SWT.NONE).setText("Title");
 		textboxTitle = new Text(keyFactsGroup, SWT.BORDER);
 		textboxTitle.setLayoutData(gridSmallTextboxes);
-
-		new Label(keyFactsGroup, SWT.NONE).setText("Authors");
-		textboxAuthors = new Text(keyFactsGroup, SWT.BORDER);
-		textboxAuthors.setLayoutData(gridSmallTextboxes);
 
 		new Label(keyFactsGroup, SWT.NONE).setText("Keywords");
 		textboxKeywords = new Text(keyFactsGroup, SWT.BORDER);
@@ -270,7 +263,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	        public void handleEvent(Event e) {
 				switch (e.type) {
 				case SWT.Selection: {
-		        	NewAuthorDialog dialog = new NewAuthorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+		        	NewAndEditAuthorDialog dialog = new NewAndEditAuthorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
 		        	dialog.create();
 					if (dialog.open() == Window.OK) {
 						Author newAuthor = new Author(dialog.getName(), dialog.getMail(), dialog.getAffiliation());
@@ -284,10 +277,35 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			}
 	      });
 		
+		buttonEditAuthor.addListener(SWT.Selection, new Listener() {
+	        public void handleEvent(Event e) {
+				switch (e.type) {
+				case SWT.Selection: {
+		        	int editIndex = listAuthorsList.getSelectionIndex();
+					if(editIndex < 0) break;
+					
+		        	NewAndEditAuthorDialog dialog = new NewAndEditAuthorDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+		        	Author authorToEdit = metainformation.getAuthorsList().get(editIndex);
+		        	dialog.initEditAuthor(authorToEdit);
+		        	dialog.create();
+		        	
+					if (dialog.open() == Window.OK) {
+						Author editedAuthor = new Author(dialog.getName(), dialog.getMail(), dialog.getAffiliation());
+						metainformation.getAuthorsList().set(editIndex, editedAuthor);
+						redrawAuthorsList();
+						setDirty(true);
+					}
+				}
+					break;
+				}
+			}
+	      });
+		
 		buttonDeleteAuthor.addListener(SWT.Selection, new Listener() {
 	        public void handleEvent(Event e) {
 				switch (e.type) {
 				case SWT.Selection: {
+					if(listAuthorsList.getSelectionIndex() < 0) break;
 					metainformation.getAuthorsList().remove(listAuthorsList.getSelectionIndex());
 					setDirty(true);
 					redrawAuthorsList();
@@ -305,7 +323,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		};
 
 		textboxTitle.addModifyListener(modifiedDirty);
-		textboxAuthors.addModifyListener(modifiedDirty);
 		textboxKeywords.addModifyListener(modifiedDirty);
 		textboxAbstract.addModifyListener(modifiedDirty);
 		textboxDescriptionTaxonomy.addModifyListener(modifiedDirty);
@@ -350,7 +367,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	public void testSave(String path) {
 		SlrProjectMetainformation m = new SlrProjectMetainformation();
 		m.setTitle("title");
-		m.setAuthors("authors");
 		m.setKeywords("keywords");
 		m.setProjectAbstract("abstract");
 		m.setTaxonomyDescription("descr");

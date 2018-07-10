@@ -106,7 +106,7 @@ public class PlainArticle extends SlrLatexDocument {
 		
 		Map<String, String> valuesMap = new HashMap<String, String>();
 		valuesMap.put("SLR_TITLE", metainformation.getTitle());
-		valuesMap.put("SLR_AUTHORS", metainformation.getAuthors());
+		//valuesMap.put("SLR_AUTHORS", metainformation.getAuthors());
 		valuesMap.put("SLR_ABSTRACT", metainformation.getProjectAbstract());
 		valuesMap.put("SLR_KEYWORDS", metainformation.getKeywords());
 		//valuesMap.put("SLR_STATISTICS", );

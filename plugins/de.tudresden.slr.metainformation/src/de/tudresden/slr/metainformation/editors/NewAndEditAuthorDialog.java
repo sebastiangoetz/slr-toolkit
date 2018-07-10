@@ -1,5 +1,7 @@
 package de.tudresden.slr.metainformation.editors;
 
+import java.util.Optional;
+
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -11,22 +13,29 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class NewAuthorDialog extends TitleAreaDialog {
+import de.tudresden.slr.metainformation.data.Author;
+
+public class NewAndEditAuthorDialog extends TitleAreaDialog {
 
     private Text textboxName;
     private Text textboxEmail;
     private Text textboxAffiliation;
 
 
-    private String name;
-    private String mail;
-    private String affiliation;
+    private String name = "";
+    private String mail = "";
+    private String affiliation = "";
+    
+    private Optional<Author> optionalEditAuthor = Optional.empty();
 
-
-    public NewAuthorDialog(Shell parentShell) {
+    public NewAndEditAuthorDialog(Shell parentShell) {
         super(parentShell);
     }
-
+    
+    public void initEditAuthor(Author author) {
+    	optionalEditAuthor = Optional.of(author);
+    }
+    
     @Override
     public void create() {
         super.create();
@@ -36,6 +45,13 @@ public class NewAuthorDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(Composite parent) {
+    	if(optionalEditAuthor.isPresent()) {
+    		Author authorToEdit = optionalEditAuthor.get();
+    		this.name = authorToEdit.getName();
+    		this.mail = authorToEdit.getEmail();
+    		this.affiliation = authorToEdit.getOrganisation();
+    	}
+    	
         Composite control = (Composite) super.createDialogArea(parent);
         
         Composite container = new Composite(control, SWT.NONE);
@@ -50,16 +66,19 @@ public class NewAuthorDialog extends TitleAreaDialog {
         Label labelName = new Label(container, SWT.NONE);
         labelName.setText("Name");
         textboxName = new Text(container, SWT.BORDER);
+        textboxName.setText(name);
         textboxName.setLayoutData(gridData);
         
         Label labelMail = new Label(container, SWT.NONE);
         labelMail.setText("Email");
         textboxEmail = new Text(container, SWT.BORDER);
+        textboxEmail.setText(mail);
         textboxEmail.setLayoutData(gridData);
         
         Label labelAffiliation = new Label(container, SWT.NONE);
         labelAffiliation.setText("Affiliation");
         textboxAffiliation = new Text(container, SWT.BORDER);
+        textboxAffiliation.setText(affiliation);
         textboxAffiliation.setLayoutData(gridData);
 
         return control;

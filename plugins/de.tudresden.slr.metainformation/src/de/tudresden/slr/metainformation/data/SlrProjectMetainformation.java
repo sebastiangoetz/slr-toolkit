@@ -16,15 +16,11 @@ public class SlrProjectMetainformation {
 	@XmlElement
 	private String title = "";
 	@XmlElement
-	private String authors = "";
-	@XmlElement
 	private String keywords = "";
 	@XmlElement
 	private String projectAbstract = "";
 	@XmlElement
 	private String taxonomyDescription = "";
-	@XmlElement
-	private Map<TermImpl, String> dimensionDescriptions = new HashMap<TermImpl, String>();
 	@XmlElement
 	private List<Author> authorsList;
 
@@ -37,17 +33,16 @@ public class SlrProjectMetainformation {
 		this.authorsList = authorsList;
 	}
 
-	public SlrProjectMetainformation(String authors, String keywords, String projectAbstract,
-			String taxonomyDescription) {
+	public SlrProjectMetainformation(String keywords, String projectAbstract,
+			String taxonomyDescription, List<Author> authorsList) {
 		super();
-		this.authors = authors;
 		this.keywords = keywords;
 		this.projectAbstract = projectAbstract;
 		this.taxonomyDescription = taxonomyDescription;
+		this.authorsList = authorsList;
 	}
 
 	public SlrProjectMetainformation() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String getTitle() {
@@ -56,14 +51,6 @@ public class SlrProjectMetainformation {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getAuthors() {
-		return authors;
-	}
-
-	public void setAuthors(String authors) {
-		this.authors = authors;
 	}
 
 	public String getKeywords() {
@@ -91,19 +78,7 @@ public class SlrProjectMetainformation {
 	}
 
 	public String toString() {
-		return this.authors + "; " +  this.keywords + "; " + this.projectAbstract + "; " + this.taxonomyDescription;
-	}
-
-	public Map<TermImpl, String> getDimensionDescriptions() {
-		return dimensionDescriptions;
-	}
-
-	public void setDimensionDescriptions(Map<TermImpl, String> dimensionDescriptions) {
-		this.dimensionDescriptions = dimensionDescriptions;
-	}
-	
-	public void addDimensionDescription(TermImpl term, String description) {
-		dimensionDescriptions.put(term, description);
+		return this.authorsList + "; " +  this.keywords + "; " + this.projectAbstract + "; " + this.taxonomyDescription;
 	}
 
 }
