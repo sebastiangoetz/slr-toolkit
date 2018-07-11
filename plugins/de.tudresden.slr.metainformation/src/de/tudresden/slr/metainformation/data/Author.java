@@ -42,8 +42,8 @@ public class Author {
 	}
 	
 	public String toString() {
-		String mailString = email.equals("") ? "" : ","+email;
-		String organisationString = organisation.equals("") ? "" : ","+organisation;
+		String mailString = email.equals("") ? "" : "; "+email;
+		String organisationString = organisation.equals("") ? "" : "; "+organisation;
 		return name + mailString + organisationString;
 	}
 

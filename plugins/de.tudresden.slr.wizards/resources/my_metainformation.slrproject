@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<slrProjectMetainformation>
+    <title>Title of the project</title>
+    <keywords>keyword1, keyword2, keyword 3</keywords>
+    <projectAbstract>Abstract for the exported LaTex document.</projectAbstract>
+    <taxonomyDescription>Here comes a brief description of the project's taxonomy.</taxonomyDescription>
+    <authorsList>
+        <email>johnd@mail.tld</email>
+        <name>John Doe</name>
+        <organisation>University of XYZ</organisation>
+    </authorsList>
+</slrProjectMetainformation>

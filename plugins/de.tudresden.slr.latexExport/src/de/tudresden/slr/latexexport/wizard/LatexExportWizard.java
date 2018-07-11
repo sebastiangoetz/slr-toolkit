@@ -1,8 +1,10 @@
 package de.tudresden.slr.latexexport.wizard;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -14,8 +16,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
-import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
-import de.tudresden.slr.latexexport.latexgeneration.PlainArticle;
+import de.tudresden.slr.latexexport.documentclasses.PlainArticle;
+import de.tudresden.slr.latexexport.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.latexexport.latexgeneration.SlrLatexDocument;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
@@ -61,14 +63,21 @@ public class LatexExportWizard extends Wizard implements INewWizard {
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
     	}
     	
         return true;
     }
 
-	private void performExport() throws FileNotFoundException, UnsupportedEncodingException {		
-		SlrLatexDocument document = new PlainArticle(metainformation, dataprovider, one.getFilename());
+	private void performExport() throws IOException {
+		SlrLatexTemplate template = new PlainArticle();
+		SlrLatexDocument document = new SlrLatexDocument(metainformation, dataprovider, one.getFilename(), template);
 		document.performExport();
 	}
 	

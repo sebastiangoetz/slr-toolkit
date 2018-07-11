@@ -25,7 +25,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
 	private static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
 	private static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
-	private static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrmi";
+	private static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrproject";
 
 	
 	private WizardNewProjectCreationPage firstPage;

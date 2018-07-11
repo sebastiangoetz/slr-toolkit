@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.internal.Workbench;
 
+import de.tudresden.slr.latexexport.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.latexexport.helpers.LatexResourceLoader;
-import de.tudresden.slr.latexexport.latexgeneration.LatexDocumentTypes;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
@@ -144,7 +144,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 		Label labelTemplate = new Label(container, SWT.NONE);
 		labelTemplate.setText("LaTex Template");
 		Combo comboDropDown = new Combo(container, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
-		for(String type : LatexDocumentTypes.documentTypes) {
+		for(String type : SlrLatexTemplate.documentTypes) {
 			comboDropDown.add(type);
 		}
 		comboDropDown.select(0);

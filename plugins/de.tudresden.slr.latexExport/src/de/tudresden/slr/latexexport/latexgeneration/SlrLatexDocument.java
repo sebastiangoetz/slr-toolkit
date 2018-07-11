@@ -1,74 +1,51 @@
 package de.tudresden.slr.latexexport.latexgeneration;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
-import org.osgi.framework.Bundle;
-
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
-import de.tudresden.slr.latexexport.helpers.LatexDocumentHelper;
+import de.tudresden.slr.latexexport.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 
-public abstract class SlrLatexDocument {
+public class SlrLatexDocument {
 	protected SlrProjectMetainformation metainformation;
 	protected DataProvider dataProvider;
 	protected String filename;
+	protected SlrLatexTemplate concreteDocument;
+	Map<Term, String> mainDimensions;
 
-	public SlrLatexDocument(SlrProjectMetainformation metainformation, DataProvider dataProvider, String filename) {
+	public SlrLatexDocument(SlrProjectMetainformation metainformation, DataProvider dataProvider, String filename, SlrLatexTemplate concreteDocument) {
 		super();
 		this.metainformation = metainformation;
 		this.dataProvider = dataProvider;
 		this.filename = filename;
+		this.concreteDocument = concreteDocument;
 	}
 
 	public Map<Term, String> exportCharts() throws FileNotFoundException, UnsupportedEncodingException {
 		return LatexExportChartGenerator.generatePDFOutput(filename, dataProvider);
 	}
 
-	public abstract void performExport() throws FileNotFoundException, UnsupportedEncodingException;
-
-	public String generateSectionTemplate(String title) {
-		String sectionPreTitle = "\\section{";
-		String sectionPostTitle = "}";
-
-		return sectionPreTitle + title + sectionPostTitle;
-	}
-
-	public String generateImageFigure(String path, String caption) {
-		return "\\begin{figure}[ht!]\r\n" + "\\centering\r\n" + "\\includegraphics[width = 1\\textwidth]{" + path
-				+ "}\r\n" + "\\caption{" + caption + "}\r\n" + "\\end{figure}\r\n";
-	}
-
-	public URL getFileForResource(String resourceName) {
+	public String getResourceContentAsString(URL url) {
 		//URL fileURL = bundle.getEntry("resources/latexTemplates/plain/plainArticle.tex");
-
-		URL url = null;
+		String toReturn = "";
 		try {
-			url = new URL("platform:/plugin/de.tudresden.slr.latexExport/resources/latexTemplates/plain/plainArticle.tex");
 			InputStream inputStream = url.openConnection().getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String inputLine;
-
-			System.out.println("accessing file:");
 			
 			while ((inputLine = in.readLine()) != null) {
-				System.out.println(inputLine);
+				toReturn = toReturn + "\r\n" + inputLine;
 			}
 
 			in.close();
@@ -77,6 +54,27 @@ public abstract class SlrLatexDocument {
 			e.printStackTrace();
 		}
 
-		return url;
+		return toReturn;
+	}
+	
+	public void copyResources(URL[] resources) {
+		
+	}
+	
+	
+	public final void performExport() throws IOException {
+		copyResources(null);
+		mainDimensions = exportCharts();
+		String filledDocument = fillDocument(concreteDocument);
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+	    writer.write(filledDocument);
+	    writer.close();
+	}
+	
+	
+	public String fillDocument(SlrLatexTemplate template) {
+		String document = getResourceContentAsString(template.getTemplatePath());
+		return template.fillDocument(document, metainformation, dataProvider, mainDimensions);
 	}
 }
