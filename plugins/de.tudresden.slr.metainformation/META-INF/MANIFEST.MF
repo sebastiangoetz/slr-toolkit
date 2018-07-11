@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.ui,
  de.tudresden.slr.model.modelregistry,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
- de.tudresden.slr.model.bibtex
+ de.tudresden.slr.model.bibtex,
+ org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.tudresden.slr.metainformation
 Bundle-ActivationPolicy: lazy

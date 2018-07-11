@@ -12,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -59,6 +60,9 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private org.eclipse.swt.widgets.List listAuthorsList;
 	private DataProvider dataProvider;
 	
+	//Dummy author to ensure consistency of metainformation storage
+	Author dummyAuthor = new Author("John Doe", "johnd@mail.tld", "University of XYZ");
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
@@ -78,9 +82,8 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			
 			//authors list must not be empty or null, insert dummy when it is null/empty
 			if(metainformation.getAuthorsList() == null || metainformation.getAuthorsList().isEmpty()) {
-				Author a = new Author("John", "Doe", "University of XYZ");
 				List<Author> l = new ArrayList<Author>();
-				l.add(a);
+				l.add(dummyAuthor);
 				metainformation.setAuthorsList(l);
 			}
 			toSave.setAuthorsList(metainformation.getAuthorsList());
@@ -110,7 +113,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		//testSave(activeFilePath.toOSString());
 	}
 
-	public void initTextFields() {
+	public void initFormFields() {
 		try {
 			File file = new File(activeFilePath.toOSString());
 			metainformation = MetainformationUtil.getMetainformationFromFile(file);
@@ -123,6 +126,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			textboxDescriptionTaxonomy.setText(metainformation.getTaxonomyDescription());
 			textboxAbstract.setText(metainformation.getProjectAbstract());
 			textboxFile.setText(activeFilePath.toOSString());
+			redrawAuthorsList();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			// TODO error message
@@ -154,7 +158,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		GridLayout layout = new GridLayout(2, false);
 		layout.numColumns = 2;
 		parent.setLayout(layout);
-		
+
 //		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL);
 //		Composite child = new Composite(scrolledComposite, SWT.NONE);
 //		new Text(scrolledComposite, SWT.BORDER);
@@ -253,10 +257,8 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		Button refreshTaxonomy = new Button(annotateTaxonomyGroup, 0);
 		refreshTaxonomy.setText("Refresh");
 		
-		initTextFields();
+		initFormFields();
 		
-		//initialization of list of authors
-		redrawAuthorsList();
 		
 		//Listener for author group buttons
 		buttonAddAuthor.addListener(SWT.Selection, new Listener() {
@@ -306,7 +308,13 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 				switch (e.type) {
 				case SWT.Selection: {
 					if(listAuthorsList.getSelectionIndex() < 0) break;
+					
 					metainformation.getAuthorsList().remove(listAuthorsList.getSelectionIndex());
+					
+					if(metainformation.getAuthorsList().isEmpty()) {
+						MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Info", "List of authors must not be empty. A dummy will be inserted.");
+						metainformation.getAuthorsList().add(dummyAuthor);
+					}
 					setDirty(true);
 					redrawAuthorsList();
 				}
