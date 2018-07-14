@@ -2,12 +2,8 @@ package de.tudresden.slr.latexexport.wizard;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.Map;
-
-import org.eclipse.core.resources.team.TeamHook;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -16,20 +12,14 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
 import de.tudresden.slr.latexexport.latexgeneration.SlrLatexGenerator;
-import de.tudresden.slr.latexexport.latexgeneration.documentclasses.SlrLatexTemplate;
-import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateACMSigplanConf;
-import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplatePlainArticle;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
-import de.tudresden.slr.model.taxonomy.Term;
-
 
 public class LatexExportWizard extends Wizard implements INewWizard {
 
-    protected LatexExportWizardPageOne one;
+    protected LatexExportWizardPageOne wizardPageOne;
     private DataProvider dataprovider = new DataProvider();
     SlrProjectMetainformation metainformation = MetainformationActivator.getMetainformation();
 
@@ -45,31 +35,29 @@ public class LatexExportWizard extends Wizard implements INewWizard {
 
     @Override
     public void addPages() {
-        one = new LatexExportWizardPageOne();
-        addPage(one);
+        wizardPageOne = new LatexExportWizardPageOne();
+        addPage(wizardPageOne);
     }
 
     @Override
+    /**
+     * When wizard is finished/ok clicked, this method tries to get the filename from it.
+     * If the filename is valid, perform export method is called.
+     */
     public boolean performFinish() {
-        // Print the result to the console
-
-    	if(one.getFilename() == null || one.getFilename().equals("")) {
+    	if(wizardPageOne.getFilename() == null || wizardPageOne.getFilename().equals("")) {
     		popupError("No path was specified.");
     	}
     	else {
     		try {
 				performExport();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}
@@ -77,10 +65,14 @@ public class LatexExportWizard extends Wizard implements INewWizard {
         return true;
     }
 
+    /**
+     * Gets the template, which is selected in the wizard, creates a new LatexGenerator and calls the export method.
+     * @throws IOException
+     */
 	private void performExport() throws IOException {
-		String templateSelection = one.getTemplate();
+		String templateSelection = wizardPageOne.getTemplate();
 
-		SlrLatexGenerator document = new SlrLatexGenerator(metainformation, dataprovider, one.getFilename(), templateSelection);
+		SlrLatexGenerator document = new SlrLatexGenerator(metainformation, dataprovider, wizardPageOne.getFilename(), templateSelection);
 		document.performExport();
 	}
 	
@@ -89,6 +81,10 @@ public class LatexExportWizard extends Wizard implements INewWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 	}
 	
+	/**
+	 * Generates a popup with an error message
+	 * @param message Error message which is to be displayed
+	 */
 	public void popupError(String message) {
 		Shell activeShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		MessageDialog.openError(activeShell, "Error", message);

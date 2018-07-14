@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sound.midi.MetaEventListener;
-
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import de.tudresden.slr.metainformation.data.Author;
@@ -14,20 +12,20 @@ import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 
-public class TemplateACMSigplanConf extends SlrLatexTemplate {
+public class TemplateIEEEconf extends SlrLatexTemplate {
 
 	/**
 	 * Constructor for this template. Initializes which auxiliary files are to be copied and where the template is found in the resources.
 	 * @throws MalformedURLException
 	 */
-	public TemplateACMSigplanConf() throws MalformedURLException {
-		URL resource0 = new URL(resourcePrefix + "latexTemplates/acmsigplan/sigplanconf.cls");
+	public TemplateIEEEconf() throws MalformedURLException {
+		URL resource0 = new URL(resourcePrefix + "latexTemplates/ieee/IEEEtran.cls");
 
 		this.filesToCopy = new URL[] { resource0 };
-		this.name = "ACM SIGPLAN conf";
-		this.templatePath = new URL(resourcePrefix + "latexTemplates/acmsigplan/sigplanconf-template.tex");
+		this.name = "IEEEconf";
+		this.templatePath = new URL(resourcePrefix + "latexTemplates/ieee/ieee-template.tex");
 	}
-
+	
 	@Override
 	public String fillDocument(String document, SlrProjectMetainformation metainformation, DataProvider dataProvider,
 			Map<Term, String> mainDimensions) {
@@ -54,10 +52,28 @@ public class TemplateACMSigplanConf extends SlrLatexTemplate {
 	 */
 	public String generateAuthorSection(SlrProjectMetainformation metainformation) {
 		String authors = "";
+		int authorNumber = 1;
+		
 		for(Author a : metainformation.getAuthorsList()) {
-			authors = authors + "\\authorinfo{"+ a.getName() +"\\thanks{with optional author note}}\r\n" + 
-					"           {"+ a.getOrganisation() +"}\r\n" + 
-					"           {"+ a.getEmail() +"}\r\n";
+			authors = authors + "\\IEEEauthorblockN{"+
+					authorNumber +
+					"\\textsuperscript{st} " +
+					a.getName() +
+					"}\r\n" + 
+					"\\IEEEauthorblockA{\\textit{ "+
+					a.getOrganisation() +
+					" } \\\\\r\n" + 
+					"\\textit{name of organization (of Aff.)}\\\\\r\n" + 
+					"City, Country \\\\\r\n" + 
+					a.getEmail() +
+					"}\r\n";
+			
+			if(authorNumber != metainformation.getAuthorsList().size()) {
+				authors = authors + "\\and\r\n";
+			}
+					
+			
+			authorNumber++;
 		}
 		
 		return authors;

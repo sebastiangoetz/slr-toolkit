@@ -9,6 +9,13 @@ import javax.xml.bind.Unmarshaller;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 
 public class MetainformationUtil {
+	/**
+	 * Unmarshals a xml-file to a metainformation object
+	 * @param file XML File
+	 * @return Metainformation object with information from specified file, if it fit the schema of
+	 * SlrProjectMetainformation
+	 * @throws JAXBException
+	 */
 	public static SlrProjectMetainformation getMetainformationFromFile(File file) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
 

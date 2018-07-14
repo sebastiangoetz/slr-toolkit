@@ -14,14 +14,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
-import de.tudresden.slr.model.taxonomy.Term;
-
 public class ExportProjectChooser extends TitleAreaDialog {
 
 	private int chosenProject;
 	private Combo comboDropDown;
 	private List<IProject> openProjects;
 
+	/**
+	 * Constructor
+	 * @param parentShell Active shell
+	 * @param openProjects List of the workspace's projects
+	 */
 	public ExportProjectChooser(Shell parentShell, List<IProject> openProjects) {
 		super(parentShell);
 		this.openProjects = openProjects;
@@ -36,6 +39,9 @@ public class ExportProjectChooser extends TitleAreaDialog {
 	
 	}
 
+	/**
+	 * Generate drop down menu for selecting the active project
+	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite control = (Composite) super.createDialogArea(parent);
@@ -59,9 +65,7 @@ public class ExportProjectChooser extends TitleAreaDialog {
 		
 		//ensure, that a project is selected
 		comboDropDown.select(0);
-		
-
-
+	
 		return control;
 	}
 
@@ -70,6 +74,9 @@ public class ExportProjectChooser extends TitleAreaDialog {
 		return true;
 	}
 
+	/**
+	 * Save, which project is chosen. Otherwise, information would be lost.
+	 */
 	private void saveInput() {
 		this.chosenProject = comboDropDown.getSelectionIndex();
 

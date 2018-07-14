@@ -19,6 +19,10 @@ import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.metainformation.data.Author;
 
+/**
+ * 
+ * Class for creating a SWT-Dialog for adding or editing an author.
+ */
 public class NewAndEditAuthorDialog extends TitleAreaDialog {
 
 	private Text textboxName;
@@ -31,14 +35,19 @@ public class NewAndEditAuthorDialog extends TitleAreaDialog {
 
 	Button okButton;
 
+	//optional with or without Author which is to be edited.
+	//if empty, there is no author to be edited -> add new author
 	private Optional<Author> optionalEditAuthor = Optional.empty();
 
 	public NewAndEditAuthorDialog(Shell parentShell) {
 		super(parentShell);
 	}
 
+	/*
+	 * Initializes Optional which contains author.
+	 */
 	public void initEditAuthor(Author author) {
-		optionalEditAuthor = Optional.of(author);
+		if(author != null) optionalEditAuthor = Optional.of(author);
 	}
 
 	@Override
@@ -47,6 +56,9 @@ public class NewAndEditAuthorDialog extends TitleAreaDialog {
 		setTitle("Add author");
 		setMessage("At least the new author's name has to be specified.", IMessageProvider.INFORMATION);
 		okButton = getButton(IDialogConstants.OK_ID);
+		
+		//ok button is disabled by default and just activated, if either author is edited and name is not empty
+		//later, listener is added to track change in name field
 		okButton.setEnabled(false);
 		
 		if(optionalEditAuthor.isPresent()) {
@@ -55,6 +67,7 @@ public class NewAndEditAuthorDialog extends TitleAreaDialog {
 			}
 		}
 
+		//modigy listener which checks, whether the name field is empty or not. If not, ok button is enabled.
 		textboxName.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				Text text = (Text) e.widget;

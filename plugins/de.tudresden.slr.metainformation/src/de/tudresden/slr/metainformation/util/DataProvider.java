@@ -1,12 +1,8 @@
 package de.tudresden.slr.metainformation.util;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import de.tudresden.slr.model.bibtex.Document;
@@ -15,24 +11,30 @@ import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.utils.SearchUtils;
 
+/**
+ * 
+ * Data provider which encapsulates taxonomy dimensions and Bibtex documents
+ */
 public class DataProvider {
-//	private Optional<AdapterFactoryEditingDomain> domainOptional;
-//	private AdapterFactoryEditingDomain adapterFactoryEditingDomain;
+	/**
+	 * List of documents from bibtex plugins
+	 */
 	private List<Document> documents = SearchUtils.getDocumentList();
+	/**
+	 * Optional which may or may not contain taxonomy
+	 */
 	private Optional<Model> taxonomyOptional = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 	
 	public DataProvider() {
-//		domainOptional = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
-//		if (domainOptional.isPresent()) {
-//			adapterFactoryEditingDomain = domainOptional.get();
-//			resources = new ArrayList<>(adapterFactoryEditingDomain.getResourceSet().getResources());
-//		}
 	}
 
 	public List<Document> getDocuments() {
 		return documents;
 	}
 	
+	/**
+	 * Returns the main dimensions of the taxonomy if it is present
+	 */
 	public EList<Term> getMainDimensions() {
 		if(taxonomyOptional.isPresent()) {
 			return taxonomyOptional.get().getDimensions();
@@ -50,6 +52,11 @@ public class DataProvider {
 		return documents.size();
 	}
 	
+	/**
+	 * 
+	 * @param t Term whose subdimensions are to be determined
+	 * @return List of subdimensions for a certain term
+	 */
 	public EList<Term> getAllSubdimenions(Term t){
 		EList<Term> toReturn = new BasicEList<Term>();
 		for(Term subTerm : t.getSubclasses()) {
@@ -61,6 +68,12 @@ public class DataProvider {
 		
 	}
 	
+	/**
+	 * Generates a list of all dimensions and their subdimenions.
+	 * Order: Every dimension has as successor - if existant - it's first child. If not present,
+	 * it's the next dimension of the same or higher level.
+	 * @return
+	 */
 	public EList<Term> getAllDimensionsOrdered(){
 		EList<Term> allTerms = new BasicEList<Term>();
 		EList<Term> allClasses = getMainDimensions();
@@ -73,63 +86,13 @@ public class DataProvider {
 		return allTerms;
 	}
 	
+	/**
+	 * 
+	 * @param t Term of taxonomy
+	 * @return Number of documents, which are annotated which the specified term of the taxonomy
+	 */
 	public int getNumberOfElementsInDimension(Term t) {
 		Map<Document, Term> termsInDocuments = SearchUtils.findDocumentsWithTerm(t);
 		return termsInDocuments.size();
 	}
-	
-	public String[] getDimensionInformation(){
-		EList<Term> dimensions = getAllDimensionsOrdered();
-		String[] toReturn = new String[dimensions.size()];
-		
-		int index = 0;
-		
-		if(dimensions.size() > 0) {
-			for(Term t : dimensions) {
-				toReturn[index] = extractMetainformationFromDimension(t);
-			}	
-		}
-		
-		return toReturn;
-	}
-
-	public String extractMetainformationFromDimension(Term t) {    
-		//TODO: über regexp?
-		//TODO: assertions
-		int indexBegin, indexEnd;
-		indexBegin = t.getName().indexOf('[');
-		indexEnd = t.getName().indexOf(']');
-		
-		if(indexBegin > 0 && indexEnd > 0) {
-			return t.getName().substring(t.getName().indexOf("[") + 1, t.getName().indexOf("]"));
-		}
-		else {
-			return "";
-		}
-	}
-	
-	public Map<Term, String> getAllDimensionsAndMetainformation(boolean allDimensions){
-		Map<Term, String> toReturn = new HashMap<Term, String>();
-		EList<Term> data;
-		
-		if(allDimensions) {
-			data = getAllDimensionsOrdered();
-		}else {
-			data = getMainDimensions();
-		}
-		
-		for(Term t : data) {
-			toReturn.put(t, extractMetainformationFromDimension(t));
-		}
-		
-		return toReturn;
-	}
-	
-
-	
-
-	
-	
-	
-
 }

@@ -1,17 +1,14 @@
 package de.tudresden.slr.metainformation.data;
 
-import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.impl.TermImpl;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
+/**
+ * Represents the project's metainformation
+ *
+ */
 public class SlrProjectMetainformation {
 	@XmlElement
 	private String title = "";

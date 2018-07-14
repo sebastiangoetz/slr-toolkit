@@ -17,7 +17,9 @@ public class MetainformationActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static MetainformationActivator plugin;
 	
+	// Currently active metainformation object
 	private static SlrProjectMetainformation metainformation;
+	// Filepath to the currently active metainformation object
 	private static String currentFilepath = null;
 	
 	/**
@@ -68,6 +70,10 @@ public class MetainformationActivator extends AbstractUIPlugin {
 		return metainformation;
 	}
 
+	/**
+	 * Sets the currently active metainformation object.
+	 * @param metainformation
+	 */
 	public static void setMetainformation(SlrProjectMetainformation metainformation) {
 		MetainformationActivator.metainformation = metainformation;
 	}

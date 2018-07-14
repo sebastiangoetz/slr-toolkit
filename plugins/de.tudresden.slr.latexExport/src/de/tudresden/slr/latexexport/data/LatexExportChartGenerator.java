@@ -16,17 +16,19 @@ import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.ui.dialogs.NewFolderDialog;
-
 import com.ibm.icu.util.ULocale;
 
 import de.tudresden.slr.latexexport.helpers.FileHelper;
-import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 
+/**
+ * 
+ * @author Andreas Huber
+ *
+ */
 public class LatexExportChartGenerator {
 	
 	

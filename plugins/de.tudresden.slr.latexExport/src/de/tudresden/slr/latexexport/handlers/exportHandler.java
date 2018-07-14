@@ -3,26 +3,12 @@ package de.tudresden.slr.latexexport.handlers;
 import de.tudresden.slr.latexexport.helpers.ExportProjectChooser;
 import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
 import de.tudresden.slr.metainformation.MetainformationActivator;
-import de.tudresden.slr.metainformation.data.Author;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
-import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
-import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.utils.SearchUtils;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
-import java.util.Optional;
-
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -33,33 +19,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.osgi.framework.Bundle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -70,14 +38,18 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class exportHandler extends AbstractHandler {
 	
+	/**
+	 * Constant, which signals that the selection event was cancelled
+	 */
 	private final int SELECTIONEVENT_CANCEL = -1;
 	
+	//AdapterFactory and EditingDomain for loading of resources, copied and adapted from de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView
 	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
 	
 	/**
-	 * 
-	 * @param project
+	 * Sets bibtex documents, taxonomy and metainformation from input argument's project as active elements in ModelRegistry and Metainformation plugin activator
+	 * @param project project whose workspace is searched for resources whose file extensions are checked. Matching .taxonomy, .bib and .slrproject-files are loaded in the respective plugins or ModelRegistry
 	 */
 	private void setProjectForExport(IProject project) {
 		IResource[] resources = null;
@@ -112,24 +84,12 @@ public class exportHandler extends AbstractHandler {
 		}
 	}
 
+	/**
+	 * Tries to load the wizard for the LaTex export. If a project can be loaded, it will be opened.
+	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		//läuft bei selection
-//		ISelection sel = HandlerUtil.getCurrentSelection(event);
-//
-//	    if (sel instanceof IStructuredSelection)
-//	     {
-//	       Object selected = ((IStructuredSelection)sel).getFirstElement();
-//
-//	       IResource resource = (IResource)Platform.getAdapterManager().getAdapter(selected, IResource.class);
-//
-//	       if (resource != null)
-//	        {
-//	          IProject project = resource.getProject();
-//	        }
-//	     }		
-		
-		if(ensureTaxonomyIsLoaded(event)) {
+	public Object execute(ExecutionEvent event) throws ExecutionException {	
+		if(tryLoadingProjectFiles(event)) {
 			Shell activeShell = HandlerUtil.getActiveShell(event);
 			IWizard wizard = new LatexExportWizard();
 			WizardDialog wizardDialog = new WizardDialog(activeShell, wizard);
@@ -144,16 +104,20 @@ public class exportHandler extends AbstractHandler {
 //				return null;
 //			} else {
 //
-//			}
-			
-			
+//			}	
 		}
 		return null;
 
 
 	}
 
-	private boolean ensureTaxonomyIsLoaded(ExecutionEvent event) {
+	/**
+	 * Tries to load a project and all corresponding files in ModelRegistry and metainformation plugin. If more than one projects are in the workspace, a dialog will be opened and the user
+	 * input determines, which project is to be loaded.
+	 * @param event Execution Event
+	 * @return false, if no project can be loaded; true, if a project could be loaded
+	 */
+	private boolean tryLoadingProjectFiles(ExecutionEvent event) {
 		initializeEditingDomain();
 		
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
@@ -188,10 +152,13 @@ public class exportHandler extends AbstractHandler {
 				return true;
 			}
 		}
-		
-		
 	}
 	
+	/**
+	 * Determines, which project is to be loaded. A dialog is opened.
+	 * @param openProjects List of all open projects in the workspace
+	 * @return index (in the argument) of the project which is to be loaded
+	 */
 	private int getProjectSelection(List<IProject> openProjects) {
     	ExportProjectChooser dialog = new ExportProjectChooser(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), openProjects);
     	dialog.create();
@@ -203,16 +170,14 @@ public class exportHandler extends AbstractHandler {
 		}
 	}
 
+	//copied and adapted from de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView
 	protected void initializeEditingDomain() {
 		ModelRegistryPlugin.getModelRegistry().getEditingDomain().ifPresent((domain) -> editingDomain = domain);
-		// Add a listener to set the most recent command's affected objects
-		// to be the selection of the viewer with focus.
 		if (editingDomain == null) {
-			System.err.println("[BibtexEntryView#initializeEditingDomain] uninitailised editing domain");
+			System.err.println("uninitailised editing domain");
 			return;
 		}
 		adapterFactory = editingDomain.getAdapterFactory();
-		//closeEditors();
 	}
 	
 

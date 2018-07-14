@@ -2,54 +2,32 @@ package de.tudresden.slr.metainformation.editors;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
-import java.util.Optional;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.command.CommandStackListener;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -59,9 +37,6 @@ import de.tudresden.slr.metainformation.data.Author;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.Term;
 
 public class MetainformationEditor extends EditorPart implements IEditorPart {
 
@@ -70,45 +45,20 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private IPath activeFilePath;
 	private Text textboxFile, textboxTitle, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
 	private org.eclipse.swt.widgets.List listAuthorsList;
-	private DataProvider dataProvider;
-	
 	//Dummy author to ensure consistency of metainformation storage
 	Author dummyAuthor = new Author("John Doe", "johnd@mail.tld", "University of XYZ");
 	
 	public  MetainformationEditor() {
-		// TODO Auto-generated constructor stub
 	}
-	
-	protected AdapterFactory adapterFactory;
-	protected AdapterFactoryEditingDomain editingDomain;
-	
-//	private void registerResources(IProject project) {
-//		IResource[] resources = null;
-//		try {
-//			resources = project.members();
-//		} catch (CoreException e) {
-//			e.printStackTrace();
-//			return;
-//		}
-//		for (IResource res : resources) {
-//			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
-//				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
-//				editingDomain.getResourceSet().getResource(uri, true);
-//			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
-//				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
-//			}
-//		}
-//	}
-	
+		
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
-
+			//marshalling of metainformation object to xml data
 			File file = new File(activeFilePath.toOSString());
 			JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			SlrProjectMetainformation toSave = new SlrProjectMetainformation();
@@ -130,7 +80,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			setDirty(false);
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			//TODO error message
 		} catch (Exception e) {
 			
 		}
@@ -146,10 +95,12 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		setInput(input);
 		
 		activeFilePath = ((IFileEditorInput) input).getFile().getLocation();
-		
-		//testSave(activeFilePath.toOSString());
 	}
 
+	/**
+	 * Initializes the editor's form fields. Unmarshals XML object to metainformation object 
+	 * and sets both path and object in the plugin's singleton.
+	 */
 	public void initFormFields() {
 		try {
 			File file = new File(activeFilePath.toOSString());
@@ -166,7 +117,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			redrawAuthorsList();
 		} catch (JAXBException e) {
 			e.printStackTrace();
-			// TODO error message
 		}
 
 	}
@@ -190,7 +140,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {		
-		dataProvider = new DataProvider();
+		new DataProvider();
 		
 		GridLayout layout = new GridLayout(2, false);
 		layout.numColumns = 2;
@@ -273,27 +223,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		new Label(descriptionGroup, SWT.NONE).setText("Description of the taxonomy");
 		textboxDescriptionTaxonomy = new Text(descriptionGroup, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		textboxDescriptionTaxonomy.setLayoutData(gridDataBigTextboxes);
-		
-		Group annotateTaxonomyGroup = new Group(parent, SWT.NONE);
-		annotateTaxonomyGroup.setText("Annotate Taxonomy");
-		annotateTaxonomyGroup.setLayout(gridLayout2Columns);
-		annotateTaxonomyGroup.setLayoutData(gridDataGroups);
-		
-		Combo comboDropDown = new Combo(annotateTaxonomyGroup, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
-		//TODO functionality
-		List<Term> dimensions = dataProvider.getAllDimensionsOrdered();
-		for(Term t : dimensions) {
-			comboDropDown.add(t.getName());
-		}
-		GridData comboLayoutData = new GridData();
-		comboLayoutData.widthHint = 100;
-		comboDropDown.setLayoutData(comboLayoutData);
-		
-		Text termAnnotation = new Text(annotateTaxonomyGroup, SWT.SINGLE | SWT.BORDER);
-		termAnnotation.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		Button refreshTaxonomy = new Button(annotateTaxonomyGroup, 0);
-		refreshTaxonomy.setText("Refresh");
-		
+				
 		initFormFields();
 		
 		
@@ -316,6 +246,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			}
 	      });
 		
+		//Listener for edit button
 		buttonEditAuthor.addListener(SWT.Selection, new Listener() {
 	        public void handleEvent(Event e) {
 				switch (e.type) {
@@ -340,6 +271,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			}
 	      });
 		
+		//listener for delete button
 		buttonDeleteAuthor.addListener(SWT.Selection, new Listener() {
 	        public void handleEvent(Event e) {
 				switch (e.type) {
@@ -360,42 +292,23 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			}
 	      });
 
-
+		//generic modifiy-listener, which sets dirty flag, when something is changed.
 		ModifyListener modifiedDirty = new ModifyListener() {
 			public void modifyText(ModifyEvent event) {
 				setDirty(true);
 			}
 		};
 
+		//add generic modify listener to textboxes
 		textboxTitle.addModifyListener(modifiedDirty);
 		textboxKeywords.addModifyListener(modifiedDirty);
 		textboxAbstract.addModifyListener(modifiedDirty);
 		textboxDescriptionTaxonomy.addModifyListener(modifiedDirty);
-		
-	    refreshTaxonomy.addListener(SWT.Selection, new Listener() {
-	        public void handleEvent(Event e) {
-	          switch (e.type) {
-	          case SWT.Selection:{
-	      		List<Term> dimensions = new DataProvider().getAllDimensionsOrdered();
-	    		for(Term t : dimensions) {
-	    			comboDropDown.add(t.getName());
-	    		}
-	    		if(comboDropDown.getItemCount() > 0) {
-		    		comboDropDown.select(0);
-	    		}
-	          }
-	          default:{
-	        	  //TODO
-	          }
-	            break;
-	          }
-	        }
-	      });
-	    
-	    
-
 	}
 
+	/**
+	 * Redraws the list of authors. Needed, when an author was added, edited or deleted.
+	 */
 	protected void redrawAuthorsList() {
 		if(listAuthorsList.getItems().length != 0) {
 			listAuthorsList.removeAll();
@@ -409,6 +322,11 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	public void setFocus() {
 	}
 
+	/**
+	 * Dummy method, can be used to create a non corrupted version of a metainforation xml document
+	 * for debugging purposes
+	 * @param path Path to the .xml-File, which is to be generated
+	 */
 	public void testSave(String path) {
 		SlrProjectMetainformation m = new SlrProjectMetainformation();
 		m.setTitle("title");
@@ -429,11 +347,9 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			jaxbMarshaller.marshal(m, file);
-			// jaxbMarshaller.marshal(m, System.out);
 
 		} catch (JAXBException e) {
 			e.printStackTrace();

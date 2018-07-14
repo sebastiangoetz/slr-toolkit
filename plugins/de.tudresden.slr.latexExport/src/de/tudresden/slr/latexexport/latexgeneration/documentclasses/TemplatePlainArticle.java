@@ -13,6 +13,10 @@ import de.tudresden.slr.model.taxonomy.Term;
 
 public class TemplatePlainArticle extends SlrLatexTemplate {
 
+	/**
+	 * Constructor for this template. Initializes which auxiliary files are to be copied and where the template is found in the resources.
+	 * @throws MalformedURLException
+	 */
 	public TemplatePlainArticle() throws MalformedURLException {
 		this.name = "Plain Article";
 		this.templatePath = new URL(resourcePrefix + "latexTemplates/plain/plainArticle.tex");
@@ -27,7 +31,9 @@ public class TemplatePlainArticle extends SlrLatexTemplate {
 		valuesMap.put("SLR_KEYWORDS", metainformation.getKeywords());
 		valuesMap.put("SLR_AUTHORS", metainformation.getAuthorsList().toString());
 		valuesMap.put("SLR_STATISTICS", this.generateStatistics(dataProvider));
-		valuesMap.put("SLR_DIMENSIONCHARTS", this.generateDimensionCharts(mainDimensions));
+		
+		double imageToTextWidthFactor = 1;
+		valuesMap.put("SLR_DIMENSIONCHARTS", this.generateDimensionCharts(mainDimensions, imageToTextWidthFactor));
 
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
 		String resolvedString = sub.replace(document);
