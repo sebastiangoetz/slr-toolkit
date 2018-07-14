@@ -2,6 +2,7 @@ package de.tudresden.slr.metainformation.editors;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +11,16 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.CommandStackListener;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -36,8 +45,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
@@ -62,6 +74,31 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	
 	//Dummy author to ensure consistency of metainformation storage
 	Author dummyAuthor = new Author("John Doe", "johnd@mail.tld", "University of XYZ");
+	
+	public  MetainformationEditor() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	protected AdapterFactory adapterFactory;
+	protected AdapterFactoryEditingDomain editingDomain;
+	
+//	private void registerResources(IProject project) {
+//		IResource[] resources = null;
+//		try {
+//			resources = project.members();
+//		} catch (CoreException e) {
+//			e.printStackTrace();
+//			return;
+//		}
+//		for (IResource res : resources) {
+//			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
+//				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
+//				editingDomain.getResourceSet().getResource(uri, true);
+//			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
+//				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
+//			}
+//		}
+//	}
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {

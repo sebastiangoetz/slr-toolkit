@@ -1,4 +1,4 @@
-package de.tudresden.slr.latexexport.documentclasses;
+package de.tudresden.slr.latexexport.latexgeneration.documentclasses;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,11 +9,17 @@ import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
 
 public abstract class SlrLatexTemplate {
-	public static final String[] documentTypes = { "Plain Article" , "tudscr" , "IEEEconf" , "ACM SIGPLAN conf" , "Springer LNCS" };
+	public static final String TEMPLATE_PLAIN = "Plain Article";
+	public static final String TEMPLATE_TUDSCR = "tudscr";
+	public static final String TEMPLATE_IEEE = "IEEEconf";
+	public static final String TEMPLATE_ACM = "ACM SIGPLAN conf";
+	public static final String TEMPLATE_SPRINGER_LNCS = "Springer LNCS";
+	
+	public static final String[] documentTypes = { TEMPLATE_PLAIN , TEMPLATE_TUDSCR , TEMPLATE_IEEE , TEMPLATE_SPRINGER_LNCS, TEMPLATE_ACM};
 	
 	protected final String resourcePrefix = "platform:/plugin/de.tudresden.slr.latexExport/resources/";
 	
-	protected URL[] filesToCopy;
+	protected URL[] filesToCopy = {};
 	protected URL templatePath;
 	protected String name;
 	

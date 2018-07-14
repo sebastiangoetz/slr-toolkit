@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Map;
 
+import org.eclipse.core.resources.team.TeamHook;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -16,9 +17,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
-import de.tudresden.slr.latexexport.documentclasses.PlainArticle;
-import de.tudresden.slr.latexexport.documentclasses.SlrLatexTemplate;
-import de.tudresden.slr.latexexport.latexgeneration.SlrLatexDocument;
+import de.tudresden.slr.latexexport.latexgeneration.SlrLatexGenerator;
+import de.tudresden.slr.latexexport.latexgeneration.documentclasses.SlrLatexTemplate;
+import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateACMSigplanConf;
+import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplatePlainArticle;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
@@ -76,8 +78,9 @@ public class LatexExportWizard extends Wizard implements INewWizard {
     }
 
 	private void performExport() throws IOException {
-		SlrLatexTemplate template = new PlainArticle();
-		SlrLatexDocument document = new SlrLatexDocument(metainformation, dataprovider, one.getFilename(), template);
+		String templateSelection = one.getTemplate();
+
+		SlrLatexGenerator document = new SlrLatexGenerator(metainformation, dataprovider, one.getFilename(), templateSelection);
 		document.performExport();
 	}
 	

@@ -20,6 +20,7 @@ import org.eclipse.ui.dialogs.NewFolderDialog;
 
 import com.ibm.icu.util.ULocale;
 
+import de.tudresden.slr.latexexport.helpers.FileHelper;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -40,7 +41,7 @@ public class LatexExportChartGenerator {
 		ChartDataProvider chartData = new ChartDataProvider();
 		Map<Term, String> toReturn = new HashMap<Term, String>();
 		PlatformConfig config = new PlatformConfig();
-		String folder = extractFolderFromFilepath(filepath);
+		String folder = FileHelper.extractFolderFromFilepath(filepath);
 		
 		String filepathNewSvg;
 		String imagesFolderName = "images";
@@ -80,11 +81,5 @@ public class LatexExportChartGenerator {
 		return toReturn;
 	}
 	
-	public static String extractFolderFromFilepath(String fileName) {
-		return fileName = fileName.substring(0, fileName.lastIndexOf(File.separator));
-	}
-	
-	public static String extractRelativePathFromFilepath(String filename) {
-		return filename.substring(filename.lastIndexOf((File.separator)));
-	}
+
 }

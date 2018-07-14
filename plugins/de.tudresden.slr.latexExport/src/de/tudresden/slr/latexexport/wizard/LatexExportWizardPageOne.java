@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.internal.Workbench;
 
-import de.tudresden.slr.latexexport.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.latexexport.helpers.LatexResourceLoader;
+import de.tudresden.slr.latexexport.latexgeneration.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.bibtex.Document;
@@ -36,6 +36,7 @@ import de.tudresden.slr.model.bibtex.Document;
 public class LatexExportWizardPageOne extends WizardPage {
 	private Text textboxFilename, textboxMetainformation;
 	private Composite container;
+	private Combo comboDropDown;
 
 //	private boolean includeTitle;
 //	private boolean includeAbstract;
@@ -95,7 +96,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 				// if file exists, ask for permission to overwrite, if permission not given -
 				// repeat and ask for new path
 				boolean canContinueFileCheck = false;
-				FileDialog dialog = new FileDialog(container.getShell(), SWT.OPEN);
+				FileDialog dialog = new FileDialog(container.getShell(), SWT.SAVE);
 				dialog.setFilterExtensions(new String[] { "*.tex" });
 
 				while (!canContinueFileCheck) {
@@ -143,7 +144,7 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 		Label labelTemplate = new Label(container, SWT.NONE);
 		labelTemplate.setText("LaTex Template");
-		Combo comboDropDown = new Combo(container, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
+		comboDropDown = new Combo(container, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		for(String type : SlrLatexTemplate.documentTypes) {
 			comboDropDown.add(type);
 		}
@@ -216,6 +217,10 @@ public class LatexExportWizardPageOne extends WizardPage {
 
 	public String getFilename() {
 		return textboxFilename.getText();
+	}
+	
+	public String getTemplate() {
+		return comboDropDown.getText();
 	}
 
 	// public static IProject getCurrentProject() {
