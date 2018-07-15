@@ -140,8 +140,6 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {		
-		new DataProvider();
-		
 		GridLayout layout = new GridLayout(2, false);
 		layout.numColumns = 2;
 		parent.setLayout(layout);
@@ -153,10 +151,12 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 //	    // Create the buttons
 //	    new Button(child, SWT.PUSH).setText("One");
 		
-		//multipurpose layouts for all form elements
+		//multipurpose 2 column layout for all form elements
 		GridLayout gridLayout2Columns = new GridLayout();
 		gridLayout2Columns.numColumns = 2;
 		
+		//multipurpose GridData for Groups, specifies that they should take a whole "row", not just one
+		//half of the grid due to 2 columns layout
 		GridData gridDataGroups = new GridData(GridData.FILL, GridData.CENTER, true, false);
 		gridDataGroups.horizontalSpan = 2;
 		

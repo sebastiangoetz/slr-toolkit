@@ -4,6 +4,7 @@ import de.tudresden.slr.latexexport.helpers.ExportProjectChooser;
 import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import java.io.File;

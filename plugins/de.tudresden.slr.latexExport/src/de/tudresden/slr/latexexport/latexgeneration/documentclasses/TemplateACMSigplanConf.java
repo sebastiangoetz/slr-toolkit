@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sound.midi.MetaEventListener;
-
 import org.apache.commons.lang.text.StrSubstitutor;
 
 import de.tudresden.slr.metainformation.data.Author;
