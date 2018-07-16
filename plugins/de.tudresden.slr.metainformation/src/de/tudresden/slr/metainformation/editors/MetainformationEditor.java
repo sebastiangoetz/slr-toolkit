@@ -11,8 +11,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -139,53 +143,61 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {		
-		GridLayout layout = new GridLayout(2, false);
-		layout.numColumns = 2;
-		parent.setLayout(layout);
-
-//		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.V_SCROLL);
-//		Composite child = new Composite(scrolledComposite, SWT.NONE);
-//		new Text(scrolledComposite, SWT.BORDER);
-//		child.setLayout(new FillLayout());
-//	    // Create the buttons
-//	    new Button(child, SWT.PUSH).setText("One");
+	public void createPartControl(Composite parent) {
+	    ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+	    sc.setLayout(new RowLayout());
+		
+		Composite masterComposite = new Composite(sc, SWT.NONE);
+		
+		sc.setContent(masterComposite);
 		
 		//multipurpose 2 column layout for all form elements
 		GridLayout gridLayout2Columns = new GridLayout();
 		gridLayout2Columns.numColumns = 2;
+
+		//TODO master composite is way too wide
+		masterComposite.setLayout(new GridLayout(1, false));
+		
+		GridData gridDataExpand = new GridData();
+		gridDataExpand.grabExcessHorizontalSpace = true;
+		gridDataExpand.horizontalAlignment = SWT.FILL;
+		
 		
 		//multipurpose GridData for Groups, specifies that they should take a whole "row", not just one
 		//half of the grid due to 2 columns layout
-		GridData gridDataGroups = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		GridData gridDataGroups = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 		gridDataGroups.horizontalSpan = 2;
+		gridDataGroups.verticalAlignment = SWT.BEGINNING;
+		gridDataGroups.grabExcessHorizontalSpace = true;
+		gridDataGroups.horizontalAlignment = SWT.FILL;
 		
-		GridData gridSmallTextboxes = new GridData(SWT.FILL, SWT.BEGINNING, true, false);
+		GridData gridSmallTextboxes = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 		
-		Group keyFactsGroup = new Group(parent, SWT.NONE);
+		Group keyFactsGroup = new Group(masterComposite, SWT.NONE);
 		keyFactsGroup.setText("Key facts");		
 		keyFactsGroup.setLayout(gridLayout2Columns);
 		keyFactsGroup.setLayoutData(gridDataGroups);
+
 		
 		//Labels and Textboxes for key facts group
 		new Label(keyFactsGroup, SWT.NONE).setText("File");
 		textboxFile = new Text(keyFactsGroup, SWT.BORDER);
 		textboxFile.setEditable(false);
-		textboxFile.setLayoutData(gridSmallTextboxes);
+		textboxFile.setLayoutData(gridDataExpand);
 
 		new Label(keyFactsGroup, SWT.NONE).setText("Title");
 		textboxTitle = new Text(keyFactsGroup, SWT.BORDER);
-		textboxTitle.setLayoutData(gridSmallTextboxes);
+		textboxTitle.setLayoutData(gridDataExpand);
 
 		new Label(keyFactsGroup, SWT.NONE).setText("Keywords");
 		textboxKeywords = new Text(keyFactsGroup, SWT.BORDER);
-		textboxKeywords.setLayoutData(gridSmallTextboxes);
+		textboxKeywords.setLayoutData(gridDataExpand);
 		
 		//begin authorsgroup
 		Group authorsGroup = new Group(keyFactsGroup, SWT.NONE);
 		authorsGroup.setText("Authors");
 		authorsGroup.setLayout(new RowLayout());
-		GridData gridDataAuthorsGroup = new GridData(GridData.FILL, GridData.CENTER, true, false);
+		GridData gridDataAuthorsGroup = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 		gridDataAuthorsGroup.horizontalSpan = 2;
 		authorsGroup.setLayoutData(gridDataAuthorsGroup);
 		
@@ -200,33 +212,49 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		
 		//List is initialized later on, because initialization of form fields needs to be done first
 		listAuthorsList = new org.eclipse.swt.widgets.List(authorsGroup, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		listAuthorsList.setLayoutData(new RowData(1000, 50));
+		RowData rowDataAuthorsList = new RowData(500,50);
+		listAuthorsList.setLayoutData(rowDataAuthorsList);
 		//end authors group
 		
-		Group descriptionGroup = new Group(parent, SWT.NONE);
+		Group descriptionGroup = new Group(masterComposite, SWT.NONE);
 		descriptionGroup.setText("Description");
 		descriptionGroup.setLayout(gridLayout2Columns);
-		descriptionGroup.setLayoutData(gridDataGroups);
+		
+		GridData gridDataDescriptionGroup = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
+		descriptionGroup.setLayoutData(gridDataDescriptionGroup);
+		
 
 		//grid data for textboxes abstract & description
 		GridData gridDataBigTextboxes = new GridData();
-		gridDataBigTextboxes.horizontalAlignment = SWT.FILL;
 		gridDataBigTextboxes.grabExcessHorizontalSpace = true;
-		gridDataBigTextboxes.verticalAlignment = SWT.FILL;
-		gridDataBigTextboxes.grabExcessVerticalSpace = true;
+		gridDataBigTextboxes.horizontalAlignment = SWT.FILL;
 		gridDataBigTextboxes.heightHint = 200;
 
 		new Label(descriptionGroup, SWT.NONE).setText("Abstract");
 		textboxAbstract = new Text(descriptionGroup, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		textboxAbstract.setLayoutData(gridDataBigTextboxes);
 
-		new Label(descriptionGroup, SWT.NONE).setText("Description of the taxonomy");
+		new Label(descriptionGroup, SWT.NONE).setText("Description of \n the taxonomy");
 		textboxDescriptionTaxonomy = new Text(descriptionGroup, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		textboxDescriptionTaxonomy.setLayoutData(gridDataBigTextboxes);
 				
 		initFormFields();
 		
+	    parent.addControlListener(new ControlListener() {
+	        public void controlMoved(ControlEvent e) {
+	        }
+
+	        public void controlResized(ControlEvent e) {
+	        	double widthFactor = 0.98;
+	        	int currentWidth = (int) (widthFactor*parent.getSize().x);
+	    		masterComposite.setSize(parent.computeSize(currentWidth, SWT.DEFAULT));
+	        }
+	      });    
 		
+		//TODO set width to control width
+		masterComposite.setSize(masterComposite.computeSize(1000, SWT.DEFAULT));
+
+
 		//Listener for author group buttons
 		buttonAddAuthor.addListener(SWT.Selection, new Listener() {
 	        public void handleEvent(Event e) {

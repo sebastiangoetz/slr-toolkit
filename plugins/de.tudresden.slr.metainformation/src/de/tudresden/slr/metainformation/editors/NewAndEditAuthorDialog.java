@@ -53,7 +53,8 @@ public class NewAndEditAuthorDialog extends TitleAreaDialog {
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Add author");
+		String infoText = optionalEditAuthor.isPresent() ? "Edit author":"Add author";
+		setTitle(infoText);
 		setMessage("At least the new author's name has to be specified.", IMessageProvider.INFORMATION);
 		okButton = getButton(IDialogConstants.OK_ID);
 		
