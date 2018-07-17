@@ -31,6 +31,8 @@ import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
  */
 public class LatexExportChartGenerator {
 	
+	public static final String FILEEXTENSION =".JPG";
+	
 	
 	/**
 	 * Generates barcharts (SVG) the main dimensions of an slr project
@@ -45,16 +47,16 @@ public class LatexExportChartGenerator {
 		PlatformConfig config = new PlatformConfig();
 		String folder = FileHelper.extractFolderFromFilepath(filepath);
 		
-		String filepathNewSvg;
+		String filepathNewChart;
 		String imagesFolderName = "images";
 		new File(folder+File.separator+imagesFolderName).mkdir();
 		
 		for(Term term : dimensions) {
-			filepathNewSvg = folder;
+			filepathNewChart = folder;
 			try {
 				//TODO use SVG/PDF?
-				String newFileName = term.getName()+".JPG";
-				filepathNewSvg = filepathNewSvg+File.separator+imagesFolderName+File.separator+newFileName;
+				String newFileName = term.getName()+FILEEXTENSION;
+				filepathNewChart = filepathNewChart+File.separator+imagesFolderName+File.separator+newFileName;
 				SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
 				
 				Chart myChart = new BarChartGenerator().createBar(myValues);
@@ -69,13 +71,13 @@ public class LatexExportChartGenerator {
 				Bounds bo = BoundsImpl.create(0, 0, 600, 400);
 				gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
 
-				idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepathNewSvg);
+				idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepathNewChart);
 				//idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
 
 				gr.render(idr, gcs);
 				
 				// Separator "/" for LaTex syntag
-				toReturn.put(term, imagesFolderName+"/"+term.getName());
+				toReturn.put(term, imagesFolderName+"/"+term.getName().replaceAll("\\s+","")+FILEEXTENSION);
 			} catch (ChartException gex) {
 				gex.printStackTrace();
 			}

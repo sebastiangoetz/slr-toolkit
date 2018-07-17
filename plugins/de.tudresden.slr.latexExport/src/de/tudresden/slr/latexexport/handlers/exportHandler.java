@@ -22,6 +22,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -49,7 +50,7 @@ public class exportHandler extends AbstractHandler {
 	protected AdapterFactoryEditingDomain editingDomain;
 	
 	/**
-	 * Sets bibtex documents, taxonomy and metainformation from input argument's project as active elements in ModelRegistry and Metainformation plugin activator
+	 * Sets bibtex documents, taxonomy and metainformation from input argument's resources as active elements in ModelRegistry and Metainformation plugin activator
 	 * @param project project whose workspace is searched for resources whose file extensions are checked. Matching .taxonomy, .bib and .slrproject-files are loaded in the respective plugins or ModelRegistry
 	 */
 	private void setProjectForExport(IProject project) {
