@@ -30,14 +30,15 @@ public class TemplateACMSigplanConf extends SlrLatexTemplate {
 	public String fillDocument(String document, SlrProjectMetainformation metainformation, DataProvider dataProvider,
 			Map<Term, String> mainDimensions) {
 		Map<String, String> valuesMap = new HashMap<String, String>();
-		valuesMap.put("SLR_TITLE", metainformation.getTitle());
-		valuesMap.put("SLR_ABSTRACT", metainformation.getProjectAbstract());
-		valuesMap.put("SLR_KEYWORDS", metainformation.getKeywords());
-		valuesMap.put("SLR_AUTHORS", this.generateAuthorSection(metainformation));
-		valuesMap.put("SLR_STATISTICS", this.generateStatistics(dataProvider));
+		valuesMap.put(SLRVARIABLE_TITLE, metainformation.getTitle());
+		valuesMap.put(SLRVARIABLE_ABSTRACT, metainformation.getProjectAbstract());
+		valuesMap.put(SLRVARIABLE_KEYWORDS, metainformation.getKeywords());
+		valuesMap.put(SLRVARIABLE_AUTHORS, this.generateAuthorSection(metainformation));
+		valuesMap.put(SLRVARIABLE_STATISTICS, this.generateStatistics(dataProvider));
+		valuesMap.put(SLRVARIABLE_TAXONOMYDESCRIPTION, metainformation.getTaxonomyDescription());
 		
 		double imageToTextWidthFactor = 0.4;
-		valuesMap.put("SLR_DIMENSIONCHARTS", this.generateDimensionCharts(mainDimensions, imageToTextWidthFactor));
+		valuesMap.put(SLRVARIABLE_DIMENSIONCHARTS, this.generateDimensionCharts(mainDimensions, imageToTextWidthFactor));
 
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
 		String resolvedString = sub.replace(document);

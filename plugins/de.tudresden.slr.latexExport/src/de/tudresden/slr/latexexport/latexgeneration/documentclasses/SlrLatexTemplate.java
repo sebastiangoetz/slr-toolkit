@@ -18,12 +18,24 @@ public abstract class SlrLatexTemplate {
 	
 	public static final String[] documentTypes = { TEMPLATE_PLAIN , TEMPLATE_TUDSCR , TEMPLATE_IEEE , TEMPLATE_SPRINGER_LNCS, TEMPLATE_ACM};
 	
+	//variables in LaTex templates, use this strings for string replacement
+	protected static final String SLRVARIABLE_TITLE = "SLR_TITLE";
+	protected static final String SLRVARIABLE_ABSTRACT = "SLR_ABSTRACT";
+	protected static final String SLRVARIABLE_KEYWORDS = "SLR_KEYWORDS";
+	protected static final String SLRVARIABLE_AUTHORS = "SLR_AUTHORS";
+	protected static final String SLRVARIABLE_STATISTICS = "SLR_STATISTICS";
+	protected static final String SLRVARIABLE_TAXONOMYDESCRIPTION = "SLR_TAXONOMYDESCRIPTION";
+	protected static final String SLRVARIABLE_DIMENSIONCHARTS = "SLR_DIMENSIONCHARTS";
+	
 	protected final String resourcePrefix = "platform:/plugin/de.tudresden.slr.latexExport/resources/";
 	
 	/**
-	 * .cls and auxiliary files of the LaTex template. Specified in subclasses!
+	 * .cls and auxiliary files of the LaTex template. Specify in the constructors of the subclasses!
 	 */
 	protected URL[] filesToCopy = {};
+	/**
+	 * LaTex template. Specify in the constructors of the subclasses!
+	 */
 	protected URL templatePath;
 	protected String name;
 	
@@ -108,5 +120,15 @@ public abstract class SlrLatexTemplate {
 				+ " dimensions";
 		return toReturn;
 	}
+	
+	/**
+	 * Generates an author section for a LaTex Documents. Due to the different syntax styles regarding
+	 * the author section of different LaTex templates, this has to be implemented in every subclass.
+	 * IMPORTANT: the generated String will be placed <b>INSIDE</b> the \authors{ ... } tag in the filled
+	 * template.
+	 * @param metainformation Metainformation object containing the list of authors
+	 * @return String which is to be put in authors tag in template
+	 */
+	public abstract String generateAuthorSection(SlrProjectMetainformation metainformation);
 	
 }

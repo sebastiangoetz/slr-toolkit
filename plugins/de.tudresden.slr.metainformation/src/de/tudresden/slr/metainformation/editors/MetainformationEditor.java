@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -16,7 +17,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -39,7 +39,6 @@ import org.eclipse.ui.part.EditorPart;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.Author;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
-import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
 
 public class MetainformationEditor extends EditorPart implements IEditorPart {
@@ -48,10 +47,11 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private boolean dirty = false;
 	private IPath activeFilePath;
 	private Text textboxFile, textboxTitle, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
+	
 	private org.eclipse.swt.widgets.List listAuthorsList;
 	//Dummy author to ensure consistency of metainformation storage
 	Author dummyAuthor = new Author("John Doe", "johnd@mail.tld", "University of XYZ");
-	
+		
 	public  MetainformationEditor() {
 	}
 		
@@ -118,11 +118,20 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 			textboxDescriptionTaxonomy.setText(metainformation.getTaxonomyDescription());
 			textboxAbstract.setText(metainformation.getProjectAbstract());
 			textboxFile.setText(activeFilePath.toOSString());
+			
+			initProject();
+			
+			
 			redrawAuthorsList();
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void initProject() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -143,8 +152,8 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
-	    ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+	public void createPartControl(Composite parent) {		
+	    ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL);
 	    sc.setLayout(new RowLayout());
 		
 		Composite masterComposite = new Composite(sc, SWT.NONE);
@@ -162,22 +171,18 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		gridDataExpand.grabExcessHorizontalSpace = true;
 		gridDataExpand.horizontalAlignment = SWT.FILL;
 		
-		
 		//multipurpose GridData for Groups, specifies that they should take a whole "row", not just one
 		//half of the grid due to 2 columns layout
 		GridData gridDataGroups = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
 		gridDataGroups.horizontalSpan = 2;
 		gridDataGroups.verticalAlignment = SWT.BEGINNING;
 		gridDataGroups.grabExcessHorizontalSpace = true;
-		gridDataGroups.horizontalAlignment = SWT.FILL;
-		
-		GridData gridSmallTextboxes = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
+		gridDataGroups.horizontalAlignment = SWT.FILL;		
 		
 		Group keyFactsGroup = new Group(masterComposite, SWT.NONE);
 		keyFactsGroup.setText("Key facts");		
 		keyFactsGroup.setLayout(gridLayout2Columns);
-		keyFactsGroup.setLayoutData(gridDataGroups);
-
+		keyFactsGroup.setLayoutData(gridDataGroups);		
 		
 		//Labels and Textboxes for key facts group
 		new Label(keyFactsGroup, SWT.NONE).setText("File");
@@ -212,24 +217,39 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		
 		//List is initialized later on, because initialization of form fields needs to be done first
 		listAuthorsList = new org.eclipse.swt.widgets.List(authorsGroup, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		RowData rowDataAuthorsList = new RowData(500,50);
+		int listAuthorsListWidth = 1000; //1000px default width
+		RowData rowDataAuthorsList = new RowData(listAuthorsListWidth,100);
+		
+	    //UNUSED: Listener for list's parent to determine size of list dynamically. RowData can't (?) set expand
+		//horizontally, so this approach is used
+//		authorsGroup.addControlListener(new ControlListener() {
+//	        public void controlResized(ControlEvent e) {
+//	        	double widthFactor = 0.98;
+//	        	int currentWidth = (int) (widthFactor*parent.getSize().x);
+//	        	System.out.println("new width " + currentWidth);
+//	        	rowDataAuthorsList.width = currentWidth;
+//	        	listAuthorsList.setLayoutData(rowDataAuthorsList);
+//	        }
+//
+//			@Override
+//			public void controlMoved(ControlEvent e) {
+//			}
+//	      });
 		listAuthorsList.setLayoutData(rowDataAuthorsList);
 		//end authors group
 		
+		//begin description group
 		Group descriptionGroup = new Group(masterComposite, SWT.NONE);
 		descriptionGroup.setText("Description");
 		descriptionGroup.setLayout(gridLayout2Columns);
-		
-		GridData gridDataDescriptionGroup = new GridData(SWT.BEGINNING, SWT.BEGINNING, true, true);
-		descriptionGroup.setLayoutData(gridDataDescriptionGroup);
-		
+		descriptionGroup.setLayoutData(gridDataGroups);		
 
 		//grid data for textboxes abstract & description
 		GridData gridDataBigTextboxes = new GridData();
 		gridDataBigTextboxes.grabExcessHorizontalSpace = true;
 		gridDataBigTextboxes.horizontalAlignment = SWT.FILL;
-		gridDataBigTextboxes.heightHint = 200;
-
+		gridDataBigTextboxes.heightHint = 100;
+		
 		new Label(descriptionGroup, SWT.NONE).setText("Abstract");
 		textboxAbstract = new Text(descriptionGroup, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		textboxAbstract.setLayoutData(gridDataBigTextboxes);
@@ -237,22 +257,31 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		new Label(descriptionGroup, SWT.NONE).setText("Description of \n the taxonomy");
 		textboxDescriptionTaxonomy = new Text(descriptionGroup, SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		textboxDescriptionTaxonomy.setLayoutData(gridDataBigTextboxes);
-				
+		//end description group		
+		
 		initFormFields();
 		
+		//default width initialized with 1000px
+		masterComposite.setSize(masterComposite.computeSize(1000, SWT.DEFAULT));
+		int masterCompositeInitHeight = masterComposite.getSize().y;
+		
 	    parent.addControlListener(new ControlListener() {
-	        public void controlMoved(ControlEvent e) {
+	        public void controlResized(ControlEvent e) {
+	        	//setSize of masterComposize to new width and height at initialization time
+	        	//new width is (1-widthFactor) * old parent width. If widthFactor == 1, scrollbars
+	        	//from Textboxes would overlap with scrollbar from whole editor
+	        	double widthFactor = 0.98;
+	        	int newWidth = (int) (widthFactor * parent.getSize().x);
+	    		masterComposite.setSize(parent.computeSize(newWidth, masterCompositeInitHeight));
 	        }
 
-	        public void controlResized(ControlEvent e) {
-	        	double widthFactor = 0.98;
-	        	int currentWidth = (int) (widthFactor*parent.getSize().x);
-	    		masterComposite.setSize(parent.computeSize(currentWidth, SWT.DEFAULT));
-	        }
+			@Override
+			public void controlMoved(ControlEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 	      });    
-		
-		//TODO set width to control width
-		masterComposite.setSize(masterComposite.computeSize(1000, SWT.DEFAULT));
+
 
 
 		//Listener for author group buttons
