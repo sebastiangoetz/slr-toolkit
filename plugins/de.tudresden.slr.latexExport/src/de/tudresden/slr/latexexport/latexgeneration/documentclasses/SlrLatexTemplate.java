@@ -117,7 +117,7 @@ public abstract class SlrLatexTemplate {
 				+ dataProvider.getMainDimensions().size() 
 				+ " main dimensions which themselves are subcategorised in a total of "
 				+ dimensionsCounWithoutMainDimensions
-				+ " dimensions";
+				+ " dimensions. \\\\";
 		return toReturn;
 	}
 	

@@ -25,6 +25,7 @@ import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateACMS
 import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateIEEEconf;
 import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplatePlainArticle;
 import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateSpringerLncs;
+import de.tudresden.slr.latexexport.latexgeneration.documentclasses.TemplateTUDSCR;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -54,22 +55,26 @@ public class SlrLatexGenerator {
 
 		SlrLatexTemplate conreteDocumentTemplate = null;
 
-		//check manually, whether the template name matches an existing one
-		if (templateName.equals(SlrLatexTemplate.TEMPLATE_PLAIN)) 
+		// check manually, whether the template name matches an existing one
+		if (templateName.equals(SlrLatexTemplate.TEMPLATE_PLAIN))
 			conreteDocumentTemplate = new TemplatePlainArticle();
 		if (templateName.equals(SlrLatexTemplate.TEMPLATE_ACM))
 			conreteDocumentTemplate = new TemplateACMSigplanConf();
 		if (templateName.equals(SlrLatexTemplate.TEMPLATE_IEEE))
 			conreteDocumentTemplate = new TemplateIEEEconf();
 		if (templateName.equals(SlrLatexTemplate.TEMPLATE_SPRINGER_LNCS))
-			conreteDocumentTemplate = new TemplateSpringerLncs();	
+			conreteDocumentTemplate = new TemplateSpringerLncs();
+		if (templateName.equals(SlrLatexTemplate.TEMPLATE_TUDSCR))
+			conreteDocumentTemplate = new TemplateTUDSCR();
 
 		this.concreteDocument = conreteDocumentTemplate;
 	}
 
 	/**
 	 * Triggers the generation of the charts for the main dimensions.
-	 * @return Mapping from Term to String which contains for every Term in the main dimensions the relative path in the exported LaTex folder
+	 * 
+	 * @return Mapping from Term to String which contains for every Term in the main
+	 *         dimensions the relative path in the exported LaTex folder
 	 * @throws FileNotFoundException
 	 * @throws UnsupportedEncodingException
 	 */
@@ -78,9 +83,11 @@ public class SlrLatexGenerator {
 	}
 
 	/**
-	 * Tries to read a certain file, addressed by it's URL, and read it's contents into a String,
-	 * which is later on used for the templates.
-	 * @param url URL to the file
+	 * Tries to read a certain file, addressed by it's URL, and read it's contents
+	 * into a String, which is later on used for the templates.
+	 * 
+	 * @param url
+	 *            URL to the file
 	 * @return File content as String
 	 */
 	public String getResourceContentAsString(URL url) {
@@ -105,7 +112,10 @@ public class SlrLatexGenerator {
 
 	/**
 	 * Copies resources given by an array of URLs to the LaTex document's folder.
-	 * @param resources Array of URLs, which point to files which are to be exported/copied to the LaTex document's folder.
+	 * 
+	 * @param resources
+	 *            Array of URLs, which point to files which are to be
+	 *            exported/copied to the LaTex document's folder.
 	 * @throws IOException
 	 */
 	public void copyResources(URL[] resources) throws IOException {
@@ -122,8 +132,10 @@ public class SlrLatexGenerator {
 	}
 
 	/**
-	 * Tempalte method encapsuling the LaTex export. Copies the resources to the export's folder,
-	 * generates the charts for the main dimensions and triggers the input of data in the LaTex templates
+	 * Tempalte method encapsuling the LaTex export. Copies the resources to the
+	 * export's folder, generates the charts for the main dimensions and triggers
+	 * the input of data in the LaTex templates
+	 * 
 	 * @throws IOException
 	 */
 	public final void performExport() throws IOException {
@@ -143,7 +155,8 @@ public class SlrLatexGenerator {
 	}
 
 	/*
-	 * Fills a given template with information from the metainformation object and DataProvider.
+	 * Fills a given template with information from the metainformation object and
+	 * DataProvider.
 	 */
 	public String fillDocument(SlrLatexTemplate template) {
 		String document = getResourceContentAsString(template.getTemplatePath());
