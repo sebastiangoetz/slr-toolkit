@@ -91,15 +91,26 @@ public abstract class SlrLatexTemplate {
 	
 	/**
 	 * Generates LaTex figures for the main dimensions.
-	 * @param mainDimensions Mapping from Term/it's Chart to the relative path
+	 * @param mainDimensionsMap Mapping from Term/it's Chart to the relative path
 	 * @param imageToTextWidthFactor Scaling from picture to textwidth
 	 * @return LaTex code for the figures of the main dimensions and captions.
 	 */
-	public String generateDimensionCharts(Map<Term, String> mainDimensions, double imageToTextWidthFactor) {
+	public String generateDimensionCharts(Map<Term, String> mainDimensionsMap, double imageToTextWidthFactor) {
 		String toReturn = "";
-		for (Map.Entry<Term, String> entry : mainDimensions.entrySet()) {
-			toReturn = toReturn + generateImageFigure(entry.getValue(), entry.getKey().getName(), imageToTextWidthFactor);
+		
+		//ensure that order of main dimensions is the same as in the taxonomy
+		DataProvider dataProvider = new DataProvider();
+		for(int i = 0; i<dataProvider.getMainDimensions().size(); i++) {
+			Term currentTerm = dataProvider.getMainDimensions().get(i);
+			String path = mainDimensionsMap.get(currentTerm);
+			if(path != null) {
+				toReturn = toReturn + generateImageFigure(path, currentTerm.getName(),imageToTextWidthFactor);
+			}
 		}
+		
+//		for (Map.Entry<Term, String> entry : mainDimensionsMap.entrySet()) {
+//			toReturn = toReturn + generateImageFigure(entry.getValue(), entry.getKey().getName(), imageToTextWidthFactor);
+//		}
 		
 		return toReturn;
 	}

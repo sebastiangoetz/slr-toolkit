@@ -30,15 +30,18 @@ import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
  *
  */
 public class LatexExportChartGenerator {
-	
-	public static final String FILEEXTENSION =".JPG";
-	
-	
+
+	public static final String FILEEXTENSION = ".JPG";
+
 	/**
 	 * Generates barcharts (SVG) the main dimensions of an slr project
-	 * @param filepath Path of the LaTex-document which was generated
-	 * @param dataProvider DataProvider object which contains the dimensions
-	 * @return Mapping from Term to String which maps a Term to a relative path to an image which is to be used in a LaTex document
+	 * 
+	 * @param filepath
+	 *            Path of the LaTex-document which was generated
+	 * @param dataProvider
+	 *            DataProvider object which contains the dimensions
+	 * @return Mapping from Term to String which maps a Term to a relative path to
+	 *         an image which is to be used in a LaTex document
 	 */
 	public static Map<Term, String> generatePDFOutput(String filepath, DataProvider dataProvider) {
 		EList<Term> dimensions = dataProvider.getMainDimensions();
@@ -46,44 +49,49 @@ public class LatexExportChartGenerator {
 		Map<Term, String> toReturn = new HashMap<Term, String>();
 		PlatformConfig config = new PlatformConfig();
 		String folder = FileHelper.extractFolderFromFilepath(filepath);
-		
+
 		String filepathNewChart;
 		String imagesFolderName = "images";
-		new File(folder+File.separator+imagesFolderName).mkdir();
-		
-		for(Term term : dimensions) {
+		new File(folder + File.separator + imagesFolderName).mkdir();
+
+		for (Term term : dimensions) {
 			filepathNewChart = folder;
-			try {
-				//TODO use SVG/PDF?
-				String newFileName = term.getName()+FILEEXTENSION;
-				filepathNewChart = filepathNewChart+File.separator+imagesFolderName+File.separator+newFileName;
-				SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
-				
-				Chart myChart = new BarChartGenerator().createBar(myValues);
-				
-				IDeviceRenderer idr = null;
-				idr = ChartEngine.instance(config).getRenderer("dv.JPG");
-				RunTimeContext rtc = new RunTimeContext();
-				rtc.setULocale(ULocale.getDefault());
 
-				Generator gr = Generator.instance();
-				GeneratedChartState gcs = null;
-				Bounds bo = BoundsImpl.create(0, 0, 600, 400);
-				gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
+			if (term.getSubclasses().size() != 0)
+			{
+				try {
+					// TODO use SVG/PDF?
+					String newFileName = term.getName().replaceAll("\\s+", "") + FILEEXTENSION;
+					filepathNewChart = filepathNewChart + File.separator + imagesFolderName + File.separator
+							+ newFileName;
+					SortedMap<String, Integer> myValues = chartData.calculateNumberOfPapersPerClass(term);
 
-				idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepathNewChart);
-				//idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new EmptyUpdateNotifier(chart, gcs.getChartModel()));
+					Chart myChart = new BarChartGenerator().createBar(myValues);
 
-				gr.render(idr, gcs);
-				
-				// Separator "/" for LaTex syntag
-				toReturn.put(term, imagesFolderName+"/"+term.getName().replaceAll("\\s+","")+FILEEXTENSION);
-			} catch (ChartException gex) {
-				gex.printStackTrace();
+					IDeviceRenderer idr = null;
+					idr = ChartEngine.instance(config).getRenderer("dv.JPG");
+					RunTimeContext rtc = new RunTimeContext();
+					rtc.setULocale(ULocale.getDefault());
+
+					Generator gr = Generator.instance();
+					GeneratedChartState gcs = null;
+					Bounds bo = BoundsImpl.create(0, 0, 600, 400);
+					gcs = gr.build(idr.getDisplayServer(), myChart, bo, null, rtc, null);
+
+					idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, filepathNewChart);
+					// idr.setProperty(IDeviceRenderer.UPDATE_NOTIFIER, new
+					// EmptyUpdateNotifier(chart, gcs.getChartModel()));
+
+					gr.render(idr, gcs);
+
+					// Separator "/" for LaTex syntag
+					toReturn.put(term, imagesFolderName + "/" + newFileName);
+				} catch (ChartException gex) {
+					gex.printStackTrace();
+				}
 			}
 		}
 		return toReturn;
 	}
-	
 
 }

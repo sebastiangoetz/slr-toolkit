@@ -16,6 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;
@@ -147,6 +148,12 @@ public class SlrLatexGenerator {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			writer.write(filledDocument);
 			writer.close();
+			
+			String informationMessage = 
+					"Please be advised - check the generated LaTex template for parts which are still to be filled out. "
+					+ "\r\n\r\n"
+					+ "Due to the nature of the bar charts, charts were just generated for dimensions which have subdimensions as children.";
+			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error", informationMessage);
 		} else {
 			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
 					"No valid template selected.");
