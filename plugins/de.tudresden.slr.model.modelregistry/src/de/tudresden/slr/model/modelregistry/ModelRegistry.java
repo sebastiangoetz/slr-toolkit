@@ -73,7 +73,7 @@ public class ModelRegistry extends Observable {
 		if (activeDocument != document) {
 			Optional<Model> currentModel = getActiveTaxonomy();
 			Model model =  taxonomyParser.parseTaxonomyFile(getTaxonomyFileInProject(document.eResource()));
-			if(!model.getResource().getURI().equals(currentModel.get().eResource().getURI()))
+			if(currentModel.isPresent() && !model.getResource().getURI().equals(currentModel.get().eResource().getURI()))
 				setActiveTaxonomy(model);
 			
 			activeDocument = document;
@@ -112,16 +112,19 @@ public class ModelRegistry extends Observable {
 	 * @return Taxonomy file handle or null
 	 */
 	private IFile getTaxonomyFileInProject(Resource resource){
-		IFile[] containers = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(getFileFromResource(resource).getLocationURI());
 		IFile file = null;
-		if(containers != null && containers.length > 0){
-			IProject project = containers[0].getProject();
-			if(project != null){
-				try {
-					//TODO: project.members() only returns immediate children, would need recursive function to walk through project.
-					file = (IFile) Arrays.stream(project.members()).filter(x -> x.getType() == IResource.FILE && x.getFileExtension().equals("taxonomy")).reduce((a, b) -> b).orElse(null);
-				} catch (CoreException e) {
-					e.printStackTrace();
+		IFile ffr = getFileFromResource(resource);
+		if(ffr != null) {
+			IFile[] containers = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(ffr.getLocationURI());
+			if(containers != null && containers.length > 0){
+				IProject project = containers[0].getProject();
+				if(project != null){
+					try {
+						//TODO: project.members() only returns immediate children, would need recursive function to walk through project.
+						file = (IFile) Arrays.stream(project.members()).filter(x -> x.getType() == IResource.FILE && x.getFileExtension().equals("taxonomy")).reduce((a, b) -> b).orElse(null);
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

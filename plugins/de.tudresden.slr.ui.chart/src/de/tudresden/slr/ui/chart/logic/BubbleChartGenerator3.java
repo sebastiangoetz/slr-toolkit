@@ -101,7 +101,7 @@ public class BubbleChartGenerator3
 		Scale yScale = yAxisPrimary.getScale();
 		yScale.setStep(1);
 		yScale.setMin(NumberDataElementImpl.create(0));
-		yScale.setMax(NumberDataElementImpl.create(numberOfYTerms + 1));
+		yScale.setMax(NumberDataElementImpl.create(numberOfYTerms + 1.0));
 		if(numberOfYTerms <= 10){
 			yAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
 			yAxisPrimary.getLabel().getCaption().getFont().setName("Arial");

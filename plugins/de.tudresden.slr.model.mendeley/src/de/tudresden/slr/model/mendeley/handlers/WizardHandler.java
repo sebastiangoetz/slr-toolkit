@@ -95,10 +95,11 @@ public class WizardHandler extends AbstractHandler {
             	subMonitor.subTask("Downloading latest Mendeley Folders");
 				try {
 					// only executes if previous job was successful
-					if(loggedIn)
+					if(loggedIn) {
 						mc.updateMendeleyFolders(monitor);
 						if(!monitor.isCanceled())
 							isReady = true;
+					}
 					else
 						return Status.CANCEL_STATUS;
 				} catch (TokenMgrException | IOException | ParseException e) {
@@ -117,11 +118,11 @@ public class WizardHandler extends AbstractHandler {
             	if(loggedIn & isReady) {
             		WizardDialog wizardDialog = new WizardDialog(window.getShell(),
 				            new MSyncWizard());
-			        if (wizardDialog.open() == Window.OK) {
-			            
-			        } else {
-			            
-			        }
+//			        if (wizardDialog.open() == Window.OK) {
+//			            
+//			        } else {
+//			            
+//			        }
             	}
             	else {
             		return Status.CANCEL_STATUS;

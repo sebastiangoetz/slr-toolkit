@@ -2,6 +2,7 @@ package de.tudresden.slr.model.utils;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import de.tudresden.slr.model.taxonomy.Model;
@@ -23,6 +24,7 @@ public class TaxonomyIterator implements Iterator<Term>, Iterable<Term> {
 	@Override
 	public Term next() {
 		Term next = elements.poll();
+		if(next == null) throw new NoSuchElementException();
 		elements.addAll(next.getSubclasses());
 		return next;
 	}

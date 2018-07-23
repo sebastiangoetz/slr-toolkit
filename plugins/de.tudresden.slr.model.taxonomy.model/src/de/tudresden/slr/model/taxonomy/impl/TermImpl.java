@@ -130,11 +130,23 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 		int hash = 1;
 		if (eContainer instanceof Term) {
 			int parentHash = eContainer.hashCode();
-			hash = prime * hash + parentHash ^ (parentHash >> 32);
+			hash = prime * hash + parentHash ^ parentHash;
 		}
 		int nameHash = name.hashCode();
-		hash = prime * hash + nameHash ^ (nameHash >> 32);
+		hash = prime * hash + nameHash ^ nameHash;
 		return hash;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		String fullyQualifiedName = "";
+		if(eContainer instanceof Term) {
+			fullyQualifiedName += ((Term)eContainer).getName()+"/";
+		}
+		fullyQualifiedName += name; 
+		if(obj instanceof Term)
+			return fullyQualifiedName.equals(((Term)obj).getName());
+		else return false;
 	}
 
 	/**
@@ -214,7 +226,8 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case TaxonomyPackage.TERM__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return name != null;
+				//return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TaxonomyPackage.TERM__SUBCLASSES:
 				return subclasses != null && !subclasses.isEmpty();
 		}
