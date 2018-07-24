@@ -125,35 +125,6 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int hashCode() {
-		final int prime = 31;
-		int hash = 1;
-		if (eContainer instanceof Term) {
-			int parentHash = eContainer.hashCode();
-			hash = prime * hash + parentHash ^ parentHash;
-		}
-		int nameHash = name.hashCode();
-		hash = prime * hash + nameHash ^ nameHash;
-		return hash;
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		String fullyQualifiedName = "";
-		if(eContainer instanceof Term) {
-			fullyQualifiedName += ((Term)eContainer).getName()+"/";
-		}
-		fullyQualifiedName += name; 
-		if(obj instanceof Term)
-			return fullyQualifiedName.equals(((Term)obj).getName());
-		else return false;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
