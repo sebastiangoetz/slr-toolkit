@@ -47,7 +47,7 @@ public class TemplatePlainArticle extends SlrLatexTemplate {
 	public String generateAuthorSection(SlrProjectMetainformation metainformation) {
 		String authors = "";
 		for(Author a : metainformation.getAuthorsList()) {
-			authors = authors + a.toString() + "\r\n";
+			authors = authors + a.toString() + "\r\n\\\\";
 		}
 		
 		return authors;

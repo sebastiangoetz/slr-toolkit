@@ -58,6 +58,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 	private IPath activeFilePath;
 	private Text textboxFile, textboxTitle, textboxKeywords, textboxAbstract, textboxDescriptionTaxonomy;
 	private Text textboxMainDimensions, textboxDimensions, textboxDocuments;
+	private Button buttonAddAuthor, buttonEditAuthor, buttonDeleteAuthor;
 
 	// AdapterFactory and EditingDomain for loading of resources, copied and adapted
 	// from de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView
@@ -289,13 +290,13 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		gridDataAuthorsGroup.horizontalSpan = 2;
 		authorsGroup.setLayoutData(gridDataAuthorsGroup);
 
-		Button buttonAddAuthor = new Button(authorsGroup, 0);
+		buttonAddAuthor = new Button(authorsGroup, 0);
 		buttonAddAuthor.setText("Add");
 
-		Button buttonEditAuthor = new Button(authorsGroup, 0);
+		buttonEditAuthor = new Button(authorsGroup, 0);
 		buttonEditAuthor.setText("Edit");
 
-		Button buttonDeleteAuthor = new Button(authorsGroup, 0);
+		buttonDeleteAuthor = new Button(authorsGroup, 0);
 		buttonDeleteAuthor.setText("Delete");
 
 		// List is initialized later on, because initialization of form fields needs to
@@ -347,12 +348,11 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		textboxDescriptionTaxonomy.setLayoutData(gridDataBigTextboxes);
 		// end description group
 
-		initFormFields();
-
 		// default width initialized with 1000px
 		masterComposite.setSize(masterComposite.computeSize(1000, SWT.DEFAULT));
 		int masterCompositeInitHeight = masterComposite.getSize().y;
 
+		//resize listener has to be in here due to access on composites
 		parent.addControlListener(new ControlListener() {
 			public void controlResized(ControlEvent e) {
 				// setSize of masterComposize to new width and height at initialization time
@@ -366,11 +366,15 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 
 			@Override
 			public void controlMoved(ControlEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
+		
+		initFormFields();
+		addListeners();
 
+	}
+	
+	private void addListeners() {
 		// Listener for author group buttons
 		buttonAddAuthor.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -453,6 +457,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		textboxKeywords.addModifyListener(modifiedDirty);
 		textboxAbstract.addModifyListener(modifiedDirty);
 		textboxDescriptionTaxonomy.addModifyListener(modifiedDirty);
+
 	}
 
 	/**

@@ -153,7 +153,7 @@ public class SlrLatexGenerator {
 					"Please be advised - check the generated LaTex template for parts which are still to be filled out. "
 					+ "\r\n\r\n"
 					+ "Due to the nature of the bar charts, charts were just generated for dimensions which have subdimensions as children.";
-			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error", informationMessage);
+			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Attention", informationMessage);
 		} else {
 			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
 					"No valid template selected.");

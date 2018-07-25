@@ -5,6 +5,7 @@ import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+//import com.thoughtworks.xstream;
 
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 
@@ -17,6 +18,8 @@ public class MetainformationUtil {
 	 * @throws JAXBException
 	 */
 	public static SlrProjectMetainformation getMetainformationFromFile(File file) throws JAXBException {
+		//XStream x;
+		
 		JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
 
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
