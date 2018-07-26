@@ -13,6 +13,13 @@
             id="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView"
             name="Bibtex Entries">
       </view>
+      <view
+            category="de.tudresden.slr.views"
+            class="de.tudresden.slr.model.bibtex.ui.presentation.BibtexSearchView"
+            icon="icons/icon.png"
+            id="de.tudresden.slr.model.bibtex.ui.searchview"
+            name="Bibtex Term Search">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
