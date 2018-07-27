@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <slrProjectMetainformation>
-    <title>Title of the systematic literature review</title>
-    <keywords>keyword1, keyword2, keyword3, keyword4, keyword5, keyword6, keyword7, keyword8, keyword9</keywords>
-    <projectAbstract>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#xD;
-Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </projectAbstract>
-    <taxonomyDescription>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </taxonomyDescription>
+    <title>A systematic literature study on building information modelling from a computer science perspective</title>
+    <keywords>bim, cad</keywords>
+    <projectAbstract>Building Information Modeling, kurz "BIM", ist ein Prozess, der die Entwicklung eines zusammengesetzten, mit Metadaten angereichertem, virtuellen Modells eines Gebäudes zum Ziel hat. Diese Metadaten beinhalten sowohl physische als auch funktionale Chararakteristika, gespeichert in intelligenten Objekten. Das Modell kann durch verschiedene Sichten (Stabilität, Energieverbrauch, Kostenberechnung, Ablaufplanung, Wartbarkeit, Sicherheit, Katastrophenmanagement, u.a.) des selben Gebäudes dargestellt und von allen Teilnehmern jederzeit betrachtet und bearbeitet werden. Die Änderungen werden dabei synchronisiert, was einen enormen Vorteil gegenuber traditionellen, papierbasierten Methoden der Modellierung darstellt.</projectAbstract>
+    <taxonomyDescription>Die folgende multidimensionale Taxonomie wurde iterativ, auf Grundlage erster Analysen der Literatur erstellt. Eine wissenschaftliche Arbeit kann innerhalb einer Dimension in mehrere Klassen eingeteilt sein. Die Ausnahme bildet dabei die Dimension "Art". Es folgt die sukzessive Beschreibung der Dimensionen und ihrer Klassen, sowie Unterklassen. Dazu wird eine schematische Darstellung der Taxonomie angegeben (Auswahl).</taxonomyDescription>
     <authorsList>
-        <email>johnd@mail.tld</email>
-        <name>John Doe</name>
-        <organisation>University of XYZ</organisation>
-    </authorsList>
-    <authorsList>
-        <email>new@name.org</email>
-        <name>New Name</name>
-        <organisation>Affiliation</organisation>
+        <email>brownieHorst@web.de</email>
+        <name>Kevin Horst</name>
+        <organisation>Technische Universität Dresden, Germany</organisation>
     </authorsList>
 </slrProjectMetainformation>
