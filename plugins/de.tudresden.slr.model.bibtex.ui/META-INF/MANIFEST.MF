@@ -21,4 +21,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: de.tudresden.slr.model.bibtex.ui.presentation
+Export-Package: de.tudresden.slr.model.bibtex.ui.presentation,
+ de.tudresden.slr.model.bibtex.ui.util
