@@ -3,7 +3,7 @@
 
 A Toolkit for Systematic Literature Reviews
 
-Find a short video giving an overview of the main features of the tool on [Youtube](https://youtu.be/C4kdDET3s-8).
+Find a short video giving an overview of the main features of the tool on [Youtube](https://youtu.be/IB4d9CJt144).
 
 ### Releases
 
