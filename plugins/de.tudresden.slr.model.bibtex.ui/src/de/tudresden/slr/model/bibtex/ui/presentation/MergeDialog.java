@@ -1,9 +1,17 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -27,6 +35,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
 public class MergeDialog extends Dialog {
@@ -147,20 +156,19 @@ public class MergeDialog extends Dialog {
     	if(!validateDialog()) {
     		return;
     	}
-    	if(!data.getArgs()[0]) {
-    		// merge with no duplicate handling
-    		if(data.merge() == null) {
-    			MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
-    			return;
-    		}
-    		else { 
-    			//display stats
-    			String info = "The files have been merged into " + data.getFilename() + ".";
-    			while(data.getStats().iterator().hasNext()) {
-    				info = info + "\n" + data.getStats().iterator().next();
-    			}
-    			MessageDialog.openInformation(getShell(), "Merge successful", info);
-    		}
+		if(merge() == null) {
+			MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
+			return;
+		}
+		if(!data.getArgs()[0]) {
+			// merge with no duplicate handling - display stats
+			String info = "The files have been merged into " + data.getFilename() + ".";
+			ListIterator<String> i = data.getStats().listIterator();
+			while(i.hasNext()) {
+				info = info + "\n" + data.getStats().iterator().next();
+			}
+			MessageDialog.openInformation(getShell(), "Merge successful", info);
+    		
     	}
     	else{
     		if(data.getArgs()[2]) {
@@ -175,6 +183,52 @@ public class MergeDialog extends Dialog {
         super.okPressed();
     }
 
+
+	public IFile merge() {
+		IFile result = null;
+		if(!data.getArgs()[0]) {
+			// merge with no duplicate handling
+			BibtexResourceImpl res = null;
+			for(ListIterator<Object> i = data.getResourceList().listIterator(); i.hasNext();) {
+				res = (BibtexResourceImpl) i.next();
+				if(!data.toMergeContains(res.getURI())) {
+					i.remove();
+				}
+			}
+			IPath filePath = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(0)).getLocation();
+			filePath = filePath.removeLastSegments(1);
+			filePath = new Path(filePath.toString() + "/" + getFilename());
+			System.out.println(filePath);
+			result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
+			if(result.exists()) {
+				// if file already exists, signalise that
+				return null;
+			}
+			try {
+				InputStream source = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(0)).getContents();
+			    result.create(source, IResource.NONE, null);
+			    for(int i = 1; i < data.getResourceList().size(); i++) {
+			    	source = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(i)).getContents();
+			    	result.appendContents(source, IResource.NONE, null);
+			    }
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else{
+			if(data.getArgs()[2]) {
+				// merge with manual duplicate handling
+				
+			}
+			else {
+				// merge with automatic duplicate handling
+				
+			}
+		}
+		return result;
+	}
+	
 	public String getFilename() {
         return filename.getText();
     }

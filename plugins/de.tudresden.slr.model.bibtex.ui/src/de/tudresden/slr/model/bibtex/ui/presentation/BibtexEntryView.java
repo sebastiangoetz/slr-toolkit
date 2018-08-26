@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -657,15 +658,18 @@ public class BibtexEntryView extends ViewPart {
 		};
 		openingAction.setText("Open");
 		openingAction.setToolTipText("Open document in an editor");
-		
+
 		mergingAction = new Action() {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
 				if(select.size() > 1 && select.size() < 9) {
 					List<Object> resourceList = new ArrayList<Object>();
-					while(select.iterator().hasNext()) {
-						Object o = select.iterator().next();
+					@SuppressWarnings("unchecked")
+					Iterator<Object> i = select.iterator();
+					Object o;
+					while(i.hasNext()) {
+						o = i.next();
 						if(!(o instanceof BibtexResourceImpl)) {
 							return;
 						}
