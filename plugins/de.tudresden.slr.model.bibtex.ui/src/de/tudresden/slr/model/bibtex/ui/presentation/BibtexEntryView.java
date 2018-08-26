@@ -665,10 +665,9 @@ public class BibtexEntryView extends ViewPart {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
 				if(select.size() > 1 && select.size() < 9) {
 					List<Object> resourceList = new ArrayList<Object>();
-					@SuppressWarnings("unchecked")
-					Iterator<Object> i = select.iterator();
 					Object o;
-					while(i.hasNext()) {
+					for(@SuppressWarnings("unchecked")
+					Iterator<Object> i = select.iterator(); i.hasNext();) {
 						o = i.next();
 						if(!(o instanceof BibtexResourceImpl)) {
 							return;

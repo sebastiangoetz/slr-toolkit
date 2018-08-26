@@ -12,14 +12,12 @@ public class BibtexMergeData {
 	
 	private List<Object> resourceList;
 	private Set<Object> toMerge;
-	private boolean[] args;
 	private String filename;
 	private List<BibtexMergeConflict> conflicts;
 	private List<String> stats;
 	
 	public BibtexMergeData(List<Object> resources) {
 		this.resourceList = resources;
-		this.args = new boolean[3];
 		this.filename = "[missingFilename]";
 		this.conflicts = new ArrayList<BibtexMergeConflict>();
 		this.stats = new ArrayList<String>();
@@ -36,18 +34,6 @@ public class BibtexMergeData {
 
 	public void setResourceList(List<Object> resourceList) {
 		this.resourceList = resourceList;
-	}
-
-	public boolean[] getArgs() {
-		return args;
-	}
-
-	public void setArgs(boolean[] args) {
-		this.args = args;
-	}
-
-	public void setSingleArg(int index, boolean arg) {
-		this.args[index] = arg;
 	}
 	
 	public String getFilename() {
