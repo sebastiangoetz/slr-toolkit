@@ -52,6 +52,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -74,6 +75,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.ui.util.Utils;
+import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**
@@ -660,16 +662,27 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
-				// TODO: check if selection elements BibTeX files
-				if (select == null || !(select.getFirstElement() instanceof Document)) {
+				if(select.size() > 1 && select.size() < 9) {
+					List<Object> resourceList = new ArrayList<Object>();
+					while(select.iterator().hasNext()) {
+						Object o = select.iterator().next();
+						if(!(o instanceof BibtexResourceImpl)) {
+							return;
+						}
+						resourceList.add(o);
+					}
+					MergeDialog dialog = new MergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
+					if (dialog.open() == Window.OK) {
+						refreshAction.run();
+					}
+				}	
+				else {
 					return;
 				}
-				// TODO: make mergeListener and use it here to open merge dialog
-				openListener.openEditor(select, true);
 			}
 		};
-		mergingAction.setText("Merge");
-		mergingAction.setToolTipText("Merge two (or more) BibTeX files");
+		mergingAction.setText("Merge BibTeX files...");
+		mergingAction.setToolTipText("Merge two or more BibTeX files");
 	}
 
 	private void hookActions() {
