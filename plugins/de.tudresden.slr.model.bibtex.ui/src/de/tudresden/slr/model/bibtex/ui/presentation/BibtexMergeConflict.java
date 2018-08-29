@@ -2,35 +2,34 @@ package de.tudresden.slr.model.bibtex.ui.presentation;
 
 public class BibtexMergeConflict {
 	
-	private int noOfConflicts;
-	private String[] snippets;
-	private long[] lineIndices;
-	private String description;
+	private String[] entries;
+	private String[] fileNames;
+	// TODO: these selections will have a different background colour in the StyledTexts of the wizard to show conflicting data
+//	private <textselection>[] conflicts
 	
-	public BibtexMergeConflict(String[] snippets, long[] lineIndices, String description) throws IllegalArgumentException {
-		if(snippets.length == lineIndices.length) {
-			this.noOfConflicts = snippets.length;
-			this.snippets = snippets;
-			this.lineIndices = lineIndices;
-			this.description = description;
+	public BibtexMergeConflict(String[] entries, String[] fileNames/*, <textselection>[] conflicts*/) throws IllegalArgumentException {
+		if(entries.length == fileNames.length) {
+			this.entries = entries;
+			this.fileNames = fileNames;
+//			this.conflicts = conflicts;
 		}
-		else throw(new IllegalArgumentException("Amount of snippets and line indices not equal!"));
+		else throw(new IllegalArgumentException("Argument lengths do not match!"));
 	}
 
-	public int getNoOfConflicts() {
-		return noOfConflicts;
+	public int amountOfEntries() {
+		return entries.length;
 	}
 
-	public String[] getSnippets() {
-		return snippets;
+	public String getEntry(int index) {
+		return entries[index];
 	}
-
-	public long[] getLineIndices() {
-		return lineIndices;
-	}
-
-	public String getDescription() {
-		return description;
+	
+	public String getFileName(int index) {
+		return fileNames[index];
 	}	
+	
+//	public <textselection> getConflict(int index){
+//		return conflicts[index];
+//	}
 	
 }

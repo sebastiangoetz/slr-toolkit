@@ -45,11 +45,11 @@ public class BibtexMergeData {
 	}
 
 	public Set<Object> getToMerge() {
-		return this.toMerge;
+		return toMerge;
 	}
 	
 	public void setToMerge(Set<Object> files) {
-		this.toMerge = files;
+		toMerge = files;
 	}
 	
 	public boolean toMergeContains(Object o) {
@@ -60,8 +60,8 @@ public class BibtexMergeData {
 		return conflicts;
 	}
 
-	public void setConflicts(List<BibtexMergeConflict> conflicts) {
-		this.conflicts = conflicts;
+	public void addConflict(BibtexMergeConflict conflict) {
+		conflicts.add(conflict);
 	}
 
 	public List<String> getStats() {
@@ -69,7 +69,7 @@ public class BibtexMergeData {
 	}
 
 	public void addStat(String stat) {
-		this.stats.add(stat);
+		stats.add(stat);
 	}
 	
 }

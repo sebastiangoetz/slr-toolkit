@@ -16,6 +16,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -176,11 +177,12 @@ public class MergeDialog extends Dialog {
     		else{
     			if(getArgs()[2]) {
     				// merge with manual duplicate handling
-
+    				WizardDialog dialog = new WizardDialog(getShell(), new BibtexManualMergeWizard(data));
+    				dialog.open();
     			}
     			else {
     				// merge with automatic duplicate handling
-
+    				
     			}
     		}
     	} 
