@@ -134,11 +134,57 @@ public class WizardManualMergePage  extends WizardPage {
 			System.err.println(e.getMessage());
 			return false;
 		}
-		// TODO: more precise validation: parse string, check for correct structure, existing required fields, fitting taxonomy data 
+		// TODO: maybe validate taxonomy data too?
 		if(!entryMap.isEmpty()) {
-			return true;
+			BibTeXEntry e = entryMap.values().iterator().next();
+			// check for required fields
+			if(e.getField(BibTeXEntry.KEY_TITLE) != null) {
+				switch (e.getType().getValue()) {
+				case "article": 
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_JOURNAL) != null 
+					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "book":
+					if((e.getField(BibTeXEntry.KEY_AUTHOR) != null || e.getField(BibTeXEntry.KEY_EDITOR) != null)
+					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "inbook":
+					if((e.getField(BibTeXEntry.KEY_AUTHOR) != null || e.getField(BibTeXEntry.KEY_EDITOR) != null)
+					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null 
+					&& (e.getField(BibTeXEntry.KEY_CHAPTER) != null || e.getField(BibTeXEntry.KEY_PAGES) != null)) 
+						return true;
+				case "incollection":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
+					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null)
+						return true;
+				case "inproceedings":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
+					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "mastersthesis":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_SCHOOL) != null 
+					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "phdthesis":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_SCHOOL) != null 
+					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "proceedings":
+					if(e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "techreport":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_INSTITUTION) != null 
+					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+						return true;
+				case "unpublished":
+					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_NOTE) != null) 
+						return true;
+				default: 
+					return false;
+				}
+			}
 		}
-    	return false;
+		return false;
     }
     
 	private void addEditTab() {
@@ -180,7 +226,7 @@ public class WizardManualMergePage  extends WizardPage {
 			newHint += resultName + " selected";
 		}
 		if(!isValid) {
-			newHint += "; current edited result isn't valid";
+			newHint += "; current edit is not valid";
 		}
 		hint.setText(newHint += ".");
 	}

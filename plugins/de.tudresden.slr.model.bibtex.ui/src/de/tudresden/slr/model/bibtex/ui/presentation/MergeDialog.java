@@ -1,10 +1,14 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -45,6 +49,7 @@ public class MergeDialog extends Dialog {
 	private boolean[] args;
     private Text filename;
     private CheckboxTableViewer ctv;
+    private WizardDialog wizardDialog;
 
     public MergeDialog(Shell parentShell, BibtexMergeData d) {
         super(parentShell);
@@ -61,11 +66,9 @@ public class MergeDialog extends Dialog {
         ctvGroup.setText("Files to merge");
         ctvGroup.setLayout(new FillLayout());
         ctv = CheckboxTableViewer.newCheckList(ctvGroup, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        BibtexResourceImpl ele;
-        List<Object> resourceList = data.getResourceList();
+        List<BibtexResourceImpl> resourceList = data.getResourceList();
         for(int i = 0; i < resourceList.size(); i++) {
-        	ele = (BibtexResourceImpl) resourceList.get(i);
-            ctv.add(ele.getURI());
+            ctv.add(resourceList.get(i).getURI());
         }
         ctv.setAllChecked(true);
         ctv.getTable().addListener(SWT.Selection, new Listener() {
@@ -160,95 +163,154 @@ public class MergeDialog extends Dialog {
     		return;
     	}
     	try {
-    		if(merge() == null) {
-    			MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
-    			return;
-    		}
     		if(!getArgs()[0]) {
     			// merge with no duplicate handling - display stats
-    			String info = "The files have been merged into " + data.getFilename() + ".";
-
-    			for(ListIterator<String> i = data.getStats().listIterator(); i.hasNext();) {
-    				info = info + "\n" + data.getStats().iterator().next();
-    			}
+        		if(merge("") == -1) {
+        			MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
+        			return;
+        		}
+    			String info = "The files have been merged into " + data.getFilename() + ".\n" + data.getStats();
     			MessageDialog.openInformation(getShell(), "Merge successful", info);
 
     		}
     		else{
     			if(getArgs()[2]) {
     				// merge with manual duplicate handling
-    				WizardDialog dialog = new WizardDialog(getShell(), new BibtexManualMergeWizard(data));
-    				dialog.open();
+    				if(data.getConflicts().isEmpty()) {
+						merge("");
+    	    			MessageDialog.openInformation(getShell(), "Merge successful", "No conflicts detected, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
+    	    		}
+    				else {
+    					BibtexManualMergeWizard mergeWizard = new BibtexManualMergeWizard(data);
+    					wizardDialog = new WizardDialog(getShell(), mergeWizard);
+    					if(wizardDialog.open() == 0) {
+    						merge(mergeWizard.getResults());
+    					}
+    	    			MessageDialog.openInformation(getShell(), "Manual merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
+    				}
     			}
     			else {
     				// merge with automatic duplicate handling
+					merge("");
+	    			MessageDialog.openInformation(getShell(), "Automatic merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
     				
     			}
     		}
     	} 
-    	catch (CoreException e) {
+    	catch (CoreException | IOException e) {
     		e.printStackTrace();
     		if(e.getMessage().contains("deleting")) {
     			MessageDialog.openError(getShell(), "Error", "An exception occured while deleting files.");
     		}
-    		else {
+    		else if(e.getMessage().contains("creating")) {
     			MessageDialog.openError(getShell(), "Error", "An exception occured while creating the new file.");
+    		}
+    		else {
+    			MessageDialog.openError(getShell(), "Error", "An exception occured while manipulating files.");
     		}
     	}
     	super.okPressed();
     }
 
 
-	private IFile merge() throws CoreException {
-		IFile result = null;
+	private int merge(String manualResult) throws CoreException, IOException {
 		boolean[] args = getArgs();
-		BibtexResourceImpl res = null;
-		for(ListIterator<Object> i = data.getResourceList().listIterator(); i.hasNext();) { 
-			res = (BibtexResourceImpl) i.next();
-			if(data.toMergeContains(res.getURI())) {
-				break;
-			}
-		}	
-		IPath filePath = Utils.getIFilefromEMFResource(res).getLocation();
+		data.removeUnselectedResources();
+		IPath filePath = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getLocation();
 		filePath = filePath.removeLastSegments(1);
 		filePath = new Path(filePath.toString() + "/" + getFilename());
-		result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
+		IFile result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
 		if(result.exists()) {
-			return null;
-		}
-		for(ListIterator<Object> i = data.getResourceList().listIterator(); i.hasNext();) { 
-			res = (BibtexResourceImpl) i.next();
-			if(!data.toMergeContains(res.getURI())) {
-				i.remove();
-			}
+			return -1;
 		}
 		if(!args[0]) {
 			// merge with no duplicate handling
-			InputStream source = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(0)).getContents();
+			InputStream source = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getContents();
 			result.create(source, IResource.NONE, null);
 			for(int i = 1; i < data.getResourceList().size(); i++) {
-				source = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(i)).getContents();
+				source = Utils.getIFilefromEMFResource(data.getResourceList().get(i)).getContents();
 				result.appendContents(source, IResource.NONE, null);
 			}
 		}
-		else{
-			if(args[2]) {
+		else {
+			// merge with duplicate handling
+			String conflictResult = "";
+			if(!manualResult.isEmpty()) {
 				// merge with manual duplicate handling
-
+				conflictResult = manualResult;
 			}
 			else {
 				// merge with automatic duplicate handling
-
+				String chosen;
+				String checked;
+				for(BibtexMergeConflict c : data.getConflicts()) {
+					chosen = c.getEntry(0);
+					if(chosen.endsWith("}")) {
+						chosen += System.lineSeparator();
+					}
+					for(int i = 0; i < c.amountOfEntries(); i++) {
+						// TODO: more detailed decision making: parse with BibTeXParser and check which entry has more fields / more info
+						// TODO: even more detailed decision making: per-field evaluation of all entries and construction of chosen result
+						checked = c.getEntry(i);
+						if(checked.endsWith("}")) {
+							checked += System.lineSeparator();
+						}
+						if(checked.length() > chosen.length()) {
+							chosen = c.getEntry(i);
+						}
+					}
+					conflictResult += chosen;
+				}
+			}
+			// common part: write resolved conflicts to newly created file, then iterate through all merged files and write entries if necessary
+			InputStream source = new ByteArrayInputStream(conflictResult.getBytes());
+			result.create(source, IResource.NONE, null);
+			Set<String> dupTitles = data.getSimpleDuplicateTitles();
+			Set<String> remainingDupTitles = new HashSet<String>(dupTitles);
+			Set<String> conflictTitles = data.getConflictTitles();
+			for(int i = 0; i < data.getResourceList().size(); i++) {
+				IFile f = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(i));
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				InputStream inputStream = f.getContents();
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = inputStream.read(buffer)) != -1) {
+					outputStream.write(buffer, 0, length);
+				}
+				inputStream.close();
+				for(String snippet : outputStream.toString().split("@")) {
+					if(snippet.contains("{")) {
+						String title = snippet.split("title = \\{")[1].split("\\}")[0];
+						String toWrite = "@" + snippet;
+						if(toWrite.endsWith("}")) {
+							toWrite += System.lineSeparator();
+						}
+						// The following statements assure that:
+						// - if the snippet contains a simple duplicate's title, it is written to the result only when found for the first time
+						// - else if snippet does not contain a conflict's title, it is written to the result
+						if(dupTitles.remove(title)) {
+							dupTitles.add(title);
+							if(remainingDupTitles.remove(title)) {
+								source = new ByteArrayInputStream(toWrite.getBytes());
+								result.appendContents(source, IResource.NONE, null);
+							}
+						}
+						else if(conflictTitles.add(title)) {
+							conflictTitles.remove(title);
+							source = new ByteArrayInputStream(toWrite.getBytes());
+							result.appendContents(source, IResource.NONE, null);
+						}
+					}
+				}
 			}
 		}
 		if(args[1]) {
 			// if source files should be deleted
-			for(ListIterator<Object> i = data.getResourceList().listIterator(); i.hasNext();) { 
-				res = (BibtexResourceImpl) i.next();
-				Utils.getIFilefromEMFResource(res).delete(true, null);
+			for(ListIterator<BibtexResourceImpl> i = data.getResourceList().listIterator(); i.hasNext();) { 
+				Utils.getIFilefromEMFResource(i.next()).delete(true, null);
 			}
 		}
-		return result;
+		return 0;
 	}
 
 	public boolean[] getArgs() {

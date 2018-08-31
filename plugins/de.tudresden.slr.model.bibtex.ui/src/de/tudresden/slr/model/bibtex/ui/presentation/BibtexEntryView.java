@@ -664,15 +664,14 @@ public class BibtexEntryView extends ViewPart {
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
 				if(select.size() > 1 && select.size() < 9) {
-					List<Object> resourceList = new ArrayList<Object>();
-					Object o;
+					List<BibtexResourceImpl> resourceList = new ArrayList<BibtexResourceImpl>();
 					for(@SuppressWarnings("unchecked")
 					Iterator<Object> i = select.iterator(); i.hasNext();) {
-						o = i.next();
+						Object o = i.next();
 						if(!(o instanceof BibtexResourceImpl)) {
 							return;
 						}
-						resourceList.add(o);
+						resourceList.add((BibtexResourceImpl) o);
 					}
 					MergeDialog dialog = new MergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
 					if (dialog.open() == Window.OK) {

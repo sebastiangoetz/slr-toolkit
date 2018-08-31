@@ -1,38 +1,133 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.ecore.EObject;
+
+import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
+import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
 public class BibtexMergeData {
 	
-	private List<Object> resourceList;
+	private List<BibtexResourceImpl> resourceList;
 	private Set<Object> toMerge;
 	private String filename;
+	private Set<String> conflictTitles;
 	private List<BibtexMergeConflict> conflicts;
-	private List<String> stats;
+	private Set<String> simpleDuplicateTitles;
+	private String stats;
 	
-	public BibtexMergeData(List<Object> resources) {
+	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
-		this.filename = "[missingFilename]";
-		this.conflicts = new ArrayList<BibtexMergeConflict>();
-		this.stats = new ArrayList<String>();
+		this.filename = "mergeResult.bib";
+		this.conflictTitles = new HashSet<String>();
+		this.simpleDuplicateTitles = new HashSet<String>();
+		this.conflicts = findConflicts();
+		this.stats = "";
 		this.toMerge = new HashSet<Object>();
-		BibtexResourceImpl res;
-		for(ListIterator<Object> i = resourceList.listIterator(); i.hasNext();) {
-			res = (BibtexResourceImpl) i.next();
-			toMerge.add(res.getURI());
+		for(ListIterator<BibtexResourceImpl> i = resourceList.listIterator(); i.hasNext();) {
+			toMerge.add(i.next().getURI());
 		}
 	}
-	public List<Object> getResourceList() {
+	
+	public void removeUnselectedResources() {
+		for(ListIterator<BibtexResourceImpl> i = resourceList.listIterator(); i.hasNext();) { 
+			if(!toMergeContains(i.next().getURI())) {
+				i.remove();
+			}
+		}
+	}
+	
+	private List<BibtexMergeConflict> findConflicts(){
+		List<BibtexMergeConflict> result = new ArrayList<BibtexMergeConflict>();
+		Map<String, Integer> titles = new HashMap<String, Integer>();
+		Map<String, List<Integer>> duplicateTitles = new HashMap<String, List<Integer>>();
+		for(int i = 0; i < resourceList.size(); i++) {
+			for(EObject e : resourceList.get(i).getContents()) {
+				String eTitle = ((DocumentImpl) e).getTitle();
+				if(titles.get(eTitle) == null) {
+					titles.put(eTitle, i);
+				}
+				else {
+					if(duplicateTitles.get(eTitle) == null) {
+						List<Integer> newList = new ArrayList<Integer>();
+						newList.add(titles.get(eTitle));
+						newList.add(i);
+						duplicateTitles.put(eTitle, newList);
+					}
+					else {
+						duplicateTitles.get(eTitle).add(i);
+					}
+				}
+			}
+		}
+		for(String s : duplicateTitles.keySet()) {
+			List<Integer> indices = duplicateTitles.get(s);
+			String[] duplicateEntries = new String[indices.size()];
+			String[] duplicateFilenames = new String[indices.size()];
+			try {
+				for(int j = 0; j < duplicateEntries.length; j++) {
+					IFile f = Utils.getIFilefromEMFResource(resourceList.get(indices.get(j)));
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					InputStream inputStream = f.getContents();
+					byte[] buffer = new byte[1024];
+					int length;
+					while ((length = inputStream.read(buffer)) != -1) {
+						outputStream.write(buffer, 0, length);
+					}
+					for(String snippet : outputStream.toString().split("@")) {
+						if(snippet.contains("title = {" + s + "}")) {
+							duplicateEntries[j] = "@" + snippet;
+							duplicateFilenames[j] = f.getName();
+							break;
+						}
+					}
+					inputStream.close();
+					outputStream.close();
+				}
+			}
+			catch(CoreException | IOException e) {
+				System.err.println(e.getMessage());
+			}
+			List<String> conflictEntries = new ArrayList<String>();
+			List<String> conflictFilenames = new ArrayList<String>();
+			conflictEntries.add(duplicateEntries[0]);
+			conflictFilenames.add(duplicateFilenames[0]);
+			for(int k = 1; k < duplicateEntries.length; k++) {
+				String e = duplicateEntries[k];
+				if(!e.startsWith(duplicateEntries[0]) && !duplicateEntries[0].startsWith(e)) {
+					conflictEntries.add(e);
+					conflictFilenames.add(duplicateFilenames[k]);
+				}
+			}
+			if(conflictEntries.size() > 1) {
+				result.add(new BibtexMergeConflict(conflictEntries.toArray(new String[0]), conflictFilenames.toArray(new String[0])));
+				conflictTitles.add(s);
+			}
+			else {
+				simpleDuplicateTitles.add(s);
+			}
+		}
+		return result;
+	}
+	
+	public List<BibtexResourceImpl> getResourceList() {
 		return resourceList;
 	}
 
-	public void setResourceList(List<Object> resourceList) {
+	public void setResourceList(List<BibtexResourceImpl> resourceList) {
 		this.resourceList = resourceList;
 	}
 	
@@ -60,16 +155,20 @@ public class BibtexMergeData {
 		return conflicts;
 	}
 
-	public void addConflict(BibtexMergeConflict conflict) {
-		conflicts.add(conflict);
+	public Set<String> getConflictTitles() {
+		return conflictTitles;
+	}
+	
+	public Set<String> getSimpleDuplicateTitles() {
+		return simpleDuplicateTitles;
 	}
 
-	public List<String> getStats() {
+	public String getStats() {
 		return stats;
 	}
 
 	public void addStat(String stat) {
-		stats.add(stat);
+		stats += "\n" + stat;
 	}
 	
 }
