@@ -159,41 +159,54 @@ public class MergeDialog extends Dialog {
     
     @Override
     protected void okPressed() {
-    	if(!validateDialog() || (args[1] && !MessageDialog.openQuestion(getShell(), "Confirm file deletion", "This will delete the selected files.\nAre you sure?"))) {
+    	if(!validateDialog()) {
     		return;
     	}
+    	if(fileExists()) {
+    		MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
+			return;
+    	}
+    	if(args[1] && !MessageDialog.openQuestion(getShell(), "Confirm file deletion", "This will delete the selected files. Are you sure?")) {
+    		return;
+    	}
+    	boolean success = false;
     	try {
     		if(!getArgs()[0]) {
     			// merge with no duplicate handling - display stats
-        		if(merge("") == -1) {
-        			MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
-        			return;
+        		if(merge("")) {
+        			String info = "The files have been merged into " + data.getFilename() + ".\n" + data.getStats();
+        			MessageDialog.openInformation(getShell(), "Merge successful", info);
+        			success = true;
         		}
-    			String info = "The files have been merged into " + data.getFilename() + ".\n" + data.getStats();
-    			MessageDialog.openInformation(getShell(), "Merge successful", info);
 
     		}
     		else{
     			if(getArgs()[2]) {
     				// merge with manual duplicate handling
     				if(data.getConflicts().isEmpty()) {
-						merge("");
-    	    			MessageDialog.openInformation(getShell(), "Merge successful", "No conflicts detected, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-    	    		}
+    					if(merge("")) {
+        	    			MessageDialog.openInformation(getShell(), "Merge successful", "No conflicts detected, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
+        	    			success = true;
+    					}
+    				}
     				else {
     					BibtexManualMergeWizard mergeWizard = new BibtexManualMergeWizard(data);
     					wizardDialog = new WizardDialog(getShell(), mergeWizard);
     					if(wizardDialog.open() == 0) {
-    						merge(mergeWizard.getResults());
-    					}
-    	    			MessageDialog.openInformation(getShell(), "Manual merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-    				}
+    						if(merge(mergeWizard.getResults())) {
+    							MessageDialog.openInformation(getShell(), "Manual merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
+    							success = true;
+    						}
+    	    			}
+    	    		}
     			}
     			else {
     				// merge with automatic duplicate handling
-					merge("");
-	    			MessageDialog.openInformation(getShell(), "Automatic merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-    				
+    				if(merge("")) {
+    					MessageDialog.openInformation(getShell(), "Automatic merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
+    					success = true;
+    				}
+
     			}
     		}
     	} 
@@ -209,20 +222,24 @@ public class MergeDialog extends Dialog {
     			MessageDialog.openError(getShell(), "Error", "An exception occured while manipulating files.");
     		}
     	}
-    	super.okPressed();
+    	if(success) {
+        	super.okPressed();
+    	}
+    	else {
+    		MessageDialog.openError(getShell(), "Error", "Something went wrong while merging.");
+    	}
     }
 
 
-	private int merge(String manualResult) throws CoreException, IOException {
+	private boolean merge(String manualResult) throws CoreException, IOException {
 		boolean[] args = getArgs();
+		if(fileExists()) {
+			return false;
+		}
 		data.removeUnselectedResources();
-		IPath filePath = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getLocation();
-		filePath = filePath.removeLastSegments(1);
+		IPath filePath = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getLocation().removeLastSegments(1);
 		filePath = new Path(filePath.toString() + "/" + getFilename());
 		IFile result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
-		if(result.exists()) {
-			return -1;
-		}
 		if(!args[0]) {
 			// merge with no duplicate handling
 			InputStream source = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getContents();
@@ -249,12 +266,12 @@ public class MergeDialog extends Dialog {
 						chosen += System.lineSeparator();
 					}
 					for(int i = 0; i < c.amountOfEntries(); i++) {
-						// TODO: more detailed decision making: parse with BibTeXParser and check which entry has more fields / more info
-						// TODO: even more detailed decision making: per-field evaluation of all entries and construction of chosen result
 						checked = c.getEntry(i);
 						if(checked.endsWith("}")) {
 							checked += System.lineSeparator();
 						}
+						// TODO: more detailed decision making: parse with BibTeXParser and check which entry has more fields / more info
+						// TODO: even more detailed decision making: per-field evaluation of all entries and construction of chosen result
 						if(checked.length() > chosen.length()) {
 							chosen = c.getEntry(i);
 						}
@@ -310,9 +327,23 @@ public class MergeDialog extends Dialog {
 				Utils.getIFilefromEMFResource(i.next()).delete(true, null);
 			}
 		}
-		return 0;
+		return true;
 	}
 
+	private boolean fileExists() {
+		BibtexResourceImpl res = data.getResourceList().get(0);
+		for(int i = 0; i < data.getResourceList().size(); i++) {
+			res = data.getResourceList().get(i);
+			if(data.toMergeContains(res.getURI())) {
+				break;
+			}
+		}
+		IPath filePath = Utils.getIFilefromEMFResource(res).getLocation().removeLastSegments(1);
+		filePath = new Path(filePath.toString() + "/" + getFilename());
+		IFile result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
+		return result.exists();
+	}
+	
 	public boolean[] getArgs() {
 		return args;
 	}

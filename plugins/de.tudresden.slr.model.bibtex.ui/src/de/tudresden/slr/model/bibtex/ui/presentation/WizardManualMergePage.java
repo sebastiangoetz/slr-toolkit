@@ -79,7 +79,7 @@ public class WizardManualMergePage  extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				boolean onEditTab = folder.getSelectionIndex() == conflict.amountOfEntries();
 				edit.setEnabled(!onEditTab);
-	    		select.setEnabled(!onEditTab || validateString(editedText.getText()));
+	    		select.setEnabled((!onEditTab || validateString(editedText.getText())) && folder.getItem(folder.getSelectionIndex()).getText() != resultName);
 			}
 		});
 		Composite bottom = new Composite(container, SWT.BOTTOM);
@@ -108,6 +108,7 @@ public class WizardManualMergePage  extends WizardPage {
 			            setResult("Edited result", editedText.getText());
 		            }
 	                setPageComplete(true);
+	                select.setEnabled(false);
 		        }
 		      });
 		hint = new Label(bottom, SWT.CENTER);
