@@ -52,72 +52,68 @@ public class BibtexMergeData {
 	
 	private List<BibtexMergeConflict> findConflicts(){
 		List<BibtexMergeConflict> result = new ArrayList<BibtexMergeConflict>();
-		Map<String, Integer> titles = new HashMap<String, Integer>();
-		Map<String, List<Integer>> duplicateTitles = new HashMap<String, List<Integer>>();
+		Map<String, List<Integer>> titleMap = new HashMap<String, List<Integer>>();
 		for(int i = 0; i < resourceList.size(); i++) {
 			for(EObject e : resourceList.get(i).getContents()) {
-				String eTitle = ((DocumentImpl) e).getTitle();
-				if(titles.get(eTitle) == null) {
-					titles.put(eTitle, i);
+				String eTitle = ((DocumentImpl) e).getTitle().toLowerCase();
+				if(titleMap.get(eTitle) == null) {
+					List<Integer> newList = new ArrayList<Integer>();
+					newList.add(i);
+					titleMap.put(eTitle, newList);
 				}
 				else {
-					if(duplicateTitles.get(eTitle) == null) {
-						List<Integer> newList = new ArrayList<Integer>();
-						newList.add(titles.get(eTitle));
-						newList.add(i);
-						duplicateTitles.put(eTitle, newList);
-					}
-					else {
-						duplicateTitles.get(eTitle).add(i);
-					}
+					titleMap.get(eTitle).add(i);
 				}
 			}
 		}
-		for(String s : duplicateTitles.keySet()) {
-			List<Integer> indices = duplicateTitles.get(s);
-			String[] duplicateEntries = new String[indices.size()];
-			String[] duplicateFilenames = new String[indices.size()];
-			try {
-				for(int j = 0; j < duplicateEntries.length; j++) {
-					IFile f = Utils.getIFilefromEMFResource(resourceList.get(indices.get(j)));
-					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-					InputStream inputStream = f.getContents();
-					byte[] buffer = new byte[1024];
-					int length;
-					while ((length = inputStream.read(buffer)) != -1) {
-						outputStream.write(buffer, 0, length);
-					}
-					for(String snippet : outputStream.toString().split("@")) {
-						if(snippet.contains("title = {" + s + "}")) {
-							duplicateEntries[j] = "@" + snippet;
-							duplicateFilenames[j] = f.getName();
-							break;
+		for(String s : titleMap.keySet()) {
+			List<Integer> indices = titleMap.get(s);
+			if(indices.size() > 1) {
+				String[] duplicateEntries = new String[indices.size()];
+				String[] duplicateFilenames = new String[indices.size()];
+				try {
+					for(int j = 0; j < duplicateEntries.length; j++) {
+						IFile f = Utils.getIFilefromEMFResource(resourceList.get(indices.get(j)));
+						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+						InputStream inputStream = f.getContents();
+						byte[] buffer = new byte[1024];
+						int length;
+						while ((length = inputStream.read(buffer)) != -1) {
+							outputStream.write(buffer, 0, length);
 						}
+						for(String snippet : outputStream.toString().split("@")) {
+							if(snippet.toLowerCase().contains("title = {" + s + "}")) {
+								duplicateEntries[j] = "@" + snippet;
+								duplicateFilenames[j] = f.getName();
+								break;
+							}
+						}
+						inputStream.close();
+						outputStream.close();
 					}
-					inputStream.close();
-					outputStream.close();
 				}
-			}
-			catch(CoreException | IOException e) {
-				System.err.println(e.getMessage());
-			}
-			List<String> conflictEntries = new ArrayList<String>();
-			List<String> conflictFilenames = new ArrayList<String>();
-			conflictEntries.add(duplicateEntries[0]);
-			conflictFilenames.add(duplicateFilenames[0]);
-			for(int k = 1; k < duplicateEntries.length; k++) {
-				String e = duplicateEntries[k];
-				if(!e.startsWith(duplicateEntries[0]) && !duplicateEntries[0].startsWith(e)) {
-					conflictEntries.add(e);
-					conflictFilenames.add(duplicateFilenames[k]);
+				catch(CoreException | IOException e) {
+					System.err.println(e.getMessage());
 				}
-			}
-			if(conflictEntries.size() > 1) {
-				result.add(new BibtexMergeConflict(conflictEntries.toArray(new String[0]), conflictFilenames.toArray(new String[0])));
-				conflictTitles.add(s);
-			}
-			else {
-				simpleDuplicateTitles.add(s);
+				List<String> conflictEntries = new ArrayList<String>();
+				List<String> conflictFilenames = new ArrayList<String>();
+				conflictEntries.add(duplicateEntries[0]);
+				conflictFilenames.add(duplicateFilenames[0]);
+				String test = duplicateEntries[0].toLowerCase();
+				for(int k = 1; k < duplicateEntries.length; k++) {
+					String e = duplicateEntries[k].toLowerCase();
+					if(!e.startsWith(test) && !test.startsWith(e)) {
+						conflictEntries.add(duplicateEntries[k]);
+						conflictFilenames.add(duplicateFilenames[k]);
+					}
+				}
+				if(conflictEntries.size() > 1) {
+					result.add(new BibtexMergeConflict(conflictEntries.toArray(new String[0]), conflictFilenames.toArray(new String[0])));
+					conflictTitles.add(s);
+				}
+				else {
+					simpleDuplicateTitles.add(s);
+				}
 			}
 		}
 		return result;

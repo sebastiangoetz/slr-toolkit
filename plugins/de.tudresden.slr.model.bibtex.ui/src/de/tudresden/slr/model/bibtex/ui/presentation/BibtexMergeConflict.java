@@ -21,6 +21,10 @@ public class BibtexMergeConflict {
 		return entries[index];
 	}
 	
+	public String[] getEntries() {
+		return entries;
+	}
+	
 	public String getFileName(int index) {
 		return fileNames[index];
 	}

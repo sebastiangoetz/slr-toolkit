@@ -35,7 +35,7 @@ public class BibtexManualMergeWizard extends Wizard {
     	for(Object o : getPages()) {
     		results += ((WizardManualMergePage) o).getResult();
 			if(results.endsWith("}")) {
-				results += System.lineSeparator();
+				results += System.lineSeparator() + System.lineSeparator();
 			}
     	}
         return true;

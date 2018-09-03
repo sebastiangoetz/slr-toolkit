@@ -1,9 +1,14 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +44,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.jbibtex.BibTeXDatabase;
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.BibTeXFormatter;
+import org.jbibtex.BibTeXParser;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+import org.jbibtex.TokenMgrException;
+import org.jbibtex.Value;
 
 import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
@@ -257,29 +270,46 @@ public class MergeDialog extends Dialog {
 				conflictResult = manualResult;
 			}
 			else {
-				// merge with automatic duplicate handling
-				String chosen;
-				String checked;
+				// new automerge w/ BibTeXParser
 				for(BibtexMergeConflict c : data.getConflicts()) {
-					chosen = c.getEntry(0);
-					if(chosen.endsWith("}")) {
-						chosen += System.lineSeparator();
-					}
-					for(int i = 0; i < c.amountOfEntries(); i++) {
-						checked = c.getEntry(i);
-						if(checked.endsWith("}")) {
-							checked += System.lineSeparator();
-						}
-						// TODO: more detailed decision making: parse with BibTeXParser and check which entry has more fields / more info
-						// TODO: even more detailed decision making: per-field evaluation of all entries and construction of chosen result
-						if(checked.length() > chosen.length()) {
-							chosen = c.getEntry(i);
+					List<BibTeXDatabase> conflicts = new ArrayList<BibTeXDatabase>();
+					for(String s : c.getEntries()) {
+						try (Reader reader = new BufferedReader(new StringReader(s))) {
+							BibTeXParser parser = new BibTeXParser();
+							conflicts.add(parser.parseFully(reader));
+						} catch (TokenMgrException | ParseException e) {
+							System.err.println(e.getMessage());
+							return false;
 						}
 					}
-					conflictResult += chosen;
+					BibTeXEntry res = conflicts.get(0).getEntries().values().iterator().next();
+					for(int i = 1; i < conflicts.size(); i++) {
+						BibTeXEntry cur = conflicts.get(i).getEntries().values().iterator().next();
+						for(Key k : cur.getFields().keySet()) {
+							Value resValue = res.getField(k);
+							Value curValue = cur.getField(k);
+							if(resValue == null) {
+								res.addField(k, curValue);
+							}
+							else {
+								if(resValue.toUserString().length() < curValue.toUserString().length()) {
+									res.addField(k, curValue);
+								}
+							}
+						}
+					}
+					BibTeXDatabase resDB = new BibTeXDatabase();
+					resDB.addObject(res);
+					StringWriter writer = new StringWriter();
+					BibTeXFormatter bibtexFormatter = new BibTeXFormatter();
+					bibtexFormatter.format(resDB, writer);
+					conflictResult += writer.toString();
+					if(conflictResult.endsWith("}")) {
+						conflictResult += System.lineSeparator() + System.lineSeparator();
+					}
 				}
 			}
-			// common part: write resolved conflicts to newly created file, then iterate through all merged files and write entries if necessary
+			// common part: write resolved conflicts to newly created file, then iterate through files and write entries to result if necessary
 			InputStream source = new ByteArrayInputStream(conflictResult.getBytes());
 			result.create(source, IResource.NONE, null);
 			Set<String> dupTitles = data.getSimpleDuplicateTitles();
@@ -297,10 +327,10 @@ public class MergeDialog extends Dialog {
 				inputStream.close();
 				for(String snippet : outputStream.toString().split("@")) {
 					if(snippet.contains("{")) {
-						String title = snippet.split("title = \\{")[1].split("\\}")[0];
+						String title = snippet.split("title = \\{")[1].split("\\}")[0].toLowerCase();
 						String toWrite = "@" + snippet;
 						if(toWrite.endsWith("}")) {
-							toWrite += System.lineSeparator();
+							toWrite += System.lineSeparator() + System.lineSeparator();
 						}
 						// The following statements assure that:
 						// - if the snippet contains a simple duplicate's title, it is written to the result only when found for the first time
