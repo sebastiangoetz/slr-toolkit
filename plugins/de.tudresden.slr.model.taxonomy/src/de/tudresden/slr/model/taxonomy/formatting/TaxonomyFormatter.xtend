@@ -8,15 +8,7 @@ import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
 import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess
 
-/**
- * This class contains custom formatting declarations.
- * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#formatting
- * on how and when to use it.
- * 
- * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
- */
-public class TaxonomyFormatter extends AbstractDeclarativeFormatter {
+class TaxonomyFormatter extends AbstractDeclarativeFormatter {
 	
 	@Inject extension TaxonomyGrammarAccess
 	

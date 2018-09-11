@@ -1,4 +1,4 @@
-package de.tudresden.slr.model.taxonomy.ui.manipulation;
+package de.tudresden.slr.utils.taxonomy.manipulation;
 
 import java.util.Map;
 import java.util.Optional;

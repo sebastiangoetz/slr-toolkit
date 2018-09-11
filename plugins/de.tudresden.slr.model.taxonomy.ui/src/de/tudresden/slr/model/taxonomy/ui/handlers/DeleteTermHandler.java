@@ -13,7 +13,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.ui.manipulation.TermDeleter;
+import de.tudresden.slr.utils.taxonomy.manipulation.TermDeleter;
 
 public class DeleteTermHandler extends AbstractHandler {
 

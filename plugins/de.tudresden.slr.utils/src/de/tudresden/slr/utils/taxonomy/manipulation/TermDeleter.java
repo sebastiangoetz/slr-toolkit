@@ -1,4 +1,4 @@
-package de.tudresden.slr.model.taxonomy.ui.manipulation;
+package de.tudresden.slr.utils.taxonomy.manipulation;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class TermDeleter {
 			termInDocuments.forEach((k, v) -> {
 					if (termsInDocuments.containsKey(k)) termsInDocuments.get(k).add(v);
 					else termsInDocuments.put(k, new LinkedList<Term>(Arrays.asList(v)));
-			});  
+			});
 			Optional<Model> model = SearchUtils.getConainingModel(term);
 			EcoreUtil.remove(term);			
 			if (model.isPresent()) {

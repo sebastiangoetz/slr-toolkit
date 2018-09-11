@@ -40,10 +40,10 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc --> This implementation returns <code>true</code> if
-	 * the object is either the model's package or is an instance object of the
-	 * model. <!-- end-user-doc -->
+	 * Returns whether this factory is applicable for the type of the object. <!--
+	 * begin-user-doc --> This implementation returns <code>true</code> if the
+	 * object is either the model's package or is an instance object of the model.
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
@@ -72,17 +72,21 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseBibtexFile(BibtexFile object) {
+			return createBibtexFileAdapter();
+		}
+
+		@Override
 		public Adapter defaultCase(EObject object) {
 			return createEObjectAdapter();
 		}
 	};
 
 	/**
-	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
-	 * @param target
-	 *            the object to adapt.
+	 * @param target the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
@@ -94,15 +98,30 @@ public class BibtexAdapterFactory extends AdapterFactoryImpl {
 	/**
 	 * Creates a new adapter for an object of class '
 	 * {@link de.tudresden.slr.model.bibtex.Document <em>Document</em>}'. <!--
-	 * begin-user-doc --> This default implementation returns null so that we
-	 * can easily ignore cases; it's useful to ignore a case when inheritance
-	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch
+	 * all the cases anyway. <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.
 	 * @see de.tudresden.slr.model.bibtex.Document
 	 * @generated
 	 */
 	public Adapter createDocumentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class
+	 * '{@link de.tudresden.slr.model.bibtex.BibtexFile <em>File</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we can
+	 * easily ignore cases; it's useful to ignore a case when inheritance will catch
+	 * all the cases anyway. <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see de.tudresden.slr.model.bibtex.BibtexFile
+	 * @generated
+	 */
+	public Adapter createBibtexFileAdapter() {
 		return null;
 	}
 

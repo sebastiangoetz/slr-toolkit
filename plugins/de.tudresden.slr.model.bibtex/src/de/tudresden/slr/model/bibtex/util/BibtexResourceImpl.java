@@ -10,6 +10,7 @@ import static org.jbibtex.BibTeXEntry.KEY_URL;
 import static org.jbibtex.BibTeXEntry.KEY_YEAR;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -66,8 +68,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
 	 * 
-	 * @param uri
-	 *            the URI of the new resource.
+	 * @param uri the URI of the new resource.
 	 * @generated
 	 */
 	public BibtexResourceImpl(URI uri) {
@@ -117,13 +118,28 @@ public class BibtexResourceImpl extends ResourceImpl {
 			document.setUrl(safeGetField(entry, KEY_URL));
 			document.setAbstract(safeGetField(entry, KEY_ABSTRACT));
 			String url = safeGetField(entry, KEY_FILE);
-			if(url.contains("url{")) {
+			if (url.contains("url{")) {
 				url = url.substring("\\url{".length());
-				url = url.substring(0,url.length()-1);
+				url = url.substring(0, url.length() - 1);
 			}
 			document.setFile(url);
 			document.setUrl(url);
 			document.setTaxonomy(parseClasses(safeGetField(entry, KEY_CLASSES)));
+
+			String path = "/home/x/u/kp_literature/slr-toolkit/examples/Bachelorarbeit_Kevin_Horst/Library.bib";
+
+			File f = new File(path);
+			Scanner fileScanner = new Scanner(f);
+
+			int lineNumber = 0;
+			while (fileScanner.hasNextLine()) {
+				lineNumber++;
+				if (fileScanner.nextLine().contains(entry.getKey().toString())) {
+					break;
+				}
+			}
+			fileScanner.close();
+			document.setLine(lineNumber);
 
 			getContents().add(document);
 		}

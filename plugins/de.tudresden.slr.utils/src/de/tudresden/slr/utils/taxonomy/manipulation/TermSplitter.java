@@ -1,4 +1,4 @@
-package de.tudresden.slr.model.taxonomy.ui.manipulation;
+package de.tudresden.slr.utils.taxonomy.manipulation;
 
 import java.util.List;
 import java.util.Map;
@@ -11,15 +11,15 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.ui.dialog.CreateTermDialog;
 import de.tudresden.slr.model.utils.SearchUtils;
+import de.tudresden.slr.utils.TermPosition;
 
 public class TermSplitter {
 	
 	public static Term split (Term termToSplit, String defaultTermName, List<String> furtherTermNames) {
 		// create term first for the taxonomy
-		TermCreator.create(defaultTermName, termToSplit, CreateTermDialog.TermPosition.SUBTERM);
-		furtherTermNames.forEach(n -> TermCreator.create(n, termToSplit, CreateTermDialog.TermPosition.SUBTERM));
+		TermCreator.create(defaultTermName, termToSplit, TermPosition.SUBTERM);
+		furtherTermNames.forEach(n -> TermCreator.create(n, termToSplit, TermPosition.SUBTERM));
 		// create term for all documents which contain the termToSplit
 		Map<Document, Term> documentsWithTerm = SearchUtils.findDocumentsWithTerm(termToSplit);
 		Set<Resource> resourcesToUpdate = new TreeSet<>(

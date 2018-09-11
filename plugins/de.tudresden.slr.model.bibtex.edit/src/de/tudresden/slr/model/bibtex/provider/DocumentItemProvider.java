@@ -67,13 +67,14 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 			addTypePropertyDescriptor(object);
 			addFilePropertyDescriptor(object);
 			addCitesPropertyDescriptor(object);
+			addLinePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Authors feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Authors feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -88,8 +89,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Abstract feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Abstract feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -104,8 +105,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Year feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Year feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -120,8 +121,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Month feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Month feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -136,8 +137,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Title feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Title feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -152,8 +153,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Key feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Key feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -168,8 +169,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Doi feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Doi feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -184,8 +185,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Url feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Url feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -216,8 +217,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Taxonomy feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Taxonomy feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -231,8 +232,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Type feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Type feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -247,10 +248,10 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the File feature. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the File feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @generated  NOT
+	 * @generated NOT
 	 */
 	protected void addFilePropertyDescriptor(Object object) {
 		itemPropertyDescriptors
@@ -263,8 +264,8 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds a property descriptor for the Cites feature. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds a property descriptor for the Cites feature. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -279,6 +280,22 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
+	 * This adds a property descriptor for the Line feature. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected void addLinePropertyDescriptor(Object object) {
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_Document_line_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_Document_line_feature",
+								"_UI_Document_type"),
+						BibtexPackage.Literals.DOCUMENT__LINE, true, false, false,
+						ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This returns Document.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -289,22 +306,20 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This returns the label text for the adapted class. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 */
 	@Override
 	public String getText(Object object) {
 		String label = ((Document) object).getKey();
-		return label == null || label.length() == 0 ? getString("_UI_Document_type")
-				: label;
+		return label == null || label.length() == 0 ? getString("_UI_Document_type") : label;
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to
-	 * update any cached children and by creating a viewer notification, which
-	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to update
+	 * any cached children and by creating a viewer notification, which it passes to
+	 * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -325,6 +340,7 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 		case BibtexPackage.DOCUMENT__TYPE:
 		case BibtexPackage.DOCUMENT__FILE:
 		case BibtexPackage.DOCUMENT__CITES:
+		case BibtexPackage.DOCUMENT__LINE:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}
@@ -332,9 +348,9 @@ public class DocumentItemProvider extends ItemProviderAdapter implements IEditin
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
-	 * describing the children that can be created under this object. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
+	 * the children that can be created under this object. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="de.tudresden.slr.utils.commands.category"
+            name="Sample Category">
+      </category>
+      <command
+            categoryId="de.tudresden.slr.utils.commands.category"
+            name="Sample Command"
+            id="de.tudresden.slr.utils.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="de.tudresden.slr.utils.Utils"
+            commandId="de.tudresden.slr.utils.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.tudresden.slr.utils.commands.sampleCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+         markerType="org.eclipse.core.resources.problemmarker"
+         class="de.tudresden.slr.utils.quickfix.QuickFixGenerator"/>
+   </extension> 
+</plugin>

@@ -36,8 +36,8 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 		implements ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 	/**
-	 * This keeps track of the root adapter factory that delegates to this
-	 * adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * This keeps track of the root adapter factory that delegates to this adapter
+	 * factory. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -45,8 +45,8 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 
 	/**
 	 * This is used to implement
-	 * {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -62,8 +62,7 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
 	/**
-	 * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
+	 * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -77,17 +76,16 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 
 	/**
 	 * This keeps track of the one adapter used for all
-	 * {@link de.tudresden.slr.model.bibtex.Document} instances. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * {@link de.tudresden.slr.model.bibtex.Document} instances. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	protected DocumentItemProvider documentItemProvider;
 
 	/**
-	 * This creates an adapter for a
-	 * {@link de.tudresden.slr.model.bibtex.Document}. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This creates an adapter for a {@link de.tudresden.slr.model.bibtex.Document}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -98,6 +96,31 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 		}
 
 		return documentItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all
+	 * {@link de.tudresden.slr.model.bibtex.BibtexFile} instances. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	protected BibtexFileItemProvider bibtexFileItemProvider;
+
+	/**
+	 * This creates an adapter for a
+	 * {@link de.tudresden.slr.model.bibtex.BibtexFile}. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public Adapter createBibtexFileAdapter() {
+		if (bibtexFileItemProvider == null) {
+			bibtexFileItemProvider = new BibtexFileItemProvider(this);
+		}
+
+		return bibtexFileItemProvider;
 	}
 
 	/**
@@ -182,8 +205,7 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 
 	/**
 	 * This delegates to {@link #changeNotifier} and to
-	 * {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
+	 * {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -206,6 +228,8 @@ public class BibtexItemProviderAdapterFactory extends BibtexAdapterFactory
 	public void dispose() {
 		if (documentItemProvider != null)
 			documentItemProvider.dispose();
+		if (bibtexFileItemProvider != null)
+			bibtexFileItemProvider.dispose();
 	}
 
 }

@@ -24,6 +24,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/file"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/cites"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//Document/line"/>
+    </genClasses>
+    <genClasses ecoreClass="bibtex.ecore#//BibtexFile">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bibtex.ecore#//BibtexFile/entries"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bibtex.ecore#//BibtexFile/path"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

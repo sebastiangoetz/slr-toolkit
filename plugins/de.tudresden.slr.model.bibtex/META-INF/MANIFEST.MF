@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tudresden.slr.model.bibtex;singleton:=true
+Automatic-Module-Name: de.tudresden.slr.model.bibtex
 Bundle-Version: 0.2.1.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -11,7 +12,7 @@ Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.ui.workbench,
  org.eclipse.xtext,
  org.eclipse.core.runtime,
- de.tudresden.slr.model.taxonomy.model,
+ de.tudresden.slr.model.taxonomy.model;visibility:=reexport,
  de.tudresden.slr.model.taxonomy,
  org.jbibtex;bundle-version="1.0.17"
 Foo: org.jbibtex;bundle-version="1.0.15"

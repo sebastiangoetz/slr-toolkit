@@ -1,5 +1,6 @@
 package de.tudresden.slr.model.taxonomy.ui.views;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -10,6 +11,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -53,11 +55,12 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.ui.manipulation.TermRenamer;
 import de.tudresden.slr.model.taxonomy.ui.util.TermContentProvider;
 import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyIterator;
+import de.tudresden.slr.utils.Utils;
+import de.tudresden.slr.utils.taxonomy.manipulation.TermRenamer;
 
 public class TaxonomyCheckboxListView extends ViewPart implements ISelectionListener, Observer, ICheckStateListener {
 	public static final String ID = "de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView";
@@ -162,6 +165,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		// document has changed
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
+			Utils.unmark((Document) arg);
+			showTaxonomyConfilcts((Document) arg);
 		}
 	}
 
@@ -185,7 +190,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	private void setTermChanged(Document document, Term element, boolean add) {
 		if (add) {
 			addTerm(document, element);
-		} else { // delete
+		}
+		else { // delete
 			removeTerm(document, element);
 		}
 	}
@@ -221,7 +227,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 			if (parent.size() == 1) {
 				removeTerm(document, elementContainer);
 			}
-		} else { // Model
+		}
+		else { // Model
 			parent = document.getTaxonomy().getDimensions();
 		}
 		parent.removeIf(t -> TermUtils.equals(t, element));
@@ -292,6 +299,94 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 
 	}
 
+	private void matchTaxonomy(String[] path, EList<Term> generalTerms, EList<Term> fileTerms, Document document) {
+		String[] newPath = new String[]{};
+		if (generalTerms.isEmpty() || fileTerms.isEmpty()) {
+			return;
+		}
+		for(Term fileTerm : fileTerms) {
+			boolean foundMatch = false;
+			for(Term generalTerm : generalTerms) {
+				//System.out.println("compare: "+fileTerm.getName()+" ?= "+generalTerm.getName());
+				if (fileTerm.getName().equals(generalTerm.getName())) {
+					foundMatch = true;
+					if (!fileTerm.getSubclasses().isEmpty()) {
+						newPath = Arrays.copyOf(path, path.length+1);
+						newPath[newPath.length-1] = generalTerm.getName();
+						matchTaxonomy(newPath, generalTerm.getSubclasses(), fileTerm.getSubclasses(), document);
+					}
+				}
+			}
+			if (!foundMatch) {
+				String txt = "Taxonomy match conflict: '"+fileTerm.getName()+"' in ";
+				if (path.length >= 1) {
+					txt += "'"+path[path.length-1]+"'";
+				}
+				else {
+					txt += "root";
+				}
+//				String markerPath = getTaxonomyPath(
+//					fileTerm.getName(),
+//					ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions(),
+//					""
+//				);
+				
+				
+//				if (markerPath.length == 0) {
+//					markerPath = new String[fileTerms.size()];
+//					int i = 0;
+//					for(Term term : fileTerms) {
+//						System.out.println(term.getName());
+//						markerPath[i] = term.getName();
+//						i++;
+//					}
+//				}
+//				
+				String pathString = "";
+				for (String entry : path) {
+					pathString += "/"+entry;
+				}
+				pathString += "/"+fileTerm.getName();
+
+				System.out.println(txt+"\n"+pathString);
+				Utils.mark(document, txt, pathString, ID);
+			}
+		}
+	}
+
+	public String getTaxonomyPath(String search, EList<Term> terms, String path) {
+		System.out.println(path);
+		for(Term term : terms) {
+			String newPath = path;
+			newPath += "/"+term.getName();
+			System.out.println("compare: "+term.getName()+" ?= "+search);
+			if (term.getName().equals(search)) {
+				System.out.println("found: "+newPath);
+				return path;
+			}
+			return getTaxonomyPath(search, term.getSubclasses(), path+"/"+term.getName());
+		}
+		return "/";
+	}
+	
+	public void showTaxonomyConfilcts(Document document) {
+		System.out.println("showTaxonomyConfilcts");
+		EList<Term> generalTerms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
+		EList<Term> fileTerms = document.getTaxonomy().getDimensions();
+
+		if (generalTerms.isEmpty())
+			System.out.println("generalTerms empty");
+		if (fileTerms.isEmpty())
+			System.out.println("fileTerms empty");
+		
+		
+		if (!generalTerms.isEmpty() && !fileTerms.isEmpty()) {
+			matchTaxonomy(new String[]{}, generalTerms, fileTerms, document);
+		}
+
+	}
+	
+	
 	class TreeLabelProvider extends ColumnLabelProvider {
 		public String getText(Object element) {
 			if(element instanceof Term) {

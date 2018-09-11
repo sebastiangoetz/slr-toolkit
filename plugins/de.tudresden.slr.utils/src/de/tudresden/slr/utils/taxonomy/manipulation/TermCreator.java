@@ -1,4 +1,4 @@
-package de.tudresden.slr.model.taxonomy.ui.manipulation;
+package de.tudresden.slr.utils.taxonomy.manipulation;
 
 import java.util.Optional;
 
@@ -7,9 +7,9 @@ import org.eclipse.emf.ecore.EObject;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.ui.dialog.CreateTermDialog.TermPosition;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyUtils;
+import de.tudresden.slr.utils.TermPosition;
 
 public class TermCreator {
 	

@@ -21,8 +21,8 @@ public interface BibtexFactory extends EFactory {
 	BibtexFactory eINSTANCE = de.tudresden.slr.model.bibtex.impl.BibtexFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Document</em>'. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * Returns a new object of class '<em>Document</em>'. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @return a new object of class '<em>Document</em>'.
 	 * @generated
@@ -30,8 +30,17 @@ public interface BibtexFactory extends EFactory {
 	Document createDocument();
 
 	/**
-	 * Returns the package supported by this factory. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns a new object of class '<em>File</em>'. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>File</em>'.
+	 * @generated
+	 */
+	BibtexFile createBibtexFile();
+
+	/**
+	 * Returns the package supported by this factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @return the package supported by this factory.
 	 * @generated
