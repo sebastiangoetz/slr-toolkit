@@ -42,121 +42,236 @@ public class QuickFix implements IMarkerResolution {
 	public void run(IMarker marker) {
 		try {
 			String[] path = ((String) marker.getAttribute("PATH")).split("/");
-			EList<Term> terms;
 			System.out.println("quickfix run "+fixType+"|"+marker.getAttribute("PATH"));
 			
 			switch (fixType) {
 				case ADD_TO_TAXONOMY:
-					terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
-					Term term = terms.get(0);
-					
-
-					System.out.println("path.length: "+path.length);
-					//add to taxonomy root
-					if (path.length == 2) {
-						TermCreator.create(path[1], term, TermPosition.NEIGHBOR);
-						break;
-					}
-					
-					for (int pathPosition=1; pathPosition<(path.length-1); pathPosition++) {
-						System.out.println("search for "+path[pathPosition]);
-
-						for (Term t : terms) {
-							System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
-							if (t.getName().equals(path[pathPosition])) {
-								System.out.println("found "+t.getName()+" "+pathPosition);
-								term = t;
-								terms = t.getSubclasses();
-								break;
-							}
-						}
-					}
-					
-					//check if taxonomy contains term already
-					boolean alreadyInTaxonomy = false;
-					for (Term t : term.getSubclasses()) {
-						if(t.getName().equals(path[path.length-1])) {
-							alreadyInTaxonomy = true;
-						}
-					}
-					if (alreadyInTaxonomy) {
-						System.out.println(path[path.length-1]+" is already in taxonomy.");
-					}
-					else {
-						TermCreator.create(path[path.length-1], term, TermPosition.SUBTERM);
-					}
+					addToTaxonomy(path);
 					break;
 				case DELETE_FROM_FILE:
-					List<Document> documents = SearchUtils.getDocumentList();
-					for (Document d : documents) {
-						if (d.getKey().equals(marker.getAttribute(IMarker.LOCATION))) {
-							System.out.println("list "+d.getLine());
-							terms = d.getTaxonomy().getDimensions();
-							term = terms.get(0);
-							
-							int[] pathIndex = new int[path.length];
-
-							for (int pathPosition=1; pathPosition<path.length; pathPosition++) {
-								System.out.println("search for "+path[pathPosition]);
-
-								int index = 0;
-								for (Term t : terms) {
-									System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
-									if (t.getName().equals(path[pathPosition])) {
-										pathIndex[pathPosition-1] = index;
-										System.out.println("found "+t.getName()+" "+pathPosition);
-										term = t;
-										System.out.println("test #42");
-										if (pathPosition == (path.length-1)) { //check if pointer is at last path-element
-											System.out.println("Remove "+terms.get(index).getName());
-											terms.remove(index);
-											pathPosition = path.length; //break parent loop
-										}
-										terms = t.getSubclasses();
-											
-										break;
-									}
-									index++;
-								}
-								
-							}
-							System.out.println("t:"+term.getName());
-							
-
-							for (int i : pathIndex)
-							System.out.println(i+" ");
-							
-
-							//System.out.println("add: "+d.getTaxonomy().getDimensions().get(0).getSubclasses().get(0).getName());
-							//d.getTaxonomy().getDimensions().remove(d.getTaxonomy().getDimensions().get(0).getSubclasses().get(0));
-					//		d.getTaxonomy().getDimensions().remove(1);
-							//remove(d.getTaxonomy().getDimensions().get(0).getSubclasses().get(0));
-
-							
-
-							BibtexFileWriter.updateBibtexFile(d.eResource());	
-
-							printTaxonomy(d.getTaxonomy().getDimensions(), "|");
-							System.out.println("\n");
-							
-							BibtexFactory bib = BibtexFactoryImpl.init();
-							bib.createBibtexFile();
-						
-							//TODO save bibtex doc
-							break;
-						}
-					}
+					deleteFromFile(path, marker.getAttribute(IMarker.LOCATION).toString());
 					break;
 				case MATCH_TAXONOMY:
-					//TODO remove old from file taxonomy and add new to file taxonomy
+					System.out.println("## remove "+path+"\n## add "+((String) marker.getAttribute("PATH2")));
+					moveTermInFile(path, ((String) marker.getAttribute("PATH2")).split("/"), marker.getAttribute(IMarker.LOCATION).toString());
+					
 					break;
 			}
-			
 			
 			marker.delete();
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void addToTaxonomy(String[] path) {
+		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
+		Term term = terms.get(0);
+		
+
+		System.out.println("path.length: "+path.length);
+		//add to taxonomy root
+		if (path.length == 2) {
+			TermCreator.create(path[1], term, TermPosition.NEIGHBOR);
+			return;
+		}
+		
+		for (int pathPosition=1; pathPosition<(path.length-1); pathPosition++) {
+			System.out.println("search for "+path[pathPosition]);
+
+			for (Term t : terms) {
+				System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
+				if (t.getName().equals(path[pathPosition])) {
+					System.out.println("found "+t.getName()+" "+pathPosition);
+					term = t;
+					terms = t.getSubclasses();
+					break;
+				}
+			}
+		}
+		
+		//check if taxonomy contains term already
+		boolean alreadyInTaxonomy = false;
+		for (Term t : term.getSubclasses()) {
+			if(t.getName().equals(path[path.length-1])) {
+				alreadyInTaxonomy = true;
+			}
+		}
+		if (alreadyInTaxonomy) {
+			System.out.println(path[path.length-1]+" is already in taxonomy.");
+		}
+		else {
+			TermCreator.create(path[path.length-1], term, TermPosition.SUBTERM);
+		}
+		
+	}
+
+	private void deleteFromFile(String[] path, String markerLocation) {
+		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
+		Term term = terms.get(0);
+		List<Document> documents = SearchUtils.getDocumentList();
+		for (Document d : documents) {
+			if (d.getKey().equals(markerLocation)) {
+				System.out.println("list "+d.getLine());
+				terms = d.getTaxonomy().getDimensions();
+				term = terms.get(0);
+				
+				int[] pathIndex = new int[path.length];
+
+				for (int pathPosition=1; pathPosition<path.length; pathPosition++) {
+					System.out.println("search for "+path[pathPosition]);
+
+					int index = 0;
+					for (Term t : terms) {
+						System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
+						if (t.getName().equals(path[pathPosition])) {
+							pathIndex[pathPosition-1] = index;
+							System.out.println("found "+t.getName()+" "+pathPosition);
+							term = t;
+							System.out.println("test #42");
+							if (pathPosition == (path.length-1)) { //check if pointer is at last path-element
+								System.out.println("Remove "+terms.get(index).getName());
+								terms.remove(index);
+								pathPosition = path.length; //break parent loop
+							}
+							terms = t.getSubclasses();
+								
+							break;
+						}
+						index++;
+					}
+					
+				}
+				System.out.println("t:"+term.getName());
+				
+
+				for (int i : pathIndex)
+				System.out.println(i+" ");
+				
+
+
+				
+
+				BibtexFileWriter.updateBibtexFile(d.eResource());	
+
+				printTaxonomy(d.getTaxonomy().getDimensions(), "|");
+				System.out.println("\n");
+				
+				BibtexFactory bib = BibtexFactoryImpl.init();
+				bib.createBibtexFile();
+			
+				break;
+			}
+		}
+		
+	}
+	
+
+	private void moveTermInFile(String[] path, String[] path2, String markerLocation) {
+		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
+		Term term = terms.get(0);
+		List<Document> documents = SearchUtils.getDocumentList();
+		for (Document d : documents) {
+			if (d.getKey().equals(markerLocation)) {
+				
+				System.out.println("list "+d.getLine());
+				terms = d.getTaxonomy().getDimensions();
+				term = terms.get(0);
+				
+				int[] pathIndex = new int[path.length];
+
+				for (int pathPosition=1; pathPosition<path.length; pathPosition++) {
+					System.out.println("search for "+path[pathPosition]);
+
+					int index = 0;
+					for (Term t : terms) {
+						System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
+						if (t.getName().equals(path[pathPosition])) {
+							pathIndex[pathPosition-1] = index;
+							System.out.println("found "+t.getName()+" "+pathPosition);
+							term = t;
+							if (pathPosition == (path.length-1)) { //check if pointer is at last path-element
+								Term moveTerm = terms.get(index);
+								addTerm(d, path2, moveTerm);
+								System.out.println("Remove "+terms.get(index).getName());
+								
+								terms.remove(index);
+								pathPosition = path.length; //break parent loop
+							}
+							terms = t.getSubclasses();
+								
+							break;
+						}
+						index++;
+					}
+					
+				}
+				System.out.println("t:"+term.getName());
+				
+
+//				for (int i : pathIndex)
+//				System.out.println(i+" ");
+								
+
+				BibtexFileWriter.updateBibtexFile(d.eResource());	
+
+				printTaxonomy(d.getTaxonomy().getDimensions(), "|");
+				System.out.println("\n");
+				
+				BibtexFactory bib = BibtexFactoryImpl.init();
+				bib.createBibtexFile();
+			
+				break;
+			}
+		}
+		
+	}
+
+
+	private void addTerm(Document d, String[] path2, Term moveTerm) {
+		System.out.println("addTerm");
+
+		EList<Term> terms = d.getTaxonomy().getDimensions();
+		int pathPosition = 1;
+		boolean termFound = false;
+
+		for (String pathPart : path2) {
+			System.out.println("current part: "+pathPart);
+			termFound = false;
+			if (pathPart.equals("")) {
+				continue;
+			}
+			for (Term term : terms) {
+				System.out.println("compare "+term.getName()+" ?= "+path2[pathPosition]);
+				if (term.getName().equals(path2[pathPosition])) {
+					termFound = true;
+					if (term.getSubclasses().isEmpty()) {
+						System.out.println("Add "+moveTerm.getName()+" under "+terms.get(0).getName());
+						//terms.add(moveTerm);
+					}
+					else {
+						terms = term.getSubclasses();
+					}
+					break;
+				}
+			}
+			if (!termFound) {
+				Term newTerm = TermCreator.create(
+						pathPart,
+						ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions().get(3).getSubclasses().get(0),
+						TermPosition.SUBTERM
+				);
+				terms.add(newTerm);
+				System.out.println("nf Add "+newTerm.getName()+" under "+terms.get(0).getName());
+				terms = newTerm.getSubclasses();
+				
+				BibtexFileWriter.updateBibtexFile(d.eResource());
+			}
+			pathPosition++;
+		}
+		
+		BibtexFileWriter.updateBibtexFile(d.eResource());
+		
 	}
 
 	private void printTaxonomy(EList<Term> terms, String spacer) {

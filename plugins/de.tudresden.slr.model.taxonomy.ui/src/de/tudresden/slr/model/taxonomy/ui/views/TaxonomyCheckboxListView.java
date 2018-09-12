@@ -52,6 +52,7 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -166,6 +167,15 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
 			Utils.unmark((Document) arg);
+			
+//			
+//			((Document) arg).getTaxonomy().getDimensions().add(
+//					((Document) arg).getTaxonomy().getDimensions().get(1).getSubclasses().get(0)
+//					);
+//
+//			BibtexFileWriter.updateBibtexFile(((Document) arg).eResource());
+//			
+			
 			showTaxonomyConfilcts((Document) arg);
 		}
 	}
@@ -342,6 +352,17 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 //					}
 //				}
 //				
+				
+				
+				//search for move quickfix and set path2
+				String path2String = getPossibleMovePath(
+						fileTerm.getName(),
+						ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions(),
+						""
+				);
+				System.out.println("path2String= "+path2String+")");
+				
+				
 				String pathString = "";
 				for (String entry : path) {
 					pathString += "/"+entry;
@@ -349,22 +370,26 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 				pathString += "/"+fileTerm.getName();
 
 				System.out.println(txt+"\n"+pathString);
-				Utils.mark(document, txt, pathString, ID);
+				Utils.mark(document, txt, pathString, path2String, ID);
 			}
 		}
 	}
 
-	public String getTaxonomyPath(String search, EList<Term> terms, String path) {
-		System.out.println(path);
+	public String getPossibleMovePath(String search, EList<Term> terms, String path) {
+		System.out.println("getPossibleMovePath("+search+", "+path+")");
 		for(Term term : terms) {
-			String newPath = path;
-			newPath += "/"+term.getName();
-			System.out.println("compare: "+term.getName()+" ?= "+search);
+			String newPath = path+"/"+term.getName();
+			System.out.println("compare: "+search+" ?= "+term.getName());
 			if (term.getName().equals(search)) {
 				System.out.println("found: "+newPath);
-				return path;
+				return newPath;
 			}
-			return getTaxonomyPath(search, term.getSubclasses(), path+"/"+term.getName());
+			if (!term.getSubclasses().isEmpty()) {
+				String result = getPossibleMovePath(search, term.getSubclasses(), newPath);
+				if (!result.equals("/")) {
+					return result;
+				}
+			}
 		}
 		return "/";
 	}

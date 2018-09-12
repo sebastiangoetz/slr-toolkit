@@ -93,7 +93,7 @@ public class Utils {
 
 	}
 
-	public static void mark(Document document, String message, String path, String sourceId) {
+	public static void mark(Document document, String message, String path, String path2, String sourceId) {
 		IFile file = Utils.getIFilefromDocument(document);
 		if (file == null) {
 			return;
@@ -111,8 +111,9 @@ public class Utils {
 		map.put(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 		map.put(IMarker.LOCATION, document.getKey());
 		map.put(IMarker.MESSAGE, message);
-		
+
 		map.put("PATH", path);
+		map.put("PATH2", path2);
 
 		if (sourceId != null) {
 			map.put(IMarker.SOURCE_ID, sourceId);
