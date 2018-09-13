@@ -206,11 +206,6 @@ public class QuickFix implements IMarkerResolution {
 					}
 					
 				}
-				System.out.println("t:"+term.getName());
-				
-
-//				for (int i : pathIndex)
-//				System.out.println(i+" ");
 								
 
 				BibtexFileWriter.updateBibtexFile(d.eResource());	
@@ -229,27 +224,19 @@ public class QuickFix implements IMarkerResolution {
 
 
 	private void addTerm(Document d, String[] path2, Term moveTerm) {
-		System.out.println("addTerm");
-
 		EList<Term> terms = d.getTaxonomy().getDimensions();
 		int pathPosition = 1;
 		boolean termFound = false;
 
 		for (String pathPart : path2) {
-			System.out.println("current part: "+pathPart);
 			termFound = false;
 			if (pathPart.equals("")) {
 				continue;
 			}
 			for (Term term : terms) {
-				System.out.println("compare "+term.getName()+" ?= "+path2[pathPosition]);
 				if (term.getName().equals(path2[pathPosition])) {
 					termFound = true;
-					if (term.getSubclasses().isEmpty()) {
-						System.out.println("Add "+moveTerm.getName()+" under "+terms.get(0).getName());
-						//terms.add(moveTerm);
-					}
-					else {
+					if (!term.getSubclasses().isEmpty()) {
 						terms = term.getSubclasses();
 					}
 					break;
@@ -262,7 +249,6 @@ public class QuickFix implements IMarkerResolution {
 						TermPosition.SUBTERM
 				);
 				terms.add(newTerm);
-				System.out.println("nf Add "+newTerm.getName()+" under "+terms.get(0).getName());
 				terms = newTerm.getSubclasses();
 				
 				BibtexFileWriter.updateBibtexFile(d.eResource());
@@ -274,6 +260,11 @@ public class QuickFix implements IMarkerResolution {
 		
 	}
 
+	/*
+	 *
+	 * helper function to print taxonomy in tree-view
+	 * 
+	 */
 	private void printTaxonomy(EList<Term> terms, String spacer) {
 		for (Term term : terms) {
 			System.out.println(spacer+term.getName());
