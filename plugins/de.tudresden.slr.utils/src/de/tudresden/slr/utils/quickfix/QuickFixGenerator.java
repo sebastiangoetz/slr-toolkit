@@ -28,7 +28,7 @@ public class QuickFixGenerator implements IMarkerResolutionGenerator {
 						QuickFix.ADD_TO_TAXONOMY
 				),
 				new QuickFix(
-						"Delete '"+nodeName+"' from document taxonomy."+subtermNote,
+						"Delete '"+nodeName+"' from document classification."+subtermNote,
 						QuickFix.DELETE_FROM_FILE
 				)
 		};
@@ -44,11 +44,12 @@ public class QuickFixGenerator implements IMarkerResolutionGenerator {
 								QuickFix.ADD_TO_TAXONOMY
 						),
 						new QuickFix(
-								"Delete '"+nodeName+"' from document taxonomy."+subtermNote,
+								"Delete '"+nodeName+"' from document classification."+subtermNote,
 								QuickFix.DELETE_FROM_FILE
 						),
 						new QuickFix(
-								"Correct path from '"+((String) marker.getAttribute("PATH"))+"' to '"+((String) marker.getAttribute("PATH2"))+"'",
+								"Correct path in document classification.\n"+
+										"('"+((String) marker.getAttribute("PATH"))+"' to '"+((String) marker.getAttribute("PATH2"))+"')",
 								QuickFix.MATCH_TAXONOMY
 						)
 				};
