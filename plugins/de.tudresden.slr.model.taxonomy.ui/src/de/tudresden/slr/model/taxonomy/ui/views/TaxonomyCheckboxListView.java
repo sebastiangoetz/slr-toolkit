@@ -52,7 +52,6 @@ import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import de.tudresden.slr.model.bibtex.Document;
-import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -167,15 +166,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		if (arg instanceof Document) {
 			setTicks((Document) arg);
 			Utils.unmark((Document) arg);
-			
-//			
-//			((Document) arg).getTaxonomy().getDimensions().add(
-//					((Document) arg).getTaxonomy().getDimensions().get(1).getSubclasses().get(0)
-//					);
-//
-//			BibtexFileWriter.updateBibtexFile(((Document) arg).eResource());
-//			
-			
 			showTaxonomyConfilcts((Document) arg);
 		}
 	}
@@ -335,24 +325,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 				else {
 					txt += "root";
 				}
-//				String markerPath = getTaxonomyPath(
-//					fileTerm.getName(),
-//					ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions(),
-//					""
-//				);
-				
-				
-//				if (markerPath.length == 0) {
-//					markerPath = new String[fileTerms.size()];
-//					int i = 0;
-//					for(Term term : fileTerms) {
-//						System.out.println(term.getName());
-//						markerPath[i] = term.getName();
-//						i++;
-//					}
-//				}
-//				
-				
 				
 				//search for move quickfix and set path2
 				String path2String = getPossibleMovePath(
@@ -360,7 +332,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 						ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions(),
 						""
 				);
-				System.out.println("path2String= "+path2String+")");
 				
 				
 				String pathString = "";
@@ -369,19 +340,15 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 				}
 				pathString += "/"+fileTerm.getName();
 
-				System.out.println(txt+"\n"+pathString);
 				Utils.mark(document, txt, pathString, path2String, ID);
 			}
 		}
 	}
 
 	public String getPossibleMovePath(String search, EList<Term> terms, String path) {
-		System.out.println("getPossibleMovePath("+search+", "+path+")");
 		for(Term term : terms) {
 			String newPath = path+"/"+term.getName();
-			System.out.println("compare: "+search+" ?= "+term.getName());
 			if (term.getName().equals(search)) {
-				System.out.println("found: "+newPath);
 				return newPath;
 			}
 			if (!term.getSubclasses().isEmpty()) {
@@ -395,7 +362,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	}
 	
 	public void showTaxonomyConfilcts(Document document) {
-		System.out.println("showTaxonomyConfilcts");
 		EList<Term> generalTerms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
 		EList<Term> fileTerms = document.getTaxonomy().getDimensions();
 
