@@ -68,8 +68,6 @@ public class QuickFix implements IMarkerResolution {
 		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
 		Term term = terms.get(0);
 		
-
-		System.out.println("path.length: "+path.length);
 		//add to taxonomy root
 		if (path.length == 2) {
 			TermCreator.create(path[1], term, TermPosition.NEIGHBOR);
@@ -77,12 +75,8 @@ public class QuickFix implements IMarkerResolution {
 		}
 		
 		for (int pathPosition=1; pathPosition<(path.length-1); pathPosition++) {
-			System.out.println("search for "+path[pathPosition]);
-
 			for (Term t : terms) {
-				System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
 				if (t.getName().equals(path[pathPosition])) {
-					System.out.println("found "+t.getName()+" "+pathPosition);
 					term = t;
 					terms = t.getSubclasses();
 					break;
@@ -108,29 +102,19 @@ public class QuickFix implements IMarkerResolution {
 
 	private void deleteFromFile(String[] path, String markerLocation) {
 		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
-		Term term = terms.get(0);
 		List<Document> documents = SearchUtils.getDocumentList();
 		for (Document d : documents) {
 			if (d.getKey().equals(markerLocation)) {
-				System.out.println("list "+d.getLine());
 				terms = d.getTaxonomy().getDimensions();
-				term = terms.get(0);
 				
 				int[] pathIndex = new int[path.length];
 
 				for (int pathPosition=1; pathPosition<path.length; pathPosition++) {
-					System.out.println("search for "+path[pathPosition]);
-
 					int index = 0;
 					for (Term t : terms) {
-						System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
 						if (t.getName().equals(path[pathPosition])) {
 							pathIndex[pathPosition-1] = index;
-							System.out.println("found "+t.getName()+" "+pathPosition);
-							term = t;
-							System.out.println("test #42");
 							if (pathPosition == (path.length-1)) { //check if pointer is at last path-element
-								System.out.println("Remove "+terms.get(index).getName());
 								terms.remove(index);
 								pathPosition = path.length; //break parent loop
 							}
@@ -142,20 +126,7 @@ public class QuickFix implements IMarkerResolution {
 					}
 					
 				}
-				System.out.println("t:"+term.getName());
-				
-
-				for (int i : pathIndex)
-				System.out.println(i+" ");
-				
-
-
-				
-
 				BibtexFileWriter.updateBibtexFile(d.eResource());	
-
-				printTaxonomy(d.getTaxonomy().getDimensions(), "|");
-				System.out.println("\n");
 				
 				BibtexFactory bib = BibtexFactoryImpl.init();
 				bib.createBibtexFile();
@@ -169,49 +140,35 @@ public class QuickFix implements IMarkerResolution {
 
 	private void moveTermInFile(String[] path, String[] path2, String markerLocation) {
 		EList<Term> terms = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
-		Term term = terms.get(0);
 		List<Document> documents = SearchUtils.getDocumentList();
 		for (Document d : documents) {
 			if (d.getKey().equals(markerLocation)) {
-				
-				System.out.println("list "+d.getLine());
 				terms = d.getTaxonomy().getDimensions();
-				term = terms.get(0);
 				
 				int[] pathIndex = new int[path.length];
 
 				for (int pathPosition=1; pathPosition<path.length; pathPosition++) {
-					System.out.println("search for "+path[pathPosition]);
 
 					int index = 0;
 					for (Term t : terms) {
-						System.out.println("compare "+t.getName()+" ?= "+path[pathPosition]);
 						if (t.getName().equals(path[pathPosition])) {
 							pathIndex[pathPosition-1] = index;
-							System.out.println("found "+t.getName()+" "+pathPosition);
-							term = t;
 							if (pathPosition == (path.length-1)) { //check if pointer is at last path-element
 								Term moveTerm = terms.get(index);
 								addTerm(d, path2, moveTerm);
-								System.out.println("Remove "+terms.get(index).getName());
 								
 								terms.remove(index);
 								pathPosition = path.length; //break parent loop
 							}
 							terms = t.getSubclasses();
-								
 							break;
 						}
 						index++;
 					}
-					
-				}
-								
+				}		
 
 				BibtexFileWriter.updateBibtexFile(d.eResource());	
-
-				printTaxonomy(d.getTaxonomy().getDimensions(), "|");
-				System.out.println("\n");
+				//printTaxonomy(d.getTaxonomy().getDimensions(), "|");
 				
 				BibtexFactory bib = BibtexFactoryImpl.init();
 				bib.createBibtexFile();
