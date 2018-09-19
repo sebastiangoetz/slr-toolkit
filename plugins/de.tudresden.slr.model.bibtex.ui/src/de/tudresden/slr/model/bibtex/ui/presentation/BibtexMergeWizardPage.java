@@ -30,7 +30,7 @@ import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 import org.jbibtex.TokenMgrException;
 
-public class WizardManualMergePage  extends WizardPage {
+public class BibtexMergeWizardPage  extends WizardPage {
 	private Composite container;
     private BibtexMergeConflict conflict;
     private int index;
@@ -44,7 +44,7 @@ public class WizardManualMergePage  extends WizardPage {
     private Button select;
     private Button edit;
 
-    public WizardManualMergePage(BibtexMergeConflict conflict, int i, int a) {
+    public BibtexMergeWizardPage(BibtexMergeConflict conflict, int i, int a) {
         super("Step 2: Manual conflict solving");
         setTitle("Step 2: Manual conflict solving");
     	this.conflict = conflict;

@@ -56,7 +56,7 @@ import org.jbibtex.Value;
 import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
-public class MergeDialog extends Dialog {
+public class BibtexMergeDialog extends Dialog {
 	
     private BibtexMergeData data;
 	private boolean[] args;
@@ -64,7 +64,7 @@ public class MergeDialog extends Dialog {
     private CheckboxTableViewer ctv;
     private WizardDialog wizardDialog;
 
-    public MergeDialog(Shell parentShell, BibtexMergeData d) {
+    public BibtexMergeDialog(Shell parentShell, BibtexMergeData d) {
         super(parentShell);
     	this.data = d;
 		this.args = new boolean[3];
@@ -203,7 +203,7 @@ public class MergeDialog extends Dialog {
     					}
     				}
     				else {
-    					BibtexManualMergeWizard mergeWizard = new BibtexManualMergeWizard(data);
+    					BibtexMergeWizard mergeWizard = new BibtexMergeWizard(data);
     					wizardDialog = new WizardDialog(getShell(), mergeWizard);
     					if(wizardDialog.open() == 0) {
     						if(merge(mergeWizard.getResults())) {

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.eclipse.jface.wizard.Wizard;
 
-public class BibtexManualMergeWizard extends Wizard {
+public class BibtexMergeWizard extends Wizard {
 
     protected BibtexMergeData data;
     private String results;
 
-    public BibtexManualMergeWizard(BibtexMergeData data) {
+    public BibtexMergeWizard(BibtexMergeData data) {
         super();
         this.data = data;
         this.results = "";
@@ -26,14 +26,14 @@ public class BibtexManualMergeWizard extends Wizard {
     	List<BibtexMergeConflict> conflicts = data.getConflicts();
     	int amount = data.getConflicts().size();
     	for(int i = 0; i < amount; i++) {
-            addPage(new WizardManualMergePage(conflicts.get(i), i + 1, amount));
+            addPage(new BibtexMergeWizardPage(conflicts.get(i), i + 1, amount));
     	}
     }
 
     @Override
     public boolean performFinish() {
     	for(Object o : getPages()) {
-    		results += ((WizardManualMergePage) o).getResult();
+    		results += ((BibtexMergeWizardPage) o).getResult();
 			if(results.endsWith("}")) {
 				results += System.lineSeparator() + System.lineSeparator();
 			}
