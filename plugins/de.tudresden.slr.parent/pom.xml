@@ -251,5 +251,6 @@
 		<module>../de.tudresden.slr.model.mendeley</module>
 		<module>../de.tudresden.slr.googlescholar</module>
 		<module>../de.tudresden.slr.utils</module>
+		<module>../de.tudresden.slr.model.taxonomy</module>
 	</modules>
 </project>
