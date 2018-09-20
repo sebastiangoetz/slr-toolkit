@@ -42,8 +42,6 @@ public class QuickFix implements IMarkerResolution {
 	public void run(IMarker marker) {
 		try {
 			String[] path = ((String) marker.getAttribute("PATH")).split("/");
-			System.out.println("quickfix run "+fixType+"|"+marker.getAttribute("PATH"));
-			
 			switch (fixType) {
 				case ADD_TO_TAXONOMY:
 					addToTaxonomy(path);
@@ -52,9 +50,7 @@ public class QuickFix implements IMarkerResolution {
 					deleteFromFile(path, marker.getAttribute(IMarker.LOCATION).toString());
 					break;
 				case MATCH_TAXONOMY:
-					System.out.println("## remove "+path+"\n## add "+((String) marker.getAttribute("PATH2")));
 					moveTermInFile(path, ((String) marker.getAttribute("PATH2")).split("/"), marker.getAttribute(IMarker.LOCATION).toString());
-					
 					break;
 			}
 			
