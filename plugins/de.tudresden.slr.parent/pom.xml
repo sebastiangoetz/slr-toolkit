@@ -67,6 +67,8 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+					<compilerArgument>-err:-forbidden</compilerArgument>
+					<useProjectSettings>false</useProjectSettings>
 				</configuration>
 			</plugin>
 
