@@ -48,6 +48,7 @@ public class BibtexMergeData {
 				i.remove();
 			}
 		}
+		findConflicts();
 	}
 	
 	private List<BibtexMergeConflict> findConflicts(){
