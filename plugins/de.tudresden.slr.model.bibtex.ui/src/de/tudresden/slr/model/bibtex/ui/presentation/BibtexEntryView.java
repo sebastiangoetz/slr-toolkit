@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -74,6 +76,7 @@ import org.eclipse.ui.part.ViewPart;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.ui.util.Utils;
+import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**
@@ -96,6 +99,7 @@ public class BibtexEntryView extends ViewPart {
 	private Action refreshAction;
 	private Action markingAction;
 	private Action openingAction;
+	private Action mergingAction;
 	private ComboViewer combo;
 	private BibtexOpenListener openListener, selectionListener;
 
@@ -596,6 +600,8 @@ public class BibtexEntryView extends ViewPart {
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(openingAction);
 		manager.add(new Separator());
+		manager.add(mergingAction);
+		manager.add(new Separator());
 		manager.add(markingAction);
 	}
 
@@ -652,6 +658,33 @@ public class BibtexEntryView extends ViewPart {
 		};
 		openingAction.setText("Open");
 		openingAction.setToolTipText("Open document in an editor");
+
+		mergingAction = new Action() {
+			@Override
+			public void run() {
+				TreeSelection select = (TreeSelection) viewer.getSelection();
+				if(select.size() > 1 && select.size() < 9) {
+					List<BibtexResourceImpl> resourceList = new ArrayList<BibtexResourceImpl>();
+					for(@SuppressWarnings("unchecked")
+					Iterator<Object> i = select.iterator(); i.hasNext();) {
+						Object o = i.next();
+						if(!(o instanceof BibtexResourceImpl)) {
+							return;
+						}
+						resourceList.add((BibtexResourceImpl) o);
+					}
+					BibtexMergeDialog dialog = new BibtexMergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
+					if (dialog.open() == Window.OK) {
+						refreshAction.run();
+					}
+				}	
+				else {
+					return;
+				}
+			}
+		};
+		mergingAction.setText("Merge BibTeX files...");
+		mergingAction.setToolTipText("Merge two or more BibTeX files");
 	}
 
 	private void hookActions() {
