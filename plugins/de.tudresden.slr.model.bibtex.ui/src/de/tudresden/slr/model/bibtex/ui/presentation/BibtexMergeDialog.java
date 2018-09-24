@@ -326,8 +326,8 @@ public class BibtexMergeDialog extends Dialog {
 				}
 				inputStream.close();
 				for(String snippet : outputStream.toString().split("@")) {
-					if(snippet.contains("{")) {
-						String title = snippet.split("title = \\{")[1].split("\\}")[0].toLowerCase();
+					if(snippet.contains("title = {") || snippet.contains("title={")) {
+						String title = snippet.split("title( )*=( )*\\{")[1].split("\\}")[0].toLowerCase();
 						String toWrite = "@" + snippet;
 						if(toWrite.endsWith("}")) {
 							toWrite += System.lineSeparator() + System.lineSeparator();
