@@ -41,11 +41,10 @@ public class ChartWizard extends Wizard {
 			view = (ICommunicationView) PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage()
 					.showView(chartViewId);
+			view.setAndRenderChart(myChart);
 		} catch (PartInitException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		view.setAndRenderChart(myChart);
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().showView(chartViewId);

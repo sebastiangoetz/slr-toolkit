@@ -785,28 +785,38 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		case BibtexPackage.DOCUMENT__AUTHORS:
 			return authors != null && !authors.isEmpty();
 		case BibtexPackage.DOCUMENT__ABSTRACT:
-			return ABSTRACT_EDEFAULT == null ? abstract_ != null : !ABSTRACT_EDEFAULT.equals(abstract_);
+			//return ABSTRACT_EDEFAULT == null ? abstract_ != null : !ABSTRACT_EDEFAULT.equals(abstract_);
+			return abstract_ != null;
 		case BibtexPackage.DOCUMENT__YEAR:
-			return YEAR_EDEFAULT == null ? year != null : !YEAR_EDEFAULT.equals(year);
+			//return YEAR_EDEFAULT == null ? year != null : !YEAR_EDEFAULT.equals(year);
+			return year != null;
 		case BibtexPackage.DOCUMENT__MONTH:
-			return MONTH_EDEFAULT == null ? month != null : !MONTH_EDEFAULT.equals(month);
+			//return MONTH_EDEFAULT == null ? month != null : !MONTH_EDEFAULT.equals(month);
+			return month != null;
 		case BibtexPackage.DOCUMENT__TITLE:
-			return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
+			//return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
+			return title != null;
 		case BibtexPackage.DOCUMENT__KEY:
-			return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+			//return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+			return key != null;
 		case BibtexPackage.DOCUMENT__DOI:
-			return DOI_EDEFAULT == null ? doi != null : !DOI_EDEFAULT.equals(doi);
+			//return DOI_EDEFAULT == null ? doi != null : !DOI_EDEFAULT.equals(doi);
+			return doi != null;
 		case BibtexPackage.DOCUMENT__URL:
-			return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
+			//return URL_EDEFAULT == null ? url != null : !URL_EDEFAULT.equals(url);
+			return url != null;
 		case BibtexPackage.DOCUMENT__UNPARSED_AUTHORS:
-			return UNPARSED_AUTHORS_EDEFAULT == null ? unparsedAuthors != null
-					: !UNPARSED_AUTHORS_EDEFAULT.equals(unparsedAuthors);
+			//return UNPARSED_AUTHORS_EDEFAULT == null ? unparsedAuthors != null
+			//		: !UNPARSED_AUTHORS_EDEFAULT.equals(unparsedAuthors);
+			return unparsedAuthors != null;
 		case BibtexPackage.DOCUMENT__TAXONOMY:
 			return taxonomy != null;
 		case BibtexPackage.DOCUMENT__TYPE:
-			return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			//return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
+			return type != null;
 		case BibtexPackage.DOCUMENT__FILE:
-			return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT.equals(file);
+			//return FILE_EDEFAULT == null ? file != null : !FILE_EDEFAULT.equals(file);
+			return file != null;
 		case BibtexPackage.DOCUMENT__CITES:
 			return cites != CITES_EDEFAULT;
 		}

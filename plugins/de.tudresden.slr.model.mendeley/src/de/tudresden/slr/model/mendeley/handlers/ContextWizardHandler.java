@@ -101,10 +101,10 @@ public class ContextWizardHandler extends AbstractHandler {
 							try {
 								// only executes if previous job was successful
 								if(loggedIn) {
-									if(!monitor.isCanceled())
+									if(!monitor.isCanceled()) {
 										mc.updateMendeleyFolders(monitor);
-										if(!monitor.isCanceled())
-											isReady = true;
+										isReady = true;
+									}
 								}
 								else
 									return Status.CANCEL_STATUS;
@@ -123,11 +123,11 @@ public class ContextWizardHandler extends AbstractHandler {
 			            	if(loggedIn & isReady) {
 			            		WizardDialog wizardDialog = new WizardDialog(window.getShell(),
 							            new MSyncWizard(file.getLocationURI()));
-						        if (wizardDialog.open() == Window.OK) {
-						            
-						        } else {
-						           
-						        }
+//						        if (wizardDialog.open() == Window.OK) {
+//						            
+//						        } else {
+//						           
+//						        }
 			            	}
 			            	else {
 			            		return Status.CANCEL_STATUS;

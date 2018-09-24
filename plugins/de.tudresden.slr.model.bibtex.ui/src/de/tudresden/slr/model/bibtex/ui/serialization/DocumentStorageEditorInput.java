@@ -59,4 +59,9 @@ public class DocumentStorageEditorInput implements IStorageEditorInput {
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
+	}
 }

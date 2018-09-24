@@ -123,7 +123,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 			}
 			document.setFile(url);
 			document.setUrl(url);
-			document.setTaxonomy(parseClasses(safeGetField(entry, KEY_CLASSES)));
+			String classes = safeGetField(entry, KEY_CLASSES);
+			classes = classes.replaceAll("["+System.lineSeparator()+"]", " ");
+			document.setTaxonomy(parseClasses(classes));
 
 			getContents().add(document);
 		}

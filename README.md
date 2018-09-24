@@ -3,6 +3,8 @@
 
 A Toolkit for Systematic Literature Reviews
 
+Find a short video giving an overview of the main features of the tool on [Youtube](https://youtu.be/IB4d9CJt144).
+
 ### Releases
 
 Latest release: [here](https://github.com/sebastiangoetz/slr-toolkit/releases)

@@ -1,0 +1,32 @@
+\RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
+\documentclass[ngerman]{tudscrartcl}
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords }} #1}
+\usepackage[T1]{fontenc}
+\usepackage{selinput}\SelectInputMappings{adieresis={ä},germandbls={ß}}
+\usepackage{babel}
+\begin{document}
+\faculty{Fakultät X}
+\department{Fachrichtung Y}
+\institute{Institut für Z}
+\chair{Lehrstuhl für A}
+\date{\today}
+\author{ ${SLR_AUTHORS} }
+\title{ ${SLR_TITLE} }
+\maketitle
+
+\begin{abstract}
+${SLR_ABSTRACT}
+\end{abstract}
+
+\keywords{ ${SLR_KEYWORDS} }
+
+\section{Introduction}
+Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+
+\section{Taxonomy}
+${SLR_STATISTICS}
+
+${SLR_TAXONOMYDESCRIPTION}
+
+${SLR_DIMENSIONCHARTS}
+\end{document}
