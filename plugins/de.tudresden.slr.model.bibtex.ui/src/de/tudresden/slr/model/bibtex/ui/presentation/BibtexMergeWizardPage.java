@@ -2,12 +2,12 @@ package de.tudresden.slr.model.bibtex.ui.presentation;
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -27,8 +27,11 @@ import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-import org.jbibtex.TokenMgrException;
+import org.jbibtex.Value;
+
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
+import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 public class BibtexMergeWizardPage  extends WizardPage {
 	private Composite container;
@@ -131,54 +134,71 @@ public class BibtexMergeWizardPage  extends WizardPage {
 			BibTeXParser parser = new BibTeXParser();
 			BibTeXDatabase db = parser.parseFully(reader);
 			entryMap = db.getEntries();
-		} catch (TokenMgrException | ParseException | IOException e) {
+		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			return false;
 		}
-		// TODO: maybe validate taxonomy data too?
 		if(!entryMap.isEmpty()) {
-			BibTeXEntry e = entryMap.values().iterator().next();
-			// check for required fields
-			if(e.getField(BibTeXEntry.KEY_TITLE) != null) {
-				switch (e.getType().getValue()) {
+			BibTeXEntry entry = entryMap.values().iterator().next();
+			if(entry.getField(BibTeXEntry.KEY_TITLE) != null) {
+				// validate taxonomy classification
+				Key classKey = new Key("classes");
+				Value classes = entry.getField(classKey);
+				if(classes != null) {
+					TaxonomyStandaloneParser tsp = new TaxonomyStandaloneParser();
+					EList<Term> newDims;
+					try {
+						newDims = tsp.parseTaxonomyText(classes.toUserString()).getDimensions();
+					}
+					catch(Exception e){
+						System.err.println(e.getMessage());
+						return false;
+					}
+					EList<Term> dims = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get().getDimensions();
+					if(!validateTerms(newDims, dims)) {
+						return false;
+					}
+				}
+				// check for required fields
+				switch (entry.getType().getValue()) {
 				case "article": 
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_JOURNAL) != null 
-					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_JOURNAL) != null 
+					&& entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "book":
-					if((e.getField(BibTeXEntry.KEY_AUTHOR) != null || e.getField(BibTeXEntry.KEY_EDITOR) != null)
-					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if((entry.getField(BibTeXEntry.KEY_AUTHOR) != null || entry.getField(BibTeXEntry.KEY_EDITOR) != null)
+					&& entry.getField(BibTeXEntry.KEY_PUBLISHER) != null && entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "inbook":
-					if((e.getField(BibTeXEntry.KEY_AUTHOR) != null || e.getField(BibTeXEntry.KEY_EDITOR) != null)
-					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null 
-					&& (e.getField(BibTeXEntry.KEY_CHAPTER) != null || e.getField(BibTeXEntry.KEY_PAGES) != null)) 
+					if((entry.getField(BibTeXEntry.KEY_AUTHOR) != null || entry.getField(BibTeXEntry.KEY_EDITOR) != null)
+					&& entry.getField(BibTeXEntry.KEY_PUBLISHER) != null && entry.getField(BibTeXEntry.KEY_YEAR) != null 
+					&& (entry.getField(BibTeXEntry.KEY_CHAPTER) != null || entry.getField(BibTeXEntry.KEY_PAGES) != null)) 
 						return true;
 				case "incollection":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
-					&& e.getField(BibTeXEntry.KEY_PUBLISHER) != null && e.getField(BibTeXEntry.KEY_YEAR) != null)
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
+					&& entry.getField(BibTeXEntry.KEY_PUBLISHER) != null && entry.getField(BibTeXEntry.KEY_YEAR) != null)
 						return true;
 				case "inproceedings":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
-					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_BOOKTITLE) != null 
+					&& entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "mastersthesis":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_SCHOOL) != null 
-					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_SCHOOL) != null 
+					&& entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "phdthesis":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_SCHOOL) != null 
-					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_SCHOOL) != null 
+					&& entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "proceedings":
-					if(e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "techreport":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_INSTITUTION) != null 
-					&& e.getField(BibTeXEntry.KEY_YEAR) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_INSTITUTION) != null 
+					&& entry.getField(BibTeXEntry.KEY_YEAR) != null) 
 						return true;
 				case "unpublished":
-					if(e.getField(BibTeXEntry.KEY_AUTHOR) != null && e.getField(BibTeXEntry.KEY_NOTE) != null) 
+					if(entry.getField(BibTeXEntry.KEY_AUTHOR) != null && entry.getField(BibTeXEntry.KEY_NOTE) != null) 
 						return true;
 				default: 
 					return false;
@@ -186,6 +206,30 @@ public class BibtexMergeWizardPage  extends WizardPage {
 			}
 		}
 		return false;
+    }
+    
+    private boolean validateTerms(EList<Term> toValidate, EList<Term> taxonomy) {
+    	if(toValidate.isEmpty()) {
+    		return true;
+    	}
+    	else if(taxonomy.isEmpty()) {
+    		return false;
+    	}
+		boolean result = true;
+		for(int i = 0; i < toValidate.size(); i++) {
+			boolean match = false;
+			for(int j = 0; j < taxonomy.size(); j++) {
+				if(toValidate.get(i).getName().equals(taxonomy.get(j).getName())) {
+					match = true;
+					result = result && validateTerms(toValidate.get(i).getSubclasses(), taxonomy.get(j).getSubclasses());
+					break;
+				}
+			}
+			if(!match) {
+				return false;
+			}
+		}
+		return result;
     }
     
 	private void addEditTab() {

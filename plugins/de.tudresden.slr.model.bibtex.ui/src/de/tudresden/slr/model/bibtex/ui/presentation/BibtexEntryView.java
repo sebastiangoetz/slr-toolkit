@@ -673,9 +673,6 @@ public class BibtexEntryView extends ViewPart {
 						}
 						resourceList.add((BibtexResourceImpl) o);
 					}
-//					if(MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Save changes in project?", "This merge dialog only works with the saved contents of files." + System.lineSeparator() + "Save all selected files before merging?")) {
-//						// TODO: save all changes here, including those from TaxonomyCheckboxListView
-//					}
 					BibtexMergeDialog dialog = new BibtexMergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
 					if (dialog.open() == Window.OK) {
 						refreshAction.run();
