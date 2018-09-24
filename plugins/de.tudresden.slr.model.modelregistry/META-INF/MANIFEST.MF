@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Modelregistry
 Bundle-SymbolicName: de.tudresden.slr.model.modelregistry
-Bundle-Version: 0.2.3.qualifier
+Bundle-Version: 0.2.4.qualifier
 Bundle-Activator: de.tudresden.slr.model.modelregistry.ModelRegistryPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
