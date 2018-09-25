@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<slrProjectMetainformation>
+    <title>A systematic literature study on building information modelling from a computer science perspective</title>
+    <keywords>bim, cad</keywords>
+    <projectAbstract>Building Information Modeling, kurz "BIM", ist ein Prozess, der die Entwicklung eines zusammengesetzten, mit Metadaten angereichertem, virtuellen Modells eines Gebäudes zum Ziel hat. Diese Metadaten beinhalten sowohl physische als auch funktionale Chararakteristika, gespeichert in intelligenten Objekten. Das Modell kann durch verschiedene Sichten (Stabilität, Energieverbrauch, Kostenberechnung, Ablaufplanung, Wartbarkeit, Sicherheit, Katastrophenmanagement, u.a.) des selben Gebäudes dargestellt und von allen Teilnehmern jederzeit betrachtet und bearbeitet werden. Die Änderungen werden dabei synchronisiert, was einen enormen Vorteil gegenuber traditionellen, papierbasierten Methoden der Modellierung darstellt.</projectAbstract>
+    <taxonomyDescription>Die folgende multidimensionale Taxonomie wurde iterativ, auf Grundlage erster Analysen der Literatur erstellt. Eine wissenschaftliche Arbeit kann innerhalb einer Dimension in mehrere Klassen eingeteilt sein. Die Ausnahme bildet dabei die Dimension "Art". Es folgt die sukzessive Beschreibung der Dimensionen und ihrer Klassen, sowie Unterklassen. Dazu wird eine schematische Darstellung der Taxonomie angegeben (Auswahl).</taxonomyDescription>
+    <authorsList>
+        <email>brownieHorst@web.de</email>
+        <name>Kevin Horst</name>
+        <organisation>Technische Universität Dresden, Germany</organisation>
+    </authorsList>
+</slrProjectMetainformation>

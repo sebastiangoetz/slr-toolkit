@@ -128,21 +128,6 @@ public class BibtexResourceImpl extends ResourceImpl {
 			classes = classes.replaceAll("["+System.lineSeparator()+"]", " ");
 			document.setTaxonomy(parseClasses(classes));
 
-			String path = "/home/x/u/kp_literature/slr-toolkit/examples/Bachelorarbeit_Kevin_Horst/Library.bib";
-
-			File f = new File(path);
-			Scanner fileScanner = new Scanner(f);
-
-			int lineNumber = 0;
-			while (fileScanner.hasNextLine()) {
-				lineNumber++;
-				if (fileScanner.nextLine().contains(entry.getKey().toString())) {
-					break;
-				}
-			}
-			fileScanner.close();
-			document.setLine(lineNumber);
-
 			getContents().add(document);
 		}
 	}
