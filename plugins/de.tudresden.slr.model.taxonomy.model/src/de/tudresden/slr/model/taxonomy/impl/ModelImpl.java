@@ -198,7 +198,8 @@ public class ModelImpl extends MinimalEObjectImpl.Container implements Model {
 			case TaxonomyPackage.MODEL__DIMENSIONS:
 				return dimensions != null && !dimensions.isEmpty();
 			case TaxonomyPackage.MODEL__RESOURCE:
-				return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
+				return resource != null;
+				//return RESOURCE_EDEFAULT == null ? resource != null : !RESOURCE_EDEFAULT.equals(resource);
 		}
 		return super.eIsSet(featureID);
 	}

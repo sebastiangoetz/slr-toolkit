@@ -96,7 +96,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 				viewer,
 				new ColumnViewerEditorActivationStrategy(viewer){
 					protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
-						System.out.println("event arrived ("+event.eventType+")");
 						return event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION ||
 								(event.eventType == ColumnViewerEditorActivationEvent.KEY_PRESSED && event.keyCode == SWT.F2);
 					}
@@ -307,7 +306,6 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		for(Term fileTerm : fileTerms) {
 			boolean foundMatch = false;
 			for(Term generalTerm : generalTerms) {
-				//System.out.println("compare: "+fileTerm.getName()+" ?= "+generalTerm.getName());
 				if (fileTerm.getName().equals(generalTerm.getName())) {
 					foundMatch = true;
 					if (!fileTerm.getSubclasses().isEmpty()) {

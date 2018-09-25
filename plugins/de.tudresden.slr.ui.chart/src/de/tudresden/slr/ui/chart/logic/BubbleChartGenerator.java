@@ -124,7 +124,7 @@ public class BubbleChartGenerator {
 		Scale yScale = yAxisPrimary.getScale();
 		yScale.setStep(1);
 		yScale.setMin(NumberDataElementImpl.create(0));
-		yScale.setMax(NumberDataElementImpl.create(numberOfYTerms + 1));
+		yScale.setMax(NumberDataElementImpl.create(numberOfYTerms + 1d));
 		if(numberOfYTerms <= 10){
 			yAxisPrimary.getLabel().getCaption().getFont().setRotation(45);
 			

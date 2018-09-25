@@ -150,10 +150,8 @@ public class WorkspaceManager {
 	public void updateWorkspaceBibTexEntry(WorkspaceBibTexEntry wEntry){
 		for(WorkspaceBibTexEntry entry : this.workspaceEntries){
 			if(entry.getUri().equals(wEntry.getUri())){
-				try {
-					BufferedWriter writer = new BufferedWriter(new FileWriter(wEntry.getUri().getPath()));
+				try(BufferedWriter writer = new BufferedWriter(new FileWriter(wEntry.getUri().getPath()))) {
 					BibTeXDatabase bib = mc.getDocumentsByFolderBibTex(wEntry.getMendeleyFolder());
-					
 					BibTeXFormatter bibtexFormatter = new BibTeXFormatter();
 					bibtexFormatter.format(bib, writer);
 					wEntry.setBibTexDB(bib);

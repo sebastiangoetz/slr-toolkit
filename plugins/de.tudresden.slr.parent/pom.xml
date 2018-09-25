@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden</groupId>
 	<artifactId>de.tudresden.slr.parent</artifactId>
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.2.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Systematic Literature Review</name>
@@ -46,7 +46,7 @@
 						    <artifactId>org.eclipse.equinox.common</artifactId>
 						    <version>3.10.0</version>
 						</dependency>
-					</dependencies>
+				</dependencies>
 				<executions>
 					<execution>
 						<goals>
@@ -180,7 +180,7 @@
 						<artifact>
 							<groupId>de.tudresden</groupId>
 							<artifactId>de.tudresden.slr.target</artifactId>
-							<version>0.2.1-SNAPSHOT</version>
+							<version>0.2.4-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<pomDependencies>consider</pomDependencies>
@@ -261,5 +261,7 @@
 		<module>../de.tudresden.slr.googlescholar</module>
 		<module>../de.tudresden.slr.utils</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
+		<module>../de.tudresden.slr.metainformation</module>
+		<module>../de.tudresden.slr.latexExport</module>
 	</modules>
 </project>

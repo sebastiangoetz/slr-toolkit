@@ -124,7 +124,9 @@ public class BibtexResourceImpl extends ResourceImpl {
 			}
 			document.setFile(url);
 			document.setUrl(url);
-			document.setTaxonomy(parseClasses(safeGetField(entry, KEY_CLASSES)));
+			String classes = safeGetField(entry, KEY_CLASSES);
+			classes = classes.replaceAll("["+System.lineSeparator()+"]", " ");
+			document.setTaxonomy(parseClasses(classes));
 
 			String path = "/home/x/u/kp_literature/slr-toolkit/examples/Bachelorarbeit_Kevin_Horst/Library.bib";
 

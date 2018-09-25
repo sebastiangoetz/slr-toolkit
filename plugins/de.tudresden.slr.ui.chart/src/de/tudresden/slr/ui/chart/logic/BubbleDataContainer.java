@@ -18,6 +18,18 @@ public class BubbleDataContainer {
 		result = prime * result + ((yTerm == null) ? 0 : yTerm.hashCode());
 		return result;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof BubbleDataContainer) {
+			BubbleDataContainer b = ((BubbleDataContainer)obj);
+			if(b.getxTerm().equals(this.getxTerm()) &&
+					b.getyTerm().equals(this.getyTerm()) &&
+							b.getBubbleSize() == this.getBubbleSize())
+				return true;					
+		}
+		return false;
+	}
 
 	public Term getxTerm() {
 		return xTerm;

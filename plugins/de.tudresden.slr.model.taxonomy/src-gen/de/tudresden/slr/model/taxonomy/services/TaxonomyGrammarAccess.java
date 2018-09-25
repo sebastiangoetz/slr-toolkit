@@ -70,8 +70,7 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//Term:
-		//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)?
-		//	'}')?;
+		//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?;
 		@Override public ParserRule getRule() { return rule; }
 
 		//name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?
@@ -201,8 +200,7 @@ public class TaxonomyGrammarAccess extends AbstractGrammarElementFinder {
 	} 
 
 	//Term:
-	//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)?
-	//	'}')?;
+	//	name=ID ('{' (subclasses+=Term (',' subclasses+=Term)*)? '}')?;
 	public TermElements getTermAccess() {
 		return pTerm;
 	}

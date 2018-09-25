@@ -4,16 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -35,19 +29,22 @@ import com.gargoylesoftware.htmlunit.javascript.background.JavaScriptJobManager;
 import de.tudresden.slr.googlescholar.preferences.PreferenceConstants;
 
 public class GSWorker {
+	
+	private static final String PREFERENCE_NAME =  "de.tudresden.slr.googlescholar";
+	private static final String ENCODING = "UTF-8";
 
 	private WebClient webClient;
-	private String Scholar = "http://scholar.google.de/";
-	private String Base;
+	private String scholar = "http://scholar.google.de/";
+	private String base;
 	
 	private PrintWriter out;
 	private SubMonitor monitor;
 	
-	private final static IPreferenceStore store = new ScopedPreferenceStore( InstanceScope.INSTANCE, "de.tudresden.slr.googlescholar");
-	private final static int MIN_WAIT =  store.getInt(PreferenceConstants.P_MIN_WAIT);
-	private final static int MAX_WAIT =  store.getInt(PreferenceConstants.P_MAX_WAIT);
+	private static final IPreferenceStore store = new ScopedPreferenceStore( InstanceScope.INSTANCE, PREFERENCE_NAME);
+	private static final int MIN_WAIT =  store.getInt(PreferenceConstants.P_MIN_WAIT);
+	private static final int MAX_WAIT =  store.getInt(PreferenceConstants.P_MAX_WAIT);
 	
-	public GSWorker(PrintWriter output, String as_q, String as_epq, String as_oq, String as_eq, String as_occt, String as_sauthors, String as_publication, String as_ylo, String as_yhi) {
+	public GSWorker(PrintWriter output, String asQ, String asEpq, String asOq, String asEq, String asOcct, String asSauthors, String asPublication, String asYlo, String asYhi) {
 		webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.setAjaxController(new NicelyResynchronizingAjaxController());
@@ -62,60 +59,59 @@ public class GSWorker {
 		webClient.getOptions().setScreenWidth(1024);
 		webClient.getCookieManager().setCookiesEnabled(true);
 		
-		Base = Scholar + "scholar?";
+		base = scholar + "scholar?";
 		try {
-			if(as_q == null) {
-				as_q = "";
+			if(asQ == null) {
+				asQ = "";
 			}
-			Base += "as_q=" + URLEncoder.encode(as_q.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_q=" + URLEncoder.encode(asQ.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_epq == null) {
-				as_epq = "";
+			if(asEpq == null) {
+				asEpq = "";
 			}
-			Base += "as_epq=" + URLEncoder.encode(as_epq.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_epq=" + URLEncoder.encode(asEpq.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_oq == null) {
-				as_oq = "";
+			if(asOq == null) {
+				asOq = "";
 			}
-			Base += "as_oq=" + URLEncoder.encode(as_oq.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_oq=" + URLEncoder.encode(asOq.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_eq == null) {
-				as_eq = "";
+			if(asEq == null) {
+				asEq = "";
 			}
-			Base += "as_eq=" + URLEncoder.encode(as_eq.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_eq=" + URLEncoder.encode(asEq.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_occt == null) {
-				as_occt = "";
+			if(asOcct == null) {
+				asOcct = "";
 			}
-			Base += "as_occt=" + URLEncoder.encode(as_occt.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_occt=" + URLEncoder.encode(asOcct.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_sauthors == null) {
-				as_sauthors = "";
+			if(asSauthors == null) {
+				asSauthors = "";
 			}
-			Base += "as_sauthors=" + URLEncoder.encode(as_sauthors.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_sauthors=" + URLEncoder.encode(asSauthors.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_publication == null) {
-				as_publication = "";
+			if(asPublication == null) {
+				asPublication = "";
 			}
-			Base += "as_publication=" + URLEncoder.encode(as_publication.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_publication=" + URLEncoder.encode(asPublication.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_ylo == null) {
-				as_ylo = "";
+			if(asYlo == null) {
+				asYlo = "";
 			}
-			Base += "as_ylo=" + URLEncoder.encode(as_ylo.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_ylo=" + URLEncoder.encode(asYlo.replace(" ", "+"), ENCODING) + "&";
 			
-			if(as_yhi == null) {
-				as_yhi = "";
+			if(asYhi == null) {
+				asYhi = "";
 			}
-			Base += "as_yhi=" + URLEncoder.encode(as_yhi.replace(" ", "+"), "UTF-8") + "&";
+			base += "as_yhi=" + URLEncoder.encode(asYhi.replace(" ", "+"), ENCODING) + "&";
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Base += "hl=de&as_sdt=0%2C5";
+		base += "hl=de&as_sdt=0%2C5";
 		
 		this.out = output;
-		out.write("@Comment { Base-URL: " + Base + " }\n\n");
+		out.write("@Comment { Base-URL: " + base + " }\n\n");
 		out.flush();
 	}
 	
@@ -143,7 +139,7 @@ public class GSWorker {
 			try {
 				// Load Page
 				out.print("@Comment { PageLoad: Offset " + start + " } \n");
-				HtmlPage Results = webClient.getPage((start > 0) ? Base + "&start=" + start : Base);
+				HtmlPage Results = webClient.getPage((start > 0) ? base + "&start=" + start : base);
 				
 				// Timeouts
 				s = waitLikeUser();
@@ -217,7 +213,7 @@ public class GSWorker {
 		IStatus s;
 		try {
 			// load main page
-			HtmlPage page = webClient.getPage(Scholar);
+			HtmlPage page = webClient.getPage(scholar);
 			
 			// Timeouts
 			s = waitLikeUser();
@@ -266,6 +262,7 @@ public class GSWorker {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Failed to wait for Javascript processes", e);
 			}
 			
@@ -282,6 +279,7 @@ public class GSWorker {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				return new Status(Status.ERROR, "de.tudresden.slr.googlescholar", "Timeout Failure", e);
 			}
 			

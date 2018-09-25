@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: de.tudresden.slr.model.bibtex.tests;singleton:=true
+Bundle-Version: 0.2.4.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.tudresden.slr.model.bibtex.tests
+Require-Bundle: org.eclipse.core.runtime,
+ de.tudresden.slr.model.bibtex;visibility:=reexport,
+ de.tudresden.slr.model.taxonomy.model;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.junit;visibility:=reexport
+Bundle-ActivationPolicy: lazy

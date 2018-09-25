@@ -17,6 +17,7 @@ import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.ISelectionListener;
@@ -119,13 +120,16 @@ public class ChartView extends ViewPart implements ICommunicationView {
 	private void generatePDFOutput(Chart chart, String output) {
 		PlatformConfig config = new PlatformConfig();
 		try {
-			idr = ChartEngine.instance(config).getRenderer("dv.PDF");
+			idr = ChartEngine.instance(config).getRenderer("dv.SVG");
 			RunTimeContext rtc = new RunTimeContext();
 			rtc.setULocale(ULocale.getDefault());
 
 			Generator gr = Generator.instance();
 			GeneratedChartState gcs = null;
-			Bounds bo = BoundsImpl.create(0, 0, 600, 400);
+			
+			Point s = this.parent.getSize();
+			
+			Bounds bo = BoundsImpl.create(0, 0, s.x, s.y);
 			gcs = gr.build(idr.getDisplayServer(), chart, bo, null, rtc, null);
 
 			idr.setProperty(IDeviceRenderer.FILE_IDENTIFIER, output);

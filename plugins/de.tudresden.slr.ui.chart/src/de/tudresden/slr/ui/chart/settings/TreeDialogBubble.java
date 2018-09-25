@@ -114,7 +114,8 @@ public class TreeDialogBubble extends Dialog implements SelectionListener{
 		treeViewer.setContentProvider(contentProvider);
 		treeViewer.setLabelProvider(new DefaultEObjectLabelProvider());
 		treeViewer.setSorter(null);
-		treeViewer.setInput(m.get());	
+		if(m.isPresent())
+			treeViewer.setInput(m.get());	
 		
 	}
 
