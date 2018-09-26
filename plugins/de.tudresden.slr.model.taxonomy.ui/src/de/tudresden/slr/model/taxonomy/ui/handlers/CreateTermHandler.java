@@ -10,7 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.ui.dialog.CreateTermDialog;
-import de.tudresden.slr.model.taxonomy.ui.manipulation.TermCreator;
+import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 
 public class CreateTermHandler extends AbstractHandler {
 

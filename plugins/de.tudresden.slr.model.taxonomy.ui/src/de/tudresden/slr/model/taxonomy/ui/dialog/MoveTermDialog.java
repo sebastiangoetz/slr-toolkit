@@ -14,18 +14,13 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.ui.util.TermContentProvider;
+import de.tudresden.slr.utils.TermPosition;
 
 public class MoveTermDialog extends ElementTreeSelectionDialog {
 		
 	private TermPosition termPosition;
 	
-	private List positionList;
-	
-	public enum TermPosition {
-		SUBTERM,
-		NEIGHBOR
-	}
-	
+	private List positionList;	
 	
 	public MoveTermDialog(Shell parentShell, Collection<String> selectedTerms, Model allowedTargets) {        
 		super(parentShell, new TermLabelProvider(), new TermContentProvider());

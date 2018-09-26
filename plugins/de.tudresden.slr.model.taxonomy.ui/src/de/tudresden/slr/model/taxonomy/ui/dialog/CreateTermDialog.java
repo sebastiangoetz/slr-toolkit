@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import de.tudresden.slr.utils.TermPosition;
+
 public class CreateTermDialog extends Dialog {
 	
 	private Text termNameText; 
@@ -22,11 +24,6 @@ public class CreateTermDialog extends Dialog {
 	private String selectedTermName;
 	
 	private TermPosition termPosition;
-	
-	public enum TermPosition {
-		SUBTERM,
-		NEIGHBOR
-	}
 	
 	public CreateTermDialog(Shell parentShell, String selectedTermName) {        
 		super(parentShell);

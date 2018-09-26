@@ -1,8 +1,5 @@
 package de.tudresden.slr.model.taxonomy.util;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 
 import de.tudresden.slr.model.taxonomy.Term;

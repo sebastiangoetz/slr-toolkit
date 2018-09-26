@@ -21,10 +21,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.taxonomy.ui.dialog.MoveTermDialog;
-import de.tudresden.slr.model.taxonomy.ui.manipulation.TermMover;
 import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.ui.chart.views.Activator;
+import de.tudresden.slr.utils.taxonomy.manipulation.TermMover;
 
 public class MoveTermHandler extends AbstractHandler {
 

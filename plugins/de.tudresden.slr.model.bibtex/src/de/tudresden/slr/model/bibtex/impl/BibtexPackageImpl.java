@@ -3,6 +3,7 @@
 package de.tudresden.slr.model.bibtex.impl;
 
 import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.BibtexFile;
 import de.tudresden.slr.model.bibtex.BibtexPackage;
 import de.tudresden.slr.model.bibtex.Document;
 
@@ -30,14 +31,21 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	private EClass documentEClass = null;
 
 	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass bibtexFileEClass = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
 	 * package package URI value.
 	 * <p>
-	 * Note: the correct way to create the package is via the static factory
-	 * method {@link #init init()}, which also performs initialization of the
-	 * package, or returns the registered package, if one already exists. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * Note: the correct way to create the package is via the static factory method
+	 * {@link #init init()}, which also performs initialization of the package, or
+	 * returns the registered package, if one already exists. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see de.tudresden.slr.model.bibtex.BibtexPackage#eNS_URI
@@ -56,14 +64,14 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model,
-	 * and for any others upon which it depends.
-	 * 
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and
+	 * for any others upon which it depends.
+	 *
 	 * <p>
-	 * This method is used to initialize {@link BibtexPackage#eINSTANCE} when
-	 * that field is accessed. Clients should not invoke it directly. Instead,
-	 * they should simply access that field to obtain the package. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
+	 * This method is used to initialize {@link BibtexPackage#eINSTANCE} when that
+	 * field is accessed. Clients should not invoke it directly. Instead, they
+	 * should simply access that field to obtain the package. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
 	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
@@ -75,9 +83,10 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 			return (BibtexPackage) EPackage.Registry.INSTANCE.getEPackage(BibtexPackage.eNS_URI);
 
 		// Obtain or create and register package
-		BibtexPackageImpl theBibtexPackage = (BibtexPackageImpl) (EPackage.Registry.INSTANCE
-				.get(eNS_URI) instanceof BibtexPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-						: new BibtexPackageImpl());
+		Object registeredBibtexPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		BibtexPackageImpl theBibtexPackage = registeredBibtexPackage instanceof BibtexPackageImpl
+				? (BibtexPackageImpl) registeredBibtexPackage
+				: new BibtexPackageImpl();
 
 		isInited = true;
 
@@ -244,6 +253,46 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	 * @generated
 	 */
 	@Override
+	public EAttribute getDocument_Line() {
+		return (EAttribute) documentEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EClass getBibtexFile() {
+		return bibtexFileEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EReference getBibtexFile_Entries() {
+		return (EReference) bibtexFileEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EAttribute getBibtexFile_Path() {
+		return (EAttribute) bibtexFileEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
 	public BibtexFactory getBibtexFactory() {
 		return (BibtexFactory) getEFactoryInstance();
 	}
@@ -257,8 +306,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 
 	/**
 	 * Creates the meta-model objects for the package. This method is guarded to
-	 * have no affect on any invocation but its first. <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * have no affect on any invocation but its first. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -282,6 +331,11 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		createEAttribute(documentEClass, DOCUMENT__TYPE);
 		createEAttribute(documentEClass, DOCUMENT__FILE);
 		createEAttribute(documentEClass, DOCUMENT__CITES);
+		createEAttribute(documentEClass, DOCUMENT__LINE);
+
+		bibtexFileEClass = createEClass(BIBTEX_FILE);
+		createEReference(bibtexFileEClass, BIBTEX_FILE__ENTRIES);
+		createEAttribute(bibtexFileEClass, BIBTEX_FILE__PATH);
 	}
 
 	/**
@@ -292,8 +346,8 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model. This
-	 * method is guarded to have no affect on any invocation but its first. <!--
+	 * Complete the initialization of the package and its meta-model. This method is
+	 * guarded to have no affect on any invocation but its first. <!--
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -309,7 +363,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		TaxonomyPackage thetaxonomyPackage = (TaxonomyPackage) EPackage.Registry.INSTANCE
+		TaxonomyPackage theTaxonomyPackage = (TaxonomyPackage) EPackage.Registry.INSTANCE
 				.getEPackage(TaxonomyPackage.eNS_URI);
 
 		// Create type parameters
@@ -340,7 +394,7 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 		initEAttribute(getDocument_UnparsedAuthors(), ecorePackage.getEString(), "unparsedAuthors", null, 0, 1,
 				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
 				!IS_DERIVED, IS_ORDERED);
-		initEReference(getDocument_Taxonomy(), thetaxonomyPackage.getModel(), null, "taxonomy", null, 0, 1,
+		initEReference(getDocument_Taxonomy(), theTaxonomyPackage.getModel(), null, "taxonomy", null, 0, 1,
 				Document.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
 				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Type(), ecorePackage.getEString(), "type", null, 0, 1, Document.class, !IS_TRANSIENT,
@@ -349,6 +403,16 @@ public class BibtexPackageImpl extends EPackageImpl implements BibtexPackage {
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDocument_Cites(), ecorePackage.getEInt(), "cites", null, 0, 1, Document.class, !IS_TRANSIENT,
 				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDocument_Line(), ecorePackage.getEInt(), "line", null, 1, 1, Document.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(bibtexFileEClass, BibtexFile.class, "BibtexFile", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getBibtexFile_Entries(), this.getDocument(), null, "entries", null, 0, -1, BibtexFile.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBibtexFile_Path(), ecorePackage.getEString(), "path", null, 0, 1, BibtexFile.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
