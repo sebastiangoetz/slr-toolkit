@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden</groupId>
 	<artifactId>de.tudresden.slr.parent</artifactId>
-	<version>0.2.4-SNAPSHOT</version>
+	<version>0.2.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Systematic Literature Review</name>
@@ -180,7 +180,7 @@
 						<artifact>
 							<groupId>de.tudresden</groupId>
 							<artifactId>de.tudresden.slr.target</artifactId>
-							<version>0.2.4-SNAPSHOT</version>
+							<version>0.2.5-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<pomDependencies>consider</pomDependencies>
