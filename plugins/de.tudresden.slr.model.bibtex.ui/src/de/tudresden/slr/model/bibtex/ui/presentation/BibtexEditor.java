@@ -155,12 +155,13 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	protected void pageChange(int newPageIndex) {
 		if (newPageIndex == webindex && browser != null) {
 			String url = "";
-			if (document.getUrl() != null) {
+			if (document.getUrl() != null && document.getUrl() != "") {
 				url = document.getUrl();
-			} else if (document.getDoi() != null) {
-				url = "http://doi.org/" + document.getDoi();
+			} else if (document.getDoi() != null && document.getDoi() != "") {
+				if(document.getDoi().startsWith("http")) url = document.getDoi().replaceAll("\\\\", "");
+				else url = "http://doi.org/" + document.getDoi().replaceAll("\\\\", "");
 			} else {
-				return;
+				url = "https://scholar.google.de/scholar?hl=de&as_sdt=0%2C5&q="+document.getTitle().replaceAll(" ", "%20")+"&btnG=";
 			}
 			browser.setUrl(url);
 			// call url only once
