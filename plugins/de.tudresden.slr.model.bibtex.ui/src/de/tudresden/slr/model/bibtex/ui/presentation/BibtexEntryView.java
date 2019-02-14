@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -543,14 +544,37 @@ public class BibtexEntryView extends ViewPart {
 			e.printStackTrace();
 			return;
 		}
+		List<URI> uris = registerResources(resources);
+		for (URI uri : uris) {
+			editingDomain.getResourceSet().getResource(uri, true);
+		}
+	}
+
+	private List<URI> registerResources(IResource[] resources) {
+		List<URI> uris = new ArrayList<>(); 
 		for (IResource res : resources) {
 			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
-				editingDomain.getResourceSet().getResource(uri, true);
+				uris.add(uri);
+				//editingDomain.getResourceSet().getResource(uri, true);
 			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
 				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
+			} else if (res.getType() == IResource.FOLDER) {
+				try {
+					List<URI> urisForFolder = registerResources(((IFolder) res).members());
+					Resource folder = editingDomain.createResource(res.getName());
+					for (URI uri : urisForFolder) {
+						folder.getResourceSet().getResource(uri, true);
+					}
+					uris.add(folder.getURI());
+				} catch (CoreException e) {
+					e.printStackTrace();
+					continue;
+				}
 			}
 		}
+		
+		return uris;
 	}
 
 	private void deleteResources() {
@@ -663,12 +687,14 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
+				// TODO: allow more than 9 documents?
 				if(select.size() > 1 && select.size() < 9) {
 					List<BibtexResourceImpl> resourceList = new ArrayList<BibtexResourceImpl>();
 					for(@SuppressWarnings("unchecked")
 					Iterator<Object> i = select.iterator(); i.hasNext();) {
 						Object o = i.next();
 						if(!(o instanceof BibtexResourceImpl)) {
+							// FIXME: continue??
 							return;
 						}
 						resourceList.add((BibtexResourceImpl) o);
