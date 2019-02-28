@@ -699,7 +699,7 @@ public class BibtexEntryView extends ViewPart {
 						}
 						resourceList.add((BibtexResourceImpl) o);
 					}
-					BibtexMergeDialog dialog = new BibtexMergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
+					BibtexMergeDialogReloaded dialog = new BibtexMergeDialogReloaded(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
 					if (dialog.open() == Window.OK) {
 						refreshAction.run();
 					}

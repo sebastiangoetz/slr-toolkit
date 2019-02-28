@@ -35,9 +35,10 @@ public class BibtexMergeData {
 	private String filename;
 	private Set<String> conflictTitles;
 	private List<BibtexMergeConflict> conflicts;
-	Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
+	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
 	private Set<String> simpleDuplicateTitles;
 	private String stats;
+	private Map<Criteria, Integer> criteria;
 	
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
@@ -46,6 +47,10 @@ public class BibtexMergeData {
 		this.simpleDuplicateTitles = new HashSet<String>();
 		this.conflicts = findConflicts();
 		this.similarityMatrix = createSimilarityMatrix();
+		this.criteria = new HashMap<>();
+		for (Criteria value : Criteria.values()) {
+			criteria.put(value, 95);
+		}
 		this.stats = "";
 		this.toMerge = new HashSet<Object>();
 		for(ListIterator<BibtexResourceImpl> i = resourceList.listIterator(); i.hasNext();) {
@@ -75,17 +80,17 @@ public class BibtexMergeData {
 		});
 		
 		// build similarityMatrix
-		entries.forEach(entry1 -> {					
-			System.out.println(entry1.toString());
-			similarityMatrix.put(entry1, new HashMap<>());
-			entries.forEach(entry2 -> {
-				System.out.println(entry2.toString());
-				if (entry1 == entry2)
-					return;
-				
-				similarityMatrix.get(entry1).put(entry2, new BibtexEntrySimilarity(entry1, entry2));
-			});
-		});
+//		entries.forEach(entry1 -> {					
+//			System.out.println(entry1.toString());
+//			similarityMatrix.put(entry1, new HashMap<>());
+//			entries.forEach(entry2 -> {
+//				System.out.println(entry2.toString());
+//				if (entry1 == entry2)
+//					return;
+//				
+//				similarityMatrix.get(entry1).put(entry2, new BibtexEntrySimilarity(entry1, entry2));
+//			});
+//		});
 		
 		return similarityMatrix;
 	}
@@ -211,6 +216,14 @@ public class BibtexMergeData {
 		stats += "\n" + stat;
 	}
 	
+	public Map<Criteria, Integer> getCriteria() {
+		return criteria;
+	}
+
+	public void setCriteria(Map<Criteria, Integer> criteria) {
+		this.criteria = criteria;
+	}
+
 	public class BibtexEntrySimilarity {
 		
 		public BibtexEntrySimilarity(DocumentImpl entry1, DocumentImpl entry2) {
@@ -229,8 +242,8 @@ public class BibtexMergeData {
 			//yearMonthDifference = Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()));
 		}
 		
-		public boolean equals(double fix) {
-			return DoiEquals || getTotalScore() > fix;
+		public boolean equals(double threshold) {
+			return DoiEquals || getTotalScore() > threshold;
 		}
 		
 		private double authorSimilarity;
@@ -273,5 +286,9 @@ public class BibtexMergeData {
 		public double getTotalScore() {
 			return (authorSimilarity + titleSimilarity + urlSimilarity) / 3;
 		}
-	}	
+	}
+	
+	public enum Criteria {
+		authors, doi, title, url;
+	}
 }
