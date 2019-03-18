@@ -1,29 +1,15 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.xtext.util.Pair;
-import org.eclipse.xtext.util.Tuples;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
-import de.tudresden.slr.model.bibtex.ui.util.Utils;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 import info.debatty.java.stringsimilarity.Cosine;
 import info.debatty.java.stringsimilarity.JaroWinkler;
@@ -33,28 +19,16 @@ public class BibtexMergeData {
 	private List<BibtexResourceImpl> resourceList;
 	private Set<Object> toMerge;
 	private String filename;
-	private Set<String> conflictTitles;
-	private List<BibtexMergeConflict> conflicts;
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
-	private Set<String> simpleDuplicateTitles;
-	private String stats;
-	private Map<Criteria, Integer> criteria;
+	private Map<Criteria, Integer> weights;
 	
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
 		this.filename = "mergeResult.bib";
-		this.conflictTitles = new HashSet<String>();
-		this.simpleDuplicateTitles = new HashSet<String>();
-		this.conflicts = findConflicts();
 		this.similarityMatrix = createSimilarityMatrix();
-		this.criteria = new HashMap<>();
+		this.weights = new HashMap<>();
 		for (Criteria value : Criteria.values()) {
-			criteria.put(value, 95);
-		}
-		this.stats = "";
-		this.toMerge = new HashSet<Object>();
-		for(ListIterator<BibtexResourceImpl> i = resourceList.listIterator(); i.hasNext();) {
-			toMerge.add(i.next().getURI());
+			weights.put(value, 100);
 		}
 	}
 	
@@ -64,7 +38,6 @@ public class BibtexMergeData {
 				i.remove();
 			}
 		}
-		findConflicts();
 		createSimilarityMatrix();
 	}
 	
@@ -80,88 +53,43 @@ public class BibtexMergeData {
 		});
 		
 		// build similarityMatrix
-//		entries.forEach(entry1 -> {					
-//			System.out.println(entry1.toString());
-//			similarityMatrix.put(entry1, new HashMap<>());
-//			entries.forEach(entry2 -> {
-//				System.out.println(entry2.toString());
-//				if (entry1 == entry2)
-//					return;
-//				
-//				similarityMatrix.get(entry1).put(entry2, new BibtexEntrySimilarity(entry1, entry2));
-//			});
-//		});
+		entries.forEach(entry1 -> {					
+			similarityMatrix.put(entry1, new HashMap<>());
+			
+			// search for dois
+			if (entry1.getDoi() != null)
+				System.out.println("Doi: " + entry1.getDoi());
+			entries.forEach(entry2 -> {
+				if (entry1 == entry2)
+					return;
+				
+				BibtexEntrySimilarity matrixEntry = new BibtexEntrySimilarity(entry1, entry2);
+				similarityMatrix.get(entry1).put(entry2, matrixEntry);
+				if ((matrixEntry.getAuthorSimilarity() + matrixEntry.getTitleSimilarity()) / 2 > 0.9) {
+					System.out.println("title similarity: " + matrixEntry.getTitleSimilarity());
+					System.out.println("author similarity: " + matrixEntry.getAuthorSimilarity());
+					System.out.println(entry1.toString());
+					System.out.println(entry2.toString());
+				}
+			});
+		});
 		
 		return similarityMatrix;
 	}
 	
-	private List<BibtexMergeConflict> findConflicts(){
-		List<BibtexMergeConflict> result = new ArrayList<BibtexMergeConflict>();
-		Map<String, List<Integer>> titleMap = new HashMap<String, List<Integer>>();
-		for(int i = 0; i < resourceList.size(); i++) {
-			for(EObject e : resourceList.get(i).getContents()) {
-				String eTitle = ((DocumentImpl) e).getTitle().toLowerCase();
-				if(titleMap.get(eTitle) == null) {
-					List<Integer> newList = new ArrayList<Integer>();
-					newList.add(i);
-					titleMap.put(eTitle, newList);
-				}
-				else {
-					titleMap.get(eTitle).add(i);
+	public List<BibtexMergeConflict> getConflicts(double threshold) {
+		
+		List<BibtexMergeConflict> conflicts = new ArrayList<>();
+		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
+			for (DocumentImpl entry2 : similarityMatrix.get(entry1).keySet()) {
+				System.out.println("similarity: " + similarityMatrix.get(entry1).get(entry2).getTotalScore(weights));
+				if (similarityMatrix.get(entry1).get(entry2).getTotalScore(weights) > threshold) {
+					conflicts.add(new BibtexMergeConflict(entry1, entry2));
 				}
 			}
 		}
-		for(String s : titleMap.keySet()) {
-			List<Integer> indices = titleMap.get(s);
-			if(indices.size() > 1) {
-				String[] duplicateEntries = new String[indices.size()];
-				String[] duplicateFilenames = new String[indices.size()];
-				try {
-					for(int j = 0; j < duplicateEntries.length; j++) {
-						IFile f = Utils.getIFilefromEMFResource(resourceList.get(indices.get(j)));
-						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-						InputStream inputStream = f.getContents();
-						byte[] buffer = new byte[1024];
-						int length;
-						while ((length = inputStream.read(buffer)) != -1) {
-							outputStream.write(buffer, 0, length);
-						}
-						for(String snippet : outputStream.toString().split("@")) {
-							if(snippet.toLowerCase().contains("title = {" + s + "}")) {
-								duplicateEntries[j] = "@" + snippet;
-								duplicateFilenames[j] = f.getName();
-								break;
-							}
-						}
-						inputStream.close();
-						outputStream.close();
-					}
-				}
-				catch(CoreException | IOException e) {
-					System.err.println(e.getMessage());
-				}
-				List<String> conflictEntries = new ArrayList<String>();
-				List<String> conflictFilenames = new ArrayList<String>();
-				conflictEntries.add(duplicateEntries[0]);
-				conflictFilenames.add(duplicateFilenames[0]);
-				String test = "";//duplicateEntries[0].toLowerCase();
-				for(int k = 1; k < duplicateEntries.length; k++) {
-					String e = "";//duplicateEntries[k].toLowerCase();
-					if(!e.startsWith(test) && !test.startsWith(e)) {
-						conflictEntries.add(duplicateEntries[k]);
-						conflictFilenames.add(duplicateFilenames[k]);
-					}
-				}
-				if(conflictEntries.size() > 1) {
-					result.add(new BibtexMergeConflict(conflictEntries.toArray(new String[0]), conflictFilenames.toArray(new String[0])));
-					conflictTitles.add(s);
-				}
-				else {
-					simpleDuplicateTitles.add(s);
-				}
-			}
-		}
-		return result;
+		
+		return conflicts;
 	}
 	
 	public List<BibtexResourceImpl> getResourceList() {
@@ -192,39 +120,23 @@ public class BibtexMergeData {
 		return toMerge.contains(o);
 	}
 
-	public List<BibtexMergeConflict> getConflicts() {
-		return conflicts;
-	}
-
 	public Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> getSimilarityMatrix() {
 		return similarityMatrix;
 	}
-
-	public Set<String> getConflictTitles() {
-		return conflictTitles;
-	}
 	
-	public Set<String> getSimpleDuplicateTitles() {
-		return simpleDuplicateTitles;
+	public Map<Criteria, Integer> getWeights() {
+		return weights;
 	}
 
-	public String getStats() {
-		return stats;
-	}
-
-	public void addStat(String stat) {
-		stats += "\n" + stat;
-	}
-	
-	public Map<Criteria, Integer> getCriteria() {
-		return criteria;
-	}
-
-	public void setCriteria(Map<Criteria, Integer> criteria) {
-		this.criteria = criteria;
+	public void setWeights(Map<Criteria, Integer> weights) {
+		this.weights = weights;
 	}
 
 	public class BibtexEntrySimilarity {
+		
+		public BibtexEntrySimilarity() {
+			// for testing reasons
+		}
 		
 		public BibtexEntrySimilarity(DocumentImpl entry1, DocumentImpl entry2) {
 			JaroWinkler jw = new JaroWinkler();
@@ -234,23 +146,23 @@ public class BibtexMergeData {
 			Cosine c = new Cosine(2);
 			titleSimilarity = c.similarity(c.getProfile(entry1.getTitle()), c.getProfile(entry2.getTitle()));
 			
-			DoiEquals = StringUtils.equals(entry1.getDoi(), entry2.getDoi());
+			DoiEquals = StringUtils.isNotBlank(entry1.getDoi()) 
+					&& StringUtils.isNotBlank(entry2.getDoi()) 
+					&& StringUtils.equals(entry1.getDoi(), entry2.getDoi());
 			
-			//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
-			//LocalDate date1 = LocalDate.parse("1/" + (entry1.getMonth().isEmpty() ? "01" : entry1.getMonth()) + "/" + entry1.getYear(), formatter);
-			//LocalDate date2 = LocalDate.parse("1/" + (entry2.getMonth().isEmpty() ? "01" : entry2.getMonth()) + "/" + entry2.getYear(), formatter);
-			//yearMonthDifference = Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()));
+			yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear()) ?
+					Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()))
+					: 100;
 		}
 		
-		public boolean equals(double threshold) {
-			return DoiEquals || getTotalScore() > threshold;
+		public boolean equals(Map<Criteria, Integer> weights, double threshold) {
+			return DoiEquals || getTotalScore(weights) > threshold;
 		}
 		
 		private double authorSimilarity;
 		private double titleSimilarity;
 		private boolean DoiEquals;
-		private double urlSimilarity;
-		private long yearMonthDifference;
+		private long yearDifference;
 		
 		public double getAuthorSimilarity() {
 			return authorSimilarity;
@@ -270,25 +182,95 @@ public class BibtexMergeData {
 		public void setDoiEquals(boolean doiEquals) {
 			DoiEquals = doiEquals;
 		}
-		public double getUrlSimilarity() {
-			return urlSimilarity;
+		public long getYearDifference() {
+			return yearDifference;
 		}
-		public void setUrlSimilarity(double urlSimilarity) {
-			this.urlSimilarity = urlSimilarity;
-		}
-		public long getYearMonthDifference() {
-			return yearMonthDifference;
-		}
-		public void setYearMonthDifference(long yearMonthDifference) {
-			this.yearMonthDifference = yearMonthDifference;
+		public void setYearDifference(long yearDifference) {
+			this.yearDifference = yearDifference;
 		}
 		
-		public double getTotalScore() {
-			return (authorSimilarity + titleSimilarity + urlSimilarity) / 3;
+		public double getYearSimilarity() {
+			// if entries are more than 10 years apart, there is no similarity
+			return yearDifference < 10 ? 1 - ((double) yearDifference / 10) : 0;
+		}
+		
+		public double getTotalScore(Map<Criteria, Integer> weights) {
+			double totalScore = 0;
+			int totalWeight = 0;
+			
+			if (validateCriteria(weights, Criteria.doi)) {
+				if (DoiEquals)
+					totalScore += ((double) 1 / 100) * weights.get(Criteria.doi);
+				totalWeight += weights.get(Criteria.doi);
+			} 
+			if (validateCriteria(weights, Criteria.year)) {
+				totalScore += ((double) getYearSimilarity() / 100) * weights.get(Criteria.year);
+				totalWeight += weights.get(Criteria.year);
+			} 
+			if (validateCriteria(weights, Criteria.authors)) {
+				totalScore += ((double) authorSimilarity / 100) * weights.get(Criteria.authors);
+				totalWeight += weights.get(Criteria.authors);
+			}
+			if (validateCriteria(weights, Criteria.title)) {
+				totalScore += ((double) titleSimilarity / 100) * weights.get(Criteria.title);
+				totalWeight += weights.get(Criteria.title);
+			}
+			
+			return  totalWeight > 0 ? ((double) totalScore / totalWeight) * 100 : 0;
+		}
+
+		private boolean validateCriteria(Map<Criteria, Integer> weights, Criteria criteria) {
+			return weights.containsKey(criteria) 
+					&& weights.get(criteria) != null 
+					&& weights.get(criteria) >= 0 
+					&& weights.get(criteria) <= 100;
+		}
+	}
+	
+	public class BibtexMergeConflict {
+		private DocumentImpl resource1;
+		private DocumentImpl resource2;
+		private DocumentImpl finalResource;
+		
+		public BibtexMergeConflict(DocumentImpl resource1, DocumentImpl resource2) {
+			this.resource1 = resource1;
+			this.resource2 = resource2;
+		}
+		
+		public void useResource1() {
+			finalResource = resource1;
+		}
+
+		public void useResource2() {
+			finalResource = resource2;
+		}
+		
+		public DocumentImpl getResource1() {
+			return resource1;
+		}
+		
+		public void setResource1(DocumentImpl resource1) {
+			this.resource1 = resource1;
+		}
+		
+		public DocumentImpl getResource2() {
+			return resource2;
+		}
+		
+		public void setResource2(DocumentImpl resource2) {
+			this.resource2 = resource2;
+		}
+		
+		public DocumentImpl getFinalResource() {
+			return finalResource;
+		}
+		
+		public void setFinalResource(DocumentImpl finalResource) {
+			this.finalResource = finalResource;
 		}
 	}
 	
 	public enum Criteria {
-		authors, doi, title, url;
+		authors, doi, title, year;
 	}
 }
