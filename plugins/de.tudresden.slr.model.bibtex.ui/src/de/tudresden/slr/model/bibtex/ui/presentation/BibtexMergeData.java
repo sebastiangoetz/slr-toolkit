@@ -1,5 +1,7 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,21 +58,12 @@ public class BibtexMergeData {
 		entries.forEach(entry1 -> {					
 			similarityMatrix.put(entry1, new HashMap<>());
 			
-			// search for dois
-			if (entry1.getDoi() != null)
-				System.out.println("Doi: " + entry1.getDoi());
 			entries.forEach(entry2 -> {
 				if (entry1 == entry2)
 					return;
 				
 				BibtexEntrySimilarity matrixEntry = new BibtexEntrySimilarity(entry1, entry2);
 				similarityMatrix.get(entry1).put(entry2, matrixEntry);
-				if ((matrixEntry.getAuthorSimilarity() + matrixEntry.getTitleSimilarity()) / 2 > 0.9) {
-					System.out.println("title similarity: " + matrixEntry.getTitleSimilarity());
-					System.out.println("author similarity: " + matrixEntry.getAuthorSimilarity());
-					System.out.println(entry1.toString());
-					System.out.println(entry2.toString());
-				}
 			});
 		});
 		
@@ -82,7 +75,7 @@ public class BibtexMergeData {
 		List<BibtexMergeConflict> conflicts = new ArrayList<>();
 		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
 			for (DocumentImpl entry2 : similarityMatrix.get(entry1).keySet()) {
-				System.out.println("similarity: " + similarityMatrix.get(entry1).get(entry2).getTotalScore(weights));
+				//System.out.println("similarity: " + similarityMatrix.get(entry1).get(entry2).getTotalScore(weights));
 				if (similarityMatrix.get(entry1).get(entry2).getTotalScore(weights) > threshold) {
 					conflicts.add(new BibtexMergeConflict(entry1, entry2));
 				}
@@ -138,23 +131,72 @@ public class BibtexMergeData {
 			// for testing reasons
 		}
 		
-		public BibtexEntrySimilarity(DocumentImpl entry1, DocumentImpl entry2) {
-			JaroWinkler jw = new JaroWinkler();
-			authorSimilarity = jw.similarity(StringUtils.join(entry1.getAuthors(), ", "), 
-					StringUtils.join(entry2.getAuthors(), ", "));
+		public BibtexEntrySimilarity(DocumentImpl entry1, DocumentImpl entry2) {			
+			// if doi empty -> try to get doi from url
+			if (StringUtils.isBlank(entry1.getDoi()))
+				entry1.setDoi(getDoiFromUrl(entry1.getUrl()));
+			if (StringUtils.isBlank(entry2.getDoi()))
+				entry2.setDoi(getDoiFromUrl(entry2.getUrl()));
 			
-			Cosine c = new Cosine(2);
-			titleSimilarity = c.similarity(c.getProfile(entry1.getTitle()), c.getProfile(entry2.getTitle()));
-			
+			// compare doi
 			DoiEquals = StringUtils.isNotBlank(entry1.getDoi()) 
 					&& StringUtils.isNotBlank(entry2.getDoi()) 
 					&& StringUtils.equals(entry1.getDoi(), entry2.getDoi());
 			
+			// get author similarity
+			JaroWinkler jw = new JaroWinkler();
+			authorSimilarity = jw.similarity(StringUtils.join(entry1.getAuthors(), ", "), 
+					StringUtils.join(entry2.getAuthors(), ", "));
+			
+			// get title similarity
+			Cosine c = new Cosine(2);
+			titleSimilarity = c.similarity(c.getProfile(entry1.getTitle()), c.getProfile(entry2.getTitle()));
+			
+			// get year difference
 			yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear()) ?
 					Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()))
 					: 100;
 		}
 		
+		private String getDoiFromUrl(String urlString) {
+			if (urlString == null)
+				return null;
+			
+			// parse url
+			URL url = null;
+			try {
+				url = new URL(urlString);
+			} catch (MalformedURLException e) {
+				System.out.println("url is malformed: " + urlString + ": " + e.getMessage());
+			}
+			if (url == null) {
+				System.out.println("url was parsed to null: " + urlString);
+				return null;
+			}
+			
+			// search for query named doi
+			if (url.getQuery() != null) {
+				for (String query : url.getQuery().split("&")) {
+					String[] queryParts = query.split("=");
+					if (queryParts.length == 2 && queryParts[0].toLowerCase().equals("doi")) {
+						//System.out.println("doi: " + queryParts[1]);
+						return queryParts[1];
+					}
+				}
+			}
+			
+			// search for pattern dd.dddd/.. in url (d means digit)
+			String[] parts = url.getPath().split("/");
+			for (int i = 0; i < parts.length; i++) {
+				String part = parts[i];
+				if (part.matches("\\d\\d\\.\\d\\d\\d\\d") && i + 1 < parts.length) {
+					//System.out.println("doi: " + parts[i] + "/" + parts[i + 1]);
+					return parts[i] + "/" + parts[i + 1];
+				}
+			}
+			return null;
+		}
+
 		public boolean equals(Map<Criteria, Integer> weights, double threshold) {
 			return DoiEquals || getTotalScore(weights) > threshold;
 		}

@@ -68,12 +68,38 @@ public class SimilarityMatrixTest {
 	
 	@Test
 	public void testGetConflicts() {
-		List<BibtexMergeConflict> conflicts = mergeData.getSimilarEntries(0.9);
+		List<BibtexMergeConflict> conflicts = mergeData.getConflicts(0.9);
 		int firstSize = conflicts.size();
 		Assert.assertNotNull(conflicts);
 		
 		// as the threshold decreases there should be more similar entries
-		conflicts = mergeData.getSimilarEntries(0.7);
+		conflicts = mergeData.getConflicts(0.7);
 		Assert.assertTrue(conflicts.size() > firstSize);
+	}
+	
+	@Test
+	public void testRegex() {
+		String input = "https://this/is/a/url/with/doi/10.1234/121399.34593-23/bla";
+		String result = "";
+		String[] parts = input.split("/");
+		for (int i = 0; i < parts.length; i++) {
+			String part = parts[i];
+			if (part.matches("\\d\\d\\.\\d\\d\\d\\d") && i + 1 < parts.length)
+				result = parts[i] + "/" + parts[i + 1];
+		}
+		Assert.assertTrue(result.contentEquals("10.1234/121399.34593-23"));
+	}
+	
+	@Test
+	public void testGetDoiFromUrl() {
+		Map<Criteria, Integer> weights = new HashMap<Criteria, Integer>() {{
+			put(Criteria.doi, 100);
+			put(Criteria.authors, 0);
+			put(Criteria.title, 0);
+			put(Criteria.year, 0);
+		}};
+		mergeData.setWeights(weights);
+		
+		Assert.assertTrue("There should be exactly four results for doi equality", mergeData.getConflicts(0.9).size() == 4);
 	}
 }
