@@ -556,7 +556,6 @@ public class BibtexEntryView extends ViewPart {
 			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
 				uris.add(uri);
-				//editingDomain.getResourceSet().getResource(uri, true);
 			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
 				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
 			} else if (res.getType() == IResource.FOLDER) {
@@ -699,7 +698,7 @@ public class BibtexEntryView extends ViewPart {
 						}
 						resourceList.add((BibtexResourceImpl) o);
 					}
-					BibtexMergeDialogReloaded dialog = new BibtexMergeDialogReloaded(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
+					BibtexMergeDialog dialog = new BibtexMergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
 					if (dialog.open() == Window.OK) {
 						refreshAction.run();
 					}

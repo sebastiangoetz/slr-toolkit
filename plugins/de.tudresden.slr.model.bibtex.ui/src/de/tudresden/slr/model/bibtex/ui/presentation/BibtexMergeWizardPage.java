@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
@@ -35,9 +36,7 @@ import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 public class BibtexMergeWizardPage  extends WizardPage {
 	private Composite container;
-    private BibtexMergeConflict conflict;
-    private int index;
-    private int amount;
+    private List<BibtexMergeData.BibtexMergeConflict> conflicts;
     private String result;
     private String resultName;
     private Label hint;
@@ -47,12 +46,10 @@ public class BibtexMergeWizardPage  extends WizardPage {
     private Button select;
     private Button edit;
 
-    public BibtexMergeWizardPage(BibtexMergeConflict conflict, int i, int a) {
+    public BibtexMergeWizardPage(List<BibtexMergeData.BibtexMergeConflict> conflicts) {
         super("Step 2: Manual conflict solving");
         setTitle("Step 2: Manual conflict solving");
-    	this.conflict = conflict;
-    	this.index = i;
-    	this.amount = a;
+    	this.conflicts = conflicts;
     	this.result = "";
     	this.resultName = "";
     	this.editTab = null;
@@ -60,19 +57,19 @@ public class BibtexMergeWizardPage  extends WizardPage {
     
     @Override
     public void createControl(Composite parent) {
-        setDescription("Conflict " + index + " of " + amount);
+        setDescription("Conflicts");
         container = new Composite(parent, SWT.NONE);
         GridLayout gl = new GridLayout(1, false);
         gl.marginHeight = 0;
         container.setLayout(gl);
         folder = new TabFolder(container, SWT.NONE);
-        for(int i = 0; i < conflict.amountOfEntries(); i++) {
+        for(BibtexMergeData.BibtexMergeConflict conflict : conflicts) {
             TabItem tab = new TabItem(folder, SWT.NONE);
-    	    tab.setText(conflict.getFileName(i));
+    	    tab.setText(conflict.getResource1().getTitle());
     	    Composite c = new Composite(folder, SWT.NONE);
     	    c.setLayoutData(new FillLayout());
     	    StyledText text = new StyledText(c, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-    	    text.setText(conflict.getEntry(i));
+    	    text.setText(conflict.getResource2().getTitle());
     	    text.setEditable(false);
     	    text.setBounds(0, 2, 480, 240);
 			text.setAlwaysShowScrollBars(false);
@@ -80,7 +77,7 @@ public class BibtexMergeWizardPage  extends WizardPage {
         }
         folder.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				boolean onEditTab = folder.getSelectionIndex() == conflict.amountOfEntries();
+				boolean onEditTab = folder.getSelectionIndex() == conflicts.size();
 				edit.setEnabled(!onEditTab);
 	    		select.setEnabled((!onEditTab || validateString(editedText.getText())) && folder.getItem(folder.getSelectionIndex()).getText() != resultName);
 			}
@@ -104,8 +101,8 @@ public class BibtexMergeWizardPage  extends WizardPage {
 		select.setText("Select");
 		select.addSelectionListener(new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
-		            if(folder.getSelectionIndex() < conflict.amountOfEntries()) {
-		            	setResult(conflict.getFileName(folder.getSelectionIndex()), conflict.getEntry(folder.getSelectionIndex()));
+		            if(folder.getSelectionIndex() < conflicts.size()) {
+		            	//setResult(conflicts.getResource1().getTitle());
 		            }
 		            else {
 			            setResult("Edited result", editedText.getText());
@@ -250,7 +247,7 @@ public class BibtexMergeWizardPage  extends WizardPage {
 			});
 			editTab.setControl(c);
 		}
-		editedText.setText(conflict.getEntry(folder.getSelectionIndex()));
+		//editedText.setText(conflicts.getEntry(folder.getSelectionIndex()));
 		folder.setSelection(editTab);
 		select.setEnabled(validateString(editedText.getText()));
 		edit.setEnabled(false);

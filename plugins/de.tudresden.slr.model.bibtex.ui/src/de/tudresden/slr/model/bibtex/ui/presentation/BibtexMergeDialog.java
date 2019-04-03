@@ -1,31 +1,13 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -42,32 +24,26 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.jbibtex.BibTeXDatabase;
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.BibTeXFormatter;
-import org.jbibtex.BibTeXParser;
-import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-import org.jbibtex.TokenMgrException;
-import org.jbibtex.Value;
 
-import de.tudresden.slr.model.bibtex.ui.util.Utils;
+import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
 public class BibtexMergeDialog extends Dialog {
 	
-    private BibtexMergeData data;
-	private boolean[] args;
-    private Text filename;
+    private BibtexMergeData mergeData;
     private CheckboxTableViewer ctv;
-    private WizardDialog wizardDialog;
+    private Text filename;
+    private Text preview;
 
     public BibtexMergeDialog(Shell parentShell, BibtexMergeData d) {
         super(parentShell);
-    	this.data = d;
-		this.args = new boolean[3];
+        // make non modal
+    	setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
+    	setBlockOnOpen(false);
+    	this.mergeData = d;
     }
 
     @Override
@@ -75,11 +51,117 @@ public class BibtexMergeDialog extends Dialog {
         Composite container = (Composite) super.createDialogArea(parent);
         GridLayout layout = new GridLayout(2, false);
         container.setLayout(layout);
-        Group ctvGroup = new Group(container, SWT.SHADOW_NONE);
+        
+        buildFilesPart(container); 
+        buildPreview(container);       
+        buildOptions(container);
+        buildCriteria(container);
+        buildSavePart(container);
+        
+        return container;
+    }
+
+	private void buildPreview(Composite container) {
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = SWT.RIGHT;
+        gridData.verticalAlignment = SWT.TOP;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalSpan = 1;
+        gridData.verticalSpan = 4;
+        
+		Composite composite = new Composite(container, SWT.NONE);
+        composite.setLayout(new GridLayout(1, false));
+        composite.setLayoutData(gridData);
+
+        Label label = new Label(composite, SWT.NONE);
+        label.setText("Preview: ");
+        preview = new Text(composite, SWT.BORDER  | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+        
+        GridData textGrid = new GridData(500, 500);
+        preview.setLayoutData(textGrid);
+        updatePreviewText();
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.verticalAlignment = SWT.END;
+	}
+	
+	private void updatePreviewText() {
+		preview.setText(mergeData.getConflictsForWeights().stream()
+        		.map(conflict -> conflict.printConflict())
+        		.collect(Collectors.joining("\n")));
+	}
+
+	private void buildCriteria(Composite container) {
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalSpan = 1;
+        gridData.verticalSpan = 1;
+        
+		Group criteriaGroup = new Group(container, SWT.SHADOW_NONE);
+        criteriaGroup.setText("Criteria");
+        criteriaGroup.setLayout(new GridLayout(3, false));
+        criteriaGroup.setLayoutData(gridData);
+        
+        for (Criteria value : Criteria.values()) {
+        	// create check box
+        	Button b = new Button(criteriaGroup, SWT.CHECK);
+            b.setText(value.name());
+            b.setSelection(mergeData.getWeights().get(Criteria.doi) > 0);
+            
+            // create scale
+            Scale scale = new Scale(criteriaGroup, SWT.HORIZONTAL);
+    	    scale.setMaximum(100);
+    	    scale.setSelection(95);
+    	    scale.setMinimum(0);
+    	    scale.setIncrement(1);
+    	    
+    	    // create text box for value of scale
+    	    Text text = new Text(criteriaGroup, SWT.CENTER);
+    	    text.setText(Integer.toString(scale.getSelection()));    	    
+    	    scale.addListener(SWT.Selection, new Listener() {
+    	      public void handleEvent(Event event) {
+    	        mergeData.getWeights().put(value, scale.getSelection());
+    	        text.setText(Integer.toString(scale.getSelection()));
+    	        if (scale.getSelection() == 0)
+    	        	b.setSelection(false);
+    	        else
+    	        	b.setSelection(true);
+                updatePreviewText();
+    	      }
+    	    });
+            
+            // add listener for check box updates
+            b.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    mergeData.getWeights().put(value, b.getSelection() ? 95 : 0);
+                    scale.setSelection(b.getSelection() ? 95 : 0);
+        	        text.setText(Integer.toString(scale.getSelection()));
+        	        updatePreviewText();
+                }
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    mergeData.getWeights().put(value, b.getSelection() ? 95 : 0);
+                    scale.setSelection(b.getSelection() ? 95 : 0);
+        	        text.setText(Integer.toString(scale.getSelection()));
+        	        updatePreviewText();
+                }
+            });
+        }
+	}
+
+	private void buildFilesPart(Composite container) { 
+        GridData gridData = new GridData();
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 1;
+        gridData.verticalSpan = 1;
+        
+		Group ctvGroup = new Group(container, SWT.SHADOW_NONE);
         ctvGroup.setText("Files to merge");
         ctvGroup.setLayout(new FillLayout());
+        ctvGroup.setLayoutData(gridData);
         ctv = CheckboxTableViewer.newCheckList(ctvGroup, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        List<BibtexResourceImpl> resourceList = data.getResourceList();
+        List<BibtexResourceImpl> resourceList = mergeData.getResourceList();
         for(int i = 0; i < resourceList.size(); i++) {
             ctv.add(resourceList.get(i).getURI());
         }
@@ -88,13 +170,41 @@ public class BibtexMergeDialog extends Dialog {
             public void handleEvent(Event event) {
                 if (event.detail == SWT.CHECK) {
                 	System.out.println("Checked " + event.item.toString().split("\\{")[1].split("\\}")[0]);
-                	if(validateDialog()) {
-                		data.setToMerge(new HashSet<Object>(Arrays.asList(ctv.getCheckedElements())));
-                	}
+                	mergeData.setResourceList(Arrays.asList(ctv.getCheckedElements()).stream()
+                			.map(uri -> { return new BibtexResourceImpl((URI) uri); })
+                			.collect(Collectors.toList()));
+                	validateDialog();
                 }
               }
             });
-        Group options = new Group(container, SWT.SHADOW_NONE);
+	}
+
+	private void buildSavePart(Composite container) {
+		Composite savePart = new Composite(container, SWT.NONE);
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = 1;
+        gridData.horizontalAlignment = GridData.FILL;
+        savePart.setLayout(new GridLayout(2, false));
+        savePart.setLayoutData(gridData);
+        Label save = new Label(savePart, SWT.NONE);
+        save.setText("Save as: ");
+        save.setLayoutData(new GridData (SWT.END, SWT.END, false, false));
+        filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
+        filename.setText("mergeResult.bib");
+        mergeData.setFilename(filename.getText());
+        filename.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent e) {
+        		mergeData.setFilename(filename.getText());
+        		validateDialog();
+            }
+        });
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        gd.verticalAlignment = SWT.END;
+        filename.setLayoutData(gd);
+	}
+
+	private void buildOptions(Composite container) {
+		Group options = new Group(container, SWT.SHADOW_NONE);
         options.setText("Options");
         options.setLayout(new RowLayout(SWT.VERTICAL));
         final Button b0 = new Button(options, SWT.CHECK);
@@ -106,14 +216,12 @@ public class BibtexMergeDialog extends Dialog {
         final Button b2 = new Button(options, SWT.CHECK);
         b2.setText("Manually resolve conflicts");  
         b2.setSelection(false);
-        setArgs(new boolean[] {b0.getSelection(), b1.getSelection(), b2.getSelection()});
         b0.addSelectionListener(new SelectionAdapter()
         {
             @Override
             public void widgetSelected(SelectionEvent e)
             {
             	boolean chk = b0.getSelection();
-                setSingleArg(0, chk);
                 b2.setEnabled(chk);
             }
         });
@@ -122,7 +230,7 @@ public class BibtexMergeDialog extends Dialog {
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                setSingleArg(1, b1.getSelection());
+                
             }
         });   
         b2.addSelectionListener(new SelectionAdapter()
@@ -130,34 +238,16 @@ public class BibtexMergeDialog extends Dialog {
             @Override
             public void widgetSelected(SelectionEvent e)
             {
-                setSingleArg(2, b2.getSelection());
+                
             }
         });
-        Composite savePart = new Composite(container, SWT.NONE);
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 2;
-        gridData.horizontalAlignment = GridData.FILL;
-        savePart.setLayout(new GridLayout(2, false));
-        savePart.setLayoutData(gridData);
-        Label save = new Label(savePart, SWT.NONE);
-        save.setText("Save as: ");
-        save.setLayoutData(new GridData (SWT.END, SWT.END, false, false));
-        filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
-        filename.setText("mergeResult.bib");
-        data.setFilename(getFilename());
-        filename.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent e) {
-        		if(validateDialog()) {
-        			data.setFilename(getFilename());
-        		}
-            }
-        });
-        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-        gd.verticalAlignment = SWT.END;
-        filename.setLayoutData(gd);
-        return container;
-    }
+	}
 
+	private void validateDialog() {
+		boolean valid = filename.getText().matches("[-_. A-Za-z0-9]+\\.bib") && ctv.getCheckedElements().length > 1;
+		getButton(IDialogConstants.OK_ID).setEnabled(valid);
+	}
+	
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
@@ -169,231 +259,4 @@ public class BibtexMergeDialog extends Dialog {
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
         createButton(parent, IDialogConstants.OK_ID, "Merge", true);
     }
-    
-    @Override
-    protected void okPressed() {
-    	if(!validateDialog()) {
-    		return;
-    	}
-    	if(fileExists()) {
-    		MessageDialog.openError(getShell(), "Error", "The filename " + getFilename() + " is taken. Please choose another one!");
-			return;
-    	}
-    	if(args[1] && !MessageDialog.openQuestion(getShell(), "Confirm file deletion", "This will delete the selected files. Are you sure?")) {
-    		return;
-    	}
-    	boolean success = false;
-    	try {
-    		if(!getArgs()[0]) {
-    			// merge with no duplicate handling - display stats
-        		if(merge("")) {
-        			String info = "The files have been merged into " + data.getFilename() + ".\n" + data.getStats();
-        			MessageDialog.openInformation(getShell(), "Merge successful", info);
-        			success = true;
-        		}
-
-    		}
-    		else{
-    			if(getArgs()[2]) {
-    				// merge with manual duplicate handling
-    				if(data.getConflicts().isEmpty()) {
-    					if(merge("")) {
-        	    			MessageDialog.openInformation(getShell(), "Merge successful", "No conflicts detected, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-        	    			success = true;
-    					}
-    				}
-    				else {
-    					BibtexMergeWizard mergeWizard = new BibtexMergeWizard(data);
-    					wizardDialog = new WizardDialog(getShell(), mergeWizard);
-    					if(wizardDialog.open() == 0) {
-    						if(merge(mergeWizard.getResults())) {
-    							MessageDialog.openInformation(getShell(), "Manual merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-    							success = true;
-    						}
-    	    			}
-    	    		}
-    			}
-    			else {
-    				// merge with automatic duplicate handling
-    				if(merge("")) {
-    					MessageDialog.openInformation(getShell(), "Automatic merge successful", data.getConflicts().size() + " conflict(s) solved, " + data.getSimpleDuplicateTitles().size() + " duplicate(s) eliminated.");
-    					success = true;
-    				}
-
-    			}
-    		}
-    	} 
-    	catch (CoreException | IOException e) {
-    		e.printStackTrace();
-    		if(e.getMessage().contains("deleting")) {
-    			MessageDialog.openError(getShell(), "Error", "An exception occured while deleting files.");
-    		}
-    		else if(e.getMessage().contains("creating")) {
-    			MessageDialog.openError(getShell(), "Error", "An exception occured while creating the new file.");
-    		}
-    		else {
-    			MessageDialog.openError(getShell(), "Error", "An exception occured while manipulating files.");
-    		}
-    	}
-    	if(success) {
-        	super.okPressed();
-    	}
-    	else {
-    		MessageDialog.openError(getShell(), "Error", "Something went wrong while merging.");
-    	}
-    }
-
-
-	private boolean merge(String manualResult) throws CoreException, IOException {
-		boolean[] args = getArgs();
-		if(fileExists()) {
-			return false;
-		}
-		data.removeUnselectedResources();
-		IPath filePath = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getLocation().removeLastSegments(1);
-		filePath = new Path(filePath.toString() + "/" + getFilename());
-		IFile result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
-		if(!args[0]) {
-			// merge with no duplicate handling
-			InputStream source = Utils.getIFilefromEMFResource(data.getResourceList().get(0)).getContents();
-			result.create(source, IResource.NONE, null);
-			for(int i = 1; i < data.getResourceList().size(); i++) {
-				source = Utils.getIFilefromEMFResource(data.getResourceList().get(i)).getContents();
-				result.appendContents(source, IResource.NONE, null);
-			}
-		}
-		else {
-			// merge with duplicate handling
-			String conflictResult = "";
-			if(!manualResult.isEmpty()) {
-				// merge with manual duplicate handling
-				conflictResult = manualResult;
-			}
-			else {
-				// new automerge w/ BibTeXParser
-				for(BibtexMergeConflict c : data.getConflicts()) {
-					List<BibTeXDatabase> conflicts = new ArrayList<BibTeXDatabase>();
-					for(String s : c.getEntries()) {
-						try (Reader reader = new BufferedReader(new StringReader(s))) {
-							BibTeXParser parser = new BibTeXParser();
-							conflicts.add(parser.parseFully(reader));
-						} catch (TokenMgrException | ParseException e) {
-							System.err.println(e.getMessage());
-							return false;
-						}
-					}
-					BibTeXEntry res = conflicts.get(0).getEntries().values().iterator().next();
-					for(int i = 1; i < conflicts.size(); i++) {
-						BibTeXEntry cur = conflicts.get(i).getEntries().values().iterator().next();
-						for(Key k : cur.getFields().keySet()) {
-							Value resValue = res.getField(k);
-							Value curValue = cur.getField(k);
-							if(resValue == null) {
-								res.addField(k, curValue);
-							}
-							else {
-								if(resValue.toUserString().length() < curValue.toUserString().length()) {
-									res.addField(k, curValue);
-								}
-							}
-						}
-					}
-					BibTeXDatabase resDB = new BibTeXDatabase();
-					resDB.addObject(res);
-					StringWriter writer = new StringWriter();
-					BibTeXFormatter bibtexFormatter = new BibTeXFormatter();
-					bibtexFormatter.format(resDB, writer);
-					conflictResult += writer.toString();
-					if(conflictResult.endsWith("}")) {
-						conflictResult += System.lineSeparator() + System.lineSeparator();
-					}
-				}
-			}
-			// common part: write resolved conflicts to newly created file, then iterate through files and write entries to result if necessary
-			InputStream source = new ByteArrayInputStream(conflictResult.getBytes());
-			result.create(source, IResource.NONE, null);
-			Set<String> dupTitles = data.getSimpleDuplicateTitles();
-			Set<String> remainingDupTitles = new HashSet<String>(dupTitles);
-			Set<String> conflictTitles = data.getConflictTitles();
-			for(int i = 0; i < data.getResourceList().size(); i++) {
-				IFile f = Utils.getIFilefromEMFResource((BibtexResourceImpl) data.getResourceList().get(i));
-				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				InputStream inputStream = f.getContents();
-				byte[] buffer = new byte[1024];
-				int length;
-				while ((length = inputStream.read(buffer)) != -1) {
-					outputStream.write(buffer, 0, length);
-				}
-				inputStream.close();
-				for(String snippet : outputStream.toString().split("@")) {
-					if(snippet.contains("title = {") || snippet.contains("title={")) {
-						String title = snippet.split("title( )*=( )*\\{")[1].split("\\}")[0].toLowerCase();
-						String toWrite = "@" + snippet;
-						if(toWrite.endsWith("}")) {
-							toWrite += System.lineSeparator() + System.lineSeparator();
-						}
-						// The following statements assure that:
-						// - if the snippet contains a simple duplicate's title, it is written to the result only when found for the first time
-						// - else if snippet does not contain a conflict's title, it is written to the result
-						if(dupTitles.remove(title)) {
-							dupTitles.add(title);
-							if(remainingDupTitles.remove(title)) {
-								source = new ByteArrayInputStream(toWrite.getBytes());
-								result.appendContents(source, IResource.NONE, null);
-							}
-						}
-						else if(conflictTitles.add(title)) {
-							conflictTitles.remove(title);
-							source = new ByteArrayInputStream(toWrite.getBytes());
-							result.appendContents(source, IResource.NONE, null);
-						}
-					}
-				}
-			}
-		}
-		if(args[1]) {
-			// if source files should be deleted
-			for(ListIterator<BibtexResourceImpl> i = data.getResourceList().listIterator(); i.hasNext();) { 
-				Utils.getIFilefromEMFResource(i.next()).delete(true, null);
-			}
-		}
-		return true;
-	}
-
-	private boolean fileExists() {
-		BibtexResourceImpl res = data.getResourceList().get(0);
-		for(int i = 0; i < data.getResourceList().size(); i++) {
-			res = data.getResourceList().get(i);
-			if(data.toMergeContains(res.getURI())) {
-				break;
-			}
-		}
-		IPath filePath = Utils.getIFilefromEMFResource(res).getLocation().removeLastSegments(1);
-		filePath = new Path(filePath.toString() + "/" + getFilename());
-		IFile result = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocation(filePath)[0];
-		return result.exists();
-	}
-	
-	public boolean[] getArgs() {
-		return args;
-	}
-
-	public void setArgs(boolean[] args) {
-		this.args = args;
-	}
-
-	public void setSingleArg(int index, boolean arg) {
-		this.args[index] = arg;
-	}
-	
-	public String getFilename() {
-        return filename.getText();
-    }
-    
-    private boolean validateDialog() {
-    	boolean valid = getFilename().matches("[-_. A-Za-z0-9]+\\.(bib)") && ctv.getCheckedElements().length > 1;
-        getButton(IDialogConstants.OK_ID).setEnabled(valid);
-    	return valid;
-    }
-    
 }
