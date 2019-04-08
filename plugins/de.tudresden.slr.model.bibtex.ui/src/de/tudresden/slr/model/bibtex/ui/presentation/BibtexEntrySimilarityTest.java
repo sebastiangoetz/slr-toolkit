@@ -20,13 +20,13 @@ public class BibtexEntrySimilarityTest {
 		}};
 		
 		BibtexEntrySimilarity entrySimilarity = new BibtexEntrySimilarity();
-		entrySimilarity.setAuthorSimilarity(1);
+		entrySimilarity.setAuthorSimilarity(100);
 		entrySimilarity.setTitleSimilarity(0);
 		entrySimilarity.setDoiEquals(true);
 		entrySimilarity.setYearDifference(0);
-		Assert.assertTrue("total score should be computed correctly", entrySimilarity.getTotalScore(weights) == 0.75);
-		weights.put(Criteria.title, 0);
-		Assert.assertTrue("total score should be computed correctly", entrySimilarity.getTotalScore(weights) == 1);
+		Assert.assertTrue("similarity should be computed correctly", entrySimilarity.isSimilar(weights));
+		weights.put(Criteria.authors, 0);
+		Assert.assertFalse("similarity should be computed correctly", entrySimilarity.isSimilar(weights));
 	}
 	
 	@Test

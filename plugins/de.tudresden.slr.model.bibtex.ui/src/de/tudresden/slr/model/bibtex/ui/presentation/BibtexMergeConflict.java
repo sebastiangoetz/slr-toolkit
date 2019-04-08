@@ -23,33 +23,33 @@ public class BibtexMergeConflict {
 		if (resource2.getTitle() != null && (resource1.getTitle() == null || !resource1.getTitle().equals(resource2.getTitle())))
 			result += "\ttitle={" + resource2.getTitle() + "}\n";
 		if (resource1.getAuthors() != null)
-			result += "authors={" + resource1.getAuthors() + "}\n";
+			result += "\tauthors={" + resource1.getAuthors() + "}\n";
 		if (resource2.getAuthors() != null && (resource1.getAuthors() == null || !resource1.getAuthors().equals(resource2.getAuthors())))
-			result += "authors={" + resource2.getAuthors() + "}\n";
+			result += "\tauthors={" + resource2.getAuthors() + "}\n";
 		if (resource1.getUrl() != null)
-			result += "url={" + resource1.getUrl() + "}\n";
+			result += "\turl={" + resource1.getUrl() + "}\n";
 		if (resource2.getUrl() != null && (resource1.getUrl() == null || !resource1.getUrl().equals(resource2.getUrl())))
-			result += "url={" + resource2.getUrl() + "}\n";
+			result += "\turl={" + resource2.getUrl() + "}\n";
 		if (resource1.getMonth() != null)
-			result += "month={" + resource1.getMonth() + "}\n";
+			result += "\tmonth={" + resource1.getMonth() + "}\n";
 		if (resource2.getMonth() != null && (resource1.getMonth() == null || !resource1.getMonth().equals(resource2.getMonth())))
-			result += "month={" + resource2.getMonth() + "}\n";
+			result += "\tmonth={" + resource2.getMonth() + "}\n";
 		if (resource1.getYear() != null)
-			result += "year={" + resource1.getYear() + "}\n";
+			result += "\tyear={" + resource1.getYear() + "}\n";
 		if (resource2.getYear() != null && (resource1.getYear() == null || !resource1.getYear().equals(resource2.getYear())))
-			result += "year={" + resource2.getYear() + "}\n";
+			result += "\tyear={" + resource2.getYear() + "}\n";
 		if (resource1.getAbstract() != null)
-			result += "abstract={" + resource1.getAbstract() + "}\n";
+			result += "\tabstract={" + resource1.getAbstract() + "}\n";
 		if (resource2.getAbstract() != null && (resource1.getAbstract() == null || !resource1.getAbstract().equals(resource2.getAbstract())))
-			result += "abstract={" + resource2.getAbstract() + "}\n";
+			result += "\tabstract={" + resource2.getAbstract() + "}\n";
 		if (resource1.getKey() != null)
-			result += "key=={" + resource1.getKey() + "}\n";
+			result += "\tkey=={" + resource1.getKey() + "}\n";
 		if (resource2.getKey() != null && (resource1.getKey() == null || !resource1.getKey().equals(resource2.getKey())))
-			result += "key=={" + resource2.getKey() + "}\n";
+			result += "\tkey=={" + resource2.getKey() + "}\n";
 		if (resource1.getType() != null)
-			result += "type={" + resource1.getType() + "}\n";
+			result += "\ttype={" + resource1.getType() + "}\n";
 		if (resource2.getType() != null && (resource1.getType() == null || !resource1.getType().equals(resource2.getType())))
-			result += "type={" + resource2.getType() + "}\n";
+			result += "\ttype={" + resource2.getType() + "}\n";
 		result += "}";
 		return result;
 	}

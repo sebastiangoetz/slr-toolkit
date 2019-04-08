@@ -34,7 +34,8 @@ public class BibtexEntrySimilarity {
 		
 		// get title similarity
 		Cosine c = new Cosine(2);
-		titleSimilarity = c.similarity(c.getProfile(entry1.getTitle()), c.getProfile(entry2.getTitle()));
+		titleSimilarity = c.similarity(c.getProfile(StringUtils.trimToEmpty(entry1.getTitle())), 
+				c.getProfile(StringUtils.trimToEmpty(entry2.getTitle())));
 		
 		// get year difference
 		yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear()) ?
@@ -56,10 +57,6 @@ public class BibtexEntrySimilarity {
 			}
 		}
 		return null;
-	}
-
-	public boolean equals(Map<Criteria, Integer> weights, double threshold) {
-		return DoiEquals || getTotalScore(weights) > threshold;
 	}
 	
 	private double authorSimilarity;
@@ -92,65 +89,43 @@ public class BibtexEntrySimilarity {
 		this.yearDifference = yearDifference;
 	}
 	
-	public double getYearSimilarity() {
-		// if entries are more than 10 years apart, there is no similarity
-		return yearDifference < 10 ? 1 - ((double) yearDifference / 10) : 0;
-	}
-	
 	public boolean isSimilar(Map<Criteria, Integer> weights) {	
-		System.out.print("\ndoi: " + DoiEquals + "\t");
 		if (validateCriteria(weights, Criteria.doi))
 			if (!DoiEquals)
 				return false;
 
-		System.out.print("year: " + getYearSimilarity() + "\t");
 		if (validateCriteria(weights, Criteria.year))
-			if (getYearSimilarity() < weights.get(Criteria.year) / 100)
+			if (getYearDifference() > weights.get(Criteria.year))
 				return false;
 
-		System.out.print("aurthors: " + authorSimilarity + "\t");
 		if (validateCriteria(weights, Criteria.authors))
-			if (authorSimilarity < weights.get(Criteria.authors) / 100)
+			if (Double.isNaN(authorSimilarity) || authorSimilarity < ((double) weights.get(Criteria.authors)) / 100)
 				return false;
-
-		System.out.print("title: " + titleSimilarity + "\t");
+		
 		if (validateCriteria(weights, Criteria.title))
-			if (titleSimilarity < weights.get(Criteria.title) / 100)
+			if (Double.isNaN(titleSimilarity) || titleSimilarity < ((double) weights.get(Criteria.title)) / 100)
 				return false;
 
-		System.out.print("is similar!");
 		return  true;		
-	}
-	
-	public double getTotalScore(Map<Criteria, Integer> weights) {
-		double totalScore = 0;
-		int totalWeight = 0;
-		
-		if (validateCriteria(weights, Criteria.doi)) {
-			if (DoiEquals)
-				totalScore += ((double) 1 / 100) * weights.get(Criteria.doi);
-			totalWeight += weights.get(Criteria.doi);
-		} 
-		if (validateCriteria(weights, Criteria.year)) {
-			totalScore += ((double) getYearSimilarity() / 100) * weights.get(Criteria.year);
-			totalWeight += weights.get(Criteria.year);
-		} 
-		if (validateCriteria(weights, Criteria.authors)) {
-			totalScore += ((double) authorSimilarity / 100) * weights.get(Criteria.authors);
-			totalWeight += weights.get(Criteria.authors);
-		}
-		if (validateCriteria(weights, Criteria.title)) {
-			totalScore += ((double) titleSimilarity / 100) * weights.get(Criteria.title);
-			totalWeight += weights.get(Criteria.title);
-		}
-		
-		return  totalWeight > 0 ? ((double) totalScore / totalWeight) * 100 : 0;
 	}
 
 	private boolean validateCriteria(Map<Criteria, Integer> weights, Criteria criteria) {
-		return weights.containsKey(criteria) 
+		switch (criteria) {
+		case doi:
+			return weights != null
+				&& weights.containsKey(criteria) 
 				&& weights.get(criteria) != null 
-				&& weights.get(criteria) > 0 
+				&& weights.get(criteria) > 0;
+		case year:
+			return weights != null
+				&& weights.containsKey(criteria) 
+				&& weights.get(criteria) != null; 
+		default:
+			return weights != null
+				&& weights.containsKey(criteria) 
+				&& weights.get(criteria) != null 
+				&& weights.get(criteria) >= 0 
 				&& weights.get(criteria) <= 100;
+		}
 	}
 }

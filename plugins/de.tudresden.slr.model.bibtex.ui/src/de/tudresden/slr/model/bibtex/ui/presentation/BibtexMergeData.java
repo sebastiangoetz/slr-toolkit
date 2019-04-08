@@ -66,7 +66,7 @@ public class BibtexMergeData {
 		return similarityMatrix;
 	}
 	
-	public List<BibtexMergeConflict> getConflictsForWeights() {
+	public List<BibtexMergeConflict> getConflicts() {
 		
 		List<BibtexMergeConflict> conflicts = new ArrayList<>();
 		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
@@ -78,22 +78,9 @@ public class BibtexMergeData {
 			}
 		}
 		
-		return conflicts;
-	}
-	
-	public List<BibtexMergeConflict> getConflicts(double threshold) {
-		
-		List<BibtexMergeConflict> conflicts = new ArrayList<>();
-		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
-			for (DocumentImpl entry2 : similarityMatrix.get(entry1).keySet()) {
-				//System.out.println("similarity: " + similarityMatrix.get(entry1).get(entry2).getTotalScore(weights));
-				if (similarityMatrix.get(entry1).get(entry2).getTotalScore(weights) > threshold) {
-					conflicts.add(new BibtexMergeConflict(entry1, entry2));
-				}
-			}
-		}
-		
-		return conflicts;
+		// since every entry is two times present in the similarity matrix, the conflicts are also duplicated.
+		// due to the linear construction of the matrix, all duplicated conflicts are located in the tow halves of the list
+		return conflicts.isEmpty() ? conflicts : conflicts.subList(0, conflicts.size() / 2 - 1);
 	}
 	
 	public List<BibtexResourceImpl> getResourceList() {

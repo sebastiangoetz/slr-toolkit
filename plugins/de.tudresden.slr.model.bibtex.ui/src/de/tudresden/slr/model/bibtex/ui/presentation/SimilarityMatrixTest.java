@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
-import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.BibtexMergeConflict;
 import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
 import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
@@ -45,13 +44,23 @@ public class SimilarityMatrixTest {
 	}
 	
 	@Test
-	public void testGetConflicts() {
-		List<BibtexMergeConflict> conflicts = mergeData.getConflicts(0.9);
+	public void testGetConflictsForWeights() {
+		Map<Criteria, Integer> weights = new HashMap<Criteria, Integer>() {{
+			put(Criteria.authors, 90);
+			put(Criteria.title, 90);
+			put(Criteria.year, 90);
+		}};
+		mergeData.setWeights(weights);
+		List<BibtexMergeConflict> conflicts = mergeData.getConflicts();
 		int firstSize = conflicts.size();
 		Assert.assertNotNull(conflicts);
 		
-		// as the threshold decreases there should be more similar entries
-		conflicts = mergeData.getConflicts(0.7);
+		// as the weight for some criteria decreases there should be more similar entries
+		weights.put(Criteria.title, 0);
+		weights.put(Criteria.authors, 0);
+		weights.put(Criteria.year, 0);
+		mergeData.setWeights(weights);
+		conflicts = mergeData.getConflicts();
 		Assert.assertTrue(conflicts.size() > firstSize);
 	}
 }

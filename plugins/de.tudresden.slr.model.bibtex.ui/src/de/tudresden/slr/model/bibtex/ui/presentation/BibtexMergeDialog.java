@@ -1,10 +1,12 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.URI;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -85,7 +87,7 @@ public class BibtexMergeDialog extends Dialog {
 	}
 	
 	private void updatePreviewText() {
-		preview.setText(mergeData.getConflictsForWeights().stream()
+		preview.setText(mergeData.getConflicts().stream()
         		.map(conflict -> conflict.printConflict())
         		.collect(Collectors.joining("\n")));
 	}
@@ -98,22 +100,22 @@ public class BibtexMergeDialog extends Dialog {
         gridData.verticalSpan = 1;
         
 		Group criteriaGroup = new Group(container, SWT.SHADOW_NONE);
-        criteriaGroup.setText("Criteria");
+        criteriaGroup.setText("Similarity Criteria");
         criteriaGroup.setLayout(new GridLayout(3, false));
         criteriaGroup.setLayoutData(gridData);
         
         for (Criteria value : Criteria.values()) {
         	// create check box
         	Button b = new Button(criteriaGroup, SWT.CHECK);
-            b.setText(value.name());
             b.setSelection(mergeData.getWeights().get(Criteria.doi) > 0);
+            b.setText(getButtonTextForCriteria(value));
             
             // create scale
             Scale scale = new Scale(criteriaGroup, SWT.HORIZONTAL);
-    	    scale.setMaximum(100);
-    	    scale.setSelection(95);
-    	    scale.setMinimum(0);
-    	    scale.setIncrement(1);
+            scale.setMinimum(0);
+            scale.setMaximum(getMaxScaleValueForCriteria(value));
+            scale.setSelection(getDefaultScaleSelectionValueForCriteria(value));
+            scale.setIncrement(1);
     	    
     	    // create text box for value of scale
     	    Text text = new Text(criteriaGroup, SWT.CENTER);
@@ -142,12 +144,45 @@ public class BibtexMergeDialog extends Dialog {
                 @Override
                 public void widgetDefaultSelected(SelectionEvent e) {
                     mergeData.getWeights().put(value, b.getSelection() ? 95 : 0);
-                    scale.setSelection(b.getSelection() ? 95 : 0);
+                    scale.setSelection(b.getSelection() ? getDefaultScaleSelectionValueForCriteria(value) : 0);
         	        text.setText(Integer.toString(scale.getSelection()));
         	        updatePreviewText();
                 }
             });
         }
+	}
+	
+	private String getButtonTextForCriteria(Criteria criteria) {
+		switch (criteria) {
+		case doi:
+			return criteria.name() + " equals";
+		case year:
+			return criteria.name() + "s +-";
+		default:
+			return criteria.name() + " in %";
+		}
+	}
+	
+	private int getMaxScaleValueForCriteria(Criteria criteria) {
+		switch (criteria) {
+		case doi:
+			return 1;
+		case year:
+			return 10;
+		default:
+			return 100;
+		}
+	}
+	
+	private int getDefaultScaleSelectionValueForCriteria(Criteria criteria) {
+		switch (criteria) {
+		case doi:
+			return 1;
+		case year:
+			return 5;
+		default:
+			return 95;
+		}
 	}
 
 	private void buildFilesPart(Composite container) { 
@@ -156,27 +191,16 @@ public class BibtexMergeDialog extends Dialog {
         gridData.horizontalSpan = 1;
         gridData.verticalSpan = 1;
         
-		Group ctvGroup = new Group(container, SWT.SHADOW_NONE);
-        ctvGroup.setText("Files to merge");
-        ctvGroup.setLayout(new FillLayout());
-        ctvGroup.setLayoutData(gridData);
-        ctv = CheckboxTableViewer.newCheckList(ctvGroup, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        List<BibtexResourceImpl> resourceList = mergeData.getResourceList();
-        for(int i = 0; i < resourceList.size(); i++) {
-            ctv.add(resourceList.get(i).getURI());
-        }
-        ctv.setAllChecked(true);
-        ctv.getTable().addListener(SWT.Selection, new Listener() {
-            public void handleEvent(Event event) {
-                if (event.detail == SWT.CHECK) {
-                	System.out.println("Checked " + event.item.toString().split("\\{")[1].split("\\}")[0]);
-                	mergeData.setResourceList(Arrays.asList(ctv.getCheckedElements()).stream()
-                			.map(uri -> { return new BibtexResourceImpl((URI) uri); })
-                			.collect(Collectors.toList()));
-                	validateDialog();
-                }
-              }
-            });
+		Group group = new Group(container, SWT.SHADOW_NONE);
+        group.setText("Files to merge");
+        group.setLayout(new FillLayout());
+        group.setLayoutData(gridData);
+        
+        Label label = new Label(group, SWT.NONE);
+        label.setText("Preview: ");
+        label.setText(mergeData.getResourceList().stream()
+        		.map(resource -> resource.getURI().toString())
+        		.collect(Collectors.joining("\n")));
 	}
 
 	private void buildSavePart(Composite container) {
@@ -245,8 +269,14 @@ public class BibtexMergeDialog extends Dialog {
 
 	private void validateDialog() {
 		boolean valid = filename.getText().matches("[-_. A-Za-z0-9]+\\.bib") && ctv.getCheckedElements().length > 1;
+		valid = valid && fileExists();
 		getButton(IDialogConstants.OK_ID).setEnabled(valid);
 	}
+    
+    private boolean fileExists() {
+    	File tempFile = new File(getFilePath());
+    	return tempFile.exists();
+    }
 	
     @Override
     protected void configureShell(Shell newShell) {
@@ -258,5 +288,28 @@ public class BibtexMergeDialog extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
         createButton(parent, IDialogConstants.OK_ID, "Merge", true);
+    }
+    
+    @Override
+    protected void okPressed() {
+    	writePreviewToFile();
+    }
+    
+    private String getFilePath() {
+    	BibtexResourceImpl resource1 = mergeData.getResourceList().get(0);
+    	String filePath = resource1.getURI().path().substring(0, resource1.getURI().path().length() - resource1.getURI().lastSegment().length());
+    	filePath = ResourcesPlugin.getWorkspace().toString() + filePath + filename.getText();
+    	return filePath;
+    }
+    
+    private void writePreviewToFile() {	 
+    	File file = new File(getFilePath());
+    	try {
+			if (file.createNewFile())
+				Files.write(Paths.get(getFilePath()), preview.getText().getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

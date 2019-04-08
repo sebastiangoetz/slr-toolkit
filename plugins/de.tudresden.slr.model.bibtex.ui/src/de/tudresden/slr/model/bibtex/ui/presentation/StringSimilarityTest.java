@@ -38,7 +38,8 @@ public class StringSimilarityTest {
 			{"Technology ontology and BIM-enabled estimating for owners and contractors", 
 				"BIM-Enabled Estimating through Technology Ontology for Owners and Contractors"},
 			{"Uso de la metodolog{\\'\\i}a BrIM (Bridge Information Modeling) como herramientapara la planificaci{\\'o}n de la construcci{\\'o}n de un puente de concreto en Colombia", 
-				"Uso de la metodolog{\\'\\i}a BRIM (Bridge Information Modeling) como herramienta para la planificaci{\\'o}n de la construcci{\\'o}n de un puente de concreto en Colombia"}
+				"Uso de la metodolog{\\'\\i}a BRIM (Bridge Information Modeling) como herramienta para la planificaci{\\'o}n de la construcci{\\'o}n de un puente de concreto en Colombia"},
+			{"", "BIM"}
 		});
 	}
 
