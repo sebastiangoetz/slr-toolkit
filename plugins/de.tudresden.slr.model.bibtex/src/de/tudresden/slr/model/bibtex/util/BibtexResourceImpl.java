@@ -127,6 +127,8 @@ public class BibtexResourceImpl extends ResourceImpl {
 			String classes = safeGetField(entry, KEY_CLASSES);
 			classes = classes.replaceAll("["+System.lineSeparator()+"]", " ");
 			document.setTaxonomy(parseClasses(classes));
+			
+			// TODO: add additional fields
 
 			getContents().add(document);
 		}

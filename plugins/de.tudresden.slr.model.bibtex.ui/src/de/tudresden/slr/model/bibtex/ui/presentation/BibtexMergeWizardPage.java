@@ -36,7 +36,7 @@ import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 public class BibtexMergeWizardPage  extends WizardPage {
 	private Composite container;
-    private List<BibtexMergeData.BibtexMergeConflict> conflicts;
+    private List<BibtexMergeConflict> conflicts;
     private String result;
     private String resultName;
     private Label hint;
@@ -46,7 +46,7 @@ public class BibtexMergeWizardPage  extends WizardPage {
     private Button select;
     private Button edit;
 
-    public BibtexMergeWizardPage(List<BibtexMergeData.BibtexMergeConflict> conflicts) {
+    public BibtexMergeWizardPage(List<BibtexMergeConflict> conflicts) {
         super("Step 2: Manual conflict solving");
         setTitle("Step 2: Manual conflict solving");
     	this.conflicts = conflicts;
@@ -63,7 +63,7 @@ public class BibtexMergeWizardPage  extends WizardPage {
         gl.marginHeight = 0;
         container.setLayout(gl);
         folder = new TabFolder(container, SWT.NONE);
-        for(BibtexMergeData.BibtexMergeConflict conflict : conflicts) {
+        for(BibtexMergeConflict conflict : conflicts) {
             TabItem tab = new TabItem(folder, SWT.NONE);
     	    tab.setText(conflict.getResource1().getTitle());
     	    Composite c = new Composite(folder, SWT.NONE);

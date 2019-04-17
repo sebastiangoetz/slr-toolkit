@@ -28,7 +28,7 @@ public class StringSimilarityTest {
 			{"Wakelam, Robert and Beck, Henry and Phillips, Bradley and Powell, Gregory and O'Kelly, Niall", 
 				"Wakelam, Robert Bruce and Beck III, Henry C and Phillips, Bradley Paul and Powell, Gregory Wayne and O'kelly, Niall Brendan"},
 			{"Han, Kevin K and Golparvar-Fard, Mani", "Han, Kevin K and Golparvar-Fard, Mani"},
-			{"Gait{\\'a}n Cardona, Juan Sebasti{\\'a}n", "Gait{\\'a}n Cardona, Juan Sebasti{\\'a}n and G{\\'o}mez Cabrera, Adriana"},
+			{"Gaitan Cardona, Juan Sebastian", "Gait{\\'a}n Cardona, Juan Sebasti{\\'a}n and G{\\'o}mez Cabrera, Adriana"},
 			
 			// titles
 			{"Automated monitoring of operation-level construction progress using 4D BIM and daily site photologs", 
@@ -37,7 +37,7 @@ public class StringSimilarityTest {
 				"CM12-06 A Preliminary Study on the Framework and Technologies for Bridging BIM and Building"},
 			{"Technology ontology and BIM-enabled estimating for owners and contractors", 
 				"BIM-Enabled Estimating through Technology Ontology for Owners and Contractors"},
-			{"Uso de la metodolog{\\'\\i}a BrIM (Bridge Information Modeling) como herramientapara la planificaci{\\'o}n de la construcci{\\'o}n de un puente de concreto en Colombia", 
+			{"Uso de la metodologia BrIM (Bridge Information Modeling) como herramientapara la planificacion de la construccion de un puente de concreto en Colombia", 
 				"Uso de la metodolog{\\'\\i}a BRIM (Bridge Information Modeling) como herramienta para la planificaci{\\'o}n de la construcci{\\'o}n de un puente de concreto en Colombia"},
 			{"", "BIM"}
 		});
@@ -45,8 +45,11 @@ public class StringSimilarityTest {
 
 	@Test
 	public void testJaroWinkler() {
+		System.out.println(BibtexEntrySimilarity.escapeLatexSpecialChars(s1));
+		System.out.println(BibtexEntrySimilarity.escapeLatexSpecialChars(s2));
 		JaroWinkler jw = new JaroWinkler();
-		System.out.println("JaroWinkler: " + jw.similarity(s1, s2));
+		System.out.println("JaroWinkler: " + jw.similarity(BibtexEntrySimilarity.escapeLatexSpecialChars(s1), 
+				BibtexEntrySimilarity.escapeLatexSpecialChars(s2)));
 	}
 
 	@Test
@@ -76,7 +79,10 @@ public class StringSimilarityTest {
 	@Test
 	public void testCosine() {
 		Cosine c = new Cosine(2);
-		System.out.println("Cosine: " + c.similarity(c.getProfile(s1), c.getProfile(s2)));
+		System.out.println(BibtexEntrySimilarity.escapeLatexSpecialChars(s1));
+		System.out.println(BibtexEntrySimilarity.escapeLatexSpecialChars(s2));
+		System.out.println("Cosine: " + c.similarity(c.getProfile(BibtexEntrySimilarity.escapeLatexSpecialChars(s1)), 
+				c.getProfile(BibtexEntrySimilarity.escapeLatexSpecialChars(s2))));
 	}
 
 	@Test

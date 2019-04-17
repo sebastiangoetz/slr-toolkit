@@ -31,18 +31,26 @@ public class BibtexEntrySimilarity {
 		
 		// get author similarity
 		JaroWinkler jw = new JaroWinkler();
-		authorSimilarity = jw.similarity(StringUtils.join(entry1.getAuthors(), ", "), 
-				StringUtils.join(entry2.getAuthors(), ", "));
+		authorSimilarity = jw.similarity(escapeLatexSpecialChars(StringUtils.join(entry1.getAuthors(), ", ")), 
+				escapeLatexSpecialChars(StringUtils.join(entry2.getAuthors(), ", ")));
 		
 		// get title similarity
 		Cosine c = new Cosine(2);
-		titleSimilarity = c.similarity(c.getProfile(StringUtils.trimToEmpty(entry1.getTitle())), 
-				c.getProfile(StringUtils.trimToEmpty(entry2.getTitle())));
+		titleSimilarity = c.similarity(c.getProfile(escapeLatexSpecialChars(StringUtils.trimToEmpty(entry1.getTitle()))), 
+				c.getProfile(escapeLatexSpecialChars(StringUtils.trimToEmpty(entry2.getTitle()))));
 		
 		// get year difference
-		yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear()) ?
-				Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()))
+		yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear())
+				? Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()))
 				: 100;
+	}
+	
+	public static String escapeLatexSpecialChars(String input) {
+		for (LatexSpecialCharResolution res : LatexSpecialCharResolution.values()) {
+			input = input.replaceAll(res.getSpecialChar(), res.getResolution());
+		}
+		
+		return input;
 	}
 	
 	static String getDoiFromUrl(String url) {

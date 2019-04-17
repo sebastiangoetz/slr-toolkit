@@ -43,7 +43,6 @@ public class BibtexEntrySimilarityTest {
 		Assert.assertTrue(result.contentEquals("10.1234/121399.34593-23"));
 	}
 	
-	//TODO
 	@Test
 	public void testGetDoiFromUrl() {		
 		String url = "https://www.some.url.com/10.1234/32743n3284/some/path";

@@ -23,7 +23,7 @@ public class BibtexMergeWizard extends Wizard {
 
     @Override
     public void addPages() {
-    	List<BibtexMergeData.BibtexMergeConflict> conflicts = data.getConflicts(0.9);
+    	List<BibtexMergeConflict> conflicts = data.getConflicts();
     	addPage(new BibtexMergeWizardPage(conflicts));
     }
 
