@@ -28,6 +28,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
@@ -39,6 +42,7 @@ public class BibtexMergeDialog extends Dialog {
     private CheckboxTableViewer ctv;
     private Text filename;
     private Text preview;
+    private TableItem previewStats;
 
     public BibtexMergeDialog(Shell parentShell, BibtexMergeData d) {
         super(parentShell);
@@ -74,22 +78,49 @@ public class BibtexMergeDialog extends Dialog {
 		Composite composite = new Composite(container, SWT.NONE);
         composite.setLayout(new GridLayout(1, false));
         composite.setLayoutData(gridData);
+        
+        // create overview
+        Table table = new Table(composite, SWT.BORDER);
+
+        TableColumn duplicates = new TableColumn(table, SWT.CENTER);
+        TableColumn mergeConflicts = new TableColumn(table, SWT.CENTER);
+        TableColumn differences = new TableColumn(table, SWT.CENTER);
+        duplicates.setText("Duplicates");
+        mergeConflicts.setText("Merge Conflicts");
+        differences.setText("Differences");
+        duplicates.setWidth(80);
+        mergeConflicts.setWidth(100);
+        differences.setWidth(80);
+        table.setHeaderVisible(true);
+
+        previewStats = new TableItem(table, SWT.NONE);
 
         Label label = new Label(composite, SWT.NONE);
         label.setText("Preview: ");
         preview = new Text(composite, SWT.BORDER  | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-        
         GridData textGrid = new GridData(500, 500);
         preview.setLayoutData(textGrid);
-        updatePreviewText();
-        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-        gd.verticalAlignment = SWT.END;
+        
+        updatePreview();
 	}
 	
-	private void updatePreviewText() {
+	private void updatePreview() {
 		preview.setText(mergeData.getConflicts().stream()
         		.map(conflict -> conflict.printConflict())
         		.collect(Collectors.joining("\n")));
+		
+		int numberOfDuplicates = mergeData.getConflicts()
+        		.stream()
+        		.filter(conflict -> !conflict.isConflicted())
+        		.collect(Collectors.toList())
+        		.size();
+        int numberOfDifferences = mergeData.getNumberOfPossibleConflicts() - mergeData.getConflicts().size();
+        int numberOfMergeConflicts = mergeData.getConflicts().size() - numberOfDuplicates;
+        previewStats.setText(new String[] { 
+        		Integer.toString(numberOfDuplicates), 
+        		Integer.toString(numberOfMergeConflicts), 
+        		Integer.toString(numberOfDifferences) 
+    		});
 	}
 
 	private void buildCriteria(Composite container) {
@@ -122,13 +153,13 @@ public class BibtexMergeDialog extends Dialog {
     	    text.setText(Integer.toString(scale.getSelection()));    	    
     	    scale.addListener(SWT.Selection, new Listener() {
     	      public void handleEvent(Event event) {
-    	        mergeData.getWeights().put(value, scale.getSelection());
+    	    	mergeData.setWeight(value, scale.getSelection());
     	        text.setText(Integer.toString(scale.getSelection()));
-    	        if (scale.getSelection() == 0)
+    	        if (scale.getSelection() == 10 && value == Criteria.year || value != Criteria.year && scale.getSelection() == 0)
     	        	b.setSelection(false);
     	        else
     	        	b.setSelection(true);
-                updatePreviewText();
+                updatePreview();
     	      }
     	    });
             
@@ -136,17 +167,21 @@ public class BibtexMergeDialog extends Dialog {
             b.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
-                    mergeData.getWeights().put(value, b.getSelection() ? 95 : 0);
-                    scale.setSelection(b.getSelection() ? 95 : 0);
+                    scale.setSelection(b.getSelection() 
+                    		? getDefaultScaleSelectionValueForCriteria(value) 
+            				: getUnCheckedScaleValueForCriteria(value));
+        	    	mergeData.setWeight(value, scale.getSelection());
         	        text.setText(Integer.toString(scale.getSelection()));
-        	        updatePreviewText();
+        	        updatePreview();
                 }
                 @Override
                 public void widgetDefaultSelected(SelectionEvent e) {
-                    mergeData.getWeights().put(value, b.getSelection() ? 95 : 0);
-                    scale.setSelection(b.getSelection() ? getDefaultScaleSelectionValueForCriteria(value) : 0);
+                    scale.setSelection(b.getSelection() 
+                    		? getDefaultScaleSelectionValueForCriteria(value) 
+                    		: getUnCheckedScaleValueForCriteria(value));
+        	    	mergeData.setWeight(value, scale.getSelection());
         	        text.setText(Integer.toString(scale.getSelection()));
-        	        updatePreviewText();
+        	        updatePreview();
                 }
             });
         }
@@ -160,6 +195,15 @@ public class BibtexMergeDialog extends Dialog {
 			return criteria.name() + "s +-";
 		default:
 			return criteria.name() + " in %";
+		}
+	}
+	
+	private int getUnCheckedScaleValueForCriteria(Criteria criteria) {
+		switch (criteria) {
+		case year:
+			return 10;
+		default:
+			return 0;
 		}
 	}
 	

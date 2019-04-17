@@ -85,4 +85,16 @@ public class BibtexMergeConflict {
 	public void setFinalResource(DocumentImpl finalResource) {
 		this.finalResource = finalResource;
 	}
+	
+	public boolean isConflicted() {
+		return !((resource1.getTitle() != null && resource1.getTitle().equals(resource2.getTitle()) || resource1.getTitle() == null && resource2.getTitle() == null)
+				&& (resource1.getAuthors() != null && resource1.getAuthors().equals(resource2.getAuthors()) || resource1.getAuthors() == null && resource2.getAuthors() == null)
+				&& (resource1.getDoi() != null && resource1.getDoi().equals(resource2.getDoi()) || resource1.getDoi() == null && resource2.getDoi() == null)
+				&& (resource1.getUrl() != null && resource1.getUrl().equals(resource2.getUrl()) || resource1.getUrl() == null && resource2.getUrl() == null)
+				&& (resource1.getMonth() != null && resource1.getMonth().equals(resource2.getMonth()) || resource1.getMonth() == null && resource2.getMonth() == null)
+				&& (resource1.getYear() != null && resource1.getYear().equals(resource2.getYear()) || resource1.getYear() == null && resource2.getYear() == null)
+				&& (resource1.getType() != null && resource1.getType().equals(resource2.getType()) || resource1.getType() == null && resource2.getType() == null)
+				&& (resource1.getAbstract() != null && resource1.getAbstract().equals(resource2.getAbstract()) || resource1.getAbstract() == null && resource2.getAbstract() == null)
+				&& (resource1.getKey() != null && resource1.getKey().equals(resource2.getKey()) || resource1.getKey() == null && resource2.getKey() == null));
+	}
 }

@@ -18,6 +18,7 @@ public class BibtexMergeData {
 	private Set<Object> toMerge;
 	private String filename;
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
+	private List<BibtexMergeConflict> conflicts;
 	private Map<Criteria, Integer> weights;
 	
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
@@ -28,6 +29,7 @@ public class BibtexMergeData {
 		for (Criteria value : Criteria.values()) {
 			weights.put(value, 100);
 		}
+		this.conflicts = new ArrayList<>();
 	}
 	
 	public void removeUnselectedResources() {
@@ -67,6 +69,10 @@ public class BibtexMergeData {
 	}
 	
 	public List<BibtexMergeConflict> getConflicts() {
+		return conflicts;
+	}
+	
+	public void extractConflicts() {
 		
 		List<BibtexMergeConflict> conflicts = new ArrayList<>();
 		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
@@ -80,7 +86,7 @@ public class BibtexMergeData {
 		
 		// since every entry is two times present in the similarity matrix, the conflicts are also duplicated.
 		// due to the linear construction of the matrix, all duplicated conflicts are located in the tow halves of the list
-		return conflicts.isEmpty() ? conflicts : conflicts.subList(0, conflicts.size() / 2 - 1);
+		this.conflicts = conflicts.isEmpty() ? conflicts : conflicts.subList(0, conflicts.size() / 2 - 1);
 	}
 	
 	public List<BibtexResourceImpl> getResourceList() {
@@ -118,9 +124,19 @@ public class BibtexMergeData {
 	public Map<Criteria, Integer> getWeights() {
 		return weights;
 	}
+	
+	public void setWeight(Criteria criteria, Integer weight) {
+		weights.put(criteria, weight);
+		extractConflicts();
+	}
 
 	public void setWeights(Map<Criteria, Integer> weights) {
 		this.weights = weights;
+		extractConflicts();
+	}
+	
+	public int getNumberOfPossibleConflicts() {
+ 		return (similarityMatrix.size() * similarityMatrix.size()) / 2;
 	}
 	
 	public enum Criteria {

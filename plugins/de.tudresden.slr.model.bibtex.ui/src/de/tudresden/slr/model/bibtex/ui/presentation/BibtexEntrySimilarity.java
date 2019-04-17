@@ -11,6 +11,8 @@ import info.debatty.java.stringsimilarity.JaroWinkler;
 
 public class BibtexEntrySimilarity {
 	
+	public static int MAX_YEAR_DIFFERENCE = 10;
+	
 	public BibtexEntrySimilarity() {
 		// for testing reasons
 	}
@@ -83,7 +85,7 @@ public class BibtexEntrySimilarity {
 		DoiEquals = doiEquals;
 	}
 	public long getYearDifference() {
-		return yearDifference;
+		return yearDifference < MAX_YEAR_DIFFERENCE ? yearDifference : MAX_YEAR_DIFFERENCE;
 	}
 	public void setYearDifference(long yearDifference) {
 		this.yearDifference = yearDifference;
@@ -95,15 +97,15 @@ public class BibtexEntrySimilarity {
 				return false;
 
 		if (validateCriteria(weights, Criteria.year))
-			if (getYearDifference() > weights.get(Criteria.year))
+			if (getYearDifference() >= weights.get(Criteria.year))
 				return false;
 
 		if (validateCriteria(weights, Criteria.authors))
-			if (Double.isNaN(authorSimilarity) || authorSimilarity < ((double) weights.get(Criteria.authors)) / 100)
+			if (Double.isNaN(authorSimilarity) || authorSimilarity <= ((double) weights.get(Criteria.authors)) / 100)
 				return false;
 		
 		if (validateCriteria(weights, Criteria.title))
-			if (Double.isNaN(titleSimilarity) || titleSimilarity < ((double) weights.get(Criteria.title)) / 100)
+			if (Double.isNaN(titleSimilarity) || titleSimilarity <= ((double) weights.get(Criteria.title)) / 100)
 				return false;
 
 		return  true;		
@@ -119,7 +121,8 @@ public class BibtexEntrySimilarity {
 		case year:
 			return weights != null
 				&& weights.containsKey(criteria) 
-				&& weights.get(criteria) != null; 
+				&& weights.get(criteria) != null
+				&& weights.get(criteria) >= 0;
 		default:
 			return weights != null
 				&& weights.containsKey(criteria) 
