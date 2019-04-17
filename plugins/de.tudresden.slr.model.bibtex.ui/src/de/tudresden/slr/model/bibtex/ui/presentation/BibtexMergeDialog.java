@@ -1,12 +1,20 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -259,10 +267,8 @@ public class BibtexMergeDialog extends Dialog {
         save.setLayoutData(new GridData (SWT.END, SWT.END, false, false));
         filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
         filename.setText("mergeResult.bib");
-        mergeData.setFilename(filename.getText());
         filename.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-        		mergeData.setFilename(filename.getText());
         		validateDialog();
             }
         });
@@ -313,14 +319,9 @@ public class BibtexMergeDialog extends Dialog {
 
 	private void validateDialog() {
 		boolean valid = filename.getText().matches("[-_. A-Za-z0-9]+\\.bib") && ctv.getCheckedElements().length > 1;
-		valid = valid && fileExists();
+		valid = valid && !(new File(getFilePath())).exists();
 		getButton(IDialogConstants.OK_ID).setEnabled(valid);
 	}
-    
-    private boolean fileExists() {
-    	File tempFile = new File(getFilePath());
-    	return tempFile.exists();
-    }
 	
     @Override
     protected void configureShell(Shell newShell) {
@@ -337,20 +338,28 @@ public class BibtexMergeDialog extends Dialog {
     @Override
     protected void okPressed() {
     	writePreviewToFile();
+    	super.okPressed();
     }
     
     private String getFilePath() {
-    	BibtexResourceImpl resource1 = mergeData.getResourceList().get(0);
-    	String filePath = resource1.getURI().path().substring(0, resource1.getURI().path().length() - resource1.getURI().lastSegment().length());
-    	filePath = ResourcesPlugin.getWorkspace().toString() + filePath + filename.getText();
-    	return filePath;
+    	IWorkspace workspace = ResourcesPlugin.getWorkspace();
+    	IWorkspaceRoot root = workspace.getRoot(); root.getFullPath().toString();
+    	System.out.println(root.getFullPath().toString());
+    	System.out.println(root.getLocationURI().toString());
+    	List<String> rootLocationParts = Arrays.asList(root.getLocationURI().toString().split("/"));
+    	String rootLocation = "/" + StringUtils.join(rootLocationParts.subList(1,  rootLocationParts.size() - 1), "/") + "/mergeResults";
+
+//    	BibtexResourceImpl res = mergeData.getResourceList().get(0);
+//    	List<String> pathParts = Arrays.asList(res.getURI().toString().split("/"));
+//    	String path = StringUtils.join(pathParts.subList(0, pathParts.size() - 1), "/");
+    	return rootLocation + "/" + filename.getText();
     }
     
     private void writePreviewToFile() {	 
-    	File file = new File(getFilePath());
+    	
     	try {
-			if (file.createNewFile())
-				Files.write(Paths.get(getFilePath()), preview.getText().getBytes());
+		    Path path = Paths.get(getFilePath());
+		    Files.write(path, preview.getText().getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

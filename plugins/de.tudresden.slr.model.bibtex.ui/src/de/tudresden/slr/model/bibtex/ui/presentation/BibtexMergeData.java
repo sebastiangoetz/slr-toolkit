@@ -16,14 +16,12 @@ public class BibtexMergeData {
 	
 	private List<BibtexResourceImpl> resourceList;
 	private Set<Object> toMerge;
-	private String filename;
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
 	private List<BibtexMergeConflict> conflicts;
 	private Map<Criteria, Integer> weights;
 	
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
-		this.filename = "mergeResult.bib";
 		createSimilarityMatrix();
 		this.weights = new HashMap<>();
 		for (Criteria value : Criteria.values()) {
@@ -95,14 +93,6 @@ public class BibtexMergeData {
 
 	public void setResourceList(List<BibtexResourceImpl> resourceList) {
 		this.resourceList = resourceList;
-	}
-	
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
 	}
 
 	public Set<Object> getToMerge() {
