@@ -1,5 +1,8 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
@@ -52,12 +55,28 @@ public class BibtexMergeConflict {
 			result += "\ttype={" + resource1.getType() + "}\n";
 		if (existsButNotEquals(resource2.getType(), resource1.getType()))
 			result += "\ttype={" + resource2.getType() + "}\n";
+		
+		// merge additional fields
+		// create list with all additional field names
+		List<String> additionalFields = new ArrayList<>();
+		for (String key : resource1.getAdditionalFields().keySet())
+			additionalFields.add(key);
+		for (String key : resource2.getAdditionalFields().keySet())
+			if (!additionalFields.contains(key))
+				additionalFields.add(key);
+		
+		for (String key : additionalFields) {
+			if (resource1.getAdditionalFields().containsKey(key))
+				result += "\t" + key + "={" + resource1.getAdditionalFields().get(key) + "}\n";
+			if (existsButNotEquals(resource2.getAdditionalFields().get(key), resource1.getAdditionalFields().get(key)))
+				result += "\t" + key + "={" + resource2.getAdditionalFields().get(key) + "}\n";
+		}
 		result += "}";
 		return result;
 	}
 	
-	private boolean existsButNotEquals(String s1, String s2) {
-		return (s1 != null && (s2 != null || !s1.equals(s2)));
+	private boolean existsButNotEquals(String s2, String s1) {
+		return (s1 == null) || (s1 != null && s2 != null && !s1.equals(s2));
 	}
 	
 	public void useResource1() {

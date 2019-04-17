@@ -8,6 +8,8 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -312,6 +314,8 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	protected static final int LINE_EDEFAULT = 0;
 
 	protected int line;
+	
+	protected Map<String, String> additionalFields;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -320,6 +324,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	 */
 	protected DocumentImpl() {
 		super();
+		this.additionalFields = new HashMap<>();
 	}
 
 	/**
@@ -664,6 +669,16 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, BibtexPackage.DOCUMENT__LINE, oldLine, line));
 	}
+	
+	@Override
+	public Map<String, String> getAdditionalFields() {
+		return additionalFields;
+	}
+	
+	@Override
+	public void setAdditionalFields(Map<String, String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -905,8 +920,9 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		result.append(cites);
 		result.append(", line: ");
 		result.append(line);
+		for (String field : additionalFields.keySet())
+			result.append(", " + field + ": " + additionalFields.get(field));
 		result.append(')');
 		return result.toString();
 	}
-
 } // DocumentImpl
