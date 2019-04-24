@@ -71,11 +71,9 @@ public class BibtexMergeData {
 	}
 	
 	public void extractConflicts() {
-		
 		List<BibtexMergeConflict> conflicts = new ArrayList<>();
 		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
 			for (DocumentImpl entry2 : similarityMatrix.get(entry1).keySet()) {
-				//System.out.println("similarity: " + similarityMatrix.get(entry1).get(entry2).getTotalScore(weights));
 				if (similarityMatrix.get(entry1).get(entry2).isSimilar(weights)) {
 					conflicts.add(new BibtexMergeConflict(entry1, entry2));
 				}
@@ -126,7 +124,7 @@ public class BibtexMergeData {
 	}
 	
 	public int getNumberOfPossibleConflicts() {
- 		return (similarityMatrix.size() * similarityMatrix.size()) / 2;
+		return similarityMatrix.size() * (similarityMatrix.size() - 1) / 2 - 1;
 	}
 	
 	public enum Criteria {

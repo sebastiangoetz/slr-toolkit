@@ -105,15 +105,16 @@ public class BibtexEntrySimilarity {
 				return false;
 
 		if (validateCriteria(weights, Criteria.year))
-			if (getYearDifference() >= weights.get(Criteria.year))
+			if (getYearDifference() >= weights.get(Criteria.year) && weights.get(Criteria.year) < 10)
 				return false;
 
 		if (validateCriteria(weights, Criteria.authors))
-			if (Double.isNaN(authorSimilarity) || authorSimilarity <= ((double) weights.get(Criteria.authors)) / 100)
+			if (Double.isNaN(authorSimilarity) || authorSimilarity < ((double) weights.get(Criteria.authors)) / 100)
 				return false;
 		
 		if (validateCriteria(weights, Criteria.title))
-			if (Double.isNaN(titleSimilarity) || titleSimilarity <= ((double) weights.get(Criteria.title)) / 100)
+			if ((Double.isNaN(titleSimilarity) && weights.get(Criteria.title) > 0) 
+					|| titleSimilarity < ((double) weights.get(Criteria.title)) / 100)
 				return false;
 
 		return  true;		
