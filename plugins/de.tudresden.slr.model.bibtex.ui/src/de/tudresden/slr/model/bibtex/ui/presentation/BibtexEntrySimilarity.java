@@ -25,9 +25,9 @@ public class BibtexEntrySimilarity {
 			entry2.setDoi(getDoiFromUrl(entry2.getUrl()));
 		
 		// compare doi
-		DoiEquals = StringUtils.isNotBlank(entry1.getDoi()) 
-				&& StringUtils.isNotBlank(entry2.getDoi()) 
-				&& StringUtils.equals(entry1.getDoi(), entry2.getDoi());
+		entry1.setDoi(StringUtils.trimToEmpty(entry1.getDoi()));
+		entry2.setDoi(StringUtils.trimToEmpty(entry2.getDoi()));
+		DoiEquals = StringUtils.equals(entry1.getDoi(), entry2.getDoi());
 		
 		// get author similarity
 		JaroWinkler jw = new JaroWinkler();
