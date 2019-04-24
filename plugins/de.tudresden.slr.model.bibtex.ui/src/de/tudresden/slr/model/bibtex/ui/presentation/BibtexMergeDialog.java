@@ -1,6 +1,5 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -42,7 +40,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
-import de.tudresden.slr.model.bibtex.util.BibtexResourceImpl;
 
 public class BibtexMergeDialog extends Dialog {
 	
@@ -251,7 +248,7 @@ public class BibtexMergeDialog extends Dialog {
         Label label = new Label(group, SWT.NONE);
         label.setText("Preview: ");
         label.setText(mergeData.getResourceList().stream()
-        		.map(resource -> resource.getURI().toString())
+        		.map(resource -> resource.getURI().toString() + ":\t" + resource.getContents().size() + " entries")
         		.collect(Collectors.joining("\n")));
 	}
 
