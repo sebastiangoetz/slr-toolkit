@@ -30,15 +30,6 @@ public class BibtexMergeData {
 		this.conflicts = new ArrayList<>();
 	}
 	
-	public void removeUnselectedResources() {
-		for(ListIterator<BibtexResourceImpl> i = resourceList.listIterator(); i.hasNext();) { 
-			if(!toMergeContains(i.next().getURI())) {
-				i.remove();
-			}
-		}
-		createSimilarityMatrix();
-	}
-	
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> createSimilarityMatrix() {		
 		similarityMatrix = new HashMap<>();
 		
