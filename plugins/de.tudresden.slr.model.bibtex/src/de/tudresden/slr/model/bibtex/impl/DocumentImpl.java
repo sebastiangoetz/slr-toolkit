@@ -7,10 +7,13 @@ import de.tudresden.slr.model.bibtex.Document;
 
 import de.tudresden.slr.model.taxonomy.Model;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
@@ -349,6 +352,10 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 		}
 		return authors;
 	}
+	
+	public String getAuthorsJoined() {
+		return StringUtils.join(getAuthors(), ", ");
+	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -632,6 +639,10 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	@Override
 	public int getCites() {
 		return cites;
+	}
+	
+	public String getCitesString() {
+		return Integer.toString(cites);
 	}
 
 	/**
@@ -924,5 +935,41 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 			result.append(", " + field + ": " + additionalFields.get(field));
 		result.append(')');
 		return result.toString();
+	}
+
+	public enum DocumentImplFields {
+		TITLE("title", DocumentImpl::getTitle),
+		AUTHORS("authors", DocumentImpl::getAuthorsJoined),
+		ABSTRACT("abstract", DocumentImpl::getAbstract),
+		KEY("key", DocumentImpl::getKey),
+		YEAR("year", DocumentImpl::getYear),
+		MONTH("month", DocumentImpl::getMonth),
+		URL("url", DocumentImpl::getUrl),
+		DOI("doi", DocumentImpl::getDoi),
+		TYPE("type", DocumentImpl::getType),
+		CITES("cites", DocumentImpl::getCitesString);
+		
+		private Function<DocumentImpl, String> consumer;
+		private String name;
+		
+		private DocumentImplFields(String name, Function<DocumentImpl, String> consumer) {
+			this.name = name;
+			this.consumer = consumer;
+		}
+		
+		public Function<DocumentImpl, String> getFunction() {
+			return consumer;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public boolean existsName(String nameInQuestion) {
+			return Arrays.asList(values())
+					.stream()
+					.map(DocumentImplFields::getName)
+					.anyMatch(name -> name.equals(nameInQuestion));
+		}
 	}
 } // DocumentImpl

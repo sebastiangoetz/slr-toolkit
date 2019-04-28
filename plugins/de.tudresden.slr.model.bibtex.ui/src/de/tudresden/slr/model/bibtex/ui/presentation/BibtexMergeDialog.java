@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +18,10 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.LineStyleEvent;
+import org.eclipse.swt.custom.LineStyleListener;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,8 +51,13 @@ public class BibtexMergeDialog extends Dialog {
     private BibtexMergeData mergeData;
     private CheckboxTableViewer ctv;
     private Text filename;
-    private Text preview;
+    private StyledText preview;
     private TableItem previewStats;
+    private ListIterator<BibtexMergeConflict> currentConflictedResourceIter;
+    private BibtexMergeConflict currentConflictedResource;
+    private ListIterator<String> currentConflictedFieldIter;
+    private String currentConflictedField;
+    private int currentIndex;
 
     public BibtexMergeDialog(Shell parentShell, BibtexMergeData d) {
         super(parentShell);
@@ -67,10 +77,51 @@ public class BibtexMergeDialog extends Dialog {
         buildPreview(container);       
         buildOptions(container);
         buildCriteria(container);
+        buildNavigation(container);
         buildSavePart(container);
         
         return container;
     }
+
+	private void buildNavigation(Composite container) {
+
+		Group group = new Group(container, SWT.SHADOW_NONE);
+        group.setText("Navigate through conflicts");
+        group.setLayout(new GridLayout(2, false));
+        group.setLayoutData(new GridData());
+        
+        // create navigate buttons
+        new Button(group, SWT.ARROW | SWT.UP).addListener(SWT.Selection, new Listener() {
+        	public void handleEvent(Event event) {
+                updateConflictIterator(false);
+                preview.redraw();
+    	    }
+        });
+        Button chooseFirst = new Button(group, SWT.NONE);
+        chooseFirst.setText("Choose first");
+        chooseFirst.addListener(SWT.Selection, new Listener() {
+        	public void handleEvent(Event event) {
+        		currentConflictedResource.setField(currentConflictedField, true);
+        		initializeConflictIterator();
+                updatePreview();
+    	    }
+        });        
+        new Button(group, SWT.ARROW | SWT.DOWN).addListener(SWT.Selection, new Listener() {
+        	public void handleEvent(Event event) {
+                updateConflictIterator(true);
+                preview.redraw();
+    	    }
+        });
+        Button chooseSecond = new Button(group, SWT.NONE);
+        chooseSecond.setText("Choose second");
+        chooseSecond.addListener(SWT.Selection, new Listener() {
+        	public void handleEvent(Event event) {
+        		currentConflictedResource.setField(currentConflictedField, false);
+        		initializeConflictIterator();
+                updatePreview();
+    	    }
+        });		
+	}
 
 	private void buildPreview(Composite container) {
         GridData gridData = new GridData();
@@ -78,7 +129,7 @@ public class BibtexMergeDialog extends Dialog {
         gridData.verticalAlignment = SWT.TOP;
         gridData.grabExcessVerticalSpace = true;
         gridData.horizontalSpan = 1;
-        gridData.verticalSpan = 4;
+        gridData.verticalSpan = 5;
         
 		Composite composite = new Composite(container, SWT.NONE);
         composite.setLayout(new GridLayout(1, false));
@@ -86,6 +137,7 @@ public class BibtexMergeDialog extends Dialog {
         
         // create overview
         Table table = new Table(composite, SWT.BORDER);
+        table.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, true, 1, 1));
 
         TableColumn duplicates = new TableColumn(table, SWT.CENTER);
         TableColumn mergeConflicts = new TableColumn(table, SWT.CENTER);
@@ -101,9 +153,30 @@ public class BibtexMergeDialog extends Dialog {
         previewStats = new TableItem(table, SWT.NONE);
 
         Label label = new Label(composite, SWT.NONE);
+        label.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, true, true, 1, 1));
         label.setText("Preview: ");
-        preview = new Text(composite, SWT.BORDER  | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+
+        preview = new StyledText(composite, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+        
+        // highlight current conflict
+        initializeConflictIterator();
+        preview.addLineStyleListener(new LineStyleListener() {
+            public void lineGetStyle(LineStyleEvent event) { 
+            	if (currentConflictedField == null || currentConflictedResource.getConflictForField(currentConflictedField) == null)
+            		return;
+            	
+            	String currentConflict = currentConflictedResource.getConflictForField(currentConflictedField);
+            	StyleRange styleRange = new StyleRange();
+        	    styleRange.start = preview.getText().indexOf(currentConflict);
+        	    styleRange.length = currentConflict.length();
+        	    styleRange.background = getParentShell().getDisplay().getSystemColor(SWT.COLOR_YELLOW);         
+            	event.styles = new StyleRange[] {styleRange};
+          }
+        });
+        
         GridData textGrid = new GridData(500, 500);
+        textGrid.horizontalSpan = 2;
         preview.setLayoutData(textGrid);
         
         updatePreview();
@@ -126,6 +199,96 @@ public class BibtexMergeDialog extends Dialog {
         		Integer.toString(numberOfMergeConflicts), 
         		Integer.toString(numberOfDifferences) 
     		});
+        
+        initializeConflictIterator();
+	}
+	
+	private void initializeConflictIterator() {
+		if (mergeData.getConflicts().isEmpty())
+			return;
+		
+		currentConflictedResourceIter = mergeData.getConflicts().listIterator();
+		currentConflictedResource = currentConflictedResourceIter.next();
+		
+		// search through resources until we find conflicts
+		while (currentConflictedResourceIter.hasNext() && currentConflictedResource.getConflictedFields().isEmpty())
+			currentConflictedResource = currentConflictedResourceIter.next();
+		if (currentConflictedResource.getConflictedFields().isEmpty())
+			return;
+		
+		currentConflictedFieldIter = currentConflictedResource.getConflictedFields().listIterator();
+		currentConflictedField = currentConflictedFieldIter.next();
+		preview.redraw();
+	}
+	
+	private void updateConflictIterator(boolean forward) {		
+		if (forward) {
+			// move one conflict forward
+			if (currentConflictedFieldIter.hasNext()) 
+				currentConflictedField = currentConflictedFieldIter.next();
+			else if (currentConflictedResourceIter.hasNext()) {
+				// strange behavior: if we toggle between next and previous the index somehow does not get updated
+				if (currentConflictedResourceIter.nextIndex() == currentIndex)
+					currentConflictedResourceIter.next();
+				
+				currentIndex = currentConflictedResourceIter.nextIndex();
+				currentConflictedResource = currentConflictedResourceIter.next();
+				if (currentConflictedResource.getConflictedFields().isEmpty()) {
+					updateConflictIterator(forward);
+					return;
+				}
+				
+				// there is a next resource with conflicts
+				currentConflictedFieldIter = currentConflictedResource.getConflictedFields().listIterator();
+				currentConflictedField = currentConflictedFieldIter.next();
+			} else {
+				// move to beginning
+				initializeConflictIterator();
+			}
+		} else {
+			// move one conflict backward
+			if (currentConflictedFieldIter.hasPrevious()) 
+				currentConflictedField = currentConflictedFieldIter.previous();
+			else if (currentConflictedResourceIter.hasPrevious()) {
+				// strange behavior: if we toggle between next and previous the index somehow does not get updated
+				if (currentConflictedResourceIter.previousIndex() == currentIndex)
+					currentConflictedResourceIter.previous();
+				
+				currentConflictedResource = currentConflictedResourceIter.previous();
+				List<String> conflictedFields = currentConflictedResource.getConflictedFields();
+				if (conflictedFields.isEmpty()) {
+					updateConflictIterator(forward);
+					return;
+				}
+				
+				// there is a previous resource with conflicts
+				currentConflictedFieldIter = getIteratorOnLastElement(conflictedFields);
+				currentConflictedField = conflictedFields.get(conflictedFields.size() - 1);
+			} else {
+				// move to last conflict
+				currentConflictedResourceIter = getIteratorOnLastElement(mergeData.getConflicts());
+				currentConflictedResource = mergeData.getConflicts().get(mergeData.getConflicts().size() - 1);
+				
+				// search through resources until we find conflicts
+				while (currentConflictedResourceIter.hasPrevious() && currentConflictedResource.getConflictedFields().isEmpty())
+					currentConflictedResource = currentConflictedResourceIter.previous();
+				if (currentConflictedResource.getConflictedFields().isEmpty())
+					return;
+				
+				currentConflictedFieldIter = getIteratorOnLastElement(currentConflictedResource.getConflictedFields());
+				currentConflictedField = currentConflictedResource.getConflictedFields().get(
+						currentConflictedResource.getConflictedFields().size() - 1);
+				
+			}
+		}
+	}
+	
+	private <T> ListIterator<T> getIteratorOnLastElement(List<T> list) {
+		ListIterator<T> iter = list.listIterator();
+		while(iter.hasNext())
+			iter.next();
+
+		return iter;
 	}
 
 	private void buildCriteria(Composite container) {
