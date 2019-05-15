@@ -61,6 +61,8 @@ public class BibtexMergeDialog extends Dialog {
 	private int currentIndex;
 	private boolean conflitsExist;
 	private boolean previewWasEdited;
+	private Button saveIntersection;
+	private Button saveUnion;
 
 	public BibtexMergeDialog(Shell parentShell, BibtexMergeData d) {
 		super(parentShell);
@@ -194,6 +196,7 @@ public class BibtexMergeDialog extends Dialog {
 
 		int unionWithoutConflicts = mergeData.getConflicts().stream().filter(conflict -> !conflict.isConflicted())
 				.collect(Collectors.toList()).size();
+
 		int mergeConflicts = mergeData.getConflicts().size() - unionWithoutConflicts;
 		int intersection = mergeData.getNumerOfEntries() - mergeConflicts - unionWithoutConflicts;
 		previewStats.setText(new String[] { Integer.toString(intersection), Integer.toString(mergeConflicts),
@@ -324,18 +327,21 @@ public class BibtexMergeDialog extends Dialog {
 			text.setText(Integer.toString(scale.getSelection()));
 			scale.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(Event event) {
-					if (previewWasEdited && !createMessageBox("You have already edited some conflicts.")) {
+					if (previewWasEdited && createMessageBox("You have already edited some conflicts.")) {
 						scale.setSelection(mergeData.getWeights().get(value));
 						return;
 					}
 
 					mergeData.setWeight(value, scale.getSelection());
 					text.setText(Integer.toString(scale.getSelection()));
+					
 					if (scale.getSelection() == 10 && value == Criteria.year
-							|| value != Criteria.year && scale.getSelection() == 0)
+							|| value != Criteria.year && scale.getSelection() == 0) {
 						b.setSelection(false);
-					else
+					} else {
 						b.setSelection(true);
+					}
+					
 					updatePreview();
 				}
 			});
@@ -344,11 +350,11 @@ public class BibtexMergeDialog extends Dialog {
 			b.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					if (previewWasEdited && !createMessageBox("You have already edited some conflicts.")) {
+					if (previewWasEdited && createMessageBox("You have already edited some conflicts.")) {
 						b.setSelection(!b.getSelection());
 						return;
 					}
-					
+
 					scale.setSelection(b.getSelection() ? getDefaultScaleSelectionValueForCriteria(value)
 							: getUnCheckedScaleValueForCriteria(value));
 					mergeData.setWeight(value, scale.getSelection());
@@ -358,7 +364,8 @@ public class BibtexMergeDialog extends Dialog {
 
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
-					if (previewWasEdited && !createMessageBox("You have already edited some conflicts.")) return;
+					if (previewWasEdited && createMessageBox("You have already edited some conflicts."))
+						return;
 					scale.setSelection(b.getSelection() ? getDefaultScaleSelectionValueForCriteria(value)
 							: getUnCheckedScaleValueForCriteria(value));
 					mergeData.setWeight(value, scale.getSelection());
@@ -455,34 +462,19 @@ public class BibtexMergeDialog extends Dialog {
 		Group options = new Group(container, SWT.SHADOW_NONE);
 		options.setText("Options");
 		options.setLayout(new RowLayout(SWT.VERTICAL));
-		final Button b0 = new Button(options, SWT.CHECK);
-		b0.setText("Eliminate duplicates");
-		b0.setSelection(true);
-		final Button b1 = new Button(options, SWT.CHECK);
-		b1.setText("Delete original files after merge");
-		b1.setSelection(false);
-		final Button b2 = new Button(options, SWT.CHECK);
-		b2.setText("Manually resolve conflicts");
-		b2.setSelection(false);
-		b0.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				boolean chk = b0.getSelection();
-				b2.setEnabled(chk);
-			}
-		});
-		b1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
+		saveIntersection = new Button(options, SWT.CHECK);
+		saveIntersection.setText("Save intersection");
+		saveIntersection.setSelection(true);
+		saveUnion = new Button(options, SWT.CHECK);
+		saveUnion.setText("Save union");
+		saveUnion.setSelection(true);
 
-			}
-		});
-		b2.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-			}
-		});
+		// saveIntersection.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// boolean chk = saveIntersection.getSelection();
+		// }
+		// });
 	}
 
 	private void validateDialog() {
@@ -526,7 +518,8 @@ public class BibtexMergeDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		if (conflitsExist && !createMessageBox("There are still merge conflicts.")) return;
+		if (conflitsExist && createMessageBox("There are still merge conflicts."))
+			return;
 
 		writePreviewToFile();
 		super.okPressed();
@@ -554,6 +547,7 @@ public class BibtexMergeDialog extends Dialog {
 		try {
 			Path path = Paths.get(getFilePath());
 			Files.write(path, preview.getText().getBytes());
+			Files.write(path, mergeData.writeIntersection().getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

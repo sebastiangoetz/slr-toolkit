@@ -25,17 +25,17 @@ public class BibtexMergeConflict {
 			String value2 = field.getFunction().apply(resource2);
 			
 			if (value1 != null)
-				fields.put(field.name(), value1);
+				fields.put(field.name().toLowerCase(), value1);
 			if (value1 != null && value2 != null && !value1.equals(value2))
-				duplicatedFields.put(field.getName(), new Pair<String, String>(value1, value2));
+				duplicatedFields.put(field.getName().toLowerCase(), new Pair<String, String>(value1, value2));
 			else if (value2 != null && value1 == null)
-				fields.put(field.getName(), value2);
+				fields.put(field.getName().toLowerCase(), value2);
 		}
 		
 		// additional fields
-		for (String field : resource1.getAdditionalFields().keySet().stream().map(key -> key.toLowerCase()).collect(Collectors.toList()))
+		for (String field : resource1.getAdditionalFields().keySet().stream().map(key -> key).collect(Collectors.toList()))
 			fields.put(field, resource1.getAdditionalFields().get(field));
-		for (String field : resource2.getAdditionalFields().keySet().stream().map(key -> key.toLowerCase()).collect(Collectors.toList())) {
+		for (String field : resource2.getAdditionalFields().keySet().stream().map(key -> key).collect(Collectors.toList())) {
 			if (!fields.containsKey(field))
 				fields.put(field, resource2.getAdditionalFields().get(field));
 			else if (!fields.get(field).equals(resource2.getAdditionalFields().get(field)))

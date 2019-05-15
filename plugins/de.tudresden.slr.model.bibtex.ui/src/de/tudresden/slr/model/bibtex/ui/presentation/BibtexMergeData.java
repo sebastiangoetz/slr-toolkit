@@ -125,4 +125,14 @@ public class BibtexMergeData {
 	public enum Criteria {
 		authors, doi, title, year;
 	}
+
+	public String writeIntersection() {
+		String result = "";
+		for (DocumentImpl entry : similarityMatrix.keySet()) {
+			if (!result.isEmpty()) result += "\n";
+			BibtexMergeConflict conflict = new BibtexMergeConflict(entry, entry);
+			result += conflict.printConflict();
+		}
+		return result;
+	}
 }
