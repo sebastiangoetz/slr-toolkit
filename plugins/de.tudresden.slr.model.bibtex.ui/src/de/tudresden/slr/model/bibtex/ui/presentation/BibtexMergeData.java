@@ -118,6 +118,10 @@ public class BibtexMergeData {
 		return similarityMatrix.size() * (similarityMatrix.size() - 1) / 2 - 1;
 	}
 	
+	public int getNumerOfEntries() {
+		return similarityMatrix.size();
+	}
+	
 	public enum Criteria {
 		authors, doi, title, year;
 	}
