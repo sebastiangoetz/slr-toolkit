@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
@@ -24,12 +25,25 @@ public class BibtexMergeData {
 
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
+		
 		createSimilarityMatrix();
+		
 		this.weights = new HashMap<>();
 		for (Criteria value : Criteria.values()) {
-			weights.put(value, 100);
+			switch(value) {
+			case doi:
+				weights.put(value, 1);
+				break;
+			case year:
+				weights.put(value, 5);
+				break;
+			default:
+				weights.put(value, 95);
+			}
+			
 		}
-		this.conflicts = new ArrayList<>();
+		
+		extractConflicts();
 	}
 
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> createSimilarityMatrix() {
@@ -145,12 +159,27 @@ public class BibtexMergeData {
 	}
 
 	public String writeIntersection() {
-		return intersection.stream().map(entry -> (new BibtexMergeConflict(entry, entry)).printResult())
-				.collect(Collectors.joining("\n"));
+		List<String> reservedKeys = new ArrayList<>();
+		List<String> entries = new ArrayList<>();
+		
+		for (DocumentImpl entry : intersection) {
+			BibtexMergeConflict conflict = new BibtexMergeConflict(entry, entry);
+			entries.add(conflict.printResult(reservedKeys));
+			reservedKeys.add(conflict.getKey());
+		}
+		
+		return StringUtils.join(entries, "\n");
 	}
 	
-	public String writeUnion() {
-		return this.getConflicts().stream().map(conflict -> conflict.printResult())
-				.collect(Collectors.joining("\n"));
+	public String writeUnion() {		
+		List<String> reservedKeys = new ArrayList<>();
+		List<String> entries = new ArrayList<>();
+		
+		for (BibtexMergeConflict conflict : getConflicts()) {
+			entries.add(conflict.printResult(reservedKeys));
+			reservedKeys.add(conflict.getKey());
+		}
+	
+		return StringUtils.join(entries, "\n");
 	}
 }

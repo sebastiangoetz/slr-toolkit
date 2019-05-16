@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
@@ -447,11 +448,8 @@ public class BibtexMergeDialog extends Dialog {
 		save.setText("Save as: ");
 		save.setLayoutData(new GridData(SWT.END, SWT.END, false, false));
 
-		List<String> pathParts = Arrays
-				.asList(mergeData.getResourceList().get(0).getURI().toString().split("/"));
-		String path = StringUtils.join(pathParts.subList(0, pathParts.size() - 1), "/");
 		filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
-		filename.setText(path + "/mergeResult.bib");
+		filename.setText("mergeResult.bib");
 		filename.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				validateDialog();
@@ -549,21 +547,17 @@ public class BibtexMergeDialog extends Dialog {
 		String rootLocation = "/" + StringUtils.join(rootLocationParts.subList(1, rootLocationParts.size() - 1), "/")
 				+ "/mergeResults";
 
-		// BibtexResourceImpl res = mergeData.getResourceList().get(0);
-		// List<String> pathParts = Arrays.asList(res.getURI().toString().split("/"));
-		// String path = StringUtils.join(pathParts.subList(0, pathParts.size() - 1),
-		// "/");
 		return rootLocation + "/" + filename.getText();
 	}
 
 	private void writeToFile() {
 
 		try {
-			Path path = Paths.get(getFilePath());
-			if (saveUnion.getSelection())
-				Files.write(path, mergeData.writeUnion().getBytes());
-			if (saveIntersection.getSelection())
-				Files.write(path, mergeData.writeIntersection().getBytes());
+			List<String> parts = new ArrayList<>();
+			if (saveUnion.getSelection()) parts.add(mergeData.writeUnion());
+			if (saveIntersection.getSelection()) parts.add(mergeData.writeIntersection());	
+			
+			Files.write(Paths.get(getFilePath()), StringUtils.join(parts, "\n").getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
