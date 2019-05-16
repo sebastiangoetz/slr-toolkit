@@ -81,8 +81,7 @@ public class BibtexMergeConflict {
 		// write out all fields
 		for (String field : getAllFieldsOrdered()) {
 			if (duplicatedFields.containsKey(field))
-				result += createBibtexLineForField(field, duplicatedFields.get(field).getFirst()) +
-						createBibtexLineForField(field, duplicatedFields.get(field).getSecond());
+				result += createBibtexLineForField(field, duplicatedFields.get(field).getFirst());
 			else if (fields.containsKey(field))
 				result += createBibtexLineForField(field, fields.get(field));
 		}

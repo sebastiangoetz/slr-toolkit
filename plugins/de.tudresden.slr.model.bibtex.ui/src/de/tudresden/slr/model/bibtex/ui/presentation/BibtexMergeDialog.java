@@ -526,7 +526,7 @@ public class BibtexMergeDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		if (conflitsExist && saveUnion.getSelection() && !createMessageBox("There are still merge conflicts."))
+		if (conflitsExist && saveUnion.getSelection() && !createMessageBox("There are still merge conflicts. If you continue, all conflicts will be merged automatically."))
 			return;
 
 		writeToFile();
