@@ -145,12 +145,12 @@ public class BibtexMergeData {
 	}
 
 	public String writeIntersection() {
-		return intersection.stream().map(entry -> (new BibtexMergeConflict(entry, entry)).printConflict())
+		return intersection.stream().map(entry -> (new BibtexMergeConflict(entry, entry)).printResult())
 				.collect(Collectors.joining("\n"));
 	}
 	
 	public String writeUnion() {
-		return this.getConflicts().stream().map(conflict -> conflict.printConflict())
+		return this.getConflicts().stream().map(conflict -> conflict.printResult())
 				.collect(Collectors.joining("\n"));
 	}
 }

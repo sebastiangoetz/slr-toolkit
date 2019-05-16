@@ -61,6 +61,36 @@ public class BibtexMergeConflict {
 		return result;
 	}
 	
+	public String printResult() {
+		// get type
+		String type = fields.get("type");
+		if (type == null) type = duplicatedFields.get("type").getFirst();
+		if (type == null) type = "article";
+		
+		// get key
+		String key = fields.get("key");
+		if (key == null) type = duplicatedFields.get("key").getFirst();
+		if (key == null) {
+			System.out.println("ERROR: found no key");
+			return null;
+		}
+		
+		// write first line
+		String result = "@" + type + "{" + key + ",\n";
+		
+		// write out all fields
+		for (String field : getAllFieldsOrdered()) {
+			if (duplicatedFields.containsKey(field))
+				result += createBibtexLineForField(field, duplicatedFields.get(field).getFirst()) +
+						createBibtexLineForField(field, duplicatedFields.get(field).getSecond());
+			else if (fields.containsKey(field))
+				result += createBibtexLineForField(field, fields.get(field));
+		}
+		
+		result += "}";
+		return result;
+	}
+	
 	private String createBibtexLineForField(String field, String value) {
 		return "\t" + field + "={" + value + "}\n";
 	}
