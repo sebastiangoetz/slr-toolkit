@@ -431,7 +431,6 @@ public class BibtexMergeDialog extends Dialog {
 		group.setLayoutData(gridData);
 
 		Label label = new Label(group, SWT.NONE);
-		label.setText("Preview: ");
 		label.setText(mergeData.getResourceList().stream()
 				.map(resource -> resource.getURI().toString() + ":\t" + resource.getContents().size() + " entries")
 				.collect(Collectors.joining("\n")));
@@ -447,8 +446,12 @@ public class BibtexMergeDialog extends Dialog {
 		Label save = new Label(savePart, SWT.NONE);
 		save.setText("Save as: ");
 		save.setLayoutData(new GridData(SWT.END, SWT.END, false, false));
+
+		List<String> pathParts = Arrays
+				.asList(mergeData.getResourceList().get(0).getURI().toString().split("/"));
+		String path = StringUtils.join(pathParts.subList(0, pathParts.size() - 1), "/");
 		filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
-		filename.setText("mergeResult.bib");
+		filename.setText(path + "/mergeResult.bib");
 		filename.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				validateDialog();
@@ -473,14 +476,16 @@ public class BibtexMergeDialog extends Dialog {
 		saveIntersection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!saveIntersection.getSelection()) saveUnion.setSelection(true);
+				if (!saveIntersection.getSelection())
+					saveUnion.setSelection(true);
 			}
 		});
 
 		saveUnion.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (!saveUnion.getSelection()) saveIntersection.setSelection(true);
+				if (!saveUnion.getSelection())
+					saveIntersection.setSelection(true);
 			}
 		});
 	}
@@ -526,7 +531,8 @@ public class BibtexMergeDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		if (conflitsExist && saveUnion.getSelection() && !createMessageBox("There are still merge conflicts. If you continue, all conflicts will be merged automatically."))
+		if (conflitsExist && saveUnion.getSelection() && !createMessageBox(
+				"There are still merge conflicts. If you continue, all conflicts will be merged automatically."))
 			return;
 
 		writeToFile();
