@@ -106,10 +106,10 @@ public class BibtexMergeDialog extends Dialog {
 		chooseFirst.setText("Choose first");
 		chooseFirst.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				previewWasEdited = true;
 				currentConflictedResource.setField(currentConflictedField, true);
 				initializeConflictIterator();
 				updatePreview();
+				previewWasEdited = true;
 			}
 		});
 		new Button(group, SWT.ARROW | SWT.DOWN).addListener(SWT.Selection, new Listener() {
@@ -122,10 +122,10 @@ public class BibtexMergeDialog extends Dialog {
 		chooseSecond.setText("Choose second");
 		chooseSecond.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				previewWasEdited = true;
 				currentConflictedResource.setField(currentConflictedField, false);
 				initializeConflictIterator();
 				updatePreview();
+				previewWasEdited = true;
 			}
 		});
 	}
@@ -193,6 +193,7 @@ public class BibtexMergeDialog extends Dialog {
 	private void updatePreview() {
 		preview.setText(mergeData.getConflicts().stream().map(conflict -> conflict.printConflict())
 				.collect(Collectors.joining("\n")));
+		previewWasEdited = false;
 
 		int unionWithoutConflicts = mergeData.getConflicts().stream().filter(conflict -> !conflict.isConflicted())
 				.collect(Collectors.toList()).size();
@@ -327,7 +328,7 @@ public class BibtexMergeDialog extends Dialog {
 			text.setText(Integer.toString(scale.getSelection()));
 			scale.addListener(SWT.Selection, new Listener() {
 				public void handleEvent(Event event) {
-					if (previewWasEdited && createMessageBox("You have already edited some conflicts.")) {
+					if (previewWasEdited && !createMessageBox("You have already edited some conflicts.")) {
 						scale.setSelection(mergeData.getWeights().get(value));
 						return;
 					}
@@ -350,7 +351,7 @@ public class BibtexMergeDialog extends Dialog {
 			b.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					if (previewWasEdited && createMessageBox("You have already edited some conflicts.")) {
+					if (previewWasEdited && !createMessageBox("You have already edited some conflicts.")) {
 						b.setSelection(!b.getSelection());
 						return;
 					}
@@ -514,7 +515,7 @@ public class BibtexMergeDialog extends Dialog {
 		messageBox.setMessage(cause + " Do you want to continue anyway?");
 		int buttonID = messageBox.open();
 		switch (buttonID) {
-		case SWT.YES:
+		case SWT.OK:
 			return true;
 		case SWT.CANCEL:
 			return false;
@@ -525,7 +526,7 @@ public class BibtexMergeDialog extends Dialog {
 
 	@Override
 	protected void okPressed() {
-		if (conflitsExist && saveUnion.getSelection() && createMessageBox("There are still merge conflicts."))
+		if (conflitsExist && saveUnion.getSelection() && !createMessageBox("There are still merge conflicts."))
 			return;
 
 		writeToFile();
