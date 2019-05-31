@@ -3,17 +3,13 @@ package de.tudresden.slr.model.bibtex.ui.presentation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -34,6 +30,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -53,6 +50,7 @@ public class BibtexMergeDialog extends Dialog {
 	private BibtexMergeData mergeData;
 	private CheckboxTableViewer ctv;
 	private Text filename;
+	private Text filePath;
 	private StyledText preview;
 	private TableItem previewStats;
 	private ListIterator<BibtexMergeConflict> currentConflictedResourceIter;
@@ -166,6 +164,9 @@ public class BibtexMergeDialog extends Dialog {
 
 		preview = new StyledText(composite, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		preview.setLayoutData(new GridData(GridData.FILL_BOTH));
+		preview.setEditable(false);
+		preview.setEnabled(false);
+		preview.setBlockSelection(true);
 
 		// highlight current conflict
 		initializeConflictIterator();
@@ -444,9 +445,50 @@ public class BibtexMergeDialog extends Dialog {
 		gridData.horizontalAlignment = GridData.FILL;
 		savePart.setLayout(new GridLayout(2, false));
 		savePart.setLayoutData(gridData);
-		Label save = new Label(savePart, SWT.NONE);
-		save.setText("Save as: ");
-		save.setLayoutData(new GridData(SWT.END, SWT.END, false, false));
+		
+		// directory
+		Label savePath = new Label(savePart, SWT.NONE);
+		savePath.setText("Directory: ");
+		savePath.setLayoutData(new GridData(SWT.END, SWT.END, false, false));
+		
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.verticalAlignment = SWT.END;
+
+		filePath = new Text(savePart, SWT.BORDER | SWT.SINGLE);
+		filePath.setText(getDefaultFilePath());
+		filePath.setEditable(false);
+		filePath.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				validateDialog();
+			}
+		});
+		filePath.setLayoutData(gd);
+
+		// browse
+		GridData gridDataFill = new GridData();
+		gridDataFill.horizontalSpan = 2;
+		gridDataFill.horizontalIndent = 60;
+		
+		Button browse;
+		browse = new Button(savePart, SWT.PUSH);
+		browse.setText("Browse ...");
+		browse.setLayoutData(gridDataFill);
+		Shell shell = this.getParentShell();
+		browse.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				DirectoryDialog dialog = new DirectoryDialog(shell, SWT.NULL);
+				String path = dialog.open();
+				if (path != null) {
+					filePath.setText(path.toString());
+				}
+			}
+
+		});
+
+		// filename
+		Label saveName = new Label(savePart, SWT.NONE);
+		saveName.setText("Save as: ");
+		saveName.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 
 		filename = new Text(savePart, SWT.BORDER | SWT.SINGLE);
 		filename.setText("mergeResult.bib");
@@ -455,9 +497,12 @@ public class BibtexMergeDialog extends Dialog {
 				validateDialog();
 			}
 		});
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.verticalAlignment = SWT.END;
 		filename.setLayoutData(gd);
+	}
+	
+	private String getDefaultFilePath() {
+		String rootPath = ResourcesPlugin.getWorkspace().getRoot().getLocationURI().getPath();
+		return rootPath.substring(0, rootPath.lastIndexOf("/")) + "/mergeResults";
 	}
 
 	private void buildOptions(Composite container) {
@@ -538,25 +583,18 @@ public class BibtexMergeDialog extends Dialog {
 	}
 
 	private String getFilePath() {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IWorkspaceRoot root = workspace.getRoot();
-		root.getFullPath().toString();
-		System.out.println(root.getFullPath().toString());
-		System.out.println(root.getLocationURI().toString());
-		List<String> rootLocationParts = Arrays.asList(root.getLocationURI().toString().split("/"));
-		String rootLocation = "/" + StringUtils.join(rootLocationParts.subList(1, rootLocationParts.size() - 1), "/")
-				+ "/mergeResults";
-
-		return rootLocation + "/" + filename.getText();
+		return filePath.getText() + "/" + filename.getText();
 	}
 
 	private void writeToFile() {
 
 		try {
 			List<String> parts = new ArrayList<>();
-			if (saveUnion.getSelection()) parts.add(mergeData.writeUnion());
-			if (saveIntersection.getSelection()) parts.add(mergeData.writeIntersection());	
-			
+			if (saveUnion.getSelection())
+				parts.add(mergeData.writeUnion());
+			if (saveIntersection.getSelection())
+				parts.add(mergeData.writeIntersection());
+
 			Files.write(Paths.get(getFilePath()), StringUtils.join(parts, "\n").getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

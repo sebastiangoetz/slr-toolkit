@@ -544,36 +544,15 @@ public class BibtexEntryView extends ViewPart {
 			e.printStackTrace();
 			return;
 		}
-		List<URI> uris = registerResources(resources);
-		for (URI uri : uris) {
-			editingDomain.getResourceSet().getResource(uri, true);
-		}
-	}
-
-	private List<URI> registerResources(IResource[] resources) {
-		List<URI> uris = new ArrayList<>(); 
+		
 		for (IResource res : resources) {
 			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
-				uris.add(uri);
+				editingDomain.getResourceSet().getResource(uri, true);
 			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
 				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
-			} else if (res.getType() == IResource.FOLDER) {
-				try {
-					List<URI> urisForFolder = registerResources(((IFolder) res).members());
-					Resource folder = editingDomain.createResource(res.getName());
-					for (URI uri : urisForFolder) {
-						folder.getResourceSet().getResource(uri, true);
-					}
-					uris.add(folder.getURI());
-				} catch (CoreException e) {
-					e.printStackTrace();
-					continue;
-				}
 			}
 		}
-		
-		return uris;
 	}
 
 	private void deleteResources() {
