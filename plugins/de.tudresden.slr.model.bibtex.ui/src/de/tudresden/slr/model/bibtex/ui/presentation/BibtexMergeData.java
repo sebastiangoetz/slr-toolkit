@@ -25,12 +25,10 @@ public class BibtexMergeData {
 
 	public BibtexMergeData(List<BibtexResourceImpl> resources) {
 		this.resourceList = resources;
-		
-		createSimilarityMatrix();
-		
+
 		this.weights = new HashMap<>();
 		for (Criteria value : Criteria.values()) {
-			switch(value) {
+			switch (value) {
 			case doi:
 				weights.put(value, 1);
 				break;
@@ -40,13 +38,14 @@ public class BibtexMergeData {
 			default:
 				weights.put(value, 95);
 			}
-			
+
 		}
-		
-		extractConflicts();
+		// you have to do this manually to achieve a progress bar
+//		createSimilarityMatrix();
+//		extractConflicts();
 	}
 
-	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> createSimilarityMatrix() {
+	public Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> createSimilarityMatrix() {
 		similarityMatrix = new HashMap<>();
 
 		// get all entries from resourceList
@@ -69,7 +68,7 @@ public class BibtexMergeData {
 				similarityMatrix.get(entry1).put(entry2, matrixEntry);
 			});
 		});
-		
+
 		intersection = new HashSet<>(similarityMatrix.keySet());
 
 		return similarityMatrix;
@@ -78,7 +77,7 @@ public class BibtexMergeData {
 	public List<BibtexMergeConflict> getConflicts() {
 		return conflicts;
 	}
-	
+
 	public Set<DocumentImpl> getIntersection() {
 		return intersection;
 	}
@@ -88,24 +87,28 @@ public class BibtexMergeData {
 		conflicts = new ArrayList<>();
 		for (DocumentImpl entry1 : similarityMatrix.keySet()) {
 			for (DocumentImpl entry2 : similarityMatrix.get(entry1).keySet()) {
-				if (similarityMatrix.get(entry1).get(entry2).isSimilar(weights) 
+				if (similarityMatrix.get(entry1).get(entry2).isSimilar(weights)
 						&& !(conflictedEntries.containsKey(entry1) && conflictedEntries.get(entry1).contains(entry2))) {
 					conflicts.add(new BibtexMergeConflict(entry1, entry2));
-					
+
 					// store conflictedEntries
-					List<DocumentImpl> similarities = conflictedEntries.containsKey(entry1) ? conflictedEntries.get(entry1) : new ArrayList<>();
+					List<DocumentImpl> similarities = conflictedEntries.containsKey(entry1)
+							? conflictedEntries.get(entry1)
+							: new ArrayList<>();
 					similarities.add(entry2);
 					conflictedEntries.put(entry1, similarities);
-					similarities = conflictedEntries.containsKey(entry2) ? conflictedEntries.get(entry2) : new ArrayList<>();
+					similarities = conflictedEntries.containsKey(entry2) ? conflictedEntries.get(entry2)
+							: new ArrayList<>();
 					similarities.add(entry1);
 					conflictedEntries.put(entry2, similarities);
 				}
 			}
 		}
-		
+
 		// remove conflicted entries from intersection
 		intersection = new HashSet<>(similarityMatrix.keySet());
-		for (DocumentImpl conflictedEntry : conflictedEntries.keySet()) intersection.remove(conflictedEntry);
+		for (DocumentImpl conflictedEntry : conflictedEntries.keySet())
+			intersection.remove(conflictedEntry);
 	}
 
 	public List<BibtexResourceImpl> getResourceList() {
@@ -161,25 +164,25 @@ public class BibtexMergeData {
 	public String writeIntersection() {
 		List<String> reservedKeys = new ArrayList<>();
 		List<String> entries = new ArrayList<>();
-		
+
 		for (DocumentImpl entry : intersection) {
 			BibtexMergeConflict conflict = new BibtexMergeConflict(entry, entry);
 			entries.add(conflict.printResult(reservedKeys));
 			reservedKeys.add(conflict.getKey());
 		}
-		
+
 		return StringUtils.join(entries, "\n");
 	}
-	
-	public String writeUnion() {		
+
+	public String writeUnion() {
 		List<String> reservedKeys = new ArrayList<>();
 		List<String> entries = new ArrayList<>();
-		
+
 		for (BibtexMergeConflict conflict : getConflicts()) {
 			entries.add(conflict.printResult(reservedKeys));
 			reservedKeys.add(conflict.getKey());
 		}
-	
+
 		return StringUtils.join(entries, "\n");
 	}
 }
