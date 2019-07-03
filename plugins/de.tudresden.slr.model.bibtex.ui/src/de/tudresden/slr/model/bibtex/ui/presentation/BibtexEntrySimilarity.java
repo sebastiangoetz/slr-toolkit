@@ -6,8 +6,8 @@ import org.apache.commons.lang.StringUtils;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
-import info.debatty.java.stringsimilarity.Cosine;
-import info.debatty.java.stringsimilarity.JaroWinkler;
+import de.tudresden.slr.util.stringSimilarity.Cosine;
+import de.tudresden.slr.util.stringSimilarity.JaroWinkler;
 
 public class BibtexEntrySimilarity {
 	
