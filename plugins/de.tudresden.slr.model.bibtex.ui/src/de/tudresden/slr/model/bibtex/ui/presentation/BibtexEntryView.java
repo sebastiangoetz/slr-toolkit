@@ -1,6 +1,5 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventObject;
@@ -21,7 +20,9 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.CommandStackListener;
@@ -72,6 +73,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
@@ -143,7 +145,8 @@ public class BibtexEntryView extends ViewPart {
 		combo.setInput(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		String projectName = null;
 		try {
-			projectName = ResourcesPlugin.getWorkspace().getRoot().getPersistentProperty(new QualifiedName(ID, "project"));
+			projectName = ResourcesPlugin.getWorkspace().getRoot()
+					.getPersistentProperty(new QualifiedName(ID, "project"));
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}
@@ -153,16 +156,18 @@ public class BibtexEntryView extends ViewPart {
 		viewer = tree.getViewer();
 		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
-		viewer.setLabelProvider(new DecoratingLabelProvider(new AdapterFactoryLabelProvider(adapterFactory), decorator));
+		viewer.setLabelProvider(
+				new DecoratingLabelProvider(new AdapterFactoryLabelProvider(adapterFactory), decorator));
 		viewer.setSorter(new ViewerSorter());
 		viewer.setInput(editingDomain.getResourceSet());
 		viewer.getTree().addKeyListener(createDeleteListener());
 		viewer.getTree().addKeyListener(createRefreshListener());
 		viewer.expandAll();
-		
+
 		// this is needed to let other views know what is currently selected
 		// in my case the Chart View wants to display data
-		// see https://wiki.eclipse.org/FAQ_How_do_I_make_a_view_respond_to_selection_changes_in_another_view%3F
+		// see
+		// https://wiki.eclipse.org/FAQ_How_do_I_make_a_view_respond_to_selection_changes_in_another_view%3F
 		getSite().setSelectionProvider(viewer);
 
 		makeActions();
@@ -175,23 +180,23 @@ public class BibtexEntryView extends ViewPart {
 			combo.setSelection(new StructuredSelection(project));
 		}
 	}
-	
+
 	private KeyListener createRefreshListener() {
 		KeyListener refresher = new KeyListener() {
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if(e.keyCode == SWT.F5) {
+				if (e.keyCode == SWT.F5) {
 					ISelection s = combo.getSelection();
-					if(s != null && s instanceof IStructuredSelection) {
-						IProject p = (IProject)(((IStructuredSelection)s).getFirstElement());
+					if (s != null && s instanceof IStructuredSelection) {
+						IProject p = (IProject) (((IStructuredSelection) s).getFirstElement());
 						deleteResources();
 						registerResources(p);
 						viewer.refresh();
 					}
 				}
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 			}
@@ -200,7 +205,7 @@ public class BibtexEntryView extends ViewPart {
 	}
 
 	@Override
-	public void dispose(){
+	public void dispose() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(markerChangeListener);
 		workspace.removeResourceChangeListener(projectChangeListener);
@@ -225,31 +230,31 @@ public class BibtexEntryView extends ViewPart {
 					if (selection.getFirstElement() instanceof Document) {
 						Document document = (Document) selection.getFirstElement();
 
-						editingDomain.getCommandStack().execute(
-								new AbstractCommand() {
-									@Override
-									public boolean prepare() {
-										return true;
-									}
+						editingDomain.getCommandStack().execute(new AbstractCommand() {
+							@Override
+							public boolean prepare() {
+								return true;
+							}
 
-									@Override
-									public void redo() {
-										execute();
-									}
+							@Override
+							public void redo() {
+								execute();
+							}
 
-									@Override
-									public void execute() {
-										if (document.eResource() != null) {
-											EcoreUtil.remove(document);
-										}
-									}
-								});
-						
+							@Override
+							public void execute() {
+								if (document.eResource() != null) {
+									EcoreUtil.remove(document);
+								}
+							}
+						});
+
 						// Save only resources that have actually changed.
 						final Map<Object, Object> saveOptions = new HashMap<Object, Object>();
-						saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
-						saveOptions.put(Resource.OPTION_LINE_DELIMITER,Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
-						
+						saveOptions.put(Resource.OPTION_SAVE_ONLY_IF_CHANGED,
+								Resource.OPTION_SAVE_ONLY_IF_CHANGED_MEMORY_BUFFER);
+						saveOptions.put(Resource.OPTION_LINE_DELIMITER, Resource.OPTION_LINE_DELIMITER_UNSPECIFIED);
+
 						// Do the work within an operation because this is a
 						// long running activity that modifies the workbench.
 						WorkspaceModifyOperation operation = new WorkspaceModifyOperation() {
@@ -262,7 +267,8 @@ public class BibtexEntryView extends ViewPart {
 								//
 								boolean first = true;
 								for (Resource resource : editingDomain.getResourceSet().getResources()) {
-									if ((first || !resource.getContents().isEmpty() || Utils.isPersisted(resource)) && !editingDomain.isReadOnly(resource)) {
+									if ((first || !resource.getContents().isEmpty() || Utils.isPersisted(resource))
+											&& !editingDomain.isReadOnly(resource)) {
 										try {
 											resource.save(saveOptions);
 										} catch (Exception exception) {
@@ -307,11 +313,11 @@ public class BibtexEntryView extends ViewPart {
 	/**
 	 * Listener for listening to changes to the underlying resources.
 	 */
-	private IResourceChangeListener markerChangeListener = new IResourceChangeListener(){
+	private IResourceChangeListener markerChangeListener = new IResourceChangeListener() {
 		private MarkerVisitor markerVisitor = new MarkerVisitor();
 
 		public void resourceChanged(IResourceChangeEvent event) {
-			IResourceDelta delta= event.getDelta();
+			IResourceDelta delta = event.getDelta();
 			if (delta != null) {
 				try {
 					delta.accept(markerVisitor);
@@ -322,31 +328,34 @@ public class BibtexEntryView extends ViewPart {
 		}
 	};
 	/**
-	 * Listens to resource changes and updates the BibtexEntryView when projects are added or removed.
+	 * Listens to resource changes and updates the BibtexEntryView when projects are
+	 * added or removed.
 	 */
-	private IResourceChangeListener projectChangeListener = new IResourceChangeListener(){
+	private IResourceChangeListener projectChangeListener = new IResourceChangeListener() {
 		/**
 		 * Fired whenever a resource is changed
 		 */
 		@Override
 		public void resourceChanged(IResourceChangeEvent event) {
-			if(event.getType() != IResourceChangeEvent.POST_CHANGE && event.getType() != IResourceChangeEvent.PRE_DELETE){
+			if (event.getType() != IResourceChangeEvent.POST_CHANGE
+					&& event.getType() != IResourceChangeEvent.PRE_DELETE) {
 				return;
 			}
-			if(event.getType() == IResourceChangeEvent.POST_CHANGE){
+			if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
 				handleResourceChangeEvent(event);
-			} else if (event.getType() == IResourceChangeEvent.PRE_DELETE){
+			} else if (event.getType() == IResourceChangeEvent.PRE_DELETE) {
 				handleResourceDeleteEvent(event);
 			}
 		}
 
 		/**
 		 * Handle deletion of resources (does only handle deletion of projects)
+		 * 
 		 * @param event
 		 */
-		private void handleResourceDeleteEvent(IResourceChangeEvent event){
+		private void handleResourceDeleteEvent(IResourceChangeEvent event) {
 			IResource resource = event.getResource();
-			if(!(resource instanceof IProject)){
+			if (!(resource instanceof IProject)) {
 				return;
 			}
 			Display.getDefault().asyncExec(new Runnable() {
@@ -354,20 +363,20 @@ public class BibtexEntryView extends ViewPart {
 					IProject[] input = (IProject[]) combo.getInput();
 					IStructuredSelection selection = combo.getStructuredSelection();
 
-					//Deleted project is selected
-					if(selection.getFirstElement() == resource){
-						if(input.length > 1){
+					// Deleted project is selected
+					if (selection.getFirstElement() == resource) {
+						if (input.length > 1) {
 							int currentIndex = combo.getCombo().getSelectionIndex();
 							Object newItem = combo.getElementAt(currentIndex + 1);
-							if(newItem != null){
-								combo.setSelection(new StructuredSelection(newItem)); 
-							} else{
+							if (newItem != null) {
+								combo.setSelection(new StructuredSelection(newItem));
+							} else {
 								newItem = combo.getElementAt(currentIndex - 1);
-								if(newItem != null){
-									combo.setSelection(new StructuredSelection(newItem)); 
+								if (newItem != null) {
+									combo.setSelection(new StructuredSelection(newItem));
 								}
 							}
-						} else if (input.length == 1){
+						} else if (input.length == 1) {
 							combo.setSelection(StructuredSelection.EMPTY);
 						}
 					}
@@ -378,15 +387,16 @@ public class BibtexEntryView extends ViewPart {
 
 		/**
 		 * Handles addition of new resources (projects only)
+		 * 
 		 * @param event
 		 */
-		private void handleResourceChangeEvent(IResourceChangeEvent event){
+		private void handleResourceChangeEvent(IResourceChangeEvent event) {
 			List<IProject> projects = getAddedProjects(event.getDelta());
-			if(projects.size() >  0){
+			if (projects.size() > 0) {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						refreshAction.run();
-						if(projects.size() > 0 && (combo.getSelection() == null || combo.getSelection().isEmpty())){
+						if (projects.size() > 0 && (combo.getSelection() == null || combo.getSelection().isEmpty())) {
 							combo.setSelection(new StructuredSelection(projects.get(0)));
 						}
 					}
@@ -396,15 +406,17 @@ public class BibtexEntryView extends ViewPart {
 
 		/**
 		 * Returns a list of newly added projects.
+		 * 
 		 * @param resourceDelta
 		 * @return List of newly added projects.
 		 */
-		private List<IProject> getAddedProjects(IResourceDelta resourceDelta){
+		private List<IProject> getAddedProjects(IResourceDelta resourceDelta) {
 			final List<IProject> projects = new ArrayList<IProject>();
 			try {
 				resourceDelta.accept(new IResourceDeltaVisitor() {
 					public boolean visit(IResourceDelta delta) throws CoreException {
-						if (delta.getKind() == IResourceDelta.ADDED && delta.getResource().getType() == IResource.PROJECT) {
+						if (delta.getKind() == IResourceDelta.ADDED
+								&& delta.getResource().getType() == IResource.PROJECT) {
 							IProject project = (IProject) delta.getResource();
 							projects.add(project);
 							return false;
@@ -418,7 +430,7 @@ public class BibtexEntryView extends ViewPart {
 			return projects;
 		}
 	};
-   
+
 	/**
 	 * Visitor for marker changes
 	 */
@@ -427,13 +439,13 @@ public class BibtexEntryView extends ViewPart {
 		 * Update the BibtextEntryView when markers change.
 		 */
 		public boolean visit(IResourceDelta delta) throws CoreException {
-			if(delta == null) {
+			if (delta == null) {
 				return false;
 			}
 
 			IMarkerDelta[] markerDeltas = delta.getMarkerDeltas();
 
-			if(markerDeltas.length > 0){
+			if (markerDeltas.length > 0) {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						refreshAction.run();
@@ -466,21 +478,23 @@ public class BibtexEntryView extends ViewPart {
 					}
 					if (element instanceof IProject) {
 						IProject project = (IProject) element;
-						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty() || requestConfirmation(confirmation)) {
+						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()
+								|| requestConfirmation(confirmation)) {
 							deleteResources();
 							registerResources(project);
 							viewer.refresh();
 							closeEditors();
 							lastProject = project;
 							try {
-								ResourcesPlugin.getWorkspace().getRoot().setPersistentProperty(new QualifiedName(ID, "project"),lastProject.getName());
+								ResourcesPlugin.getWorkspace().getRoot()
+										.setPersistentProperty(new QualifiedName(ID, "project"), lastProject.getName());
 							} catch (CoreException e) {
 								e.printStackTrace();
 							}
 						} else if (lastProject == null) {
 							combo.setSelection(null);
 						} else {
-							combo.setSelection(new StructuredSelection( lastProject));
+							combo.setSelection(new StructuredSelection(lastProject));
 						}
 					}
 				}
@@ -494,7 +508,7 @@ public class BibtexEntryView extends ViewPart {
 	 * editors have to be closed without saving their content.
 	 */
 	protected void closeEditors() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench() .getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		IWorkbenchPage page = window.getActivePage();
 		IEditorReference[] references = page.findEditors(null, editorId, IWorkbenchPage.MATCH_ID);
 		page.closeEditors(references, false);
@@ -503,8 +517,8 @@ public class BibtexEntryView extends ViewPart {
 	}
 
 	/**
-	 * This sets up the editing domain for the model editor. <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * This sets up the editing domain for the model editor. <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
@@ -517,16 +531,15 @@ public class BibtexEntryView extends ViewPart {
 			return;
 		}
 		adapterFactory = editingDomain.getAdapterFactory();
-		editingDomain.getCommandStack().addCommandStackListener(
-				new CommandStackListener() {
+		editingDomain.getCommandStack().addCommandStackListener(new CommandStackListener() {
 
-					@Override
-					public void commandStackChanged(final EventObject event) {
-						getSite().getShell().getDisplay().asyncExec(() -> {
-							firePropertyChange(IEditorPart.PROP_DIRTY);
-						});
-					}
+			@Override
+			public void commandStackChanged(final EventObject event) {
+				getSite().getShell().getDisplay().asyncExec(() -> {
+					firePropertyChange(IEditorPart.PROP_DIRTY);
 				});
+			}
+		});
 		closeEditors();
 	}
 
@@ -543,11 +556,12 @@ public class BibtexEntryView extends ViewPart {
 			e.printStackTrace();
 			return;
 		}
+
 		for (IResource res : resources) {
 			if (res.getType() == IResource.FILE && "bib".equals(res.getFileExtension())) {
 				URI uri = URI.createURI(((IFile) res).getFullPath().toString());
 				editingDomain.getResourceSet().getResource(uri, true);
-			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())){
+			} else if (res.getType() == IResource.FILE && "taxonomy".equals(res.getFileExtension())) {
 				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile((IFile) res);
 			}
 		}
@@ -612,14 +626,14 @@ public class BibtexEntryView extends ViewPart {
 	private void makeActions() {
 		openListener = new BibtexOpenListener(editorId, IWorkbenchPage.MATCH_INPUT | IWorkbenchPage.MATCH_ID);
 		selectionListener = new BibtexOpenListener(overviewId, IWorkbenchPage.MATCH_ID);
-		
+
 		refreshAction = new Action() {
 			@Override
 			public void run() {
 				refreshProjectCombo();
-				if(combo.getSelection() != null) {
-					if(combo.getSelection() instanceof IStructuredSelection) {
-						IProject project = (IProject)((IStructuredSelection)combo.getSelection()).getFirstElement();
+				if (combo.getSelection() != null) {
+					if (combo.getSelection() instanceof IStructuredSelection) {
+						IProject project = (IProject) ((IStructuredSelection) combo.getSelection()).getFirstElement();
 						deleteResources();
 						registerResources(project);
 					}
@@ -629,7 +643,8 @@ public class BibtexEntryView extends ViewPart {
 		};
 		refreshAction.setText("Refresh");
 		refreshAction.setToolTipText("Refreshes the tree. Make sure you selected a project before");
-		refreshAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
+		refreshAction.setImageDescriptor(
+				PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
 
 		markingAction = new Action() {
 			@Override
@@ -644,8 +659,9 @@ public class BibtexEntryView extends ViewPart {
 		};
 		markingAction.setText("Mark");
 		markingAction.setToolTipText("Mark document for ProblemsView");
-		markingAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
-		
+		markingAction.setImageDescriptor(
+				PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJS_WARN_TSK));
+
 		openingAction = new Action() {
 			@Override
 			public void run() {
@@ -663,22 +679,42 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				TreeSelection select = (TreeSelection) viewer.getSelection();
-				if(select.size() > 1 && select.size() < 9) {
+				// TODO: allow more than 9 documents?
+				if (select.size() > 1 && select.size() < 9) {
 					List<BibtexResourceImpl> resourceList = new ArrayList<BibtexResourceImpl>();
-					for(@SuppressWarnings("unchecked")
+					for (@SuppressWarnings("unchecked")
 					Iterator<Object> i = select.iterator(); i.hasNext();) {
 						Object o = i.next();
-						if(!(o instanceof BibtexResourceImpl)) {
+						if (!(o instanceof BibtexResourceImpl)) {
+							// FIXME: continue??
 							return;
 						}
 						resourceList.add((BibtexResourceImpl) o);
 					}
-					BibtexMergeDialog dialog = new BibtexMergeDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new BibtexMergeData(resourceList));
+
+					BibtexMergeData mergeData = new BibtexMergeData(resourceList);
+					ProgressBarDemo pb = new ProgressBarDemo(getSite().getShell());
+					UIJob job = new UIJob(Display.getCurrent(), "My Job") {
+					    @Override
+					    public IStatus runInUIThread(IProgressMonitor monitor) {
+					    	pb.setBlockOnOpen(false);
+					        mergeData.createSimilarityMatrix();
+					        mergeData.extractConflicts();
+					        if (pb != null) pb.close();
+					        return Status.OK_STATUS;
+					    }
+
+					};
+					job.setUser(true);
+					job.schedule(500);
+					pb.open();
+
+					BibtexMergeDialog dialog = new BibtexMergeDialog(
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), mergeData);
 					if (dialog.open() == Window.OK) {
 						refreshAction.run();
 					}
-				}	
-				else {
+				} else {
 					return;
 				}
 			}

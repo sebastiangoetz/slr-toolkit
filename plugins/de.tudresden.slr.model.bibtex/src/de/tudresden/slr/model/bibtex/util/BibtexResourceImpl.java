@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -127,6 +128,12 @@ public class BibtexResourceImpl extends ResourceImpl {
 			String classes = safeGetField(entry, KEY_CLASSES);
 			classes = classes.replaceAll("["+System.lineSeparator()+"]", " ");
 			document.setTaxonomy(parseClasses(classes));
+			
+			for (Key field : entry.getFields().keySet())
+				if (!Arrays.asList(new Key[]{KEY_TITLE, KEY_CITES, KEY_YEAR, KEY_MONTH, KEY_AUTHOR, KEY_DOI, KEY_URL, 
+						KEY_ABSTRACT, KEY_FILE, KEY_CLASSES})
+						.contains(field))
+					document.getAdditionalFields().put(field.getValue(), entry.getField(field).toUserString());
 
 			getContents().add(document);
 		}

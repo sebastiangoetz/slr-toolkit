@@ -19,3 +19,5 @@ plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model
 *._trace
 
 \.recommenders/
+
+examples

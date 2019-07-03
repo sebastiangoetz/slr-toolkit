@@ -20,4 +20,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.bibtex,
  de.tudresden.slr.model.bibtex.impl,
  de.tudresden.slr.model.bibtex.util
+Import-Package: org.apache.commons.lang
 

@@ -4,6 +4,8 @@ package de.tudresden.slr.model.bibtex;
 
 import de.tudresden.slr.model.taxonomy.Model;
 
+import java.util.Map;
+
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -414,5 +416,12 @@ public interface Document extends EObject {
 	 * @generated
 	 */
 	void setLine(int value);
+	
+	/**
+	 * these fields are for all the special latex fields that are additional to the ones above
+	 */
+	Map<String, String> getAdditionalFields();
+	
+	void setAdditionalFields(Map<String, String> additionalFields);
 
 } // Document

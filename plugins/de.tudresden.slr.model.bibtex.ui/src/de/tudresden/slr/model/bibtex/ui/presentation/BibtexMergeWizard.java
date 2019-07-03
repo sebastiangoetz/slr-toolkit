@@ -24,10 +24,7 @@ public class BibtexMergeWizard extends Wizard {
     @Override
     public void addPages() {
     	List<BibtexMergeConflict> conflicts = data.getConflicts();
-    	int amount = data.getConflicts().size();
-    	for(int i = 0; i < amount; i++) {
-            addPage(new BibtexMergeWizardPage(conflicts.get(i), i + 1, amount));
-    	}
+    	addPage(new BibtexMergeWizardPage(conflicts));
     }
 
     @Override
