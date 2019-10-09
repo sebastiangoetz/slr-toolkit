@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<slrProjectMetainformation>
+    <title>Model-driven Software Engineering for Construction Engineering: Quo Vadis?</title>
+    <keywords>Systematic Literature Survey, Building Information Modeling, Integrated Project Delivery, Lean Construction</keywords>
+    <projectAbstract>Models are an inherent part of the construction industry, which leverages from the steady advancements in information and communication technology. &#13;
+One of these advancements is Building Information Modeling (BIM), which denotes the move from 2D drawings to having semantically rich models of the objects subject to construction. &#13;
+Additionally, the way stakeholders collaborate in construction projects and their organization is revisited.&#13;
+This is commonly denoted as integrated process delivery (IPD). &#13;
+Both BIM and IPD originate from the basic principles of lean construction, the vision to minimize waste, increase value and continuous improvement.&#13;
+The application of Model-driven Software Engineering (MDSE) to BIM is a natural choice.&#13;
+Although several approaches utilizing MDSE for BIM have been proposed, so far no structured overview of the current state of the art has been conducted. &#13;
+Such an overview is vitally needed, because the existing literature is fragmented among multiple research areas. % and, thus, hard to find.&#13;
+Consequently, in this paper, we present a systematic literature review on the application of MDSE to BIM, IPD and Lean Construction.&#13;
+For this, we present a systematically derived taxonomy, which we used to classify 148 papers published since 2008.&#13;
+Based on the taxonomy, we describe an analysis of the classified research showing (a) where the discourse on model-driven construction engineering currently is, (b) the state of the art of model-driven techniques in construction engineering and (c) open research challenges.</projectAbstract>
+    <taxonomyDescription>Here comes a brief description of the project's taxonomy.</taxonomyDescription>
+    <authorsList>
+        <email>sebastian.goetz1@tu-dresden.de</email>
+        <name>Sebastian Götz</name>
+        <organisation>Technische Universität Dresden</organisation>
+    </authorsList>
+    <authorsList>
+        <email>andreas.fehn@tu-dresden.de</email>
+        <name>Andreas Fehn</name>
+        <organisation>Technische Universität Dresden</organisation>
+    </authorsList>
+    <authorsList>
+        <email>frank.rohde@tu-dresden.de</email>
+        <name>Frank Rohde</name>
+        <organisation>Technische Universität Dresden</organisation>
+    </authorsList>
+    <authorsList>
+        <email>thomas.kuehn@kit.edu</email>
+        <name>Thomas Kühn</name>
+        <organisation>Karlsruhe Institute of Technology</organisation>
+    </authorsList>
+</slrProjectMetainformation>

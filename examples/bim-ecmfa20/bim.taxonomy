@@ -1,0 +1,76 @@
+Modeling Technique {
+	Model Integration {
+		Model Merge,
+		Model Views,
+		Model Linking
+	},
+	Model Querying,
+	Model Transformation,
+	Model Semantics,
+	Model Versioning,
+	Model Consistency
+},
+Metalevel {
+	M3 - Metalanguage,
+	M2 - Language,
+	M1 - Model,
+	M0 - Instance,
+	M-1 - Real world,
+	Not applicable
+},
+Application Domain {
+	Simulation {
+		Building Energy Performance Simulation - BEPS,
+		Building Performance Assessment,
+		Multi-Physical Simulation
+	},
+	Facility Management,
+	Infrastructure,
+	Architecture,
+	Construction,
+	Process Optimization,
+	Generic
+},
+Technologies {
+	buildingSMART {
+		Industry Foundation Classes - IFC,
+		BIM Collaboration Format - BCF,
+		Model View Definition - MVD,
+		Information Delivery Manual - IDM
+	},
+	Standard for the Exchange of Product Model Data - STEP,
+	Geographic Information System - GIS,
+	City Geographic Markup Language - CityGML,
+	Web Ontology Language - OWL,
+	Business Process Modeling Notation - BPMN,
+	Technology-agnostic,
+	Modelica,
+	General Model Subset Definition - GMSD,
+	MDSE {
+		Systems Modeling Language - SysML,
+		Unified Modeling Language - UML,
+		QueryViewTransform - QVT,
+		Eclipse Modeling Framework - EMF,
+		Tefkat,
+		Meta-Programming System - MPS,
+		Atlas Transformation Language - ATL
+	}
+},
+Interfacing Research Areas {
+	Knowledge Engineering,
+	Business Processes,
+	Data Warehousing,
+	Cloud - SOA,
+	None
+},
+Paper type {
+	Vision,
+	Overview,
+	Approach {
+		Field Study,
+		Case Study,
+		Example-based,
+		Argumentation,
+		Not evaluated
+	}
+}
