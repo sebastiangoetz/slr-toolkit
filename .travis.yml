@@ -1,6 +1,6 @@
 language: java
 jdk:
-- oraclejdk9
+- openjdk8
 
 script: mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package
 
