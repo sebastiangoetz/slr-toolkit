@@ -130,25 +130,25 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void setQuestionnaire(Questionnaire newQuestionnaire) {
-		if (questionnaire != null)
-			commitQuestionnaire();
-		
 		questionnaire = newQuestionnaire;
 		questionViews.clear();
 		if (questionsContainer != null) {
 			questionsContainer.dispose();
 		}
-		questionsContainer = new Composite(parent, 0);
-		// TODO make scrollable
-		// https://stackoverflow.com/questions/14445580/scrollable-composite-auto-resize-swt
-		questionsContainer.setLayout(new RowLayout(SWT.VERTICAL));
-		for (Question<?> question : questionnaire.getQuestions()) {
-			QuestionView view = new QuestionView(questionsContainer, question, this::getDocument,
-					this::onQuestionChanged);
-			view.render();
-			questionViews.add(view);
+		if (questionnaire != null) {
+			commitQuestionnaire();
+			questionsContainer = new Composite(parent, 0);
+			// TODO make scrollable
+			// https://stackoverflow.com/questions/14445580/scrollable-composite-auto-resize-swt
+			questionsContainer.setLayout(new RowLayout(SWT.VERTICAL));
+			for (Question<?> question : questionnaire.getQuestions()) {
+				QuestionView view = new QuestionView(questionsContainer, question, this::getDocument,
+						this::onQuestionChanged);
+				view.render();
+				questionViews.add(view);
+			}
+			updateEnableAnswering();
 		}
-		updateEnableAnswering();
 		parent.pack();
 		parent.layout(true);
 	}

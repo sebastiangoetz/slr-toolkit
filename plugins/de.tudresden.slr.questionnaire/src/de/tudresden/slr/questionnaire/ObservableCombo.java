@@ -34,6 +34,8 @@ public abstract class ObservableCombo<E> {
 	protected abstract void updateLabelsAndElements();
 
 	public E getSelected() {
+		if (elements.size() == 0)
+			return null;
 		int index = combo.getSelectionIndex();
 		if (index < 0 || index >= elements.size())
 			throw new IllegalStateException();
