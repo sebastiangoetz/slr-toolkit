@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<extension point="org.eclipse.ui.views">
+        <view 
+        	id="de.tudresden.slr.questionnaire.QuestionnaireView"
+            name="QuestionnaireView"
+          	class="de.tudresden.slr.questionnaire.QuestionnaireView"
+          	category="de.tudresden.slr.views"
+        />
+	</extension>
+</plugin>

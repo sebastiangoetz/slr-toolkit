@@ -263,5 +263,6 @@
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.metainformation</module>
 		<module>../de.tudresden.slr.latexExport</module>
+                <module>../de.tudresden.slr.questionnaire</module>
 	</modules>
 </project>
