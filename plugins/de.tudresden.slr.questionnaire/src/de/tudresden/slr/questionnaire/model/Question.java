@@ -29,14 +29,18 @@ public abstract class Question<E> {
 	}
 
 	public void addAnswer(String documentKey, E answer) {
+		if (documentKey == null || answer == null)
+			throw new NullPointerException();
 		answers.put(documentKey, answer);
 	}
 
 	public void removeAnswer(String documentKey) {
 		answers.remove(documentKey);
 	}
-	
+
 	public E getAnswer(String documentKey) {
+		if (documentKey == null)
+			return null;
 		return answers.get(documentKey);
 	}
 

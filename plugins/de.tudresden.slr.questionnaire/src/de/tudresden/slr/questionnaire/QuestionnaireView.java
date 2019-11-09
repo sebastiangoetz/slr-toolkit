@@ -1,7 +1,7 @@
 package de.tudresden.slr.questionnaire;
 
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -12,7 +12,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -21,11 +20,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import com.google.gson.Gson;
-
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.questionnaire.model.Question;
-import de.tudresden.slr.questionnaire.util.GsonFactory;
+import de.tudresden.slr.questionnaire.questionview.QuestionViewBase;
 import de.tudresden.slr.questionnaire.wizard.NewQuestionWizard;
 import de.tudresden.slr.questionnaire.wizard.NewQuestionnaireWizard;
 
@@ -43,7 +40,7 @@ public class QuestionnaireView extends ViewPart {
 	private Questionnaire questionnaire;
 	private Document document;
 
-	private Collection<QuestionView> questionViews = new LinkedList<>();
+	private List<QuestionViewBase<?>> questionViews = new LinkedList<>();
 
 	private static String NO_DOCUMENT_PLACEHOLDER = "<no document>";
 
@@ -131,15 +128,14 @@ public class QuestionnaireView extends ViewPart {
 			scroll.dispose();
 
 		if (questionnaire != null) {
+			// TODO new ScrolledComposite should retain scroll height if questionnaire hasn't changed
 			scroll = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 			scroll.setLayoutData(gd);
 			Composite innerContainer = new Composite(scroll, 0);
 			innerContainer.setLayout(new GridLayout(1, false));
 			for (Question<?> question : questionnaire.getQuestions()) {
-				QuestionView view = new QuestionView(innerContainer, question, this::getDocument,
-						this::onQuestionChanged);
-				view.render();
+				QuestionViewBase<?> view = QuestionViewBase.qvFor(innerContainer, question, this::getDocument, this::onQuestionChanged);
 				questionViews.add(view);
 			}
 			updateEnableAnswering();
@@ -151,7 +147,8 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void updateEnableAnswering() {
-		questionViews.forEach(it -> it.enableAnswering(document != null));
+		final boolean shouldEnable = document != null;
+		questionViews.forEach(it -> it.enableControls(shouldEnable));
 	}
 
 	private Document getDocument() {
