@@ -7,6 +7,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -31,7 +32,7 @@ import de.tudresden.slr.questionnaire.wizard.NewQuestionnaireWizard;
 public class QuestionnaireView extends ViewPart {
 
 	private Composite parent;
-	private Composite questionsContainer;
+	private ScrolledComposite scroll;
 
 	private ComboProject projectSelector;
 	private ComboQuestionnaire questionnaireSelector;
@@ -49,25 +50,22 @@ public class QuestionnaireView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parent = parent;
-		parent.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Composite selectors = new Composite(parent, 0);
-		selectors.setLayout(new GridLayout(2, false));
+		parent.setLayout(new GridLayout(2, false));
 
-		new Label(selectors, 0).setText("Project");
-		projectSelector = new ComboProject(selectors, new GridData());
+		new Label(parent, 0).setText("Project");
+		projectSelector = new ComboProject(parent, new GridData());
 
-		new Label(selectors, 0).setText("Questionnaire");
-		questionnaireSelector = new ComboQuestionnaire(selectors, new GridData());
+		new Label(parent, 0).setText("Questionnaire");
+		questionnaireSelector = new ComboQuestionnaire(parent, new GridData());
 
-		new Label(selectors, 0).setText("Document");
-		documentLabel = new Label(selectors, 0);
+		new Label(parent, 0).setText("Document");
+		documentLabel = new Label(parent, 0);
 		documentLabel.setText(NO_DOCUMENT_PLACEHOLDER);
-		createButtonNewQuestion(selectors);
-		createButtonNewQuestionnaire(selectors);
+		createButtonNewQuestion(parent);
+		createButtonNewQuestionnaire(parent);
 
-		documentWatcher = new BibtexEntryWatcher(getSite().getWorkbenchWindow()
-				.getSelectionService());
+		documentWatcher = new BibtexEntryWatcher(getSite().getWorkbenchWindow().getSelectionService());
 		documentWatcher.addDocumentListener(this::onDocumentChanged);
 
 		projectSelector.addObserver(questionnaireSelector::setProject);
@@ -86,9 +84,7 @@ public class QuestionnaireView extends ViewPart {
 		buttonNewQuestion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Shell shell = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow()
-						.getShell();
+				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 				WizardDialog dialog = new WizardDialog(shell, new NewQuestionWizard(questionnaire));
 				dialog.open();
 				setQuestionnaire(questionnaire);
@@ -104,8 +100,7 @@ public class QuestionnaireView extends ViewPart {
 			public void mouseDown(MouseEvent e) {
 				IWorkbench wb = PlatformUI.getWorkbench();
 				IStructuredSelection selection = (IStructuredSelection) wb.getActiveWorkbenchWindow()
-						.getSelectionService()
-						.getSelection();
+						.getSelectionService().getSelection();
 				if (selection == null)
 					selection = StructuredSelection.EMPTY;
 				NewQuestionnaireWizard wiz = new NewQuestionnaireWizard();
@@ -122,34 +117,37 @@ public class QuestionnaireView extends ViewPart {
 
 		String text = (document == null) ? NO_DOCUMENT_PLACEHOLDER : document.getKey();
 		documentLabel.setText(text);
-		documentLabel.getParent()
-				.layout();
+		documentLabel.getParent().layout();
 
 		setQuestionnaire(questionnaire);
 		updateEnableAnswering();
 	}
 
 	private void setQuestionnaire(Questionnaire newQuestionnaire) {
+		if (questionnaire != null)
+			commitQuestionnaire();
 		questionnaire = newQuestionnaire;
 		questionViews.clear();
-		if (questionsContainer != null) {
-			questionsContainer.dispose();
-		}
+		if (scroll != null)
+			scroll.dispose();
+
 		if (questionnaire != null) {
-			commitQuestionnaire();
-			questionsContainer = new Composite(parent, 0);
-			// TODO make scrollable
-			// https://stackoverflow.com/questions/14445580/scrollable-composite-auto-resize-swt
-			questionsContainer.setLayout(new RowLayout(SWT.VERTICAL));
+			scroll = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+			GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+			scroll.setLayoutData(gd);
+			Composite innerContainer = new Composite(scroll, 0);
+			innerContainer.setLayout(new GridLayout(1, false));
 			for (Question<?> question : questionnaire.getQuestions()) {
-				QuestionView view = new QuestionView(questionsContainer, question, this::getDocument,
+				QuestionView view = new QuestionView(innerContainer, question, this::getDocument,
 						this::onQuestionChanged);
 				view.render();
 				questionViews.add(view);
 			}
 			updateEnableAnswering();
+
+			scroll.setContent(innerContainer);
+			innerContainer.setSize(innerContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
-		parent.pack();
 		parent.layout(true);
 	}
 
@@ -167,7 +165,8 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void onQuestionChanged(Question<?> question) {
-		// TODO maybe do something here? flag questionnaire as dirty to prevent unnecessary writes?
+		// TODO maybe do something here? flag questionnaire as dirty to prevent
+		// unnecessary writes?
 	}
 
 }
