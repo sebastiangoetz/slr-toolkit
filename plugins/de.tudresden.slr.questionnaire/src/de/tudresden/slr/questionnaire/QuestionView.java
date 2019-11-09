@@ -74,15 +74,6 @@ public class QuestionView {
 
 		final FreeTextQuestion question = (FreeTextQuestion) this.question;
 
-		t.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				Document d = documentSupplier.get();
-				question.addAnswer(d.getKey(), t.getText());
-				questionEdited.accept(question);
-			}
-		});
-
 		try {
 			Document doc = documentSupplier.get();
 			String existingAnswer = question.getAnswer(doc.getKey());
@@ -91,6 +82,15 @@ public class QuestionView {
 		} catch (NullPointerException npe) {
 			/* ignore npe */
 		}
+		
+		t.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				Document d = documentSupplier.get();
+				question.addAnswer(d.getKey(), t.getText());
+				questionEdited.accept(question);
+			}
+		});
 	}
 
 	private void renderMultipleChoice() {

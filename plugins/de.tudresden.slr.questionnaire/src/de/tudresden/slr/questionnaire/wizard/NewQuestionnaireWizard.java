@@ -35,6 +35,7 @@ public class NewQuestionnaireWizard extends NewWizard {
 			return false;
 		}
 		Questionnaire q = new Questionnaire(f.getName());
+		q.setDirty(true);
 		QuestionnaireStorage.getInstance().persist(f, q);
 		return true;
 	}

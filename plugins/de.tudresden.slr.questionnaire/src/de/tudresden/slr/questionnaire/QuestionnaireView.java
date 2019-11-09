@@ -113,10 +113,10 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void onDocumentChanged(Document document) {
+		if (document == null)
+			return;
 		this.document = document;
-
-		String text = (document == null) ? NO_DOCUMENT_PLACEHOLDER : document.getKey();
-		documentLabel.setText(text);
+		documentLabel.setText(document.getKey());
 		documentLabel.getParent().layout();
 
 		setQuestionnaire(questionnaire);
@@ -124,8 +124,7 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void setQuestionnaire(Questionnaire newQuestionnaire) {
-		if (questionnaire != null)
-			commitQuestionnaire();
+		commitQuestionnaire();
 		questionnaire = newQuestionnaire;
 		questionViews.clear();
 		if (scroll != null)
@@ -160,13 +159,14 @@ public class QuestionnaireView extends ViewPart {
 	}
 
 	private void commitQuestionnaire() {
+		if (questionnaire == null)
+			return;
 		QuestionnaireStorage qs = QuestionnaireStorage.getInstance();
 		qs.persist(questionnaire);
 	}
 
 	private void onQuestionChanged(Question<?> question) {
-		// TODO maybe do something here? flag questionnaire as dirty to prevent
-		// unnecessary writes?
+		questionnaire.setDirty(true);
 	}
 
 }

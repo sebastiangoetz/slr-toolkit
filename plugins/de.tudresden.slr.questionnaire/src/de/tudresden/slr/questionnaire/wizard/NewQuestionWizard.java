@@ -32,8 +32,8 @@ public class NewQuestionWizard extends Wizard {
 	public boolean performFinish() {
 		try {
 			Question<?> q = page.generateQuestion();
-			System.out.println(q + " ; " + questionnaire);
 			questionnaire.addQuestion(q);
+			questionnaire.setDirty(true);
 			storage.persist(questionnaire);
 			return true;
 		} catch (BadUserInputException e) {

@@ -53,11 +53,18 @@ public class QuestionnaireStorage {
 		EclipseUtils.printToIFile(target, gson.toJson(questionnaire));
 	}
 
-	/** overwrites the original file a questionnaire came from */
+	/**
+	 * overwrites the original file a questionnaire came from, iff the questionnaire
+	 * has been modified
+	 */
 	public void persist(Questionnaire questionnaire) {
+		if (!questionnaire.isDirty())
+			return;
 		IFile originalFile = fileOriginMap.get(questionnaire);
 		if (originalFile == null)
 			throw new RuntimeException(new FileNotFoundException("could not resolve the file questionnaire came from"));
 		persist(originalFile, questionnaire);
+		questionnaire.setDirty(false);
 	}
+
 }
