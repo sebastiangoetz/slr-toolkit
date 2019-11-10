@@ -30,7 +30,7 @@ public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 
 		Text text = new Text(root, SWT.MULTI | SWT.WRAP | SWT.BORDER);
 		try {
-			text.setText(getDocumentKey());
+			text.setText(question.getAnswer(getDocumentKey()));
 		} catch (NullPointerException | IllegalArgumentException e) {
 			text.setText("");
 		}
