@@ -29,6 +29,9 @@ public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 		List<Control> controls = new LinkedList<>();
 
 		Text text = new Text(root, SWT.MULTI | SWT.WRAP | SWT.BORDER);
+		int textWidth = 300;
+		int textHeight = text.getLineHeight();
+		text.setSize(textWidth, textHeight);
 		try {
 			text.setText(question.getAnswer(getDocumentKey()));
 		} catch (NullPointerException | IllegalArgumentException e) {
@@ -38,7 +41,7 @@ public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 		gd.heightHint = text.getLineHeight() * 4;
 		gd.widthHint = 300;
 		text.setLayoutData(gd);
-		
+
 		text.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
