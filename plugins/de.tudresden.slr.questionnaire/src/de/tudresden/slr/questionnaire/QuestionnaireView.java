@@ -108,7 +108,7 @@ public class QuestionnaireView extends ViewPart {
 			}
 		});
 	}
-
+	
 	private void onDocumentChanged(Document document) {
 		if (document == null)
 			return;

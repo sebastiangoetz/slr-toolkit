@@ -13,11 +13,10 @@ public abstract class Question<E> {
 	private String type;
 
 	private String questionText;
-	private Map<String, E> answers;
+	private Map<String, E> answers = new HashMap<>();
 
 	public Question() {
 		type = getClass().getName();
-		answers = new HashMap<>();
 	}
 
 	public String getQuestionText() {
@@ -42,6 +41,10 @@ public abstract class Question<E> {
 		if (documentKey == null)
 			return null;
 		return answers.get(documentKey);
+	}
+
+	public void clearAnswers() {
+		answers.clear();
 	}
 
 }
