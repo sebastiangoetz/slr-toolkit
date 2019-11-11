@@ -47,4 +47,8 @@ public abstract class Question<E> {
 		answers.clear();
 	}
 
+	public boolean hasAnswerFor(String key) {
+		return getAnswer(key) != null;
+	}
+
 }
