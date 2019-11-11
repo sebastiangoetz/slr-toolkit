@@ -23,7 +23,6 @@ import org.eclipse.ui.part.ViewPart;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.questionnaire.model.Question;
 import de.tudresden.slr.questionnaire.questionview.QuestionViewBase;
-import de.tudresden.slr.questionnaire.util.BibtexExplorer;
 import de.tudresden.slr.questionnaire.wizard.NewQuestionWizard;
 import de.tudresden.slr.questionnaire.wizard.NewQuestionnaireWizard;
 
@@ -44,10 +43,9 @@ public class QuestionnaireView extends ViewPart {
 	private List<QuestionViewBase<?>> questionViews = new LinkedList<>();
 
 	private static String NO_DOCUMENT_PLACEHOLDER = "<no document>";
-	
-	private org.eclipse.swt.widgets.List incompleteDocumentsList;
-	private Label incompleteDocumentsLabel;
-	
+
+	private UnansweredDocumentsView unansweredDocumentsView;
+
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parent = parent;
@@ -65,28 +63,18 @@ public class QuestionnaireView extends ViewPart {
 		documentLabel.setText(NO_DOCUMENT_PLACEHOLDER);
 		createButtonNewQuestion(parent);
 		createButtonNewQuestionnaire(parent);
-		
-		setupIncompleteDocumentsList(parent);
+
+		unansweredDocumentsView = new UnansweredDocumentsView(parent, getSite(), questionnaireSelector::getSelected,
+				projectSelector::getSelected);
 
 		documentWatcher = new BibtexEntryWatcher(getSite().getWorkbenchWindow().getSelectionService());
 		documentWatcher.addDocumentListener(this::onDocumentChanged);
 
 		projectSelector.addObserver(questionnaireSelector::setProject);
 		questionnaireSelector.addObserver(this::setQuestionnaire);
-		questionnaireSelector.addObserver(q -> updateIncompleteDocuments());
+		questionnaireSelector.addObserver(q -> unansweredDocumentsView.findDocuments());
 
 		projectSelector.updateOptionsDisplay();
-	}
-
-	private void setupIncompleteDocumentsList(Composite parent2) {
-		incompleteDocumentsLabel = new Label(parent, 0);
-		incompleteDocumentsLabel.setText("Answers missing for following documents:");
-		incompleteDocumentsLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1));
-		
-		incompleteDocumentsList = new org.eclipse.swt.widgets.List(parent, SWT.V_SCROLL);
-		GridData gd = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1);
-		gd.heightHint = (int) (incompleteDocumentsList.getItemHeight() * 4);
-		incompleteDocumentsList.setLayoutData(gd);
 	}
 
 	@Override
@@ -180,29 +168,11 @@ public class QuestionnaireView extends ViewPart {
 			return;
 		QuestionnaireStorage qs = QuestionnaireStorage.getInstance();
 		qs.persist(questionnaire);
-		updateIncompleteDocuments();
+		unansweredDocumentsView.findDocuments();
 	}
 
 	private void onQuestionChanged(Question<?> question) {
 		questionnaire.setDirty(true);
-	}
-
-	private void updateIncompleteDocuments() {
-		incompleteDocumentsList.removeAll();
-		Questionnaire questionnaire = questionnaireSelector.getSelected();
-		if (questionnaire == null)
-			return;
-		BibtexExplorer be = new BibtexExplorer(projectSelector.getSelected());
-		List<Question<?>> questions = questionnaire.getQuestions();
-		List<Document> documents = be.getDocuments();
-		for (Document doc : documents) {
-			for (Question<?> question : questions) {
-				if (!question.hasAnswerFor(doc.getKey())) {
-					incompleteDocumentsList.add(doc.getKey());
-					break;
-				}
-			}
-		}
 	}
 
 }
