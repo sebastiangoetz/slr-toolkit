@@ -44,8 +44,10 @@ public class QuestionnaireView extends ViewPart {
 	private List<QuestionViewBase<?>> questionViews = new LinkedList<>();
 
 	private static String NO_DOCUMENT_PLACEHOLDER = "<no document>";
+	
 	private org.eclipse.swt.widgets.List incompleteDocumentsList;
-
+	private Label incompleteDocumentsLabel;
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parent = parent;
@@ -63,13 +65,8 @@ public class QuestionnaireView extends ViewPart {
 		documentLabel.setText(NO_DOCUMENT_PLACEHOLDER);
 		createButtonNewQuestion(parent);
 		createButtonNewQuestionnaire(parent);
-
 		
-		Label incompleteDocumentsLabel = new Label(parent, 0);
-		incompleteDocumentsLabel.setText("Answers missing for following documents:");
-		incompleteDocumentsLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1));
-		incompleteDocumentsList = new org.eclipse.swt.widgets.List(parent, SWT.V_SCROLL);
-		incompleteDocumentsList.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1));
+		setupIncompleteDocumentsList(parent);
 
 		documentWatcher = new BibtexEntryWatcher(getSite().getWorkbenchWindow().getSelectionService());
 		documentWatcher.addDocumentListener(this::onDocumentChanged);
@@ -79,6 +76,17 @@ public class QuestionnaireView extends ViewPart {
 		questionnaireSelector.addObserver(q -> updateIncompleteDocuments());
 
 		projectSelector.updateOptionsDisplay();
+	}
+
+	private void setupIncompleteDocumentsList(Composite parent2) {
+		incompleteDocumentsLabel = new Label(parent, 0);
+		incompleteDocumentsLabel.setText("Answers missing for following documents:");
+		incompleteDocumentsLabel.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1));
+		
+		incompleteDocumentsList = new org.eclipse.swt.widgets.List(parent, SWT.V_SCROLL);
+		GridData gd = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1);
+		gd.heightHint = (int) (incompleteDocumentsList.getItemHeight() * 4);
+		incompleteDocumentsList.setLayoutData(gd);
 	}
 
 	@Override
@@ -195,7 +203,6 @@ public class QuestionnaireView extends ViewPart {
 				}
 			}
 		}
-		incompleteDocumentsList.setSize(100, 100);
 	}
 
 }
