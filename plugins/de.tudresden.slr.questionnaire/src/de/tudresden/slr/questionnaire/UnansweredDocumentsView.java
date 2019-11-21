@@ -26,6 +26,8 @@ public class UnansweredDocumentsView {
 	private Supplier<Questionnaire> questionnaireSupplier;
 	private Supplier<IProject> projectSupplier;
 
+	private List<Document> incompleteDocuments = new LinkedList<>();
+
 	public UnansweredDocumentsView(Composite parent, IWorkbenchPartSite site,
 			Supplier<Questionnaire> questionnaireSupplier, Supplier<IProject> projectSupplier) {
 		this.questionnaireSupplier = questionnaireSupplier;
@@ -40,7 +42,8 @@ public class UnansweredDocumentsView {
 		gd.heightHint = (int) (((org.eclipse.swt.widgets.List) incompleteDocumentsList.getControl()).getItemHeight()
 				* 4);
 		gd.widthHint = 300;
-		incompleteDocumentsList.getControl().setLayoutData(gd);
+		incompleteDocumentsList.getControl()
+				.setLayoutData(gd);
 		incompleteDocumentsList.setSorter(new ViewerSorter());
 		incompleteDocumentsList.setContentProvider(ArrayContentProvider.getInstance());
 		incompleteDocumentsList.setLabelProvider(new LabelProvider() {
@@ -69,7 +72,10 @@ public class UnansweredDocumentsView {
 				}
 			}
 		}
-		incompleteDocumentsList.setInput(badDocuments);
+		if (!badDocuments.equals(incompleteDocuments)) {
+			incompleteDocumentsList.setInput(badDocuments);
+			incompleteDocuments = badDocuments;
+		}
 		return badDocuments;
 	}
 
