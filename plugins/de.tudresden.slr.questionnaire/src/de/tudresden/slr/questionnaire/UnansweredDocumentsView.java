@@ -39,6 +39,7 @@ public class UnansweredDocumentsView {
 		GridData gd = new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false, 2, 1);
 		gd.heightHint = (int) (((org.eclipse.swt.widgets.List) incompleteDocumentsList.getControl()).getItemHeight()
 				* 4);
+		gd.widthHint = 300;
 		incompleteDocumentsList.getControl().setLayoutData(gd);
 		incompleteDocumentsList.setSorter(new ViewerSorter());
 		incompleteDocumentsList.setContentProvider(ArrayContentProvider.getInstance());
