@@ -61,20 +61,41 @@ public class QuestionnaireView extends ViewPart {
 		new Label(parent, 0).setText("Document");
 		documentLabel = new Label(parent, 0);
 		documentLabel.setText(NO_DOCUMENT_PLACEHOLDER);
+
 		createButtonNewQuestion(parent);
 		createButtonNewQuestionnaire(parent);
 
-		unansweredDocumentsView = new UnansweredDocumentsView(parent, getSite(), questionnaireSelector::getSelected,
+		createSummarryButton(parent);
+		new Label(parent, 0); // dummy to fill the grid cell
+
+		unansweredDocumentsView = new UnansweredDocumentsView(parent, getSite(),
+				questionnaireSelector::getSelected,
 				projectSelector::getSelected);
 
-		documentWatcher = new BibtexEntryWatcher(getSite().getWorkbenchWindow().getSelectionService());
+		documentWatcher = new BibtexEntryWatcher(
+				getSite().getWorkbenchWindow().getSelectionService());
 		documentWatcher.addDocumentListener(this::onDocumentChanged);
 
 		projectSelector.addObserver(questionnaireSelector::setProject);
 		questionnaireSelector.addObserver(this::setQuestionnaire);
-		questionnaireSelector.addObserver(q -> unansweredDocumentsView.findDocuments());
+		questionnaireSelector
+				.addObserver(q -> unansweredDocumentsView.findDocuments());
 
 		projectSelector.updateOptionsDisplay();
+	}
+
+	private void createSummarryButton(Composite parent2) {
+		Button btn = new Button(parent, 0);
+		btn.setText("Summary");
+		btn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (questionnaire == null)
+					return;
+				HtmlSummary summary = new HtmlSummary(questionnaire);
+				summary.showSummary();
+			}
+		});
 	}
 
 	@Override
@@ -87,8 +108,10 @@ public class QuestionnaireView extends ViewPart {
 		buttonNewQuestion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-				WizardDialog dialog = new WizardDialog(shell, new NewQuestionWizard(questionnaire));
+				Shell shell = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell();
+				WizardDialog dialog = new WizardDialog(shell,
+						new NewQuestionWizard(questionnaire));
 				dialog.open();
 				setQuestionnaire(questionnaire);
 			}
@@ -102,8 +125,9 @@ public class QuestionnaireView extends ViewPart {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				IWorkbench wb = PlatformUI.getWorkbench();
-				IStructuredSelection selection = (IStructuredSelection) wb.getActiveWorkbenchWindow()
-						.getSelectionService().getSelection();
+				IStructuredSelection selection = (IStructuredSelection) wb
+						.getActiveWorkbenchWindow().getSelectionService()
+						.getSelection();
 				if (selection == null)
 					selection = StructuredSelection.EMPTY;
 				NewQuestionnaireWizard wiz = new NewQuestionnaireWizard();
@@ -134,22 +158,26 @@ public class QuestionnaireView extends ViewPart {
 			scroll.dispose();
 
 		if (questionnaire != null) {
-			// TODO new ScrolledComposite should retain scroll height if questionnaire
+			// TODO new ScrolledComposite should retain scroll height if
+			// questionnaire
 			// hasn't changed
-			scroll = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
+			scroll = new ScrolledComposite(parent,
+					SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 			GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 			scroll.setLayoutData(gd);
 			Composite innerContainer = new Composite(scroll, 0);
 			innerContainer.setLayout(new GridLayout(1, false));
 			for (Question<?> question : questionnaire.getQuestions()) {
-				QuestionViewBase<?> view = QuestionViewBase.qvFor(innerContainer, question, this::getDocument,
+				QuestionViewBase<?> view = QuestionViewBase.qvFor(
+						innerContainer, question, this::getDocument,
 						this::onQuestionChanged);
 				questionViews.add(view);
 			}
 			updateEnableAnswering();
 
 			scroll.setContent(innerContainer);
-			innerContainer.setSize(innerContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			innerContainer.setSize(
+					innerContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		}
 		parent.layout(true);
 	}

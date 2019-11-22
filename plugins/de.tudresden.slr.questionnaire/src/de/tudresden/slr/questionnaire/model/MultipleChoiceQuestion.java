@@ -10,4 +10,10 @@ public class MultipleChoiceQuestion extends ChoiceQuestion<List<String>> {
 				throw new IllegalArgumentException("invalid choice");
 		super.addAnswer(documentKey, answer);
 	}
+
+	@Override
+	public int countOccurrencesOfChoiceInAnswers(String choice) {
+		return (int) answers.entrySet().stream()
+				.filter(entry -> entry.getValue().contains(choice)).count();
+	}
 }

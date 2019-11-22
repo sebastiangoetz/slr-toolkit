@@ -13,7 +13,7 @@ public abstract class Question<E> {
 	private String type;
 
 	private String questionText;
-	private Map<String, E> answers = new HashMap<>();
+	protected Map<String, E> answers = new HashMap<>();
 
 	public Question() {
 		type = getClass().getName();
@@ -49,6 +49,10 @@ public abstract class Question<E> {
 
 	public boolean hasAnswerFor(String key) {
 		return getAnswer(key) != null;
+	}
+	
+	public Map<String, E> getAnswers() {
+		return answers;
 	}
 
 }

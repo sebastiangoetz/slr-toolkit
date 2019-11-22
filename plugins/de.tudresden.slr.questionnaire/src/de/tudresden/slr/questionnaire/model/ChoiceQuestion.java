@@ -23,4 +23,6 @@ public abstract class ChoiceQuestion<E> extends Question<E> {
 	public List<String> getChoices() {
 		return choices;
 	}
+	
+	public abstract int countOccurrencesOfChoiceInAnswers(String choice);
 }
