@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,12 @@ import de.tudresden.slr.questionnaire.model.Question;
 public class HtmlSummary {
 
 	private Questionnaire questionnaire;
+	private StringBuilder str;
 
 	public HtmlSummary(Questionnaire questionnaire) {
 		super();
 		this.questionnaire = questionnaire;
+		this.str = new StringBuilder();
 	}
 
 	public void showSummary() {
@@ -46,46 +49,62 @@ public class HtmlSummary {
 	}
 
 	public String generateSummary() {
-		StringBuilder str = new StringBuilder();
+		str.setLength(0);
+
 		str.append("<html>");
-		
-		str.append("<head>");
-		str.append("<title>Questionnaire Summary</title>");
-		addCssFile("css/reset.css", str);
-		addCssFile("css/summary.css", str);
-		str.append("</head>");
-		
-		str.append("<body>");
-		questionnaire.getQuestions().forEach(q -> visit(str, q));
-		str.append("</body>");
-		
+		generateHead();
+		generateBody();
 		str.append("</html>");
 		return str.toString();
 	}
 
-	private void visit(StringBuilder stringBuilder, Question<?> question) {
-		stringBuilder.append("<h1>").append(question.getQuestionText()).append("</h1>");
-
-		if (question instanceof FreeTextQuestion)
-			visit(stringBuilder, (FreeTextQuestion) question);
-		else if (question instanceof ChoiceQuestion)
-			visit(stringBuilder, (ChoiceQuestion<?>) question);
-		else
-			throw new IllegalArgumentException("not implemented for " + question.getClass());
+	private void generateHead() {
+		str.append("<head>");
+		str.append("<title>Questionnaire Summary</title>");
+		addCssFile("css/reset.css");
+		addCssFile("css/summary.css");
+		str.append("</head>");
 	}
 
-	private void visit(StringBuilder str, FreeTextQuestion question) {
+	private void generateBody() {
+		str.append("<body>");
+		String fullName = questionnaire.getName();
+		String baseName = fullName.replace(".questionnaire", "");
+		str.append("<h1>Summary: ").append(baseName).append("</h1>");
+		str.append("This is a summary of the questionnaire <strong>").append(fullName).append("</strong>.");
+		questionnaire.getQuestions().forEach(this::visit);
+		str.append("</body>");
+	}
+
+	private void visit(Question<?> question) {
+		str.append("<div class='question'>");
+		str.append("<h2>").append(question.getQuestionText()).append("</h2>");
+		if (question instanceof FreeTextQuestion)
+			visit((FreeTextQuestion) question);
+		else if (question instanceof ChoiceQuestion)
+			visit((ChoiceQuestion<?>) question);
+		else
+			throw new IllegalArgumentException("not implemented for " + question.getClass());
+		str.append("</div>");
+	}
+
+	private void visit(FreeTextQuestion question) {
+		boolean notAnswered = true;
 		for (Entry<String, String> entry : question.getAnswers().entrySet()) {
+			notAnswered = false;
 			final String document = entry.getKey();
 			final String answer = entry.getValue();
-			str.append("<h2>").append(document).append("</h2>");
+			str.append("<h3>").append(document).append("</h3>");
 			str.append("<p>").append(answer).append("</p>");
+		}
+		if (notAnswered) {
+			str.append("<p class='error'>This question hasn't been answered for any documents.</p>");
 		}
 	}
 
-	private void visit(StringBuilder str, ChoiceQuestion<?> question) {
+	private void visit(ChoiceQuestion<?> question) {
 		str.append("<table>");
-		str.append("<tr><th>Choice</th><th>Count</th></tr>");
+		str.append("<tr><th>Option</th><th>Count</th></tr>");
 		for (String choice : question.getChoices()) {
 			str.append("<tr>");
 			str.append("<td>").append(choice).append("</td>");
@@ -94,21 +113,21 @@ public class HtmlSummary {
 		}
 		str.append("</table>");
 	}
-	
-	private void addCssFile(String cssName, StringBuilder str) {
+
+	private void addCssFile(String cssName) {
 		Bundle bundle = Platform.getBundle("de.tudresden.slr.questionnaire");
 		URL url = bundle.getEntry(cssName);
 		System.out.println(bundle);
 		System.out.println(url);
 		try {
 			File file = new File(FileLocator.resolve(url).toURI());
-			addCssFile(file, str);
+			addCssFile(file);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void addCssFile(File file, StringBuilder str) {
+	private void addCssFile(File file) {
 		try {
 			String content = Files.lines(file.toPath()).collect(Collectors.joining());
 			str.append("<style>").append(content).append("</style>");
