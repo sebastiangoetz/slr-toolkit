@@ -2,8 +2,6 @@ package de.tudresden.slr.questionnaire.questionview;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -13,18 +11,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.questionnaire.Questionnaire;
 import de.tudresden.slr.questionnaire.model.FreeTextQuestion;
-import de.tudresden.slr.questionnaire.model.Question;
 
 public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 
-	public FreeTextQuestionView(Composite parent, FreeTextQuestion question, Supplier<Document> documentSupplier,
-			Consumer<Question<?>> onQuestionChanged) {
-		super(parent, question, documentSupplier, onQuestionChanged);
-	}
+	public FreeTextQuestionView(Composite parent, FreeTextQuestion question, Questionnaire questionnaire,
+            String document) {
+        super(parent, question, questionnaire, document);
+    }
 
-	@Override
+    @Override
 	protected List<Control> renderControls() {
 		List<Control> controls = new LinkedList<>();
 
@@ -33,7 +30,7 @@ public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 		int textHeight = text.getLineHeight();
 		text.setSize(textWidth, textHeight);
 		try {
-			text.setText(question.getAnswer(getDocumentKey()));
+			text.setText(question.getAnswer(document));
 		} catch (NullPointerException | IllegalArgumentException e) {
 			text.setText("");
 		}
@@ -45,7 +42,7 @@ public class FreeTextQuestionView extends QuestionViewBase<FreeTextQuestion> {
 		text.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				question.addAnswer(getDocumentKey(), text.getText());
+				question.addAnswer(document, text.getText());
 				onQuestionChanged.accept(question);
 			}
 		});

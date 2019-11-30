@@ -1,11 +1,13 @@
 package de.tudresden.slr.questionnaire;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
 import de.tudresden.slr.questionnaire.model.Question;
+import de.tudresden.slr.questionnaire.util.CollectionUtils;
 import de.tudresden.slr.questionnaire.util.GsonFactory;
 
 public class Questionnaire {
@@ -24,7 +26,11 @@ public class Questionnaire {
 	}
 
 	public List<Question<?>> getQuestions() {
-		return questions;
+		return Collections.unmodifiableList(questions);
+	}
+	
+	public boolean remove(Question<?> question) {
+		return questions.remove(question);
 	}
 
 	public String getName() {
@@ -55,4 +61,11 @@ public class Questionnaire {
 		questions.forEach(q -> q.clearAnswers());
 	}
 
+	public boolean moveUp(Question<?> question) {
+		return CollectionUtils.moveUp(questions, question);
+	}
+	
+	public boolean moveDown(Question<?> question) {
+		return CollectionUtils.moveDown(questions, question);
+	}
 }
