@@ -106,7 +106,7 @@ public class QuestionnaireView extends ViewPart {
             @Override
             public void mouseDown(MouseEvent e) {
                 Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-                WizardDialog dialog = new WizardDialog(shell, new NewQuestionWizard(questionnaire));
+                WizardDialog dialog = new WizardDialog(shell, new NewQuestionWizard(questionnaire, null));
                 dialog.open();
                 setQuestionnaire(questionnaire);
             }

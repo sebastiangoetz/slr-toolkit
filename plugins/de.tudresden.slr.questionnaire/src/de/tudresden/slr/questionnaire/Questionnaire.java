@@ -68,4 +68,12 @@ public class Questionnaire {
 	public boolean moveDown(Question<?> question) {
 		return CollectionUtils.moveDown(questions, question);
 	}
+
+    public boolean replaceQuestion(Question<?> initialQuestion, Question<?> newQuestion) {
+        int oldIndex = questions.indexOf(initialQuestion);
+        if (oldIndex < 0) return false;
+        questions.remove(oldIndex);
+        questions.add(oldIndex, newQuestion);
+        return true;
+    }
 }

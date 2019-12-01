@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,6 +23,7 @@ import de.tudresden.slr.questionnaire.model.FreeTextQuestion;
 import de.tudresden.slr.questionnaire.model.MultipleChoiceQuestion;
 import de.tudresden.slr.questionnaire.model.Question;
 import de.tudresden.slr.questionnaire.model.SingleChoiceQuestion;
+import de.tudresden.slr.questionnaire.wizard.NewQuestionWizard;
 
 public abstract class QuestionViewBase<T extends Question<?>> {
 
@@ -103,11 +105,14 @@ public abstract class QuestionViewBase<T extends Question<?>> {
         new MenuItem(menu, SWT.BAR);
 
         MenuItem edit = new MenuItem(menu, SWT.NONE);
-        edit.setText("Edit (not implemented)");
+        edit.setText("Edit");
         edit.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // TODO implement, also change the display text once done
+                NewQuestionWizard wizard = new NewQuestionWizard(questionnaire, question);
+                WizardDialog dialog = new WizardDialog(root.getShell(), wizard);
+                dialog.open();
+                onQuestionnaireChanged.accept(questionnaire);
             }
         });
 

@@ -24,91 +24,105 @@ import de.tudresden.slr.questionnaire.model.SingleChoiceQuestion;
 
 public class NewQuestionWizardPage extends WizardPage {
 
-	private Text textQuestionDescription;
-	private Text textQuestionChoices;
-	private Button buttonMultipleChoice;
+    private Text textQuestionDescription;
+    private Text textQuestionChoices;
+    private Button buttonMultipleChoice;
+    
+    private Question<?> initialQuestion;
 
-	protected NewQuestionWizardPage(String pageName) {
-		super(pageName);
-		setTitle("New Question");
-		setDescription("Create a new question");
-	}
+    protected NewQuestionWizardPage(String pageName, Question<?> initialQuestion) {
+        super(pageName);
+        setTitle("New Question");
+        setDescription("Create a new question");
+        this.initialQuestion = initialQuestion;
+    }
 
-	@Override
-	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, 0);
-		container.setLayout(new RowLayout(SWT.VERTICAL));
-		setControl(container);
+    @Override
+    public void createControl(Composite parent) {
+        Composite container = new Composite(parent, 0);
+        container.setLayout(new RowLayout(SWT.VERTICAL));
+        setControl(container);
 
-		Label l1 = new Label(container, 0);
-		l1.setText("Question Text");
-		textQuestionDescription = new Text(container, SWT.BORDER);
-		textQuestionDescription.setLayoutData(new RowData(500, SWT.DEFAULT));
+        Label l1 = new Label(container, 0);
+        l1.setText("Question Text");
+        textQuestionDescription = new Text(container, SWT.BORDER);
+        textQuestionDescription.setLayoutData(new RowData(500, SWT.DEFAULT));
 
-		Group g = new Group(container, 0);
-		g.setText("Presets");
-		g.setLayout(new RowLayout(SWT.HORIZONTAL));
-		createButtonPresetLikert4(g);
-		createButtonPresetLikert5(g);
+        Group g = new Group(container, 0);
+        g.setText("Presets");
+        g.setLayout(new RowLayout(SWT.HORIZONTAL));
+        createButtonPresetLikert4(g);
+        createButtonPresetLikert5(g);
 
-		Label l2 = new Label(container, 0);
-		l2.setText("Choices, each line is one possible choice.\nLeave blank if you want free text answers instead.");
+        Label l2 = new Label(container, 0);
+        l2.setText("Choices, each line is one possible choice.\nLeave blank if you want free text answers instead.");
 
-		textQuestionChoices = new Text(container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		textQuestionChoices.setLayoutData(new RowData(500, textQuestionChoices.getLineHeight() * 6));
+        textQuestionChoices = new Text(container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+        textQuestionChoices.setLayoutData(new RowData(500, textQuestionChoices.getLineHeight() * 6));
 
-		buttonMultipleChoice = new Button(container, SWT.CHECK);
-		buttonMultipleChoice.setText("Allow multiple-choice");
-	}
+        buttonMultipleChoice = new Button(container, SWT.CHECK);
+        buttonMultipleChoice.setText("Allow multiple-choice");
+        
+        initFromQuestion(initialQuestion);
+    }
 
-	public Question<?> generateQuestion() throws BadUserInputException {
-		String description = textQuestionDescription.getText();
-		if (description.equals(""))
-			throw new BadUserInputException("Description can't be empty");
+    public Question<?> generateQuestion() throws BadUserInputException {
+        String description = textQuestionDescription.getText();
+        if (description.equals(""))
+            throw new BadUserInputException("Description can't be empty");
 
-		List<String> choices = Arrays.stream(textQuestionChoices.getText()
-				.split("\n"))
-				.map(x -> x.trim())
-				.filter(x -> !x.isEmpty())
-				.collect(Collectors.toList());
+        List<String> choices = Arrays.stream(textQuestionChoices.getText().split("\n")).map(x -> x.trim())
+                .filter(x -> !x.isEmpty()).collect(Collectors.toList());
 
-		if (choices.size() == 1)
-			throw new BadUserInputException("Must offer more than one choice, or none at all");
+        if (choices.size() == 1)
+            throw new BadUserInputException("Must offer more than one choice, or none at all");
 
-		if (choices.size() == 0) {
-			FreeTextQuestion q = new FreeTextQuestion();
-			q.setQuestionText(description);
-			return q;
-		} else {
-			boolean multiChoice = buttonMultipleChoice.getSelection();
-			ChoiceQuestion<?> q = multiChoice ? new MultipleChoiceQuestion() : new SingleChoiceQuestion();
-			q.setQuestionText(description);
-			choices.forEach(q::addChoice);
-			return q;
-		}
-	}
+        if (choices.size() == 0) {
+            FreeTextQuestion q = new FreeTextQuestion();
+            q.setQuestionText(description);
+            return q;
+        } else {
+            boolean multiChoice = buttonMultipleChoice.getSelection();
+            ChoiceQuestion<?> q = multiChoice ? new MultipleChoiceQuestion() : new SingleChoiceQuestion();
+            q.setQuestionText(description);
+            choices.forEach(q::addChoice);
+            return q;
+        }
+    }
 
-	private Button createButtonPresetLikert4(Composite parent) {
-		String[] choices = new String[] { "Strongly disagree", "Disagree", "Agree", "Strongly agree" };
-		return createButtonPreset(parent, "Likert 4", choices);
-	}
+    private Button createButtonPresetLikert4(Composite parent) {
+        String[] choices = new String[] { "Strongly disagree", "Disagree", "Agree", "Strongly agree" };
+        return createButtonPreset(parent, "Likert 4", choices);
+    }
 
-	private Button createButtonPresetLikert5(Composite parent) {
-		String[] choices = new String[] { "Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree" };
-		return createButtonPreset(parent, "Likert 5", choices);
-	}
+    private Button createButtonPresetLikert5(Composite parent) {
+        String[] choices = new String[] { "Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree" };
+        return createButtonPreset(parent, "Likert 5", choices);
+    }
 
-	private Button createButtonPreset(Composite parent, String buttonName, String[] choices) {
-		Button b = new Button(parent, SWT.PUSH);
-		b.setText(buttonName);
-		b.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				String text = String.join("\n", choices);
-				textQuestionChoices.setText(text);
-			}
-		});
-		return b;
-	}
+    private Button createButtonPreset(Composite parent, String buttonName, String[] choices) {
+        Button b = new Button(parent, SWT.PUSH);
+        b.setText(buttonName);
+        b.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDown(MouseEvent e) {
+                String text = String.join("\n", choices);
+                textQuestionChoices.setText(text);
+            }
+        });
+        return b;
+    }
+
+    private void initFromQuestion(Question<?> question) {
+        if (question == null)
+            return;
+        textQuestionDescription.setText(question.getQuestionText());
+        buttonMultipleChoice.setSelection(question instanceof MultipleChoiceQuestion);
+        if (question instanceof ChoiceQuestion) {
+            List<String> options = ((ChoiceQuestion<?>) question).getChoices();
+            String text = options.stream().collect(Collectors.joining("\n"));
+            textQuestionChoices.setText(text);
+        }
+    }
 
 }
