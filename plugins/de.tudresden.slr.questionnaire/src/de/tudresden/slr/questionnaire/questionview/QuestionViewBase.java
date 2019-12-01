@@ -62,17 +62,19 @@ public abstract class QuestionViewBase<T extends Question<?>> {
 
     private void renderBase() {
         root.setLayout(new GridLayout(1, false));
-        setupContextMenu();
 
         Font font = JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
         Label label = new Label(root, SWT.NONE);
         label.setText(question.getQuestionText());
         label.setFont(font);
+
+        setupContextMenu(root);
+        setupContextMenu(label);
     }
 
-    private void setupContextMenu() {
-        Menu menu = new Menu(root);
-        root.setMenu(menu);
+    private void setupContextMenu(Control control) {
+        Menu menu = new Menu(control);
+        control.setMenu(menu);
 
         MenuItem moveUp = new MenuItem(menu, SWT.NONE);
         moveUp.setText("Move Up");
