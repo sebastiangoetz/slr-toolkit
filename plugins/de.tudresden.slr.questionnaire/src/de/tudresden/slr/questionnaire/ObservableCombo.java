@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,7 +24,10 @@ public abstract class ObservableCombo<E> {
 	private List<Consumer<E>> observers = new LinkedList<>();
 
 	public ObservableCombo(Composite parent, GridData gridData) {
-		combo = new Combo(parent, SWT.READ_ONLY);
+	    Composite container = new Composite(parent, SWT.NONE);
+	    container.setLayout(new GridLayout(2, false));
+	    
+		combo = new Combo(container, SWT.READ_ONLY);
 		combo.setLayoutData(gridData);
 		combo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -28,21 +35,40 @@ public abstract class ObservableCombo<E> {
 				notifyObservers();
 			}
 		});
+		Button refresh = new Button(container, SWT.PUSH);
+		refresh.setText("Refresh");
+		refresh.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseDown(MouseEvent e) {
+		        updateOptionsDisplay();
+		    }
+		});
 	}
 
 	/** should update {@link #labels} and {@link #elements} */
 	protected abstract void updateLabelsAndElements();
 
 	public E getSelected() {
-		if (elements.size() == 0)
-			return null;
-		int index = combo.getSelectionIndex();
-		if (index < 0 || index >= elements.size())
-			throw new IllegalStateException();
-		return elements.get(index);
-	}
+        if (elements.size() == 0)
+            return null;
+        int index = combo.getSelectionIndex();
+        if (index < 0 || index >= elements.size())
+            throw new IllegalStateException();
+        return elements.get(index);
+    }
+	
+	public String getSelectedLabel() {
+        if (labels.size() == 0)
+            return null;
+        int index = combo.getSelectionIndex();
+        if (index < 0 || index >= labels.size())
+            throw new IllegalStateException();
+        return labels.get(index);
+    }
 
 	public void updateOptionsDisplay() {
+	    String previousLabel = getSelectedLabel();
+	    
 		labels.clear();
 		elements.clear();
 		updateLabelsAndElements();
@@ -51,14 +77,14 @@ public abstract class ObservableCombo<E> {
 			throw new IllegalStateException("unequal sizes of labels/elements");
 		labels.forEach(combo::add);
 
-		// TODO Instead of selecting first, try to select the previous element (if it
-		// still exists)
-		selectFirst();
+		int index = labels.indexOf(previousLabel);
+		select(index);
 	}
 
-	public void selectFirst() {
-		combo.select(0);
-		notifyObservers();
+	private void select(int n) {
+	    if (n < 0) n = 0;
+	    combo.select(n);
+	    notifyObservers();
 	}
 
 	private void notifyObservers() {
