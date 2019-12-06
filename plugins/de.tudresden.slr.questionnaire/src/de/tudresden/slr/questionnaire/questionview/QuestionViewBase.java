@@ -52,11 +52,12 @@ public abstract class QuestionViewBase<T extends Question<?>> {
         this.root = new Composite(parent, SWT.BORDER);
         root.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
+        this.document = document;
         this.question = question;
         this.questionnaire = questionnaire;
 
         if (!questionnaire.getQuestions().contains(question))
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("question must be part of provided questionnaire");
 
         renderBase();
         controls = renderControls();

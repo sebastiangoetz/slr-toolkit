@@ -28,8 +28,8 @@ public abstract class Question<E> {
 	}
 
 	public void addAnswer(String documentKey, E answer) {
-		if (documentKey == null || answer == null)
-			throw new NullPointerException();
+		if (documentKey == null) throw new NullPointerException("documentKey must not be null");
+		if (answer == null) throw new NullPointerException("answer must not be null");
 		answers.put(documentKey, answer);
 	}
 
