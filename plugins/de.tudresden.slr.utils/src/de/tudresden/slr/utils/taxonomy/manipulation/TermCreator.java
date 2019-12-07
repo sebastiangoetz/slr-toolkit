@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -33,4 +34,20 @@ public class TermCreator {
 		return createdTerm;
 	}
 
+	 public static Term createChildIfNotExisting(EObject parent, String name) {
+		 Optional<Term> existingTerm = SearchUtils.findChildWithName(parent,name);
+		 if(existingTerm.isPresent()) {
+			 return existingTerm.get();
+		 } else {
+			 Term newTerm = TaxonomyFactory.eINSTANCE.createTerm();
+			 newTerm.setName(name);
+			 SearchUtils.getChildren(parent).add(newTerm);
+			 if(parent instanceof Term) {
+				 SearchUtils.getConainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
+			 } else {
+				 TaxonomyUtils.saveTaxonomy((Model) parent);
+			 }
+			 return newTerm;
+		 }
+	 }
 }
