@@ -23,15 +23,15 @@ import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
 public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
-	private static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
-	private static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
-	private static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrproject";
+	protected static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
+	protected static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
+	protected static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrproject";
 
 	
-	private WizardNewProjectCreationPage firstPage;
-	private WizardSetupBibtexPage secondPage;
-	private WizardSetupTaxonomyPage thirdPage;
-	private WizardSetupMetainformationPage fourthPage;
+	protected WizardNewProjectCreationPage firstPage;
+	protected WizardSetupBibtexPage secondPage;
+	protected WizardSetupTaxonomyPage thirdPage;
+	protected WizardSetupMetainformationPage fourthPage;
 
 	public NewSlrProjectWizard() {
 		setWindowTitle("New SLR Project");
@@ -61,19 +61,27 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		// create the project set up in the first wizard page
-		IProject project = firstPage.getProjectHandle();
+		
 		try {
-			project.create(null);
-			project.open(null);
-			createResourceFile(project, secondPage, BIBTEX_RESOURCE);
-			createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
-			createResourceFile(project, fourthPage, METAINFORMATION_RESOURCE);
-			SlrProjectSupport.addNature(project);
-		} catch (CoreException e) {
-			e.printStackTrace();
+			createSlrProject();
+		} catch(CoreException e) {
 			return false;
 		}
+		
 		return true;
+	}
+	
+	
+	protected IProject createSlrProject() throws CoreException {
+		IProject project = firstPage.getProjectHandle();
+		project.create(null);
+		project.open(null);
+		createResourceFile(project, secondPage, BIBTEX_RESOURCE);
+		createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
+		createResourceFile(project, fourthPage, METAINFORMATION_RESOURCE);
+		SlrProjectSupport.addNature(project);
+		return project;
+
 	}
 
 	/**
