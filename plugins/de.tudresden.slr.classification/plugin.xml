@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Taxonomy"
+            id="de.tudresden.slr.classification.commands.category">
+      </category>
+      <command
+            name="Generate Taxonomy from Bibtex"
+            categoryId="de.tudresden.slr.classification.commands.category"
+            id="de.tudresden.slr.classification.commands.generateTaxonomyCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.tudresden.slr.classification.commands.generateTaxonomyCommand"
+            class="de.tudresden.slr.classification.handlers.ClassificationHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="de.tudresden.slr.classification.commands.generateTaxonomyCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+7"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="Taxonomy"
+               mnemonic="T"
+               id="de.tudresden.slr.classification.menus.taxonomyMenu">
+            <command
+                  commandId="de.tudresden.slr.classification.commands.generateTaxonomyCommand"
+                  mnemonic="g"
+                  id="de.tudresden.slr.classification.menus.generateTaxonomyCommand">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+
+</plugin>
