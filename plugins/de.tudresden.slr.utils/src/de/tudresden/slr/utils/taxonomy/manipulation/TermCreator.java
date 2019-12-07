@@ -33,21 +33,29 @@ public class TermCreator {
 		}
 		return createdTerm;
 	}
-
-	 public static Term createChildIfNotExisting(EObject parent, String name) {
-		 Optional<Term> existingTerm = SearchUtils.findChildWithName(parent,name);
-		 if(existingTerm.isPresent()) {
+	
+	
+	public static Term createChildIfNotExisting(EObject parent, String name) {
+		return createChildIfNotExisting(parent,name,true);
+	}
+	
+	public static Term createChildIfNotExisting(EObject parent, String name,boolean doSave) {
+		Optional<Term> existingTerm = SearchUtils.findChildWithName(parent,name);
+		if(existingTerm.isPresent()) {
 			 return existingTerm.get();
-		 } else {
+		} else {
 			 Term newTerm = TaxonomyFactory.eINSTANCE.createTerm();
 			 newTerm.setName(name);
 			 SearchUtils.getChildren(parent).add(newTerm);
-			 if(parent instanceof Term) {
-				 SearchUtils.getConainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
-			 } else {
-				 TaxonomyUtils.saveTaxonomy((Model) parent);
+			 if(doSave) {
+				 if(parent instanceof Term) {
+					 SearchUtils.getConainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
+				 } else {
+					 TaxonomyUtils.saveTaxonomy((Model) parent);
+				 }
 			 }
 			 return newTerm;
-		 }
+			
+		}
 	 }
 }
