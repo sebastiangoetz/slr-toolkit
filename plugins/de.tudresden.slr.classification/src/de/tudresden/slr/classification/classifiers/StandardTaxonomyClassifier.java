@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -43,7 +45,19 @@ public class StandardTaxonomyClassifier {
 		String[] lookUp = {"booktitle","journal","howpublished"};
 		for(String type: lookUp) {
 			if(fieldKeys.contains(type)) {
-				classifyDocument(doc,"Document Venue", type, fields.get(type).replaceAll("[^A-Za-z0-9 ]", ""));
+				String field = fields.get(type).replaceAll("[^A-Za-z0-9 ]", "");
+				if(!Character.isLetter(field.charAt(0))) {
+					
+					InputDialog dlg = new InputDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+							 "Invalid Term name",
+							 "Please enter a new term name that starts with a letter.",
+							 field,
+							 (s -> (!Character.isLetter(s.charAt(0))) ? "" : null)
+									 );
+					 field = (dlg.open() == 0)? field = dlg.getValue() : "PLACEHOLDER " + field;
+					 field.replaceAll("[^A-Za-z0-9 ]", "");
+				}
+				classifyDocument(doc,"Document Venue", type, field);
 			}
 
 		
@@ -67,6 +81,7 @@ public class StandardTaxonomyClassifier {
 			 
 			 TaxonomyUtils.saveTaxonomy(model);
 			 try {
+				 
 				 doc.eResource().save(null);
 			 } catch (IOException e) {
 				 System.err.println("Could not save document " + doc.getKey());
@@ -99,9 +114,12 @@ public class StandardTaxonomyClassifier {
 						Resource bibRes = domainOpt.get().getResourceSet().getResource(uri, true);
 						for(EObject e:bibRes.getContents()) {
 							Document doc = (Document) e;
-							ModelRegistryPlugin.getModelRegistry().setActiveDocument(doc);
+							if(doc.getAuthors().size()!=0) {
+								//Very strange bug: If a dialog is opened when the line below is uncommented, saving of docs fails
+								//ModelRegistryPlugin.getModelRegistry().setActiveDocument(doc);
+								createStandardTaxonomy(doc);
+							}
 							
-							createStandardTaxonomy(doc);
 						}
 				 }
 			 }
@@ -112,7 +130,6 @@ public class StandardTaxonomyClassifier {
 		 } catch(CoreException e) {
 			 
 		 }
-		 
 	 }
 
 }
