@@ -106,7 +106,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 			try {
 				String fieldCites = safeGetField(entry, KEY_CITES);
 				int cites = (fieldCites.equals("")) ? 0 : Integer.parseInt(fieldCites);
-				if(safeGetField(entry, KEY_SOURCE).equals("Scopus")) {
+				if(cites == 0 && safeGetField(entry, KEY_SOURCE).equals("Scopus")) {
 					//Scopus stores citation information as note field: note = {cited by $cites}
 					String[] note = safeGetField(entry, KEY_NOTE).split(" ");
 					if(note.length == 3) cites += Integer.parseInt(note[note.length - 1]);
