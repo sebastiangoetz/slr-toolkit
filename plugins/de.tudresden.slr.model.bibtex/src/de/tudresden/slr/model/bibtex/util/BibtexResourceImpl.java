@@ -64,7 +64,10 @@ public class BibtexResourceImpl extends ResourceImpl {
 	private static final Key KEY_FILE = new Key("howpublished");
 	private static final Key KEY_CITES = new Key("citations");
 	private static final Key KEY_CLASSES = new Key("classes");
-
+	
+	//scopus
+	private static final Key KEY_SOURCE = new Key("source");
+	private static final Key KEY_NOTE = new Key("note");
 	/**
 	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -101,7 +104,13 @@ public class BibtexResourceImpl extends ResourceImpl {
 			document.setType(entry.getType().toString());
 			document.setTitle(safeGetField(entry, KEY_TITLE));
 			try {
-				int cites = Integer.parseInt(safeGetField(entry, KEY_CITES));
+				String fieldCites = safeGetField(entry, KEY_CITES);
+				int cites = (fieldCites.equals("")) ? 0 : Integer.parseInt(fieldCites);
+				if(safeGetField(entry, KEY_SOURCE).equals("Scopus")) {
+					//Scopus stores citation information as note field: note = {cited by $cites}
+					String[] note = safeGetField(entry, KEY_NOTE).split(" ");
+					if(note.length == 3) cites += Integer.parseInt(note[note.length - 1]);
+				}
 				document.setCites(cites);
 			} catch (NumberFormatException e) {
 			}
