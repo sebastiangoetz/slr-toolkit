@@ -3,7 +3,7 @@
 	<extension point="org.eclipse.ui.views">
         <view 
         	id="de.tudresden.slr.questionnaire.QuestionnaireView"
-            name="QuestionnaireView"
+            name="Questionnaires"
           	class="de.tudresden.slr.questionnaire.QuestionnaireView"
           	category="de.tudresden.slr.views"
         />
