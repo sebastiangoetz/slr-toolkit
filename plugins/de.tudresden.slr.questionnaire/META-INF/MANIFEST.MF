@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: de.tudresden.slr.questionnaire
 Bundle-SymbolicName: de.tudresden.slr.questionnaire;singleton:=true
-Bundle-Version: 0.2.6.qualifier
+Bundle-Version: 0.2.7.qualifier
 Bundle-Activator: de.tudresden.slr.questionnaire.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
