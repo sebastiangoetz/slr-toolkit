@@ -1,0 +1,187 @@
+{
+  "$schema": "v5.json",
+  "width": 600,
+  "height": 400,
+  "padding": 15,
+  "background": "#ffffff",
+  "style": "cell",
+  "data": [
+    {
+      "name": "table",
+      "url": "bubble.data.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "amount": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "true"
+        }
+      ]
+    }
+  ],
+  "title": {
+    "text": "",
+    "fontSize": 12,
+    "color": "#000000",
+    "font": "",
+    "fontStyle": "normal",
+    "fontWeight": "normal"
+  },
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": [
+        "circle"
+      ],
+      "from": {
+        "data": "table"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "category1"
+          },
+          "y": {
+            "scale": "y",
+            "field": "category2"
+          },
+          "size": {
+            "scale": "size",
+            "field": "amount"
+          },
+          "fill": {
+            "scale": "color",
+            "field": "amount"
+          },
+          "stroke": {
+            "value": "#222"
+          },
+          "shape": {
+            "value": "circle"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {
+        "data": "table",
+        "field": "category1",
+        "sort": true
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "data": "table",
+        "field": "category2",
+        "sort": {
+          "order": "descending"
+        }
+      },
+      "range": [
+        0,
+        {
+          "signal": "height"
+        }
+      ],
+      "padding": 0.5
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {
+        "data": "table",
+        "field": "amount"
+      },
+      "range": [
+        0,
+        3000
+      ],
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "data": "table",
+        "field": "amount"
+      },
+      "range": {
+        "scheme": ["#eee", "#eee"]
+      },
+      "reverse": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "labelAngle": 315,
+      "labelAlign": "right",
+      "labelBaseline": "top",
+      "labelOverlap": true,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "labelAngle": 315,
+      "orient": "left",
+      "grid": true,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "orient": "right",
+      "direction": "vertical",
+      "fillColor": "#ffffff",
+      "strokeColor": "#ffffff",
+      "labelFont": "",
+      "padding": 5,
+      "gradientLength": {
+        "signal": "clamp(height, 48, 200)"
+      },
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {
+              "value": "#eee"
+            },
+            "stroke": {
+              "value": "#222"
+            },
+            "shape": {
+              "value": "circle"
+            },
+            "fillOpacity": {
+              "value": 1
+            },
+            "opacity": {
+              "value": 1
+            }
+          }
+        }
+      }
+    }
+  ]
+}
