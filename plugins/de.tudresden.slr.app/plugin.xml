@@ -78,13 +78,6 @@
                relationship="stack"
                relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
          </view>
-         <view
-               id="chart.view.chartview"
-               minimized="false"
-               ratio="0.25"
-               relationship="bottom"
-               relative="org.eclipse.ui.editorss">
-         </view>
       </perspectiveExtension>
    </extension>
    <extension

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8"/>
+  <script src="vega.min.js"></script>
+  <script src="knockout-3.5.1.js"></script>
+  <title>SLR-Toolkit - Bubble Matrix Chart</title>
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      background:#eee;
+    }
+    .sidebar {
+      height: 100%;
+      width: 0px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      background-color: #999;
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      font-size: 36px;
+    }
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #999;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      float: right;
+    }
+    .openbtn:hover {
+      background-color: #444;
+    }
+    .collapsible {
+      background-color: #777;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+    .active,
+    .collapsible:hover {
+      background-color: #555;
+    }
+    .collapsible:after {
+      content: '\002B';
+      color: white;
+      font-weight: bold;
+      float: right;
+      margin-left: 5px;
+      overflow: hidden;
+    }
+    .active:after {
+      content: "\2212";
+    }
+    .content {
+      padding: 0 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      background-color: #f1f1f1;
+    }
+    #main {
+      transition: margin-right.5s;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- main window, contains canvas view for the graph and the button for the settings sidebar -->
+  <div id="main">
+    <div id="view" style="float: left;"></div>
+    <div>
+      <button class="openbtn" onclick="openNav()">☰</button>
+    </div>
+  </div>
+
+  <!-- Sidebar that contains the settings form for the graph -->
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <span style="height: 24px;padding: 8px 10px 6px 10px; color: white; font-size: 20px; background-color: #444;float:left;float: left; margin: 13px 0px 0px 3px;">Export:</span>
+    <button class="openbtn" style="float: left; margin: 13px 0px 0px 3px;" onclick="exportSVG()">SVG</button>
+    <button class="openbtn" style="float: left; margin: 13px 0px 0px 3px;" onclick="exportCSV()">CSV</button>
+    <button class="collapsible" style="margin-top: 13px;">Title Settings</button>
+    <div class="content">
+      <h3>Chart Title:</h3>
+      <input data-bind="value: title"></input>
+      <h3>Font Size:</h3>
+      <input type="number" data-bind="value: fontSize"></input>
+      <h3>Font Color:</h3>
+      <input type="color" data-bind="value: fontColor"></input>
+      <h3>Font:</h3>
+      <input data-bind="value: font"></input>
+      <div style="margin-bottom: 10px;">
+        <select data-bind="options: fontStyle, value: fontStyleValue" style="float: left; margin: 10px 0px 10px 0px;"></select>
+        <select data-bind="options: fontWeight, value: fontWeightValue" style="width: 50%; float: right; margin: 10px 0px 10px 0px;"></select>
+      </div>
+    </div>
+    <button class="collapsible">Block Settings</button>
+    <div class="content">
+      <h3>Background Color:</h3>
+      <input type="color" data-bind="value: backgroundColor"></input>
+      <h3>Bar Color:</h3>
+      <select data-bind="options: barColor, value: barColorValue" style="margin-bottom: 10px;"></select>
+      <h3>Bubbles Size:</h3>
+      <input type="number" data-bind="value: bubbleSize" style="margin-bottom: 10px;"></input>
+    </div>
+    <button class="collapsible">Legend Settings</button>
+    <div class="content">
+      <h3>Legend:</h3>
+      <span style="float: left; margin-top: 2px;">Show Legend</span>
+      <input type="checkbox" data-bind="checked: legendBool"/>
+      <h3>Background Color:</h3>
+      <input type="color" data-bind="value: legendBackgroundColor"></input>
+      <h3>Outline Color:</h3>
+      <input type="color" data-bind="value: legendOutlineColor"></input>
+      <h3>Position:</h3>
+      <select data-bind="options: legendPosition, value: legendPositionValue"></select>
+      <h3>Orientation:</h3>
+      <select data-bind="options: legendOrientation, value: legendOrientationValue" style="margin-bottom: 10px;"></select>
+    </div>
+    <button class="collapsible">Series Settings</button>
+    <div class="content">
+      <h3>Filtering category (X-Axes):</h3>
+      <select multiple="multiple" data-bind="options: seriesValues1, selectedOptions: selectedSeriesValues1" style="width: 100%; margin-bottom: 10px; height: 200px;"></select>
+      <h3>Filtering category (Y-Axes):</h3>
+      <select multiple="multiple" data-bind="options: seriesValues2, selectedOptions: selectedSeriesValues2" style="width: 100%; margin-bottom: 10px; height: 200px;"></select>
+    </div>
+    <button class="collapsible">Axes Settings</button>
+    <div class="content">
+      <fieldset>
+        <legend>X-Axes</legend>
+        <h3>Title:</h3>
+        <input data-bind="value: xaxesTitle"></input>
+        <h3>Title Size:</h3>
+        <input type="number" data-bind="value: xaxesFontSize"></input>
+        <h3>Rotation:</h3>
+        <div data-bind="text: xaxesRotation" style="float: left; margin-top: 5px;"></div>
+        <input type="range" min="0" max="360" step="5" data-bind="value: xaxesRotation" style="margin-bottom: 10px;"></input>
+      </fieldset>
+      <fieldset style="margin-bottom: 3px;">
+        <legend>Y-Axes</legend>
+        <h3>Title:</h3>
+        <input data-bind="value: yaxesTitle"></input>
+        <h3>Title Size:</h3>
+        <input type="number" data-bind="value: yaxesFontSize"></input>
+        <h3>Rotation:</h3>
+        <div data-bind="text: yaxesRotation" style="float: left; margin-top: 5px;"></div>
+        <input type="range" min="0" max="360" step="5" data-bind="value: yaxesRotation" style="margin-bottom: 10px;"></input>
+      </fieldset>
+    </div>
+  </div>
+
+<script type="text/javascript">
+    var view;
+    const file_bubble = './bubble.vg.json';
+    const file_bubble_data = './bubble.data.csv';
+    var svg_url;
+    var spec;
+    var categories1 = [];
+    var categories2 = [];
+    
+    fetch(file_bubble_data)
+      .then(res => res.text())
+      .then(text => {
+        text.split('\n').forEach(function(value, index) {
+          if (index == 0 || !value) {
+            return;
+          } else {
+            categories1[categories1.length] = value.split(',')[0];
+            categories2[categories2.length] = value.split(',')[1];
+          }
+          categories1 = categories1.filter(function(elem, pos) {
+            return categories1.indexOf(elem) == pos;
+          }).sort();
+          categories2 = categories2.filter(function(elem, pos) {
+            return categories2.indexOf(elem) == pos;
+          }).sort();
+        });
+      })
+      .then(result => ko.applyBindings(new ViewModel()))
+      .catch(err => console.error(err));
+
+    fetch(file_bubble)
+      .then(res => res.json())
+      .then(specification => {
+        spec = specification;
+        render();
+      })
+      .catch(err => console.error(err));
+
+    function render() {
+      view = new vega.View(vega.parse(spec), {
+        renderer:  'svg',     // renderer (canvas or svg)
+        container: '#view',   // parent DOM container
+        hover:     false      // disable hover processing
+      });
+      view.toImageURL('svg').then(function(url) {
+        svg_url = url;
+      }).catch(function(error) { /* error handling */ });
+      return view.runAsync();
+    }
+
+    var ViewModel = function () {
+      this.title = ko.observable();
+      this.fontSize = ko.observable(12);
+      this.fontColor = ko.observable('#000000');
+      this.font = ko.observable('');
+      this.fontWeight = ko.observableArray(['normal', 'bold']);
+      this.fontWeightValue = ko.observable('normal');
+      this.fontStyle = ko.observableArray(['normal', 'italic']);
+      this.fontStyleValue = ko.observable('normal');
+      this.backgroundColor = ko.observable('#ffffff');
+      this.barLabelBool = ko.observable(false);
+      this.bubbleSize = ko.observable(3000);
+      this.barColor = ko.observableArray(['grey', 'blue', 'greys', 'blues', 'category10', 'category20']);
+      this.barColorValue = ko.observable('grey');
+      this.legendBool = ko.observable(true);
+      this.legendBackgroundColor = ko.observable('#ffffff');
+      this.legendOutlineColor = ko.observable('#ffffff');
+      this.legendPosition = ko.observableArray(['right', 'bottom', 'left', 'top']);
+      this.legendPositionValue = ko.observable('right');
+      this.legendOrientation = ko.observableArray(['vertical', 'horizontal']);
+      this.legendOrientationValue = ko.observable('vertical');
+      this.seriesValues1 = ko.observable(categories1);
+      this.selectedSeriesValues1 = ko.observable([]);
+      this.seriesValues2 = ko.observable(categories2);
+      this.selectedSeriesValues2 = ko.observable([]);
+      this.xaxesTitle = ko.observable();
+      this.xaxesFontSize = ko.observable(12);
+      this.xaxesRotation = ko.observable(315);
+      this.yaxesTitle = ko.observable();
+      this.yaxesFontSize = ko.observable(12);
+      this.yaxesRotation = ko.observable(315);
+
+      ko.computed(function () {
+        this.title();
+        this.fontSize();
+        this.fontColor();
+        this.font();
+        this.fontStyleValue();
+        this.fontWeightValue();
+        this.backgroundColor();
+        this.barLabelBool();
+        this.bubbleSize();
+        this.barColorValue();
+        this.legendBool();
+        this.legendBackgroundColor();
+        this.legendOutlineColor();
+        this.legendPositionValue();
+        this.legendOrientationValue();
+        this.selectedSeriesValues1();
+        this.selectedSeriesValues2();
+        this.xaxesTitle();
+        this.xaxesFontSize();
+        this.xaxesRotation();
+        this.yaxesTitle();
+        this.yaxesFontSize();
+        this.yaxesRotation();
+        if (spec) {
+          spec.title.text = !!this.title() ? this.title() : ' ';
+          spec.title.fontSize = parseInt(this.fontSize());
+          spec.title.color = this.fontColor();
+          spec.title.font = this.font();
+          spec.axes[0].titleFont = this.font();
+          spec.axes[0].labelFont = this.font();
+          spec.axes[1].titleFont = this.font();
+          spec.axes[1].labelFont = this.font();
+          spec.title.fontStyle = this.fontStyleValue();
+          spec.title.fontWeight = this.fontWeightValue();
+          spec.background = this.backgroundColor();
+          spec.scales[2].range[1] = this.bubbleSize();
+          const barColorValue = this.barColorValue();
+          if (barColorValue === "grey") {
+            spec.scales[3].range.scheme = ["#eee", "#eee"];
+            spec.marks[0].encode.update.stroke = {"value": "#222"};
+            spec.legends[0].encode.symbols.update.fill = {"value": "#eee"};
+            spec.legends[0].encode.symbols.update.stroke = {"value": "#222"};
+          } else if (barColorValue === "blue") {
+            spec.scales[3].range.scheme = ["steelblue", "steelblue"];
+            spec.marks[0].encode.update.stroke = {"value": "#1f77b4"};
+            spec.legends[0].encode.symbols.update.fill = {"value": "steelblue"};
+            spec.legends[0].encode.symbols.update.stroke = {"value": "#1f77b4"};
+          } else {
+            spec.scales[3].range.scheme = barColorValue;
+            spec.legends[0].encode.symbols.update.fill = {"value": "#eee"};
+            spec.legends[0].encode.symbols.update.stroke = {"value": "#222"};
+            delete spec.marks[0].encode.update.stroke;
+          }
+          spec.axes[0].title = !!this.xaxesTitle() ? this.xaxesTitle() : ' ';
+          spec.axes[0].titleFontSize = parseInt(this.xaxesFontSize());
+          spec.axes[0].labelAngle = parseInt(this.xaxesRotation());
+          spec.axes[1].title = !!this.yaxesTitle() ? this.yaxesTitle() : ' ';
+          spec.axes[1].titleFontSize = parseInt(this.yaxesFontSize());
+          spec.axes[1].labelAngle = parseInt(this.yaxesRotation());
+          if (this.legendBool()) {
+            if (spec.legends.length == 0) {
+              spec.legends.push({
+                "size": "size",
+                "padding": 5,
+                "gradientLength": {
+                  "signal": "clamp(height, 48, 200)"
+                },
+                "encode": { "symbols": {
+                  "update": {
+                    "fill": {
+                      "value": "steelblue"
+                    },
+                    "stroke": {
+                      "value": "#1f77b4"
+                    },
+                    "shape": {
+                      "value": "circle"
+                    },
+                    "fillOpacity": {
+                      "value": 1
+                    },
+                    "opacity": {
+                      "value": 1
+                    }
+                  }
+                }
+              }
+              });
+            }
+            spec.legends[0].labelFont = this.font();
+            spec.legends[0].fillColor = this.legendBackgroundColor();
+            spec.legends[0].strokeColor = this.legendOutlineColor();
+            spec.legends[0].orient = this.legendPositionValue();
+            spec.legends[0].direction = this.legendOrientationValue();
+          } else {
+            spec.legends.pop(0);
+          }
+          /*if (this.barLabelBool()) {
+            spec.marks.push({
+              "type": "text",
+              "from": {"data": "table"},
+              "encode": {
+                "enter": {
+                  "align": {"value": "center"},
+                  "baseline": {"value": "bottom"},
+                  "text": {"field": "amount"},
+                  "x": {"scale": "xscale", "field": "category", "band": 0.5},
+                  "y": {"scale": "yscale", "field": "amount", "offset": 0}
+                }
+              }
+            });
+          } else if (spec.marks.length == 2){
+            spec.marks.pop(1);
+          }*/
+          if (this.selectedSeriesValues1().length > 0 || this.selectedSeriesValues2().length > 0) {
+            var filter_strings = [];
+            this.selectedSeriesValues1().forEach(function(value, index) {
+              filter_strings.push("datum['category1'] != '" + value + "'");
+            });
+            this.selectedSeriesValues2().forEach(function(value, index) {
+              filter_strings.push("datum['category2'] != '" + value + "'");
+            });
+            spec.data[0].transform[0].expr = filter_strings.join(" & ");
+          } else {
+            spec.data[0].transform[0].expr = "true";
+          }
+          render();
+        }
+      }, this);
+    };
+
+    function exportSVG() {
+      var link = document.createElement("a");
+      link.setAttribute('href', svg_url);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('download', 'bubble-chart-export.svg');
+      link.dispatchEvent(new MouseEvent('click'));
+    }
+    function exportCSV() {
+      var link = document.createElement("a");
+      link.setAttribute('href', file_bubble_data);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('download', 'bubble-chart-export.csv');
+      link.dispatchEvent(new MouseEvent('click'));
+    }
+    
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    }
+
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "350px";
+      document.getElementById("main").style.marginRight = "350px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0px";
+      document.getElementById("main").style.marginRight = "0px";
+    }
+  </script>
+</body>

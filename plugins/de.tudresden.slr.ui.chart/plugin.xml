@@ -19,9 +19,28 @@
    <extension
          id="chartMenuId"
          point="org.eclipse.ui.menus">
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:chart.view.chartview">
+	     <menuContribution
+	           allPopups="false"
+	           locationURI="toolbar:chart.view.chartview">
+	     <command
+	           commandId="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+	           icon="icons/bubble_chart.png"
+	           style="push"
+	           tooltip="Create Bubblechart">
+	     </command>
+	     <command
+	           commandId="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+	           icon="icons/chart_bar.png"
+	           label="Create Cite Barchart"
+	           style="push"
+	           tooltip="Create Cite Barchart">
+	     </command>
+	     <command
+	           commandId="de.tudresden.slr.model.taxonomy.ui.createpiechart"
+	           icon="icons/pie_chart.png"
+               style="push"
+	           tooltip="Create PieChart">
+	     </command>
          <command
                commandId="de.tudresden.slr.ui.chart.savechartaspdf"
                icon="icons/pdf_export.png"
@@ -38,6 +57,22 @@
    <extension
          id="chartCommandsId"
          point="org.eclipse.ui.commands">
+	  <command
+	        defaultHandler="de.tudresden.slr.ui.chart.handlers.CreateBubbleChartHandler"
+	        description="Create a BubbleChart for two taxonomy terms"
+	        id="de.tudresden.slr.model.taxonomy.ui.createbubblechart"
+	        name="Create BubbleChart">
+	  </command>
+	  <command
+	        defaultHandler="de.tudresden.slr.ui.chart.handlers.CreateCiteHandler"
+	        id="de.tudresden.slr.model.taxonomy.ui.createcitebar"
+	        name="Create Cite Bar">
+	  </command>
+	  <command
+	        defaultHandler="de.tudresden.slr.ui.chart.handlers.CreatePieChartHandler"
+	        id="de.tudresden.slr.model.taxonomy.ui.createpiechart"
+	        name="Create Pie Chart">
+	  </command>   
       <command
             defaultHandler="de.tudresden.slr.ui.chart.handlers.SaveAsPDFHandler"
             id="de.tudresden.slr.ui.chart.savechartaspdf"
