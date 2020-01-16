@@ -1,4 +1,4 @@
-package de.tudresden.slr.model.taxonomy.ui.handlers;
+package de.tudresden.slr.ui.chart.handlers;
 
 import java.util.Map;
 

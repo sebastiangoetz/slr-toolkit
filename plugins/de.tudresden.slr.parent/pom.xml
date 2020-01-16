@@ -4,7 +4,7 @@
 
 	<groupId>de.tudresden</groupId>
 	<artifactId>de.tudresden.slr.parent</artifactId>
-	<version>0.2.6-SNAPSHOT</version>
+	<version>0.2.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Systematic Literature Review</name>
@@ -180,7 +180,7 @@
 						<artifact>
 							<groupId>de.tudresden</groupId>
 							<artifactId>de.tudresden.slr.target</artifactId>
-							<version>0.2.6-SNAPSHOT</version>
+							<version>0.2.8-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<pomDependencies>consider</pomDependencies>
@@ -263,5 +263,6 @@
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.metainformation</module>
 		<module>../de.tudresden.slr.latexExport</module>
+                <module>../de.tudresden.slr.questionnaire</module>
 	</modules>
 </project>

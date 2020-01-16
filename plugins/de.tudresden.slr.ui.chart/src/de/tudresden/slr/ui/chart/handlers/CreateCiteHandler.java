@@ -1,7 +1,6 @@
-package de.tudresden.slr.model.taxonomy.ui.handlers;
+package de.tudresden.slr.ui.chart.handlers;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.birt.chart.model.Chart;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -17,22 +16,29 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.logic.BubbleDataContainer;
+import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
-import de.tudresden.slr.ui.chart.settings.BubbleChartConfiguration;
+import de.tudresden.slr.ui.chart.logic.TermSort;
+import de.tudresden.slr.ui.chart.settings.*;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
-public class CreateBubbleChartHandler implements IHandler {
+public class CreateCiteHandler implements IHandler {
+
+	// TODO: find a better way to store these strings
 
 	private final String chartViewId = "chart.view.chartview";
 	private ICommunicationView view;
-	private String noDataToDisplay = "Could not create a bubble chart. \n Try to select two Terms with subclasses.";
+	private String noDataToDisplay = "Could not create a cite chart. \n Try to select a single Term.";
+
+	@Override
+	public void addHandlerListener(IHandlerListener handlerListener) {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -61,18 +67,17 @@ public class CreateBubbleChartHandler implements IHandler {
 		} else {
 			return null;
 		}
+
 		view.getPreview().setTextToShow(noDataToDisplay);
-		if (currentSelection.size() == 2) {
+		if (currentSelection.size() == 1) {
 			view.getPreview().setDataPresent(true);
 			ChartDataProvider provider = new ChartDataProvider();
-			@SuppressWarnings("unchecked")
-			Iterator<Term> selectionIterator = currentSelection.iterator();
-			Term first = selectionIterator.next();
-			Term second = selectionIterator.next();
-			List<BubbleDataContainer> bubbleChartData = provider.calculateBubbleChartData(first, second);
-			BubbleChartConfiguration.get().getGeneralSettings().setChartTitle("Intersection of " + first.getName() + " and " + second.getName());
-			Chart bubbleChart = ChartGenerator.createBubble(bubbleChartData,first,second);
-			view.setAndRenderChart(bubbleChart);
+			Term input = (Term) currentSelection.getFirstElement();
+			Map<String, Integer> citeChartData = provider.calculateNumberOfPapersPerClass(input);
+			BarChartConfiguration.get().getGeneralSettings().setChartTitle("Number of cites per subclass of " + input.getName());
+			BarChartConfiguration.get().setTermSort(TermSort.SUBCLASS);
+			Chart citeChart = ChartGenerator.createCiteBar(citeChartData);
+			view.setAndRenderChart(citeChart);
 		} else {
 			view.setAndRenderChart(null);
 		}
@@ -81,26 +86,17 @@ public class CreateBubbleChartHandler implements IHandler {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isHandled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public void removeHandlerListener(IHandlerListener handlerListener) {
 		// TODO Auto-generated method stub
-
 	}
-
-	@Override
-	public void addHandlerListener(IHandlerListener handlerListener) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
+

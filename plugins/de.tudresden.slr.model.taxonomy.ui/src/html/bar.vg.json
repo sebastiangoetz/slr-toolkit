@@ -1,0 +1,140 @@
+{
+  "$schema": "v5.json",
+  "width": 800,
+  "height": 400,
+  "padding": 10,
+  "background": "#ffffff",
+  "data": [
+    {
+      "name": "table",
+      "url": "bar.data.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "amount": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "amount",
+            "order": "descending"
+          }
+        },
+        {
+          "type": "filter",
+          "expr": "true"
+        }
+      ]
+    }
+  ],
+  "title": {
+    "text": "",
+    "fontSize": 12,
+    "color": "#000000",
+    "font": "",
+    "fontStyle": "normal",
+    "fontWeight": "normal"
+  },
+  "legends": [
+    {
+      "fill": "color",
+      "orient": "right",
+      "direction": "vertical",
+      "fillColor": "#ffffff",
+      "strokeColor": "#ffffff",
+      "labelFont": "",
+      "padding": 5
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {
+        "data": "table",
+        "field": "category"
+      },
+      "range": "width"
+    },
+    {
+      "name": "yscale",
+      "domain": {
+        "data": "table",
+        "field": "amount"
+      },
+      "nice": true,
+      "range": "height"
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "data": "table",
+        "field": "amount"
+      },
+      "range": {
+        "scheme": "greys"
+      },
+      "reverse": true
+    }
+  ],
+  "axes": [
+    {
+      "orient": "bottom",
+      "scale": "xscale",
+      "title": "",
+      "titleFontSize": 12,
+      "titleFont": "",
+      "labelAngle": 340,
+      "labelFont": "",
+      "labelAlign": "right",
+      "labelBaseline": "top",
+      "labelOverlap": true
+    },
+    {
+      "orient": "left",
+      "scale": "yscale",
+      "title": "",
+      "titleFont": "",
+      "titleFontSize": 20,
+      "labelFont": "",
+      "tickCount": 10
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {
+        "data": "table"
+      },
+      "encode": {
+        "enter": {
+          "x": {
+            "scale": "xscale",
+            "field": "category",
+            "offset": 5
+          },
+          "width": {
+            "scale": "xscale",
+            "band": 1,
+            "offset": -5
+          },
+          "fill": {
+            "scale": "color",
+            "field": "amount"
+          },
+          "y": {
+            "scale": "yscale",
+            "field": "amount"
+          },
+          "y2": {
+            "scale": "yscale",
+            "value": 0
+          }
+        }
+      }
+    }
+  ]
+}

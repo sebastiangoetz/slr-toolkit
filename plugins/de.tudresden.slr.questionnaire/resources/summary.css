@@ -1,0 +1,60 @@
+html {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+
+body {
+    width: 90%;
+    margin: auto;
+}
+
+strong {
+    font-weight: bold;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.error {
+    color: red;
+}
+
+th {
+    text-decoration: underline;
+    text-align: start;
+}
+
+th, td {
+    padding: 2px;
+}
+
+td:nth-child(2) {
+    text-align: end;
+}
+
+div.question {
+    padding: 10px 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.question:hover {
+    border: 1px solid black;
+}
+
+div.question:nth-child(2n) {
+    background-color: #d5dfed;
+}
+
+div.question:nth-child(2n + 1) {
+    background-color: #d5ede0;
+}

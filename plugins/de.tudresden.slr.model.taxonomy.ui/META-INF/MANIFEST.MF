@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: de.tudresden.slr.model.taxonomy.ui
 Bundle-Vendor: My Company
-Bundle-Version: 0.2.6.qualifier
+Bundle-Version: 0.2.8.qualifier
 Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
@@ -23,10 +23,17 @@ Require-Bundle: de.tudresden.slr.model.taxonomy;visibility:=reexport,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.xtext,
- de.tudresden.slr.utils
+ de.tudresden.slr.utils,
+ com.google.code.gson;bundle-version="2.8.0",
+ org.eclipse.equinox.http.jetty;bundle-version="3.1.2",
+ org.eclipse.equinox.http.registry;bundle-version="1.1.300",
+ javax.servlet;bundle-version="3.1.0",
+ org.eclipse.jetty.server;bundle-version="9.2.13",
+ org.eclipse.jetty.util
 Import-Package: de.tudresden.slr.model.taxonomy,
  org.apache.log4j,
- org.eclipse.emf.common.util
+ org.eclipse.emf.common.util,
+ org.eclipse.jetty.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: de.tudresden.slr.model.taxonomy.ui.contentassist,
  de.tudresden.slr.model.taxonomy.ui.contentassist.antlr,
@@ -34,4 +41,4 @@ Export-Package: de.tudresden.slr.model.taxonomy.ui.contentassist,
  de.tudresden.slr.model.taxonomy.ui.dialog,
  de.tudresden.slr.model.taxonomy.ui.internal,
  de.tudresden.slr.model.taxonomy.ui.quickfix
-Bundle-Activator: de.tudresden.slr.model.taxonomy.ui.internal.TaxonomyActivator
+Bundle-Activator: de.tudresden.slr.model.taxonomy.ui.views.Activator

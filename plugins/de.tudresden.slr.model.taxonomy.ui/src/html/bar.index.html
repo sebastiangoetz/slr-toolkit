@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <script src="vega.min.js"></script>
+  <script src="knockout-3.5.1.js"></script>
+  <title>SLR-Toolkit - Cite Chart</title>
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      background:#eee;
+    }
+
+    .sidebar {
+      height: 100%;
+      width: 0px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      background-color: #999;
+      overflow-x: hidden;
+      transition: 0.5s;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      font-size: 36px;
+    }
+
+    .openbtn {
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #999;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      float: right;
+    }
+
+    .openbtn:hover {
+      background-color: #444;
+    }
+
+    .collapsible {
+      background-color: #777;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+
+    .active,
+    .collapsible:hover {
+      background-color: #555;
+    }
+
+    .collapsible:after {
+      content: '\002B';
+      color: white;
+      font-weight: bold;
+      float: right;
+      margin-left: 5px;
+      overflow: hidden;
+    }
+
+    .active:after {
+      content: "\2212";
+    }
+
+    .content {
+      padding: 0 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      background-color: #f1f1f1;
+    }
+
+    #main {
+      transition: margin-right.5s;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- main window, contains canvas view for the graph and the button for the settings sidebar -->
+  <div id="main">
+    <div id="view" style="float: left;"></div>
+    <div>
+      <button class="openbtn" onclick="openNav()">☰</button>
+    </div>
+  </div>
+
+  <!-- Sidebar that contains the settings form for the graph -->
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <span style="height: 24px;padding: 8px 10px 6px 10px; color: white; font-size: 20px; background-color: #444;float:left;float: left; margin: 13px 0px 0px 3px;">Export:</span>
+    <button class="openbtn" style="float: left; margin: 13px 0px 0px 3px;" onclick="exportSVG()">SVG</button>
+    <button class="openbtn" style="float: left; margin: 13px 0px 0px 3px;" onclick="exportCSV()">CSV</button>
+    <button class="collapsible" style="margin-top: 13px;">Title Settings</button>
+    <div class="content">
+      <h3>Chart Title:</h3>
+      <input data-bind="value: title"></input>
+      <h3>Font Size:</h3>
+      <input type="number" data-bind="value: fontSize"></input>
+      <h3>Font Color:</h3>
+      <input type="color" data-bind="value: fontColor"></input>
+      <h3>Font:</h3>
+      <input data-bind="value: font"></input>
+      <div style="margin-bottom: 10px;">
+        <select data-bind="options: fontStyle, value: fontStyleValue" style="float: left; margin: 10px 0px 10px 0px;"></select>
+        <select data-bind="options: fontWeight, value: fontWeightValue" style="width: 50%; float: right; margin: 10px 0px 10px 0px;"></select>
+      </div>
+    </div>
+    <button class="collapsible">Block Settings</button>
+    <div class="content">
+      <h3>Background Color:</h3>
+      <input type="color" data-bind="value: backgroundColor"></input>
+      <h3>Bar Labels:</h3>
+      <span style="float: left; margin-top: 2px;">Show Labels</span>
+      <input type="checkbox" data-bind="checked: barLabelBool"/>
+      <h3>Bar Color:</h3>
+      <select data-bind="options: barColor, value: barColorValue" style="margin-bottom: 10px;"></select>
+    </div>
+    <button class="collapsible">Legend Settings</button>
+    <div class="content">
+      <h3>Legend:</h3>
+      <span style="float: left; margin-top: 2px;">Show Legend</span>
+      <input type="checkbox" data-bind="checked: legendBool"/>
+      <h3>Background Color:</h3>
+      <input type="color" data-bind="value: legendBackgroundColor"></input>
+      <h3>Outline Color:</h3>
+      <input type="color" data-bind="value: legendOutlineColor"></input>
+      <h3>Position:</h3>
+      <select data-bind="options: legendPosition, value: legendPositionValue"></select>
+      <h3>Orientation:</h3>
+      <select data-bind="options: legendOrientation, value: legendOrientationValue" style="margin-bottom: 10px;"></select>
+    </div>
+    <button class="collapsible">Series Settings</button>
+    <div class="content">
+      <h3>Filtering:</h3>
+      <select multiple="multiple" data-bind="options: seriesValues, selectedOptions: selectedSeriesValues" style="width: 100%; margin-bottom: 10px; height: 200px;"></select>
+    </div>
+    <button class="collapsible">Axes Settings</button>
+    <div class="content">
+      <fieldset>
+        <legend>X-Axes</legend>
+        <h3>Title:</h3>
+        <input data-bind="value: xaxesTitle"></input>
+        <h3>Title Size:</h3>
+        <input type="number" data-bind="value: xaxesFontSize"></input>
+        <h3>Rotation:</h3>
+        <div data-bind="text: xaxesRotation" style="float: left; margin-top: 5px;"></div>
+        <input type="range" min="0" max="360" step="5" data-bind="value: xaxesRotation" style="margin-bottom: 10px;"></input>
+      </fieldset>
+      <fieldset style="margin-bottom: 3px;">
+        <legend>Y-Axes</legend>
+        <h3>Title:</h3>
+        <input data-bind="value: yaxesTitle"></input>
+        <h3>Title Size:</h3>
+        <input type="number" data-bind="value: yaxesFontSize"></input>
+        <h3>Axes Ticks</h3>
+        <select data-bind="options: yaxesTicks, value: yaxesTicksValue"></select>
+      </fieldset>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var view;
+    const file_bar = './bar.vg.json';
+    const file_bar_data = './bar.data.csv';
+    var svg_url;
+    var spec;
+    const categories = [];
+    const values = [];
+
+    fetch(file_bar_data)
+      .then(res => res.text())
+      .then(text => {
+        text.split('\n').forEach(function(value, index) {
+          if (index == 0 || !value) {
+            return;
+          } else {
+            var row = value.split(',');
+            categories[categories.length] = row[0];
+            values[values.length] = [row[0], Number(row[1])];
+          }
+        });
+      })
+      .then(result => ko.applyBindings(new ViewModel()))
+      .catch(err => console.error(err));
+
+    fetch(file_bar)
+      .then(res => res.json())
+      .then(specification => {
+        spec = specification;
+        render();
+      })
+      .catch(err => console.error(err));
+
+    function render() {
+      view = new vega.View(vega.parse(spec), {
+        renderer: 'svg',
+        container: '#view',
+        hover: false
+      });
+      view.toImageURL('svg').then(function (url) {
+        svg_url = url;
+      }).catch(function (error) { /* error handling */ });
+      return view.runAsync();
+    }
+
+    var ViewModel = function () {
+      this.title = ko.observable();
+      this.fontSize = ko.observable(12);
+      this.fontColor = ko.observable('#000000');
+      this.font = ko.observable('');
+      this.fontWeight = ko.observableArray(['normal', 'bold']);
+      this.fontWeightValue = ko.observable('normal');
+      this.fontStyle = ko.observableArray(['normal', 'italic']);
+      this.fontStyleValue = ko.observable('normal');
+      this.backgroundColor = ko.observable('#ffffff');
+      this.barLabelBool = ko.observable(false);
+      this.barColor = ko.observableArray(['greys', 'blues', 'category10', 'category20']);
+      this.barColorValue = ko.observable('greys');
+      this.legendBool = ko.observable(true);
+      this.legendBackgroundColor = ko.observable('#ffffff');
+      this.legendOutlineColor = ko.observable('#ffffff');
+      this.legendPosition = ko.observableArray(['right', 'bottom', 'left', 'top']);
+      this.legendPositionValue = ko.observable('right');
+      this.legendOrientation = ko.observableArray(['vertical', 'horizontal']);
+      this.legendOrientationValue = ko.observable('vertical');
+      this.seriesValues = ko.observable(categories);
+      this.selectedSeriesValues = ko.observable([]);
+      this.xaxesTitle = ko.observable();
+      this.xaxesFontSize = ko.observable(12);
+      this.xaxesRotation = ko.observable(340);
+      this.yaxesTitle = ko.observable();
+      this.yaxesFontSize = ko.observable(12);
+      this.yaxesTicks = ko.observableArray([1, 2, 5, 10, 20, 50, 100]);
+      this.yaxesTicksValue = ko.observable(10);
+
+      ko.computed(function () {
+        this.title();
+        this.fontSize();
+        this.fontColor();
+        this.font();
+        this.fontStyleValue();
+        this.fontWeightValue();
+        this.backgroundColor();
+        this.barLabelBool();
+        this.barColorValue();
+        this.legendBool();
+        this.legendBackgroundColor();
+        this.legendOutlineColor();
+        this.legendPositionValue();
+        this.legendOrientationValue();
+        this.selectedSeriesValues();
+        this.xaxesTitle();
+        this.xaxesFontSize();
+        this.xaxesRotation();
+        this.yaxesTitle();
+        this.yaxesFontSize();
+        this.yaxesTicksValue();
+        if (spec) {
+          spec.title.text = !!this.title() ? this.title() : ' ';
+          spec.title.fontSize = parseInt(this.fontSize());
+          spec.title.color = this.fontColor();
+          spec.title.font = this.font();
+          spec.axes[0].titleFont = this.font();
+          spec.axes[0].labelFont = this.font();
+          spec.axes[1].titleFont = this.font();
+          spec.axes[1].labelFont = this.font();
+          spec.title.fontStyle = this.fontStyleValue();
+          spec.title.fontWeight = this.fontWeightValue();
+          spec.background = this.backgroundColor();
+          spec.scales[2].range.scheme = this.barColorValue();
+          spec.axes[0].title = !!this.xaxesTitle() ? this.xaxesTitle() : ' ';
+          spec.axes[0].titleFontSize = parseInt(this.xaxesFontSize());
+          spec.axes[0].labelAngle = parseInt(this.xaxesRotation());
+          spec.axes[1].title = !!this.yaxesTitle() ? this.yaxesTitle() : ' ';
+          spec.axes[1].titleFontSize = parseInt(this.yaxesFontSize());
+          var tickSize = parseInt(this.yaxesTicksValue());
+          spec.axes[1].tickCount = getHighestValue(this.selectedSeriesValues()) / tickSize;
+          if (this.legendBool()) {
+            if (spec.legends.length == 0) {
+              spec.legends.push({"fill": "color", "padding": 5});
+            }
+            spec.legends[0].labelFont = this.font();
+            spec.legends[0].fillColor = this.legendBackgroundColor();
+            spec.legends[0].strokeColor = this.legendOutlineColor();
+            spec.legends[0].orient = this.legendPositionValue();
+            spec.legends[0].direction = this.legendOrientationValue();
+          } else {
+            spec.legends.pop(0);
+          }
+          if (this.barLabelBool()) {
+            spec.marks.push({
+              "type": "text",
+              "from": {"data": "table"},
+              "encode": {
+                "enter": {
+                  "align": {"value": "center"},
+                  "baseline": {"value": "bottom"},
+                  "text": {"field": "amount"},
+                  "x": {"scale": "xscale", "field": "category", "band": 0.5},
+                  "y": {"scale": "yscale", "field": "amount", "offset": 0}
+                }
+              }
+            });
+          } else if (spec.marks.length == 2){
+            spec.marks.pop(1);
+          }
+          if (this.selectedSeriesValues().length > 0) {
+            var filter_strings = [];
+            this.selectedSeriesValues().forEach(function(value, index) {
+              filter_strings.push("datum['category'] != '" + value + "'");
+            });
+            spec.data[0].transform[1].expr = filter_strings.join(" & ");
+          } else {
+            spec.data[0].transform[1].expr = "true";
+          }
+          render();
+        }
+      }, this);
+
+      /**
+       * Takes the filtered values and finds the highest in all categories.
+       */
+      function getHighestValue(filtered) {
+        // filters the categories (selected series)
+        var filtered_array = values.filter(function(item) {
+          return !(filtered.includes(item[0]));
+        });
+
+        // finds the highest value
+        var highest = 0;
+        for (var i = 0; i < filtered_array.length; i++) {
+          if (filtered_array[i][1] > highest) {
+            highest = filtered_array[i][1];
+          }
+        }
+        return highest;
+      }
+    };
+
+    function exportSVG() {
+      var link = document.createElement("a");
+      link.setAttribute('href', svg_url);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('download', 'bar-chart-export.svg');
+      link.dispatchEvent(new MouseEvent('click'));
+    }
+    function exportCSV() {
+      var link = document.createElement("a");
+      link.setAttribute('href', file_bar_data);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('download', 'bar-chart-export.csv');
+      link.dispatchEvent(new MouseEvent('click'));
+    }
+
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    }
+
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "350px";
+      document.getElementById("main").style.marginRight = "350px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0px";
+      document.getElementById("main").style.marginRight = "0px";
+    }
+  </script>
+</body>

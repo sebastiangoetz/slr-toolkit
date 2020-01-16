@@ -27,7 +27,7 @@
             commandId="de.tudresden.slr.utils.commands.sampleCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             contextId="org.eclipse.ui.contexts.window"
-            sequence="M1+6">
+            sequence="M1+7">
       </key>
    </extension>
    <extension point="org.eclipse.ui.ide.markerResolution">
