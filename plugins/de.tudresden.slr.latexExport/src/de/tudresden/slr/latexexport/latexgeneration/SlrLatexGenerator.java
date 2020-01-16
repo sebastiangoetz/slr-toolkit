@@ -16,7 +16,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.latexexport.data.LatexExportChartGenerator;

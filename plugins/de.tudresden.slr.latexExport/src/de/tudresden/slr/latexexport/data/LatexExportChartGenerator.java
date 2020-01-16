@@ -24,17 +24,12 @@ import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 
-/**
- * 
- * @author Andreas Huber
- *
- */
 public class LatexExportChartGenerator {
 
-	public static final String FILEEXTENSION = ".JPG";
+	private static final String FILEEXTENSION = ".JPG";
 
 	/**
-	 * Generates barcharts (SVG) the main dimensions of an slr project
+	 * Generates barcharts (format: see var FILEEXTENSION) of the main dimensions of an slr project
 	 * 
 	 * @param filepath
 	 *            Path of the LaTex-document which was generated
@@ -60,7 +55,6 @@ public class LatexExportChartGenerator {
 			if (term.getSubclasses().size() != 0)
 			{
 				try {
-					// TODO use SVG/PDF?
 					String newFileName = term.getName().replaceAll("\\s+", "") + FILEEXTENSION;
 					filepathNewChart = filepathNewChart + File.separator + imagesFolderName + File.separator
 							+ newFileName;
