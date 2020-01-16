@@ -4,7 +4,6 @@ import de.tudresden.slr.latexexport.helpers.ExportProjectChooser;
 import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
-import de.tudresden.slr.metainformation.util.DataProvider;
 import de.tudresden.slr.metainformation.util.MetainformationUtil;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import java.io.File;
@@ -22,7 +21,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
@@ -38,7 +36,7 @@ import org.eclipse.swt.widgets.Shell;
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class exportHandler extends AbstractHandler {
+public class ExportHandler extends AbstractHandler {
 	
 	/**
 	 * Constant, which signals that the selection event was cancelled
