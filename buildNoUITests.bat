@@ -1,0 +1,1 @@
+mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify -pl "!projectName:de.tudresden.slr.uitests"

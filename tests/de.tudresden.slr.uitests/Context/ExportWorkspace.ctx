@@ -1,0 +1,66 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.workspace
+Element-Name: ExportWorkspace
+Element-Type: context
+Element-Version: 2.0
+Id: _ssop4BbVEeqdS_WHJ_kGbQ
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 12/4/19 9:37 PM
+
+------=_contents/newProject/my_bibtex.bib-3b165bcc-df99-303d-aec0-39cae586b2d3
+Content-Type: q7/binary
+Entry-Name: contents/newProject/my_bibtex.bib
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAABTVQjJyCxWSMpMKkmt
+UEjLzElVKE8sVkguSk0sSU1RSKpUKMlIVchLLYcpKc+sSixK4QIAUEsHCP9Ep/Q0AAAAOAAAAFBLAQIU
+ABQACAgIAAAAIQD/RKf0NAAAADgAAAAIAAkAAAAAAAAAAAAAAAAAAAAuY29udGVudFVUBQABAAAAAFBL
+BQYAAAAAAQABAD8AAABzAAAAAAA=
+------=_contents/newProject/my_bibtex.bib-3b165bcc-df99-303d-aec0-39cae586b2d3--
+------=_contents/newProject/.project-322f8843-8598-346b-9827-942c75f4b83c
+Content-Type: q7/binary
+Entry-Name: contents/newProject/.project
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACFkE0OwiAQhdeaeIeG
+vaA7F7QmalwaE/UAlU4qpkDDj/b4AqU2deOO782bmTfQbSea7AXacCVztMYrlIFkquKyztHtelxu0LZY
+zGmr1ROYPYBhmrfWu706o7IUUEh4n/syJVEIFaaEAGkLSoZXUNMYE4FM6O54U11aYIES7n1rKauopGVK
+1xhYw1sDuLPQWew4No9SQ9XzLjSCHqP4zlLXLmQwiclUoOR3W1KGOH61dRqSu4f/SU7RF4JEfxw7Dvqe
+P/3TD1BLBwjKe4ywxQAAAJIBAABQSwECFAAUAAgICAAAACEAynuMsMUAAACSAQAACAAJAAAAAAAAAAAA
+AAAAAAAALmNvbnRlbnRVVAUAAQAAAABQSwUGAAAAAAEAAQA/AAAABAEAAAAA
+------=_contents/newProject/.project-322f8843-8598-346b-9827-942c75f4b83c--
+------=_contents/newProject/my_taxonomy.taxonomy-5b9162a6-3e4d-37ec-8798-8175b9793c60
+Content-Type: q7/binary
+Entry-Name: contents/newProject/my_taxonomy.taxonomy
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACljEEKwjAURNf9p5h1
+KRTjFdy4thdImw8JNInkR2Iq3t1SFbt3NzNveH2LwTpB1vcYoq8oWjAl1pkNxopsGYHLjrtFJ0MAzhk2
+zkagIc5fZ/6dcoTYWCYtvBmkhpWh7YlOznMQFwMOeFAzcPLv1FxuY95atyuKmmf3ualvONK67UzqHxO9
+AFBLBwh1T20lhgAAAAMBAABQSwECFAAUAAgICAAAACEAdU9tJYYAAAADAQAACAAJAAAAAAAAAAAAAAAA
+AAAALmNvbnRlbnRVVAUAAQAAAABQSwUGAAAAAAEAAQA/AAAAxQAAAAAA
+------=_contents/newProject/my_taxonomy.taxonomy-5b9162a6-3e4d-37ec-8798-8175b9793c60--
+------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf
+Content-Type: q7/binary
+Entry-Name: .q7.content
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACVkU1LxDAQhu+C/yHk
+bqLiQUrrgrL4AYIiWG+lTdMat/kwGW323zvd3XQv4uIpk8nzvsM7yRdRD+Rb+qCsKegZO6VEGmFbZfqC
+fkF3ckkXV8dHufU9k2JQLkjmhQNgAiIbrV8FVwuZlam6sQZkBBK1ymbf88kXJ5mQYb+g7wAu43wcR2Z1
+z9Ccvz3eJ+TArFmemEm+4ThyfOYoMbVGehmd9VDu26otaBWCdRfXzetSfrYvVXn3UK1um2eKWQnJxRTC
+wOaCV+fthxQQdoZGjk/bDt0RyHRqkAlgOwHlv7/rddWoBtfE8PgD0hJqZTrrdQ24RxYGf9gZ6miN1WuW
+ipnNeQqyTcn3MXP+3w9G0Q9QSwcI7/2w/Q4BAAA9AgAAUEsBAhQAFAAICAgAAAAhAO/9sP0OAQAAPQIA
+AAgACQAAAAAAAAAAAAAAAAAAAC5jb250ZW50VVQFAAEAAAAAUEsFBgAAAAABAAEAPwAAAE0BAAAAAA==
+
+------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf--
+------=_contents/newProject/my_metainformation.slrproject-ccd91fe3-2f15-345f-8ab0-9d352a81d384
+Content-Type: q7/binary
+Entry-Name: contents/newProject/my_metainformation.slrproject
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAAB9UctOwzAQvCPxD6tc
+uEBN4cLBTUGqEEJF4pBKwM2NN61L7K3sLSR/Tx5OaSuED9Z4Z3dmrJXTypbwhT4YcpNkPLpOAF1O2rjV
+JFlkj1d3CQRWTquSHE6SGkMyTc/PZCj9q6cN5vyCrIwryFvFjUpDQnMkGy4xzdobqABeI2z7ASl6LjZ+
+Yv1NXoc0gvElRHSzR3Arxb4vzkW1h2Vgr3JOBwBNlM4Oqy15Rg1zlWEFmvKdRccjKU5Hh8iqIke2nmHI
+vdl2v3lCj5CTxQAKlt5gAfqXPvnZRYBBo3H5Sy46qR2vyYe5CYN5V0arTJluaO30fQtHXGop+upBm1MW
+0+emC2aEUnTPA5r8SjkT+m0snOnWy3Wb9e39Q4ojPgYSx4mk+G+/P1BLBwgdBIV4JQEAADYCAABQSwEC
+FAAUAAgICAAAACEAHQSFeCUBAAA2AgAACAAJAAAAAAAAAAAAAAAAAAAALmNvbnRlbnRVVAUAAQAAAABQ
+SwUGAAAAAAEAAQA/AAAAZAEAAAAA
+------=_contents/newProject/my_metainformation.slrproject-ccd91fe3-2f15-345f-8ab0-9d352a81d384--
