@@ -5,6 +5,7 @@
 plugins/de.tudresden.slr.app/target/xtend/*
 *.jar
 /**/target/
+/**/src-gen/
 
 *.xtendbin
 
