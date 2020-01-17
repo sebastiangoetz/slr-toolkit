@@ -29,7 +29,7 @@ public class LatexExportChartGenerator {
 	private static final String FILEEXTENSION = ".JPG";
 
 	/**
-	 * Generates barcharts (format: see var FILEEXTENSION) of the main dimensions of an slr project
+	 * Generates barcharts (format: see member variable FILEEXTENSION) of the main dimensions of an slr project
 	 * 
 	 * @param filepath
 	 *            Path of the LaTex-document which was generated

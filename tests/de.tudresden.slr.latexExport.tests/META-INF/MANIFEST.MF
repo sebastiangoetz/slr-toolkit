@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: de.tudresden.slr.latexExport.tests
+Bundle-Version: 0.2.8.qualifier
+Fragment-Host: de.tudresden.slr.latexExport;bundle-version="0.2.8"
+Automatic-Module-Name: de.tudresden.slr.latexExport.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit
