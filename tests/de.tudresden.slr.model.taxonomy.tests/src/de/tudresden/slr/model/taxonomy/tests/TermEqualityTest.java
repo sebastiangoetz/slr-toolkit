@@ -20,7 +20,7 @@ import de.tudresden.slr.model.taxonomy.util.TermUtils;
 
 @RunWith(XtextRunner.class)
 @InjectWith(TaxonomyInjectorProvider.class)
-public class TermEqualityTests {
+public class TermEqualityTest {
 	@Inject
 	ParseHelper<Model> parseHelper;
 	
