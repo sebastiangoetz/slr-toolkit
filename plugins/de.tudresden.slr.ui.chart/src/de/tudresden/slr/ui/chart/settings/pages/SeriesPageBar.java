@@ -28,7 +28,7 @@ import de.tudresden.slr.ui.chart.settings.TreeDialogBar;
 
 public class SeriesPageBar extends Composite implements SelectionListener, MouseListener, Pages{
 
-	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton;
+	private Button btnRadioButtonGrey, btnRadioButtonCustom, btnRadioButtonRandom, btnNewButton, btnCites;
 	private Button btnCheckButton;
 	private List list;
 	private java.util.List<BarDataTerm> barTermList= new ArrayList<>();
@@ -54,6 +54,8 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		
 		btnNewButton = new Button(compositeFirst, SWT.NONE);
 		btnNewButton.setText("Select Term");
+		btnCites = new Button(compositeFirst, SWT.NONE);
+		btnCites.setText("Cites");
 		
 		lblSelectedTermIs = new Label(compositeFirst, SWT.CENTER);
 		GridData gd_lblSelectedTermIs = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
@@ -61,6 +63,7 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 		lblSelectedTermIs.setLayoutData(gd_lblSelectedTermIs);
 		lblSelectedTermIs.setText("No Term Selected");
 		btnNewButton.addSelectionListener(this);
+		btnCites.addSelectionListener(this);
 		
 		
 		
@@ -160,6 +163,18 @@ public class SeriesPageBar extends Composite implements SelectionListener, Mouse
 				refresh();
 			}	
 						
+		}
+		
+		if(e.getSource() == btnCites) {
+			barTermList.clear();
+			list.removeAll();
+			SortedMap<String, Integer> sortedMap = chartDataProvider.calculateCitesPerYear();	
+			for(Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+				barTermList.add(new BarDataTerm(entry.getKey(), entry.getValue()));
+				list.add("Year:    "+ entry.getKey() + "    (" +entry.getValue() + " entries)");
+			}		
+			
+			
 		}
 		
 		if(e.getSource() == list) {			
