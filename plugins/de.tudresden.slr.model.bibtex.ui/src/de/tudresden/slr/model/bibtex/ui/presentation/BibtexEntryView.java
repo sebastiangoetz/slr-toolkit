@@ -631,13 +631,6 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				refreshProjectCombo();
-				if (combo.getSelection() != null) {
-					if (combo.getSelection() instanceof IStructuredSelection) {
-						IProject project = (IProject) ((IStructuredSelection) combo.getSelection()).getFirstElement();
-						deleteResources();
-						registerResources(project);
-					}
-				}
 				viewer.refresh();
 			}
 		};
