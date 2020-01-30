@@ -74,7 +74,7 @@ public class OpenCiteHandler implements IHandler {
 		return true;
 	}
 
-	private Map<String, Integer> processSelectionData(IStructuredSelection selection) {
+	protected Map<String, Integer> processSelectionData(IStructuredSelection selection) {
 		IStructuredSelection currentSelection = (IStructuredSelection) selection;
 		if (currentSelection.size() == 1) {
 			ChartDataProvider provider = new ChartDataProvider();
