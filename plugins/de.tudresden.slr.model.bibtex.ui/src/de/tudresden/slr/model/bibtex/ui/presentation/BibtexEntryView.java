@@ -589,7 +589,10 @@ public class BibtexEntryView extends ViewPart {
 		menuMgr.addMenuListener(new IMenuListener() {
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager);
+				IStructuredSelection s = (IStructuredSelection) viewer.getSelection();
+				if(s.getFirstElement() instanceof DocumentImpl) {
+					fillContextMenu(manager);
+				}
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
