@@ -2,6 +2,8 @@ package de.tudresden.slr.app;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -28,6 +30,17 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	
 	public IAdaptable getDefaultPageInput(){
 		return ResourcesPlugin.getWorkspace().getRoot();
+	}
+	
+	@Override
+	public void postStartup() {
+		PreferenceManager pm = PlatformUI.getWorkbench().getPreferenceManager();
+		pm.remove("org.eclipse.ui.preferencePages.Workbench");
+		pm.remove("org.eclipse.jdt.ui.preferences.JavaBasePreferencePage");
+		pm.remove("org.eclipse.team.ui.TeamPreferences");
+		pm.remove("org.eclipse.debug.ui.DebugPreferencePage");
+		
+		super.postStartup();
 	}
 
 }

@@ -98,20 +98,6 @@
             name="Taxonomy">
             <keywordReference id="de.tudresden.slr.model.taxonomy.ui.keyword_Taxonomy"/>
         </page>
-        <page
-            category="de.tudresden.slr.model.taxonomy.Taxonomy"
-            class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.syntaxcoloring.SyntaxColoringPreferencePage"
-            id="de.tudresden.slr.model.taxonomy.Taxonomy.coloring"
-            name="Syntax Coloring">
-            <keywordReference id="de.tudresden.slr.model.taxonomy.ui.keyword_Taxonomy"/>
-        </page>
-        <page
-            category="de.tudresden.slr.model.taxonomy.Taxonomy"
-            class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.editor.templates.XtextTemplatePreferencePage"
-            id="de.tudresden.slr.model.taxonomy.Taxonomy.templates"
-            name="Templates">
-            <keywordReference id="de.tudresden.slr.model.taxonomy.ui.keyword_Taxonomy"/>
-        </page>
     </extension>
     <extension
             point="org.eclipse.ui.propertyPages">
@@ -416,13 +402,6 @@
    </extension>
    <extension
             point="org.eclipse.ui.preferencePages">
-        <page
-            category="de.tudresden.slr.model.taxonomy.Taxonomy"
-            class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.builder.preferences.BuilderPreferencePage"
-            id="de.tudresden.slr.model.taxonomy.Taxonomy.compiler.preferencePage"
-            name="Compiler">
-            <keywordReference id="de.tudresden.slr.model.taxonomy.ui.keyword_Taxonomy"/>
-        </page>
     </extension>
     <extension
             point="org.eclipse.ui.propertyPages">
