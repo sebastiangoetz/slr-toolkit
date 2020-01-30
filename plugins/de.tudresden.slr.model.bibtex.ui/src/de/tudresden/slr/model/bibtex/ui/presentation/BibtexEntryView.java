@@ -1,6 +1,7 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
@@ -62,6 +63,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
@@ -209,6 +211,15 @@ public class BibtexEntryView extends ViewPart {
 		workspace.removeResourceChangeListener(projectChangeListener);
 		super.dispose();
 	}
+	
+	private List<TreeItem> getAllItems(TreeItem[] treeItems) {
+		List<TreeItem> ret = new ArrayList<TreeItem>();
+		for(TreeItem item : treeItems) {
+			ret.add(item);
+			if(item.getItemCount() > 0) ret.addAll(Arrays.asList(item.getItems()));
+		}
+		return ret;
+	}
 
 	/**
 	 * listener for releasing DEL key. Removes selected document from domain.
@@ -227,6 +238,17 @@ public class BibtexEntryView extends ViewPart {
 					StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 					if (selection.getFirstElement() instanceof Document) {
 						Document document = (Document) selection.getFirstElement();
+						Document nextDocument = null;
+						boolean found = false;
+						for(TreeItem item : getAllItems(viewer.getTree().getItems())) {
+							if(found && item.getData() instanceof Document) {
+								nextDocument = (Document)item.getData();
+								break;
+							}
+							if(item.getText().equals(document.getKey())) {
+								found = true;
+							}
+						}
 
 						editingDomain.getCommandStack().execute(new AbstractCommand() {
 							@Override
@@ -289,6 +311,8 @@ public class BibtexEntryView extends ViewPart {
 							// Something went wrong that shouldn't.
 							//
 						}
+						if(nextDocument != null)
+							selection = new StructuredSelection(nextDocument);
 						viewer.setSelection(selection);
 						viewer.getTree().forceFocus();
 						viewer.refresh();
