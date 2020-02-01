@@ -5,7 +5,8 @@ Bundle-SymbolicName: de.tudresden.slr.tests.parent
 Bundle-Version: 0.2.8.qualifier
 Automatic-Module-Name: de.tudresden.slr.tests.parent
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: net.bytebuddy.byte-buddy,
- org.objenesis,
- org.mockito,
- org.junit
+Require-Bundle: net.bytebuddy.byte-buddy;visibility:=reexport,
+ org.objenesis;visibility:=reexport,
+ org.mockito;visibility:=reexport,
+ org.junit;visibility:=reexport
+Export-Package: de.tudresden.slr.tests.parent
