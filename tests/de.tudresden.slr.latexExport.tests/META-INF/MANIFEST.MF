@@ -7,12 +7,4 @@ Bundle-ActivationPolicy: lazy
 Fragment-Host: de.tudresden.slr.latexExport;bundle-version="0.2.8"
 Automatic-Module-Name: de.tudresden.slr.latexExport.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.hamcrest.core,
- org.mockito,
- org.junit;version="4.5.0",
- org.junit.runner;version="4.5.0",
- org.junit.runner.manipulation;version="4.5.0",
- org.junit.runner.notification;version="4.5.0",
- org.junit.runners;version="4.5.0",
- org.junit.runners.model;version="4.5.0"
-Export-Package: de.tudresden.slr.latexexport.data
+Require-Bundle: de.tudresden.slr.tests.parent
