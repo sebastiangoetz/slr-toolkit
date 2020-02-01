@@ -9,4 +9,3 @@ Require-Bundle: net.bytebuddy.byte-buddy;visibility:=reexport,
  org.objenesis;visibility:=reexport,
  org.mockito;visibility:=reexport,
  org.junit;visibility:=reexport
-Export-Package: de.tudresden.slr.tests.parent
