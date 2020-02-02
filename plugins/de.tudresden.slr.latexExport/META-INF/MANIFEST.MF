@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: LatexExport
-Bundle-SymbolicName: de.tudresden.slr.latexExport;singleton:=true
+Bundle-SymbolicName: de.tudresden.slr.latexexport;singleton:=true
 Bundle-Version: 0.2.8.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
