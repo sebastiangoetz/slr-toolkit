@@ -4,8 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>de.tudresden.slr.uitests</artifactId>
-	<!-- group id needed for plugin execution -->
-	<groupId>de.tudresden</groupId>
 
 	<parent>
 		<groupId>de.tudresden</groupId>
@@ -15,84 +13,15 @@
 		</relativePath>
 	</parent>
 
-
 	<packaging>rcpttTest</packaging>
 
-	<profiles>
-		<profile>
-			<id>mac</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/macosx/cocoa/x86_64/Eclipse.app/Contents/MacOS
-				</autPath>
-			</properties>
-		</profile>
-		<profile>
-			<id>unix_64</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>x86_64</arch>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86_64
-				</autPath>
-			</properties>
-		</profile>
-		<profile>
-			<id>unix_32</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>x86_32</arch>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86
-				</autPath>
-			</properties>
-		</profile>
-		<profile>
-			<id>windows_64</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>x86_64</arch>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/product/win32/win32/x86_64
-				</autPath>
-			</properties>
-		</profile>
-		<profile>
-			<id>windows_32</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>x86_32</arch>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/product/win32/win32/x86
-				</autPath>
-			</properties>
-		</profile>
-	</profiles>
-
+	<properties>
+		<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86_64
+		</autPath>
+	</properties>
 
 	<build>
 		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
-				<version>1.1</version> <executions> <execution> <phase>validate</phase> <goals> 
-				<goal>run</goal> </goals> <configuration> <tasks> <echo>Displaying value 
-				of 'testproperty' property</echo> <echo>[testproperty] ${testproperty}</echo> 
-				</tasks> </configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.eclipse.rcptt</groupId>
 				<artifactId>rcptt-maven-plugin</artifactId>
@@ -108,43 +37,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.eclipse.rcptt
-										</groupId>
-										<artifactId>
-											rcptt-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.5.0-SNAPSHOT,)
-										</versionRange>
-										<goals>
-											<goal>resources</goal>
-											<goal>execute</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<pluginRepositories>
