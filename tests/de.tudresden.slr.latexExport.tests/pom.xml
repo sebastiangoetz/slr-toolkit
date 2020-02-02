@@ -11,7 +11,7 @@
 		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml
 		</relativePath>
 	</parent>
-	<groupId>de.tudresden</groupId>
-	<artifactId>de.tudresden.slr.latexExport.tests</artifactId>
+	
+	<artifactId>de.tudresden.slr.latexexport.tests</artifactId>
 
 </project>

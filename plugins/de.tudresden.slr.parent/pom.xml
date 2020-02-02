@@ -265,16 +265,15 @@
 		<module>../de.tudresden.slr.utils</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.metainformation</module>
-		<module>../de.tudresden.slr.latexExport</module>
+		<module>../de.tudresden.slr.latexexport</module>
 		<module>../de.tudresden.slr.questionnaire</module>
 
 		<module>
-			../../tests/de.tudresden.slr.latexExport.tests
+			../../tests/de.tudresden.slr.latexexport.tests
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.model.taxonomy.tests
 		</module>
 		<module>../../tests/de.tudresden.slr.uitests</module>
-		<module>mockitiDependencyToP2</module>
 	</modules>
 </project>
