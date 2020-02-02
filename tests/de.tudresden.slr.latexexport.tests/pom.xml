@@ -13,5 +13,18 @@
 	</parent>
 	
 	<artifactId>de.tudresden.slr.latexexport.tests</artifactId>
+	
+	<build>
+        <plugins>
+         <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-surefire-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <configuration>
+                <useUIHarness>true</useUIHarness>
+            </configuration>
+         </plugin>
+        </plugins>
+    </build>
 
 </project>
