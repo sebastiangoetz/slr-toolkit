@@ -4,6 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>de.tudresden.slr.uitests</artifactId>
+	<!-- group id needed for plugin execution -->
+	<groupId>de.tudresden</groupId>
 
 	<parent>
 		<groupId>de.tudresden</groupId>
@@ -12,6 +14,7 @@
 		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml
 		</relativePath>
 	</parent>
+
 
 	<packaging>rcpttTest</packaging>
 
@@ -85,26 +88,11 @@
 
 	<build>
 		<plugins>
-		<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-								<echo>Displaying value of 'testproperty' property</echo>
-								<echo>[testproperty] ${testproperty}</echo>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<version>1.1</version> <executions> <execution> <phase>validate</phase> <goals> 
+				<goal>run</goal> </goals> <configuration> <tasks> <echo>Displaying value 
+				of 'testproperty' property</echo> <echo>[testproperty] ${testproperty}</echo> 
+				</tasks> </configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.eclipse.rcptt</groupId>
 				<artifactId>rcptt-maven-plugin</artifactId>
