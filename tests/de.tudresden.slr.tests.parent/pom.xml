@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<packaging>eclipse-test-plugin</packaging>
+	<packaging>eclipse-plugin</packaging>
 	<parent>
 		<groupId>de.tudresden</groupId>
 		<artifactId>de.tudresden.slr.parent</artifactId>
@@ -13,7 +13,7 @@
 	</parent>
 	<groupId>de.tudresden</groupId>
 	<artifactId>de.tudresden.slr.tests.parent</artifactId>
-
+<!-- 
 	<dependencies>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -32,7 +32,7 @@
 				<configuration>
 					<dependency-resolution>
 						<extraRequirements>
-							<!-- Workaround for an issue with mockito depending on hamcrest -->
+							Workaround for an issue with mockito depending on hamcrest
 							<requirement>
 								<type>eclipse-plugin</type>
 								<id>org.hamcrest</id>
@@ -43,7 +43,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build> -->
 
 </project>
 

@@ -267,6 +267,10 @@
 		<module>../de.tudresden.slr.metainformation</module>
 		<module>../de.tudresden.slr.latexexport</module>
 		<module>../de.tudresden.slr.questionnaire</module>
+		<!-- parent test module -->
+		<module>
+			../../tests/de.tudresden.slr.tests.parent
+		</module>
 
 		<module>
 			../../tests/de.tudresden.slr.latexexport.tests
