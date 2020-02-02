@@ -15,10 +15,73 @@
 
 	<packaging>rcpttTest</packaging>
 
-	<properties>
-		<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86_64
-		</autPath>
-	</properties>
+	<profiles>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/macosx/cocoa/x86_64/Eclipse.app/Contents/MacOS
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>unix_64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86_64
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>unix_32</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<arch>x86_32</arch>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows_64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/product/win32/win32/x86_64
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows_32</id>
+			<activation>
+				<os>
+					<family>windows</family>
+					<arch>x86_32</arch>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/product/win32/win32/x86
+				</autPath>
+			</properties>
+		</profile>
+	</profiles>
+
 
 	<build>
 		<plugins>
@@ -39,7 +102,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
