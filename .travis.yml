@@ -6,7 +6,7 @@ dist: xenial
 services:
   - xvfb
 
-script: mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package
+script: mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify
 
 cache:
   directories:
