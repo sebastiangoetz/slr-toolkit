@@ -4,7 +4,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.tudresden.slr.metainformation.tests</groupId>
 	<artifactId>de.tudresden.slr.metainformation.tests</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<parent>
