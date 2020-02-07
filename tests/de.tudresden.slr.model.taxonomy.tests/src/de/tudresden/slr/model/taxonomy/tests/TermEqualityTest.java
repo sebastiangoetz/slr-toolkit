@@ -83,6 +83,8 @@ public class TermEqualityTest {
 		taxonomyABuilder.newLine();			
 		taxonomyABuilder.append("}");
 		
+		System.out.println(taxonomyABuilder);
+		
 		try {
 			taxonomyA = this.parseHelper.parse(taxonomyABuilder);
 			taxonomyB = this.parseHelper.parse(taxonomyABuilder);

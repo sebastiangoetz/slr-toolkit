@@ -1,4 +1,4 @@
-package de.tudresden.slr.latexexport.data;
+package de.tudresden.slr.metainformation.data;
 
 import static org.junit.Assert.*;
 
@@ -7,9 +7,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 
-public class LatexExportChartGeneratorTest {
+public class AuthorTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -28,9 +27,8 @@ public class LatexExportChartGeneratorTest {
 	}
 
 	@Test
-	public void testGeneratePDFOutput() {
-		Mockito.mock(LatexExportChartGenerator.class);
-		//fail("bla");
+	public void testToString() {
+		fail("Not yet implemented");
 	}
 
 }

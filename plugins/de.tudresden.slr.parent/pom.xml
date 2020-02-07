@@ -278,6 +278,10 @@
 		<module>
 			../../tests/de.tudresden.slr.model.taxonomy.tests
 		</module>
+		
+		<module>
+			../../tests/de.tudresden.slr.metainformation.tests
+		</module>
 		<module>../../tests/de.tudresden.slr.uitests</module>
 	</modules>
 </project>

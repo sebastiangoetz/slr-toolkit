@@ -7,32 +7,12 @@
 	<parent>
 		<groupId>de.tudresden</groupId>
 		<artifactId>de.tudresden.slr.parent</artifactId>
-		<version>0.2.8-SNAPSHOT</version>
+		<version>0.2.9-SNAPSHOT</version>
 		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml
 		</relativePath>
 	</parent>
 
 	<artifactId>de.tudresden.slr.latexexport.tests</artifactId>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<executions>
-					<execution>
-						<id>default-test</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-				
-			</plugin>
-			
-		</plugins>
-	</build>
 
 </project>
