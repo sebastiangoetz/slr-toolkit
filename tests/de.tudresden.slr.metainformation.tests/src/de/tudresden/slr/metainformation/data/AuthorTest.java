@@ -2,33 +2,22 @@ package de.tudresden.slr.metainformation.data;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AuthorTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
-	public void testToString() {
-		fail("Not yet implemented");
+	public void testEmptyEmailToString() {
+		// when email is empty, toString should not include an email address
+		Author author = new Author("name", "", "university of x");
+		assertFalse(author.toString().contains("email"));
+	}
+	
+	@Test
+	public void testEmptyOrganisationToString() {
+		// when organisation is empty, toString should not include an organisation
+		Author author = new Author("name", "a@b.com", "");
+		assertFalse(author.toString().contains("organisation"));
 	}
 
 }

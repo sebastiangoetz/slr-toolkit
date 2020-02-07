@@ -19,11 +19,11 @@ public class DataProvider {
 	/**
 	 * List of documents from bibtex plugins
 	 */
-	private List<Document> documents = SearchUtils.getDocumentList();
+	protected List<Document> documents = SearchUtils.getDocumentList();
 	/**
 	 * Optional which may or may not contain taxonomy
 	 */
-	private Optional<Model> taxonomyOptional = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
+	protected Optional<Model> taxonomyOptional = ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy();
 	
 	public DataProvider() {
 	}
@@ -69,8 +69,8 @@ public class DataProvider {
 	}
 	
 	/**
-	 * Generates a list of all dimensions and their subdimenions.
-	 * Order: Every dimension has as successor - if existant - it's first child. If not present,
+	 * Generates a list of all dimensions and their sub dimensions.
+	 * Order: Every dimension has as successor - if existent - it's first child. If not present,
 	 * it's the next dimension of the same or higher level.
 	 * @return
 	 */
