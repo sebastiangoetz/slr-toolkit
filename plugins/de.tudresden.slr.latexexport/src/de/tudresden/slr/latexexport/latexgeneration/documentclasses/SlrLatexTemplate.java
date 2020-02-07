@@ -27,7 +27,7 @@ public abstract class SlrLatexTemplate {
 	protected static final String SLRVARIABLE_TAXONOMYDESCRIPTION = "SLR_TAXONOMYDESCRIPTION";
 	protected static final String SLRVARIABLE_DIMENSIONCHARTS = "SLR_DIMENSIONCHARTS";
 	
-	protected final String resourcePrefix = "platform:/plugin/de.tudresden.slr.latexExport/resources/";
+	protected final String resourcePrefix = "platform:/plugin/de.tudresden.slr.latexexport/resources/";
 	
 	/**
 	 * .cls and auxiliary files of the LaTex template. Specify in the constructors of the subclasses!

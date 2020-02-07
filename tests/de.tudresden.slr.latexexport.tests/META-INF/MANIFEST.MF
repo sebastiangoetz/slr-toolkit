@@ -4,7 +4,7 @@ Bundle-Name: Tests
 Bundle-SymbolicName: de.tudresden.slr.latexexport.tests;singleton:=true
 Bundle-Version: 0.2.8.qualifier
 Bundle-ActivationPolicy: lazy
-Fragment-Host: de.tudresden.slr.latexexport;bundle-version="0.2.8"
-Automatic-Module-Name: de.tudresden.slr.latexExport.tests
+Fragment-Host: de.tudresden.slr.latexexport;bundle-version="0.2.9"
+Automatic-Module-Name: de.tudresden.slr.latexexport.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.tudresden.slr.tests.parent

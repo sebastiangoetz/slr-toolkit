@@ -6,18 +6,18 @@
          point="org.eclipse.ui.commands">
       <category
             name="LaTex Export"
-            id="de.tudresden.slr.latexExport.commands.category">
+            id="de.tudresden.slr.latexexport.commands.category">
       </category>
       <command
             name="Create LaTex Skeleton"
-            categoryId="de.tudresden.slr.latexExport.commands.category"
-            id="de.tudresden.slr.latexExport.commands.createLatexSkeleton">
+            categoryId="de.tudresden.slr.latexexport.commands.category"
+            id="de.tudresden.slr.latexexport.commands.createLatexSkeleton">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="de.tudresden.slr.latexExport.commands.createLatexSkeleton"
+            commandId="de.tudresden.slr.latexexport.commands.createLatexSkeleton"
             class="de.tudresden.slr.latexexport.handlers.ExportHandler">
       </handler>
    </extension>
@@ -27,9 +27,9 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                label="LaTex Export"
-               id="de.tudresden.slr.latexExport.menus.latexExport">
+               id="de.tudresden.slr.latexexport.menus.latexexport">
             <command
-                  commandId="de.tudresden.slr.latexExport.commands.createLatexSkeleton"
+                  commandId="de.tudresden.slr.latexexport.commands.createLatexSkeleton"
                   mnemonic="S"
                   id="Export LaTex skeleton">
             </command>

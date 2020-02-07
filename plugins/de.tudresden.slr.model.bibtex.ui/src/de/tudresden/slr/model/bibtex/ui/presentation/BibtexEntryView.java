@@ -1,6 +1,7 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.HashMap;
@@ -39,7 +40,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -63,6 +63,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
@@ -94,7 +95,6 @@ public class BibtexEntryView extends ViewPart {
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
 	public static final String overviewId = BibtexOverviewEditor.ID;
-	public static final String confirmation = "This will close all opened documents without saving them. Do you wish to proceed?";
 	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
 	private TreeViewer viewer;
@@ -211,6 +211,15 @@ public class BibtexEntryView extends ViewPart {
 		workspace.removeResourceChangeListener(projectChangeListener);
 		super.dispose();
 	}
+	
+	private List<TreeItem> getAllItems(TreeItem[] treeItems) {
+		List<TreeItem> ret = new ArrayList<TreeItem>();
+		for(TreeItem item : treeItems) {
+			ret.add(item);
+			if(item.getItemCount() > 0) ret.addAll(Arrays.asList(item.getItems()));
+		}
+		return ret;
+	}
 
 	/**
 	 * listener for releasing DEL key. Removes selected document from domain.
@@ -229,6 +238,17 @@ public class BibtexEntryView extends ViewPart {
 					StructuredSelection selection = (StructuredSelection) viewer.getSelection();
 					if (selection.getFirstElement() instanceof Document) {
 						Document document = (Document) selection.getFirstElement();
+						Document nextDocument = null;
+						boolean found = false;
+						for(TreeItem item : getAllItems(viewer.getTree().getItems())) {
+							if(found && item.getData() instanceof Document) {
+								nextDocument = (Document)item.getData();
+								break;
+							}
+							if(item.getText().equals(document.getKey())) {
+								found = true;
+							}
+						}
 
 						editingDomain.getCommandStack().execute(new AbstractCommand() {
 							@Override
@@ -291,6 +311,8 @@ public class BibtexEntryView extends ViewPart {
 							// Something went wrong that shouldn't.
 							//
 						}
+						if(nextDocument != null)
+							selection = new StructuredSelection(nextDocument);
 						viewer.setSelection(selection);
 						viewer.getTree().forceFocus();
 						viewer.refresh();
@@ -478,23 +500,16 @@ public class BibtexEntryView extends ViewPart {
 					}
 					if (element instanceof IProject) {
 						IProject project = (IProject) element;
-						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()
-								|| requestConfirmation(confirmation)) {
-							deleteResources();
-							registerResources(project);
-							viewer.refresh();
-							closeEditors();
-							lastProject = project;
-							try {
-								ResourcesPlugin.getWorkspace().getRoot()
-										.setPersistentProperty(new QualifiedName(ID, "project"), lastProject.getName());
-							} catch (CoreException e) {
-								e.printStackTrace();
-							}
-						} else if (lastProject == null) {
-							combo.setSelection(null);
-						} else {
-							combo.setSelection(new StructuredSelection(lastProject));
+						deleteResources();
+						registerResources(project);
+						viewer.refresh();
+						closeEditors();
+						lastProject = project;
+						try {
+							ResourcesPlugin.getWorkspace().getRoot()
+									.setPersistentProperty(new QualifiedName(ID, "project"), lastProject.getName());
+						} catch (CoreException e) {
+							e.printStackTrace();
 						}
 					}
 				}
@@ -598,7 +613,10 @@ public class BibtexEntryView extends ViewPart {
 		menuMgr.addMenuListener(new IMenuListener() {
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
-				fillContextMenu(manager);
+				IStructuredSelection s = (IStructuredSelection) viewer.getSelection();
+				if(s.getFirstElement() instanceof DocumentImpl) {
+					fillContextMenu(manager);
+				}
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
@@ -631,13 +649,6 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				refreshProjectCombo();
-				if (combo.getSelection() != null) {
-					if (combo.getSelection() instanceof IStructuredSelection) {
-						IProject project = (IProject) ((IStructuredSelection) combo.getSelection()).getFirstElement();
-						deleteResources();
-						registerResources(project);
-					}
-				}
 				viewer.refresh();
 			}
 		};
@@ -726,10 +737,6 @@ public class BibtexEntryView extends ViewPart {
 	private void hookActions() {
 		viewer.addOpenListener(openListener);
 		viewer.addSelectionChangedListener(selectionListener);
-	}
-
-	private boolean requestConfirmation(String message) {
-		return MessageDialog.openConfirm(viewer.getControl().getShell(), BibtexEntryView.this.getTitle(), message);
 	}
 
 	/**
