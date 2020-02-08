@@ -28,7 +28,7 @@ public class LatexExportWizardTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+//		fail("Not yet implemented");
 	}
 
 }

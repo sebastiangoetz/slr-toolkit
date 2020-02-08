@@ -1,12 +1,12 @@
 --- RCPTT testcase ---
 Format-Version: 1.0
 Context-Type: org.eclipse.rcptt.ctx.workspace
-Element-Name: ExportWorkspace
+Element-Name: NewProjectWorkspace
 Element-Type: context
 Element-Version: 2.0
 Id: _ssop4BbVEeqdS_WHJ_kGbQ
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 12/4/19 9:37 PM
+Save-Time: 2/7/20 9:29 PM
 
 ------=_contents/newProject/my_bibtex.bib-3b165bcc-df99-303d-aec0-39cae586b2d3
 Content-Type: q7/binary
@@ -43,13 +43,12 @@ Content-Type: q7/binary
 Entry-Name: .q7.content
 
 UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACVkU1LxDAQhu+C/yHk
-bqLiQUrrgrL4AYIiWG+lTdMat/kwGW323zvd3XQv4uIpk8nzvsM7yRdRD+Rb+qCsKegZO6VEGmFbZfqC
-fkF3ckkXV8dHufU9k2JQLkjmhQNgAiIbrV8FVwuZlam6sQZkBBK1ymbf88kXJ5mQYb+g7wAu43wcR2Z1
-z9Ccvz3eJ+TArFmemEm+4ThyfOYoMbVGehmd9VDu26otaBWCdRfXzetSfrYvVXn3UK1um2eKWQnJxRTC
-wOaCV+fthxQQdoZGjk/bDt0RyHRqkAlgOwHlv7/rddWoBtfE8PgD0hJqZTrrdQ24RxYGf9gZ6miN1WuW
-ipnNeQqyTcn3MXP+3w9G0Q9QSwcI7/2w/Q4BAAA9AgAAUEsBAhQAFAAICAgAAAAhAO/9sP0OAQAAPQIA
-AAgACQAAAAAAAAAAAAAAAAAAAC5jb250ZW50VVQFAAEAAAAAUEsFBgAAAAABAAEAPwAAAE0BAAAAAA==
-
+brKKBymtCyviByiKYL2VNk1r3ObDZLTdf+90t+lexMVTJpnnfYd3ki4H3ZFv6YOyJqOnbEGJNMLWyrQZ
+/YLm5IIuL4+PUutbJkWnXJDMCwfABAyst34dXClkksfqyhqQA5BBq2T2PRt9cZIJCb5n9B3AJZz3fc+s
+bhma87eHu4gcmDXLIzPKtxxHjs8cJabUSD/K/snbDykg37dUndEiBOvOV9XrtfysX4r89r5Y31TPFPMS
+kooxiIHtBa9uZxEmUzOb0olAplGdjACbBJT/3tebolIVrorh8QekJZTKNNbrEnCXLHT+sDOUgzVWb1gs
+ZjblMcguJd/HTPl/PxlFP1BLBwhBZSwtDQEAAEECAABQSwECFAAUAAgICAAAACEAQWUsLQ0BAABBAgAA
+CAAJAAAAAAAAAAAAAAAAAAAALmNvbnRlbnRVVAUAAQAAAABQSwUGAAAAAAEAAQA/AAAATAEAAAAA
 ------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf--
 ------=_contents/newProject/my_metainformation.slrproject-ccd91fe3-2f15-345f-8ab0-9d352a81d384
 Content-Type: q7/binary
