@@ -1,13 +1,17 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
@@ -19,9 +23,11 @@ public class SimilarityMatrixTest {
 	private BibtexMergeData mergeData;
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
 	
-	public SimilarityMatrixTest() throws IOException {
+	@Before
+	public void setUp() throws IOException {
 		// read bibtex test file from resources
-		InputStream is = getClass().getResourceAsStream("/BibtexTest.bib");
+		File metainformationFile = new File("resources"+File.separator+"BibtexTest.bib");
+		InputStream is = new FileInputStream(metainformationFile);
 		
 		// parse as BibtexResourceImpl
 		BibtexResourceImpl resources = new BibtexResourceImpl(null);
@@ -34,6 +40,7 @@ public class SimilarityMatrixTest {
 			put(Criteria.title, 100);
 			put(Criteria.year, 100);
 		}};
+		System.out.println(mergeData == null);
 		mergeData.setWeights(weights);
 		similarityMatrix = mergeData.getSimilarityMatrix();
 	}

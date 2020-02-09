@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: de.tudresden.slr.model.bibtex.ui.tests
+Bundle-SymbolicName: de.tudresden.slr.model.bibtex.ui.tests
+Bundle-Version: 0.2.9.qualifier
+Fragment-Host: de.tudresden.slr.model.bibtex.ui;bundle-version="0.2.9"
+Automatic-Module-Name: de.tudresden.slr.model.bibtex.ui.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.2.9"
