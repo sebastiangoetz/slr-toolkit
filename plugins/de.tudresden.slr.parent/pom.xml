@@ -284,7 +284,7 @@
 		</module>
 		<module>../../tests/de.tudresden.slr.uitests</module>
 		<module>
-			../../testsde.tudresden.slr.model.bibtex.ui.tests
+			../../tests/de.tudresden.slr.model.bibtex.ui.tests
 		</module>
 	</modules>
 </project>
