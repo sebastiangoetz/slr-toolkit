@@ -1,0 +1,74 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _hi-nIBbQEeqdS_WHJ_kGbQ,_ssop4BbVEeqdS_WHJ_kGbQ,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: EditMetainformation
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _-gfa0Et_Eeq0G8auFt1V6w
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/9/20 10:11 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// checks whether editing metainformation files persists the changes
+get-view "Project Explorer" | get-tree | select "newProject/my_metainformation.slrproject" | double-click
+with [get-editor "my_metainformation.slrproject" | get-group "Key facts"] {
+    get-editbox -after [get-label Title] | set-text "Title of the project_"
+    get-editbox -after [get-label Keywords] | set-text "keyword1, keyword2, keyword 3_"
+    get-group Authors | get-button Add | click
+}
+with [get-window -class NewAndEditAuthorDialog] {
+    with [get-editbox -after [get-label Name]] {
+        set-text a
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    with [get-editbox -after [get-label Email]] {
+        set-text b
+        key-type "TRAVERSE_TAB_NEXT"
+    }
+    get-editbox -after [get-label Affiliation] | set-text c
+    get-button OK | click
+}
+with [get-editor "my_metainformation.slrproject" | get-group Description] {
+    get-editbox -after [get-label Abstract] | set-text "Abstract for the exported LaTex document._"
+    with [get-editbox -after [get-label "Description of  the taxonomy"]] {
+        set-text "Here comes a brief description of the project's taxonomy._"
+       
+    }
+}
+get-window "Save Resource" | get-button Yes | click
+get-view "Project Explorer" | click
+get-editor "my_metainformation.slrproject" | close
+get-view "Project Explorer" | get-tree | select "newProject/my_metainformation.slrproject" | double-click
+with [get-editor "my_metainformation.slrproject"] {
+    with [get-group "Key facts"] {
+        with [get-editbox -after [get-label Title]] {
+            get-property className | equals "org.eclipse.swt.widgets.Text" | verify-true
+            get-property text | equals "Title of the project_" | verify-true
+        }
+        with [get-editbox -after [get-label Keywords]] {
+            get-property className | equals "org.eclipse.swt.widgets.Text" | verify-true
+            get-property text | equals "keyword1, keyword2, keyword 3_" | verify-true
+        }
+        with [get-group Authors | get-list] {
+            get-property "getClassName()" | equals "org.eclipse.swt.widgets.List" | verify-true
+            get-property "getItems().String[0]" | equals "John Doe; johnd@mail.tld; University of XYZ" | verify-true
+            get-property "getItems().String[1]" | equals "a; b; c" | verify-true
+        }
+    }
+    with [get-group Description] {
+        with [get-editbox -after [get-label Abstract]] {
+            get-property className | equals "org.eclipse.swt.widgets.Text" | verify-true
+            get-property text | equals "Abstract for the exported LaTex document._" | verify-true
+        }
+        with [get-editbox -after [get-label "Description of  the taxonomy"]] {
+            get-property className | equals "org.eclipse.swt.widgets.Text" | verify-true
+            get-property text | equals "Here comes a brief description of the project's taxonomy._" | verify-true
+        }
+    }
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
