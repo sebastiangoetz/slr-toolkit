@@ -1,0 +1,77 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _MCe54Eq0EeqHAOukN5Idlw,_ssop4BbVEeqdS_WHJ_kGbQ
+Element-Name: LatexExportTest
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _ff6w8BbVEeqdS_WHJ_kGbQ
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/12/20 9:26 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-menu -path "LaTex Export/Create LaTex Skeleton" | click
+// default covers linux+mac, win covers.... windows.
+set-dialog-result File  [concat [get-workspace-location] [get-by-os -default "/" -win "\\"] "newProject" [get-by-os -default "/" -win "\\"]  [get-by-os -default "/export.tex" -win "\\export.tex"]]
+set-dialog-result MessageBox 64
+with [get-window "LaTex Export"] {
+    get-button "Target file for LaTex-Document" | click
+    get-button Finish | click
+}
+with [get-window Attention] {
+    get-property "getClassName()" | equals "org.eclipse.swt.widgets.Shell" | verify-true
+    get-property "getEnabled()" | equals true | verify-true
+    get-property "getText()" | equals Attention | verify-true
+    get-property "getChildren().Control[0].getClassName()" | equals "org.eclipse.swt.widgets.Label" | verify-true
+    get-property "getChildren().Control[1].getClassName()" | equals "org.eclipse.swt.widgets.Label" | verify-true
+    get-property "getChildren().Control[1].getText()" 
+        | equals "Please be advised - check the generated LaTex template for parts which are still to be filled out. \n\n"
+        + "Due to the nature of the bar charts, charts were just generated for dimensions which have subdimensions as children." 
+        | verify-true
+}
+get-window Attention | get-button OK | click
+
+with [get-view "Project Explorer" | get-tree] {
+    select newProject | get-menu -path Refresh | click
+    select "newProject/export.tex" | select "newProject/export.tex" | get-menu -path "Open With/Text Editor" | click
+}
+with [get-editor "export.tex" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "\\documentclass{article}\n"
+        + "\\usepackage{graphicx}\n"
+        + "\\providecommand{\\keywords}[1]{\\textbf{\\textit{Keywords }} #1}\n\n"
+        + "\\begin{document}\n\n"
+        + "\\title{ Title of the project }\n\n"
+        + "\\author{ John Doe; johnd@mail.tld; University of XYZ\n"
+        + "\\\\ }\n\n \n"
+        + "\\maketitle\n"
+        + "\\begin{abstract}\n"
+        + "Abstract for the exported LaTex document.\n"
+        + "\\end{abstract}\n\n"
+        + "\\keywords{ keyword1, keyword2, keyword 3 }\n\n"
+        + "\\section{Introduction}\n"
+        + "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \n\n"
+        + "\\section{Taxonomy}\n"
+        + "During this systematic literature review, 0 documents were analyzed. They were mapped to a taxonomy of 2 main dimensions which themselves are subcategorised in a total of 10 dimensions. \\\\\n\n"
+        + "Here comes a brief description of the project's taxonomy.\n\n"
+        + "\\begin{figure}[!htb]\n"
+        + "\\centering\n"
+        + "\\includegraphics[width = 1.0\\textwidth]{images/Dimension1.JPG}\n"
+        + "\\caption{Dimension 1}\n"
+        + "\\end{figure}\n"
+        + "\\begin{figure}[!htb]\n"
+        + "\\centering\n"
+        + "\\includegraphics[width = 1.0\\textwidth]{images/Dimension2.JPG}\n"
+        + "\\caption{Dimension 2}\n"
+        + "\\end{figure}\n\n\n"
+        + "\\end{document}" | verify-true
+}
+with [get-view "Project Explorer" | get-tree] {
+    get-item -path "newProject/images/Dimension1.JPG" | get-property caption | equals "Dimension1.JPG" | verify-true
+    get-item -path "newProject/images/Dimension2.JPG" | get-property caption | equals "Dimension2.JPG" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
