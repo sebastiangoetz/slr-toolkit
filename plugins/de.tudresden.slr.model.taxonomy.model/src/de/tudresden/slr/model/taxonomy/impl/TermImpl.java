@@ -125,6 +125,23 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 1;
+		if (eContainer instanceof Term) {
+			int parentHash = eContainer.hashCode();
+			hash = prime * hash + parentHash ^ (parentHash >> 32);
+		}
+		int nameHash = name.hashCode();
+		hash = prime * hash + nameHash ^ (nameHash >> 32);
+		return hash;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -197,8 +214,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case TaxonomyPackage.TERM__NAME:
-				return name != null;
-				//return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TaxonomyPackage.TERM__SUBCLASSES:
 				return subclasses != null && !subclasses.isEmpty();
 		}
@@ -228,7 +244,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');
