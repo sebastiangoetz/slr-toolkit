@@ -33,8 +33,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
-		<tycho.version>1.2.0</tycho.version>
-		<tycho-extras.version>1.2.0</tycho-extras.version>
+		<tycho.version>1.6.0</tycho.version>
+		<tycho-extras.version>1.6.0</tycho-extras.version>
 	</properties>
 
 	<build>
@@ -194,19 +194,9 @@
 							<arch>x86_64</arch>
 						</environment>
 						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
 							<os>linux</os>
 							<ws>gtk</ws>
 							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
 						</environment>
 						<environment>
 							<os>macosx</os>
@@ -278,7 +268,7 @@
 		<module>
 			../../tests/de.tudresden.slr.model.taxonomy.tests
 		</module>
-		
+
 		<module>
 			../../tests/de.tudresden.slr.metainformation.tests
 		</module>
