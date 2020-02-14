@@ -69,7 +69,7 @@ public interface Term extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='final int prime = 31;\r\nint hash = 1;\r\nif (eContainer instanceof Term) {\r\n\tint parentHash = eContainer.hashCode();\r\n\thash = prime * hash + parentHash ^ (parentHash >> 32);\r\n}\r\nint nameHash = name.hashCode();\r\nhash = prime * hash + nameHash ^ (nameHash >> 32);\r\nreturn hash;'"
+	 * @model
 	 * @generated
 	 */
 	int hashCode();

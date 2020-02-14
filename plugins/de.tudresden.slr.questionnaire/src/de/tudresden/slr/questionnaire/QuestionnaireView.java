@@ -136,6 +136,7 @@ public class QuestionnaireView extends ViewPart {
     private void onDocumentChanged(Document document) {
         if (document == null)
             return;
+        if(documentLabel.isDisposed()) return;
         this.document = document;
         documentLabel.setText(document.getKey());
         documentLabel.getParent().layout();

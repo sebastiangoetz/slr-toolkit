@@ -7,5 +7,7 @@ package de.tudresden.slr.model.taxonomy;
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 public class TaxonomyRuntimeModule extends de.tudresden.slr.model.taxonomy.AbstractTaxonomyRuntimeModule {
-
+	public TaxonomyRuntimeModule() {
+		super();
+	}
 }
