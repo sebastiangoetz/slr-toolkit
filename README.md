@@ -11,7 +11,9 @@ Latest release: [here](https://github.com/sebastiangoetz/slr-toolkit/releases)
 
 ### Build
 From console:
-* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package`
+* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify`
+To build without Unit- and UI-Tests
+* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package -P skipUnitAndUiTests`
 
 Within Eclipse add Run Configurations (Run as -> Maven build):
 * de.tudresden.slr.target.target -> open de.tudresden.slr.target.target -> set as target platform

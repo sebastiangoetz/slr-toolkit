@@ -234,6 +234,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>skipUnitAndUiTests</id>
+			<properties>
+				<skipTests>true</skipTests>
+			</properties>
+		</profile>
+	</profiles>
 	<modules>
 		<module>../../targets/de.tudresden.slr.target</module>
 		<module>../de.tudresden.slr.wizards</module>
@@ -275,7 +283,7 @@
 		<module>
 			../../tests/de.tudresden.slr.model.bibtex.ui.tests
 		</module>
-		<!--  keep the uitests project at the very bottom of the modules -->
+		<!-- keep the uitests project at the very bottom of the modules -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 
 	</modules>
