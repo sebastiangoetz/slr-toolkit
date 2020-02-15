@@ -40,7 +40,6 @@ public class SimilarityMatrixTest {
 			put(Criteria.title, 100);
 			put(Criteria.year, 100);
 		}};
-		System.out.println(mergeData == null);
 		mergeData.createSimilarityMatrix();
 		mergeData.setWeights(weights);
 		similarityMatrix = mergeData.getSimilarityMatrix();

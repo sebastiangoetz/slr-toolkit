@@ -281,7 +281,7 @@
 			../../tests/de.tudresden.slr.metainformation.tests
 		</module>
 		<module>
-			../../tests/de.tudresden.slr.model.bibtex.ui.tests
+			../../tests/de.tudresden.slr.model.bibtex.tests
 		</module>
 		<!-- keep the uitests project at the very bottom of the modules -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
