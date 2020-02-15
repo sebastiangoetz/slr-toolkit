@@ -53,7 +53,7 @@ public class BibtexEntrySimilarity {
 		return input;
 	}
 	
-	static String getDoiFromUrl(String url) {
+	public static String getDoiFromUrl(String url) {
 		if (url == null)
 			return null;
 		
