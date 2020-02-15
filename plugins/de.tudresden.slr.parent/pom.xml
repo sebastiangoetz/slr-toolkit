@@ -283,8 +283,10 @@
 		<module>
 			../../tests/de.tudresden.slr.model.bibtex.tests
 		</module>
+		<module>../../tests/de.tudresden.slr.googlescholar.test</module>
 		<!-- keep the uitests project at the very bottom of the modules -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 
+		
 	</modules>
 </project>

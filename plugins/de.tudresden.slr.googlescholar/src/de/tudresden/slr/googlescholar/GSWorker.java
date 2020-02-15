@@ -40,7 +40,7 @@ public class GSWorker {
 	private PrintWriter out;
 	private SubMonitor monitor;
 
-	private static final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_NAME);
+	protected static final IPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, PREFERENCE_NAME);
 	private static final int MIN_WAIT = store.getInt(PreferenceConstants.P_MIN_WAIT);
 	private static final int MAX_WAIT = store.getInt(PreferenceConstants.P_MAX_WAIT);
 
