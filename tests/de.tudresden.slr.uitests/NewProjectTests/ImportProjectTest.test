@@ -7,12 +7,62 @@ Element-Version: 3.0
 External-Reference: 
 Id: _u4gOcFHDEeq5oZP7waE4Pg
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 2/17/20 9:47 PM
+Save-Time: 2/18/20 10:46 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
 
-
+get-menu -path "File/Import..." | click
+get-window Import | get-tree | select "General/Existing Projects into Workspace" | double-click
+set-dialog-result Folder "platform:/resource/importTest"
+with [get-window Import] {
+    get-button "Browse..." | click
+    get-button Finish | click
+}
+with [get-view "Project Explorer"] {
+    click
+    get-tree | select "importProject/my_bibtex.bib" | double-click
+}
+with [get-editor "my_bibtex.bib" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "% This bibtex file was created by the new bibtex wizard\n"
+        + "% changed" | verify-true
+}
+get-view "Project Explorer" | get-tree | select "importProject/my_metainformation.slrproject" | double-click
+with [get-editor "my_metainformation.slrproject" | get-group "Key facts" | get-editbox -after [get-label Title]] {
+    get-property className | equals "org.eclipse.swt.widgets.Text" | verify-true
+    get-property text | equals NewProject | verify-true
+}
+with [get-view Taxonomy | get-tree] {
+    get-property className | equals "org.eclipse.swt.widgets.Tree" | verify-true
+    get-property itemCount | equals 3 | verify-true
+}
+get-view "Project Explorer" | get-tree | select "importProject/my_taxonomy.taxonomy" | double-click
+with [get-editor "my_taxonomy.taxonomy" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "/* This taxonomy was created by the new taxonomy wizard\n"
+        + "   It holds a simple taxonomy to showcase the syntax */\n\n"
+        + "Dimension 1 {\n"
+        + "\tTerm 1 {\n"
+        + "\t\tSubterm 1,\n"
+        + "\t\tSubterm 2\n"
+        + "\t},\n"
+        + "\tTerm 2,\n"
+        + "\tTerm 3\n"
+        + "},\n\n"
+        + "Dimension 2 {\n"
+        + "\tTerm 1 {\n"
+        + "\t\tSubterm 1,\n"
+        + "\t\tSubterm 2\n"
+        + "\t},\n"
+        + "\tTerm 2,\n"
+        + "\tTerm 3\n"
+        + "},\n\n"
+        + "Dimension 3 {\n"
+        + "\t\n"
+        + "\t\n"
+        + "}" | verify-true
+}
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
