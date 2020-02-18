@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -14,6 +12,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 public abstract class ObservableCombo<E> {
 
@@ -37,9 +37,9 @@ public abstract class ObservableCombo<E> {
 		});
 		Button refresh = new Button(container, SWT.PUSH);
 		refresh.setText("Refresh");
-		refresh.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseDown(MouseEvent e) {
+		refresh.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
 		        updateOptionsDisplay();
 		    }
 		});
