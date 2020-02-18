@@ -1,0 +1,19 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _hi-nIBbQEeqdS_WHJ_kGbQ,_5V5LkFKNEeqJqYS7i9Ha1Q,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: QuestionnaireInitialization
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _vCamEFKMEeqJqYS7i9Ha1Q
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/18/20 9:35 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view Questionnaires | get-control Any -index 1 | get-property className 
+    | equals "org.eclipse.swt.widgets.Composite" | verify-true
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
