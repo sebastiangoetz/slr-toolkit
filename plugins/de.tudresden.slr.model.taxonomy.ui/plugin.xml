@@ -193,18 +193,6 @@
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.SplitTermHandler"
       		id="de.tudresden.slr.model.taxonomy.ui.splitterm"
       		name="Split Selected Term">
-      </command>
-      <command
-            defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.OpenCiteCountHandler"
-            description="Open a Bar Chart for cite counts in the browser"
-            id="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
-            name="Open Cite Count Bar">
-      </command>
-      <command
-            defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.OpenCiteCountHandler"
-            description="Open a Bar Chart for cite counts in the browser"
-            id="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
-            name="Open Cite Bar">
       </command>  		
     </extension>
     <extension point="org.eclipse.ui.menus">
@@ -268,14 +256,6 @@
                   label="Open Cite Barchart"
                   style="push"
                   tooltip="Open bar chart in Browser for the chosen Taxonomy Term">
-            </command>
-            <command
-                  commandId="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
-                  icon="icons/tree_mode.gif"
-                  id="de.tudresden.slr.model.taxonomy.ui.opencitecountbarbutton"
-                  label="Open Cite Count Barchart"
-                  style="push"
-                  tooltip="Open bar chart in Browser for the chosen Cite Count">
             </command>
          </menuContribution>
          <menuContribution
