@@ -2,35 +2,76 @@ package de.tudresden.slr.latexexport.data;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
+
+import de.tudresden.slr.metainformation.util.DataProvider;
+import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.impl.TermImpl;
 
 public class LatexExportChartGeneratorTest {
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+	@Rule
+	public TemporaryFolder tempFolder = new TemporaryFolder();
+	
+	private DataProvider dataProvider;
 
 	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
+	public void setUp() throws Exception {		
+		EList<Term> mainDimensions = new BasicEList<>();
+		EList<Term> subDimensions = new BasicEList<>();
+		
+		Term termA = Mockito.mock(Term.class);
+		Mockito.when(termA.getName()).thenReturn("termA");
+		Mockito.when(termA.getSubclasses()).thenReturn(subDimensions);
+		mainDimensions.add(termA);
+		
+		Term termB = Mockito.mock(Term.class);
+		Mockito.when(termB.getName()).thenReturn("termB");
+		subDimensions.add(termB);
+		
+		dataProvider = Mockito.mock(DataProvider.class);
+		Mockito.when(dataProvider.getMainDimensions()).thenReturn(mainDimensions);
 	}
 
 	@Test
-	public void testGeneratePDFOutput() {
-		Mockito.mock(LatexExportChartGenerator.class);
-		//fail("bla");
+	public void testTexAndImagesAreCreated() throws IOException {
+		// BIRT cant be tested right now, furthermore the old charting engine is obsolete
+		File targetFile = tempFolder.newFile("output.texFileEnding");
+		LatexExportChartGenerator.generatePDFOutput(targetFile.toString(), dataProvider);
+		
+		File texFile = null;
+		File imagesFolder = null;
+
+		for(File f : tempFolder.getRoot().listFiles()) {
+			if(f.getName().contains("texFileEnding")) {
+				texFile = f;
+			}
+			
+			if(f.getName().contains("images")) {
+				imagesFolder = f;
+			}
+		}
+		
+		// assert that there are the tex file, the images folder and exactly one image
+		assertNotNull(texFile);
+		assertNotNull(imagesFolder);
+		assertEquals(1, imagesFolder.listFiles().length);
 	}
 
 }
