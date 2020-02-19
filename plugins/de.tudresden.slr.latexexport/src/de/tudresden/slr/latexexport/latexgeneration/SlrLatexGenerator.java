@@ -45,7 +45,7 @@ public class SlrLatexGenerator {
 	 */
 	protected SlrLatexTemplate concreteDocument;
 	Map<Term, String> mainDimensions;
-
+	
 	public SlrLatexGenerator(SlrProjectMetainformation metainformation, DataProvider dataProvider, String filename,
 			String templateName) throws MalformedURLException {
 		super();
@@ -68,6 +68,10 @@ public class SlrLatexGenerator {
 			conreteDocumentTemplate = new TemplateTUDSCR();
 
 		this.concreteDocument = conreteDocumentTemplate;
+	}
+
+	protected SlrLatexGenerator() {
+		
 	}
 
 	/**
