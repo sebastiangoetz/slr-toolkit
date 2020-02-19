@@ -21,3 +21,5 @@ plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model
 \.recommenders/
 
 examples
+plugins/de.tudresden.slr.model.taxonomy/src-gen/de/tudresden/slr/model/taxonomy/services/TaxonomyGrammarAccess.java
+tests/de.tudresden.slr.model.taxonomy.tests/.classpath
