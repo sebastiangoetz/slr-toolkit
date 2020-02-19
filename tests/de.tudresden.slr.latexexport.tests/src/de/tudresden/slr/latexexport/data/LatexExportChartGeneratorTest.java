@@ -38,19 +38,19 @@ public class LatexExportChartGeneratorTest {
 		
 		Term termA = Mockito.mock(Term.class);
 		Mockito.when(termA.getName()).thenReturn("termA");
-		//Mockito.when(termA.getSubclasses()).thenReturn(subDimensions);
+		Mockito.when(termA.getSubclasses()).thenReturn(subDimensions);
 		mainDimensions.add(termA);
 		
 		Term termB = Mockito.mock(Term.class);
 		Mockito.when(termB.getName()).thenReturn("termB");
-		subDimensions.add(termB);
+		//subDimensions.add(termB);
 		
 		dataProvider = Mockito.mock(DataProvider.class);
 		Mockito.when(dataProvider.getMainDimensions()).thenReturn(mainDimensions);
 	}
 
 	@Test
-	public void testTexAndImagesAreCreated() throws IOException {
+	public void testTexAndImageFolderAreCreated() throws IOException {
 		// renderer dv.JPG not available in jenkins build
 		File targetFile = tempFolder.newFile("output.texFileEnding");
 		LatexExportChartGenerator.generatePDFOutput(targetFile.toString(), dataProvider);
@@ -70,8 +70,7 @@ public class LatexExportChartGeneratorTest {
 		
 		// assert that there are the tex file, the images folder and exactly one image
 		assertNotNull(texFile);
-//		assertNotNull(imagesFolder);
-//		assertEquals(1, imagesFolder.listFiles().length);
+		assertNotNull(imagesFolder);
 	}
 
 }
