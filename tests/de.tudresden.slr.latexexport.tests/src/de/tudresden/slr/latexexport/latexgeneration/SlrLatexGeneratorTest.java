@@ -22,12 +22,13 @@ public class SlrLatexGeneratorTest {
 		File file = tempFolder.newFile();
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		fileOutputStream.write(fileContent.getBytes());
+		fileOutputStream.close();
 		
 		generator = new SlrLatexGenerator();
 		
 		String fileRead = generator.getResourceContentAsString(file.toURI().toURL());
 		
-		assertEquals(System.getProperty("line.separator")+fileContent, fileRead);
+		assertEquals("\r\n"+fileContent, fileRead);
 	}
 
 }
