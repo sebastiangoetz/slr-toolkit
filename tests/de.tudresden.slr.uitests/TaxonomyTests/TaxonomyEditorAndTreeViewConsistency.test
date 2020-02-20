@@ -7,7 +7,7 @@ Element-Version: 3.0
 External-Reference: 
 Id: _IPe9cFHHEeq5oZP7waE4Pg
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 2/18/20 10:53 PM
+Save-Time: 2/20/20 10:08 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
@@ -82,39 +82,5 @@ with [get-editor "my_taxonomy.taxonomy" | get-text-viewer] {
 with [get-view Taxonomy | get-tree] {
     get-property "getClassName()" | equals "org.eclipse.swt.widgets.Tree" | verify-true
     get-property "getItemCount()" | equals 3 | verify-true
-}
-// vice versa
-get-view Taxonomy | get-tree | select "Dimension 3 (0)" | get-menu -path "New Term" | click
-with [get-window -class CreateTermDialog] {
-    get-list | select "As Neighbor of: Dimension 3"
-    get-editbox -after [get-label "Term Name:"] | set-text "Dimension 4"
-    get-button OK | click
-}
-with [get-view Taxonomy | get-tree] {
-    get-property "getClassName()" | equals "org.eclipse.swt.widgets.Tree" | verify-true
-    get-property "getItemCount()" | equals 4 | verify-true
-}
-with [get-editor "my_taxonomy.taxonomy" | get-text-viewer] {
-    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
-    get-property text | equals "/* This taxonomy was created by the new taxonomy wizard\n"
-        + "   It holds a simple taxonomy to showcase the syntax */ Dimension 1 {\n"
-        + "\tTerm 1 {\n"
-        + "\t\tSubterm 1,\n"
-        + "\t\tSubterm 2\n"
-        + "\t},\n"
-        + "\tTerm 2,\n"
-        + "\tTerm 3\n"
-        + "},\n"
-        + "Dimension 2 {\n"
-        + "\tTerm 1 {\n"
-        + "\t\tSubterm 1,\n"
-        + "\t\tSubterm 2\n"
-        + "\t},\n"
-        + "\tTerm 2,\n"
-        + "\tTerm 3\n"
-        + "},\n"
-        + "Dimension 3 {\n"
-        + "},\n"
-        + "Dimension 4" | verify-true
 }
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
