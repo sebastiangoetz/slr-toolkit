@@ -7,12 +7,20 @@ Element-Version: 3.0
 External-Reference: 
 Id: __slxkE6gEeqa2_ZAWX6iDQ
 Runtime-Version: 2.4.3.201909171500
-Save-Time: 2/20/20 9:51 PM
+Save-Time: 2/20/20 10:01 PM
 Testcase-Type: ecl
 
 ------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
 Content-Type: text/ecl
 Entry-Name: .content
+
+with [get-view "Bibtex Entries"] {
+    get-combo | select MRT
+    get-tree | select "\\/MRT\\/mrt.bib"
+    get-combo | select "Bachelorarbeit_taxonomie"
+    get-tree | select "\\/Bachelorarbeit_taxonomie\\/Library.bib"
+    get-combo | select MRT
+}
 
 with [get-view "Bibtex Entries"] {
     click
