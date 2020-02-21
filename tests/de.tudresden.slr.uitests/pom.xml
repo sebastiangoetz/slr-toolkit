@@ -41,19 +41,6 @@
 				</autPath>
 			</properties>
 		</profile>
-		<!-- <profile>
-			<id>unix_32</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<name>Linux</name>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86
-				</autPath>
-			</properties>
-		</profile> -->
 		<profile>
 			<id>windows_64</id>
 			<activation>
@@ -66,19 +53,6 @@
 				</autPath>
 			</properties>
 		</profile>
-	<!-- 	<profile>
-			<id>windows_32</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>x86_32</arch>
-				</os>
-			</activation>
-			<properties>
-				<autPath>../../features/de.tudresden.slr.product/target/products/product/product/win32/win32/x86
-				</autPath>
-			</properties>
-		</profile> -->
 	</profiles>
 
  
@@ -88,14 +62,14 @@
 			<plugin>
 				<groupId>org.eclipse.rcptt</groupId>
 				<artifactId>rcptt-maven-plugin</artifactId>
-				<version>2.5.0-SNAPSHOT</version>
+				<version>2.5.1-SNAPSHOT</version>
 				<extensions>true</extensions>
 				<configuration>
 					<aut>
 						<explicit>${autPath}</explicit>
 					</aut>
 					<runner>
-						<version>2.5.0-SNAPSHOT</version>
+						<version>2.5.1-SNAPSHOT</version>
 					</runner>
 				</configuration>
 			</plugin>
@@ -141,7 +115,7 @@
 											rcptt-maven-plugin
 										</artifactId>
 										<versionRange>
-											[2.5.0-SNAPSHOT,)
+											[2.5.1-SNAPSHOT,)
 										</versionRange>
 										<goals>
 											<goal>execute</goal>
