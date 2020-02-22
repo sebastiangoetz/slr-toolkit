@@ -55,7 +55,7 @@
 		</profile>
 	</profiles>
 
- 
+
 
 	<build>
 		<plugins>
@@ -73,25 +73,11 @@
 					</runner>
 				</configuration>
 			</plugin>
-<!-- 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<tasks>
-							<echo>[project.basedir] ${project.basedir}</echo>
-								<echo>[autPath] ${autPath}</echo>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<version>1.1</version> <executions> <execution> <phase>validate</phase> <goals> 
+				<goal>run</goal> </goals> <configuration> <tasks> <echo>[project.basedir] 
+				${project.basedir}</echo> <echo>[autPath] ${autPath}</echo> </tasks> </configuration> 
+				</execution> </executions> </plugin> -->
 		</plugins>
 
 
@@ -151,5 +137,24 @@
 			</url>
 		</pluginRepository>
 	</pluginRepositories>
+
+	<!-- <pluginRepositories>
+		<pluginRepository>
+			<id>rcptt-snapshots</id>
+			<name>RCPTT Maven Snapshots repository</name>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+			<url>https://repo.eclipse.org/content/groups/releases/
+			</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>rcptt-releases</id>
+			<name>RCPTT Maven repository</name>
+			<url>https://repo.eclipse.org/content/groups/releases/
+			</url>
+			alternative: https://ftp.fau.de/eclipse/rcptt/release/
+		</pluginRepository>
+	</pluginRepositories> -->
 
 </project>
