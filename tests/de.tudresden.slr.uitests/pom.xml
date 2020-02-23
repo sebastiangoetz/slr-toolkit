@@ -62,15 +62,15 @@
 			<plugin>
 				<groupId>org.eclipse.rcptt</groupId>
 				<artifactId>rcptt-maven-plugin</artifactId>
-				<version>2.5.1-SNAPSHOT</version>
+				<version>2.5.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<aut>
 						<explicit>${autPath}</explicit>
 					</aut>
 					<runner>
-						<version>2.5.1-SNAPSHOT</version>
-						<explicit>https://repo.eclipse.org/content/repositories/rcptt-releases/org/eclipse/rcptt/runner/rcptt.runner/2.5.1/rcptt.runner-2.5.1.zip</explicit>
+						<version>2.5.1</version>
+						<!-- <explicit>https://repo.eclipse.org/content/repositories/rcptt-releases/org/eclipse/rcptt/runner/rcptt.runner/2.5.1/rcptt.runner-2.5.1.zip</explicit> -->
 					</runner>
 				</configuration>
 			</plugin>
@@ -102,7 +102,7 @@
 											rcptt-maven-plugin
 										</artifactId>
 										<versionRange>
-											[2.5.1-SNAPSHOT,)
+											[2.5.1,)
 										</versionRange>
 										<goals>
 											<goal>execute</goal>
@@ -123,15 +123,6 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>rcptt-snapshots</id>
-			<name>RCPTT Maven Snapshots repository</name>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<url>https://repo.eclipse.org/content/repositories/rcptt-snapshots/
-			</url>
-		</pluginRepository>
-		<pluginRepository>
 			<id>rcptt-releases</id>
 			<name>RCPTT Maven repository</name>
 			<url>https://repo.eclipse.org/content/repositories/rcptt-releases/
@@ -139,23 +130,12 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<!-- <pluginRepositories>
-		<pluginRepository>
-			<id>rcptt-snapshots</id>
-			<name>RCPTT Maven Snapshots repository</name>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<url>https://repo.eclipse.org/content/groups/releases/
-			</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>rcptt-releases</id>
-			<name>RCPTT Maven repository</name>
-			<url>https://repo.eclipse.org/content/groups/releases/
-			</url>
-			alternative: https://ftp.fau.de/eclipse/rcptt/release/
-		</pluginRepository>
-	</pluginRepositories> -->
+	<!-- <pluginRepositories> <pluginRepository> <id>rcptt-snapshots</id> <name>RCPTT 
+		Maven Snapshots repository</name> <snapshots> <updatePolicy>always</updatePolicy> 
+		</snapshots> <url>https://repo.eclipse.org/content/groups/releases/ </url> 
+		</pluginRepository> <pluginRepository> <id>rcptt-releases</id> <name>RCPTT 
+		Maven repository</name> <url>https://repo.eclipse.org/content/groups/releases/ 
+		</url> alternative: https://ftp.fau.de/eclipse/rcptt/release/ </pluginRepository> 
+		</pluginRepositories> -->
 
 </project>
