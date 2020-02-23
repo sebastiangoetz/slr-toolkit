@@ -269,23 +269,21 @@
 		<module>
 			../../tests/de.tudresden.slr.tests.parent
 		</module>
-
 		<module>
 			../../tests/de.tudresden.slr.latexexport.tests
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.model.taxonomy.tests
 		</module>
-
 		<module>
 			../../tests/de.tudresden.slr.metainformation.tests
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.model.bibtex.tests
 		</module>
-
-		<module>../../tests/de.tudresden.slr.googlescholar.test</module>
-
+		<module>
+			../../tests/de.tudresden.slr.googlescholar.tests
+		</module>
 		<module>../../tests/de.tudresden.slr.utils.tests</module>
 		<module>
 			../../tests/de.tudresden.slr.questionnaire.tests
@@ -295,7 +293,5 @@
 			these tests will run the longest -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 		<!-- IMPORTANT! -->
-
-
 	</modules>
 </project>
