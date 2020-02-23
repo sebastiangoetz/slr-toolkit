@@ -1,0 +1,68 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _0DZNUFZVEeqldtHkDOR8xw,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: QuestionnaireInheritance
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _gpR-AFZVEeqldtHkDOR8xw
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/23/20 5:08 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view Questionnaires] {
+    get-button Refresh | click
+    get-button Refresh -after [get-label Questionnaire] | click
+    get-button "New Questionnaire" | click
+}
+with [get-window "New Questionnaire"] {
+    get-editbox -after [get-label "File name:"] | set-text inheritance
+    get-tree | select "Bachelorarbeit_taxonomie"
+    get-button "Next >" | click
+    get-button "Use an existing questionnaire as a base" | check
+    get-button Refresh -after [get-label "Base Questionnaire"] | click
+    get-button Refresh | click
+    get-button Finish | click
+}
+get-view "Project Explorer" | get-tree | select "Bachelorarbeit_taxonomie/inheritance.questionnaire" | double-click
+with [get-editor "inheritance.questionnaire" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "{\n"
+        + "  \"name\": \"inheritance.questionnaire\",\n"
+        + "  \"questions\": [\n"
+        + "    {\n"
+        + "      \"choices\": [\n"
+        + "        \"Strongly disagree\",\n"
+        + "        \"Disagree\",\n"
+        + "        \"Agree\",\n"
+        + "        \"Strongly agree\"\n"
+        + "      ],\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.SingleChoiceQuestion\",\n"
+        + "      \"questionText\": \"Question1\",\n"
+        + "      \"answers\": {}\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"choices\": [\n"
+        + "        \"Strongly disagree\",\n"
+        + "        \"Disagree\",\n"
+        + "        \"Neutral\",\n"
+        + "        \"Agree\",\n"
+        + "        \"Strongly agree\"\n"
+        + "      ],\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.MultipleChoiceQuestion\",\n"
+        + "      \"questionText\": \"Question2\",\n"
+        + "      \"answers\": {}\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.FreeTextQuestion\",\n"
+        + "      \"questionText\": \"Question3\",\n"
+        + "      \"answers\": {}\n"
+        + "    }\n"
+        + "  ]\n"
+        + "}" | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--
