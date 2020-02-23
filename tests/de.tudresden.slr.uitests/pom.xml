@@ -70,6 +70,7 @@
 					</aut>
 					<runner>
 						<version>2.5.1-SNAPSHOT</version>
+						<explicit>https://repo.eclipse.org/content/repositories/rcptt-releases/org/eclipse/rcptt/runner/rcptt.runner/2.5.1/rcptt.runner-2.5.1.zip</explicit>
 					</runner>
 				</configuration>
 			</plugin>
