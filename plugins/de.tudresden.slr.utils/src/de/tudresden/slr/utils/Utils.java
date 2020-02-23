@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 public class Utils {
 
-	private static Document lastDoc = null;
-	private static StringBuffer logBuffer = new StringBuffer();
+	protected static Document lastDoc = null;
+	protected static StringBuffer logBuffer = new StringBuffer();
 
 	/**
 	 * Returns the resource file which contains the given bibtex document. Bases
@@ -29,12 +29,10 @@ public class Utils {
 	 */
 	public static IFile getIFilefromDocument(Document doc) {
 		if (doc == null) {
-			// TODO: remove syso
-			// System.err.println("Document " + doc
-			// + " does not exist or has no resource");
 			return null;
 		}
 		if (doc.equals(lastDoc)) {
+			
 		} else {
 			// System.out.println("Document "
 			// + ((lastDoc == null) ? null : lastDoc.getKey())

@@ -20,7 +20,7 @@ import de.tudresden.slr.model.taxonomy.util.TermUtils;
 
 @RunWith(XtextRunner.class)
 @InjectWith(TaxonomyInjectorProvider.class)
-public class TermEqualityTest {
+public class TermUtilsTest {
 	@Inject
 	ParseHelper<Model> parseHelper;
 	
@@ -33,7 +33,7 @@ public class TermEqualityTest {
         	},
         	Term 2,
         	Subterm 1
-		}
+		},
         Dimension 2 {
         	Term 1 {
         		Subterm 1,
@@ -130,5 +130,11 @@ public class TermEqualityTest {
 		Term dimension1Subterm1 = taxonomyA.getDimensions().get(0).getSubclasses().get(2);
 		Term dimension1Term1Subterm1 = taxonomyB.getDimensions().get(0).getSubclasses().get(0).getSubclasses().get(0);
 		Assert.assertFalse(TermUtils.equals(dimension1Subterm1, dimension1Term1Subterm1));	
+	}
+	
+	@Test
+	public void containsTest() {
+		Term dimension1Term1 = taxonomyA.getDimensions().get(0).getSubclasses().get(0);
+		Assert.assertTrue(TermUtils.contains(taxonomyA.getDimensions().get(0), dimension1Term1));
 	}
 }
