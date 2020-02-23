@@ -10,15 +10,13 @@ Find a short video giving an overview of the main features of the tool on [Youtu
 Latest release: [here](https://github.com/sebastiangoetz/slr-toolkit/releases)
 
 ### Build
-From console:
-* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify`
-To build without Unit- and UI-Tests
-* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package -P skipUnitAndUiTests`
-
-Within Eclipse add Run Configurations (Run as -> Maven build):
-* de.tudresden.slr.target.target -> open de.tudresden.slr.target.target -> set as target platform
-* de.tudresden.slr.model.taxonomy -> de.tudresden.slr.model.taxonomy.GenerateTaxonomy.mwe2 -> Run as.. -> MWE2 Workflow
-* for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
+* From console
+	* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify` for building with tests
+	* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean package -P skipUnitAndUiTests` for building without tests
+* Within Eclipse add Run Configurations (Run as -> Maven build):
+	* de.tudresden.slr.target.target -> open de.tudresden.slr.target.target -> set as target platform
+	* de.tudresden.slr.model.taxonomy -> de.tudresden.slr.model.taxonomy.GenerateTaxonomy.mwe2 -> Run as.. -> MWE2 Workflow
+	* for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
  
 ### Dependencies
 * JDK 1.8
