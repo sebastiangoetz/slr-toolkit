@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class StringSimilarityTests {
+public class StringSimilarityTest {
 	
 	private static final String stringA = "this is string a";
 	private static final String stringBnotEqualsA = "this is string b";
