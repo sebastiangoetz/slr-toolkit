@@ -288,10 +288,14 @@
 		<module>
 			../../tests/de.tudresden.slr.questionnaire.tests
 		</module>
+				<module>
+			../../tests/de.tudresden.slr.model.modelregistry.tests
+		</module>
 
 		<!-- IMPORTANT! keep the uitests project at the very bottom of the modules, 
 			these tests will run the longest -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 		<!-- IMPORTANT! -->
+
 	</modules>
 </project>
