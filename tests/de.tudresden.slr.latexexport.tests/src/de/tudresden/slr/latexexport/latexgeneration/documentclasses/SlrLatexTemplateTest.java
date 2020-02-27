@@ -2,15 +2,9 @@ package de.tudresden.slr.latexexport.latexgeneration.documentclasses;
 
 import static org.junit.Assert.*;
 
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
-import de.tudresden.slr.metainformation.util.DataProvider;
-import de.tudresden.slr.model.taxonomy.Term;
 
 public class SlrLatexTemplateTest {
 

@@ -53,7 +53,7 @@ public class HtmlSummary {
         return str.toString();
     }
 
-    private void generateHead() {
+    protected void generateHead() {
         str.append("<head>");
         str.append("<title>Questionnaire Summary</title>");
         addCssFile("/reset.css");
@@ -61,7 +61,7 @@ public class HtmlSummary {
         str.append("</head>");
     }
 
-    private void generateBody() {
+    protected void generateBody() {
         str.append("<body>");
         String fullName = questionnaire.getName();
         String baseName = fullName.replace(".questionnaire", "");
@@ -71,7 +71,7 @@ public class HtmlSummary {
         str.append("</body>");
     }
 
-    private void visit(Question<?> question) {
+    protected void visit(Question<?> question) {
         str.append("<div class='question'>");
         str.append("<h2>").append(question.getQuestionText()).append("</h2>");
         if (question instanceof FreeTextQuestion)
@@ -83,7 +83,7 @@ public class HtmlSummary {
         str.append("</div>");
     }
 
-    private void visit(FreeTextQuestion question) {
+    protected void visit(FreeTextQuestion question) {
         boolean notAnswered = true;
         for (Entry<String, String> entry : question.getAnswers().entrySet()) {
             notAnswered = false;
@@ -97,7 +97,7 @@ public class HtmlSummary {
         }
     }
 
-    private void visit(ChoiceQuestion<?> question) {
+    protected void visit(ChoiceQuestion<?> question) {
         str.append("<table>");
         str.append("<tr><th>Option</th><th>Count</th></tr>");
         for (String choice : question.getChoices()) {
@@ -109,7 +109,7 @@ public class HtmlSummary {
         str.append("</table>");
     }
 
-    private void addCssFile(String cssName) {
+    protected void addCssFile(String cssName) {
         InputStream stream = null;
         try {
             System.out.println("cssName: " + cssName);
@@ -130,7 +130,7 @@ public class HtmlSummary {
         }
     }
 
-    private void addCssFile(File file) {
+    protected void addCssFile(File file) {
         try {
             String content = Files.lines(file.toPath()).collect(Collectors.joining());
             str.append("<style>").append(content).append("</style>");

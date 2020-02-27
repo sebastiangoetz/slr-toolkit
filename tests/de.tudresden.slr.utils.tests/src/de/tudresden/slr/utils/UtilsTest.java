@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.eclipse.emf.ecore.resource.Resource;
 
 public class UtilsTest {
 
@@ -13,24 +15,12 @@ public class UtilsTest {
 
 	@Test
 	public void testGetIFilefromDocument() {
-		//null should return null
+		// null should return null
+		assertNull(Utils.getIFilefromEMFResource(null));
 		
-		
+		//empty ressource set should return null
+		Resource nullResourceSetResource = Mockito.mock(Resource.class);
+		Mockito.when(nullResourceSetResource.getResourceSet()).thenReturn(null);
+		assertNull(Utils.getIFilefromEMFResource(nullResourceSetResource));
 	}
-
-	@Test
-	public void testGetIFilefromEMFResource() {
-		//fail("Not yet implemented");
-	}
-
-	@Test
-	public void testMark() {
-		//fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUnmark() {
-		//fail("Not yet implemented");
-	}
-
 }
