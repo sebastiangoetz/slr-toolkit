@@ -8,6 +8,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.ui.ide,
- de.tudresden.slr.classification;bundle-version="0.2.6"
+ de.tudresden.slr.classification;bundle-version="0.2.6",
+ de.tudresden.slr.model.modelregistry;bundle-version="0.2.8",
+ org.eclipse.emf.edit;bundle-version="2.10.1"
 Export-Package: de.tudresden.slr.wizards.natures;uses:="org.eclipse.core.resources",
  de.tudresden.slr.wizards.projects;uses:="org.eclipse.core.resources"

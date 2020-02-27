@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -32,8 +34,15 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	protected WizardSetupBibtexPage secondPage;
 	protected WizardSetupTaxonomyPage thirdPage;
 	protected WizardSetupMetainformationPage fourthPage;
+	
+	IProject project;
+	
+	protected AtomicInteger filesLoaded;
+	protected final int filesToLoad;
 
 	public NewSlrProjectWizard() {
+		filesLoaded = new AtomicInteger(0);
+		filesToLoad = 3;
 		setWindowTitle("New SLR Project");
 		firstPage = new WizardNewProjectCreationPage("SLR Project Wizard");
 		firstPage.setTitle("Create a new SLR Project");
@@ -73,7 +82,7 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	
 	
 	protected IProject createSlrProject() throws CoreException {
-		IProject project = firstPage.getProjectHandle();
+		project = firstPage.getProjectHandle();
 		project.create(null);
 		project.open(null);
 		createResourceFile(project, secondPage, BIBTEX_RESOURCE);
@@ -82,6 +91,14 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 		SlrProjectSupport.addNature(project);
 		return project;
 
+	}
+	
+	protected synchronized void onFileCreated() {
+		if(filesLoaded.incrementAndGet() == filesToLoad) onAllFilesLoaded();
+	}
+	
+	protected void onAllFilesLoaded() {
+		
 	}
 
 	/**
@@ -109,7 +126,12 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	private void createFile(IProject project, URL sourceFile, String newFileName){
 		try (InputStream fileStream = sourceFile.openConnection().getInputStream()) {
 			IFile taxonomyFile = project.getFile(newFileName);
-			taxonomyFile.create(fileStream, false, null);
+			taxonomyFile.create(fileStream, false, new NullProgressMonitor() {
+				@Override
+				public void done() {
+					onFileCreated();
+				}
+			});
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 		}
