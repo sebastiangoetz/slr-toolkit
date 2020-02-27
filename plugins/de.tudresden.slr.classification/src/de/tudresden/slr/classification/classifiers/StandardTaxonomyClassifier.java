@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -114,6 +115,11 @@ public class StandardTaxonomyClassifier {
 			 }
 			 
 			 TaxonomyUtils.saveTaxonomy(model);
+			 try {
+				doc.eResource().save(null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		 }
 	 }
 	 
@@ -149,29 +155,12 @@ public class StandardTaxonomyClassifier {
 						for(EObject e:bibRes.getContents()) { 
 							Document doc = (Document) e;
 							
-							Command c = new AbstractCommand() {
-									@Override
-									public boolean prepare() {
-										return true;
-									}
-
-									@Override
-									public void redo() {
-										execute();
-									}
-									
-									@Override
-									public void execute() {
-										if(doc.getAdditionalFields().containsKey("crossref")) {
-											createStandardTaxonomy(doc,docMap.get(doc.getAdditionalFields().get("crossref")));
-										} else {
-											createStandardTaxonomy(doc);
-										}
-									}
-							};
+							if(doc.getAdditionalFields().containsKey("crossref")) {
+								createStandardTaxonomy(doc,docMap.get(doc.getAdditionalFields().get("crossref")));
+							} else {
+								createStandardTaxonomy(doc);
+							}
 							
-							Optional<AdapterFactoryEditingDomain> editingDomain = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
-							editingDomain.ifPresent((domain) -> domain.getCommandStack().execute(c));
 						}
 				 }
 			 }
