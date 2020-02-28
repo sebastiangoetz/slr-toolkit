@@ -26,7 +26,7 @@ public class TermCreator {
 				((Model) container).getDimensions().add(createdTerm);
 			}
 		}
-		Optional<Model> model = SearchUtils.getConainingModel(relative);
+		Optional<Model> model = SearchUtils.getContainingModel(relative);
 		if (model.isPresent()) {
 			TaxonomyUtils.saveTaxonomy(model.get());
 		}

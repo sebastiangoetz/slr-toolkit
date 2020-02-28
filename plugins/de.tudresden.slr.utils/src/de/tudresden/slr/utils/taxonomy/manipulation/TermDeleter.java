@@ -29,7 +29,7 @@ public class TermDeleter {
 					if (termsInDocuments.containsKey(k)) termsInDocuments.get(k).add(v);
 					else termsInDocuments.put(k, new LinkedList<Term>(Arrays.asList(v)));
 			});
-			Optional<Model> model = SearchUtils.getConainingModel(term);
+			Optional<Model> model = SearchUtils.getContainingModel(term);
 			EcoreUtil.remove(term);			
 			if (model.isPresent()) {
 				TaxonomyUtils.saveTaxonomy(model.get());

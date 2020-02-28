@@ -76,7 +76,7 @@ public class SearchUtils {
 		return result;
 	}
 	
-	public static Optional<Model> getConainingModel(Term t) {
+	public static Optional<Model> getContainingModel(Term t) {
 		EObject currentNode = t;
 		while (!(currentNode instanceof Model) && currentNode.eContainer() != null) {
 			currentNode = ((Term) currentNode).eContainer();
