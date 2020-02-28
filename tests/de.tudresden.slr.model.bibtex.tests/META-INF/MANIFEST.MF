@@ -8,3 +8,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0",
  de.tudresden.slr.model.bibtex.ui,
  de.tudresden.slr.model.bibtex
+Import-Package: org.eclipse.core.resources
