@@ -1,14 +1,9 @@
 package de.tudresden.slr.latexexport.handlers;
 
-import de.tudresden.slr.latexexport.helpers.ExportProjectChooser;
-import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
-import de.tudresden.slr.metainformation.MetainformationActivator;
-import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
-import de.tudresden.slr.metainformation.util.MetainformationUtil;
-import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -26,9 +21,16 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.swt.widgets.Shell;
+
+import de.tudresden.slr.latexexport.helpers.ExportProjectChooser;
+import de.tudresden.slr.latexexport.wizard.LatexExportWizard;
+import de.tudresden.slr.metainformation.MetainformationActivator;
+import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
+import de.tudresden.slr.metainformation.util.MetainformationUtil;
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.

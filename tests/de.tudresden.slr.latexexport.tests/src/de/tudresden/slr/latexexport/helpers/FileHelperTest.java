@@ -1,6 +1,7 @@
 package de.tudresden.slr.latexexport.helpers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.net.MalformedURLException;

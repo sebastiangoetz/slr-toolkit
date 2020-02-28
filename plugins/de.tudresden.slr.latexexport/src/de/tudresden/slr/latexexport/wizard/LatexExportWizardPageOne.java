@@ -1,6 +1,7 @@
 package de.tudresden.slr.latexexport.wizard;
 
 import java.io.File;
+
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
+
 import de.tudresden.slr.latexexport.latexgeneration.documentclasses.SlrLatexTemplate;
 import de.tudresden.slr.metainformation.MetainformationActivator;
 

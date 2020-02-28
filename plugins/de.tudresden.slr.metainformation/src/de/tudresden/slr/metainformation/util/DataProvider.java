@@ -3,8 +3,10 @@ package de.tudresden.slr.metainformation.util;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;

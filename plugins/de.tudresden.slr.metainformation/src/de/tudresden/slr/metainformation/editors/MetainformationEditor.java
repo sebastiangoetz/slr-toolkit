@@ -3,6 +3,7 @@ package de.tudresden.slr.metainformation.editors;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;

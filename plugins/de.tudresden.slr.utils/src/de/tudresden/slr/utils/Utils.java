@@ -1,7 +1,5 @@
 package de.tudresden.slr.utils;
 
-import de.tudresden.slr.model.bibtex.Document;
-
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
@@ -12,6 +10,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+
+import de.tudresden.slr.model.bibtex.Document;
 
 public class Utils {
 

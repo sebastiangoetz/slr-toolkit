@@ -16,6 +16,7 @@ import org.eclipse.birt.chart.model.attribute.Bounds;
 import org.eclipse.birt.chart.model.attribute.impl.BoundsImpl;
 import org.eclipse.birt.core.framework.PlatformConfig;
 import org.eclipse.emf.common.util.EList;
+
 import com.ibm.icu.util.ULocale;
 
 import de.tudresden.slr.latexexport.helpers.FileHelper;

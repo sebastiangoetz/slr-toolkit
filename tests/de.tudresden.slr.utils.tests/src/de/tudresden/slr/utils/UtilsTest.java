@@ -1,11 +1,11 @@
 package de.tudresden.slr.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.eclipse.emf.ecore.resource.Resource;
 
 public class UtilsTest {
 

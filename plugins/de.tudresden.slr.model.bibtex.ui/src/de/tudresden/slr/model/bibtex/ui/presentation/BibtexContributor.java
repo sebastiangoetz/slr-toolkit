@@ -1,6 +1,6 @@
 package de.tudresden.slr.model.bibtex.ui.presentation;
 
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;

@@ -2,6 +2,7 @@ package de.tudresden.slr.model.bibtex.util;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import org.eclipse.emf.ecore.resource.Resource;
 
 

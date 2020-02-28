@@ -2,12 +2,13 @@
  */
 package de.tudresden.slr.model.bibtex.util;
 
-import de.tudresden.slr.model.bibtex.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
+
+import de.tudresden.slr.model.bibtex.BibtexFile;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance

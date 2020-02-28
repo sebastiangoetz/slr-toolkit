@@ -2,12 +2,13 @@
  */
 package de.tudresden.slr.model.taxonomy.util;
 
-import de.tudresden.slr.model.taxonomy.*;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->

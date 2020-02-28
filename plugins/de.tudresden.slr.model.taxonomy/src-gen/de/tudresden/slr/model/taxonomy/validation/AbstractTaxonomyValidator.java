@@ -5,6 +5,7 @@ package de.tudresden.slr.model.taxonomy.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.emf.ecore.EPackage;
 
 public class AbstractTaxonomyValidator extends org.eclipse.xtext.validation.AbstractDeclarativeValidator {

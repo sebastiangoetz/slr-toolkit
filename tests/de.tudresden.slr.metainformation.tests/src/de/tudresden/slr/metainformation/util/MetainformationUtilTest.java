@@ -1,8 +1,11 @@
 package de.tudresden.slr.metainformation.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
+
 import javax.xml.bind.JAXBException;
+
 import org.junit.Test;
 
 import de.tudresden.slr.metainformation.data.Author;

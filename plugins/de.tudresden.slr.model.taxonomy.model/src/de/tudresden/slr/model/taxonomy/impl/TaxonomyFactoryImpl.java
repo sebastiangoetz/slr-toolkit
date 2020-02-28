@@ -2,15 +2,16 @@
  */
 package de.tudresden.slr.model.taxonomy.impl;
 
-import de.tudresden.slr.model.taxonomy.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->
