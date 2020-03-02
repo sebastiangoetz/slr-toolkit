@@ -2,15 +2,16 @@
  */
 package de.tudresden.slr.model.bibtex.impl;
 
-import de.tudresden.slr.model.bibtex.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.BibtexFile;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--

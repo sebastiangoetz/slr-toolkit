@@ -2,18 +2,17 @@
  */
 package de.tudresden.slr.model.taxonomy.impl;
 
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
-import de.tudresden.slr.model.taxonomy.Term;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->

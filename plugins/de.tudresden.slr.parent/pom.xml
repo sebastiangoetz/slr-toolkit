@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -22,8 +23,10 @@
 
 	<scm>
 		<url>https://github.com/sebastiangoetz/slr-toolkit</url>
-		<connection>scm:git:git://github.com/sebastiangoetz/slr-toolkit.git</connection>
-		<developerConnection>scm:git:git@github.com:sebastiangoetz/slr-toolkit.git</developerConnection>
+		<connection>scm:git:git://github.com/sebastiangoetz/slr-toolkit.git
+		</connection>
+		<developerConnection>scm:git:git@github.com:sebastiangoetz/slr-toolkit.git
+		</developerConnection>
 	</scm>
 
 	<properties>
@@ -41,11 +44,11 @@
 				<artifactId>xtend-maven-plugin</artifactId>
 				<version>2.7.0</version>
 				<dependencies>
-						<dependency>
-						    <groupId>org.eclipse.platform</groupId>
-						    <artifactId>org.eclipse.equinox.common</artifactId>
-						    <version>3.10.0</version>
-						</dependency>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>3.10.0</version>
+					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
@@ -86,95 +89,95 @@
 				<configuration>
 					<filters>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.ui</id>
-			            	<removeAll />
-			         	</filter>
-			         	<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.debug.core</id>
-			            	<removeAll />
-			         	</filter>
-			         	<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.debug.ui</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.ui</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.debug</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.debug.core</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.debug.core</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.debug.ui</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.debug.ui</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.debug</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.emf.codegen.ecore</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.debug.core</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.emf.codegen</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.debug.ui</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.emf.ecore.edit</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.emf.codegen.ecore</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.emf.ecore.editor</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.emf.codegen</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.equinox.concurrent</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.emf.ecore.edit</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.core.manipulation</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.emf.ecore.editor</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.core</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.equinox.concurrent</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.jdt.launching</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.core.manipulation</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.xtext.common.types.edit</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.core</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.xtext.common.types.ui</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.jdt.launching</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.xtext.generator</id>
-			            	<removeAll />
-			         	</filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.common.types.edit</id>
+							<removeAll />
+						</filter>
 						<filter>
-			            	<type>eclipse-plugin</type>
-			            	<id>org.eclipse.xtext.xtext.generator</id>
-			            	<removeAll />
-			         	</filter>					
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.common.types.ui</id>
+							<removeAll />
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.generator</id>
+							<removeAll />
+						</filter>
+						<filter>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.xtext.xtext.generator</id>
+							<removeAll />
+						</filter>
 					</filters>
 					<target>
 						<artifact>
@@ -215,7 +218,7 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-source-plugin</artifactId>
@@ -231,6 +234,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>skipUnitAndUiTests</id>
+			<properties>
+				<skipTests>true</skipTests>
+			</properties>
+		</profile>
+	</profiles>
 	<modules>
 		<module>../../targets/de.tudresden.slr.target</module>
 		<module>../de.tudresden.slr.wizards</module>
@@ -241,9 +252,9 @@
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
 		<module>../de.tudresden.slr.model.modelregistry</module>
 		<module>../de.tudresden.slr.ui.chart</module>
-		
+
 		<module>../de.tudresden.slr.model.bibtex.ui</module>
-		
+
 		<module>../de.tudresden.slr.model.taxonomy.model</module>
 		<module>../../features/de.tudresden.slr.model.taxonomy.sdk</module>
 		<module>../de.tudresden.slr.model.taxonomy.ui</module>
@@ -252,7 +263,39 @@
 		<module>../de.tudresden.slr.utils</module>
 		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.metainformation</module>
-		<module>../de.tudresden.slr.latexExport</module>
-                <module>../de.tudresden.slr.questionnaire</module>
+		<module>../de.tudresden.slr.latexexport</module>
+		<module>../de.tudresden.slr.questionnaire</module>
+		<!-- parent test module -->
+		<module>
+			../../tests/de.tudresden.slr.tests.parent
+		</module>
+		<module>
+			../../tests/de.tudresden.slr.latexexport.tests
+		</module>
+		<module>
+			../../tests/de.tudresden.slr.model.taxonomy.tests
+		</module>
+		<module>
+			../../tests/de.tudresden.slr.metainformation.tests
+		</module>
+		<module>
+			../../tests/de.tudresden.slr.model.bibtex.tests
+		</module>
+		<module>
+			../../tests/de.tudresden.slr.googlescholar.tests
+		</module>
+		<module>../../tests/de.tudresden.slr.utils.tests</module>
+		<module>
+			../../tests/de.tudresden.slr.questionnaire.tests
+		</module>
+				<module>
+			../../tests/de.tudresden.slr.model.modelregistry.tests
+		</module>
+
+		<!-- IMPORTANT! keep the uitests project at the very bottom of the modules, 
+			these tests will run the longest -->
+		<module>../../tests/de.tudresden.slr.uitests</module>
+		<!-- IMPORTANT! -->
+
 	</modules>
 </project>

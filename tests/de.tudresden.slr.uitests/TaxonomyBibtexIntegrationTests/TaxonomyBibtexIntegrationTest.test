@@ -1,0 +1,115 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _4UtdUFWsEeqHlqchZU6uRQ,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: TaxonomyBibtexIntegrationTest
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _nJgLAFWrEeqHlqchZU6uRQ
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/22/20 9:32 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+get-view "Project Explorer" | get-tree | select "minimalWorkingExample/my_taxonomy.taxonomy" | double-click
+get-view "Project Explorer" | get-tree | select "minimalWorkingExample/my_bibtex.bib" | double-click
+with [get-view "Bibtex Entries"] {
+    click
+    get-tree | key-type F5 -times 5
+    get-combo | select minimalWorkingExample
+    with [get-tree] {
+        key-type F5 -times 5
+        select "\\/minimalWorkingExample\\/my_bibtex.bib/tag1"
+    }
+}
+with [get-editor "my_bibtex.bib" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "% This bibtex file was created by the new bibtex wizard\n"
+        + "@misc{ tag1,\n"
+        + "       author = \"Author1\",\n"
+        + "       title = \"Article1\",\n"
+        + "       year = \"2019\" }\n"
+        + "@misc{ tag2,\n"
+        + "       author = \"Author2\",\n"
+        + "       title = \"Article2\",\n"
+        + "       year = \"2020\" }" | verify-true
+}
+
+// select terms
+with [get-view Taxonomy | get-tree] {
+    get-item -path "Dimension 1 \\(0\\)/Term 1 \\(0\\)/Subterm 1 \\(0\\)" | check
+    get-item -path "Dimension 2 \\(0\\)/Term 2 \\(0\\)" | check
+}
+
+get-view "Bibtex Entries" | get-tree | select "\\/minimalWorkingExample\\/my_bibtex.bib/tag2"
+with [get-view Taxonomy | get-tree] {
+    get-item -path "Dimension 1 \\(0\\)/Term 2 \\(0\\)" | check
+    get-item -path "Dimension 2 \\(0\\)/Term 3 \\(0\\)" | check
+}
+get-editor "my_bibtex.bib" | click
+// assert change in bibtex file
+
+with [get-editor "my_bibtex.bib" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "% This bibtex file was created by the new bibtex wizard\n"
+        + "@misc{ tag1,\n"
+        + "       author = \"Author1\",\n"
+        + "       title = \"Article1\",\n"
+        + "       year = \"2019\" }\n"
+        + "@misc{ tag2,\n"
+        + "       author = \"Author2\",\n"
+        + "       title = \"Article2\",\n"
+        + "       year = \"2020\" }" | verify-true
+}
+// assert state of taxonomy tree
+with [get-view Taxonomy | get-tree] {
+    get-property "getClassName()" | equals "org.eclipse.swt.widgets.Tree" | verify-true
+    get-property "getItems().TreeItem[0].getClassName()" | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getText()" 
+        | equals "Subterm 1 (1)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[0].getChecked()" | equals false 
+        | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[1].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[1].getText()" 
+        | equals "Subterm 2 (0)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getItems().TreeItem[1].getChecked()" | equals false 
+        | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getText()" | equals "Term 1 (0)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[0].getChecked()" | equals false | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[1].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[1].getText()" | equals "Term 2 (1)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[1].getChecked()" | equals true | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[2].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[2].getText()" | equals "Term 3 (0)" | verify-true
+    get-property "getItems().TreeItem[0].getItems().TreeItem[2].getChecked()" | equals false | verify-true
+    get-property "getItems().TreeItem[0].getText()" | equals "Dimension 1 (0)" | verify-true
+    get-property "getItems().TreeItem[0].getChecked()" | equals true | verify-true
+    get-property "getItems().TreeItem[1].getClassName()" | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[0].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[0].getItems().TreeItem[0].getChecked()" | equals false 
+        | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[0].getText()" | equals "Term 1 (0)" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[0].getChecked()" | equals false | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[1].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[1].getText()" | equals "Term 2 (1)" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[1].getChecked()" | equals false | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[2].getClassName()" 
+        | equals "org.eclipse.swt.widgets.TreeItem" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[2].getText()" | equals "Term 3 (1)" | verify-true
+    get-property "getItems().TreeItem[1].getItems().TreeItem[2].getChecked()" | equals true | verify-true
+    get-property "getItems().TreeItem[1].getText()" | equals "Dimension 2 (0)" | verify-true
+    get-property "getItems().TreeItem[1].getChecked()" | equals true | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

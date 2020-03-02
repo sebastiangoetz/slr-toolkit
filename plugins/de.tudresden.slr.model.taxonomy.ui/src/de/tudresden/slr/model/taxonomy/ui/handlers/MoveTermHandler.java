@@ -57,7 +57,7 @@ public class MoveTermHandler extends AbstractHandler {
 	}
 	
 	private Model computeAllowedTargets(List<Term> termsToMove) {
-		Optional<Model> completeTaxonomyOptional = SearchUtils.getConainingModel(termsToMove.get(0));
+		Optional<Model> completeTaxonomyOptional = SearchUtils.getContainingModel(termsToMove.get(0));
 		if (completeTaxonomyOptional.isPresent()) {
 			Model completeTaxonomyCopy = EcoreUtil.copy(completeTaxonomyOptional.get());
 			for (Term t : termsToMove) {

@@ -4,9 +4,9 @@
  */
 package de.tudresden.slr.model.taxonomy.validation;
 
-import de.tudresden.slr.model.taxonomy.Term;
-
 import org.eclipse.emf.common.util.EList;
+
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * A sample validator interface for {@link de.tudresden.slr.model.taxonomy.Model}.

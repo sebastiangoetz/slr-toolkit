@@ -19,7 +19,7 @@ import de.tudresden.slr.questionnaire.util.GsonFactory;
 public class QuestionnaireStorage {
 
 	private static QuestionnaireStorage instance;
-	private Map<Questionnaire, IFile> fileOriginMap = new HashMap<Questionnaire, IFile>();
+	protected Map<Questionnaire, IFile> fileOriginMap = new HashMap<Questionnaire, IFile>();
 
 	private QuestionnaireStorage() {
 	}

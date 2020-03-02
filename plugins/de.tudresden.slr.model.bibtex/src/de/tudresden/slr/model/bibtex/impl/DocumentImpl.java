@@ -2,11 +2,6 @@
  */
 package de.tudresden.slr.model.bibtex.impl;
 
-import de.tudresden.slr.model.bibtex.BibtexPackage;
-import de.tudresden.slr.model.bibtex.Document;
-
-import de.tudresden.slr.model.taxonomy.Model;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,16 +10,16 @@ import java.util.function.Function;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
+
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.taxonomy.Model;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '

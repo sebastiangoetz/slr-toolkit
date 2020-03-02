@@ -4,9 +4,9 @@
  */
 package de.tudresden.slr.model.bibtex.validation;
 
-import de.tudresden.slr.model.taxonomy.Model;
-
 import org.eclipse.emf.common.util.EList;
+
+import de.tudresden.slr.model.taxonomy.Model;
 
 /**
  * A sample validator interface for

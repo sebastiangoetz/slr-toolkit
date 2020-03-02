@@ -83,7 +83,7 @@ public class TermMerger {
 		}		
 		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));
 		// secondly, for the main taxonomy
-				Optional<Model> model = SearchUtils.getConainingModel(targetTerm);		
+				Optional<Model> model = SearchUtils.getContainingModel(targetTerm);		
 				if (model.isPresent()) {			
 					TaxonomyUtils.saveTaxonomy(doMerge(model.get(), termsToMerge, targetTerm));
 				}

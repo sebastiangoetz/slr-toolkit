@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: de.tudresden.slr.latexexport.tests;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-ActivationPolicy: lazy
+Fragment-Host: de.tudresden.slr.latexexport;bundle-version="0.3.0"
+Automatic-Module-Name: de.tudresden.slr.latexexport.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.tudresden.slr.tests.parent

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: de.tudresden.slr.utils.tests
+Bundle-Version: 0.3.0.qualifier
+Fragment-Host: de.tudresden.slr.utils;bundle-version="0.3.0"
+Automatic-Module-Name: de.tudresden.slr.utils.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0"

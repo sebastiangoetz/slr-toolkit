@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<slrProjectMetainformation>
+    <title>myTitle</title>
+    <keywords>myKeywords</keywords>
+    <projectAbstract>myAbstract</projectAbstract>
+	<taxonomyDescription>myDescription</taxonomyDescription>
+    <authorsList>
+        <email>myMail</email>
+        <name>myName</name>
+        <organisation>myOrganisation</organisation>
+    </authorsList>
+</slrProjectMetainformation>

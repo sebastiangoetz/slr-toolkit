@@ -1,14 +1,11 @@
 package de.tudresden.slr.googlescholar;
 
-import java.util.Iterator;
-import java.util.List;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -16,8 +13,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
-
-import com.gargoylesoftware.htmlunit.WebClient;
 
 public class GSImportWizard extends Wizard implements INewWizard {
 
