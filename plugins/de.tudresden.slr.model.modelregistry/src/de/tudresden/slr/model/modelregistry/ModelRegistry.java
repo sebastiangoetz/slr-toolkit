@@ -29,6 +29,7 @@ public class ModelRegistry extends Observable {
 	private Model activeTaxonomy;
 	private AdapterFactoryEditingDomain sharedEditingDomain;
 	private TaxonomyStandaloneParser taxonomyParser = new TaxonomyStandaloneParser();
+	private ResourceManager resourceManager;
 
 	public ModelRegistry() {
 		createEditingDomain();
@@ -42,6 +43,7 @@ public class ModelRegistry extends Observable {
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new BibtexItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+		
 
 		// Create the command stack that will notify this editor as commands are
 		// executed.
@@ -51,6 +53,10 @@ public class ModelRegistry extends Observable {
 		// Create the editing domain with a special command stack.
 		//
 		sharedEditingDomain = new AdapterFactoryEditingDomain(adapterFactory,commandStack, new HashMap<Resource, Boolean>());
+		
+		//Create the resource manager providing a unified, simplified interface for loading and unloading resources
+		//
+		resourceManager = new ResourceManager(sharedEditingDomain);
 	}
 
 	public Optional<AdapterFactoryEditingDomain> getEditingDomain() {
@@ -95,6 +101,10 @@ public class ModelRegistry extends Observable {
 		activeTaxonomy = taxonomy;
 		setChanged();
 		notifyObservers(activeTaxonomy);
+	}
+	
+	public ResourceManager getResourceManager() {
+		return resourceManager;
 	}
 
 	@Override
