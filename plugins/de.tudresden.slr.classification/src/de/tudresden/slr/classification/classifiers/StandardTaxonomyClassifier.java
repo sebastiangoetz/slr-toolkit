@@ -124,53 +124,27 @@ public class StandardTaxonomyClassifier {
 	 }
 	 
 	 public void classifyDocumentsInProject(IProject project) {
-		 List<IFile> bibFiles = new ArrayList<IFile>();
-		 IFile taxonomyFile = null;
 		 try {
-			 for(IResource res:project.members()) {
-				 if(res.getFileExtension().equals("bib")) {
-					 bibFiles.add(project.getFile(res.getFullPath().lastSegment()));
-					 
-				 }
-				 
-				 if(res.getFileExtension().equals("taxonomy")) {
-					 taxonomyFile = project.getFile(res.getFullPath().lastSegment());
-				 }
-			 }
+			 List<Document> docs = ModelRegistryPlugin.getModelRegistry().getResourceManager().loadProject(project);
+			 Map<String,String> docMap = new HashMap<>();
 			 
-			 ModelRegistryPlugin.getModelRegistry().setTaxonomyFile(taxonomyFile);
-			 Optional<AdapterFactoryEditingDomain> domainOpt = ModelRegistryPlugin.getModelRegistry().getEditingDomain();
-			 if(domainOpt.isPresent()) {
-				 for(IFile file:bibFiles) {
-						URI uri = URI.createURI(file.getFullPath().toString());	
-						Resource bibRes = domainOpt.get().getResourceSet().getResource(uri, true);
-						
-						//create map to associate a doc with its key to efficiently find crossrefs later
-						Map<String,String> docMap = new HashMap<>();
-
-						for(EObject e:bibRes.getContents()) {
-							docMap.put(((Document) e).getKey(), ((Document) e).getTitle());	
-						}
-						
-						for(EObject e:bibRes.getContents()) { 
-							Document doc = (Document) e;
-							
-							if(doc.getAdditionalFields().containsKey("crossref")) {
-								createStandardTaxonomy(doc,docMap.get(doc.getAdditionalFields().get("crossref")));
-							} else {
-								createStandardTaxonomy(doc);
-							}
-							
-						}
-				 }
-			 }
-			
-			 
-			 
-			 
-		 } catch(CoreException e) {
+				for(Document d: docs) {
+					docMap.put(d.getKey(), d.getTitle());	
+				}
+				
+				for(Document doc: docs) {
+					if(doc.getAdditionalFields().containsKey("crossref")) {
+						createStandardTaxonomy(doc,docMap.get(doc.getAdditionalFields().get("crossref")));
+					} else {
+						createStandardTaxonomy(doc);
+					}
+					
+				}
+		 } catch (CoreException e) {
 			 
 		 }
+		 
+		 
 	 }
 
 }
