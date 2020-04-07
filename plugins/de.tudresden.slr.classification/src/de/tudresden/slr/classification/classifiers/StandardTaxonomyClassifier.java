@@ -68,7 +68,7 @@ public class StandardTaxonomyClassifier {
 			}
 			
 			if(isTermNameMalformed(field)) {
-				field = handleMalformedTermName(field,true);
+				field = handleMalformedTermName(field,false);
 			}
 			
 			classifyDocument(doc,"Document Venue", venueType, field);
