@@ -17,6 +17,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
 import de.tudresden.slr.wizards.pages.WizardSetupMetainformationPage;
 import de.tudresden.slr.wizards.pages.WizardSetupPage;
@@ -98,7 +99,11 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	}
 	
 	protected void onAllFilesLoaded() {
-		
+		try {
+			ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

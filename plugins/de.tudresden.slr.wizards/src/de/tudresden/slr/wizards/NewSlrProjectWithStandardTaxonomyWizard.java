@@ -19,7 +19,7 @@ public class NewSlrProjectWithStandardTaxonomyWizard extends NewSlrProjectWizard
 	public boolean performFinish() {
 		try {
 			createSlrProject();
-			(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project);
+			//(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project);
 			
 		} catch(CoreException e) {
 			return false;
@@ -30,6 +30,7 @@ public class NewSlrProjectWithStandardTaxonomyWizard extends NewSlrProjectWizard
 	
 	
 	protected void onAllFilesLoaded() {
+		super.onAllFilesLoaded();
 			if(ModelRegistryPlugin.getModelRegistry().getEditingDomain().isPresent()) {
 				ModelRegistryPlugin.getModelRegistry().getEditingDomain().get().getCommandStack().execute(new AbstractCommand() {
 					

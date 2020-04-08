@@ -1,11 +1,9 @@
 package de.tudresden.slr.model.modelregistry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
-import java.util.Optional;
+
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -21,11 +19,29 @@ import de.tudresden.slr.model.bibtex.Document;
 public class ResourceManager extends Observable {
 
 	AdapterFactoryEditingDomain editingDomain;
+	IProject activeProject;
+
+
+	public void setActiveProject(IProject project) throws CoreException {
+		if (project != activeProject) {
+			unloadResources();
+			activeProject = project;
+			loadProject(project);
+			setChanged();
+			notifyObservers(project);
+		}
+
+	}
+
+	public IProject getActiveProject() {
+		return activeProject;
+	}
 
 	public ResourceManager(AdapterFactoryEditingDomain editingDomain) {
 		this.editingDomain = editingDomain;
+
 		
-		
+
 	}
 
 	public void unloadResources() {
@@ -33,6 +49,7 @@ public class ResourceManager extends Observable {
 			resource.unload();
 		}
 		editingDomain.getResourceSet().getResources().clear();
+
 	}
 
 	public List<Document> loadProject(IProject project) throws CoreException {
@@ -61,11 +78,10 @@ public class ResourceManager extends Observable {
 			}
 		}
 
-		notifyObservers(project);
 		return docs;
 
 	}
-	
+
 	@Override
 	public void notifyObservers(Object arg) {
 		try {
