@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -105,7 +107,7 @@ public class BibtexEntryView extends ViewPart {
 	private ComboViewer combo;
 	private BibtexOpenListener openListener, selectionListener;
 
-	/**
+	/*
 	 * The constructor.
 	 */
 	public BibtexEntryView() {
@@ -114,6 +116,21 @@ public class BibtexEntryView extends ViewPart {
 		workspace.addResourceChangeListener(markerChangeListener);
 		workspace.addResourceChangeListener(projectChangeListener);
 		initializeEditingDomain();
+		ModelRegistryPlugin.getModelRegistry().getResourceManager().addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				if (arg instanceof IProject) {
+					Display.getDefault().asyncExec(new Runnable() {
+						public void run() {
+							refreshAction.run();
+							combo.setSelection(new StructuredSelection((IProject) arg));
+						}
+					});
+
+				}
+
+			}
+		});
 	}
 
 	/**
@@ -190,8 +207,12 @@ public class BibtexEntryView extends ViewPart {
 					ISelection s = combo.getSelection();
 					if (s != null && s instanceof IStructuredSelection) {
 						IProject p = (IProject) (((IStructuredSelection) s).getFirstElement());
-						deleteResources();
-						registerResources(p);
+						try {
+							ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(p);
+						} catch (CoreException coreEx) {
+							coreEx.printStackTrace();
+						}
+
 						viewer.refresh();
 					}
 				}
@@ -391,17 +412,7 @@ public class BibtexEntryView extends ViewPart {
 		 * @param event
 		 */
 		private void handleResourceChangeEvent(IResourceChangeEvent event) {
-			List<IProject> projects = getAddedProjects(event.getDelta());
-			if (projects.size() > 0) {
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						refreshAction.run();
-						if (projects.size() > 0 && (combo.getSelection() == null || combo.getSelection().isEmpty())) {
-							combo.setSelection(new StructuredSelection(projects.get(0)));
-						}
-					}
-				});
-			}
+
 		}
 
 		/**
@@ -468,7 +479,7 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				if (event.getSelection() == null || event.getSelection().isEmpty()) {
-					deleteResources();
+					// deleteResources();
 					return;
 				}
 				if (event.getSelection() instanceof StructuredSelection) {
@@ -480,8 +491,12 @@ public class BibtexEntryView extends ViewPart {
 						IProject project = (IProject) element;
 						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()
 								|| requestConfirmation(confirmation)) {
-							deleteResources();
-							registerResources(project);
+							try {
+								ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
+							} catch (CoreException coreEx) {
+								coreEx.printStackTrace();
+							}
+
 							viewer.refresh();
 							closeEditors();
 							lastProject = project;
@@ -633,9 +648,8 @@ public class BibtexEntryView extends ViewPart {
 				refreshProjectCombo();
 				if (combo.getSelection() != null) {
 					if (combo.getSelection() instanceof IStructuredSelection) {
-						IProject project = (IProject) ((IStructuredSelection) combo.getSelection()).getFirstElement();
-						deleteResources();
-						registerResources(project);
+						IProject project = ModelRegistryPlugin.getModelRegistry().getResourceManager()
+								.getActiveProject();
 					}
 				}
 				viewer.refresh();
@@ -695,14 +709,15 @@ public class BibtexEntryView extends ViewPart {
 					BibtexMergeData mergeData = new BibtexMergeData(resourceList);
 					ProgressBarDemo pb = new ProgressBarDemo(getSite().getShell());
 					UIJob job = new UIJob(Display.getCurrent(), "My Job") {
-					    @Override
-					    public IStatus runInUIThread(IProgressMonitor monitor) {
-					    	pb.setBlockOnOpen(false);
-					        mergeData.createSimilarityMatrix();
-					        mergeData.extractConflicts();
-					        if (pb != null) pb.close();
-					        return Status.OK_STATUS;
-					    }
+						@Override
+						public IStatus runInUIThread(IProgressMonitor monitor) {
+							pb.setBlockOnOpen(false);
+							mergeData.createSimilarityMatrix();
+							mergeData.extractConflicts();
+							if (pb != null)
+								pb.close();
+							return Status.OK_STATUS;
+						}
 
 					};
 					job.setUser(true);
