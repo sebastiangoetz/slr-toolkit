@@ -26,7 +26,7 @@
       <key
             commandId="de.tudresden.slr.classification.commands.generateTaxonomyCommand"
             contextId="org.eclipse.ui.contexts.window"
-            sequence="M1+7"
+            sequence="M1+8"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
    </extension>
