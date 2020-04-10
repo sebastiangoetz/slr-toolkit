@@ -82,6 +82,12 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	}
 	
 	
+	/**
+	 * Crates an SLR project with all required files and adds the appropriate nature
+	 * 
+	 * @return A project handle for the newly created SLR project
+	 * @throws CoreException
+	 */
 	protected IProject createSlrProject() throws CoreException {
 		project = firstPage.getProjectHandle();
 		project.create(null);
@@ -94,10 +100,16 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
 	}
 	
+	/**
+	 * Helper function to execute once a single file is done being copied. Once all files are copied, it calls onAllFilesLoaded().
+	 */
 	protected synchronized void onFileCreated() {
 		if(filesLoaded.incrementAndGet() == filesToLoad) onAllFilesLoaded();
 	}
 	
+	/**
+	 * Fires automatically once all files are completely copied to the project directory
+	 */
 	protected void onAllFilesLoaded() {
 		try {
 			ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
