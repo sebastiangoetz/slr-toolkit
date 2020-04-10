@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -21,7 +20,15 @@ public class ResourceManager extends Observable {
 	AdapterFactoryEditingDomain editingDomain;
 	IProject activeProject;
 
-
+	/**
+	 * Assigns the supplied project as the "active" project, i. e. specifying which
+	 * files are currently loaded and can be edited
+	 * 
+	 * @param project
+	 *            The project that should be designated "active" similar to
+	 *            activeDocument and activeTaxonomy
+	 * @throws CoreException
+	 */
 	public void setActiveProject(IProject project) throws CoreException {
 		if (project != activeProject) {
 			unloadResources();
@@ -33,6 +40,11 @@ public class ResourceManager extends Observable {
 
 	}
 
+	/**
+	 * Returns the active Project
+	 * 
+	 * @return activeProject The currently active project
+	 */
 	public IProject getActiveProject() {
 		return activeProject;
 	}
@@ -40,10 +52,11 @@ public class ResourceManager extends Observable {
 	public ResourceManager(AdapterFactoryEditingDomain editingDomain) {
 		this.editingDomain = editingDomain;
 
-		
-
 	}
 
+	/**
+	 * Unloads all resources and clears the ResourceSet
+	 */
 	public void unloadResources() {
 		for (Resource resource : editingDomain.getResourceSet().getResources()) {
 			resource.unload();
@@ -52,6 +65,13 @@ public class ResourceManager extends Observable {
 
 	}
 
+	/**
+	 * Loads all documents from all .bib files in the given project and sets the last found taxonomy file in ModelRegistry
+	 * 
+	 * @param project
+	 * @return
+	 * @throws CoreException
+	 */
 	public List<Document> loadProject(IProject project) throws CoreException {
 		List<IFile> bibFiles = new ArrayList<IFile>();
 		IFile taxonomyFile = null;
