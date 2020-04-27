@@ -3,12 +3,8 @@
  */
 package de.tudresden.slr.model.taxonomy.serializer;
 
-import com.google.inject.Inject;
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
-import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess;
 import java.util.Set;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtext.Action;
@@ -16,6 +12,13 @@ import org.eclipse.xtext.Parameter;
 import org.eclipse.xtext.ParserRule;
 import org.eclipse.xtext.serializer.ISerializationContext;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
+
+import com.google.inject.Inject;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
+import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess;
 
 @SuppressWarnings("all")
 public abstract class AbstractTaxonomySemanticSequencer extends AbstractDelegatingSemanticSequencer {

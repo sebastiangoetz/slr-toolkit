@@ -17,9 +17,7 @@ public class MetainformationUtil {
 	 * SlrProjectMetainformation
 	 * @throws JAXBException
 	 */
-	public static SlrProjectMetainformation getMetainformationFromFile(File file) throws JAXBException {
-		//XStream x;
-		
+	public static SlrProjectMetainformation getMetainformationFromFile(File file) throws JAXBException {		
 		JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
 
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();

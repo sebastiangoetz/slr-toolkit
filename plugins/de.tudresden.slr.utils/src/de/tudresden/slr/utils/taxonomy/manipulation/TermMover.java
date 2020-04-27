@@ -35,7 +35,7 @@ public class TermMover {
 				else termsInDocuments.put(k, new LinkedList<Term>(Arrays.asList(v)));
 			});
 			// get the taxonomy of the term before the term is changed
-			Optional<Model> model = SearchUtils.getConainingModel(termToMove);
+			Optional<Model> model = SearchUtils.getContainingModel(termToMove);
 			// remove the original term from the taxonomy
 			EcoreUtil.remove(termToMove);
 			// store the term at the new position

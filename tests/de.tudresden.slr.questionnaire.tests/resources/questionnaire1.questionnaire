@@ -1,0 +1,16 @@
+{
+  "name": "questionnaire1.questionnaire",
+  "questions": [
+    {
+      "choices": [
+        "Strongly disagree",
+        "Disagree",
+        "Agree",
+        "Strongly agree"
+      ],
+      "$$ type $$": "de.tudresden.slr.questionnaire.model.SingleChoiceQuestion",
+      "questionText": "q1",
+      "answers": {}
+    }
+  ]
+}

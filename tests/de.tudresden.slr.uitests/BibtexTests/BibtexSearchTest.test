@@ -1,0 +1,46 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _yfBZgE6fEeqa2_ZAWX6iDQ,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: BibtexSearchTest
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _UYFZwFWzEeqHlqchZU6uRQ
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/22/20 9:40 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+with [get-view "Bibtex Entries"] {
+    click
+    with [get-tree] {
+        key-type F5 -times 5
+        select "\\/MRT\\/mrt.bib" | double-click
+    }
+    get-combo | select MRT
+    get-tree | key-type F5 -times 5
+}
+// unfiltered, all entries should be displayed
+with [get-view "Bibtex Entries" | get-tree] {
+    get-item -path "\\/MRT\\/mrt.bib" | get-property caption | equals "/MRT/mrt.bib" | verify-true
+    get-item -path "\\/MRT\\/mrt.bib" | get-property childCount | equals 275 | verify-true
+}
+// with a specific search query, just one entry should be displayed
+get-view "Bibtex Entries" | get-editbox | set-text alfarez2014
+with [get-view "Bibtex Entries" | get-tree] {
+    get-item -path "\\/MRT\\/mrt.bib" | get-property caption | equals "/MRT/mrt.bib" | verify-true
+    get-item -path "\\/MRT\\/mrt.bib" | get-property childCount | equals 1 | verify-true
+}
+with [get-view "Bibtex Entries" | get-editbox] {
+    set-text ""
+    key-type Enter
+}
+// removing the query, all entries will be displayed again
+with [get-view "Bibtex Entries" | get-tree] {
+    get-item -path "\\/MRT\\/mrt.bib" | get-property caption | equals "/MRT/mrt.bib" | verify-true
+    get-item -path "\\/MRT\\/mrt.bib" | get-property childCount | equals 275 | verify-true
+}
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

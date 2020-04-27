@@ -24,7 +24,7 @@ public class TermRenamer {
 				(Resource r1, Resource r2) -> r1 == r2 ? 0 : 1);
 		for (Map.Entry<Document, Term> entry : termsInDocuments.entrySet()) {
 			entry.getValue().setName(name);
-			Optional<Model> model = SearchUtils.getConainingModel(entry.getValue());
+			Optional<Model> model = SearchUtils.getContainingModel(entry.getValue());
 			if (model.isPresent()) {
 				Model newTaxonomy = EcoreUtil.copy((Model) model.get());
 				entry.getKey().setTaxonomy(newTaxonomy);					
@@ -32,7 +32,7 @@ public class TermRenamer {
 			resourcesToUpdate.add(entry.getKey().eResource());			
 		}			
 		resourcesToUpdate.forEach(r -> BibtexFileWriter.updateBibtexFile(r));		
-		Optional<Model> model = SearchUtils.getConainingModel(term);
+		Optional<Model> model = SearchUtils.getContainingModel(term);
 		if (model.isPresent()) {
 			TaxonomyUtils.saveTaxonomy(model.get());			
 		}

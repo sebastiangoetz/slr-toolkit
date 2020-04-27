@@ -2,14 +2,14 @@
  */
 package de.tudresden.slr.model.taxonomy.util;
 
-import de.tudresden.slr.model.taxonomy.*;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->

@@ -2,18 +2,17 @@
  */
 package de.tudresden.slr.model.taxonomy.impl;
 
-import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
-import de.tudresden.slr.model.taxonomy.Term;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import de.tudresden.slr.model.taxonomy.Model;
+import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->
@@ -64,7 +63,7 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link TaxonomyPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -78,7 +77,8 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		if (isInited) return (TaxonomyPackage)EPackage.Registry.INSTANCE.getEPackage(TaxonomyPackage.eNS_URI);
 
 		// Obtain or create and register package
-		TaxonomyPackageImpl theTaxonomyPackage = (TaxonomyPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof TaxonomyPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new TaxonomyPackageImpl());
+		Object registeredTaxonomyPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		TaxonomyPackageImpl theTaxonomyPackage = registeredTaxonomyPackage instanceof TaxonomyPackageImpl ? (TaxonomyPackageImpl)registeredTaxonomyPackage : new TaxonomyPackageImpl();
 
 		isInited = true;
 
@@ -91,7 +91,6 @@ public class TaxonomyPackageImpl extends EPackageImpl implements TaxonomyPackage
 		// Mark meta-data to indicate it can't be changed
 		theTaxonomyPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(TaxonomyPackage.eNS_URI, theTaxonomyPackage);
 		return theTaxonomyPackage;

@@ -2,26 +2,21 @@
  */
 package de.tudresden.slr.model.taxonomy.impl;
 
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
-import de.tudresden.slr.model.taxonomy.Term;
-
 import java.lang.reflect.InvocationTargetException;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
+import de.tudresden.slr.model.taxonomy.Term;
 
 /**
  * <!-- begin-user-doc -->
@@ -125,6 +120,23 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 1;
+		if (eContainer instanceof Term) {
+			int parentHash = eContainer.hashCode();
+			hash = prime * hash + parentHash ^ (parentHash >> 32);
+		}
+		int nameHash = name.hashCode();
+		hash = prime * hash + nameHash ^ (nameHash >> 32);
+		return hash;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -197,8 +209,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case TaxonomyPackage.TERM__NAME:
-				return name != null;
-				//return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case TaxonomyPackage.TERM__SUBCLASSES:
 				return subclasses != null && !subclasses.isEmpty();
 		}
@@ -228,7 +239,7 @@ public class TermImpl extends MinimalEObjectImpl.Container implements Term {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (name: ");
 		result.append(name);
 		result.append(')');

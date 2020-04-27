@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
@@ -171,9 +171,9 @@ class NewQuestionWizardPage extends WizardPage {
     private Button createButtonPreset(Composite parent, String buttonName, String[] choices) {
         Button b = new Button(parent, SWT.PUSH);
         b.setText(buttonName);
-        b.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseDown(MouseEvent e) {
+        b.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
                 String text = String.join("\n", choices);
                 textQuestionChoices.setText(text);
             }

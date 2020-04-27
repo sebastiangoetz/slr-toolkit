@@ -16,11 +16,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.ui.chart.logic.BarChartGenerator;
 import de.tudresden.slr.ui.chart.logic.ChartDataProvider;
 import de.tudresden.slr.ui.chart.logic.ChartGenerator;
 import de.tudresden.slr.ui.chart.logic.TermSort;
-import de.tudresden.slr.ui.chart.settings.*;
+import de.tudresden.slr.ui.chart.settings.BarChartConfiguration;
 import de.tudresden.slr.ui.chart.views.ICommunicationView;
 
 public class CreateCiteHandler implements IHandler {

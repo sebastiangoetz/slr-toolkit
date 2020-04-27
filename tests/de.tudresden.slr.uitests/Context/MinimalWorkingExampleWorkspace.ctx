@@ -1,0 +1,67 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Context-Type: org.eclipse.rcptt.ctx.workspace
+Element-Name: MinimalWorkingExampleWorkspace
+Element-Type: context
+Element-Version: 2.0
+Id: _4UtdUFWsEeqHlqchZU6uRQ
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/22/20 8:57 PM
+
+------=_contents/minimalWorkingExample/.project-2a528463-5556-3620-8831-bab610cc9001
+Content-Type: q7/binary
+Entry-Name: contents/minimalWorkingExample/.project
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACFkL1uwyAUhedW6jtY
+3gvt1gHbUpJ27JJWnSm+ckj40wVXfvwAxrWcJRvf4Zx7D7Bu0qr6A/TSmqZ+JS91BUbYXpqhqb+/Pp7f
+6q59emQO7RlEOIAXKF2I7qg+MMM1tFoaqbn6sXiJsfeJa6eA0XyXTMJqDSa0jC6npJaJPgPd0O8oVX90
+IBIV3McoN31Wyl6LAwGhpPNApgBTIKMk/sQR+pl3KQi4VolJjsOYOvjCdCswerutKEuduDqMCMU9w/0m
+n9mXimR/HrsO+n/+9nuvUEsHCPbuz1vQAAAAnQEAAFBLAQIUABQACAgIAAAAIQD27s9b0AAAAJ0BAAAI
+AAkAAAAAAAAAAAAAAAAAAAAuY29udGVudFVUBQABAAAAAFBLBQYAAAAAAQABAD8AAAAPAQAAAAA=
+------=_contents/minimalWorkingExample/.project-2a528463-5556-3620-8831-bab610cc9001--
+------=_contents/minimalWorkingExample/my_metainformation.slrproject-010f2c69-0586-3125-a17a-b607a91652b7
+Content-Type: q7/binary
+Entry-Name: contents/minimalWorkingExample/my_metainformation.slrproject
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAAB9UctOwzAQvCPxD6tc
+uEBN4cLBTUGqEEJF4pBKwM2NN61L7K3sLSR/Tx5OaSuED9Z4Z3dmrJXTypbwhT4YcpNkPLpOAF1O2rjV
+JFlkj1d3CQRWTquSHE6SGkMyTc/PZCj9q6cN5vyCrIwryFvFjUpDQnMkGy4xzdobqABeI2z7ASl6LjZ+
+Yv1NXoc0gvElRHSzR3Arxb4vzkW1h2Vgr3JOBwBNlM4Oqy15Rg1zlWEFmvKdRccjKU5Hh8iqIke2nmHI
+vdl2v3lCj5CTxQAKlt5gAfqXPvnZRYBBo3H5Sy46qR2vyYe5CYN5V0arTJluaO30fQtHXGop+upBm1MW
+0+emC2aEUnTPA5r8SjkT+m0snOnWy3Wb9e39Q4ojPgYSx4mk+G+/P1BLBwgdBIV4JQEAADYCAABQSwEC
+FAAUAAgICAAAACEAHQSFeCUBAAA2AgAACAAJAAAAAAAAAAAAAAAAAAAALmNvbnRlbnRVVAUAAQAAAABQ
+SwUGAAAAAAEAAQA/AAAAZAEAAAAA
+------=_contents/minimalWorkingExample/my_metainformation.slrproject-010f2c69-0586-3125-a17a-b607a91652b7--
+------=_contents/minimalWorkingExample/my_taxonomy.taxonomy-6a46cc9f-aefc-37d8-bbb3-40ab5f5dfbf0
+Content-Type: q7/binary
+Entry-Name: contents/minimalWorkingExample/my_taxonomy.taxonomy
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACljEEKwjAURNf9p5h1
+KRTjFdy4thdImw8JNInkR2Iq3t1SFbt3NzNveH2LwTpB1vcYoq8oWjAl1pkNxopsGYHLjrtFJ0MAzhk2
+zkagIc5fZ/6dcoTYWCYtvBmkhpWh7YlOznMQFwMOeFAzcPLv1FxuY95atyuKmmf3ualvONK67UzqHxO9
+AFBLBwh1T20lhgAAAAMBAABQSwECFAAUAAgICAAAACEAdU9tJYYAAAADAQAACAAJAAAAAAAAAAAAAAAA
+AAAALmNvbnRlbnRVVAUAAQAAAABQSwUGAAAAAAEAAQA/AAAAxQAAAAAA
+------=_contents/minimalWorkingExample/my_taxonomy.taxonomy-6a46cc9f-aefc-37d8-bbb3-40ab5f5dfbf0--
+------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf
+Content-Type: q7/binary
+Entry-Name: .q7.content
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAACVkT9PwzAQxXckvkPk
+HRsQQihK6ICKYOgAUhTEUrmOkxr8J7WvxP32XEqSLlUrJp/t33vnd85m0ejkR/qgnM3JDb0mibTCVco2
+OdlCffVAZo+XF5nzDZVCqzZI6kULQAVE2jn/HVouZFqO1ZOzICMk0ah08r3tfbGTDSme52QN0KaMdV1H
+nWkomrOPxeuInOk1yUeml+85hhybOJJYbpBeKKsM1/0LMdU8ctNqWR4oVeVkeVdAVTyXYS43L3oj1p/F
+/fb9jWD0JMlEn8nCfoPb1rsvKSAM/uaYPxlgxGul5cjSQUvY8XuzW67UCgdIcTkBGQlc2dp5wwEnTIP2
+552BR2ed2dGxmNiMjZn+ArND4oz99+tR9AtQSwcIkdePOhcBAABXAgAAUEsBAhQAFAAICAgAAAAhAJHX
+jzoXAQAAVwIAAAgACQAAAAAAAAAAAAAAAAAAAC5jb250ZW50VVQFAAEAAAAAUEsFBgAAAAABAAEAPwAA
+AFYBAAAAAA==
+------=_.q7.content-3d2e0690-ce48-3609-83e0-c704d49f1eaf--
+------=_contents/minimalWorkingExample/my_bibtex.bib-9b94a202-3a6a-374b-abf7-eeebc2876f7c
+Content-Type: q7/binary
+Entry-Name: contents/minimalWorkingExample/my_bibtex.bib
+
+UEsDBBQACAgIAAAAIQAAAAAAAAAAAAAAAAAIAAkALmNvbnRlbnRVVAUAAQAAAAB1zD0OwjAMBeC9p3iK
+xMbQZGNAgjtwASc1xFIBKTEKBXH3/vCjDtST5ff8rXCIkuHFK99xlJZRKCMkJuUGvoNGxoXLt1LkQamp
+dmfJ4Qmlk11XeA/dNF4TtjD7abPmF6noII9JUgktz6KOafpxtd0YvGayW5Tdsuz+ya4e5M+1B1BLBwgm
+eGCEgAAAAPIAAABQSwECFAAUAAgICAAAACEAJnhghIAAAADyAAAACAAJAAAAAAAAAAAAAAAAAAAALmNv
+bnRlbnRVVAUAAQAAAABQSwUGAAAAAAEAAQA/AAAAvwAAAAAA
+------=_contents/minimalWorkingExample/my_bibtex.bib-9b94a202-3a6a-374b-abf7-eeebc2876f7c--

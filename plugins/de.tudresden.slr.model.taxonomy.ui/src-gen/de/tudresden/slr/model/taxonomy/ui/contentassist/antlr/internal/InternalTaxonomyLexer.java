@@ -1,14 +1,15 @@
 package de.tudresden.slr.model.taxonomy.ui.contentassist.antlr.internal;
 
+import org.antlr.runtime.BaseRecognizer;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.DFA;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.MismatchedSetException;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
 // Hack: Use our own Lexer superclass by means of import. 
 // Currently there is no other way to specify the superclass for the lexer.
 import org.eclipse.xtext.ui.editor.contentassist.antlr.internal.Lexer;
-
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class InternalTaxonomyLexer extends Lexer {
@@ -412,18 +413,21 @@ public class InternalTaxonomyLexer extends Lexer {
         "\1\uffff\1\1\1\2\1\3\1\uffff\1\6\1\7\1\10\1\4\1\5";
     static final String DFA5_specialS =
         "\12\uffff}>";
-    static final String[] DFA5_transitionS = {
-            "\1\5\1\6\2\uffff\1\6\22\uffff\1\5\13\uffff\1\1\2\uffff\1\4\21\uffff\32\7\6\uffff\32\7\1\2\1\uffff\1\3",
-            "",
-            "",
-            "",
-            "\1\11\4\uffff\1\10",
-            "",
-            "",
-            "",
-            "",
-            ""
-    };
+    static final String[] DFA5_transitionS = DFA5_transitionS_.DFA5_transitionS;
+    private static final class DFA5_transitionS_ {
+        static final String[] DFA5_transitionS = {
+                "\1\5\1\6\2\uffff\1\6\22\uffff\1\5\13\uffff\1\1\2\uffff\1\4\21\uffff\32\7\6\uffff\32\7\1\2\1\uffff\1\3",
+                "",
+                "",
+                "",
+                "\1\11\4\uffff\1\10",
+                "",
+                "",
+                "",
+                "",
+                ""
+        };
+    }
 
     static final short[] DFA5_eot = DFA.unpackEncodedString(DFA5_eotS);
     static final short[] DFA5_eof = DFA.unpackEncodedString(DFA5_eofS);

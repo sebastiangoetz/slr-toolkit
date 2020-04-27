@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>de.tudresden.slr.uitests</artifactId>
+
+	<parent>
+		<groupId>de.tudresden</groupId>
+		<artifactId>de.tudresden.slr.parent</artifactId>
+		<version>0.3.0-SNAPSHOT</version>
+		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml
+		</relativePath>
+	</parent>
+
+	<packaging>rcpttTest</packaging>
+
+	<profiles>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/macosx/cocoa/x86_64/Eclipse.app/Contents/MacOS
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>unix_64</id>
+			<activation>
+				<os>
+					<family>unix</family>
+					<name>Linux</name>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/linux/gtk/x86_64
+				</autPath>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows_64</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<autPath>../../features/de.tudresden.slr.product/target/products/product/win32/win32/x86_64
+				</autPath>
+			</properties>
+		</profile>
+	</profiles>
+
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.rcptt</groupId>
+				<artifactId>rcptt-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<extensions>true</extensions>
+				<configuration>
+					<aut>
+						<explicit>${autPath}</explicit>
+					</aut>
+					<runner>
+						<version>2.5.1</version>
+						<!-- <explicit>https://repo.eclipse.org/content/repositories/rcptt-releases/org/eclipse/rcptt/runner/rcptt.runner/2.5.1/rcptt.runner-2.5.1.zip</explicit> -->
+					</runner>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-antrun-plugin</artifactId> 
+				<version>1.1</version> <executions> <execution> <phase>validate</phase> <goals> 
+				<goal>run</goal> </goals> <configuration> <tasks> <echo>[project.basedir] 
+				${project.basedir}</echo> <echo>[autPath] ${autPath}</echo> </tasks> </configuration> 
+				</execution> </executions> </plugin> -->
+		</plugins>
+
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.eclipse.rcptt
+										</groupId>
+										<artifactId>
+											rcptt-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.5.1,)
+										</versionRange>
+										<goals>
+											<goal>execute</goal>
+											<goal>resources</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>rcptt-releases</id>
+			<name>RCPTT Maven repository</name>
+			<url>https://repo.eclipse.org/content/repositories/rcptt-releases/
+			</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!-- <pluginRepositories> <pluginRepository> <id>rcptt-snapshots</id> <name>RCPTT 
+		Maven Snapshots repository</name> <snapshots> <updatePolicy>always</updatePolicy> 
+		</snapshots> <url>https://repo.eclipse.org/content/groups/releases/ </url> 
+		</pluginRepository> <pluginRepository> <id>rcptt-releases</id> <name>RCPTT 
+		Maven repository</name> <url>https://repo.eclipse.org/content/groups/releases/ 
+		</url> alternative: https://ftp.fau.de/eclipse/rcptt/release/ </pluginRepository> 
+		</pluginRepositories> -->
+
+</project>

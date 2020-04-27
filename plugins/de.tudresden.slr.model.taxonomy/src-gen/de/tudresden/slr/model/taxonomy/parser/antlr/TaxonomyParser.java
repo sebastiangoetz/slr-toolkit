@@ -3,9 +3,10 @@
  */
 package de.tudresden.slr.model.taxonomy.parser.antlr;
 
+import org.eclipse.xtext.parser.antlr.XtextTokenStream;
+
 import com.google.inject.Inject;
 
-import org.eclipse.xtext.parser.antlr.XtextTokenStream;
 import de.tudresden.slr.model.taxonomy.services.TaxonomyGrammarAccess;
 
 public class TaxonomyParser extends org.eclipse.xtext.parser.antlr.AbstractAntlrParser {

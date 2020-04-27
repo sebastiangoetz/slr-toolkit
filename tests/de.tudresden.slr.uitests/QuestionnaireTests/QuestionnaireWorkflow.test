@@ -1,0 +1,147 @@
+--- RCPTT testcase ---
+Format-Version: 1.0
+Contexts: _ssop4BbVEeqdS_WHJ_kGbQ,_5V5LkFKNEeqJqYS7i9Ha1Q,_MCe54Eq0EeqHAOukN5Idlw
+Element-Name: QuestionnaireWorkflow
+Element-Type: testcase
+Element-Version: 3.0
+External-Reference: 
+Id: _Rw3ssFKOEeqJqYS7i9Ha1Q
+Runtime-Version: 2.4.3.201909171500
+Save-Time: 2/23/20 5:52 PM
+Testcase-Type: ecl
+
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac
+Content-Type: text/ecl
+Entry-Name: .content
+
+// IMPORTANT: if this test fails after running it in RCPTT, delete the AUT's workspace! The test failes because the questionnaire-file has not been deleted and there seems to be a lock on it.
+with [get-view Questionnaires] {
+    get-button "New Questionnaire" | click
+}
+
+with [get-window "New Questionnaire"] {
+    get-tree | select "Bachelorarbeit_taxonomie"
+    get-editbox -after [get-label "File name:"] | set-text Questionnaire1
+    get-button Finish | click
+}
+// IMPORTANT: if this test fails after running it in RCPTT, delete the AUT's workspace! The test failes because the questionnaire-file has not been deleted and there seems to be a lock on it.
+get-view Questionnaires | get-button Refresh | click
+
+with [get-view Questionnaires] {
+    get-button "New Question" | click
+}
+with [get-window "New Question"] {
+    get-group Presets | get-button "Likert 4" | click
+    get-editbox -after [get-label "Question Text"] | set-text Question1
+    get-button Finish | click
+}
+with [get-view Questionnaires] {
+    get-button "New Question" | click
+}
+
+with [get-window "New Question"] {
+    get-group Presets | get-button "Likert 5" | click
+    get-editbox -after [get-label "Question Text"] | set-text Question2
+    get-button "Allow multiple-choice" | check
+    get-button Finish | click
+}
+with [get-view Questionnaires] {
+    get-button "New Question" | click
+}
+with [get-window "New Question"] {
+    get-editbox -after [get-label "Question Text"] | set-text Question3
+    get-button Finish | click
+}
+with [get-view Questionnaires] {
+    with [get-list] {
+        get-property "getClassName()" | equals "org.eclipse.swt.widgets.List" | verify-true
+        get-property "getItemCount()" | equals 53 | verify-true
+    }
+    with [get-control Any -after [get-label "Questionnaire is missing answers for 53 documents."] -index 4] {
+        get-property "getClassName()" | equals "org.eclipse.swt.widgets.Composite" | verify-true
+        get-property "getChildren().getClassName()" | equals "org.eclipse.swt.widgets.Control[]" | verify-true
+        get-property "getChildren().length" | equals 5 | verify-true
+        get-property "getChildren().Control[0].getClassName()" | equals "org.eclipse.swt.widgets.Label" | verify-true
+        get-property "getChildren().Control[0].getText()" | equals Question1 | verify-true
+        get-property "getChildren().Control[1].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[1].getText()" | equals "Strongly disagree" | verify-true
+        get-property "getChildren().Control[2].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[2].getText()" | equals Disagree | verify-true
+        get-property "getChildren().Control[3].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[3].getText()" | equals Agree | verify-true
+        get-property "getChildren().Control[4].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[4].getText()" | equals "Strongly agree" | verify-true
+    }
+    with [get-control Any -after [get-label Question1] -index 4] {
+        get-property "getClassName()" | equals "org.eclipse.swt.widgets.Composite" | verify-true
+        get-property "getChildren().length" | equals 6 | verify-true
+        get-property "getChildren().Control[0].getClassName()" | equals "org.eclipse.swt.widgets.Label" | verify-true
+        get-property "getChildren().Control[0].getText()" | equals Question2 | verify-true
+        get-property "getChildren().Control[1].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[1].getText()" | equals "Strongly disagree" | verify-true
+        get-property "getChildren().Control[2].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[2].getText()" | equals Disagree | verify-true
+        get-property "getChildren().Control[3].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[3].getText()" | equals Neutral | verify-true
+        get-property "getChildren().Control[4].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[4].getText()" | equals Agree | verify-true
+        get-property "getChildren().Control[5].getClassName()" | equals "org.eclipse.swt.widgets.Button" | verify-true
+        get-property "getChildren().Control[5].getText()" | equals "Strongly agree" | verify-true
+    }
+    with [get-editbox -after [get-label Question3]] {
+        get-property "getClassName()" | equals "org.eclipse.swt.widgets.Text" | verify-true
+        get-property "getText()" | equals "" | verify-true
+    }
+}
+with [get-view Questionnaires] {
+    get-list | select Azhar2011b
+    get-button "Strongly disagree" | click
+    get-button Disagree -after [get-label Question2] | check
+    get-editbox -after [get-label Question3] | set-text asd
+}
+with [get-view "Project Explorer"] {
+    click
+    get-tree | select "Bachelorarbeit_taxonomie/Questionnaire1.questionnaire" | double-click
+}
+
+with [get-editor "Questionnaire1.questionnaire" | get-text-viewer] {
+    get-property className | equals "org.eclipse.swt.custom.StyledText" | verify-true
+    get-property text | equals "{\n"
+        + "  \"name\": \"Questionnaire1.questionnaire\",\n"
+        + "  \"questions\": [\n"
+        + "    {\n"
+        + "      \"choices\": [\n"
+        + "        \"Strongly disagree\",\n"
+        + "        \"Disagree\",\n"
+        + "        \"Agree\",\n"
+        + "        \"Strongly agree\"\n"
+        + "      ],\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.SingleChoiceQuestion\",\n"
+        + "      \"questionText\": \"Question1\",\n"
+        + "      \"answers\": {}\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"choices\": [\n"
+        + "        \"Strongly disagree\",\n"
+        + "        \"Disagree\",\n"
+        + "        \"Neutral\",\n"
+        + "        \"Agree\",\n"
+        + "        \"Strongly agree\"\n"
+        + "      ],\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.MultipleChoiceQuestion\",\n"
+        + "      \"questionText\": \"Question2\",\n"
+        + "      \"answers\": {}\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"$$ type $$\": \"de.tudresden.slr.questionnaire.model.FreeTextQuestion\",\n"
+        + "      \"questionText\": \"Question3\",\n"
+        + "      \"answers\": {}\n"
+        + "    }\n"
+        + "  ]\n"
+        + "}" | verify-true
+}
+
+get-view "Project Explorer" | get-tree | select "Bachelorarbeit_taxonomie/Questionnaire1.questionnaire" | get-menu 
+    -path Delete | click
+get-window "Delete Resources" | get-button OK | click
+------=_.content-0a7243a0-75d3-3d5f-9791-539de0e5b7ac--

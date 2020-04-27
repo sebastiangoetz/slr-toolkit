@@ -2,19 +2,17 @@
  */
 package de.tudresden.slr.model.bibtex.impl;
 
-import de.tudresden.slr.model.bibtex.BibtexFactory;
-import de.tudresden.slr.model.bibtex.BibtexFile;
-import de.tudresden.slr.model.bibtex.BibtexPackage;
-import de.tudresden.slr.model.bibtex.Document;
-
-import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import de.tudresden.slr.model.bibtex.BibtexFactory;
+import de.tudresden.slr.model.bibtex.BibtexFile;
+import de.tudresden.slr.model.bibtex.BibtexPackage;
+import de.tudresden.slr.model.bibtex.Document;
+import de.tudresden.slr.model.taxonomy.TaxonomyPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--

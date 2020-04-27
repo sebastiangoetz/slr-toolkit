@@ -1,7 +1,5 @@
 package de.tudresden.slr.utils;
 
-import de.tudresden.slr.model.bibtex.Document;
-
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
@@ -13,10 +11,12 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
+import de.tudresden.slr.model.bibtex.Document;
+
 public class Utils {
 
-	private static Document lastDoc = null;
-	private static StringBuffer logBuffer = new StringBuffer();
+	protected static Document lastDoc = null;
+	protected static StringBuffer logBuffer = new StringBuffer();
 
 	/**
 	 * Returns the resource file which contains the given bibtex document. Bases
@@ -29,12 +29,10 @@ public class Utils {
 	 */
 	public static IFile getIFilefromDocument(Document doc) {
 		if (doc == null) {
-			// TODO: remove syso
-			// System.err.println("Document " + doc
-			// + " does not exist or has no resource");
 			return null;
 		}
 		if (doc.equals(lastDoc)) {
+			
 		} else {
 			// System.out.println("Document "
 			// + ((lastDoc == null) ? null : lastDoc.getKey())

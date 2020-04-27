@@ -4,7 +4,9 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import de.tudresden.slr.questionnaire.model.Question;

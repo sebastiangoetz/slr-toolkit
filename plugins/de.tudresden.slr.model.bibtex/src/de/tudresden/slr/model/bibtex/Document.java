@@ -2,13 +2,12 @@
  */
 package de.tudresden.slr.model.bibtex;
 
-import de.tudresden.slr.model.taxonomy.Model;
-
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
+
+import de.tudresden.slr.model.taxonomy.Model;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '

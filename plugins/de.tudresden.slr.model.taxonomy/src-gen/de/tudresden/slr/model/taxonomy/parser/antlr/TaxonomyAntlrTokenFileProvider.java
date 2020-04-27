@@ -4,6 +4,7 @@
 package de.tudresden.slr.model.taxonomy.parser.antlr;
 
 import java.io.InputStream;
+
 import org.eclipse.xtext.parser.antlr.IAntlrTokenFileProvider;
 
 public class TaxonomyAntlrTokenFileProvider implements IAntlrTokenFileProvider {

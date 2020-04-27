@@ -31,6 +31,8 @@
 * Execute Xtext Build
   * (Project) de.tudresden.slr.model.taxonomy -> (Right-Click) src/de/tudresden/slr/model/taxonomy/GenerateTaxonomy.mwe2 -> Run As.. -> MWE2 Workflow
 
+> Additional information can be found [here](https://github.com/sebastiangoetz/slr-toolkit/wiki/Setup-Guide).
+
 ## BibTeX Views ##
 
 * Implemented as EMF Project: de.tudresden.slr.model.bibtex
