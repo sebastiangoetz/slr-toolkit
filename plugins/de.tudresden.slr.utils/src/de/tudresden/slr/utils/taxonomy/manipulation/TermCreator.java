@@ -49,7 +49,7 @@ public class TermCreator {
 			 SearchUtils.getChildren(parent).add(newTerm);
 			 if(doSave) {
 				 if(parent instanceof Term) {
-					 SearchUtils.getConainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
+					 SearchUtils.getContainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
 				 } else {
 					 TaxonomyUtils.saveTaxonomy((Model) parent);
 				 }

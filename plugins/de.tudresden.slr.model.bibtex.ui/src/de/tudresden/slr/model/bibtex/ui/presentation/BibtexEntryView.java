@@ -97,6 +97,7 @@ public class BibtexEntryView extends ViewPart {
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
 	public static final String overviewId = BibtexOverviewEditor.ID;
+	public static final String confirmation = "This will close all opened documents without saving them. Do you wish to proceed?";
 	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
 	private TreeViewer viewer;
@@ -511,8 +512,7 @@ public class BibtexEntryView extends ViewPart {
 					}
 					if (element instanceof IProject) {
 						IProject project = (IProject) element;
-						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()
-								|| requestConfirmation(confirmation)) {
+						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()) {
 							try {
 								ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
 							} catch (CoreException coreEx) {
