@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.PlatformUI;
 
+import de.tudresden.slr.classification.ui.MalformedTermNameDialog;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
@@ -33,8 +34,10 @@ import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 
 public class StandardTaxonomyClassifier {
 
+	boolean useDefaultMalformedTermNameHandling;
+	
 	public StandardTaxonomyClassifier() {
-
+		useDefaultMalformedTermNameHandling = false;
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class StandardTaxonomyClassifier {
 			}
 
 			if (isTermNameMalformed(field)) {
-				field = handleMalformedTermName(field, false);
+				field = handleMalformedTermName(field, useDefaultMalformedTermNameHandling);
 			}
 
 			classifyDocument(doc, "Document Venue", venueType, field);
@@ -123,12 +126,13 @@ public class StandardTaxonomyClassifier {
 	private String handleMalformedTermName(String name, boolean useDialog) {
 
 		String returnName = "T " + name;
-		if (useDialog) {
-			InputDialog dlg = new InputDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+		if (!useDefaultMalformedTermNameHandling) {
+			MalformedTermNameDialog dlg = new MalformedTermNameDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 					"Invalid Term name", "Please enter a new term name that starts with a letter.", returnName,
 					(s -> (!Character.isLetter(s.charAt(0))) ? "" : null));
 			returnName = (dlg.open() == 0) ? name = dlg.getValue() : returnName;
 			returnName.replaceAll("[^A-Za-z0-9 ]", "");
+			useDefaultMalformedTermNameHandling = dlg.getUseDefault();
 		}
 		return returnName;
 	}
