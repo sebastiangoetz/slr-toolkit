@@ -97,7 +97,6 @@ public class BibtexEntryView extends ViewPart {
 	public static final String ID = "de.tudresden.slr.model.bibtex.ui.presentation.BibtexEntryView";
 	public static final String editorId = BibtexEditor.ID;
 	public static final String overviewId = BibtexOverviewEditor.ID;
-	public static final String confirmation = "This will close all opened documents without saving them. Do you wish to proceed?";
 	protected AdapterFactory adapterFactory;
 	protected AdapterFactoryEditingDomain editingDomain;
 	private TreeViewer viewer;
@@ -233,12 +232,13 @@ public class BibtexEntryView extends ViewPart {
 		workspace.removeResourceChangeListener(projectChangeListener);
 		super.dispose();
 	}
-	
+
 	private List<TreeItem> getAllItems(TreeItem[] treeItems) {
 		List<TreeItem> ret = new ArrayList<TreeItem>();
-		for(TreeItem item : treeItems) {
+		for (TreeItem item : treeItems) {
 			ret.add(item);
-			if(item.getItemCount() > 0) ret.addAll(Arrays.asList(item.getItems()));
+			if (item.getItemCount() > 0)
+				ret.addAll(Arrays.asList(item.getItems()));
 		}
 		return ret;
 	}
@@ -262,12 +262,12 @@ public class BibtexEntryView extends ViewPart {
 						Document document = (Document) selection.getFirstElement();
 						Document nextDocument = null;
 						boolean found = false;
-						for(TreeItem item : getAllItems(viewer.getTree().getItems())) {
-							if(found && item.getData() instanceof Document) {
-								nextDocument = (Document)item.getData();
+						for (TreeItem item : getAllItems(viewer.getTree().getItems())) {
+							if (found && item.getData() instanceof Document) {
+								nextDocument = (Document) item.getData();
 								break;
 							}
-							if(item.getText().equals(document.getKey())) {
+							if (item.getText().equals(document.getKey())) {
 								found = true;
 							}
 						}
@@ -333,7 +333,7 @@ public class BibtexEntryView extends ViewPart {
 							// Something went wrong that shouldn't.
 							//
 						}
-						if(nextDocument != null)
+						if (nextDocument != null)
 							selection = new StructuredSelection(nextDocument);
 						viewer.setSelection(selection);
 						viewer.getTree().forceFocus();
@@ -512,32 +512,27 @@ public class BibtexEntryView extends ViewPart {
 					}
 					if (element instanceof IProject) {
 						IProject project = (IProject) element;
-						if (lastProject == null || editingDomain.getResourceSet().getResources().isEmpty()) {
-							try {
-								ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
-							} catch (CoreException coreEx) {
-								coreEx.printStackTrace();
-							}
+						try {
+							ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
+						} catch (CoreException coreEx) {
+							coreEx.printStackTrace();
+						}
 
-							viewer.refresh();
-							closeEditors();
-							lastProject = project;
-							try {
-								ResourcesPlugin.getWorkspace().getRoot()
-										.setPersistentProperty(new QualifiedName(ID, "project"), lastProject.getName());
-							} catch (CoreException e) {
-								e.printStackTrace();
-							}
-						} else if (lastProject == null) {
-							combo.setSelection(null);
-						} else {
-							combo.setSelection(new StructuredSelection(lastProject));
+						viewer.refresh();
+						closeEditors();
+						lastProject = project;
+						try {
+							ResourcesPlugin.getWorkspace().getRoot()
+									.setPersistentProperty(new QualifiedName(ID, "project"), lastProject.getName());
+						} catch (CoreException e) {
+							e.printStackTrace();
 						}
 					}
 				}
 			}
 		};
 		return result;
+
 	}
 
 	/**
@@ -636,7 +631,7 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				IStructuredSelection s = (IStructuredSelection) viewer.getSelection();
-				if(s.getFirstElement() instanceof DocumentImpl) {
+				if (s.getFirstElement() instanceof DocumentImpl) {
 					fillContextMenu(manager);
 				}
 			}
@@ -671,12 +666,6 @@ public class BibtexEntryView extends ViewPart {
 			@Override
 			public void run() {
 				refreshProjectCombo();
-				if (combo.getSelection() != null) {
-					if (combo.getSelection() instanceof IStructuredSelection) {
-						IProject project = ModelRegistryPlugin.getModelRegistry().getResourceManager()
-								.getActiveProject();
-					}
-				}
 				viewer.refresh();
 			}
 		};
