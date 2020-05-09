@@ -179,6 +179,12 @@
       		defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.SplitTermHandler"
       		id="de.tudresden.slr.model.taxonomy.ui.splitterm"
       		name="Split Selected Term">
+      </command>
+      <command
+            defaultHandler="de.tudresden.slr.model.taxonomy.ui.handlers.OpenCiteCountHandler"
+            description="Open a Bar Chart for cite counts in the browser"
+            id="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
+            name="Open Cite Count Bar">
       </command>  		
     </extension>
     <extension point="org.eclipse.ui.menus">
