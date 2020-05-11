@@ -39,6 +39,10 @@ public class StandardTaxonomyClassifier {
 	public StandardTaxonomyClassifier() {
 		useDefaultMalformedTermNameHandling = false;
 	}
+	
+	public StandardTaxonomyClassifier(boolean useDefaultMalformedTermNameHandling) {
+		this.useDefaultMalformedTermNameHandling = useDefaultMalformedTermNameHandling;
+	}
 
 	/**
 	 * Alias for createStandardTaxonomy(d, null)
