@@ -265,6 +265,7 @@
 		<module>../de.tudresden.slr.metainformation</module>
 		<module>../de.tudresden.slr.latexexport</module>
 		<module>../de.tudresden.slr.questionnaire</module>
+		<module>../de.tudresden.slr.classification</module>
 		<!-- parent test module -->
 		<module>
 			../../tests/de.tudresden.slr.tests.parent
@@ -291,11 +292,16 @@
 				<module>
 			../../tests/de.tudresden.slr.model.modelregistry.tests
 		</module>
+		<module>
+			../../tests/de.tudresden.slr.classification.tests
+		</module>
 
 		<!-- IMPORTANT! keep the uitests project at the very bottom of the modules, 
 			these tests will run the longest -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 		<!-- IMPORTANT! -->
+
+		
 
 	</modules>
 </project>
