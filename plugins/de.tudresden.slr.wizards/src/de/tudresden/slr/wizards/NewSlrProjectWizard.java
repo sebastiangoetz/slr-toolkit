@@ -144,9 +144,24 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 		try (InputStream fileStream = sourceFile.openConnection().getInputStream()) {
 			IFile taxonomyFile = project.getFile(newFileName);
 			taxonomyFile.create(fileStream, false, new NullProgressMonitor() {
+				
+				int workLeft=0;
+				
+				
+				@Override
+				public void beginTask(String name, int totalWork) {
+					workLeft = totalWork;
+				}
+				
 				@Override
 				public void done() {
 					onFileCreated();
+				}
+				
+				@Override
+				public void worked(int work) {
+					workLeft -= work;
+					if(workLeft == 0) done();
 				}
 			});
 		} catch (IOException | CoreException e) {
