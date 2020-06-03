@@ -20,7 +20,7 @@
 
 ## Setup Instructions ##
 
-* Download Eclipse Modeling Tools (Oxygen)
+* Download Eclipse Modeling Tools (Eclipse 2019-12 (4.14))
 * Install 
   * Xtext 
   * BIRT 
