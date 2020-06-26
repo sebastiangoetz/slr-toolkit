@@ -25,6 +25,8 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.classification.ui.MalformedTermNameDialog;
+import de.tudresden.slr.classification.validators.ITermNameValidator;
+import de.tudresden.slr.classification.validators.TermNameValidatorImpl;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
@@ -35,13 +37,17 @@ import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 public class StandardTaxonomyClassifier {
 
 	boolean useDefaultMalformedTermNameHandling;
+	ITermNameValidator validator;
 	
 	public StandardTaxonomyClassifier() {
 		useDefaultMalformedTermNameHandling = false;
+		validator = new TermNameValidatorImpl();
+		
 	}
 	
-	public StandardTaxonomyClassifier(boolean useDefaultMalformedTermNameHandling) {
+	public StandardTaxonomyClassifier(boolean useDefaultMalformedTermNameHandling,ITermNameValidator validator) {
 		this.useDefaultMalformedTermNameHandling = useDefaultMalformedTermNameHandling;
+		this.validator = validator;
 	}
 
 	/**
@@ -96,24 +102,13 @@ public class StandardTaxonomyClassifier {
 				field = crossRefTitle.replaceAll("[^A-Za-z0-9 ]", "");
 			}
 
-			if (isTermNameMalformed(field)) {
+			if (!validator.isTermNameValid(field)) {
 				field = handleMalformedTermName(field, useDefaultMalformedTermNameHandling);
 			}
 
 			classifyDocument(doc, "Document Venue", venueType, field);
 		}
 
-	}
-
-	/**
-	 * Checks if a term name is malformed and cannot be used
-	 * 
-	 * @param name
-	 *            Name to be checked
-	 * @return malformedness
-	 */
-	private boolean isTermNameMalformed(String name) {
-		return !Character.isLetter(name.charAt(0)) || !name.matches("[A-Za-z0-9 ]+");
 	}
 
 	/**
