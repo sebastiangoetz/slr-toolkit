@@ -1,5 +1,6 @@
 package de.tudresden.slr.utils.taxonomy.manipulation;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
@@ -51,7 +52,11 @@ public class TermCreator {
 				 if(parent instanceof Term) {
 					 SearchUtils.getContainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
 				 } else {
-					 TaxonomyUtils.saveTaxonomy((Model) parent);
+					 try {
+						 parent.eResource().save(null);
+					 } catch (IOException e) {
+						 e.printStackTrace();
+					 };
 				 }
 			 }
 			 return newTerm;
