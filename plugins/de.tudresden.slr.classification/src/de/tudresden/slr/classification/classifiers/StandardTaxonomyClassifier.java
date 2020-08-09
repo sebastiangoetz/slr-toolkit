@@ -3,6 +3,7 @@ package de.tudresden.slr.classification.classifiers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -175,27 +176,42 @@ public class StandardTaxonomyClassifier {
 		}
 	}
 
+	public void classifyDocumentsInProject(IProject project) {
+		classifyDocumentsInProject(project,new LinkedList<String>());
+	}
+	
+	/**
+	 * Instantiats a map that associates a Document's key with a reference to the Document itself
+	 * 
+	 * @param docs  A List of document objects
+	 */
+	public Map<String,Document> createDocMap(List<Document> docs) {
+		Map<String, Document> docMap = new HashMap<String,Document>();
+
+		for (Document d : docs) {
+			docMap.put(d.getKey(), d);
+		}
+		return docMap;
+	}
+	
 	/**
 	 * Loads project if necessary and generates a taxonomy based on bibtex and taxonomy files
 	 * 
 	 * @param project  Project containing bibtex and taxonomy files
 	 */
-	public void classifyDocumentsInProject(IProject project) {
+	public void classifyDocumentsInProject(IProject project,List<String> excludeList) {
 		try {
 			List<Document> docs = ModelRegistryPlugin.getModelRegistry().getResourceManager().loadProject(project);
-			Map<String, Document> docMap = new HashMap<String,Document>();
-
-			for (Document d : docs) {
-				docMap.put(d.getKey(), d);
-			}
+			Map<String, Document> docMap = createDocMap(docs);
 
 			for (Document doc : docs) {
-				if (doc.getAdditionalFields().containsKey("crossref")) {
-					createStandardTaxonomy(doc, docMap.get(doc.getAdditionalFields().get("crossref")));
-				} else {
-					createStandardTaxonomy(doc);
+				if(!excludeList.contains(doc.getType())) {
+					if (doc.getAdditionalFields().containsKey("crossref")) {
+						createStandardTaxonomy(doc, docMap.get(doc.getAdditionalFields().get("crossref")));
+					} else {
+						createStandardTaxonomy(doc);
+					}
 				}
-
 			}
 		} catch (CoreException e) {
 

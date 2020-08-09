@@ -60,7 +60,7 @@ public class StandardTaxonomyClassifierTest {
 		classifyAndTestAgainstReference(classifier, crossReferencedDoc, null, crossReferencedModelReference);
 	
 		Model crossReferencingModelReference = createTestModel("inproceedings","booktitle","CrossReferenced Doc");
-		classifyAndTestAgainstReference(classifier, crossReferencingDoc, crossReferencedDoc.getTitle(), crossReferencingModelReference);
+		classifyAndTestAgainstReference(classifier, crossReferencingDoc, crossReferencedDoc, crossReferencingModelReference);
 		
 		Model activeModelReference = createTestModel("article","journal","Generic Journal");
 		Term docTypeTerm = activeModelReference.getDimensions().get(0);
@@ -74,8 +74,8 @@ public class StandardTaxonomyClassifierTest {
 		if(!modelEquals(activeModel, activeModelReference)) fail();
 	}
 	
-	private void classifyAndTestAgainstReference(StandardTaxonomyClassifier classifier, Document doc, String crossReferenceString, Model reference) {
-		classifier.createStandardTaxonomy(doc,crossReferenceString);
+	private void classifyAndTestAgainstReference(StandardTaxonomyClassifier classifier, Document doc, Document crossReferenceDocument, Model reference) {
+		classifier.createStandardTaxonomy(doc,crossReferenceDocument);
 		if(!modelEquals(doc.getTaxonomy(), reference)) {
 			fail();
 		}

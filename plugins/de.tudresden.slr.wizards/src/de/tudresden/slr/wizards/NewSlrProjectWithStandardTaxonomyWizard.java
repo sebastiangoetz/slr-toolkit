@@ -1,19 +1,26 @@
 package de.tudresden.slr.wizards;
 
-import java.util.Observable;
-import java.util.Observer;
-
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.AbstractCommand;
 
 import de.tudresden.slr.classification.classifiers.StandardTaxonomyClassifier;
+import de.tudresden.slr.classification.pages.EntryExcludeSelectionPage;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 
 public class NewSlrProjectWithStandardTaxonomyWizard extends NewSlrProjectWizard {
 
+	protected EntryExcludeSelectionPage entryExcludeSelectionPage;
+	
 	public NewSlrProjectWithStandardTaxonomyWizard() {
-		// TODO Auto-generated constructor stub
+		super();
+		entryExcludeSelectionPage = new EntryExcludeSelectionPage("Setup exlusionSelection");
+		entryExcludeSelectionPage.setTitle("Exclude Bibtex Entry Types");
+		firstPage.setTitle("Create a new SLR Project and automatically classify entries");
+	}
+	
+	public void addPages() {
+		super.addPages();
+		addPage(entryExcludeSelectionPage);
 	}
 	
 	public boolean performFinish() {
@@ -47,7 +54,7 @@ public class NewSlrProjectWithStandardTaxonomyWizard extends NewSlrProjectWizard
 					
 					@Override
 					public void execute() {
-						(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project);
+						(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project,entryExcludeSelectionPage.getExclusionList());
 						
 					}
 				});
