@@ -36,6 +36,8 @@ import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 
 public class StandardTaxonomyClassifier {
 
+	public final static String EXP_NONALPHANUMERIC = "[^A-Za-z0-9 ]";
+	
 	boolean useDefaultMalformedTermNameHandling;
 	ITermNameValidator validator;
 	
@@ -64,7 +66,7 @@ public class StandardTaxonomyClassifier {
 	 * Creates a taxonomy for the given document based on bibtex attributes
 	 * (Document type and Document Venue). If provided, it will use a cross
 	 * reference to avoid inconsistent journal/book names If SCOPUS document types
-	 * are found, those specified in that field will be used instead of annoted
+	 * are found, those specified in that field will be used instead of annotated
 	 * types Term names are stripped of non-alphanumeric characters and malformed
 	 * term names will be corrected by handleMalformedTermName
 	 * 
@@ -74,39 +76,47 @@ public class StandardTaxonomyClassifier {
 	 *            Title of the document to be cross referenced If null, no cross
 	 *            reference will be used
 	 */
-	public void createStandardTaxonomy(Document doc, String crossRefTitle) {
+	public void createStandardTaxonomy(Document doc, Document crossRefDoc) {
 		Map<String, String> fields = doc.getAdditionalFields();
 		Set<String> fieldKeys = fields.keySet();
+		
 		if (fieldKeys.contains("document_type")) {
 			classifyDocument(doc, "Document Type", fields.get("document_type"));
 		} else {
 			classifyDocument(doc, "Document Type", doc.getType());
 		}
 
+		
 		String[] lookUp = { "booktitle", "journal", "howpublished" };
 		String venueType = "";
+		String venueTitle ="";
 		boolean venueFound = false;
 		for (String s : lookUp) {
 			if (fields.containsKey(s)) {
 				venueType = s;
+				venueTitle = fields.get(s);
 				venueFound = true;
 				break;
 			}
-
 		}
+		
+		if(crossRefDoc!=null) {
+			if(!venueFound) {
+				venueType = crossRefDoc.getType();
+				venueFound = true;
+			}
+			venueTitle = crossRefDoc.getTitle();
+		}
+		
+		
+		
 		if (venueFound) {
-			String field = "";
-			if (crossRefTitle == null) {
-				field = fields.get(venueType).replaceAll("[^A-Za-z0-9 ]", "");
-			} else {
-				field = crossRefTitle.replaceAll("[^A-Za-z0-9 ]", "");
+			venueTitle = venueTitle.replaceAll(EXP_NONALPHANUMERIC, "");
+			if (!validator.isTermNameValid(venueTitle)) {
+				venueTitle = handleMalformedTermName(venueTitle, useDefaultMalformedTermNameHandling);
 			}
 
-			if (!validator.isTermNameValid(field)) {
-				field = handleMalformedTermName(field, useDefaultMalformedTermNameHandling);
-			}
-
-			classifyDocument(doc, "Document Venue", venueType, field);
+			classifyDocument(doc, "Document Venue", venueType, venueTitle);
 		}
 
 	}
@@ -173,10 +183,10 @@ public class StandardTaxonomyClassifier {
 	public void classifyDocumentsInProject(IProject project) {
 		try {
 			List<Document> docs = ModelRegistryPlugin.getModelRegistry().getResourceManager().loadProject(project);
-			Map<String, String> docMap = new HashMap<>();
+			Map<String, Document> docMap = new HashMap<String,Document>();
 
 			for (Document d : docs) {
-				docMap.put(d.getKey(), d.getTitle());
+				docMap.put(d.getKey(), d);
 			}
 
 			for (Document doc : docs) {
