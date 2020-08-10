@@ -84,10 +84,9 @@ public class ResourceManager extends Observable {
 
 			if (res.getFileExtension().equals("taxonomy")) {
 				taxonomyFile = project.getFile(res.getFullPath().lastSegment());
+				ModelRegistryPlugin.getModelRegistry().setTaxonomyFile(taxonomyFile);
 			}
 		}
-
-		ModelRegistryPlugin.getModelRegistry().setTaxonomyFile(taxonomyFile);
 		List<Document> docs = new ArrayList<Document>();
 
 		for (IFile file : bibFiles) {
