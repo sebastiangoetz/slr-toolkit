@@ -204,7 +204,8 @@ public class StandardTaxonomyClassifier {
 			List<Document> docs = ModelRegistryPlugin.getModelRegistry().getResourceManager().loadProject(project);
 			Map<String, Document> docMap = createDocMap(docs);
 
-			for (Document doc : docs) {
+			//using docMap.values() intead of docs list to enable swapping of docs in tests using createDocMap()
+			for (Document doc : docMap.values()) {
 				if(!excludeList.contains(doc.getType())) {
 					if (doc.getAdditionalFields().containsKey("crossref")) {
 						createStandardTaxonomy(doc, docMap.get(doc.getAdditionalFields().get("crossref")));
