@@ -4,7 +4,13 @@ import static org.junit.Assert.*;
 
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
@@ -12,6 +18,8 @@ import org.eclipse.xtext.testing.XtextRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
 import de.tudresden.slr.classification.classifiers.StandardTaxonomyClassifier;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
@@ -28,6 +36,32 @@ public class StandardTaxonomyClassifierTest {
 	public void setUp() throws Exception {
 
 	}
+	
+	@Test
+	public void classifyDocumentTest() {
+		StandardTaxonomyClassifier classifier = new StandardTaxonomyClassifier();
+		
+		Model testActiveModel = createTestModel(null,null,null);
+		Resource testActivemodelRes = new  NonPersistentResource();
+		testActivemodelRes.getContents().add(testActiveModel);
+		ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(testActiveModel);
+		
+		Model reference = createTestModel(null,null,null);
+		Resource referenceRes = new  NonPersistentResource();
+		referenceRes.getContents().add(reference);
+
+		Term termParent = TermCreator.createChildIfNotExisting(reference, "TermParent");
+		TermCreator.createChildIfNotExisting(termParent, "TermChild");
+		Resource docRes = new  NonPersistentResource();
+		Document doc = createDocument("testdoc",null,null,null,null,null);
+		docRes.getContents().add(doc);
+		classifier.classifyDocument(doc,"TermParent","TermChild");
+		
+		
+		if(!modelEquals(ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get(),reference)) fail();
+		if(!modelEquals(doc.getTaxonomy(),reference)) fail();
+	}
+	
 	
 	@Test
 	public void createStandardtaxonomyTest() {
@@ -72,6 +106,57 @@ public class StandardTaxonomyClassifierTest {
 		TermCreator.createChildIfNotExisting(booktitleTerm, "CrossReferenced Doc",false);
 		
 		if(!modelEquals(activeModel, activeModelReference)) fail();
+	}
+	
+	@Test
+	public void classifyDocumentsInProjectTest() {
+		Model testActiveModel = createTestModel(null,null,null);
+		Resource testActivemodelRes = new  NonPersistentResource();
+		testActivemodelRes.getContents().add(testActiveModel);
+		ModelRegistryPlugin.getModelRegistry().setActiveTaxonomy(testActiveModel);
+		
+		//mock an empty project to avoid ResourceManager call
+		IProject mockProject = Mockito.mock(IProject.class);
+		IResource empty[] = {};
+		try {
+			Mockito.when(mockProject.members()).thenReturn(empty);
+		} catch(CoreException e) {
+			e.printStackTrace();
+		}
+		
+		
+		Resource docRes = new  NonPersistentResource();
+		Document crossReferencedDoc = createDocument("CrossReferenced Doc","proceedings",null, "Crossref book",null,null);
+		Document crossReferencingDoc = createDocument("CrossReferencing Doc","inproceedings","booktitle","Should not be used", null, null);
+		
+		docRes.getContents().add(crossReferencingDoc);
+		docRes.getContents().add(crossReferencedDoc);
+		
+		crossReferencedDoc.setKey("k1");
+		crossReferencingDoc.setKey("k2");
+		
+		Map<String, Document> testDocMap = new HashMap<String,Document>();
+		testDocMap.put("k1",crossReferencedDoc);
+		testDocMap.put("k2",crossReferencingDoc);
+		
+		crossReferencingDoc.getAdditionalFields().put("crossref","k1");
+		
+		List<String> testExcludeList = new LinkedList<String>();
+		testExcludeList.add("proceedings");
+		
+		//Use overloaded createDocMap to load docs instead
+		StandardTaxonomyClassifier classifier = new StandardTaxonomyClassifier() {
+			
+			@Override
+			public Map<String, Document> createDocMap(List<Document> docs) {
+				return testDocMap;
+			}
+		};
+		
+		classifier.classifyDocumentsInProject(mockProject,testExcludeList);
+		Model crossReferencingModelReference = createTestModel("inproceedings","booktitle","CrossReferenced Doc");
+		if(!modelEquals(ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get(),crossReferencingModelReference)) fail();
+		if(!modelEquals(crossReferencingDoc.getTaxonomy(), crossReferencingModelReference)) fail();
 	}
 	
 	private void classifyAndTestAgainstReference(StandardTaxonomyClassifier classifier, Document doc, Document crossReferenceDocument, Model reference) {
