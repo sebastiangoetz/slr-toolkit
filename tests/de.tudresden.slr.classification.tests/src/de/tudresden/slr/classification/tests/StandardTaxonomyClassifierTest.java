@@ -57,7 +57,6 @@ public class StandardTaxonomyClassifierTest {
 		docRes.getContents().add(doc);
 		classifier.classifyDocument(doc,"TermParent","TermChild");
 		
-		
 		if(!modelEquals(ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get(),reference)) fail();
 		if(!modelEquals(doc.getTaxonomy(),reference)) fail();
 	}
@@ -90,7 +89,7 @@ public class StandardTaxonomyClassifierTest {
 		Model scopusModelReference = createTestModel("Scopus Article","journal","Generic Journal");
 		classifyAndTestAgainstReference(classifier, scopusDoc, null, scopusModelReference);
 		
-		Model crossReferencedModelReference = createTestModel("proceedings",null,null);
+		Model crossReferencedModelReference = createTestModel("proceedings","none",null);
 		classifyAndTestAgainstReference(classifier, crossReferencedDoc, null, crossReferencedModelReference);
 	
 		Model crossReferencingModelReference = createTestModel("inproceedings","booktitle","CrossReferenced Doc");
@@ -102,6 +101,7 @@ public class StandardTaxonomyClassifierTest {
 		TermCreator.createChildIfNotExisting(docTypeTerm, "Scopus Article",false);
 		TermCreator.createChildIfNotExisting(docTypeTerm, "proceedings",false);
 		TermCreator.createChildIfNotExisting(docTypeTerm, "inproceedings",false);
+		TermCreator.createChildIfNotExisting(venueTypeTerm, "none",false);
 		Term booktitleTerm = TermCreator.createChildIfNotExisting(venueTypeTerm, "booktitle",false);
 		TermCreator.createChildIfNotExisting(booktitleTerm, "CrossReferenced Doc",false);
 		

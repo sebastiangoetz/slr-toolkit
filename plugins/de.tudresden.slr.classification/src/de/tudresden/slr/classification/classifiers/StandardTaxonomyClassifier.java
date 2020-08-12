@@ -1,7 +1,6 @@
 package de.tudresden.slr.classification.classifiers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,20 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.command.AbstractCommand;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.command.ChangeCommand;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.PlatformUI;
 
 import de.tudresden.slr.classification.ui.MalformedTermNameDialog;
@@ -31,13 +19,13 @@ import de.tudresden.slr.classification.validators.TermNameValidatorImpl;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
-import de.tudresden.slr.model.taxonomy.Term;
 import de.tudresden.slr.model.utils.TaxonomyUtils;
 import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 
 public class StandardTaxonomyClassifier {
 
 	public final static String EXP_NONALPHANUMERIC = "[^A-Za-z0-9 ]";
+	public final static String NO_VENUE = "none";
 	
 	boolean useDefaultMalformedTermNameHandling;
 	ITermNameValidator validator;
@@ -118,6 +106,8 @@ public class StandardTaxonomyClassifier {
 			}
 
 			classifyDocument(doc, "Document Venue", venueType, venueTitle);
+		} else {
+			classifyDocument(doc, "Document Venue", NO_VENUE);
 		}
 
 	}
@@ -204,7 +194,7 @@ public class StandardTaxonomyClassifier {
 			List<Document> docs = ModelRegistryPlugin.getModelRegistry().getResourceManager().loadProject(project);
 			Map<String, Document> docMap = createDocMap(docs);
 
-			//using docMap.values() intead of docs list to enable swapping of docs in tests using createDocMap()
+			//using docMap.values() intead of docs list to enable swapping of docs in tests using overloaded createDocMap()
 			for (Document doc : docMap.values()) {
 				if(!excludeList.contains(doc.getType())) {
 					if (doc.getAdditionalFields().containsKey("crossref")) {
