@@ -49,7 +49,7 @@ public class MalformedTermNameHandlerImpl implements IMalformedTermNameHandler {
 					"Invalid Term name", "Please enter a new term name that starts with a letter.", returnName,
 					validator);
 			returnName = (dlg.open() == 0) ? name = dlg.getValue() : returnName;
-			returnName.replaceAll("[^A-Za-z0-9 ]", "");
+			returnName.replaceAll(EXP_NONALPHANUMERIC, "");
 			useDefault = dlg.getUseDefault();
 		}
 		return returnName;
