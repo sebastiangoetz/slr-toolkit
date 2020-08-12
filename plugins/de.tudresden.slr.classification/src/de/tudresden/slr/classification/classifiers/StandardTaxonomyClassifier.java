@@ -11,10 +11,10 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ui.PlatformUI;
 
-import de.tudresden.slr.classification.ui.MalformedTermNameDialog;
+import de.tudresden.slr.classification.validators.IMalformedTermNameHandler;
 import de.tudresden.slr.classification.validators.ITermNameValidator;
+import de.tudresden.slr.classification.validators.MalformedTermNameHandlerImpl;
 import de.tudresden.slr.classification.validators.TermNameValidatorImpl;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -24,21 +24,22 @@ import de.tudresden.slr.utils.taxonomy.manipulation.TermCreator;
 
 public class StandardTaxonomyClassifier {
 
-	public final static String EXP_NONALPHANUMERIC = "[^A-Za-z0-9 ]";
+	
 	public final static String NO_VENUE = "none";
 	
-	boolean useDefaultMalformedTermNameHandling;
-	ITermNameValidator validator;
+	private ITermNameValidator validator;
+	private IMalformedTermNameHandler malformedTermNameHandler;
 	
 	public StandardTaxonomyClassifier() {
-		useDefaultMalformedTermNameHandling = false;
 		validator = new TermNameValidatorImpl();
-		
+		MalformedTermNameHandlerImpl handler = new MalformedTermNameHandlerImpl();
+		handler.setUseDefault(false);
+		malformedTermNameHandler = handler;
 	}
 	
-	public StandardTaxonomyClassifier(boolean useDefaultMalformedTermNameHandling,ITermNameValidator validator) {
-		this.useDefaultMalformedTermNameHandling = useDefaultMalformedTermNameHandling;
+	public StandardTaxonomyClassifier(ITermNameValidator validator, IMalformedTermNameHandler malformedTermNameHandler) {
 		this.validator = validator;
+		this.malformedTermNameHandler = malformedTermNameHandler;
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class StandardTaxonomyClassifier {
 	 * reference to avoid inconsistent journal/book names If SCOPUS document types
 	 * are found, those specified in that field will be used instead of annotated
 	 * types Term names are stripped of non-alphanumeric characters and malformed
-	 * term names will be corrected by handleMalformedTermName
+	 * term names will be corrected by malformedTermNameHandler
 	 * 
 	 * @param doc
 	 *            Document to be classified
@@ -100,11 +101,6 @@ public class StandardTaxonomyClassifier {
 		
 		
 		if (venueFound) {
-			venueTitle = venueTitle.replaceAll(EXP_NONALPHANUMERIC, "");
-			if (!validator.isTermNameValid(venueTitle)) {
-				venueTitle = handleMalformedTermName(venueTitle, useDefaultMalformedTermNameHandling);
-			}
-
 			classifyDocument(doc, "Document Venue", venueType, venueTitle);
 		} else {
 			classifyDocument(doc, "Document Venue", NO_VENUE);
@@ -112,33 +108,9 @@ public class StandardTaxonomyClassifier {
 
 	}
 
-	/**
-	 * Transforms strings that would be invalid when used as term names into valid
-	 * ones
-	 * 
-	 * @param name
-	 *            Term name to be transformed
-	 * @param useDialog
-	 *            Indicates, wether a pop-up string field that allows users to set
-	 *            the term name manually should appear
-	 * @return Valid term name
-	 */
-	private String handleMalformedTermName(String name, boolean useDialog) {
-
-		String returnName = "T " + name;
-		if (!useDefaultMalformedTermNameHandling) {
-			MalformedTermNameDialog dlg = new MalformedTermNameDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-					"Invalid Term name", "Please enter a new term name that starts with a letter.", returnName,
-					(s -> (!Character.isLetter(s.charAt(0))) ? "" : null));
-			returnName = (dlg.open() == 0) ? name = dlg.getValue() : returnName;
-			returnName.replaceAll("[^A-Za-z0-9 ]", "");
-			useDefaultMalformedTermNameHandling = dlg.getUseDefault();
-		}
-		return returnName;
-	}
 
 	/**
-	 * Adds hierarchical terms to a document based on the order of supplied strings
+	 * Adds hierarchical terms to a document based on the order of supplied strings. Order goes from highest level term name to lowest order Term name.
 	 * 
 	 * @param doc  document for which to create terms
 	 * @param types  variable amount of strings starting with the highest order term name
@@ -153,6 +125,9 @@ public class StandardTaxonomyClassifier {
 
 			for (String type : types) {
 				// create element in general taxonomy
+				if(!validator.isTermNameValid(type)) {
+					type = malformedTermNameHandler.handleMalformedTermName(type);
+				}
 				taxonomyElement = TermCreator.createChildIfNotExisting(taxonomyElement, type);
 				docTaxonomyElement = TermCreator.createChildIfNotExisting(docTaxonomyElement, type, false);
 			}
@@ -166,12 +141,17 @@ public class StandardTaxonomyClassifier {
 		}
 	}
 
+	/**
+	 * Loads project if necessary and generates a taxonomy based on bibtex and taxonomy files. Alias for classifyDocumentsInProject(project,new LinkedList<String>())
+	 * 
+	 * @param project  Project containing bibtex and taxonomy files
+	 */
 	public void classifyDocumentsInProject(IProject project) {
 		classifyDocumentsInProject(project,new LinkedList<String>());
 	}
 	
 	/**
-	 * Instantiats a map that associates a Document's key with a reference to the Document itself
+	 * Instantiates a map that associates a Document's key with a reference to the Document itself. 
 	 * 
 	 * @param docs  A List of document objects
 	 */
@@ -186,8 +166,10 @@ public class StandardTaxonomyClassifier {
 	
 	/**
 	 * Loads project if necessary and generates a taxonomy based on bibtex and taxonomy files
+	 * Documents with entry types found in exclusionList will not be classifier, but still used in cross referencing.
 	 * 
 	 * @param project  Project containing bibtex and taxonomy files
+	 * @param excludeList  List of bibtex entry types for documents to be ignored
 	 */
 	public void classifyDocumentsInProject(IProject project,List<String> excludeList) {
 		try {
@@ -208,6 +190,22 @@ public class StandardTaxonomyClassifier {
 
 		}
 
+	}
+
+	public ITermNameValidator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(ITermNameValidator validator) {
+		this.validator = validator;
+	}
+
+	public IMalformedTermNameHandler getMalformedTermNameHandler() {
+		return malformedTermNameHandler;
+	}
+
+	public void setMalformedTermNameHandler(IMalformedTermNameHandler malformedTermNameHandler) {
+		this.malformedTermNameHandler = malformedTermNameHandler;
 	}
 
 }

@@ -21,6 +21,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import de.tudresden.slr.classification.classifiers.StandardTaxonomyClassifier;
+import de.tudresden.slr.classification.validators.MalformedTermNameHandlerImpl;
+import de.tudresden.slr.classification.validators.TermNameValidatorImpl;
 import de.tudresden.slr.model.bibtex.BibtexFactory;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
@@ -39,7 +41,9 @@ public class StandardTaxonomyClassifierTest {
 	
 	@Test
 	public void classifyDocumentTest() {
-		StandardTaxonomyClassifier classifier = new StandardTaxonomyClassifier();
+		TermNameValidatorImpl validator = new TermNameValidatorImpl();
+		MalformedTermNameHandlerImpl handler = new MalformedTermNameHandlerImpl();
+		StandardTaxonomyClassifier classifier = new StandardTaxonomyClassifier(validator,handler);
 		
 		Model testActiveModel = createTestModel(null,null,null);
 		Resource testActivemodelRes = new  NonPersistentResource();
@@ -51,11 +55,12 @@ public class StandardTaxonomyClassifierTest {
 		referenceRes.getContents().add(reference);
 
 		Term termParent = TermCreator.createChildIfNotExisting(reference, "TermParent");
-		TermCreator.createChildIfNotExisting(termParent, "TermChild");
+		Term termChild = TermCreator.createChildIfNotExisting(termParent, "TermChild");
+		TermCreator.createChildIfNotExisting(termChild, "T 1st invalid Term Name");
 		Resource docRes = new  NonPersistentResource();
 		Document doc = createDocument("testdoc",null,null,null,null,null);
 		docRes.getContents().add(doc);
-		classifier.classifyDocument(doc,"TermParent","TermChild");
+		classifier.classifyDocument(doc,"TermParent","TermChild","1st invalid@ Term! Name/");
 		
 		if(!modelEquals(ModelRegistryPlugin.getModelRegistry().getActiveTaxonomy().get(),reference)) fail();
 		if(!modelEquals(doc.getTaxonomy(),reference)) fail();
