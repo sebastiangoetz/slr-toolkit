@@ -33,7 +33,7 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu">
+            locationURI="menu:org.eclipse.ui.main.menu?after=de.tudresden.slr.model.mendeley.menus.mainMenu">
          <menu
                label="Taxonomy"
                mnemonic="T"
