@@ -46,7 +46,7 @@ public class MalformedTermNameHandlerImpl implements IMalformedTermNameHandler {
 		String returnName = DEFAULT_PREFIX + name;
 		if (!useDefault) {
 			MalformedTermNameDialog dlg = new MalformedTermNameDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-					"Invalid Term name", "Please enter a new term name that starts with a letter.", returnName,
+					"Invalid Term name", "Please enter a new term name that starts with a letter.  \"" + DEFAULT_PREFIX + "\" has been prepended for convenience.", returnName,
 					validator);
 			returnName = (dlg.open() == 0) ? name = dlg.getValue() : returnName;
 			returnName.replaceAll(EXP_NONALPHANUMERIC, "");
