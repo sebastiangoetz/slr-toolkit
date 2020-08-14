@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -435,7 +436,27 @@ public class BibtexEntryView extends ViewPart {
 		 * @param event
 		 */
 		private void handleResourceChangeEvent(IResourceChangeEvent event) {
-
+			List<IProject> projects = getAddedProjects(event.getDelta());
+			Optional<IProject> optActiveProject = ModelRegistryPlugin.getModelRegistry().getResourceManager().getActiveProject();
+			if(projects.size()>0) {
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						refreshAction.run();
+					}
+				});
+				
+				if(!optActiveProject.isPresent() && projects.size() > 0) {
+					IProject project = projects.get(0);
+					try {
+						ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
+						combo.setSelection(new StructuredSelection(project));
+					} catch(CoreException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+			
 		}
 
 		/**

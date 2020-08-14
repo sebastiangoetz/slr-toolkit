@@ -3,6 +3,7 @@ package de.tudresden.slr.model.modelregistry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Optional;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -19,6 +20,11 @@ public class ResourceManager extends Observable {
 
 	AdapterFactoryEditingDomain editingDomain;
 	IProject activeProject;
+	
+	public ResourceManager(AdapterFactoryEditingDomain editingDomain) {
+		this.editingDomain = editingDomain;
+
+	}
 
 	/**
 	 * Assigns the supplied project as the "active" project, i. e. specifying which
@@ -29,7 +35,7 @@ public class ResourceManager extends Observable {
 	 *            activeDocument and activeTaxonomy
 	 * @throws CoreException
 	 */
-	public void setActiveProject(IProject project) throws CoreException {
+	public synchronized void setActiveProject(IProject project) throws CoreException {
 		if (project != activeProject) {
 			unloadResources();
 			activeProject = project;
@@ -45,13 +51,8 @@ public class ResourceManager extends Observable {
 	 * 
 	 * @return activeProject The currently active project
 	 */
-	public IProject getActiveProject() {
-		return activeProject;
-	}
-
-	public ResourceManager(AdapterFactoryEditingDomain editingDomain) {
-		this.editingDomain = editingDomain;
-
+	public Optional<IProject> getActiveProject() { 
+		return activeProject==null ? Optional.empty() : Optional.of(activeProject);
 	}
 
 	/**
