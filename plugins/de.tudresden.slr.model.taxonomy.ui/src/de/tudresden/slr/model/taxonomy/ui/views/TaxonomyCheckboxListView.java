@@ -34,6 +34,7 @@ import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -158,7 +159,14 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	public void update(Observable o, Object arg) {
 		// taxonomy has changed
 		if (arg instanceof Model){
-			viewer.setInput(arg);
+			Display.getDefault().asyncExec(new Runnable() {
+				
+				@Override
+				public void run() {
+					viewer.setInput(arg);
+				}
+			}); 
+			
 			return;
 		}
 		// document has changed

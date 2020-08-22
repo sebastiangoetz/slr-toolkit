@@ -208,12 +208,13 @@ public class BibtexEntryView extends ViewPart {
 					ISelection s = combo.getSelection();
 					if (s != null && s instanceof IStructuredSelection) {
 						IProject p = (IProject) (((IStructuredSelection) s).getFirstElement());
-						try {
-							ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(p);
-						} catch (CoreException coreEx) {
-							coreEx.printStackTrace();
+						if(!(p == null)) {
+							try {
+								ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(p);
+							} catch (CoreException coreEx) {
+								coreEx.printStackTrace();
+							}
 						}
-
 						viewer.refresh();
 					}
 				}
@@ -422,6 +423,7 @@ public class BibtexEntryView extends ViewPart {
 								}
 							}
 						} else if (input.length == 1) {
+							ModelRegistryPlugin.getModelRegistry().getResourceManager().unloadResources(false);
 							combo.setSelection(StructuredSelection.EMPTY);
 						}
 					}
@@ -448,8 +450,12 @@ public class BibtexEntryView extends ViewPart {
 				if(!optActiveProject.isPresent() && projects.size() > 0) {
 					IProject project = projects.get(0);
 					try {
-						ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
-						combo.setSelection(new StructuredSelection(project));
+						ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project,true);
+						Display.getDefault().asyncExec(new Runnable() {
+							public void run() {
+								combo.setSelection(new StructuredSelection(project));
+							}
+						});
 					} catch(CoreException e) {
 						e.printStackTrace();
 					}

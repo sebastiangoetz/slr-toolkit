@@ -33,17 +33,31 @@ public class ResourceManager extends Observable {
 	 * @param project
 	 *            The project that should be designated "active" similar to
 	 *            activeDocument and activeTaxonomy
+	 * @param forceLoad
+	 * 			  Sets whether the project should be reloaded if it is already the active project
 	 * @throws CoreException
 	 */
-	public synchronized void setActiveProject(IProject project) throws CoreException {
-		if (project != activeProject) {
-			unloadResources();
+	public synchronized void setActiveProject(IProject project,boolean forceLoad) throws CoreException {
+		if ((project != activeProject) || forceLoad) {
+			unloadResources(true);
 			activeProject = project;
 			loadProject(project);
 			setChanged();
 			notifyObservers(project);
 		}
 
+	}
+	
+	/**
+	 * Alias for setActiveProject(project, false)
+	 * 
+	 * @param project
+	 *            The project that should be designated "active" similar to
+	 *            activeDocument and activeTaxonomy
+	 * @throws CoreException
+	 */
+	public synchronized void setActiveProject(IProject project) throws CoreException {
+		setActiveProject(project, false);
 	}
 
 	/**
@@ -58,11 +72,16 @@ public class ResourceManager extends Observable {
 	/**
 	 * Unloads all resources and clears the ResourceSet
 	 */
-	public void unloadResources() {
+	public void unloadResources(boolean silent) {
 		for (Resource resource : editingDomain.getResourceSet().getResources()) {
 			resource.unload();
 		}
 		editingDomain.getResourceSet().getResources().clear();
+		activeProject = null;
+		
+		if(!silent) {
+			notifyObservers(activeProject);
+		}
 
 	}
 
