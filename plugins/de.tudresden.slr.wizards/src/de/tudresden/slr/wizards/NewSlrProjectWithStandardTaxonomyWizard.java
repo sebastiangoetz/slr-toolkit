@@ -54,7 +54,7 @@ public class NewSlrProjectWithStandardTaxonomyWizard extends NewSlrProjectWizard
 					
 					@Override
 					public void execute() {
-						(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project,entryExcludeSelectionPage.getExclusionList());
+						(new StandardTaxonomyClassifier(false)).classifyDocumentsInProject(project,entryExcludeSelectionPage.getExclusionList());
 						
 					}
 				});

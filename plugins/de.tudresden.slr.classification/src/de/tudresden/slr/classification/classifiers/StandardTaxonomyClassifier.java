@@ -33,7 +33,14 @@ public class StandardTaxonomyClassifier {
 	public StandardTaxonomyClassifier() {
 		validator = new TermNameValidatorImpl();
 		MalformedTermNameHandlerImpl handler = new MalformedTermNameHandlerImpl();
-		handler.setUseDefault(false);
+		handler.setUseDefault(true);
+		malformedTermNameHandler = handler;
+	}
+	
+	public StandardTaxonomyClassifier(boolean useDefault) {
+		validator = new TermNameValidatorImpl();
+		MalformedTermNameHandlerImpl handler = new MalformedTermNameHandlerImpl();
+		handler.setUseDefault(useDefault);
 		malformedTermNameHandler = handler;
 	}
 	

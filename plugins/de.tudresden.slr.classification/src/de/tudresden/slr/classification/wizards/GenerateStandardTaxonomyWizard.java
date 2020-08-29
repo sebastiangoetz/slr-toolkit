@@ -31,7 +31,7 @@ public class GenerateStandardTaxonomyWizard extends Wizard {
 	public boolean performFinish() {
 		for(IProject project:projectsPage.getReferencedProjects())
 		{
-			(new StandardTaxonomyClassifier()).classifyDocumentsInProject(project,entryTypeExclusionPage.getExclusionList());
+			(new StandardTaxonomyClassifier(false)).classifyDocumentsInProject(project,entryTypeExclusionPage.getExclusionList());
 		}
 		return true;
 	}
