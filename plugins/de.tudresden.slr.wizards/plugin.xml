@@ -17,6 +17,16 @@
             name="SLR Project"
             project="true">
       </wizard>
+      <wizard
+            category="de.tudresden.slr.wizards.slr"
+            class="de.tudresden.slr.wizards.NewSlrProjectWithStandardTaxonomyWizard"
+            finalPerspective="de.tudresden.slr.app.perspective"
+            hasPages="true"
+            icon="icons/newslrprj_wiz.gif"
+            id="de.tudresden.slr.wizards.newSlrProjectWithStandardTaxonomy"
+            name="SLR Project with pre-defined taxonomy"
+            project="true">
+      </wizard>
       <!--
       <wizard
             category="de.tudresden.slr.wizards.slr"

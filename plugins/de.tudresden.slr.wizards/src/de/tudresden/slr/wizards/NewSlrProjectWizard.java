@@ -5,16 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.wizards.pages.WizardSetupBibtexPage;
 import de.tudresden.slr.wizards.pages.WizardSetupMetainformationPage;
 import de.tudresden.slr.wizards.pages.WizardSetupPage;
@@ -23,17 +26,24 @@ import de.tudresden.slr.wizards.projects.SlrProjectSupport;
 
 public class NewSlrProjectWizard extends Wizard implements INewWizard {
 
-	private static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
-	private static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
-	private static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrproject";
+	protected static final String BIBTEX_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_bibtex.bib";
+	protected static final String TAXONOMY_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_taxonomy.taxonomy";
+	protected static final String METAINFORMATION_RESOURCE = "platform:/plugin/de.tudresden.slr.wizards/resources/my_metainformation.slrproject";
 
 	
-	private WizardNewProjectCreationPage firstPage;
-	private WizardSetupBibtexPage secondPage;
-	private WizardSetupTaxonomyPage thirdPage;
-	private WizardSetupMetainformationPage fourthPage;
+	protected WizardNewProjectCreationPage firstPage;
+	protected WizardSetupBibtexPage secondPage;
+	protected WizardSetupTaxonomyPage thirdPage;
+	protected WizardSetupMetainformationPage fourthPage;
+	
+	IProject project;
+	
+	protected AtomicInteger filesLoaded;
+	protected final int filesToLoad;
 
 	public NewSlrProjectWizard() {
+		filesLoaded = new AtomicInteger(0);
+		filesToLoad = 3;
 		setWindowTitle("New SLR Project");
 		firstPage = new WizardNewProjectCreationPage("SLR Project Wizard");
 		firstPage.setTitle("Create a new SLR Project");
@@ -61,19 +71,51 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		// create the project set up in the first wizard page
-		IProject project = firstPage.getProjectHandle();
+		
 		try {
-			project.create(null);
-			project.open(null);
-			createResourceFile(project, secondPage, BIBTEX_RESOURCE);
-			createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
-			createResourceFile(project, fourthPage, METAINFORMATION_RESOURCE);
-			SlrProjectSupport.addNature(project);
-		} catch (CoreException e) {
-			e.printStackTrace();
+			createSlrProject();
+		} catch(CoreException e) {
 			return false;
 		}
+		
 		return true;
+	}
+	
+	
+	/**
+	 * Crates an SLR project with all required files and adds the appropriate nature
+	 * 
+	 * @return A project handle for the newly created SLR project
+	 * @throws CoreException
+	 */
+	protected IProject createSlrProject() throws CoreException {
+		project = firstPage.getProjectHandle();
+		project.create(null);
+		project.open(null);
+		createResourceFile(project, secondPage, BIBTEX_RESOURCE);
+		createResourceFile(project, thirdPage, TAXONOMY_RESOURCE);
+		createResourceFile(project, fourthPage, METAINFORMATION_RESOURCE);
+		SlrProjectSupport.addNature(project);
+		return project;
+
+	}
+	
+	/**
+	 * Helper function to execute once a single file is done being copied. Once all files are copied, it calls onAllFilesLoaded().
+	 */
+	protected synchronized void onFileCreated() {
+		if(filesLoaded.incrementAndGet() == filesToLoad) onAllFilesLoaded();
+	}
+	
+	/**
+	 * Fires automatically once all files are completely copied to the project directory
+	 */
+	protected void onAllFilesLoaded() {
+		try {
+			ModelRegistryPlugin.getModelRegistry().getResourceManager().setActiveProject(project);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -101,7 +143,27 @@ public class NewSlrProjectWizard extends Wizard implements INewWizard {
 	private void createFile(IProject project, URL sourceFile, String newFileName){
 		try (InputStream fileStream = sourceFile.openConnection().getInputStream()) {
 			IFile taxonomyFile = project.getFile(newFileName);
-			taxonomyFile.create(fileStream, false, null);
+			taxonomyFile.create(fileStream, false, new NullProgressMonitor() {
+				
+				int workLeft=0;
+				
+				
+				@Override
+				public void beginTask(String name, int totalWork) {
+					workLeft = totalWork;
+				}
+				
+				@Override
+				public void done() {
+					onFileCreated();
+				}
+				
+				@Override
+				public void worked(int work) {
+					workLeft -= work;
+					if(workLeft == 0) done();
+				}
+			});
 		} catch (IOException | CoreException e) {
 			e.printStackTrace();
 		}

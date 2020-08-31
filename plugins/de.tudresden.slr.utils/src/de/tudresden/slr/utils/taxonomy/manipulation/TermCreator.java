@@ -1,9 +1,11 @@
 package de.tudresden.slr.utils.taxonomy.manipulation;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
@@ -32,5 +34,33 @@ public class TermCreator {
 		}
 		return createdTerm;
 	}
-
+	
+	
+	public static Term createChildIfNotExisting(EObject parent, String name) {
+		return createChildIfNotExisting(parent,name,true);
+	}
+	
+	public static Term createChildIfNotExisting(EObject parent, String name,boolean doSave) {
+		Optional<Term> existingTerm = SearchUtils.findChildWithName(parent,name);
+		if(existingTerm.isPresent()) {
+			 return existingTerm.get();
+		} else {
+			 Term newTerm = TaxonomyFactory.eINSTANCE.createTerm();
+			 newTerm.setName(name);
+			 SearchUtils.getChildren(parent).add(newTerm);
+			 if(doSave) {
+				 if(parent instanceof Term) {
+					 SearchUtils.getContainingModel((Term) parent).ifPresent((model -> TaxonomyUtils.saveTaxonomy(model)));
+				 } else {
+					 try {
+						 parent.eResource().save(null);
+					 } catch (IOException e) {
+						 e.printStackTrace();
+					 };
+				 }
+			 }
+			 return newTerm;
+			
+		}
+	 }
 }

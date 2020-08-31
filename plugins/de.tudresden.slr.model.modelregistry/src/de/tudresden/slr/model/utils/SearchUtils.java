@@ -107,4 +107,40 @@ public class SearchUtils {
 		}
 		return results;
 	}
+	
+	 public static Optional<Term> findChildWithName(EObject parent, String subClassName) {
+		 Term foundTerm = null;
+		 for(Term t: getChildren(parent)) {
+			 if(t.getName().equals(subClassName)) {
+				 foundTerm = t;
+				 break;
+			 }
+		 }
+		 
+		 if(foundTerm == null) {
+			 return Optional.empty();
+		 } else {
+			 return Optional.of(foundTerm);
+		 }
+		 
+	 }
+	 
+	 public static List<Term> getChildren(EObject parent) {
+		 if(parent instanceof Model) {
+			return  ((Model) parent).getDimensions();
+		 } else if (parent instanceof Term) {
+			return ((Term) parent).getSubclasses();
+		 } else {
+			 throw new IllegalArgumentException();
+		 }
+	 }
+	 
+	 public static boolean childWithNameExists(EObject parent, String name) {
+		 List<Term> children = getChildren(parent);
+		 
+		 for(Term t: children) {
+			 if (t.getName().equals(name)) return true;
+		 }
+		 return false;
+	 }
 }

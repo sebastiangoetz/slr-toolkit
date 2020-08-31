@@ -151,6 +151,26 @@ public class ChartDataProvider {
 		return citesPerYear;
 	}
 	
+	public SortedMap<String,Integer> calculateCitesPerYear() {
+		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
+		resources.forEach((resource) ->  {
+			for(Document d: getDocumentList(resource) ) {
+				if(d.getAdditionalFields().containsKey("note")) {
+					String note = d.getAdditionalFields().get("note");
+					if(note.contains("cited")) {
+						String[] parts = note.split(" ");
+						String year = d.getYear();
+						int count = citesPerYear.containsKey(year) ? citesPerYear.get(year) : 0;
+						citesPerYear.put(year,count + d.getCites());
+					}
+				}
+			}
+			
+		});
+		
+		return citesPerYear;
+	}
+	
 	public SortedMap<String, Integer> calculateNumberOfCitesPerYearForClass(Term inputTerm, SortedMap<String,Boolean> visibleMap) {
 		
 		SortedMap<String, Integer> citesPerYear = new TreeMap<>();
