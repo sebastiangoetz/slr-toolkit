@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: de.tudresden.slr.model.taxonomy.tests
 Bundle-Vendor: My Company
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.3.2.qualifier
 Bundle-SymbolicName: de.tudresden.slr.model.taxonomy.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.tudresden.slr.model.taxonomy,

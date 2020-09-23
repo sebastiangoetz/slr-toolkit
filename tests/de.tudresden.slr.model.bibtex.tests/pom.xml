@@ -6,7 +6,7 @@
   	<parent>
 		<groupId>de.tudresden</groupId>
 		<artifactId>de.tudresden.slr.parent</artifactId>
-		<version>0.3.0-SNAPSHOT</version>
+		<version>0.3.2-SNAPSHOT</version>
 		<relativePath>../../plugins/de.tudresden.slr.parent/pom.xml
 		</relativePath>
 	</parent>
