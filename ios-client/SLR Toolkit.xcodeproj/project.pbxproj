@@ -1,0 +1,600 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		503E515F2553538100EA801A /* SLR_ToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLR_ToolkitApp.swift */; };
+		503E51612553538100EA801A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51602553538100EA801A /* ContentView.swift */; };
+		503E51632553538200EA801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51622553538200EA801A /* Assets.xcassets */; };
+		503E51662553538200EA801A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51652553538200EA801A /* Preview Assets.xcassets */; };
+		503E51682553538200EA801A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51672553538200EA801A /* Persistence.swift */; };
+		503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */; };
+		503E51762553538200EA801A /* SLR_ToolkitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51752553538200EA801A /* SLR_ToolkitTests.swift */; };
+		503E51812553538200EA801A /* SLR_ToolkitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51802553538200EA801A /* SLR_ToolkitUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		503E51722553538200EA801A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503E51532553538100EA801A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 503E515A2553538100EA801A;
+			remoteInfo = "SLR Toolkit";
+		};
+		503E517D2553538200EA801A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503E51532553538100EA801A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 503E515A2553538100EA801A;
+			remoteInfo = "SLR Toolkit";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		503E515E2553538100EA801A /* SLR_ToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitApp.swift; sourceTree = "<group>"; };
+		503E51602553538100EA801A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		503E51622553538200EA801A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		503E51652553538200EA801A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		503E51672553538200EA801A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		503E516A2553538200EA801A /* SLR_Toolkit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SLR_Toolkit.xcdatamodel; sourceTree = "<group>"; };
+		503E516C2553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		503E51712553538200EA801A /* SLR ToolkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		503E51752553538200EA801A /* SLR_ToolkitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitTests.swift; sourceTree = "<group>"; };
+		503E51772553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		503E517C2553538200EA801A /* SLR ToolkitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		503E51802553538200EA801A /* SLR_ToolkitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitUITests.swift; sourceTree = "<group>"; };
+		503E51822553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		503E51582553538100EA801A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E516E2553538200EA801A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E51792553538200EA801A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		503E51522553538100EA801A = {
+			isa = PBXGroup;
+			children = (
+				503E515D2553538100EA801A /* SLR Toolkit */,
+				503E51742553538200EA801A /* SLR ToolkitTests */,
+				503E517F2553538200EA801A /* SLR ToolkitUITests */,
+				503E515C2553538100EA801A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		503E515C2553538100EA801A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				503E515B2553538100EA801A /* SLR Toolkit.app */,
+				503E51712553538200EA801A /* SLR ToolkitTests.xctest */,
+				503E517C2553538200EA801A /* SLR ToolkitUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		503E515D2553538100EA801A /* SLR Toolkit */ = {
+			isa = PBXGroup;
+			children = (
+				503E515E2553538100EA801A /* SLR_ToolkitApp.swift */,
+				503E51602553538100EA801A /* ContentView.swift */,
+				503E51622553538200EA801A /* Assets.xcassets */,
+				503E51672553538200EA801A /* Persistence.swift */,
+				503E516C2553538200EA801A /* Info.plist */,
+				503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */,
+				503E51642553538200EA801A /* Preview Content */,
+			);
+			path = "SLR Toolkit";
+			sourceTree = "<group>";
+		};
+		503E51642553538200EA801A /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				503E51652553538200EA801A /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		503E51742553538200EA801A /* SLR ToolkitTests */ = {
+			isa = PBXGroup;
+			children = (
+				503E51752553538200EA801A /* SLR_ToolkitTests.swift */,
+				503E51772553538200EA801A /* Info.plist */,
+			);
+			path = "SLR ToolkitTests";
+			sourceTree = "<group>";
+		};
+		503E517F2553538200EA801A /* SLR ToolkitUITests */ = {
+			isa = PBXGroup;
+			children = (
+				503E51802553538200EA801A /* SLR_ToolkitUITests.swift */,
+				503E51822553538200EA801A /* Info.plist */,
+			);
+			path = "SLR ToolkitUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		503E515A2553538100EA801A /* SLR Toolkit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 503E51852553538200EA801A /* Build configuration list for PBXNativeTarget "SLR Toolkit" */;
+			buildPhases = (
+				503E51572553538100EA801A /* Sources */,
+				503E51582553538100EA801A /* Frameworks */,
+				503E51592553538100EA801A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SLR Toolkit";
+			productName = "SLR Toolkit";
+			productReference = 503E515B2553538100EA801A /* SLR Toolkit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		503E51702553538200EA801A /* SLR ToolkitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 503E51882553538200EA801A /* Build configuration list for PBXNativeTarget "SLR ToolkitTests" */;
+			buildPhases = (
+				503E516D2553538200EA801A /* Sources */,
+				503E516E2553538200EA801A /* Frameworks */,
+				503E516F2553538200EA801A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				503E51732553538200EA801A /* PBXTargetDependency */,
+			);
+			name = "SLR ToolkitTests";
+			productName = "SLR ToolkitTests";
+			productReference = 503E51712553538200EA801A /* SLR ToolkitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		503E517B2553538200EA801A /* SLR ToolkitUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 503E518B2553538200EA801A /* Build configuration list for PBXNativeTarget "SLR ToolkitUITests" */;
+			buildPhases = (
+				503E51782553538200EA801A /* Sources */,
+				503E51792553538200EA801A /* Frameworks */,
+				503E517A2553538200EA801A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				503E517E2553538200EA801A /* PBXTargetDependency */,
+			);
+			name = "SLR ToolkitUITests";
+			productName = "SLR ToolkitUITests";
+			productReference = 503E517C2553538200EA801A /* SLR ToolkitUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		503E51532553538100EA801A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1210;
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					503E515A2553538100EA801A = {
+						CreatedOnToolsVersion = 12.1;
+					};
+					503E51702553538200EA801A = {
+						CreatedOnToolsVersion = 12.1;
+						TestTargetID = 503E515A2553538100EA801A;
+					};
+					503E517B2553538200EA801A = {
+						CreatedOnToolsVersion = 12.1;
+						TestTargetID = 503E515A2553538100EA801A;
+					};
+				};
+			};
+			buildConfigurationList = 503E51562553538100EA801A /* Build configuration list for PBXProject "SLR Toolkit" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 503E51522553538100EA801A;
+			productRefGroup = 503E515C2553538100EA801A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				503E515A2553538100EA801A /* SLR Toolkit */,
+				503E51702553538200EA801A /* SLR ToolkitTests */,
+				503E517B2553538200EA801A /* SLR ToolkitUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		503E51592553538100EA801A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				503E51662553538200EA801A /* Preview Assets.xcassets in Resources */,
+				503E51632553538200EA801A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E516F2553538200EA801A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E517A2553538200EA801A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		503E51572553538100EA801A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				503E51682553538200EA801A /* Persistence.swift in Sources */,
+				503E51612553538100EA801A /* ContentView.swift in Sources */,
+				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
+				503E515F2553538100EA801A /* SLR_ToolkitApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E516D2553538200EA801A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				503E51762553538200EA801A /* SLR_ToolkitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		503E51782553538200EA801A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				503E51812553538200EA801A /* SLR_ToolkitUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		503E51732553538200EA801A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 503E515A2553538100EA801A /* SLR Toolkit */;
+			targetProxy = 503E51722553538200EA801A /* PBXContainerItemProxy */;
+		};
+		503E517E2553538200EA801A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 503E515A2553538100EA801A /* SLR Toolkit */;
+			targetProxy = 503E517D2553538200EA801A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		503E51832553538200EA801A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		503E51842553538200EA801A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		503E51862553538200EA801A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"SLR Toolkit/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "SLR Toolkit/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-Toolkit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		503E51872553538200EA801A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"SLR Toolkit/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "SLR Toolkit/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-Toolkit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		503E51892553538200EA801A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "SLR ToolkitTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-ToolkitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SLR Toolkit.app/SLR Toolkit";
+			};
+			name = Debug;
+		};
+		503E518A2553538200EA801A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "SLR ToolkitTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-ToolkitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SLR Toolkit.app/SLR Toolkit";
+			};
+			name = Release;
+		};
+		503E518C2553538200EA801A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "SLR ToolkitUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-ToolkitUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "SLR Toolkit";
+			};
+			name = Debug;
+		};
+		503E518D2553538200EA801A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "SLR ToolkitUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.tu-dresden.SLR-ToolkitUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "SLR Toolkit";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		503E51562553538100EA801A /* Build configuration list for PBXProject "SLR Toolkit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				503E51832553538200EA801A /* Debug */,
+				503E51842553538200EA801A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		503E51852553538200EA801A /* Build configuration list for PBXNativeTarget "SLR Toolkit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				503E51862553538200EA801A /* Debug */,
+				503E51872553538200EA801A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		503E51882553538200EA801A /* Build configuration list for PBXNativeTarget "SLR ToolkitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				503E51892553538200EA801A /* Debug */,
+				503E518A2553538200EA801A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		503E518B2553538200EA801A /* Build configuration list for PBXNativeTarget "SLR ToolkitUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				503E518C2553538200EA801A /* Debug */,
+				503E518D2553538200EA801A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				503E516A2553538200EA801A /* SLR_Toolkit.xcdatamodel */,
+			);
+			currentVersion = 503E516A2553538200EA801A /* SLR_Toolkit.xcdatamodel */;
+			path = SLR_Toolkit.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 503E51532553538100EA801A /* Project object */;
+}
