@@ -7,12 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		503E515F2553538100EA801A /* SLR_ToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLR_ToolkitApp.swift */; };
+		50066B79255375DC00EF7EA6 /* Bibtex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B78255375DC00EF7EA6 /* Bibtex.swift */; };
+		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
+		503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLRToolkitApp.swift */; };
 		503E51632553538200EA801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51622553538200EA801A /* Assets.xcassets */; };
 		503E51682553538200EA801A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51672553538200EA801A /* Persistence.swift */; };
 		503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */; };
-		503E51762553538200EA801A /* SLR_ToolkitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51752553538200EA801A /* SLR_ToolkitTests.swift */; };
+		503E51762553538200EA801A /* GitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51752553538200EA801A /* GitManagerTests.swift */; };
 		503E51812553538200EA801A /* SLR_ToolkitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51802553538200EA801A /* SLR_ToolkitUITests.swift */; };
+		50864A4A25541297001F0007 /* SwiftGit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50864A4925541297001F0007 /* SwiftGit2.framework */; };
+		50864A4B25541297001F0007 /* SwiftGit2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50864A4925541297001F0007 /* SwiftGit2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		50864A5125541590001F0007 /* GitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5025541590001F0007 /* GitManager.swift */; };
+		50864A5825542D42001F0007 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
+		50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,19 +39,39 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		50864A252553FC7C001F0007 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				50864A4B25541297001F0007 /* SwiftGit2.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		50066B78255375DC00EF7EA6 /* Bibtex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bibtex.swift; sourceTree = "<group>"; };
+		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		503E515E2553538100EA801A /* SLR_ToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitApp.swift; sourceTree = "<group>"; };
+		503E515E2553538100EA801A /* SLRToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRToolkitApp.swift; sourceTree = "<group>"; };
 		503E51622553538200EA801A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		503E51672553538200EA801A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		503E516A2553538200EA801A /* SLR_Toolkit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SLR_Toolkit.xcdatamodel; sourceTree = "<group>"; };
 		503E516C2553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503E51712553538200EA801A /* SLR ToolkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		503E51752553538200EA801A /* SLR_ToolkitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitTests.swift; sourceTree = "<group>"; };
+		503E51752553538200EA801A /* GitManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitManagerTests.swift; sourceTree = "<group>"; };
 		503E51772553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503E517C2553538200EA801A /* SLR ToolkitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E51802553538200EA801A /* SLR_ToolkitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitUITests.swift; sourceTree = "<group>"; };
 		503E51822553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50864A4925541297001F0007 /* SwiftGit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftGit2.framework; path = "SLR Toolkit/SwiftGit2.framework"; sourceTree = "<group>"; };
+		50864A5025541590001F0007 /* GitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitManager.swift; sourceTree = "<group>"; };
+		50864A5725542D42001F0007 /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
+		50864A6125542DBF001F0007 /* MockGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGitClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50864A4A25541297001F0007 /* SwiftGit2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +100,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50066B802553788E00EF7EA6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				50864A4925541297001F0007 /* SwiftGit2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		503E51522553538100EA801A = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +115,7 @@
 				503E51742553538200EA801A /* SLR ToolkitTests */,
 				503E517F2553538200EA801A /* SLR ToolkitUITests */,
 				503E515C2553538100EA801A /* Products */,
+				50066B802553788E00EF7EA6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,8 +132,11 @@
 		503E515D2553538100EA801A /* SLR Toolkit */ = {
 			isa = PBXGroup;
 			children = (
-				503E515E2553538100EA801A /* SLR_ToolkitApp.swift */,
+				503E515E2553538100EA801A /* SLRToolkitApp.swift */,
+				50066B902553794900EF7EA6 /* MainView.swift */,
 				503E51672553538200EA801A /* Persistence.swift */,
+				50066B78255375DC00EF7EA6 /* Bibtex.swift */,
+				50864A5625542D22001F0007 /* Git */,
 				50BE516B255356CB0094171B /* Model */,
 				50BE516C255356F00094171B /* Supporting Files */,
 			);
@@ -106,7 +146,8 @@
 		503E51742553538200EA801A /* SLR ToolkitTests */ = {
 			isa = PBXGroup;
 			children = (
-				503E51752553538200EA801A /* SLR_ToolkitTests.swift */,
+				503E51752553538200EA801A /* GitManagerTests.swift */,
+				50864A6125542DBF001F0007 /* MockGitClient.swift */,
 				503E51772553538200EA801A /* Info.plist */,
 			);
 			path = "SLR ToolkitTests";
@@ -119,6 +160,15 @@
 				503E51822553538200EA801A /* Info.plist */,
 			);
 			path = "SLR ToolkitUITests";
+			sourceTree = "<group>";
+		};
+		50864A5625542D22001F0007 /* Git */ = {
+			isa = PBXGroup;
+			children = (
+				50864A5725542D42001F0007 /* GitClient.swift */,
+				50864A5025541590001F0007 /* GitManager.swift */,
+			);
+			path = Git;
 			sourceTree = "<group>";
 		};
 		50BE516B255356CB0094171B /* Model */ = {
@@ -148,6 +198,7 @@
 				503E51572553538100EA801A /* Sources */,
 				503E51582553538100EA801A /* Frameworks */,
 				503E51592553538100EA801A /* Resources */,
+				50864A252553FC7C001F0007 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -267,8 +318,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				503E51682553538200EA801A /* Persistence.swift in Sources */,
+				50066B79255375DC00EF7EA6 /* Bibtex.swift in Sources */,
 				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
-				503E515F2553538100EA801A /* SLR_ToolkitApp.swift in Sources */,
+				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
+				50864A5125541590001F0007 /* GitManager.swift in Sources */,
+				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
+				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +331,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				503E51762553538200EA801A /* SLR_ToolkitTests.swift in Sources */,
+				503E51762553538200EA801A /* GitManagerTests.swift in Sources */,
+				50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +483,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "SLR Toolkit/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -447,6 +512,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "SLR Toolkit/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
