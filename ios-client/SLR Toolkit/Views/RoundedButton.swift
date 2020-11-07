@@ -1,8 +1,13 @@
 import SwiftUI
 
 struct RoundedButton: View {
-    var title: String
-    var action: () -> Void
+    private var title: String
+    private var action: () -> Void
+    
+    init(_ title: String, action: @escaping () -> Void) {
+        self.title = title
+        self.action = action
+    }
     
     var body: some View {
         Button(action: action) {
@@ -17,6 +22,6 @@ struct RoundedButton: View {
 
 struct RoundedRectButton_Previews: PreviewProvider {
     static var previews: some View {
-        RoundedButton(title: "OK", action: {})
+        RoundedButton("OK", action: {})
     }
 }
