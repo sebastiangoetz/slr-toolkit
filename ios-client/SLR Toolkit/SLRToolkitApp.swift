@@ -6,8 +6,11 @@ struct SLRToolkitApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            NavigationView {
+                MainView(project: nil)
+                EntryDetailView()
+            }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
