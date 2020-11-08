@@ -2,20 +2,17 @@ import SwiftGit2
 
 struct GitManager {
     enum CloneError: Error {
-        case invalidScheme
+        case unsupportedScheme
         case invalidURL
-        case repositoryAlreadyCloned
         case fileManagerError(Error)
         case gitError(Error)
         
         var description: String {
             switch self {
-            case .invalidScheme:
+            case .unsupportedScheme:
                 return "The URL has an invalid scheme."
             case .invalidURL:
                 return "The URL is invalid."
-            case .repositoryAlreadyCloned:
-                return "The repository has been cloned already."
             case .fileManagerError(let error):
                 return "\(error)"
             case .gitError(let error):
@@ -42,9 +39,9 @@ struct GitManager {
         self.gitClient = gitClient
     }
     
-    func cloneRepository(at url: URL) -> Result<URL, CloneError> {
+    func cloneRepository(at url: URL, progress: ((Float) -> Void)? = nil) -> Result<URL, CloneError> {
         if url.scheme != "https" {
-            return .failure(.invalidScheme)
+            return .failure(.unsupportedScheme)
         }
         
         guard let host = url.host else { return .failure(.invalidURL) }
@@ -60,7 +57,7 @@ struct GitManager {
         }
         
         if FileManager.default.fileExists(atPath: repositoryDirectory.path) {
-            return .failure(.repositoryAlreadyCloned)
+            return .success(repositoryDirectory)
         }
         
         do {
@@ -69,7 +66,7 @@ struct GitManager {
             return .failure(.fileManagerError(error))
         }
         
-        let error = gitClient.clone(from: url, to: repositoryDirectory)
+        let error = gitClient.clone(from: url, to: repositoryDirectory, progress: progress)
         if let error = error {
             return .failure(.gitError(error))
         }

@@ -2,7 +2,7 @@ import Foundation
 import SwiftGit2
 
 protocol GitClient {
-    func clone(from remoteURL: URL, to localURL: URL) -> Error?
+    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?) -> Error?
 }
 
 struct HttpsGitClient: GitClient {
@@ -13,9 +13,16 @@ struct HttpsGitClient: GitClient {
         self.token = token
     }
     
-    func clone(from remoteURL: URL, to localURL: URL) -> Error? {
+    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?) -> Error? {
         let credentials = Credentials.plaintext(username: username, password: token)
-        let result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials)
+        let result: Result<Repository, NSError>
+        if let progress = progress {
+            result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials) { _, completed, total in
+                progress(Float(completed) / Float(total))
+            }
+        } else {
+            result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials)
+        }
         switch result {
         case .success:
             return nil

@@ -2,7 +2,7 @@ import Foundation
 @testable import SLR_Toolkit
 
 struct MockGitClient: GitClient {
-    func clone(from remoteURL: URL, to localURL: URL) -> Error? {
+    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?) -> Error? {
         let gitFolder = localURL.appendingPathComponent(".git", isDirectory: true)
         do {
             try FileManager.default.createDirectory(at: gitFolder, withIntermediateDirectories: false)

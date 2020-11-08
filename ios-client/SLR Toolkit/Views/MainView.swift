@@ -2,35 +2,44 @@ import SwiftGit2
 import SwiftUI
 
 struct MainView: View {
-    var project: Project?
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.persistenceController) var persistenceController
+    
+    @State var project: Project?
+    
+    @State private var addProjectIsPresented = false
+    
+    init(project: Project?) {
+        if let project = project {
+            _project = State(initialValue: project)
+        } else if let activeProject = loadActiveProject() {
+            _project = State(initialValue: activeProject)
+        }
+    }
     
     var body: some View {
         if let project = project {
             ProjectView(project: project)
         } else {
             VStack(spacing: 20) {
-                Text("Welcome to SLR Toolkit!\nClone your first project to get started.")
+                Text("Welcome to SLR Toolkit!\nAdd a project to get started.")
                     .multilineTextAlignment(.center)
-                RoundedButton("Clone Project") {}
+                RoundedButton("Add Project") {
+                    addProjectIsPresented = true
+                }
             }
             .navigationBarTitle("SLR Toolkit")
+            .sheet(isPresented: $addProjectIsPresented) {
+                AddProjectView(project: $project)
+            }
         }
     }
     
-    private func clone() {
-        let environment = ProcessInfo.processInfo.environment
-        guard let username = environment["GITHUB_USERNAME"], let token = environment["GITHUB_TOKEN"] else {
-            print("Please set the environment variables GITHUB_USERNAME and GITHUB_TOKEN.")
-            return
-        }        
-        
-        let gitManager = GitManager(gitClient: HttpsGitClient(username: username, token: token))
-        let remoteURL = URL(string: "https://github.com/MaxHaertwig/slr-example.git")!
-        let _ = gitManager.cloneRepository(at: remoteURL)
-    }
-    
-    private func delete() {
-        GitManager.deleteGitDirectory()
+    private func loadActiveProject() -> Project? {
+        if let uri = UserDefaults.standard.url(forKey: .activeProject), let managedObjectID = persistenceController.container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: uri), let activeProject = managedObjectContext.object(with: managedObjectID) as? Project {
+            return activeProject
+        }
+        return nil
     }
 }
 
@@ -40,9 +49,9 @@ struct MainView_Previews: PreviewProvider {
             NavigationView {
                 MainView(project: nil)
             }
-            NavigationView {
-                MainView(project: Constants.exampleProject)
-            }
+//            NavigationView {
+//                MainView(project: Constants.exampleProject)
+//            }
         }
     }
 }

@@ -25,7 +25,7 @@ struct ProjectView: View {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button(action: {}) {
-                        Label("Switch Project", systemImage: "folder")
+                        Label("Change Project", systemImage: "folder")
                     }
                     Button(action: {}) {
                         Label("Project Settings", systemImage: "folder.badge.gear")
@@ -39,10 +39,10 @@ struct ProjectView: View {
     }
 }
 
-struct ProjectView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ProjectView(project: Constants.exampleProject)
-        }
-    }
-}
+//struct ProjectView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            ProjectView(project: Constants.exampleProject)
+//        }
+//    }
+//}

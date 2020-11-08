@@ -10,7 +10,23 @@ struct SLRToolkitApp: App {
                 MainView(project: nil)
                 EntryDetailView()
             }
+            .environment(\.persistenceController, persistenceController)
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        }
+    }
+}
+
+struct PersistenceControllerKey: EnvironmentKey {
+    static let defaultValue: PersistenceController = PersistenceController(inMemory: true)
+}
+
+extension EnvironmentValues {
+    var persistenceController: PersistenceController {
+        get {
+            return self[PersistenceControllerKey.self]
+        }
+        set {
+            self[PersistenceControllerKey.self] = newValue
         }
     }
 }
