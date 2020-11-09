@@ -2,25 +2,28 @@ import CoreData
 import SwiftUI
 
 struct AddProjectDetailsView: View {
-    @Environment(\.managedObjectContext) private var managedObjectContext
-    @Environment(\.presentationMode) private var presentationMode
-    
     @Binding var project: Project?
+    @Binding var isPresented: Bool
+    
+    @Environment(\.managedObjectContext) private var managedObjectContext
     
     @State private var projectName = ""
     @State private var selection: Directory
     @State private var isDirectoryValid = false
     
-    private let username, token: String
+    private let username, token, repositoryURL: String
     private let directories: [Directory]
     
-    init(username: String, token: String, repositoryDirectory: URL, project: Binding<Project?>) {
+    init(username: String, token: String, repositoryURL: String, repositoryDirectory: URL, project: Binding<Project?>, isPresented: Binding<Bool>) {
         self.username = username
         self.token = token
-        directories = [Directory(url: repositoryDirectory)]
+        self.repositoryURL = repositoryURL
+        
+        directories = [Directory(url: repositoryDirectory, isRoot: true)]
         _selection = State(initialValue: directories[0])
         _isDirectoryValid = State(initialValue: directories[0].isValidProjectDirectory)
         _project = project
+        _isPresented = isPresented
     }
     
     var body: some View {
@@ -61,9 +64,9 @@ struct AddProjectDetailsView: View {
     }
     
     private func done() {
-        let repositoryURL = directories[0].url
-        let path = selection.url.pathComponents[repositoryURL.pathComponents.count...].joined(separator: "/")
-        let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repository: repositoryURL, path: path, in: managedObjectContext)
+        let repositoryDirectory = directories[0].url
+        let pathInRepository = selection.url.pathComponents[repositoryDirectory.pathComponents.count...].joined(separator: "/")
+        let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, repositoryPath: repositoryDirectory.path, pathInRepository: pathInRepository, in: managedObjectContext)
         project = newProject
         do {
             try managedObjectContext.save()
@@ -71,14 +74,14 @@ struct AddProjectDetailsView: View {
         } catch {
             print("Error saving managed object context: \(error)")
         }
-        presentationMode.wrappedValue.dismiss()
+        isPresented = false
     }
 }
 
 struct AddProjectDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            AddProjectDetailsView(username: "", token: "", repositoryDirectory: URL(fileURLWithPath: ""), project: .constant(nil))
+            AddProjectDetailsView(username: "", token: "", repositoryURL: "", repositoryDirectory: URL(fileURLWithPath: ""), project: .constant(nil), isPresented: .constant(true))
         }
     }
 }

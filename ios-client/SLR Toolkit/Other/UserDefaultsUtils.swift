@@ -17,11 +17,19 @@ extension UserDefaults {
         return string(forKey: key.rawValue)
     }
     
+    func removeString(forKey key: StringUserDefaultsKey) {
+        removeObject(forKey: key.rawValue)
+    }
+    
     func set(_ value: URL, forKey key: URLUserDefaultsKey) {
         set(value, forKey: key.rawValue)
     }
     
     func url(forKey key: URLUserDefaultsKey) -> URL? {
         return url(forKey: key.rawValue)
+    }
+    
+    func removeURL(forKey key: URLUserDefaultsKey) {
+        removeObject(forKey: key.rawValue)
     }
 }

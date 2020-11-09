@@ -2,12 +2,13 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Project" representedClassName=".Project" syncable="YES">
         <attribute name="name" attributeType="String"/>
-        <attribute name="path" attributeType="String"/>
-        <attribute name="repository" attributeType="String"/>
+        <attribute name="pathInRepository" attributeType="String"/>
+        <attribute name="repositoryPath" attributeType="String"/>
+        <attribute name="repositoryURL" attributeType="String"/>
         <attribute name="token" attributeType="String"/>
         <attribute name="username" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Project" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="Project" positionX="-63" positionY="-18" width="128" height="133"/>
     </elements>
 </model>

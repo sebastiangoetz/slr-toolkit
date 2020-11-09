@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		50066B79255375DC00EF7EA6 /* Bibtex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B78255375DC00EF7EA6 /* Bibtex.swift */; };
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
+		5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034067525583D9100FC8FF4 /* ProjectsView.swift */; };
 		503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLRToolkitApp.swift */; };
 		503E51632553538200EA801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51622553538200EA801A /* Assets.xcassets */; };
-		503E51682553538200EA801A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51672553538200EA801A /* Persistence.swift */; };
+		503E51682553538200EA801A /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51672553538200EA801A /* PersistenceController.swift */; };
 		503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */; };
 		503E51762553538200EA801A /* GitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51752553538200EA801A /* GitManagerTests.swift */; };
 		503E51812553538200EA801A /* SLR_ToolkitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51802553538200EA801A /* SLR_ToolkitUITests.swift */; };
@@ -28,7 +29,6 @@
 		50EFFAF32556C6B2004BA48F /* TaxonomyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF22556C6B2004BA48F /* TaxonomyNode.swift */; };
 		50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF72556CA29004BA48F /* RoundedButton.swift */; };
 		50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFB032556D587004BA48F /* AddProjectView.swift */; };
-		50EFFB082556D84D004BA48F /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFB072556D84D004BA48F /* ProjectView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,10 +65,11 @@
 /* Begin PBXFileReference section */
 		50066B78255375DC00EF7EA6 /* Bibtex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bibtex.swift; sourceTree = "<group>"; };
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E515E2553538100EA801A /* SLRToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRToolkitApp.swift; sourceTree = "<group>"; };
 		503E51622553538200EA801A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		503E51672553538200EA801A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		503E51672553538200EA801A /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		503E516A2553538200EA801A /* SLR_Toolkit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SLR_Toolkit.xcdatamodel; sourceTree = "<group>"; };
 		503E516C2553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503E51712553538200EA801A /* SLR ToolkitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,7 +90,6 @@
 		50EFFAF22556C6B2004BA48F /* TaxonomyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyNode.swift; sourceTree = "<group>"; };
 		50EFFAF72556CA29004BA48F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		50EFFB032556D587004BA48F /* AddProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectView.swift; sourceTree = "<group>"; };
-		50EFFB072556D84D004BA48F /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,10 +219,10 @@
 			isa = PBXGroup;
 			children = (
 				50066B902553794900EF7EA6 /* MainView.swift */,
-				50EFFB072556D84D004BA48F /* ProjectView.swift */,
 				50EFFAEA2556C138004BA48F /* EntryDetailView.swift */,
 				50EFFB032556D587004BA48F /* AddProjectView.swift */,
 				5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */,
+				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
 				50EFFAF72556CA29004BA48F /* RoundedButton.swift */,
 			);
 			path = Views;
@@ -232,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */,
-				503E51672553538200EA801A /* Persistence.swift */,
+				503E51672553538200EA801A /* PersistenceController.swift */,
 				508399972557F65E00BA21DE /* Project.swift */,
 			);
 			path = Persistence;
@@ -377,7 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50EFFAEB2556C138004BA48F /* EntryDetailView.swift in Sources */,
-				503E51682553538200EA801A /* Persistence.swift in Sources */,
+				503E51682553538200EA801A /* PersistenceController.swift in Sources */,
 				50066B79255375DC00EF7EA6 /* Bibtex.swift in Sources */,
 				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
 				508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */,
@@ -390,8 +390,8 @@
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
 				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
-				50EFFB082556D84D004BA48F /* ProjectView.swift in Sources */,
 				508399A62557FC0A00BA21DE /* Directory.swift in Sources */,
+				5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

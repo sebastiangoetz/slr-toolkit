@@ -2,8 +2,14 @@ import Foundation
 
 struct Directory: Hashable, Identifiable {
     let url: URL
+    let isRoot: Bool
     
     var id: URL { url }
+    
+    init(url: URL, isRoot: Bool = false) {
+        self.url = url
+        self.isRoot = isRoot
+    }
     
     var name: String {
         return url.pathComponents.last!
@@ -15,7 +21,7 @@ struct Directory: Hashable, Identifiable {
             return contents.filter { url in
                 do {
                     let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
-                    return resourceValues.isDirectory!
+                    return resourceValues.isDirectory! && (!isRoot || url.pathComponents.last != ".git")
                 } catch {
                     print("Error fetching resource values for \(url): \(error)")
                     return false

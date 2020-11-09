@@ -3,9 +3,10 @@ import SwiftUI
 struct AddProjectView: View {
     static private let httpsPrefix = "https://"
     
-    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-    
     @Binding var project: Project?
+    @Binding var isPresented: Bool
+    
+    @Environment(\.presentationMode) var presentationMode
     
     @State private var repositoryURL = ""
     @State private var username = ""
@@ -20,7 +21,7 @@ struct AddProjectView: View {
     @State private var navigateToNextScreen = false
     @State private var repositoryDirectory = URL(fileURLWithPath: "")
     
-    init(project: Binding<Project?>) {
+    init(project: Binding<Project?>, isPresented: Binding<Bool>) {
         if let username = UserDefaults.standard.string(forKey: .username), !username.isEmpty {
             _username = State(initialValue: username)
         }
@@ -28,6 +29,7 @@ struct AddProjectView: View {
             _token = State(initialValue: token)
         }
         _project = project
+        _isPresented = isPresented
     }
     
     var body: some View {
@@ -50,8 +52,8 @@ struct AddProjectView: View {
                             .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                     }
                 }
-                NavigationLink(destination: AddProjectDetailsView(username: username, token: token, repositoryDirectory: repositoryDirectory, project: $project), isActive: $navigateToNextScreen) {
-                    Text("")
+                NavigationLink(destination: AddProjectDetailsView(username: username.trimmingCharacters(in: .whitespaces), token: token.trimmingCharacters(in: .whitespaces), repositoryURL: repositoryURL.trimmingCharacters(in: .whitespaces), repositoryDirectory: repositoryDirectory, project: $project, isPresented: $isPresented), isActive: $navigateToNextScreen) {
+                    EmptyView()
                 }
                 .hidden()
             }
@@ -117,6 +119,6 @@ struct AddProjectView: View {
 
 struct AddProjectView_Previews: PreviewProvider {
     static var previews: some View {
-        AddProjectView(project: .constant(nil))
+        AddProjectView(project: .constant(nil), isPresented: .constant(true))
     }
 }

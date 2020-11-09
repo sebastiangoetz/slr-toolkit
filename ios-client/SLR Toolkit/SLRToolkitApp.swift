@@ -1,32 +1,34 @@
+import CoreData
 import SwiftUI
 
 @main
 struct SLRToolkitApp: App {
-    let persistenceController = PersistenceController.shared
+    private let persistenceController = PersistenceController.shared
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                MainView(project: nil)
+                MainView(project: loadActiveProject())
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 EntryDetailView()
             }
-            .environment(\.persistenceController, persistenceController)
-            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
-}
-
-struct PersistenceControllerKey: EnvironmentKey {
-    static let defaultValue: PersistenceController = PersistenceController(inMemory: true)
-}
-
-extension EnvironmentValues {
-    var persistenceController: PersistenceController {
-        get {
-            return self[PersistenceControllerKey.self]
+    
+    private func loadActiveProject() -> Project? {
+        let container = PersistenceController.shared.container
+        let fetchRequest = Project.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        do {
+            if let projects = try container.viewContext.fetch(fetchRequest) as? [Project], let firstProject = projects.first {
+                if let uri = UserDefaults.standard.url(forKey: .activeProject), let managedObjectID = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: uri), let activeProject = container.viewContext.object(with: managedObjectID) as? Project {
+                    return activeProject
+                }
+                return firstProject
+            }
+        } catch {
+            print("Error fetching projects: \(error)")
         }
-        set {
-            self[PersistenceControllerKey.self] = newValue
-        }
+        return nil
     }
 }

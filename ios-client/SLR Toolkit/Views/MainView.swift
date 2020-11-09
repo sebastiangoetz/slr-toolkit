@@ -1,25 +1,55 @@
+import CoreData
 import SwiftGit2
 import SwiftUI
 
 struct MainView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @Environment(\.persistenceController) var persistenceController
+    @Environment(\.managedObjectContext) private var managedObjectContext
     
     @State var project: Project?
     
     @State private var addProjectIsPresented = false
-    
-    init(project: Project?) {
-        if let project = project {
-            _project = State(initialValue: project)
-        } else if let activeProject = loadActiveProject() {
-            _project = State(initialValue: activeProject)
-        }
-    }
+    @State private var projectsViewIsPresented = false
     
     var body: some View {
         if let project = project {
-            ProjectView(project: project)
+            List {
+                Section {
+                    Text("All Entries")
+                }
+                Section(header: HStack {
+                    Text("Taxonomy")
+                    Spacer()
+                    Button("Edit", action: {})
+                        .foregroundColor(.accentColor)
+                }) {
+                    OutlineGroup(project.taxonomy, children: \.children) { node in
+                        Text(node.name)
+                    }
+                }
+            }
+            .listStyle(InsetGroupedListStyle())
+            .navigationBarTitle(project.name)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button {
+                            projectsViewIsPresented = true
+                        } label: {
+                            Label("Change Project", systemImage: "folder")
+                        }
+                        Button(action: {}) {
+                            Label("Project Settings", systemImage: "folder.badge.gear")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                            .imageScale(.large)
+                    }
+                }
+            }
+            .sheet(isPresented: $projectsViewIsPresented) {
+                ProjectsView(activeProject: $project)
+                    .environment(\.managedObjectContext, managedObjectContext)
+            }
         } else {
             VStack(spacing: 20) {
                 Text("Welcome to SLR Toolkit!\nAdd a project to get started.")
@@ -30,16 +60,10 @@ struct MainView: View {
             }
             .navigationBarTitle("SLR Toolkit")
             .sheet(isPresented: $addProjectIsPresented) {
-                AddProjectView(project: $project)
+                AddProjectView(project: $project, isPresented: $addProjectIsPresented)
+                    .environment(\.managedObjectContext, managedObjectContext)
             }
         }
-    }
-    
-    private func loadActiveProject() -> Project? {
-        if let uri = UserDefaults.standard.url(forKey: .activeProject), let managedObjectID = persistenceController.container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: uri), let activeProject = managedObjectContext.object(with: managedObjectID) as? Project {
-            return activeProject
-        }
-        return nil
     }
 }
 
