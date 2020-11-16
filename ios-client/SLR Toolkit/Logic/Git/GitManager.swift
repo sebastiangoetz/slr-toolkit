@@ -1,4 +1,4 @@
-import SwiftGit2
+import Foundation
 
 struct GitManager {
     enum CloneError: Error {
@@ -10,7 +10,7 @@ struct GitManager {
         var description: String {
             switch self {
             case .unsupportedScheme:
-                return "The URL has an invalid scheme."
+                return "The URL has an unsupported scheme."
             case .invalidURL:
                 return "The URL is invalid."
             case .fileManagerError(let error):

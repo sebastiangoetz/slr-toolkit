@@ -1,5 +1,4 @@
 import CoreData
-import SwiftGit2
 import SwiftUI
 
 struct MainView: View {
