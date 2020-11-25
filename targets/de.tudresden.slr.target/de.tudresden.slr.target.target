@@ -24,6 +24,27 @@
 <unit id="org.eclipse.jetty.server" version="9.4.24.v20191120"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.14"/>
 </location>
+
+<location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.egit" version="5.9.0.202009080501-r"/>
+<unit id="org.eclipse.egit.core" version="5.9.0.202009080501-r"/>
+<unit id="org.eclipse.egit.ui" version="5.9.0.202009080501-r"/>
+<unit id="org.eclipse.jgit" version="5.9.0.202009080501-r"/>
+<unit id="org.eclipse.jgit.ssh.apache" version="5.9.0.202009080501-r"/>
+<unit id="org.eclipse.jgit.ssh.jsch" version="5.9.0.202009080501-r"/>
+<unit id="javaewah" version="1.1.7.v20200107-0831"/>
+<unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
+<unit id="org.apache.sshd.osgi" version="2.4.0.v20200318-1614"/>
+<unit id="org.apache.sshd.sftp" version="2.4.0.v20200319-1547"/>
+<unit id="net.i2p.crypto.eddsa" version="0.3.0.v20181102-1323"/>
+<unit id="com.jcraft.jsch" version="0.1.55.v20190404-1902"/>
+<unit id="org.eclipse.jgit.http.apache" version="5.9.0.202009080501-r"/>
+<unit id="org.apache.httpcomponents.httpclient" version="4.5.10.v20200830-2311"/>
+<unit id="org.apache.httpcomponents.httpcore" version="4.4.12.v20200108-1212"/>
+<unit id="org.apache.commons.codec" version="1.14.0.v20200818-1422"/>
+<repository location="https://download.eclipse.org/egit/updates"/>
+</location>
+
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.google.guava" version="27.1.0.v20190517-1946"/>
 <unit id="io.github.classgraph" version="4.8.35.v20190528-1517"/>
