@@ -19,13 +19,13 @@
    <includes
          id="de.tudresden.slr.model.taxonomy.sdk"
          version="0.0.0"/>
-         
+
    <plugin
          id="org.antlr.runtime"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>         
+         unpack="false"/>
 
    <plugin
          id="com.ibm.icu"
@@ -1639,6 +1639,20 @@
 
    <plugin
          id="org.eclipse.equinox.p2.garbagecollector"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.latexexport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.tudresden.slr.metainformation"
          download-size="0"
          install-size="0"
          version="0.0.0"
