@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SLR Toolkit</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="add_project">SLR Projekt hinzufügen</string>
+    <string name="next">Weiter</string>
+    <string name="previous">Zurück</string>
+    <string name="no_project">Bisher keine Projekte.</string>
+</resources>
