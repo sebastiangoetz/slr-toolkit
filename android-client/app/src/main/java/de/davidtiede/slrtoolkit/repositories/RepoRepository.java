@@ -18,7 +18,7 @@ public class RepoRepository {
     private RepoDao repoDao;
     private LiveData<List<Repo>> allRepos;
 
-    RepoRepository(Application application) {
+    public RepoRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         repoDao = db.repoDao();
         allRepos = repoDao.getAllRepos();
@@ -29,8 +29,6 @@ public class RepoRepository {
     }
 
     public void insert(Repo repo) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            repoDao.insert(repo);
-        });
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insert(repo));
     }
 }
