@@ -1,4 +1,4 @@
-package de.davidtiede.slrtoolkit;
+package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
-import java.util.Objects;
-
+import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.worker.CloneWorker;
 
 public class AddProjectFragment extends Fragment {

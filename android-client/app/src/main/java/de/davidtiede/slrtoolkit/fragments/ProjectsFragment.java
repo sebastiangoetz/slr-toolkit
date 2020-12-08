@@ -1,4 +1,4 @@
-package de.davidtiede.slrtoolkit;
+package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+import de.davidtiede.slrtoolkit.R;
 
 public class ProjectsFragment extends Fragment {
 
