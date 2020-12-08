@@ -27,7 +27,7 @@ public class ProjectsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(ProjectsFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                        .navigate(R.id.action_ProjectsFragment_to_AddProjectFragment);
             }
         });
     }

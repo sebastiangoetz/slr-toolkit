@@ -6,4 +6,6 @@
     <string name="next">Weiter</string>
     <string name="previous">Zurück</string>
     <string name="no_project">Bisher keine Projekte.</string>
+    <string name="projects_fragment_label">Projects Fragment</string>
+    <string name="add_project_fragment_label">Add Project Fragment</string>
 </resources>

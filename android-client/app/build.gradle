@@ -38,4 +38,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    def work_version = "2.4.0"
+    implementation "androidx.work:work-runtime:$work_version" // (Java only)
+    //implementation "androidx.work:work-runtime-ktx:$work_version" // Kotlin + coroutines
+    //implementation "androidx.work:work-rxjava2:$work_version" // optional - RxJava2 support
+    //implementation "androidx.work:work-gcm:$work_version" // optional - GCMNetworkManager support
+    //androidTestImplementation "androidx.work:work-testing:$work_version" // optional - Test helpers
 }

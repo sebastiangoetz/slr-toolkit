@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/ProjectsFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/ProjectsFragment"
         android:name="de.davidtiede.slrtoolkit.ProjectsFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/projects_fragment_label"
         tools:layout="@layout/fragment_projects">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_ProjectsFragment_to_AddProjectFragment"
+            app:destination="@id/AddProjectFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/AddProjectFragment"
         android:name="de.davidtiede.slrtoolkit.AddProjectFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/add_project_fragment_label"
         tools:layout="@layout/fragment_add_project">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_AddProjectFragment_to_ProjectsFragment"
+            app:destination="@id/ProjectsFragment" />
     </fragment>
 </navigation>

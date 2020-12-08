@@ -8,6 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
+
+import java.util.Objects;
+
+import de.davidtiede.slrtoolkit.worker.CloneWorker;
 
 public class AddProjectFragment extends Fragment {
 
@@ -26,8 +33,15 @@ public class AddProjectFragment extends Fragment {
         view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                WorkRequest cloneWorkRequest =
+                        new OneTimeWorkRequest.Builder(CloneWorker.class)
+                                .build();
+                WorkManager
+                        .getInstance(requireActivity().getApplicationContext())
+                        .enqueue(cloneWorkRequest);
+
                 NavHostFragment.findNavController(AddProjectFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                        .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
             }
         });
     }
