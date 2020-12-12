@@ -65,8 +65,9 @@ struct AddProjectDetailsView: View {
     
     private func done() {
         let repositoryDirectory = directories[0].url
+        let pathInGitDirectory = repositoryDirectory.pathComponents[GitManager.gitDirectory.pathComponents.count...].joined(separator: "/")
         let pathInRepository = selection.url.pathComponents[repositoryDirectory.pathComponents.count...].joined(separator: "/")
-        let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, repositoryPath: repositoryDirectory.path, pathInRepository: pathInRepository, in: managedObjectContext)
+        let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
         project = newProject
         do {
             try managedObjectContext.save()

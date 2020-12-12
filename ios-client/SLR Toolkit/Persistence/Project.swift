@@ -1,5 +1,4 @@
 import CoreData
-import Foundation
 
 class Project: NSManagedObject {
     @NSManaged var name: String
@@ -8,16 +7,16 @@ class Project: NSManagedObject {
     @NSManaged var token: String
     
     @NSManaged var repositoryURL: String
-    @NSManaged var repositoryPath: String
+    @NSManaged var pathInGitDirectory: String
     @NSManaged var pathInRepository: String
     
-    @discardableResult static func newProject(name: String, username: String, token: String, repositoryURL: String, repositoryPath: String, pathInRepository: String, in managedObjectContext: NSManagedObjectContext) -> Project {
+    @discardableResult static func newProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, in managedObjectContext: NSManagedObjectContext) -> Project {
         let project = NSEntityDescription.insertNewObject(forEntityName: "Project", into: managedObjectContext) as! Project
         project.name = name
         project.username = username
         project.token = token
         project.repositoryURL = repositoryURL
-        project.repositoryPath = repositoryPath
+        project.pathInGitDirectory = pathInGitDirectory
         project.pathInRepository = pathInRepository
         return project
     }
