@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Antlr4",
+        "repositoryURL": "https://github.com/MaxHaertwig/ANTLR4-Swift.git",
+        "state": {
+          "branch": null,
+          "revision": "519edc831ee78959ad3fbe3a2aa05a844d74a5a7",
+          "version": "4.9.0"
+        }
+      },
+      {
+        "package": "SwiftyBibtex",
+        "repositoryURL": "https://github.com/MaxHaertwig/SwiftyBibtex.git",
+        "state": {
+          "branch": "main",
+          "revision": "398ac6dc326b08aabb9b8014b8b496c2bd2cba2d",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

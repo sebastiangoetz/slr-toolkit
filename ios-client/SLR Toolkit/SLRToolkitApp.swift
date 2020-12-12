@@ -10,7 +10,8 @@ struct SLRToolkitApp: App {
             NavigationView {
                 MainView(project: loadActiveProject())
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                EntryDetailView()
+                // TODO
+//                EntryDetailsView()
             }
         }
     }

@@ -1,4 +1,5 @@
 import CoreData
+import SwiftyBibtex
 
 class Project: NSManagedObject {
     @NSManaged var name: String
@@ -20,6 +21,17 @@ class Project: NSManagedObject {
         project.pathInRepository = pathInRepository
         return project
     }
+
+    lazy var entries: [Publication]? = {
+        guard let bibFileURL = bibFileURL else { return nil }
+        do {
+            let fileContents = try String(contentsOf: bibFileURL)
+            return try SwiftyBibtex.parse(fileContents).publications
+        } catch {
+            print("Error reading or parsing bib file: \(error)")
+            return []
+        }
+    }()
     
     var taxonomy: [TaxonomyNode] {
         return [
@@ -34,4 +46,29 @@ class Project: NSManagedObject {
             ])
         ]
     }
+
+    private var projectURL: URL {
+        return GitManager.gitDirectory
+            .appendingPathComponent(pathInGitDirectory)
+            .appendingPathComponent(pathInRepository, isDirectory: true)
+    }
+
+    private lazy var bibFileURL: URL? = {
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(at: projectURL, includingPropertiesForKeys: [.isDirectoryKey])
+            for url in contents {
+                do {
+                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
+                    if !resourceValues.isDirectory! && url.pathComponents.last?.hasSuffix(".bib") == true {
+                        return url
+                    }
+                } catch {
+                    print("Error fetching resource values for \(url): \(error)")
+                }
+            }
+        } catch {
+            print("Error listing contents of \(projectURL): \(error)")
+        }
+        return nil
+    }()
 }

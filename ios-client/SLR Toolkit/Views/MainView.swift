@@ -13,7 +13,12 @@ struct MainView: View {
         if let project = project {
             List {
                 Section {
-                    Text("All Entries")
+                    NavigationLink(destination: EntriesView(title: "All Entries", entries: project.entries ?? [])) {
+                        Text("All Entries")
+                        Spacer()
+                        Text("\(project.entries?.count ?? 0)")
+                            .foregroundColor(.secondary)
+                    }
                 }
                 Section(header: HStack {
                     Text("Taxonomy")
@@ -23,6 +28,12 @@ struct MainView: View {
                 }) {
                     OutlineGroup(project.taxonomy, children: \.children) { node in
                         Text(node.name)
+                        // TODO filter
+                        NavigationLink(destination: EntriesView(title: node.name, entries: [])) {
+                            EmptyView()
+                        }
+                        .frame(width: 0)
+                        .opacity(0)
                     }
                 }
             }
