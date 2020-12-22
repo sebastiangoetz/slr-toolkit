@@ -23,13 +23,14 @@ class Project: NSManagedObject {
     }
 
     lazy var entries: [Publication]? = {
-        guard let bibFileURL = bibFileURL else { return nil }
-        do {
-            let fileContents = try String(contentsOf: bibFileURL)
-            return try SwiftyBibtex.parse(fileContents).publications
-        } catch {
-            print("Error reading or parsing bib file: \(error)")
-            return []
+        return bibFileURLs.reduce([Publication]()) {
+            do {
+                let fileContents = try String(contentsOf: $1)
+                return $0 + (try SwiftyBibtex.parse(fileContents).publications)
+            } catch {
+                print("Error reading or parsing bib file: \(error)")
+                return $0
+            }
         }
     }()
     
@@ -53,14 +54,14 @@ class Project: NSManagedObject {
             .appendingPathComponent(pathInRepository, isDirectory: true)
     }
 
-    private lazy var bibFileURL: URL? = {
+    private lazy var bibFileURLs: [URL] = {
         do {
             let contents = try FileManager.default.contentsOfDirectory(at: projectURL, includingPropertiesForKeys: [.isDirectoryKey])
-            for url in contents {
+            return contents.reduce(into: []) { acc, url in
                 do {
                     let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
                     if !resourceValues.isDirectory! && url.pathComponents.last?.hasSuffix(".bib") == true {
-                        return url
+                        acc.append(url)
                     }
                 } catch {
                     print("Error fetching resource values for \(url): \(error)")
@@ -68,7 +69,7 @@ class Project: NSManagedObject {
             }
         } catch {
             print("Error listing contents of \(projectURL): \(error)")
+            return []
         }
-        return nil
     }()
 }
