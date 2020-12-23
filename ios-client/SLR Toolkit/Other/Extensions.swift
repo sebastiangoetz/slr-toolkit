@@ -1,6 +1,12 @@
 import Foundation
 import SwiftyBibtex
 
+extension Array {
+    func interspersing(_ element: Element) -> Array {
+      flatMap { [$0, element] }.dropLast()
+    }
+}
+
 extension String {
     private static let latexReplacements = [
         ("a", "'", "á"),
@@ -89,5 +95,20 @@ extension Publication {
 
     var abstract: String {
         return fields["abstract"] ?? "No Abstract"
+    }
+
+    var classes: Set<String> {
+        guard let classesString = fields["classes"], let taxonomy = TaxonomyParser.parse(classesString) else { return [] }
+        var classes = Set<String>()
+        var nodes = taxonomy
+        while let node = nodes.last {
+            nodes.removeLast()
+            if node.children.isEmpty {
+                classes.insert(node.path)
+            } else {
+                nodes.append(contentsOf: node.children)
+            }
+        }
+        return classes
     }
 }

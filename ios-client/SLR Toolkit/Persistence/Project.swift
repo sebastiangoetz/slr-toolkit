@@ -36,17 +36,15 @@ class Project: NSManagedObject {
     }()
     
     var taxonomy: [TaxonomyNode] {
-        return [
-            TaxonomyNode(name: "Types of Research", children: [
-                TaxonomyNode(name: "Applied", children: []),
-                TaxonomyNode(name: "Fundamental")
-            ]),
-            TaxonomyNode(name: "Application Domains", children: [
-                TaxonomyNode(name: "none"),
-                TaxonomyNode(name: "enterprise"),
-                TaxonomyNode(name: "cloud")
-            ])
-        ]
+        guard let url = FileManager.default.contentsOfDirectory(at: projectURL, matching: { $1.hasSuffix(".taxonomy") }).first else { return [] }
+        do {
+            let fileContents = try String(contentsOf: url)
+            guard let parserNodes = TaxonomyParser.parse(fileContents) else { return [] }
+            return parserNodes.map { $0.toTaxonomyNode(allEntries: entries ?? []) }
+        } catch {
+            print("Error reading or parsing bib file: \(error)")
+            return []
+        }
     }
 
     private var projectURL: URL {

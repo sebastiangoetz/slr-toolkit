@@ -14,10 +14,7 @@ struct MainView: View {
             List {
                 Section {
                     NavigationLink(destination: EntriesView(title: "All Entries", entries: project.entries ?? [])) {
-                        Text("All Entries")
-                        Spacer()
-                        Text("\(project.entries?.count ?? 0)")
-                            .foregroundColor(.secondary)
+                        DetailRow(text: "All Entries", detail: "\(project.entries?.count ?? 0)")
                     }
                 }
                 Section(header: HStack {
@@ -27,9 +24,8 @@ struct MainView: View {
                         .foregroundColor(.accentColor)
                 }) {
                     OutlineGroup(project.taxonomy, children: \.children) { node in
-                        Text(node.name)
-                        // TODO filter
-                        NavigationLink(destination: EntriesView(title: node.name, entries: [])) {
+                        DetailRow(text: node.name, detail: "\(node.entries.count)")
+                        NavigationLink(destination: EntriesView(title: node.name, entries: node.entries)) {
                             EmptyView()
                         }
                         .frame(width: 0)

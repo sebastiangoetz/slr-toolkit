@@ -15,6 +15,8 @@
 		503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 503E51692553538200EA801A /* SLR_Toolkit.xcdatamodeld */; };
 		503E51762553538200EA801A /* GitManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51752553538200EA801A /* GitManagerTests.swift */; };
 		503E51812553538200EA801A /* SLR_ToolkitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E51802553538200EA801A /* SLR_ToolkitUITests.swift */; };
+		504838C72592E9E0005149B6 /* TaxonomyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504838C62592E9E0005149B6 /* TaxonomyNode.swift */; };
+		504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504838CA2592ED1A005149B6 /* DetailRow.swift */; };
 		504B2EA52584116400DBAE31 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 504B2EA42584116400DBAE31 /* SwiftyBibtex */; };
 		504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B2EAC2584274A00DBAE31 /* Extensions.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
@@ -27,8 +29,10 @@
 		50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
 		50D3454C2592B48600B57191 /* SwiftGit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D345482592B41600B57191 /* SwiftGit2.framework */; };
 		50D3454D2592B48600B57191 /* SwiftGit2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50D345482592B41600B57191 /* SwiftGit2.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		50D345512592D30B00B57191 /* TaxonomyParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345502592D30B00B57191 /* TaxonomyParserTests.swift */; };
+		50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345542592D38700B57191 /* TaxonomyParser.swift */; };
 		50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */; };
-		50EFFAF32556C6B2004BA48F /* TaxonomyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF22556C6B2004BA48F /* TaxonomyNode.swift */; };
+		50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */; };
 		50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF72556CA29004BA48F /* RoundedButton.swift */; };
 		50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFB032556D587004BA48F /* AddProjectView.swift */; };
 /* End PBXBuildFile section */
@@ -79,6 +83,8 @@
 		503E517C2553538200EA801A /* SLR ToolkitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SLR ToolkitUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E51802553538200EA801A /* SLR_ToolkitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLR_ToolkitUITests.swift; sourceTree = "<group>"; };
 		503E51822553538200EA801A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		504838C62592E9E0005149B6 /* TaxonomyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyNode.swift; sourceTree = "<group>"; };
+		504838CA2592ED1A005149B6 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		504B2EAC2584274A00DBAE31 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
 		5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectDetailsView.swift; sourceTree = "<group>"; };
@@ -89,8 +95,10 @@
 		50864A5725542D42001F0007 /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
 		50864A6125542DBF001F0007 /* MockGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGitClient.swift; sourceTree = "<group>"; };
 		50D345482592B41600B57191 /* SwiftGit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftGit2.framework; sourceTree = "<group>"; };
+		50D345502592D30B00B57191 /* TaxonomyParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserTests.swift; sourceTree = "<group>"; };
+		50D345542592D38700B57191 /* TaxonomyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParser.swift; sourceTree = "<group>"; };
 		50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailsView.swift; sourceTree = "<group>"; };
-		50EFFAF22556C6B2004BA48F /* TaxonomyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyNode.swift; sourceTree = "<group>"; };
+		50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserNode.swift; sourceTree = "<group>"; };
 		50EFFAF72556CA29004BA48F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		50EFFB032556D587004BA48F /* AddProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -170,6 +178,7 @@
 			children = (
 				503E51752553538200EA801A /* GitManagerTests.swift */,
 				50864A6125542DBF001F0007 /* MockGitClient.swift */,
+				50D345502592D30B00B57191 /* TaxonomyParserTests.swift */,
 				503E51772553538200EA801A /* Info.plist */,
 			);
 			path = "SLR ToolkitTests";
@@ -202,11 +211,20 @@
 			path = Git;
 			sourceTree = "<group>";
 		};
+		508935372592E03F0053ADD4 /* Taxonomy Parser */ = {
+			isa = PBXGroup;
+			children = (
+				50D345542592D38700B57191 /* TaxonomyParser.swift */,
+				50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */,
+			);
+			path = "Taxonomy Parser";
+			sourceTree = "<group>";
+		};
 		50BE516B255356CB0094171B /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				508399A52557FC0A00BA21DE /* Directory.swift */,
-				50EFFAF22556C6B2004BA48F /* TaxonomyNode.swift */,
+				504838C62592E9E0005149B6 /* TaxonomyNode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -230,6 +248,7 @@
 				5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */,
 				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
 				50EFFAF72556CA29004BA48F /* RoundedButton.swift */,
+				504838CA2592ED1A005149B6 /* DetailRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -247,6 +266,7 @@
 		50EFFB002556D4D5004BA48F /* Logic */ = {
 			isa = PBXGroup;
 			children = (
+				508935372592E03F0053ADD4 /* Taxonomy Parser */,
 				50864A5625542D22001F0007 /* Git */,
 			);
 			path = Logic;
@@ -394,11 +414,14 @@
 				508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */,
 				50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */,
 				508399982557F65E00BA21DE /* Project.swift in Sources */,
-				50EFFAF32556C6B2004BA48F /* TaxonomyNode.swift in Sources */,
+				50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */,
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
+				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
+				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
+				504838C72592E9E0005149B6 /* TaxonomyNode.swift in Sources */,
 				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,
@@ -411,6 +434,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50D345512592D30B00B57191 /* TaxonomyParserTests.swift in Sources */,
 				503E51762553538200EA801A /* GitManagerTests.swift in Sources */,
 				50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */,
 			);
