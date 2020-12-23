@@ -15,9 +15,9 @@ struct EntryDetailsView: View {
                     Text(author)
                 }
             }
-            if entry.year != 0 {
+            if let dateString = entry.dateString {
                 Section(header: Text("Date").font(.caption)) {
-                    Text((entry.month == 0 ? "" : "\(entry.month)") + "\(entry.year)")
+                    Text(dateString)
                 }
             }
             Section(header: Text("Abstract").font(.caption)) {

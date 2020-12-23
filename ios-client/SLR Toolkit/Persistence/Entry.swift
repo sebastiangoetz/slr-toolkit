@@ -21,6 +21,10 @@ final class Entry: NSManagedObject, Identifiable {
 
     @NSManaged var isRemoved: Bool
 
+    var dateString: String? {
+        return year == 0 ? nil : (month == 0 ? "" : "\(month)/") + "\(year)"
+    }
+
     var rangeInFile: RangeInFile {
         get { try! PropertyListDecoder().decode(RangeInFile.self, from: rangeInFileData) }
         set { rangeInFileData = try! PropertyListEncoder().encode(newValue) }

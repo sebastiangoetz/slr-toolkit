@@ -1,7 +1,7 @@
 import Foundation
 
 enum StringUserDefaultsKey: String {
-    case username, token
+    case username, token, sortMode
 }
 
 enum URLUserDefaultsKey: String {

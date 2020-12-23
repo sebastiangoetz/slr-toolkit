@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5002A2F32593912800847F55 /* EntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5002A2F22593912800847F55 /* EntryRow.swift */; };
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
 		5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034067525583D9100FC8FF4 /* ProjectsView.swift */; };
 		503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLRToolkitApp.swift */; };
@@ -36,6 +37,7 @@
 		50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */; };
 		50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF72556CA29004BA48F /* RoundedButton.swift */; };
 		50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFB032556D587004BA48F /* AddProjectView.swift */; };
+		50F3A5972593EFBC0021E943 /* EntriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F3A5962593EFBC0021E943 /* EntriesList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5002A2F22593912800847F55 /* EntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryRow.swift; sourceTree = "<group>"; };
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +106,7 @@
 		50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserNode.swift; sourceTree = "<group>"; };
 		50EFFAF72556CA29004BA48F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		50EFFB032556D587004BA48F /* AddProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectView.swift; sourceTree = "<group>"; };
+		50F3A5962593EFBC0021E943 /* EntriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +136,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5002A2EF259390EB00847F55 /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				50500401257934F100B79470 /* EntriesView.swift */,
+				50F3A5962593EFBC0021E943 /* EntriesList.swift */,
+				5002A2F22593912800847F55 /* EntryRow.swift */,
+				50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */,
+			);
+			path = Entries;
+			sourceTree = "<group>";
+		};
+		5002A2F0259390F700847F55 /* Add Project */ = {
+			isa = PBXGroup;
+			children = (
+				50EFFB032556D587004BA48F /* AddProjectView.swift */,
+				5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */,
+			);
+			path = "Add Project";
+			sourceTree = "<group>";
+		};
+		5002A2F12593910C00847F55 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				50EFFAF72556CA29004BA48F /* RoundedButton.swift */,
+				504838CA2592ED1A005149B6 /* DetailRow.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		50066B802553788E00EF7EA6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,13 +277,10 @@
 			isa = PBXGroup;
 			children = (
 				50066B902553794900EF7EA6 /* MainView.swift */,
-				50500401257934F100B79470 /* EntriesView.swift */,
-				50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */,
-				50EFFB032556D587004BA48F /* AddProjectView.swift */,
-				5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */,
 				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
-				50EFFAF72556CA29004BA48F /* RoundedButton.swift */,
-				504838CA2592ED1A005149B6 /* DetailRow.swift */,
+				5002A2EF259390EB00847F55 /* Entries */,
+				5002A2F0259390F700847F55 /* Add Project */,
+				5002A2F12593910C00847F55 /* Common */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -419,10 +449,12 @@
 				50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */,
 				508399982557F65E00BA21DE /* Project.swift in Sources */,
 				50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */,
+				50F3A5972593EFBC0021E943 /* EntriesList.swift in Sources */,
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
 				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
 				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
+				5002A2F32593912800847F55 /* EntryRow.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
 				504838C72592E9E0005149B6 /* TaxonomyNode.swift in Sources */,
