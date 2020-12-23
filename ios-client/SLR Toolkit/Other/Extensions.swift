@@ -1,3 +1,4 @@
+import Foundation
 import SwiftyBibtex
 
 extension String {
@@ -44,6 +45,26 @@ extension String {
             string = string.replacingOccurrences(of: s, with: r)
         }
         return string
+    }
+}
+
+extension FileManager {
+    func contentsOfDirectory(at url: URL, matching predicate: (Bool, String) -> Bool) -> [URL] {
+        do {
+            let contents = try contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey])
+            return contents.filter { url in
+                do {
+                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
+                    return predicate(resourceValues.isDirectory!, url.pathComponents.last!)
+                } catch {
+                    print("Error fetching resource values for \(url): \(error)")
+                    return false
+                }
+            }
+        } catch {
+            print("Error listing contents of \(url): \(error)")
+            return []
+        }
     }
 }
 

@@ -16,45 +16,16 @@ struct Directory: Hashable, Identifiable {
     }
     
     var directories: [Directory]? {
-        do {
-            let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey])
-            return contents.filter { url in
-                do {
-                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
-                    return resourceValues.isDirectory! && (!isRoot || url.pathComponents.last != ".git")
-                } catch {
-                    print("Error fetching resource values for \(url): \(error)")
-                    return false
-                }
-            }.map { Directory(url: $0) }
-        } catch {
-            print("Error listing contents of \(url): \(error)")
-            return nil
-        }
+        return FileManager.default.contentsOfDirectory(at: url) { isDirectory, fileName in
+            return isDirectory && (!isRoot || fileName != ".git")
+        }.map { Directory(url: $0) }
     }
     
     var isValidProjectDirectory: Bool {
-        var bibFiles = 0
-        var taxonomyFiles = 0
-        do {
-            let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey])
-            for url in contents {
-                do {
-                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
-                    if !resourceValues.isDirectory! {
-                        if url.pathComponents.last?.hasSuffix(".bib") == true {
-                            bibFiles += 1
-                        } else if url.pathComponents.last?.hasSuffix(".taxonomy") == true {
-                            taxonomyFiles += 1
-                        }
-                    }
-                } catch {
-                    print("Error fetching resource values for \(url): \(error)")
-                }
-            }
-        } catch {
-            print("Error listing contents of \(url): \(error)")
+        let bibFiles = FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".bib") }.count
+        if bibFiles != 1 {
+            return false
         }
-        return bibFiles == 1 && taxonomyFiles == 1
+        return FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".taxonomy") }.count == 1
     }
 }
