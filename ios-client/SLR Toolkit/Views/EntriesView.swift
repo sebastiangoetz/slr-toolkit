@@ -5,6 +5,8 @@ struct EntriesView: View {
     var project: Project
     var taxonomyClass: String?
 
+    @Environment(\.managedObjectContext) private var managedObjectContext
+
     @FetchRequest private var entries: FetchedResults<Entry>
 
     init(project: Project, taxonomyClass: String?) {
@@ -25,23 +27,29 @@ struct EntriesView: View {
                 .foregroundColor(.secondary)
             } else {
 //                // TODO show sorted
-                List(entries, id: \.citationKey) { entry in
-                    NavigationLink(destination: EntryDetailsView(entry: entry)) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(entry.title ?? "No Title")
-                                .bold()
-                                .lineLimit(1)
-                            if let author = entry.author {
-                                Text(author)
-                                    .font(.footnote)
+                List {
+                    ForEach(entries) { entry in
+                        NavigationLink(destination: EntryDetailsView(entry: entry)) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(entry.title ?? "No Title")
+                                    .bold()
                                     .lineLimit(1)
+                                if let author = entry.author {
+                                    Text(author)
+                                        .font(.footnote)
+                                        .lineLimit(1)
+                                }
+                                Text(entry.abstract ?? "No Abstract")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
                             }
-                            Text(entry.abstract ?? "No Abstract")
-                                .font(.footnote)
-                                .foregroundColor(.secondary)
-                                .lineLimit(2)
+                            .padding(.vertical, 2)
                         }
-                        .padding(.vertical, 2)
+                    }
+                    .onDelete { indexSet in
+                        indexSet.forEach { entries[$0].isRemoved = true }
+                        try? managedObjectContext.save()
                     }
                 }
             }

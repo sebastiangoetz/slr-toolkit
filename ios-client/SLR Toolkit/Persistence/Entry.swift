@@ -1,7 +1,9 @@
 import CoreData
 import SwiftyBibtex
 
-final class Entry: NSManagedObject {
+final class Entry: NSManagedObject, Identifiable {
+    var id: String { citationKey }
+
     @NSManaged var citationKey: String
 
     @NSManaged var title: String?

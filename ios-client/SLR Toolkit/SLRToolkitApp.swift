@@ -9,10 +9,10 @@ struct SLRToolkitApp: App {
         WindowGroup {
             NavigationView {
                 MainView(project: loadActiveProject())
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 // TODO
 //                EntryDetailsView()
             }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
     
