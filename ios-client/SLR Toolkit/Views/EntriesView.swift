@@ -2,11 +2,19 @@ import SwiftUI
 import SwiftyBibtex
 
 struct EntriesView: View {
-    var title: String
-    var entries: [Publication]
+    var project: Project
+    var taxonomyClass: String?
+
+    @FetchRequest private var entries: FetchedResults<Entry>
+
+    init(project: Project, taxonomyClass: String?) {
+        self.project = project
+        self.taxonomyClass = taxonomyClass
+        self._entries = FetchRequest(sortDescriptors: [NSSortDescriptor(key: "title", ascending: true)], predicate: NSPredicate(format: "project == %@ && isRemoved == NO", project))
+    }
 
     var body: some View {
-        return Group {
+        Group {
             if entries.isEmpty {
                 VStack(spacing: 32) {
                     Image(systemName: "tray")
@@ -15,13 +23,12 @@ struct EntriesView: View {
                         .font(.title)
                 }
                 .foregroundColor(.secondary)
-                .navigationBarTitle(title, displayMode: .inline)
             } else {
-                // TODO show sorted
+//                // TODO show sorted
                 List(entries, id: \.citationKey) { entry in
                     NavigationLink(destination: EntryDetailsView(entry: entry)) {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(entry.title)
+                            Text(entry.title ?? "No Title")
                                 .bold()
                                 .lineLimit(1)
                             if let author = entry.author {
@@ -29,7 +36,7 @@ struct EntriesView: View {
                                     .font(.footnote)
                                     .lineLimit(1)
                             }
-                            Text(entry.abstract)
+                            Text(entry.abstract ?? "No Abstract")
                                 .font(.footnote)
                                 .foregroundColor(.secondary)
                                 .lineLimit(2)
@@ -37,23 +44,22 @@ struct EntriesView: View {
                         .padding(.vertical, 2)
                     }
                 }
-                .navigationBarTitle(title, displayMode: .inline)
             }
         }
-        .navigationBarTitle(title, displayMode: .inline)
+        .navigationBarTitle(taxonomyClass?.components(separatedBy: "###").last ?? "All Entries", displayMode: .inline)
     }
 }
 
-struct EntriesView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationView {
-                EntriesView(title: "All Entries", entries: [])
-            }
-            NavigationView {
-                EntriesView(title: "All Entries", entries: [])
-            }
-            .colorScheme(.dark)
-        }
-    }
-}
+//struct EntriesView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            NavigationView {
+//                EntriesView(title: "All Entries", entries: [])
+//            }
+//            NavigationView {
+//                EntriesView(title: "All Entries", entries: [])
+//            }
+//            .colorScheme(.dark)
+//        }
+//    }
+//}

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20B29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Entry" representedClassName=".Entry" syncable="YES">
+        <attribute name="abstract" optional="YES" attributeType="String"/>
+        <attribute name="author" optional="YES" attributeType="String"/>
+        <attribute name="citationKey" attributeType="String" defaultValueString=""/>
+        <attribute name="classesData" optional="YES" attributeType="Binary"/>
+        <attribute name="fieldsData" optional="YES" attributeType="Binary"/>
+        <attribute name="isRemoved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="month" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="rangeInFileData" attributeType="Binary"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="entries" inverseEntity="Project"/>
+    </entity>
     <entity name="Project" representedClassName=".Project" syncable="YES">
         <attribute name="name" attributeType="String"/>
         <attribute name="pathInGitDirectory" attributeType="String"/>
@@ -7,8 +20,10 @@
         <attribute name="repositoryURL" attributeType="String"/>
         <attribute name="token" attributeType="String"/>
         <attribute name="username" attributeType="String"/>
+        <relationship name="entries" toMany="YES" deletionRule="Cascade" destinationEntity="Entry" inverseName="project" inverseEntity="Entry"/>
     </entity>
     <elements>
-        <element name="Project" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="Entry" positionX="-63" positionY="27" width="128" height="194"/>
+        <element name="Project" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

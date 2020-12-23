@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 import SwiftyBibtex
 
@@ -54,6 +55,8 @@ extension String {
     }
 }
 
+// Foundation
+
 extension FileManager {
     func contentsOfDirectory(at url: URL, matching predicate: (Bool, String) -> Bool) -> [URL] {
         do {
@@ -74,29 +77,18 @@ extension FileManager {
     }
 }
 
+// Core Data
+
+extension NSFetchRequest {
+    @objc func withPredicate(_ predicate: NSPredicate) -> NSFetchRequest {
+        self.predicate = predicate
+        return self
+    }
+}
+
+// SwiftyBibtex
+
 extension Publication {
-    var title: String {
-        return fields["title"]?.withLatexMacrosReplaced ?? "No Title"
-    }
-
-    var author: String? {
-        return fields["author"]?.withLatexMacrosReplaced
-    }
-
-    var date: String? {
-        if let yearString = fields["year"] {
-            if let monthString = fields["month"], let month = Month(monthString) {
-                return "\(month) \(yearString)"
-            }
-            return yearString
-        }
-        return nil
-    }
-
-    var abstract: String {
-        return fields["abstract"] ?? "No Abstract"
-    }
-
     var classes: Set<String> {
         guard let classesString = fields["classes"], let taxonomy = TaxonomyParser.parse(classesString) else { return [] }
         var classes = Set<String>()

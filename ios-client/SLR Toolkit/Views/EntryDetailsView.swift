@@ -2,12 +2,12 @@ import SwiftUI
 import SwiftyBibtex
 
 struct EntryDetailsView: View {
-    var entry: Publication
+    var entry: Entry
 
     var body: some View {
         List {
             Section(header: Text("Title").font(.caption)) {
-                Text(entry.title)
+                Text(entry.title ?? "No Title")
                     .font(.headline)
             }
             if let author = entry.author {
@@ -15,13 +15,13 @@ struct EntryDetailsView: View {
                     Text(author)
                 }
             }
-            if let date = entry.date {
+            if entry.year != 0 {
                 Section(header: Text("Date").font(.caption)) {
-                    Text(date)
+                    Text((entry.month == 0 ? "" : "\(entry.month)") + "\(entry.year)")
                 }
             }
             Section(header: Text("Abstract").font(.caption)) {
-                Text(entry.abstract)
+                Text(entry.abstract ?? "No Abstract")
                     .font(.callout)
             }
             if let urlString = entry.fields["url"] {

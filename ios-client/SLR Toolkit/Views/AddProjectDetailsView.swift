@@ -31,7 +31,7 @@ struct AddProjectDetailsView: View {
             Section(header: Text("Name")) {
                 TextField("Project name", text: $projectName)
             }
-            Section(header: Text("Path"), footer: Text(isDirectoryValid ? "This is a valid directory ✓" : "Select a directory that contains a single .bib file and a single .taxonomy file.")) {
+            Section(header: Text("Path"), footer: Text(isDirectoryValid ? "This is a valid directory ✓" : "Select a directory that contains one or more .bib files and a single .taxonomy file.")) {
                 OutlineGroup(self.directories, children: \Directory.directories) { directory in
                     Button(action: { selectDirectory(directory) }) {
                         HStack {
@@ -64,17 +64,26 @@ struct AddProjectDetailsView: View {
     }
     
     private func done() {
+        // TODO do in background
         let repositoryDirectory = directories[0].url
         let pathInGitDirectory = repositoryDirectory.pathComponents[GitManager.gitDirectory.pathComponents.count...].joined(separator: "/")
         let pathInRepository = selection.url.pathComponents[repositoryDirectory.pathComponents.count...].joined(separator: "/")
         let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
-        project = newProject
+
+        if let entries = newProject.parseEntries() {
+            for entry in entries {
+                Entry.newEntry(publication: entry, project: newProject, in: managedObjectContext)
+            }
+        }
+
         do {
             try managedObjectContext.save()
             UserDefaults.standard.set(newProject.objectID.uriRepresentation(), forKey: .activeProject)
         } catch {
             print("Error saving managed object context: \(error)")
         }
+
+        project = newProject
         isPresented = false
     }
 }
