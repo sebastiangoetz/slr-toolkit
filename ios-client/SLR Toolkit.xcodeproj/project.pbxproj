@@ -38,6 +38,8 @@
 		50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF72556CA29004BA48F /* RoundedButton.swift */; };
 		50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFB032556D587004BA48F /* AddProjectView.swift */; };
 		50F3A5972593EFBC0021E943 /* EntriesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F3A5962593EFBC0021E943 /* EntriesList.swift */; };
+		50F3A5A12594010B0021E943 /* EntryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F3A5A02594010B0021E943 /* EntryCard.swift */; };
+		50F3A5A5259403A20021E943 /* CardValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F3A5A4259403A20021E943 /* CardValue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,8 @@
 		50EFFAF72556CA29004BA48F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		50EFFB032556D587004BA48F /* AddProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectView.swift; sourceTree = "<group>"; };
 		50F3A5962593EFBC0021E943 /* EntriesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesList.swift; sourceTree = "<group>"; };
+		50F3A5A02594010B0021E943 /* EntryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCard.swift; sourceTree = "<group>"; };
+		50F3A5A4259403A20021E943 /* CardValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardValue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +147,8 @@
 				50F3A5962593EFBC0021E943 /* EntriesList.swift */,
 				5002A2F22593912800847F55 /* EntryRow.swift */,
 				50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */,
+				50F3A5A02594010B0021E943 /* EntryCard.swift */,
+				50F3A5A4259403A20021E943 /* CardValue.swift */,
 			);
 			path = Entries;
 			sourceTree = "<group>";
@@ -446,11 +452,13 @@
 				503E51682553538200EA801A /* PersistenceController.swift in Sources */,
 				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
 				508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */,
+				50F3A5A12594010B0021E943 /* EntryCard.swift in Sources */,
 				50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */,
 				508399982557F65E00BA21DE /* Project.swift in Sources */,
 				50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */,
 				50F3A5972593EFBC0021E943 /* EntriesList.swift in Sources */,
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
+				50F3A5A5259403A20021E943 /* CardValue.swift in Sources */,
 				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
 				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,

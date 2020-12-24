@@ -2,6 +2,8 @@ import CoreData
 import SwiftyBibtex
 
 final class Entry: NSManagedObject, Identifiable {
+    private static let keysToRemove = Set(["abstract", "author", "classes", "month", "title", "year"])
+
     var id: String { citationKey }
 
     @NSManaged var citationKey: String
@@ -70,7 +72,7 @@ final class Entry: NSManagedObject, Identifiable {
 
         entry.rangeInFile = publication.rangeInFile
         entry.classes = publication.classes
-        entry.fields = publication.fields.filter { $0.key != "title" && $0.key != "author" && $0.key != "abstract" }
+        entry.fields = publication.fields.filter { !Self.keysToRemove.contains($0.key) }
 
         entry.project = project
 
