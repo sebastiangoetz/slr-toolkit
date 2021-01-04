@@ -95,10 +95,9 @@ struct AddProjectView: View {
         if rememberCredentials {
             UserDefaults.standard.set(trimmedUsername, forKey: .username)
         }
-        
-        let gitManager = GitManager(gitClient: HttpsGitClient(username: trimmedUsername, token: trimmedToken))
+
         guard let url = URL(string: repositoryURL) else { return }
-        gitManager.cloneRepository(at: url) { progress in
+        GitManager.default.cloneRepository(at: url, credentials: (trimmedUsername, trimmedToken)) { progress in
             self.progress = progress
         } completion: { result in
             switch result {

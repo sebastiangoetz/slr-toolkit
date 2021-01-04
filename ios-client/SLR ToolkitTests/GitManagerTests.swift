@@ -11,7 +11,7 @@ class GitManagerTests: XCTestCase {
     func testInvalidScheme() {
         let expectation = XCTestExpectation(description: "")
         let url = URL(string: "ssh://git@github.com:MaxHaertwig/slr-example.git")!
-        gitManager.cloneRepository(at: url) { result in
+        gitManager.cloneRepository(at: url, credentials: ("", "")) { result in
             guard case .failure(let error) = result, case .unsupportedScheme = error else { XCTFail(); return }
             expectation.fulfill()
         }
@@ -21,7 +21,7 @@ class GitManagerTests: XCTestCase {
     func testInvalidURL() {
         let expectation = XCTestExpectation(description: "")
         let url = URL(string: "https:///MaxHaertwig/slr-example.git")!
-        gitManager.cloneRepository(at: url) { result in
+        gitManager.cloneRepository(at: url, credentials: ("", "")) { result in
             guard case .failure(let error) = result, case .invalidURL = error else { XCTFail(); return }
             expectation.fulfill()
         }
@@ -31,7 +31,7 @@ class GitManagerTests: XCTestCase {
     func testCorrectPath() {
         let expectation = XCTestExpectation(description: "")
         let url = URL(string: "https://github.com/MaxHaertwig/slr-example.git")!
-        gitManager.cloneRepository(at: url) { result in
+        gitManager.cloneRepository(at: url, credentials: ("", "")) { result in
             switch result {
             case .success(let url):
                 let expectedURL = GitManager.gitDirectory

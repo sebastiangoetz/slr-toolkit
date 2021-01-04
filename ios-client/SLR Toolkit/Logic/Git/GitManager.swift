@@ -20,6 +20,8 @@ struct GitManager {
             }
         }
     }
+
+    static let `default` = GitManager(gitClient: HttpsGitClient())
     
     static let gitDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("git", isDirectory: true)
     
@@ -39,7 +41,7 @@ struct GitManager {
         self.gitClient = gitClient
     }
     
-    func cloneRepository(at url: URL, progress: ((Float) -> Void)? = nil, completion: @escaping (Result<URL, CloneError>) -> Void) {
+    func cloneRepository(at url: URL, credentials: GitClient.Credentials, progress: ((Float) -> Void)? = nil, completion: @escaping (Result<URL, CloneError>) -> Void) {
         guard url.scheme == "https" else {
             completion(.failure(.unsupportedScheme))
             return
@@ -72,12 +74,16 @@ struct GitManager {
             return
         }
         
-        gitClient.clone(from: url, to: repositoryDirectory, progress: progress) { error in
+        gitClient.clone(from: url, to: repositoryDirectory, credentials: credentials, progress: progress) { error in
             if let error = error {
                 return completion(.failure(.gitError(error)))
             } else {
                 completion(.success(repositoryDirectory))
             }
         }
+    }
+
+    func fetch(project: Project, completion: @escaping (Error?) -> Void) {
+        gitClient.fetch(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
 }

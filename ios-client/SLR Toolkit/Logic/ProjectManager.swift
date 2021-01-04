@@ -1,8 +1,9 @@
+import CoreData
 import Foundation
 import SwiftyBibtex
 
 enum ProjectManager {
-    static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, completion: @escaping (Project) -> Void) {
+    static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext
             let project = Project.newEntity(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
@@ -15,9 +16,11 @@ enum ProjectManager {
 
 
             let nodes = parseTaxonomy(project: project) ?? []
-            let classes = createTaxonomyClasses(project: project, nodes: nodes)
+            let classes = createTaxonomyClasses(project: project, nodes: nodes, managedObjectContext: managedObjectContext)
+
             let publications = parsePublications(project: project)
-            let entries = createEntries(project: project, publications: publications)
+            let entries = createEntries(project: project, publications: publications, managedObjectContext: managedObjectContext)
+
             assign(entries: entries, to: classes)
 
             do {
@@ -42,8 +45,7 @@ enum ProjectManager {
         }
     }
 
-    private static func createTaxonomyClasses(project: Project, nodes: [TaxonomyParserNode]) -> [String: TaxonomyClass] {
-        let managedObjectContext = PersistenceController.shared.container.viewContext
+    private static func createTaxonomyClasses(project: Project, nodes: [TaxonomyParserNode], managedObjectContext: NSManagedObjectContext) -> [String: TaxonomyClass] {
         var classes = [String: TaxonomyClass]()
 
         func createTaxonomyClasses(parent: TaxonomyClass?, children: [TaxonomyParserNode]) {
@@ -72,8 +74,7 @@ enum ProjectManager {
         }
     }
 
-    private static func createEntries(project: Project, publications: [Publication]) -> [(Entry, Set<String>)] {
-        let managedObjectContext = PersistenceController.shared.container.viewContext
+    private static func createEntries(project: Project, publications: [Publication], managedObjectContext: NSManagedObjectContext) -> [(Entry, Set<String>)] {
         return publications.map {
             return (Entry.newEntity(publication: $0, decision: $0.classes.isEmpty ? .outstanding : .keep, project: project, in: managedObjectContext), $0.classes)
         }

@@ -9,6 +9,8 @@ struct ProjectView: View {
     @FetchRequest private var unfilteredEntries: FetchedResults<Entry>
     @FetchRequest private var unclassifiedEntries: FetchedResults<Entry>
 
+    @State private var isFetching = false
+    @State private var alertError: AlertError?
     @State private var projectsViewIsPresented = false
 
     init(project: Binding<Project?>) {
@@ -61,6 +63,9 @@ struct ProjectView: View {
                 menu()
             }
         }
+        .alert(item: $alertError, content: { alertError in
+            Alert(title: Text(alertError.title), message: Text(alertError.message), dismissButton: .cancel(Text("OK")))
+        })
         .sheet(isPresented: $projectsViewIsPresented) {
             ProjectsView(activeProject: $project)
                 .environment(\.managedObjectContext, managedObjectContext)
@@ -69,6 +74,10 @@ struct ProjectView: View {
 
     private func menu() -> some View {
         Menu {
+            Button(action: fetch) {
+                Label("Fetch", systemImage: "arrow.down")
+            }
+            Divider()
             Button {
                 projectsViewIsPresented = true
             } label: {
@@ -80,6 +89,18 @@ struct ProjectView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
                 .imageScale(.large)
+        }
+    }
+
+    private func fetch() {
+        isFetching = true
+        GitManager.default.fetch(project: project) { error in
+            isFetching = false
+            if let error = error {
+                alertError = AlertError(title: "Error fetching repository", message: error.localizedDescription)
+            } else {
+                commitsBehindOrigin = GitManager.default.commitsBehindOrigin(project: project)
+            }
         }
     }
 }
