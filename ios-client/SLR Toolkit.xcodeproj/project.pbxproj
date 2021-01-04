@@ -22,6 +22,8 @@
 		504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B2EAC2584274A00DBAE31 /* Extensions.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
 		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
+		5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7225A37FAB0001EF49 /* ProjectView.swift */; };
+		5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7625A380190001EF49 /* WelcomeView.swift */; };
 		507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F183D25A3463000D88CD3 /* TaxonomyClass.swift */; };
 		507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184325A3481600D88CD3 /* ProjectManager.swift */; };
 		507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184925A373B900D88CD3 /* ExpandingButton.swift */; };
@@ -99,6 +101,8 @@
 		504B2EAC2584274A00DBAE31 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
 		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
+		5077EC7225A37FAB0001EF49 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
+		5077EC7625A380190001EF49 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		507F183D25A3463000D88CD3 /* TaxonomyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyClass.swift; sourceTree = "<group>"; };
 		507F184325A3481600D88CD3 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
 		507F184925A373B900D88CD3 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 			isa = PBXGroup;
 			children = (
 				50066B902553794900EF7EA6 /* MainView.swift */,
+				5077EC7625A380190001EF49 /* WelcomeView.swift */,
+				5077EC7225A37FAB0001EF49 /* ProjectView.swift */,
 				5077EC6C25A37DC40001EF49 /* ButtonRow.swift */,
 				507F185325A37C1C00D88CD3 /* SubtitleButton.swift */,
 			);
@@ -493,8 +499,10 @@
 				507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */,
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
 				50F3A5A5259403A20021E943 /* CardValue.swift in Sources */,
+				5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */,
 				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
 				507F185425A37C1C00D88CD3 /* SubtitleButton.swift in Sources */,
+				5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */,
 				507F184E25A374C200D88CD3 /* TextButton.swift in Sources */,
 				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
