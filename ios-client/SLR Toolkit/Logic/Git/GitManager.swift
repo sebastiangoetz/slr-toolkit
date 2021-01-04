@@ -39,12 +39,16 @@ struct GitManager {
         self.gitClient = gitClient
     }
     
-    func cloneRepository(at url: URL, progress: ((Float) -> Void)? = nil) -> Result<URL, CloneError> {
-        if url.scheme != "https" {
-            return .failure(.unsupportedScheme)
+    func cloneRepository(at url: URL, progress: ((Float) -> Void)? = nil, completion: @escaping (Result<URL, CloneError>) -> Void) {
+        guard url.scheme == "https" else {
+            completion(.failure(.unsupportedScheme))
+            return
         }
         
-        guard let host = url.host else { return .failure(.invalidURL) }
+        guard let host = url.host else {
+            completion(.failure(.invalidURL))
+            return
+        }
         
         var repositoryDirectory = Self.gitDirectory.appendingPathComponent(host, isDirectory: true)
         for component in url.pathComponents[1...] {
@@ -57,19 +61,23 @@ struct GitManager {
         }
         
         if FileManager.default.fileExists(atPath: repositoryDirectory.path) {
-            return .success(repositoryDirectory)
+            completion(.success(repositoryDirectory))
+            return
         }
         
         do {
             try FileManager.default.createDirectory(at: repositoryDirectory, withIntermediateDirectories: true)
         } catch {
-            return .failure(.fileManagerError(error))
+            completion(.failure(.fileManagerError(error)))
+            return
         }
         
-        let error = gitClient.clone(from: url, to: repositoryDirectory, progress: progress)
-        if let error = error {
-            return .failure(.gitError(error))
+        gitClient.clone(from: url, to: repositoryDirectory, progress: progress) { error in
+            if let error = error {
+                return completion(.failure(.gitError(error)))
+            } else {
+                completion(.success(repositoryDirectory))
+            }
         }
-        return .success(repositoryDirectory)
     }
 }

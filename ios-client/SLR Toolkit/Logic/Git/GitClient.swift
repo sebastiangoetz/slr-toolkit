@@ -2,7 +2,7 @@ import Foundation
 import SwiftGit2
 
 protocol GitClient {
-    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?) -> Error?
+    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void)
 }
 
 struct HttpsGitClient: GitClient {
@@ -12,22 +12,24 @@ struct HttpsGitClient: GitClient {
         self.username = username
         self.token = token
     }
-    
-    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?) -> Error? {
-        let credentials = Credentials.plaintext(username: username, password: token)
-        let result: Result<Repository, NSError>
-        if let progress = progress {
-            result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials) { _, completed, total in
-                progress(Float(completed) / Float(total))
+
+    func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let credentials = Credentials.plaintext(username: username, password: token)
+            let result: Result<Repository, NSError>
+            if let progress = progress {
+                result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials) { _, completed, total in
+                    progress(Float(completed) / Float(total))
+                }
+            } else {
+                result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials)
             }
-        } else {
-            result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials)
-        }
-        switch result {
-        case .success:
-            return nil
-        case .failure(let error):
-            return error
+            switch result {
+            case .success:
+                completion(nil)
+            case .failure(let error):
+                completion(error)
+            }
         }
     }
 }

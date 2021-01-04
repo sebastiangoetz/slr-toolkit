@@ -98,21 +98,21 @@ struct AddProjectView: View {
         
         let gitManager = GitManager(gitClient: HttpsGitClient(username: trimmedUsername, token: trimmedToken))
         guard let url = URL(string: repositoryURL) else { return }
-        let result = gitManager.cloneRepository(at: url) { progress in
+        gitManager.cloneRepository(at: url) { progress in
             self.progress = progress
-        }
-        
-        switch result {
-        case .success(let repositoryDirectory):
-            isLoading = false
-            if rememberCredentials {
-                UserDefaults.standard.set(trimmedToken, forKey: .token)
+        } completion: { result in
+            switch result {
+            case .success(let repositoryDirectory):
+                isLoading = false
+                if rememberCredentials {
+                    UserDefaults.standard.set(trimmedToken, forKey: .token)
+                }
+                self.repositoryDirectory = repositoryDirectory
+                navigateToNextScreen = true
+            case .failure(let error):
+                cloneErrorAlertIsPresented = true
+                cloneError = error.description
             }
-            self.repositoryDirectory = repositoryDirectory
-            navigateToNextScreen = true
-        case .failure(let error):
-            cloneErrorAlertIsPresented = true
-            cloneError = error.description
         }
     }
 }
