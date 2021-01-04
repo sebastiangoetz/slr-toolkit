@@ -18,7 +18,7 @@ struct EntriesList: View {
                 }
             }
             .onDelete { indexSet in
-                indexSet.forEach { entries[$0].isRemoved = true }
+                indexSet.forEach { entries[$0].decision = .discard }
                 do {
                     try managedObjectContext.save()
                 } catch {

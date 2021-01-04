@@ -2,6 +2,10 @@ import CoreData
 import SwiftyBibtex
 
 final class Entry: NSManagedObject, Identifiable {
+    enum Decision: Int16 {
+        case outstanding, keep, discard
+    }
+
     private static let keysToRemove = Set(["abstract", "author", "classes", "month", "title", "year"])
 
     var id: String { citationKey }
@@ -21,7 +25,12 @@ final class Entry: NSManagedObject, Identifiable {
     @NSManaged var project: Project
     @NSManaged var classes: Set<TaxonomyClass>
 
-    @NSManaged var isRemoved: Bool
+    @NSManaged var decisionRaw: Int16
+
+    var decision: Decision {
+        get { Decision(rawValue: decisionRaw) ?? .outstanding }
+        set { decisionRaw = newValue.rawValue }
+    }
 
     var dateString: String? {
         return year == 0 ? nil : (month == 0 ? "" : "\(month)/") + "\(year)"
@@ -37,7 +46,7 @@ final class Entry: NSManagedObject, Identifiable {
         set { fieldsData = try! PropertyListEncoder().encode(newValue) }
     }
 
-    @discardableResult static func newEntity(publication: Publication, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
+    @discardableResult static func newEntity(publication: Publication, decision: Decision = .outstanding, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
         let entry = NSEntityDescription.insertNewObject(forEntityName: String(describing: self), into: managedObjectContext) as! Entry
         entry.citationKey = publication.citationKey
 
@@ -67,6 +76,8 @@ final class Entry: NSManagedObject, Identifiable {
 
         entry.rangeInFile = publication.rangeInFile
         entry.fields = publication.fields.filter { !Self.keysToRemove.contains($0.key) }
+
+        entry.decision = decision
 
         entry.project = project
 

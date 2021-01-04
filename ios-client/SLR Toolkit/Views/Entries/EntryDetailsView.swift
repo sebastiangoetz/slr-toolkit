@@ -26,7 +26,7 @@ struct EntryDetailsView: View {
     }
 
     private func removeEntry() {
-        entry.isRemoved = true
+        entry.decision = .discard
         do {
             try managedObjectContext.save()
         } catch {

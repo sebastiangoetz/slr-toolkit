@@ -68,7 +68,7 @@ enum ProjectManager {
     private static func createEntries(project: Project, publications: [Publication]) -> [(Entry, Set<String>)] {
         let managedObjectContext = PersistenceController.shared.container.viewContext
         return publications.map {
-            return (Entry.newEntity(publication: $0, project: project, in: managedObjectContext), $0.classes)
+            return (Entry.newEntity(publication: $0, decision: $0.classes.isEmpty ? .outstanding : .keep, project: project, in: managedObjectContext), $0.classes)
         }
     }
 

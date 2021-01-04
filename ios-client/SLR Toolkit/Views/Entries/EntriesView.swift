@@ -27,9 +27,9 @@ struct EntriesView: View {
         let sortAscending = UserDefaults.standard.bool(forKey: .sortAscending)
         let fetchRequest = Entry.fetchRequest
         if let taxonomyClass = taxonomyClass {
-            fetchRequest.predicate = NSPredicate(format: "project == %@ && (ANY classes == %@) && isRemoved == NO", project, taxonomyClass)
+            fetchRequest.predicate = NSPredicate(format: "project == %@ && (ANY classes == %@) && decisionRaw != 2", project, taxonomyClass)
         } else {
-            fetchRequest.predicate = NSPredicate(format: "project == %@ && isRemoved == NO", project)
+            fetchRequest.predicate = NSPredicate(format: "project == %@ && decisionRaw != 2", project)
         }
         fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: sortAscending), NSSortDescriptor(key: "month", ascending: sortAscending)]) + [NSSortDescriptor(key: "title", ascending: sortMode == .date || sortAscending)]
         _fetchRequest = State(initialValue: fetchRequest)
