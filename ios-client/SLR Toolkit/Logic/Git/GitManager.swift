@@ -86,4 +86,13 @@ struct GitManager {
     func fetch(project: Project, completion: @escaping (Error?) -> Void) {
         gitClient.fetch(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
+
+    func commitsAheadAndBehindOrigin(project: Project) -> (ahead: Int, behind: Int) {
+        switch gitClient.commitsAheadAndBehindOrigin(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory)) {
+        case .success(let tuple):
+            return tuple
+        case .failure:
+            return (0, 0)
+        }
+    }
 }

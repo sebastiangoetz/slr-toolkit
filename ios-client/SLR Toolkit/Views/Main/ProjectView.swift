@@ -9,12 +9,15 @@ struct ProjectView: View {
     @FetchRequest private var unfilteredEntries: FetchedResults<Entry>
     @FetchRequest private var unclassifiedEntries: FetchedResults<Entry>
 
+    @State private var commitsBehindOrigin: Int
     @State private var isFetching = false
     @State private var alertError: AlertError?
     @State private var projectsViewIsPresented = false
 
     init(project: Binding<Project?>) {
         _project = project
+
+        _commitsBehindOrigin = State(initialValue: GitManager.default.commitsAheadAndBehindOrigin(project: project.wrappedValue!).behind)
 
         let fetchRequest1 = Entry.fetchRequest
         fetchRequest1.predicate = NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)
@@ -35,9 +38,8 @@ struct ProjectView: View {
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
+                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", commitsBehindOrigin > 0, isFetching, {}),
                     ("Commit", "37 changes", true, isFetching, {})
-                    ("Pull", "Up to date", true, false, {}),
-                    ("Commit", "37 changes", true, false, {})
                 ])
             }
             Section(header: Text("Entries")) {
@@ -99,7 +101,7 @@ struct ProjectView: View {
             if let error = error {
                 alertError = AlertError(title: "Error fetching repository", message: error.localizedDescription)
             } else {
-                commitsBehindOrigin = GitManager.default.commitsBehindOrigin(project: project)
+                commitsBehindOrigin = GitManager.default.commitsAheadAndBehindOrigin(project: project).behind
             }
         }
     }

@@ -15,4 +15,8 @@ struct MockGitClient: GitClient {
     func fetch(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void) {
         completion(nil)
     }
+
+    func commitsBehindOrigin(repositoryURL: URL) -> Result<Int, Error> {
+        return .success(0)
+    }
 }

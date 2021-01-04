@@ -6,6 +6,8 @@ protocol GitClient {
 
     func clone(from remoteURL: URL, to localURL: URL, credentials: Credentials, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void)
     func fetch(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void)
+//    func pull(repositoryURL: URL, completion: @escaping (Error?) -> Void)
+    func commitsAheadAndBehindOrigin(repositoryURL: URL) -> Result<(ahead: Int, behind: Int), Error>
 }
 
 struct HttpsGitClient: GitClient {
@@ -36,6 +38,38 @@ struct HttpsGitClient: GitClient {
             } catch {
                 completion(error)
             }
+        }
+    }
+
+//    func pull(repositoryURL: URL, completion: @escaping (Error?) -> Void) {
+//        switch Repository.at(repositoryURL) {
+//        case .success(let repository):
+//            fetch(repository: repository) { error in
+//                if let error = error {
+//                    completion(error)
+//                } else {
+//                    repository.comm
+//                }
+//            }
+//        case .failure(let error):
+//            completion(error)
+//        }
+//    }
+
+    func commitsAheadAndBehindOrigin(repositoryURL: URL) -> Result<(ahead: Int, behind: Int), Error> {
+        do {
+            let repository = try GTRepository(url: repositoryURL)
+            let currentBranch = try repository.currentBranch()
+            let remoteBranches = try repository.remoteBranches()
+            // TODO error handling
+            let remoteBranch = remoteBranches.first { $0.shortName == currentBranch.shortName }!
+
+            var ahead = 0
+            var behind = 0
+            try currentBranch.calculateAhead(&ahead, behind: &behind, relativeTo: remoteBranch)
+            return .success((ahead, behind))
+        } catch {
+            return .failure(error)
         }
     }
 }
