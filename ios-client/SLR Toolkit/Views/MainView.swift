@@ -12,20 +12,16 @@ struct MainView: View {
     var body: some View {
         Group {
             if let project = project {
-                let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && isRemoved == NO", project))
-                let entriesCount = (try? managedObjectContext.count(for: fetchRequest)) ?? 0
                 List {
                     Section {
                         NavigationLink(destination: EntriesView(project: project, taxonomyClass: nil)) {
-                            // TODO
-                            DetailRow(text: "All Entries", detail: "\(entriesCount)")
+                            DetailRow(text: "All Entries", detail: "\(project.entries.count)")
                         }
                     }
                     Section(header: Text("Taxonomy")) {
-                        OutlineGroup(project.taxonomy, children: \.children) { node in
-                            // TODO
-                            DetailRow(text: node.name, detail: "0")
-                            NavigationLink(destination: EntriesView(project: project, taxonomyClass: node.path)) {
+                        OutlineGroup(project.sortedRootClasses, children: \.sortedChildren) { taxonomyClass in
+                            DetailRow(text: taxonomyClass.name, detail: "\(taxonomyClass.entries.count)")
+                            NavigationLink(destination: EntriesView(project: project, taxonomyClass: taxonomyClass)) {
                                 EmptyView()
                             }
                             .frame(width: 0)

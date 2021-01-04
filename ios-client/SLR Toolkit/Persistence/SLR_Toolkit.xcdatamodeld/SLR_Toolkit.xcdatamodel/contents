@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Entry" representedClassName=".Entry" syncable="YES">
         <attribute name="abstract" optional="YES" attributeType="String"/>
         <attribute name="author" optional="YES" attributeType="String"/>
@@ -11,6 +11,7 @@
         <attribute name="rangeInFileData" attributeType="Binary"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="year" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="classes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaxonomyClass" inverseName="entries" inverseEntity="TaxonomyClass"/>
         <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="entries" inverseEntity="Project"/>
     </entity>
     <entity name="Project" representedClassName=".Project" syncable="YES">
@@ -20,10 +21,19 @@
         <attribute name="repositoryURL" attributeType="String"/>
         <attribute name="token" attributeType="String"/>
         <attribute name="username" attributeType="String"/>
+        <relationship name="classes" toMany="YES" deletionRule="Cascade" destinationEntity="TaxonomyClass" inverseName="project" inverseEntity="TaxonomyClass"/>
         <relationship name="entries" toMany="YES" deletionRule="Cascade" destinationEntity="Entry" inverseName="project" inverseEntity="Entry"/>
     </entity>
+    <entity name="TaxonomyClass" representedClassName=".TaxonomyClass" syncable="YES">
+        <attribute name="name" attributeType="String" defaultValueString=""/>
+        <relationship name="children" toMany="YES" deletionRule="Cascade" destinationEntity="TaxonomyClass" inverseName="parent" inverseEntity="TaxonomyClass"/>
+        <relationship name="entries" toMany="YES" deletionRule="Nullify" destinationEntity="Entry" inverseName="classes" inverseEntity="Entry"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaxonomyClass" inverseName="children" inverseEntity="TaxonomyClass"/>
+        <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="classes" inverseEntity="Project"/>
+    </entity>
     <elements>
-        <element name="Entry" positionX="-63" positionY="27" width="128" height="194"/>
-        <element name="Project" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="Entry" positionX="-63" positionY="27" width="128" height="209"/>
+        <element name="Project" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="TaxonomyClass" positionX="-54" positionY="99" width="128" height="104"/>
     </elements>
 </model>

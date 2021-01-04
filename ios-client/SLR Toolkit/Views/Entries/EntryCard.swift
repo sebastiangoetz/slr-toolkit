@@ -4,8 +4,7 @@ struct EntryCard: View {
     var entry: Entry
 
     var body: some View {
-        print(entry.citationKey)
-        return ScrollView(showsIndicators: false) {
+        ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .center, spacing: 6) {
                     if let dateString = entry.dateString {
@@ -47,7 +46,6 @@ struct EntryCard: View {
                         }
                     }
                 }
-//                Spacer()
             }
             .padding(20)
         }

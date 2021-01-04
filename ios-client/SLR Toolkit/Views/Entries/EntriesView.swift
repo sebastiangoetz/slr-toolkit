@@ -3,7 +3,7 @@ import SwiftUI
 
 struct EntriesView: View {
     var project: Project
-    var taxonomyClass: String?
+    var taxonomyClass: TaxonomyClass?
 
     @Environment(\.managedObjectContext) private var managedObjectContext
 
@@ -19,15 +19,18 @@ struct EntriesView: View {
     @State private var sortMode: SortMode
     @State private var sortAscending: Bool
 
-    init(project: Project, taxonomyClass: String?) {
+    init(project: Project, taxonomyClass: TaxonomyClass?) {
         self.project = project
         self.taxonomyClass = taxonomyClass
 
         let sortMode = SortMode(rawValue: UserDefaults.standard.string(forKey: .sortMode) ?? "") ?? .title
         let sortAscending = UserDefaults.standard.bool(forKey: .sortAscending)
         let fetchRequest = Entry.fetchRequest
-        fetchRequest.predicate = NSPredicate(format: "project == %@ && isRemoved == NO", project)
-        fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: true), NSSortDescriptor(key: "month", ascending: true)]) + [NSSortDescriptor(key: "title", ascending: true)]
+        if let taxonomyClass = taxonomyClass {
+            fetchRequest.predicate = NSPredicate(format: "project == %@ && (ANY classes == %@) && isRemoved == NO", project, taxonomyClass)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "project == %@ && isRemoved == NO", project)
+        }
         fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: sortAscending), NSSortDescriptor(key: "month", ascending: sortAscending)]) + [NSSortDescriptor(key: "title", ascending: sortMode == .date || sortAscending)]
         _fetchRequest = State(initialValue: fetchRequest)
         _entries = FetchRequest(fetchRequest: fetchRequest)

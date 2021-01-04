@@ -10,6 +10,9 @@ struct AddProjectDetailsView: View {
     @State private var projectName = ""
     @State private var selection: Directory
     @State private var isDirectoryValid = false
+
+    @State private var isLoading = false
+    @State private var projectCreationPhase: String?
     
     private let username, token, repositoryURL: String
     private let directories: [Directory]
@@ -52,8 +55,21 @@ struct AddProjectDetailsView: View {
         .navigationBarTitle("Add Project", displayMode: .inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Done", action: done)
-                    .disabled(projectName.trimmingCharacters(in: .whitespaces).isEmpty || !isDirectoryValid)
+                if isLoading {
+                    if let phase = projectCreationPhase {
+                        VStack {
+                            ProgressView()
+                            Text(phase)
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                    } else {
+                        ProgressView()
+                    }
+                } else {
+                    Button("Done", action: done)
+                        .disabled(projectName.trimmingCharacters(in: .whitespaces).isEmpty || !isDirectoryValid)
+                }
             }
         }
     }
@@ -64,27 +80,15 @@ struct AddProjectDetailsView: View {
     }
     
     private func done() {
-        // TODO do in background
+        isLoading = true
         let repositoryDirectory = directories[0].url
         let pathInGitDirectory = repositoryDirectory.pathComponents[GitManager.gitDirectory.pathComponents.count...].joined(separator: "/")
         let pathInRepository = selection.url.pathComponents[repositoryDirectory.pathComponents.count...].joined(separator: "/")
-        let newProject = Project.newProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
-
-        if let entries = newProject.parseEntries() {
-            for entry in entries {
-                Entry.newEntry(publication: entry, project: newProject, in: managedObjectContext)
-            }
+        ProjectManager.createProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository) { newProject in
+            project = newProject
+            isLoading = false
+            isPresented = false
         }
-
-        do {
-            try managedObjectContext.save()
-            UserDefaults.standard.set(newProject.objectID.uriRepresentation(), forKey: .activeProject)
-        } catch {
-            print("Error saving managed object context: \(error)")
-        }
-
-        project = newProject
-        isPresented = false
     }
 }
 

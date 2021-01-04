@@ -16,10 +16,10 @@ final class Entry: NSManagedObject, Identifiable {
     @NSManaged var month: Int16
 
     @NSManaged var rangeInFileData: Data
-    @NSManaged var classesData: Data?
     @NSManaged var fieldsData: Data?
 
     @NSManaged var project: Project
+    @NSManaged var classes: Set<TaxonomyClass>
 
     @NSManaged var isRemoved: Bool
 
@@ -32,17 +32,12 @@ final class Entry: NSManagedObject, Identifiable {
         set { rangeInFileData = try! PropertyListEncoder().encode(newValue) }
     }
 
-    var classes: Set<String> {
-        get { classesData == nil ? Set<String>() : try! PropertyListDecoder().decode(Set<String>.self, from: classesData!) }
-        set { classesData = try! PropertyListEncoder().encode(newValue) }
-    }
-
     var fields: [String: String] {
         get { fieldsData == nil ? [:] : try! PropertyListDecoder().decode([String: String].self, from: fieldsData!) }
         set { fieldsData = try! PropertyListEncoder().encode(newValue) }
     }
 
-    @discardableResult static func newEntry(publication: Publication, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
+    @discardableResult static func newEntity(publication: Publication, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
         let entry = NSEntityDescription.insertNewObject(forEntityName: String(describing: self), into: managedObjectContext) as! Entry
         entry.citationKey = publication.citationKey
 
@@ -71,7 +66,6 @@ final class Entry: NSManagedObject, Identifiable {
         }
 
         entry.rangeInFile = publication.rangeInFile
-        entry.classes = publication.classes
         entry.fields = publication.fields.filter { !Self.keysToRemove.contains($0.key) }
 
         entry.project = project

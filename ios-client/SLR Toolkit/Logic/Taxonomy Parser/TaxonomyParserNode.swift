@@ -28,10 +28,6 @@ final class TaxonomyParserNode: CustomStringConvertible, Equatable {
         return inset + name + (children.isEmpty ? "" : " {\n\(children.map { $0.description(level: level + 1) }.joined(separator: "\n"))\n\(inset)}")
     }
 
-    var toTaxonomyNode: TaxonomyNode {
-        return TaxonomyNode(name: name, path: path, children: children.isEmpty ? nil : children.map(\.toTaxonomyNode))
-    }
-
     static func == (lhs: TaxonomyParserNode, rhs: TaxonomyParserNode) -> Bool {
         return lhs.name == rhs.name && lhs.children == rhs.children
     }
