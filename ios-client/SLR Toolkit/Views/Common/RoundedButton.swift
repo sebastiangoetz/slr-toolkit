@@ -14,7 +14,7 @@ struct RoundedButton<Label: View>: View {
             label
                 .foregroundColor(.white)
                 .background(Color.accentColor)
-                .cornerRadius(12)
+                .cornerRadius(10)
         }
     }
 }
