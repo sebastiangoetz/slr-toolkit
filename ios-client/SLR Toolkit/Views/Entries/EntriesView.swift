@@ -17,19 +17,23 @@ struct EntriesView: View {
     }
 
     @State private var sortMode: SortMode
+    @State private var sortAscending: Bool
 
     init(project: Project, taxonomyClass: String?) {
         self.project = project
         self.taxonomyClass = taxonomyClass
 
         let sortMode = SortMode(rawValue: UserDefaults.standard.string(forKey: .sortMode) ?? "") ?? .title
+        let sortAscending = UserDefaults.standard.bool(forKey: .sortAscending)
         let fetchRequest = Entry.fetchRequest
         fetchRequest.predicate = NSPredicate(format: "project == %@ && isRemoved == NO", project)
         fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: true), NSSortDescriptor(key: "month", ascending: true)]) + [NSSortDescriptor(key: "title", ascending: true)]
+        fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: sortAscending), NSSortDescriptor(key: "month", ascending: sortAscending)]) + [NSSortDescriptor(key: "title", ascending: sortMode == .date || sortAscending)]
         _fetchRequest = State(initialValue: fetchRequest)
         _entries = FetchRequest(fetchRequest: fetchRequest)
 
         _sortMode = State(initialValue: sortMode)
+        _sortAscending = State(initialValue: sortAscending)
     }
 
     var body: some View {
@@ -56,20 +60,24 @@ struct EntriesView: View {
                     }
             }
         }
-        .navigationBarTitle(taxonomyClass?.components(separatedBy: "###").last ?? "All Entries", displayMode: .inline)
+        .navigationBarTitle(taxonomyClass?.name ?? "All Entries", displayMode: .inline)
     }
 
     private func sortModeButton(newSortMode: SortMode) -> some View {
-        let title = "Sort by " + (sortMode == .title ? "title" : "date")
+        let title = "Sort by " + (newSortMode == .title ? "title" : "date")
         return Button {
-            if sortMode != newSortMode {
+            if sortMode == newSortMode {
+                sortAscending.toggle()
+            } else {
                 sortMode = newSortMode
+                sortAscending = true
                 UserDefaults.standard.set(sortMode.rawValue, forKey: .sortMode)
-                fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: true), NSSortDescriptor(key: "month", ascending: true)]) + [NSSortDescriptor(key: "title", ascending: true)]
+                UserDefaults.standard.set(sortAscending, forKey: .sortAscending)
             }
+            fetchRequest.sortDescriptors = (sortMode == .title ? [] : [NSSortDescriptor(key: "year", ascending: sortAscending), NSSortDescriptor(key: "month", ascending: sortAscending)]) + [NSSortDescriptor(key: "title", ascending: sortMode == .date || sortAscending)]
         } label : {
             if sortMode == newSortMode {
-                Label(title, systemImage: "checkmark")
+                Label(title, systemImage: sortAscending ? "chevron.up" : "chevron.down")
             } else {
                 Text(title)
             }
