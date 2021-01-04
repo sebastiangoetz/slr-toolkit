@@ -21,8 +21,12 @@
 		504B2EA52584116400DBAE31 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 504B2EA42584116400DBAE31 /* SwiftyBibtex */; };
 		504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B2EAC2584274A00DBAE31 /* Extensions.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
+		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
 		507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F183D25A3463000D88CD3 /* TaxonomyClass.swift */; };
 		507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184325A3481600D88CD3 /* ProjectManager.swift */; };
+		507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184925A373B900D88CD3 /* ExpandingButton.swift */; };
+		507F184E25A374C200D88CD3 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184D25A374C200D88CD3 /* TextButton.swift */; };
+		507F185425A37C1C00D88CD3 /* SubtitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F185325A37C1C00D88CD3 /* SubtitleButton.swift */; };
 		5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */; };
 		508399982557F65E00BA21DE /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508399972557F65E00BA21DE /* Project.swift */; };
 		508399A62557FC0A00BA21DE /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508399A52557FC0A00BA21DE /* Directory.swift */; };
@@ -94,8 +98,12 @@
 		504838D025936ECF005149B6 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		504B2EAC2584274A00DBAE31 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
+		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
 		507F183D25A3463000D88CD3 /* TaxonomyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyClass.swift; sourceTree = "<group>"; };
 		507F184325A3481600D88CD3 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
+		507F184925A373B900D88CD3 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
+		507F184D25A374C200D88CD3 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
+		507F185325A37C1C00D88CD3 /* SubtitleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleButton.swift; sourceTree = "<group>"; };
 		5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectDetailsView.swift; sourceTree = "<group>"; };
 		508399972557F65E00BA21DE /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		508399A52557FC0A00BA21DE /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
@@ -168,6 +176,8 @@
 			isa = PBXGroup;
 			children = (
 				50EFFAF72556CA29004BA48F /* RoundedButton.swift */,
+				507F184D25A374C200D88CD3 /* TextButton.swift */,
+				507F184925A373B900D88CD3 /* ExpandingButton.swift */,
 				504838CA2592ED1A005149B6 /* DetailRow.swift */,
 			);
 			path = Common;
@@ -236,6 +246,24 @@
 			path = "SLR ToolkitUITests";
 			sourceTree = "<group>";
 		};
+		507F185125A37BE600D88CD3 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		507F185225A37BF000D88CD3 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				50066B902553794900EF7EA6 /* MainView.swift */,
+				5077EC6C25A37DC40001EF49 /* ButtonRow.swift */,
+				507F185325A37C1C00D88CD3 /* SubtitleButton.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		508399AF25580BBC00BA21DE /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,8 +311,8 @@
 		50EFFAF62556CA0D004BA48F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				50066B902553794900EF7EA6 /* MainView.swift */,
-				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
+				507F185225A37BF000D88CD3 /* Main */,
+				507F185125A37BE600D88CD3 /* Projects */,
 				5002A2EF259390EB00847F55 /* Entries */,
 				5002A2F0259390F700847F55 /* Add Project */,
 				5002A2F12593910C00847F55 /* Common */,
@@ -450,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504838D125936ECF005149B6 /* Entry.swift in Sources */,
+				5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */,
 				50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */,
 				50500402257934F100B79470 /* EntriesView.swift in Sources */,
 				503E51682553538200EA801A /* PersistenceController.swift in Sources */,
@@ -465,11 +494,14 @@
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
 				50F3A5A5259403A20021E943 /* CardValue.swift in Sources */,
 				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
+				507F185425A37C1C00D88CD3 /* SubtitleButton.swift in Sources */,
+				507F184E25A374C200D88CD3 /* TextButton.swift in Sources */,
 				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
 				5002A2F32593912800847F55 /* EntryRow.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
+				507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */,
 				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,

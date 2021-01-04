@@ -13,7 +13,11 @@ struct MainView: View {
         Group {
             if let project = project {
                 List {
-                    Section {
+                    ButtonRow(buttons: [
+                        ("Filter", "84 entries", true),
+                        ("Classify", "12 entries", true)
+                    ])
+                    Section(header: Text("Entries")) {
                         NavigationLink(destination: EntriesView(project: project, taxonomyClass: nil)) {
                             DetailRow(text: "All Entries", detail: "\(project.entries.count)")
                         }
@@ -27,6 +31,12 @@ struct MainView: View {
                             .frame(width: 0)
                             .opacity(0)
                         }
+                    }
+                    Section(header: Text("Source Control")) {
+                        ButtonRow(buttons: [
+                            ("Pull", "4 commits behind", true),
+                            ("Commit", "37 changes", true)
+                        ])
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
@@ -56,7 +66,7 @@ struct MainView: View {
                 VStack(spacing: 20) {
                     Text("Welcome to SLR Toolkit!\nAdd a project to get started.")
                         .multilineTextAlignment(.center)
-                    RoundedButton("Add Project") {
+                    TextButton("Add Project") {
                         addProjectIsPresented = true
                     }
                 }

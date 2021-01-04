@@ -1,27 +1,29 @@
 import SwiftUI
 
-struct RoundedButton<Label: View>: View {
+struct ExpandingButton<Label: View>: View {
     private var action: () -> Void
     private var label: Label
-    
+
     init(action: @escaping () -> Void, @ViewBuilder label: () -> Label) {
         self.action = action
         self.label = label()
     }
-    
+
     var body: some View {
-        Button(action: action) {
-            label
-                .foregroundColor(.white)
-                .background(Color.accentColor)
-                .cornerRadius(12)
+        RoundedButton(action: action) {
+            HStack {
+                Spacer()
+                label
+                Spacer()
+            }
         }
+        .frame(maxWidth: .infinity)
     }
 }
 
-struct RoundedButton_Previews: PreviewProvider {
+struct ExpandingButton_Previews: PreviewProvider {
     static var previews: some View {
-        RoundedButton(action: {}) {
+        ExpandingButton(action: {}) {
             Text("OK")
         }
     }
