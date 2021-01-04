@@ -24,6 +24,8 @@
 		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
 		5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7225A37FAB0001EF49 /* ProjectView.swift */; };
 		5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7625A380190001EF49 /* WelcomeView.swift */; };
+		5077EC7B25A3BFD90001EF49 /* ObjectiveGit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; };
+		5077EC7C25A3BFD90001EF49 /* ObjectiveGit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F183D25A3463000D88CD3 /* TaxonomyClass.swift */; };
 		507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184325A3481600D88CD3 /* ProjectManager.swift */; };
 		507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184925A373B900D88CD3 /* ExpandingButton.swift */; };
@@ -36,8 +38,6 @@
 		50864A5125541590001F0007 /* GitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5025541590001F0007 /* GitManager.swift */; };
 		50864A5825542D42001F0007 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
 		50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
-		50D3454C2592B48600B57191 /* SwiftGit2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50D345482592B41600B57191 /* SwiftGit2.framework */; };
-		50D3454D2592B48600B57191 /* SwiftGit2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50D345482592B41600B57191 /* SwiftGit2.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		50D345512592D30B00B57191 /* TaxonomyParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345502592D30B00B57191 /* TaxonomyParserTests.swift */; };
 		50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345542592D38700B57191 /* TaxonomyParser.swift */; };
 		50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */; };
@@ -73,7 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				50D3454D2592B48600B57191 /* SwiftGit2.framework in Embed Frameworks */,
+				5077EC7C25A3BFD90001EF49 /* ObjectiveGit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +103,7 @@
 		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
 		5077EC7225A37FAB0001EF49 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		5077EC7625A380190001EF49 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/iOS/ObjectiveGit.framework; sourceTree = "<group>"; };
 		507F183D25A3463000D88CD3 /* TaxonomyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyClass.swift; sourceTree = "<group>"; };
 		507F184325A3481600D88CD3 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
 		507F184925A373B900D88CD3 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
@@ -115,7 +116,6 @@
 		50864A5025541590001F0007 /* GitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitManager.swift; sourceTree = "<group>"; };
 		50864A5725542D42001F0007 /* GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitClient.swift; sourceTree = "<group>"; };
 		50864A6125542DBF001F0007 /* MockGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGitClient.swift; sourceTree = "<group>"; };
-		50D345482592B41600B57191 /* SwiftGit2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftGit2.framework; sourceTree = "<group>"; };
 		50D345502592D30B00B57191 /* TaxonomyParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserTests.swift; sourceTree = "<group>"; };
 		50D345542592D38700B57191 /* TaxonomyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParser.swift; sourceTree = "<group>"; };
 		50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailsView.swift; sourceTree = "<group>"; };
@@ -132,8 +132,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50D3454C2592B48600B57191 /* SwiftGit2.framework in Frameworks */,
 				504B2EA52584116400DBAE31 /* SwiftyBibtex in Frameworks */,
+				5077EC7B25A3BFD90001EF49 /* ObjectiveGit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +190,7 @@
 		50066B802553788E00EF7EA6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				50D345482592B41600B57191 /* SwiftGit2.framework */,
+				5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -359,6 +359,7 @@
 				503E51582553538100EA801A /* Frameworks */,
 				503E51592553538100EA801A /* Resources */,
 				502CD31325750AD900E5D707 /* Embed Frameworks */,
+				5077EC8325A3BFF90001EF49 /* Carthage Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -477,6 +478,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5077EC8325A3BFF90001EF49 /* Carthage Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ObjectiveGit.framework",
+			);
+			name = "Carthage Copy Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		503E51572553538100EA801A /* Sources */ = {
@@ -689,7 +712,9 @@
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS/ObjectiveGit.framework/Headers/";
 				INFOPLIST_FILE = "SLR Toolkit/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -726,7 +751,9 @@
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
 					"$(PROJECT_DIR)/SLR\\ Toolkit",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/Carthage/Build/iOS/ObjectiveGit.framework/Headers/";
 				INFOPLIST_FILE = "SLR Toolkit/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -1,5 +1,5 @@
 import Foundation
-import SwiftGit2
+import ObjectiveGit
 
 protocol GitClient {
     func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void)
@@ -15,19 +15,14 @@ struct HttpsGitClient: GitClient {
 
     func clone(from remoteURL: URL, to localURL: URL, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let credentials = Credentials.plaintext(username: username, password: token)
-            let result: Result<Repository, NSError>
-            if let progress = progress {
-                result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials) { _, completed, total in
-                    progress(Float(completed) / Float(total))
+            do {
+                let credential = try GTCredential(userName: username, password: token)
+                let auth = GTCredentialProvider { _, _, _ in credential }
+                try GTRepository.clone(from: remoteURL, toWorkingDirectory: localURL, options: [GTRepositoryCloneOptionsCredentialProvider: auth]) { progressPointer, _ in
+                    progress?(Float(progressPointer.pointee.received_objects) / Float(progressPointer.pointee.total_objects))
                 }
-            } else {
-                result = Repository.clone(from: remoteURL, to: localURL, credentials: credentials)
-            }
-            switch result {
-            case .success:
                 completion(nil)
-            case .failure(let error):
+            } catch {
                 completion(error)
             }
         }

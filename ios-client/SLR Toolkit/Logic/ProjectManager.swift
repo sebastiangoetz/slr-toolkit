@@ -7,6 +7,13 @@ enum ProjectManager {
             let managedObjectContext = PersistenceController.shared.container.viewContext
             let project = Project.newEntity(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
 
+            do {
+                try managedObjectContext.save() // Workaround, otherwise a Core Data exception is thrown
+            } catch {
+                print("Error saving managed object context: \(error)")
+            }
+
+
             let nodes = parseTaxonomy(project: project) ?? []
             let classes = createTaxonomyClasses(project: project, nodes: nodes)
             let publications = parsePublications(project: project)
