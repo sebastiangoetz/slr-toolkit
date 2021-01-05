@@ -7,31 +7,50 @@ enum ProjectManager {
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext
             let project = Project.newEntity(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
+            managedObjectContext.saveAndLogError()  // Workaround, otherwise a Core Data exception is thrown
 
-            do {
-                try managedObjectContext.save() // Workaround, otherwise a Core Data exception is thrown
-            } catch {
-                print("Error saving managed object context: \(error)")
-            }
-
-
-            let nodes = parseTaxonomy(project: project) ?? []
-            let classes = createTaxonomyClasses(project: project, nodes: nodes, managedObjectContext: managedObjectContext)
-
-            let publications = parsePublications(project: project)
-            let entries = createEntries(project: project, publications: publications, managedObjectContext: managedObjectContext)
-
-            assign(entries: entries, to: classes)
-
-            do {
-                try managedObjectContext.save()
-                UserDefaults.standard.set(project.objectID.uriRepresentation(), forKey: .activeProject)
-            } catch {
-                print("Error saving managed object context: \(error)")
-            }
-
+            createContents(for: project, managedObjectContext: managedObjectContext)
             completion(project)
         }
+    }
+
+    static func updateProject(_ project: Project, fileModificationDates: [String: Date], completion: @escaping () -> Void) {
+        guard fileModificationDates != project.fileModificationDates else {
+            completion()
+            return
+        }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let managedObjectContext = PersistenceController.shared.container.viewContext
+            let decisions = project.entries.reduce(into: [String: Entry.Decision]()) { acc, entry in
+                if entry.decision != .outstanding {
+                    acc[entry.citationKey] = entry.decision
+                }
+            }
+            project.entries.forEach { managedObjectContext.delete($0) }
+            project.classes.forEach { managedObjectContext.delete($0) }
+            let entries = createContents(for: project, managedObjectContext: managedObjectContext)
+            for entry in entries {
+                if let decision = decisions[entry.citationKey] {
+                    entry.decision = decision
+                }
+            }
+            completion()
+        }
+    }
+
+    @discardableResult static func createContents(for project: Project, managedObjectContext: NSManagedObjectContext) -> [Entry] {
+        let nodes = parseTaxonomy(project: project) ?? []
+        let classes = createTaxonomyClasses(project: project, nodes: nodes, managedObjectContext: managedObjectContext)
+
+        let publications = parsePublications(project: project)
+        let entries = createEntries(project: project, publications: publications, managedObjectContext: managedObjectContext)
+
+        assign(entries: entries, to: classes)
+
+        managedObjectContext.saveAndLogError()
+        UserDefaults.standard.set(project.objectID.uriRepresentation(), forKey: .activeProject)
+
+        return entries.map(\.0)
     }
 
     private static func parseTaxonomy(project: Project) -> [TaxonomyParserNode]? {

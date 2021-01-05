@@ -86,6 +86,16 @@ extension NSFetchRequest {
     }
 }
 
+extension NSManagedObjectContext {
+    func saveAndLogError() {
+        do {
+            try save()
+        } catch {
+            print("Error saving managed object context: \(error)")
+        }
+    }
+}
+
 // SwiftyBibtex
 
 extension Publication {

@@ -27,11 +27,7 @@ struct EntryDetailsView: View {
 
     private func removeEntry() {
         entry.decision = .discard
-        do {
-            try managedObjectContext.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
+        managedObjectContext.saveAndLogError()
         presentationMode.wrappedValue.dismiss()
     }
 }

@@ -19,11 +19,7 @@ struct EntriesList: View {
             }
             .onDelete { indexSet in
                 indexSet.forEach { entries[$0].decision = .discard }
-                do {
-                    try managedObjectContext.save()
-                } catch {
-                    print("Error saving context: \(error)")
-                }
+                managedObjectContext.saveAndLogError()
             }
         }
     }

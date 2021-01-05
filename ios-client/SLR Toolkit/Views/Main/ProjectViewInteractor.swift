@@ -20,12 +20,15 @@ struct ProjectViewInteractorImplementation: ProjectViewInteractor {
 
     func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertError: Binding<AlertError?>) {
         isLoading.wrappedValue = true
+        let fileModificationDates = project.fileModificationDates
         GitManager.default.pull(project: project) { error in
-            isLoading.wrappedValue = false
             if let error = error {
                 alertError.wrappedValue = AlertError(title: "Error pulling repository", message: error.localizedDescription)
             } else {
                 commitsBehindOrigin.wrappedValue = 0
+                ProjectManager.updateProject(project, fileModificationDates: fileModificationDates) {
+                    isLoading.wrappedValue = false
+                }
             }
         }
     }

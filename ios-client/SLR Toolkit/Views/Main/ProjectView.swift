@@ -45,7 +45,7 @@ struct ProjectView: View {
             }
             Section(header: Text("Entries")) {
                 NavigationLink(destination: EntriesView(project: project, taxonomyClass: nil)) {
-                    DetailRow(text: "All Entries", detail: "\(project.entries.count)")
+                    DetailRow(text: "All Entries", detail: "\(project.entries.filter { $0.decision != .discard }.count)")
                 }
             }
             Section(header: Text("Taxonomy")) {

@@ -22,6 +22,26 @@ final class Project: NSManagedObject {
             .appendingPathComponent(pathInGitDirectory)
             .appendingPathComponent(pathInRepository, isDirectory: true)
     }
+
+    var fileModificationDates: [String: Date] {
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey, .contentModificationDateKey])
+            return contents.reduce(into: [:]) { acc, url in
+                do {
+                    let fileName = url.pathComponents.last!
+                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey, .contentModificationDateKey])
+                    if let isDirectory = resourceValues.isDirectory, !isDirectory, let contentModificationDate = resourceValues.contentModificationDate, fileName.hasSuffix(".bib") || fileName.hasSuffix(".taxonomy") {
+                        acc[fileName] = contentModificationDate
+                    }
+                } catch {
+                    print("Error fetching resource values for \(url): \(error)")
+                }
+            }
+        } catch {
+            print("Error listing contents of \(url): \(error)")
+            return [:]
+        }
+    }
     
     @discardableResult static func newEntity(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, in managedObjectContext: NSManagedObjectContext) -> Project {
         let project = NSEntityDescription.insertNewObject(forEntityName: String(describing: self), into: managedObjectContext) as! Project
