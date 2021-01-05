@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ProjectView: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
+    @Environment(\.projectViewInteractor) private var interactor
 
     @Binding var project: Project!
 
@@ -38,7 +39,7 @@ struct ProjectView: View {
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
-                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, pull),
+                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, { interactor.pull(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertError: $alertError) }),
                     ("Commit", "37 changes", !isFetchingOrPulling, false, {})
                 ])
             }
@@ -76,7 +77,9 @@ struct ProjectView: View {
 
     private func menu() -> some View {
         Menu {
-            Button(action: fetch) {
+            Button {
+                interactor.fetch(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertError: $alertError)
+            } label: {
                 Label("Fetch", systemImage: "arrow.down")
             }
             Divider()
@@ -91,30 +94,6 @@ struct ProjectView: View {
         } label: {
             Image(systemName: "ellipsis.circle")
                 .imageScale(.large)
-        }
-    }
-
-    private func fetch() {
-        isFetchingOrPulling = true
-        GitManager.default.fetch(project: project) { error in
-            isFetchingOrPulling = false
-            if let error = error {
-                alertError = AlertError(title: "Error fetching repository", message: error.localizedDescription)
-            } else {
-                commitsBehindOrigin = GitManager.default.commitsAheadAndBehindOrigin(project: project).behind
-            }
-        }
-    }
-
-    private func pull() {
-        isFetchingOrPulling = true
-        GitManager.default.pull(project: project) { error in
-            isFetchingOrPulling = false
-            if let error = error {
-                alertError = AlertError(title: "Error pulling repository", message: error.localizedDescription)
-            } else {
-                commitsBehindOrigin = 0
-            }
         }
     }
 }
