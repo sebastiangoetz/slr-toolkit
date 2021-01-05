@@ -10,7 +10,7 @@ struct ProjectView: View {
     @FetchRequest private var unclassifiedEntries: FetchedResults<Entry>
 
     @State private var commitsBehindOrigin: Int
-    @State private var isFetching = false
+    @State private var isFetchingOrPulling = false
     @State private var alertError: AlertError?
     @State private var projectsViewIsPresented = false
 
@@ -38,8 +38,8 @@ struct ProjectView: View {
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
-                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", commitsBehindOrigin > 0, isFetching, {}),
-                    ("Commit", "37 changes", true, isFetching, {})
+                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, pull),
+                    ("Commit", "37 changes", !isFetchingOrPulling, false, {})
                 ])
             }
             Section(header: Text("Entries")) {
@@ -95,13 +95,25 @@ struct ProjectView: View {
     }
 
     private func fetch() {
-        isFetching = true
+        isFetchingOrPulling = true
         GitManager.default.fetch(project: project) { error in
-            isFetching = false
+            isFetchingOrPulling = false
             if let error = error {
                 alertError = AlertError(title: "Error fetching repository", message: error.localizedDescription)
             } else {
                 commitsBehindOrigin = GitManager.default.commitsAheadAndBehindOrigin(project: project).behind
+            }
+        }
+    }
+
+    private func pull() {
+        isFetchingOrPulling = true
+        GitManager.default.pull(project: project) { error in
+            isFetchingOrPulling = false
+            if let error = error {
+                alertError = AlertError(title: "Error pulling repository", message: error.localizedDescription)
+            } else {
+                commitsBehindOrigin = 0
             }
         }
     }

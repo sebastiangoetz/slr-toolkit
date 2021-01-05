@@ -16,7 +16,11 @@ struct MockGitClient: GitClient {
         completion(nil)
     }
 
-    func commitsBehindOrigin(repositoryURL: URL) -> Result<Int, Error> {
-        return .success(0)
+    func pull(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void) {
+        completion(nil)
+    }
+
+    func commitsAheadAndBehindOrigin(repositoryURL: URL) -> Result<(ahead: Int, behind: Int), Error> {
+        return .success((0, 0))
     }
 }

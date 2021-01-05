@@ -87,6 +87,11 @@ struct GitManager {
         gitClient.fetch(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
 
+    func pull(project: Project, completion: @escaping (Error?) -> Void) {
+        // TODO update project, re-parse taxonomy and publications
+        gitClient.pull(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
+    }
+
     func commitsAheadAndBehindOrigin(project: Project) -> (ahead: Int, behind: Int) {
         switch gitClient.commitsAheadAndBehindOrigin(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory)) {
         case .success(let tuple):

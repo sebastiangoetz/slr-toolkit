@@ -6,7 +6,7 @@ protocol GitClient {
 
     func clone(from remoteURL: URL, to localURL: URL, credentials: Credentials, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void)
     func fetch(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void)
-//    func pull(repositoryURL: URL, completion: @escaping (Error?) -> Void)
+    func pull(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void)
     func commitsAheadAndBehindOrigin(repositoryURL: URL) -> Result<(ahead: Int, behind: Int), Error>
 }
 
@@ -30,10 +30,10 @@ struct HttpsGitClient: GitClient {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
                 let repository = try GTRepository(url: repositoryURL)
-                let remote = try GTRemote(name: "origin", in: repository)
+                let origin = try GTRemote(name: "origin", in: repository)
                 let credential = try GTCredential(userName: credentials.username, password: credentials.token)
                 let auth = GTCredentialProvider { _, _, _ in credential }
-                try repository.fetch(remote, withOptions: [GTRepositoryRemoteOptionsCredentialProvider: auth])
+                try repository.fetch(origin, withOptions: [GTRepositoryRemoteOptionsCredentialProvider: auth])
                 completion(nil)
             } catch {
                 completion(error)
@@ -41,20 +41,21 @@ struct HttpsGitClient: GitClient {
         }
     }
 
-//    func pull(repositoryURL: URL, completion: @escaping (Error?) -> Void) {
-//        switch Repository.at(repositoryURL) {
-//        case .success(let repository):
-//            fetch(repository: repository) { error in
-//                if let error = error {
-//                    completion(error)
-//                } else {
-//                    repository.comm
-//                }
-//            }
-//        case .failure(let error):
-//            completion(error)
-//        }
-//    }
+    func pull(repositoryURL: URL, credentials: Credentials, completion: @escaping (Error?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let repository = try GTRepository(url: repositoryURL)
+                let currentBranch = try repository.currentBranch()
+                let origin = try GTRemote(name: "origin", in: repository)
+                let credential = try GTCredential(userName: credentials.username, password: credentials.token)
+                let auth = GTCredentialProvider { _, _, _ in credential }
+                try repository.pull(currentBranch, from: origin, withOptions: [GTRepositoryRemoteOptionsCredentialProvider: auth])
+                completion(nil)
+            } catch {
+                completion(error)
+            }
+        }
+    }
 
     func commitsAheadAndBehindOrigin(repositoryURL: URL) -> Result<(ahead: Int, behind: Int), Error> {
         do {

@@ -16,6 +16,7 @@ struct ButtonRow: View {
                     }
                 } else {
                     SubtitleButton(title: configuration.title, subtitle: configuration.subtitle, action: configuration.action)
+                        .buttonStyle(PlainButtonStyle())
                         .disabled(!configuration.enabled)
                 }
             }
