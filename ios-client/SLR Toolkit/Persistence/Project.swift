@@ -13,6 +13,14 @@ final class Project: NSManagedObject {
     @NSManaged var entries: Set<Entry>
     @NSManaged var classes: Set<TaxonomyClass>
 
+    var discardedEntries: Set<Entry> {
+        return entries.filter { $0.decision == .discard }
+    }
+
+    var classifiedEntries: Set<Entry> {
+        return entries.filter { !$0.hadClasses && !$0.classes.isEmpty }
+    }
+
     var sortedRootClasses: [TaxonomyClass] {
         return classes.filter { $0.parent == nil }.sorted { $0.name < $1.name }
     }

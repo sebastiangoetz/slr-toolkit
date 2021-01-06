@@ -22,10 +22,12 @@ final class Entry: NSManagedObject, Identifiable {
     @NSManaged var rangeInFileData: Data
     @NSManaged var fieldsData: Data?
 
+    @NSManaged var decisionRaw: Int16
+
+    @NSManaged var hadClasses: Bool
+
     @NSManaged var project: Project
     @NSManaged var classes: Set<TaxonomyClass>
-
-    @NSManaged var decisionRaw: Int16
 
     var decision: Decision {
         get { Decision(rawValue: decisionRaw) ?? .outstanding }
@@ -78,6 +80,8 @@ final class Entry: NSManagedObject, Identifiable {
         entry.fields = publication.fields.filter { !Self.keysToRemove.contains($0.key) }
 
         entry.decision = decision
+
+        entry.hadClasses = publication.fields["classes"]?.isEmpty == false
 
         entry.project = project
 

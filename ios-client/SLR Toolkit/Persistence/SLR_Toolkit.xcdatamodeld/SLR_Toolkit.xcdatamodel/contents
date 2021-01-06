@@ -7,6 +7,7 @@
         <attribute name="classesData" optional="YES" attributeType="Binary"/>
         <attribute name="decisionRaw" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="fieldsData" optional="YES" attributeType="Binary"/>
+        <attribute name="hadClasses" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="month" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="rangeInFileData" attributeType="Binary"/>
         <attribute name="title" optional="YES" attributeType="String"/>

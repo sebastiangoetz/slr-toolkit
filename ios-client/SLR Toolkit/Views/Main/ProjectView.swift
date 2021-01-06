@@ -9,6 +9,7 @@ struct ProjectView: View {
 
     @FetchRequest private var unfilteredEntries: FetchedResults<Entry>
     @FetchRequest private var unclassifiedEntries: FetchedResults<Entry>
+    @FetchRequest private var changedEntries: FetchedResults<Entry>
 
     @State private var commitsBehindOrigin: Int
     @State private var isFetchingOrPulling = false
@@ -20,15 +21,9 @@ struct ProjectView: View {
 
         _commitsBehindOrigin = State(initialValue: GitManager.default.commitsAheadAndBehindOrigin(project: project.wrappedValue!).behind)
 
-        let fetchRequest1 = Entry.fetchRequest
-        fetchRequest1.predicate = NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)
-        fetchRequest1.sortDescriptors = []
-        _unfilteredEntries = FetchRequest(fetchRequest: fetchRequest1)
-
-        let fetchRequest2 = Entry.fetchRequest
-        fetchRequest2.predicate = NSPredicate(format: "project == %@ && classes.@count == 0", project.wrappedValue!)
-        fetchRequest2.sortDescriptors = []
-        _unclassifiedEntries = FetchRequest(fetchRequest: fetchRequest2)
+        _unfilteredEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)).withSortDescriptors([]))
+        _unclassifiedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && classes.@count == 0", project.wrappedValue!)).withSortDescriptors([]))
+        _changedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && (decisionRaw == 2 || (hadClasses == NO && classes.@count > 0))", project.wrappedValue!)).withSortDescriptors([]))
     }
 
     var body: some View {
@@ -40,7 +35,7 @@ struct ProjectView: View {
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
                     ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, { interactor.pull(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertError: $alertError) }),
-                    ("Commit", "37 changes", !isFetchingOrPulling, false, {})
+                    ("Commit", changedEntries.isEmpty ? "No changes" : changedEntries.count == 1 ? "1 change" : "\(changedEntries.count) changes", !isFetchingOrPulling && !changedEntries.isEmpty, isCommitting, {})
                 ])
             }
             Section(header: Text("Entries")) {

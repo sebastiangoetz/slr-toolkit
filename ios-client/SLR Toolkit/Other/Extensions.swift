@@ -84,6 +84,11 @@ extension NSFetchRequest {
         self.predicate = predicate
         return self
     }
+
+    @objc func withSortDescriptors(_ sortDescriptors: [NSSortDescriptor]) -> NSFetchRequest {
+        self.sortDescriptors = sortDescriptors
+        return self
+    }
 }
 
 extension NSManagedObjectContext {
