@@ -2,6 +2,12 @@ import CoreData
 import SwiftUI
 
 struct ProjectView: View {
+    enum Sheet: Int, Identifiable {
+        case projectsView, settingsView
+
+        var id: Int { rawValue }
+    }
+
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.projectViewInteractor) private var interactor
 
@@ -14,7 +20,7 @@ struct ProjectView: View {
     @State private var commitsBehindOrigin: Int
     @State private var isFetchingOrPulling = false
     @State private var alertError: AlertError?
-    @State private var projectsViewIsPresented = false
+    @State private var presentedSheet: Sheet?
 
     init(project: Binding<Project?>) {
         _project = project
@@ -64,9 +70,14 @@ struct ProjectView: View {
         .alert(item: $alertError, content: { alertError in
             Alert(title: Text(alertError.title), message: Text(alertError.message), dismissButton: .cancel(Text("OK")))
         })
-        .sheet(isPresented: $projectsViewIsPresented) {
-            ProjectsView(activeProject: $project)
-                .environment(\.managedObjectContext, managedObjectContext)
+        .sheet(item: $presentedSheet) { sheet in
+            switch sheet {
+            case .projectsView:
+                ProjectsView(activeProject: $project)
+                    .environment(\.managedObjectContext, managedObjectContext)
+            case .settingsView:
+                SettingsView()
+            }
         }
     }
 
@@ -79,12 +90,18 @@ struct ProjectView: View {
             }
             Divider()
             Button {
-                projectsViewIsPresented = true
+                presentedSheet = .projectsView
             } label: {
                 Label("Change Project", systemImage: "folder")
             }
             Button(action: {}) {
                 Label("Project Settings", systemImage: "folder.badge.gear")
+            }
+            Divider()
+            Button {
+                presentedSheet = .settingsView
+            } label: {
+                Label("App Settings", systemImage: "gearshape")
             }
         } label: {
             Image(systemName: "ellipsis.circle")
