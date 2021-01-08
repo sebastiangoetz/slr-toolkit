@@ -1,17 +1,28 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Objects;
 
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
+import de.davidtiede.slrtoolkit.views.RepoListAdapter;
 
 public class ProjectsFragment extends Fragment {
+
+    private RepoViewModel repoViewModel;
 
     @Override
     public View onCreateView(
@@ -24,6 +35,18 @@ public class ProjectsFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        final RepoListAdapter adapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
+        recyclerView.setAdapter(adapter);
+
+        repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
+
+        repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), repos -> {
+            adapter.submitList(repos);
+        });
+
 
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override

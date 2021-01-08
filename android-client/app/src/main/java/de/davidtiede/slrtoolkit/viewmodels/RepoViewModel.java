@@ -25,7 +25,7 @@ public class RepoViewModel extends AndroidViewModel {
         allRepos = repoRepository.getAllRepos();
     }
 
-    LiveData<List<Repo>> getAllRepos() {
+    public LiveData<List<Repo>> getAllRepos() {
         return allRepos;
     }
 
