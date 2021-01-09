@@ -6,7 +6,7 @@
     <string name="next">Next</string>
     <string name="textview_add_project">Add Project</string>
     <string name="textview_no_project">No projects.</string>
-    <string name="button_add_project">Add SLR Project</string>
+    <string name="fab_add_project">Add SLR Project</string>
     <string name="textinput_password">Git Repo Password</string>
     <string name="textinput_url">Git Repo URL</string>
     <string name="textinput_username">Git Repo Username</string>

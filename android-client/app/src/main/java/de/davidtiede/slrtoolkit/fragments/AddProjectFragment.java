@@ -15,10 +15,13 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
+import de.davidtiede.slrtoolkit.MainActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
@@ -30,10 +33,9 @@ public class AddProjectFragment extends Fragment {
     private TextInputEditText edittext_url;
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FloatingActionButton floatingActionButton = ((MainActivity) requireActivity()).getFloatingActionButton();
+        floatingActionButton.setVisibility(View.INVISIBLE);
         return inflater.inflate(R.layout.fragment_add_project, container, false);
     }
 
@@ -41,29 +43,26 @@ public class AddProjectFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         edittext_url = view.findViewById(R.id.edittext_url);
-        view.findViewById(R.id.button_add_project).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TextUtils.isEmpty(edittext_url.getText())) {
-                    Toast.makeText(requireActivity().getApplicationContext(),
-                            getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Repo repo = new Repo(Objects.requireNonNull(edittext_url.getText()).toString());
-                repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
-
-                repoViewModel.insert(repo);
-
-                WorkRequest cloneWorkRequest =
-                        new OneTimeWorkRequest.Builder(CloneWorker.class)
-                                .build();
-                WorkManager
-                        .getInstance(requireActivity().getApplicationContext())
-                        .enqueue(cloneWorkRequest);
-
-                NavHostFragment.findNavController(AddProjectFragment.this)
-                        .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
+        view.findViewById(R.id.button_add_project).setOnClickListener(view1 -> {
+            if (TextUtils.isEmpty(edittext_url.getText())) {
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
+                return;
             }
+            Repo repo = new Repo(Objects.requireNonNull(edittext_url.getText()).toString());
+            repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+
+            repoViewModel.insert(repo);
+
+            WorkRequest cloneWorkRequest =
+                    new OneTimeWorkRequest.Builder(CloneWorker.class)
+                            .build();
+            WorkManager
+                    .getInstance(requireActivity().getApplicationContext())
+                    .enqueue(cloneWorkRequest);
+
+            NavHostFragment.findNavController(AddProjectFragment.this)
+                    .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
         });
     }
 }

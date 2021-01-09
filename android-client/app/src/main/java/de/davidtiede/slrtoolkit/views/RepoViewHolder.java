@@ -14,7 +14,7 @@ class RepoViewHolder extends RecyclerView.ViewHolder {
 
     private RepoViewHolder(View itemView) {
         super(itemView);
-        projectItemView = itemView.findViewById(R.id.textView);
+        projectItemView = itemView.findViewById(R.id.textview_recyclerview);
     }
 
     public void bind(String text) {
