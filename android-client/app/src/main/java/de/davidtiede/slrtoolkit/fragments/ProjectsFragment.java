@@ -37,7 +37,7 @@ public class ProjectsFragment extends Fragment {
         final RepoListAdapter adapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
         recyclerView.setAdapter(adapter);
 
-        repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), repos -> {
             adapter.submitList(repos);

@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey;
 public class Repo {
     @PrimaryKey
     public int id;
-    @NonNull
     public String name;
     public String local_path;
     public String remote_url;
@@ -16,8 +15,8 @@ public class Repo {
     public String git_name;
     public String git_email;
 
-    public Repo(@NonNull String name) {
-        this.name = name;
+    public Repo(String remote_url) {
+        this.name = remote_url;
     }
 
     @NonNull

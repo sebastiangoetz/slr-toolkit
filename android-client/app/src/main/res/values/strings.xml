@@ -10,4 +10,5 @@
     <string name="textinput_password">Git Repo Password</string>
     <string name="textinput_url">Git Repo URL</string>
     <string name="textinput_username">Git Repo Username</string>
+    <string name="toast_empty_url">Please leave URL not empty.</string>
 </resources>

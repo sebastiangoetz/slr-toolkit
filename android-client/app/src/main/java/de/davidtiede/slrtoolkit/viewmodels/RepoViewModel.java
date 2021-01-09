@@ -29,7 +29,7 @@ public class RepoViewModel extends AndroidViewModel {
         return allRepos;
     }
 
-    void insert(Repo repo) {
+    public void insert(Repo repo) {
         repoRepository.insert(repo);
     }
 }
