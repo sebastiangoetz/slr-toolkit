@@ -47,7 +47,7 @@ dependencies {
     //implementation "androidx.work:work-gcm:$work_version" // optional - GCMNetworkManager support
     //androidTestImplementation "androidx.work:work-testing:$work_version" // optional - Test helpers
 
-    def room_version = "2.2.5"
+    def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     //implementation "androidx.room:room-rxjava2:$room_version" // optional - RxJava support for Room
