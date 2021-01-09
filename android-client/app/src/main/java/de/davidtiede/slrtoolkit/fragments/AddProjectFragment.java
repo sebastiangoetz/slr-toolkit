@@ -22,14 +22,13 @@ public class AddProjectFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_project, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_add_project).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 WorkRequest cloneWorkRequest =

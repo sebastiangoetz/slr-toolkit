@@ -2,10 +2,13 @@
 <resources>
     <string name="app_name">SLR Toolkit</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="add_project">SLR Projekt hinzufügen</string>
     <string name="next">Weiter</string>
-    <string name="previous">Zurück</string>
-    <string name="no_project">Bisher keine Projekte.</string>
-    <string name="projects_fragment_label">Projects Fragment</string>
-    <string name="add_project_fragment_label">Add Project Fragment</string>
+    <string name="textview_add_project">Projekt hinzufügen</string>
+    <string name="textview_no_project">Bisher keine Projekte.</string>
+    <string name="fragment_label_projects">Projects Fragment</string>
+    <string name="fragment_label_add_project">Add Project Fragment</string>
+    <string name="button_add_project">SLR Projekt hinzufügen</string>
+    <string name="textinput_password">Git Repo Passwort</string>
+    <string name="textinput_url">Git Repo URL</string>
+    <string name="textinput_username">Git Repo Nutzername</string>
 </resources>
