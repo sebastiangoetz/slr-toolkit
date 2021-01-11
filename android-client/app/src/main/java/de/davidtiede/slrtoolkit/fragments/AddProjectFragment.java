@@ -42,7 +42,7 @@ public class AddProjectFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         edittext_url = view.findViewById(R.id.edittext_url);
-        view.findViewById(R.id.button_add_project).setOnClickListener(view1 -> {
+        view.findViewById(R.id.button_clone_project).setOnClickListener(view1 -> {
             if (TextUtils.isEmpty(edittext_url.getText())) {
                 Toast.makeText(requireActivity().getApplicationContext(),
                         getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();

@@ -8,8 +8,13 @@
     <string name="fragment_label_projects">Projects Fragment</string>
     <string name="fragment_label_add_project">Add Project Fragment</string>
     <string name="fab_add_project">SLR Projekt hinzufügen</string>
-    <string name="textinput_password">Git Repo Passwort</string>
-    <string name="textinput_url">Git Repo URL</string>
-    <string name="textinput_username">Git Repo Nutzername</string>
+    <string name="textinput_token">Token</string>
+    <string name="textinput_url">Repository URL</string>
+    <string name="textinput_username">Nutzername</string>
     <string name="toast_empty_url">Bitte lassen sie URL nicht leer.</string>
+    <string name="textview_credentials">Zugangsdaten</string>
+    <string name="textview_git_settings">Git Einstellungen</string>
+    <string name="textinput_git_name">Name</string>
+    <string name="textinput_git_email">E-Mail</string>
+    <string name="button_clone_project">Clone Projekt</string>
 </resources>

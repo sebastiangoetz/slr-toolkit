@@ -7,8 +7,13 @@
     <string name="textview_add_project">Add Project</string>
     <string name="textview_no_project">No projects.</string>
     <string name="fab_add_project">Add SLR Project</string>
-    <string name="textinput_password">Git Repo Password</string>
-    <string name="textinput_url">Git Repo URL</string>
-    <string name="textinput_username">Git Repo Username</string>
+    <string name="textinput_token">Token</string>
+    <string name="textinput_url">Repository URL</string>
+    <string name="textinput_username">Username</string>
     <string name="toast_empty_url">Please leave URL not empty.</string>
+    <string name="textview_credentials">Credentials</string>
+    <string name="textview_git_settings">Git Settings</string>
+    <string name="textinput_git_name">Name</string>
+    <string name="textinput_git_email">Email</string>
+    <string name="button_clone_project">Clone Project</string>
 </resources>
