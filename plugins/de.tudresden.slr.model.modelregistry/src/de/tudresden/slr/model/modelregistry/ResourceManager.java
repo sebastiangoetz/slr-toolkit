@@ -97,6 +97,7 @@ public class ResourceManager extends Observable {
 		IFile taxonomyFile = null;
 
 		for (IResource res : project.members()) { // throws CoreException because of members()
+			if (res.getFileExtension() == null) continue;
 			if (res.getFileExtension().equals("bib")) {
 				bibFiles.add(project.getFile(res.getFullPath().lastSegment()));
 
