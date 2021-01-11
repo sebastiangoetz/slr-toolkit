@@ -4,7 +4,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="next">Weiter</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
-    <string name="textview_no_project">Bisher keine Projekte.</string>
+    <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
     <string name="fragment_label_projects">Projects Fragment</string>
     <string name="fragment_label_add_project">Add Project Fragment</string>
     <string name="fab_add_project">SLR Projekt hinzufügen</string>

@@ -6,17 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ProjectsFragment">
 
-    <!--
+
     <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
+        android:id="@+id/textview_no_project"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/no_project"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/textview_no_project"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    -->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.383" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
