@@ -20,6 +20,7 @@
 		504838D125936ECF005149B6 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504838D025936ECF005149B6 /* Entry.swift */; };
 		504B2EA52584116400DBAE31 /* SwiftyBibtex in Frameworks */ = {isa = PBXBuildFile; productRef = 504B2EA42584116400DBAE31 /* SwiftyBibtex */; };
 		504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B2EAC2584274A00DBAE31 /* Extensions.swift */; };
+		504F3EEC25AFBD7C0055C19F /* ProjectSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
 		50744ADE25A4826F00AE8F57 /* ProjectViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */; };
 		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
@@ -104,6 +105,7 @@
 		504838CA2592ED1A005149B6 /* DetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRow.swift; sourceTree = "<group>"; };
 		504838D025936ECF005149B6 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
 		504B2EAC2584274A00DBAE31 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsView.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
 		50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewInteractor.swift; sourceTree = "<group>"; };
 		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		50BB355D25A5D43600189AA6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */,
 				50BB355E25A5D4B300189AA6 /* SettingsView.swift */,
 				50BB356425A5DC6600189AA6 /* AcknowledgementsView.swift */,
 			);
@@ -530,6 +533,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50BB355F25A5D4B300189AA6 /* SettingsView.swift in Sources */,
+				504F3EEC25AFBD7C0055C19F /* ProjectSettingsView.swift in Sources */,
 				504838D125936ECF005149B6 /* Entry.swift in Sources */,
 				5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */,
 				50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */,

@@ -22,6 +22,7 @@ struct EntryDetailsView: View {
                         Label("Remove", systemImage: "trash")
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) { Text("") } // Workaround, otherwise back button isn't shown
             }
     }
 

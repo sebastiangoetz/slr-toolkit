@@ -16,6 +16,8 @@
         <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="entries" inverseEntity="Project"/>
     </entity>
     <entity name="Project" representedClassName=".Project" syncable="YES">
+        <attribute name="commitEmail" optional="YES" attributeType="String"/>
+        <attribute name="commitName" optional="YES" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="pathInGitDirectory" attributeType="String"/>
         <attribute name="pathInRepository" attributeType="String"/>
@@ -33,8 +35,8 @@
         <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="classes" inverseEntity="Project"/>
     </entity>
     <elements>
-        <element name="Entry" positionX="-63" positionY="27" width="128" height="209"/>
-        <element name="Project" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="Entry" positionX="-63" positionY="27" width="128" height="224"/>
+        <element name="Project" positionX="-63" positionY="-18" width="128" height="179"/>
         <element name="TaxonomyClass" positionX="-54" positionY="99" width="128" height="104"/>
     </elements>
 </model>

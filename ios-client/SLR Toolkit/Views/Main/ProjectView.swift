@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ProjectView: View {
     enum Sheet: Int, Identifiable {
-        case projectsView, settingsView
+        case projectsView, projectSettingsView, settingsView
 
         var id: Int { rawValue }
     }
@@ -75,6 +75,8 @@ struct ProjectView: View {
             case .projectsView:
                 ProjectsView(activeProject: $project)
                     .environment(\.managedObjectContext, managedObjectContext)
+            case .projectSettingsView:
+                ProjectSettingsView(project: project)
             case .settingsView:
                 SettingsView()
             }
@@ -94,7 +96,9 @@ struct ProjectView: View {
             } label: {
                 Label("Change Project", systemImage: "folder")
             }
-            Button(action: {}) {
+            Button {
+                presentedSheet = .projectSettingsView
+            } label: {
                 Label("Project Settings", systemImage: "folder.badge.gear")
             }
             Divider()

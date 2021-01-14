@@ -10,6 +10,9 @@ final class Project: NSManagedObject {
     @NSManaged var pathInGitDirectory: String
     @NSManaged var pathInRepository: String
 
+    @NSManaged var commitName: String?
+    @NSManaged var commitEmail: String?
+
     @NSManaged var entries: Set<Entry>
     @NSManaged var classes: Set<TaxonomyClass>
 
