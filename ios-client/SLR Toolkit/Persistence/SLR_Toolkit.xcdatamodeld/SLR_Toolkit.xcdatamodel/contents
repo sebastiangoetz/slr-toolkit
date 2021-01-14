@@ -4,9 +4,9 @@
         <attribute name="abstract" optional="YES" attributeType="String"/>
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="citationKey" attributeType="String" defaultValueString=""/>
+        <attribute name="classesChanged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="decisionRaw" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="fieldsData" optional="YES" attributeType="Binary"/>
-        <attribute name="hadClasses" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="month" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="rangeInFileData" attributeType="Binary"/>
         <attribute name="title" optional="YES" attributeType="String"/>

@@ -38,7 +38,50 @@ enum ProjectManager {
         }
     }
 
-    @discardableResult static func createContents(for project: Project, managedObjectContext: NSManagedObjectContext) -> [Entry] {
+    static func commitChanges(project: Project) throws -> (Int, Int) {
+        // TODO handle multiple bib files, each entry needs to know to which file it belongs; new CD entity?
+        let bibFileURL = FileManager.default.contentsOfDirectory(at: project.url) { $1.hasSuffix(".bib") }.first!
+        let bibText = try String(contentsOf: bibFileURL)
+        var lines = bibText.split(omittingEmptySubsequences: false) { $0 == "\n" || $0 == "\r\n" }  // TODO Switch to approach on character level
+
+        let classifiedEntries = project.classifiedEntries.count
+        for entry in project.classifiedEntries {
+            var entryLines = lines[(entry.rangeInFile.start.line - 1)...(entry.rangeInFile.end.line - 1)]
+
+            let indentRegex = try! NSRegularExpression(pattern: "^\\s+", options: [])
+            let indent: String
+            let secondLine = String(entryLines[1])
+            if let match = indentRegex.firstMatch(in: secondLine, options: [], range: NSRange(secondLine)!) {
+                indent = String(secondLine[Range(match.range(at: 1), in: secondLine)!])
+            } else {
+                indent = ""
+            }
+
+            let classesString = indent + "classes = {\(entry.classesString)}"
+            if let index = entryLines.firstIndex(where: { $0.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("classes") }) {
+                entryLines[index] = classesString + (entryLines[index].hasSuffix(",") ? "," : "")
+            } else {
+                let index = entryLines.count - 2
+                entryLines[index] += (entryLines[index].hasSuffix(",") ? "" : ",") + "\n" + classesString
+            }
+            entry.classesChanged = false
+        }
+
+        let discardedEntries = project.discardedEntries.count
+        project.discardedEntries.map(\.rangeInFile).sorted { $0 > $1 }.forEach { lines.remove(atOffsets: IndexSet(integersIn: ($0.start.line - 1)...($0.end.line - 1))) }
+
+        try lines.joined(separator: "\n").write(to: bibFileURL, atomically: true, encoding: .utf8)
+
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        project.classes.filter { $0.parent == nil }.forEach { managedObjectContext.delete($0) }
+        project.entries.forEach { managedObjectContext.delete($0) }
+        managedObjectContext.saveAndLogError()
+        createContents(for: project, managedObjectContext: managedObjectContext)
+
+        return (discardedEntries, classifiedEntries)
+    }
+
+    @discardableResult private static func createContents(for project: Project, managedObjectContext: NSManagedObjectContext) -> [Entry] {
         let nodes = parseTaxonomy(project: project) ?? []
         let classes = createTaxonomyClasses(project: project, nodes: nodes, managedObjectContext: managedObjectContext)
 
@@ -84,7 +127,7 @@ enum ProjectManager {
         let urls = FileManager.default.contentsOfDirectory(at: project.url) { $1.hasSuffix(".bib") }
         return urls.reduce([Publication]()) {
             do {
-                let fileContents = try String(contentsOf: $1)
+                let fileContents = try String(contentsOf: $1).replacingOccurrences(of: "\r\n", with: "\n")
                 return $0 + (try SwiftyBibtex.parse(fileContents).publications)
             } catch {
                 print("Error reading or parsing bib file: \(error)")

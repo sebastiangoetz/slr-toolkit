@@ -19,6 +19,7 @@ struct ProjectView: View {
 
     @State private var commitsBehindOrigin: Int
     @State private var isFetchingOrPulling = false
+    @State private var isCommitting = false
     @State private var alertContent: AlertContent?
     @State private var presentedSheet: Sheet?
 
@@ -29,7 +30,7 @@ struct ProjectView: View {
 
         _unfilteredEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)).withSortDescriptors([]))
         _unclassifiedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && classes.@count == 0", project.wrappedValue!)).withSortDescriptors([]))
-        _changedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && (decisionRaw == 2 || (hadClasses == NO && classes.@count > 0))", project.wrappedValue!)).withSortDescriptors([]))
+        _changedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && (decisionRaw == 2 || classesChanged == YES)", project.wrappedValue!)).withSortDescriptors([]))
     }
 
     var body: some View {
@@ -40,10 +41,12 @@ struct ProjectView: View {
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
-                    ("Commit", changedEntries.isEmpty ? "No changes" : changedEntries.count == 1 ? "1 change" : "\(changedEntries.count) changes", !isFetchingOrPulling && !changedEntries.isEmpty, false, {}),
                     ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, {
                         interactor.pull(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertContent: $alertContent)
                     }),
+                    ("Commit", changedEntries.isEmpty ? "No changes" : changedEntries.count == 1 ? "1 change" : "\(changedEntries.count) changes", !isFetchingOrPulling && !changedEntries.isEmpty, isCommitting, {
+                        interactor.commit(project: project, isLoading: $isCommitting, alertContent: $alertContent)
+                    })
                 ])
             }
             Section(header: Text("Entries")) {
@@ -79,6 +82,7 @@ struct ProjectView: View {
                     .environment(\.managedObjectContext, managedObjectContext)
             case .projectSettingsView:
                 ProjectSettingsView(project: project)
+                    .environment(\.managedObjectContext, managedObjectContext)
             case .settingsView:
                 SettingsView()
             }

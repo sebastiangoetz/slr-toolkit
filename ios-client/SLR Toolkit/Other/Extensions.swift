@@ -119,3 +119,13 @@ extension Publication {
         return classes
     }
 }
+
+extension RangeInFile: Comparable {
+    // Publications don't overlap
+    public static func < (lhs: RangeInFile, rhs: RangeInFile) -> Bool {
+        if lhs.start.line != rhs.start.line {
+            return lhs.start.line < rhs.start.line
+        }
+        return lhs.start.positionInLine < rhs.start.positionInLine
+    }
+}

@@ -24,7 +24,7 @@ final class Entry: NSManagedObject, Identifiable {
 
     @NSManaged var decisionRaw: Int16
 
-    @NSManaged var hadClasses: Bool
+    @NSManaged var classesChanged: Bool
 
     @NSManaged var project: Project
     @NSManaged var classes: Set<TaxonomyClass>
@@ -46,6 +46,10 @@ final class Entry: NSManagedObject, Identifiable {
     var fields: [String: String] {
         get { fieldsData == nil ? [:] : try! PropertyListDecoder().decode([String: String].self, from: fieldsData!) }
         set { fieldsData = try! PropertyListEncoder().encode(newValue) }
+    }
+
+    var classesString: String {
+        return classes.map(\.classesString).joined(separator: ", ")
     }
 
     @discardableResult static func newEntity(publication: Publication, decision: Decision = .outstanding, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
@@ -81,7 +85,7 @@ final class Entry: NSManagedObject, Identifiable {
 
         entry.decision = decision
 
-        entry.hadClasses = publication.fields["classes"]?.isEmpty == false
+        entry.classesChanged = false
 
         entry.project = project
 

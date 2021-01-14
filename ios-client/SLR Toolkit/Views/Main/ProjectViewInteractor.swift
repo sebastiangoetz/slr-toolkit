@@ -3,6 +3,7 @@ import SwiftUI
 protocol ProjectViewInteractor {
     func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
     func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
+    func commit(project: Project, isLoading: Binding<Bool>, alertContent: Binding<AlertContent?>)
 }
 
 struct ProjectViewInteractorImplementation: ProjectViewInteractor {
@@ -29,6 +30,40 @@ struct ProjectViewInteractorImplementation: ProjectViewInteractor {
                 ProjectManager.updateProject(project, fileModificationDates: fileModificationDates) {
                     isLoading.wrappedValue = false
                 }
+            }
+        }
+    }
+
+    func commit(project: Project, isLoading: Binding<Bool>, alertContent: Binding<AlertContent?>) {
+        guard !project.discardedEntries.isEmpty || !project.classifiedEntries.isEmpty else {
+            alertContent.wrappedValue = AlertContent(title: "Nothing to commit.", message: nil)
+            return
+        }
+
+        guard project.commitName?.isEmpty == false && project.commitName?.isEmpty == false else {
+            alertContent.wrappedValue = AlertContent(title: "No commit identity", message: "Please enter a name and email address for your commits in project settings.")  // TODO Add button that links to ProjectSettingsView
+            return
+        }
+
+        isLoading.wrappedValue = true
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let changes = try ProjectManager.commitChanges(project: project)
+                if let error = GitManager.default.commit(project: project, changes: changes) {
+                    alertContent.wrappedValue = AlertContent(title: "Error commiting changes", message: error.localizedDescription)
+                    isLoading.wrappedValue = false
+                    return
+                }
+                GitManager.default.push(project: project) { error in
+                    if let error = error {
+                        alertContent.wrappedValue = AlertContent(title: "Error pushing changes", message: error.localizedDescription)
+                    } else {
+                        isLoading.wrappedValue = false
+                    }
+                }
+            } catch {
+                isLoading.wrappedValue = false
+                alertContent.wrappedValue = AlertContent(title: "Error committing changes", message: error.localizedDescription)
             }
         }
     }

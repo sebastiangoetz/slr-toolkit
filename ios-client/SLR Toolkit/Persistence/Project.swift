@@ -21,7 +21,7 @@ final class Project: NSManagedObject {
     }
 
     var classifiedEntries: Set<Entry> {
-        return entries.filter { !$0.hadClasses && !$0.classes.isEmpty }
+        return entries.filter(\.classesChanged)
     }
 
     var sortedRootClasses: [TaxonomyClass] {

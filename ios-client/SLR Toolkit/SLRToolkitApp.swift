@@ -9,7 +9,7 @@ struct SLRToolkitApp: App {
         WindowGroup {
             NavigationView {
                 MainView(project: loadActiveProject())
-                // TODO
+                // TODO support iPad
 //                EntryDetailsView()
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext)

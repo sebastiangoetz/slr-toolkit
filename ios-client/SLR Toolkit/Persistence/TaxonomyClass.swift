@@ -15,6 +15,10 @@ final class TaxonomyClass: NSManagedObject, Identifiable {
         return children.isEmpty ? nil : children.sorted { $0.name < $1.name }
     }
 
+    var classesString: String {
+        return children.isEmpty ? name : "\(name) {\(children.map(\.classesString).joined(separator: ", "))}"
+    }
+
     @discardableResult static func newEntity(name: String, project: Project, parent: TaxonomyClass?, in managedObjectContext: NSManagedObjectContext) -> TaxonomyClass {
         let taxonomyClass = NSEntityDescription.insertNewObject(forEntityName: String(describing: self), into: managedObjectContext) as! TaxonomyClass
         taxonomyClass.name = name
