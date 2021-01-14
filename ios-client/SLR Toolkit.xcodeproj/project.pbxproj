@@ -46,6 +46,8 @@
 		50BB356925A5DD1700189AA6 /* Acknowledgements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BB356825A5DD1700189AA6 /* Acknowledgements.swift */; };
 		50D345512592D30B00B57191 /* TaxonomyParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345502592D30B00B57191 /* TaxonomyParserTests.swift */; };
 		50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D345542592D38700B57191 /* TaxonomyParser.swift */; };
+		50DA689F25B0DC920009F0AD /* EntryDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA689E25B0DC920009F0AD /* EntryDetailsViewController.swift */; };
+		50DA68A325B0DF140009F0AD /* EntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DA68A225B0DF140009F0AD /* EntryCell.swift */; };
 		50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */; };
 		50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */; };
 		50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EFFAF72556CA29004BA48F /* RoundedButton.swift */; };
@@ -130,6 +132,8 @@
 		50BB356825A5DD1700189AA6 /* Acknowledgements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Acknowledgements.swift; sourceTree = "<group>"; };
 		50D345502592D30B00B57191 /* TaxonomyParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserTests.swift; sourceTree = "<group>"; };
 		50D345542592D38700B57191 /* TaxonomyParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParser.swift; sourceTree = "<group>"; };
+		50DA689E25B0DC920009F0AD /* EntryDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailsViewController.swift; sourceTree = "<group>"; };
+		50DA68A225B0DF140009F0AD /* EntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCell.swift; sourceTree = "<group>"; };
 		50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailsView.swift; sourceTree = "<group>"; };
 		50EFFAF22556C6B2004BA48F /* TaxonomyParserNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyParserNode.swift; sourceTree = "<group>"; };
 		50EFFAF72556CA29004BA48F /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
@@ -173,6 +177,8 @@
 				50F3A5962593EFBC0021E943 /* EntriesList.swift */,
 				5002A2F22593912800847F55 /* EntryRow.swift */,
 				50EFFAEA2556C138004BA48F /* EntryDetailsView.swift */,
+				50DA689E25B0DC920009F0AD /* EntryDetailsViewController.swift */,
+				50DA68A225B0DF140009F0AD /* EntryCell.swift */,
 				50F3A5A02594010B0021E943 /* EntryCard.swift */,
 				50F3A5A4259403A20021E943 /* CardValue.swift */,
 			);
@@ -539,6 +545,7 @@
 				50EFFAEB2556C138004BA48F /* EntryDetailsView.swift in Sources */,
 				50500402257934F100B79470 /* EntriesView.swift in Sources */,
 				503E51682553538200EA801A /* PersistenceController.swift in Sources */,
+				50DA689F25B0DC920009F0AD /* EntryDetailsViewController.swift in Sources */,
 				507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */,
 				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
 				508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */,
@@ -567,6 +574,7 @@
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
 				5077EC8925A3CFBC0001EF49 /* AlertContent.swift in Sources */,
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,
+				50DA68A325B0DF140009F0AD /* EntryCell.swift in Sources */,
 				508399A62557FC0A00BA21DE /* Directory.swift in Sources */,
 				5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */,
 				50BB356525A5DC6600189AA6 /* AcknowledgementsView.swift in Sources */,

@@ -56,7 +56,7 @@ struct ProjectView: View {
             }
             Section(header: Text("Taxonomy")) {
                 OutlineGroup(project.sortedRootClasses, children: \.sortedChildren) { taxonomyClass in
-                    DetailRow(text: taxonomyClass.name, detail: "\(taxonomyClass.entries.count)")
+                    DetailRow(text: taxonomyClass.name, detail: "\(taxonomyClass.entries.filter { $0.decision != .discard }.count)")
                     NavigationLink(destination: EntriesView(project: project, taxonomyClass: taxonomyClass)) {
                         EmptyView()
                     }
