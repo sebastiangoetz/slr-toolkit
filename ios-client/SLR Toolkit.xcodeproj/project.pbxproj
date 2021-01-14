@@ -28,7 +28,7 @@
 		5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7625A380190001EF49 /* WelcomeView.swift */; };
 		5077EC7B25A3BFD90001EF49 /* ObjectiveGit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; };
 		5077EC7C25A3BFD90001EF49 /* ObjectiveGit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5077EC8925A3CFBC0001EF49 /* AlertError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC8825A3CFBC0001EF49 /* AlertError.swift */; };
+		5077EC8925A3CFBC0001EF49 /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC8825A3CFBC0001EF49 /* AlertContent.swift */; };
 		507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F183D25A3463000D88CD3 /* TaxonomyClass.swift */; };
 		507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184325A3481600D88CD3 /* ProjectManager.swift */; };
 		507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184925A373B900D88CD3 /* ExpandingButton.swift */; };
@@ -112,7 +112,7 @@
 		5077EC7225A37FAB0001EF49 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		5077EC7625A380190001EF49 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/iOS/ObjectiveGit.framework; sourceTree = "<group>"; };
-		5077EC8825A3CFBC0001EF49 /* AlertError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertError.swift; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/Documents/AlertError.swift"; sourceTree = "<group>"; };
+		5077EC8825A3CFBC0001EF49 /* AlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertContent.swift; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/Documents/AlertContent.swift"; sourceTree = "<group>"; };
 		507F183D25A3463000D88CD3 /* TaxonomyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyClass.swift; sourceTree = "<group>"; };
 		507F184325A3481600D88CD3 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
 		507F184925A373B900D88CD3 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				508399A52557FC0A00BA21DE /* Directory.swift */,
-				5077EC8825A3CFBC0001EF49 /* AlertError.swift */,
+				5077EC8825A3CFBC0001EF49 /* AlertContent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -565,7 +565,7 @@
 				507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */,
 				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
-				5077EC8925A3CFBC0001EF49 /* AlertError.swift in Sources */,
+				5077EC8925A3CFBC0001EF49 /* AlertContent.swift in Sources */,
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,
 				508399A62557FC0A00BA21DE /* Directory.swift in Sources */,
 				5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */,

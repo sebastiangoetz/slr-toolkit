@@ -19,7 +19,7 @@ struct ProjectView: View {
 
     @State private var commitsBehindOrigin: Int
     @State private var isFetchingOrPulling = false
-    @State private var alertError: AlertError?
+    @State private var alertContent: AlertContent?
     @State private var presentedSheet: Sheet?
 
     init(project: Binding<Project?>) {
@@ -40,8 +40,10 @@ struct ProjectView: View {
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
-                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, { interactor.pull(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertError: $alertError) }),
-                    ("Commit", changedEntries.isEmpty ? "No changes" : changedEntries.count == 1 ? "1 change" : "\(changedEntries.count) changes", !isFetchingOrPulling && !changedEntries.isEmpty, isCommitting, {})
+                    ("Commit", changedEntries.isEmpty ? "No changes" : changedEntries.count == 1 ? "1 change" : "\(changedEntries.count) changes", !isFetchingOrPulling && !changedEntries.isEmpty, false, {}),
+                    ("Pull", commitsBehindOrigin == 0 ? "Up to date" : commitsBehindOrigin == 1 ? "1 commit behind" : "\(commitsBehindOrigin) commits behind", true, isFetchingOrPulling, {
+                        interactor.pull(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertContent: $alertContent)
+                    }),
                 ])
             }
             Section(header: Text("Entries")) {
@@ -67,8 +69,8 @@ struct ProjectView: View {
                 menu()
             }
         }
-        .alert(item: $alertError, content: { alertError in
-            Alert(title: Text(alertError.title), message: Text(alertError.message), dismissButton: .cancel(Text("OK")))
+        .alert(item: $alertContent, content: { alertContent in
+            Alert(title: Text(alertContent.title), message: alertContent.message == nil ? nil : Text(alertContent.message!), dismissButton: .cancel(Text("OK")))
         })
         .sheet(item: $presentedSheet) { sheet in
             switch sheet {
@@ -86,7 +88,7 @@ struct ProjectView: View {
     private func menu() -> some View {
         Menu {
             Button {
-                interactor.fetch(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertError: $alertError)
+                interactor.fetch(project: project, isLoading: $isFetchingOrPulling, commitsBehindOrigin: $commitsBehindOrigin, alertContent: $alertContent)
             } label: {
                 Label("Fetch", systemImage: "arrow.down")
             }

@@ -1,29 +1,29 @@
 import SwiftUI
 
 protocol ProjectViewInteractor {
-    func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertError: Binding<AlertError?>)
-    func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertError: Binding<AlertError?>)
+    func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
+    func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
 }
 
 struct ProjectViewInteractorImplementation: ProjectViewInteractor {
-    func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertError: Binding<AlertError?>) {
+    func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>) {
         isLoading.wrappedValue = true
         GitManager.default.fetch(project: project) { error in
             isLoading.wrappedValue = false
             if let error = error {
-                alertError.wrappedValue = AlertError(title: "Error fetching repository", message: error.localizedDescription)
+                alertContent.wrappedValue = AlertContent(title: "Error fetching repository", message: error.localizedDescription)
             } else {
                 commitsBehindOrigin.wrappedValue = GitManager.default.commitsAheadAndBehindOrigin(project: project).behind
             }
         }
     }
 
-    func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertError: Binding<AlertError?>) {
+    func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>) {
         isLoading.wrappedValue = true
         let fileModificationDates = project.fileModificationDates
         GitManager.default.pull(project: project) { error in
             if let error = error {
-                alertError.wrappedValue = AlertError(title: "Error pulling repository", message: error.localizedDescription)
+                alertContent.wrappedValue = AlertContent(title: "Error pulling repository", message: error.localizedDescription)
             } else {
                 commitsBehindOrigin.wrappedValue = 0
                 ProjectManager.updateProject(project, fileModificationDates: fileModificationDates) {

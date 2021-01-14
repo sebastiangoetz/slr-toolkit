@@ -4,7 +4,6 @@
         <attribute name="abstract" optional="YES" attributeType="String"/>
         <attribute name="author" optional="YES" attributeType="String"/>
         <attribute name="citationKey" attributeType="String" defaultValueString=""/>
-        <attribute name="classesData" optional="YES" attributeType="Binary"/>
         <attribute name="decisionRaw" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="fieldsData" optional="YES" attributeType="Binary"/>
         <attribute name="hadClasses" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -35,7 +34,7 @@
         <relationship name="project" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="classes" inverseEntity="Project"/>
     </entity>
     <elements>
-        <element name="Entry" positionX="-63" positionY="27" width="128" height="224"/>
+        <element name="Entry" positionX="-63" positionY="27" width="128" height="209"/>
         <element name="Project" positionX="-63" positionY="-18" width="128" height="179"/>
         <element name="TaxonomyClass" positionX="-54" positionY="99" width="128" height="104"/>
     </elements>
