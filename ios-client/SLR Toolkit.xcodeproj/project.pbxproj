@@ -22,13 +22,13 @@
 		504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504B2EAC2584274A00DBAE31 /* Extensions.swift */; };
 		504F3EEC25AFBD7C0055C19F /* ProjectSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
+		5051E85025B1A37E00819F75 /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5051E84F25B1A37E00819F75 /* AlertContent.swift */; };
 		50744ADE25A4826F00AE8F57 /* ProjectViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */; };
 		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
 		5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7225A37FAB0001EF49 /* ProjectView.swift */; };
 		5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7625A380190001EF49 /* WelcomeView.swift */; };
 		5077EC7B25A3BFD90001EF49 /* ObjectiveGit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; };
 		5077EC7C25A3BFD90001EF49 /* ObjectiveGit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5077EC8925A3CFBC0001EF49 /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC8825A3CFBC0001EF49 /* AlertContent.swift */; };
 		507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F183D25A3463000D88CD3 /* TaxonomyClass.swift */; };
 		507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184325A3481600D88CD3 /* ProjectManager.swift */; };
 		507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507F184925A373B900D88CD3 /* ExpandingButton.swift */; };
@@ -110,12 +110,12 @@
 		504B2EAC2584274A00DBAE31 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsView.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
+		5051E84F25B1A37E00819F75 /* AlertContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertContent.swift; sourceTree = "<group>"; };
 		50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewInteractor.swift; sourceTree = "<group>"; };
 		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
 		5077EC7225A37FAB0001EF49 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		5077EC7625A380190001EF49 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		5077EC7A25A3BFD90001EF49 /* ObjectiveGit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectiveGit.framework; path = Carthage/Build/iOS/ObjectiveGit.framework; sourceTree = "<group>"; };
-		5077EC8825A3CFBC0001EF49 /* AlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AlertContent.swift; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/Documents/AlertContent.swift"; sourceTree = "<group>"; };
 		507F183D25A3463000D88CD3 /* TaxonomyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaxonomyClass.swift; sourceTree = "<group>"; };
 		507F184325A3481600D88CD3 /* ProjectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManager.swift; sourceTree = "<group>"; };
 		507F184925A373B900D88CD3 /* ExpandingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingButton.swift; sourceTree = "<group>"; };
@@ -333,8 +333,8 @@
 		50BE516B255356CB0094171B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5051E84F25B1A37E00819F75 /* AlertContent.swift */,
 				508399A52557FC0A00BA21DE /* Directory.swift */,
-				5077EC8825A3CFBC0001EF49 /* AlertContent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -571,11 +571,11 @@
 				5002A2F32593912800847F55 /* EntryRow.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
 				50BB356925A5DD1700189AA6 /* Acknowledgements.swift in Sources */,
+				5051E85025B1A37E00819F75 /* AlertContent.swift in Sources */,
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
 				507F184A25A373B900D88CD3 /* ExpandingButton.swift in Sources */,
 				50864A5825542D42001F0007 /* GitClient.swift in Sources */,
 				503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */,
-				5077EC8925A3CFBC0001EF49 /* AlertContent.swift in Sources */,
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,
 				50DA68A725B102B80009F0AD /* ClassifyEntryView.swift in Sources */,
 				50DA68A325B0DF140009F0AD /* EntryCell.swift in Sources */,
