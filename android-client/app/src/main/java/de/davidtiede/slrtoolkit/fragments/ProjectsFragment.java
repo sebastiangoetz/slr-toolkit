@@ -50,7 +50,7 @@ public class ProjectsFragment extends Fragment {
         repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    public void onLoaded(List<Repo> list){
+    private void onLoaded(List<Repo> list){
         if (list.size() == 0) {
             recyclerView.setVisibility(View.INVISIBLE);
             textview_no_project.setVisibility(View.VISIBLE);

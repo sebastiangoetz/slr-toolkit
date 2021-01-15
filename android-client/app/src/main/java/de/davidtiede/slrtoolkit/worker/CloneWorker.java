@@ -22,14 +22,19 @@ public class CloneWorker extends Worker {
     }
 
     @Override
-    public Result doWork() {
+    public @NonNull Result doWork() {
+        String remote_url = getInputData().getString("REMOTE_URL");
+        if(remote_url == null) {
+            return Result.failure();
+        }
+
         File path = new File(getApplicationContext().getFilesDir(),"testrepo");
         if (!path.exists()) {
             path.mkdir();
         }
 
         CloneCommand cloneCommand = Git.cloneRepository()
-                .setURI("https://github.com/tidenhub/urlwatch")
+                .setURI(remote_url)
                 .setDirectory(path);
 
         try {

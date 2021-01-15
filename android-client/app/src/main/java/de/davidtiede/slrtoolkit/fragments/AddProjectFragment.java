@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -48,20 +49,40 @@ public class AddProjectFragment extends Fragment {
                         getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
                 return;
             }
-            Repo repo = new Repo(Objects.requireNonNull(edittext_url.getText()).toString());
-            repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
-
-            repoViewModel.insert(repo);
-
-            WorkRequest cloneWorkRequest =
-                    new OneTimeWorkRequest.Builder(CloneWorker.class)
-                            .build();
-            WorkManager
-                    .getInstance(requireActivity().getApplicationContext())
-                    .enqueue(cloneWorkRequest);
-
-            NavHostFragment.findNavController(AddProjectFragment.this)
-                    .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
+            actionCloneRepo(view);
         });
+    }
+
+    private void actionCloneRepo(@NonNull View view) {
+        TextInputEditText edittext_username = view.findViewById(R.id.edittext_username);
+        TextInputEditText edittext_token = view.findViewById(R.id.edittext_token);
+        TextInputEditText edittext_git_name = view.findViewById(R.id.edittext_git_name);
+        TextInputEditText edittext_git_email = view.findViewById(R.id.edittext_git_email);
+
+        Repo repo = new Repo(
+                Objects.requireNonNull(edittext_url.getText()).toString(),
+                Objects.requireNonNull(edittext_username.getText()).toString(),
+                Objects.requireNonNull(edittext_token.getText()).toString(),
+                Objects.requireNonNull(edittext_git_name.getText()).toString(),
+                Objects.requireNonNull(edittext_git_email.getText()).toString()
+                );
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+
+        repoViewModel.insert(repo);
+
+        WorkRequest cloneWorkRequest =
+                new OneTimeWorkRequest.Builder(CloneWorker.class)
+                        .setInputData(
+                                new Data.Builder()
+                                        .putString("REMOTE_URL", repo.getRemote_url())
+                                        .build()
+                        )
+                        .build();
+        WorkManager
+                .getInstance(requireActivity().getApplicationContext())
+                .enqueue(cloneWorkRequest);
+
+        NavHostFragment.findNavController(AddProjectFragment.this)
+                .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
     }
 }
