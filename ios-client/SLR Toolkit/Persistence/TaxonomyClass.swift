@@ -15,8 +15,12 @@ final class TaxonomyClass: NSManagedObject, Identifiable {
         return children.isEmpty ? nil : children.sorted { $0.name < $1.name }
     }
 
-    var classesString: String {
-        return children.isEmpty ? name : "\(name) {\(children.map(\.classesString).joined(separator: ", "))}"
+    func classesString(for entry: Entry) -> String? {
+        let childrenStrings = children.compactMap { $0.classesString(for: entry) }
+        if entry.classes.contains(self) || !childrenStrings.isEmpty {
+            return childrenStrings.isEmpty ? name : "\(name) { \(childrenStrings.joined(separator: ", ")) }"
+        }
+        return nil
     }
 
     @discardableResult static func newEntity(name: String, project: Project, parent: TaxonomyClass?, in managedObjectContext: NSManagedObjectContext) -> TaxonomyClass {

@@ -6,6 +6,7 @@ struct EntryDetailsView: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
 
     @State private var currentEntry: Entry
+    @State private var classifyEntryViewIsPresented = false
 
     private var fetchRequest: NSFetchRequest<Entry>
 
@@ -40,20 +41,22 @@ struct EntryDetailsView: View {
                     } label: {
                         Label("Discard entry", systemImage: "trash")
                     }
-                    Button(action: classify) {
+                    Button {
+                        classifyEntryViewIsPresented = true
+                    } label: {
                         Label("Classify", systemImage: "tag")
                     }
                 }
+            }
+            .sheet(isPresented: $classifyEntryViewIsPresented) {
+                ClassifyEntryView(entry: currentEntry)
+                    .environment(\.managedObjectContext, managedObjectContext)
             }
     }
 
     private func discard() {
         currentEntry.decision = .discard
         managedObjectContext.saveAndLogError()
-    }
-
-    private func classify() {
-
     }
 }
 

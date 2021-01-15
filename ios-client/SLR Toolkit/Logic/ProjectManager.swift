@@ -26,8 +26,8 @@ enum ProjectManager {
                     acc[entry.citationKey] = entry.decision
                 }
             }
+            project.classes.filter { $0.parent == nil }.forEach { managedObjectContext.delete($0) } // Delete rule is "cascade"
             project.entries.forEach { managedObjectContext.delete($0) }
-            project.classes.forEach { managedObjectContext.delete($0) }
             let entries = createContents(for: project, managedObjectContext: managedObjectContext)
             for entry in entries {
                 if let decision = decisions[entry.citationKey] {
@@ -46,38 +46,46 @@ enum ProjectManager {
 
         let classifiedEntries = project.classifiedEntries.count
         for entry in project.classifiedEntries {
-            var entryLines = lines[(entry.rangeInFile.start.line - 1)...(entry.rangeInFile.end.line - 1)]
+            let entryLines = lines[(entry.rangeInFile.start.line - 1)...(entry.rangeInFile.end.line - 1)]
 
             let indentRegex = try! NSRegularExpression(pattern: "^\\s+", options: [])
             let indent: String
-            let secondLine = String(entryLines[1])
-            if let match = indentRegex.firstMatch(in: secondLine, options: [], range: NSRange(secondLine)!) {
-                indent = String(secondLine[Range(match.range(at: 1), in: secondLine)!])
+            let secondLine = String(Array(entryLines)[1])
+            if let match = indentRegex.firstMatch(in: secondLine, options: [], range: NSRange(location: 0, length: secondLine.utf16.count)) {
+                indent = String(secondLine[Range(match.range(at: 0), in: secondLine)!])
             } else {
                 indent = ""
             }
 
             let classesString = indent + "classes = {\(entry.classesString)}"
             if let index = entryLines.firstIndex(where: { $0.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("classes") }) {
-                entryLines[index] = classesString + (entryLines[index].hasSuffix(",") ? "," : "")
+                lines[index] = classesString + (entryLines[index].hasSuffix(",") ? "," : "")
             } else {
                 let index = entryLines.count - 2
-                entryLines[index] += (entryLines[index].hasSuffix(",") ? "" : ",") + "\n" + classesString
+                lines[entry.rangeInFile.start.line - 1 + index] += (entryLines[index].hasSuffix(",") ? "" : ",") + "\n" + classesString
             }
             entry.classesChanged = false
         }
 
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+
         let discardedEntries = project.discardedEntries.count
         project.discardedEntries.map(\.rangeInFile).sorted { $0 > $1 }.forEach { lines.remove(atOffsets: IndexSet(integersIn: ($0.start.line - 1)...($0.end.line - 1))) }
+        project.discardedEntries.forEach { managedObjectContext.delete($0) }
 
+        // Write changes back to file
         try lines.joined(separator: "\n").write(to: bibFileURL, atomically: true, encoding: .utf8)
 
-        let managedObjectContext = PersistenceController.shared.container.viewContext
-        project.classes.filter { $0.parent == nil }.forEach { managedObjectContext.delete($0) }
-        project.entries.forEach { managedObjectContext.delete($0) }
+        // Update ranges
+        let entries = project.entries.reduce(into: [String: Entry]()) { $0[$1.citationKey] = $1 }
+        for publication in parsePublications(project: project) {
+            if let entry = entries[publication.citationKey] {
+                entry.rangeInFile = publication.rangeInFile
+            }
+        }
         managedObjectContext.saveAndLogError()
-        createContents(for: project, managedObjectContext: managedObjectContext)
 
+        // Report number of changes
         return (discardedEntries, classifiedEntries)
     }
 

@@ -49,7 +49,7 @@ final class Entry: NSManagedObject, Identifiable {
     }
 
     var classesString: String {
-        return classes.map(\.classesString).joined(separator: ", ")
+        return project.sortedRootClasses.compactMap { $0.classesString(for: self) }.joined(separator: ", ")
     }
 
     @discardableResult static func newEntity(publication: Publication, decision: Decision = .outstanding, project: Project, in managedObjectContext: NSManagedObjectContext) -> Entry {
