@@ -27,7 +27,7 @@ import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 import de.davidtiede.slrtoolkit.worker.CloneWorker;
 
-public class AddProjectFragment extends Fragment {
+public class AddProject1Fragment extends Fragment {
 
     private RepoViewModel repoViewModel;
     private TextInputEditText edittext_url;
@@ -36,7 +36,7 @@ public class AddProjectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FloatingActionButton floatingActionButton = ((MainActivity) requireActivity()).getFloatingActionButton();
         floatingActionButton.setVisibility(View.INVISIBLE);
-        return inflater.inflate(R.layout.fragment_add_project, container, false);
+        return inflater.inflate(R.layout.fragment_add_project_1, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class AddProjectFragment extends Fragment {
                 .getInstance(requireActivity().getApplicationContext())
                 .enqueue(cloneWorkRequest);
 
-        NavHostFragment.findNavController(AddProjectFragment.this)
+        NavHostFragment.findNavController(AddProject1Fragment.this)
                 .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
     }
 }

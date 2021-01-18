@@ -17,4 +17,6 @@
     <string name="textinput_git_name">Name</string>
     <string name="textinput_git_email">E-Mail</string>
     <string name="button_clone_project">Clone Projekt</string>
+    <string name="button_add_project">Projekt hinzufügen</string>
+    <string name="textinput_name">Projektname</string>
 </resources>

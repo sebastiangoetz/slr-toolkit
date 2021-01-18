@@ -17,9 +17,9 @@
     </fragment>
     <fragment
         android:id="@+id/AddProjectFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.AddProjectFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.AddProject1Fragment"
         android:label="@string/fragment_label_add_project"
-        tools:layout="@layout/fragment_add_project">
+        tools:layout="@layout/fragment_add_project_1">
 
         <action
             android:id="@+id/action_AddProjectFragment_to_ProjectsFragment"
