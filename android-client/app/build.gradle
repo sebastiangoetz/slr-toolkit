@@ -33,8 +33,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.navigation:navigation-fragment:2.3.2'
-    implementation 'androidx.navigation:navigation-ui:2.3.2'
 
     implementation 'org.eclipse.jgit:org.eclipse.jgit:5.4.2.201908231537-r'
     implementation 'org.jbibtex:jbibtex:1.0.18'
@@ -42,6 +40,14 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    def nav_version = "2.3.2"
+    implementation "androidx.navigation:navigation-fragment:$nav_version" // Java language implementation
+    implementation "androidx.navigation:navigation-ui:$nav_version" // Java language implementation
+    //implementation "androidx.navigation:navigation-fragment-ktx:$nav_version" // Kotlin
+    //implementation "androidx.navigation:navigation-ui-ktx:$nav_version" // Kotlin
+    //implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version" // Feature module Support
+    //androidTestImplementation "androidx.navigation:navigation-testing:$nav_version" // Testing Navigation
 
     def work_version = "2.4.0"
     implementation "androidx.work:work-runtime:$work_version" // (Java only)
