@@ -18,4 +18,5 @@
     <string name="button_clone_project">Clone Project</string>
     <string name="button_add_project">Add Project</string>
     <string name="textinput_name">Project Name</string>
+    <string name="toast_empty_name">Please leave \'project name\' not empty.</string>
 </resources>

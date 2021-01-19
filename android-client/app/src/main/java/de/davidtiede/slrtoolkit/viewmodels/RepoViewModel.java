@@ -16,8 +16,9 @@ import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 
 public class RepoViewModel extends AndroidViewModel {
 
-    private RepoRepository repoRepository;
+    private final RepoRepository repoRepository;
     private final LiveData<List<Repo>> allRepos;
+    private Repo currentRepo;
 
     public RepoViewModel(Application application) {
         super(application);
@@ -31,5 +32,13 @@ public class RepoViewModel extends AndroidViewModel {
 
     public void insert(Repo repo) {
         repoRepository.insert(repo);
+    }
+
+    public Repo getCurrentRepo() {
+        return currentRepo;
+    }
+
+    public void setCurrentRepo(Repo currentRepo) {
+        this.currentRepo = currentRepo;
     }
 }

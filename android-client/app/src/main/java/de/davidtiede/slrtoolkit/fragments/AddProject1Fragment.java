@@ -69,6 +69,8 @@ public class AddProject1Fragment extends Fragment {
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         repoViewModel.insert(repo);
+        repoViewModel.setCurrentRepo(repo);
+
 
         WorkRequest cloneWorkRequest =
                 new OneTimeWorkRequest.Builder(CloneWorker.class)
@@ -83,6 +85,6 @@ public class AddProject1Fragment extends Fragment {
                 .enqueue(cloneWorkRequest);
 
         NavHostFragment.findNavController(AddProject1Fragment.this)
-                .navigate(R.id.action_AddProjectFragment_to_ProjectsFragment);
+                .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment);
     }
 }

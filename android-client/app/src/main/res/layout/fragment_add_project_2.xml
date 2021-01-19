@@ -25,7 +25,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:hint="@string/textinput_url"
+        android:hint="@string/textinput_name"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
