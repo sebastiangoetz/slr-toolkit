@@ -28,6 +28,10 @@ public class RepoRepository {
         return allRepos;
     }
 
+    public void update(Repo repo) {
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.update(repo));
+    }
+
     public void insert(Repo repo) {
         AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insert(repo));
     }

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Repo {
-    @PrimaryKey(autoGenerate = true) private long id;
+    @PrimaryKey(autoGenerate = true) private int id;
     private String name;
     private String local_path;
     private String remote_url;
@@ -22,7 +22,7 @@ public class Repo {
         this.git_email = git_email;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

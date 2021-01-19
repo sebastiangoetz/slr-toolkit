@@ -26,6 +26,14 @@ public class RepoViewModel extends AndroidViewModel {
         allRepos = repoRepository.getAllRepos();
     }
 
+    public Repo getCurrentRepo() {
+        return currentRepo;
+    }
+
+    public void setCurrentRepo(Repo currentRepo) {
+        this.currentRepo = currentRepo;
+    }
+
     public LiveData<List<Repo>> getAllRepos() {
         return allRepos;
     }
@@ -34,11 +42,7 @@ public class RepoViewModel extends AndroidViewModel {
         repoRepository.insert(repo);
     }
 
-    public Repo getCurrentRepo() {
-        return currentRepo;
-    }
-
-    public void setCurrentRepo(Repo currentRepo) {
-        this.currentRepo = currentRepo;
+    public void update(Repo repo) {
+        repoRepository.update(repo);
     }
 }

@@ -15,8 +15,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Objects;
+
 import de.davidtiede.slrtoolkit.MainActivity;
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 
 public class AddProject2Fragment extends Fragment {
@@ -43,6 +46,9 @@ public class AddProject2Fragment extends Fragment {
             }
 
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+            Repo repo = repoViewModel.getCurrentRepo();
+            repo.setName(Objects.requireNonNull(edittext_name.getText()).toString());
+            repoViewModel.update(repo);
 
             NavHostFragment.findNavController(AddProject2Fragment.this)
                     .navigate(R.id.action_AddProject2Fragment_to_ProjectsFragment);
