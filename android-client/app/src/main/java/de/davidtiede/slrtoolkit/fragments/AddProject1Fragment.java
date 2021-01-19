@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.work.Data;
@@ -19,6 +20,7 @@ import androidx.work.WorkRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
 import de.davidtiede.slrtoolkit.MainActivity;
@@ -68,9 +70,8 @@ public class AddProject1Fragment extends Fragment {
                 );
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
-        repoViewModel.insert(repo);
-        repoViewModel.setCurrentRepo(repo);
-
+        int id = (int) repoViewModel.insert(repo);
+        repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), this::onLoaded);
 
         WorkRequest cloneWorkRequest =
                 new OneTimeWorkRequest.Builder(CloneWorker.class)
@@ -86,5 +87,9 @@ public class AddProject1Fragment extends Fragment {
 
         NavHostFragment.findNavController(AddProject1Fragment.this)
                 .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment);
+    }
+
+    private void onLoaded(Repo repo){
+        repoViewModel.setCurrentRepo(repo);
     }
 }

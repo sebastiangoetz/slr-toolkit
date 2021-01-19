@@ -14,8 +14,11 @@ public interface RepoDao {
     @Query("SELECT * FROM repo")
     LiveData<List<Repo>> getAllRepos();
 
+    @Query("SELECT * FROM repo WHERE id=:id ")
+    LiveData<Repo> getRepoById(int id);
+
     @Insert
-    void insert(Repo repo);
+    long insert(Repo repo);
 
     @Update
     void update(Repo repo);

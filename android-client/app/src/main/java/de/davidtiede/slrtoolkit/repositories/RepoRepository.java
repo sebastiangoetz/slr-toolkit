@@ -5,6 +5,9 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Repo;
@@ -28,11 +31,28 @@ public class RepoRepository {
         return allRepos;
     }
 
+    public LiveData<Repo> getRepoById(int id) {
+        return repoDao.getRepoById(id);
+    }
+
     public void update(Repo repo) {
         AppDatabase.databaseWriteExecutor.execute(() -> repoDao.update(repo));
     }
 
-    public void insert(Repo repo) {
-        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insert(repo));
+    public long insert(Repo repo) {
+        Callable<Long> insertCallable = () -> repoDao.insert(repo);
+        long id = 0;
+
+        Future<Long> future = AppDatabase.databaseWriteExecutor.submit(insertCallable);
+        try {
+            id = future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public void delete(Repo repo) {
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.update(repo));
     }
 }

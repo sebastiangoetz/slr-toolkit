@@ -34,15 +34,23 @@ public class RepoViewModel extends AndroidViewModel {
         this.currentRepo = currentRepo;
     }
 
+    public LiveData<Repo> getRepoById(int id) {
+        return repoRepository.getRepoById(id);
+    }
+
     public LiveData<List<Repo>> getAllRepos() {
         return allRepos;
     }
 
-    public void insert(Repo repo) {
-        repoRepository.insert(repo);
+    public long insert(Repo repo) {
+        return repoRepository.insert(repo);
     }
 
     public void update(Repo repo) {
         repoRepository.update(repo);
+    }
+
+    public void delete(Repo repo) {
+        repoRepository.delete(repo);
     }
 }
