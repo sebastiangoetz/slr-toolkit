@@ -53,6 +53,6 @@ public class RepoRepository {
     }
 
     public void delete(Repo repo) {
-        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.update(repo));
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.delete(repo));
     }
 }

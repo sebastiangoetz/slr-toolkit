@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,12 +22,13 @@ import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 import de.davidtiede.slrtoolkit.views.RepoListAdapter;
+import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallback;
 
 public class ProjectsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private TextView textview_no_project;
-    private RepoListAdapter adapter;
+    private RepoListAdapter repoListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,8 +45,12 @@ public class ProjectsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
-        adapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
-        recyclerView.setAdapter(adapter);
+        repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
+        recyclerView.setAdapter(repoListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallback(repoListAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         RepoViewModel repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), this::onLoaded);
@@ -58,7 +64,7 @@ public class ProjectsFragment extends Fragment {
         else {
             recyclerView.setVisibility(View.VISIBLE);
             textview_no_project.setVisibility(View.INVISIBLE);
-            adapter.submitList(list);
+            repoListAdapter.submitList(list);
         }
     }
 }
