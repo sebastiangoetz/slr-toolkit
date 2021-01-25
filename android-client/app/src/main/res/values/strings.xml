@@ -19,4 +19,5 @@
     <string name="button_add_project">Add Project</string>
     <string name="textinput_name">Project Name</string>
     <string name="toast_empty_name">Please leave \'project name\' not empty.</string>
+    <string name="snackbar_undo">Undo</string>
 </resources>

@@ -60,11 +60,11 @@ public class ProjectsFragment extends Fragment {
 
     private void onLoaded(List<Repo> list){
         if (list.size() == 0) {
-            recyclerView.setVisibility(View.INVISIBLE);
+            //recyclerView.setVisibility(View.INVISIBLE);
             textview_no_project.setVisibility(View.VISIBLE);
         }
         else {
-            recyclerView.setVisibility(View.VISIBLE);
+            //recyclerView.setVisibility(View.VISIBLE);
             textview_no_project.setVisibility(View.INVISIBLE);
             repoListAdapter.submitList(list);
         }

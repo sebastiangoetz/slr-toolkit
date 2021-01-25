@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 
 public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
-    private Context context;
+    private RecyclerView recyclerView;
 
     public RepoListAdapter(@NonNull DiffUtil.ItemCallback<Repo> diffCallback) {
         super(diffCallback);
@@ -48,19 +51,28 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        context = recyclerView.getContext();
+        this.recyclerView = recyclerView;
     }
 
     public Context getContext() {
-        return context;
+        return recyclerView.getContext();
     }
 
     public void deleteItem(int position) {
-        Repo recentlyDeletedItem = getItem(position);
-        int recentlyDeletedItemPosition = position;
-        RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(RepoViewModel.class);
-        repoViewModel.delete(recentlyDeletedItem);
+        Repo recentlyDeletedRepo = getItem(position);
+        RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
+        repoViewModel.delete(recentlyDeletedRepo);
         notifyItemRemoved(position);
-        //showUndoSnackbar();
+        notifyItemRangeRemoved(position, 1);
+
+        Snackbar snackbar = Snackbar.make(recyclerView, R.string.snackbar_undo, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.snackbar_undo, v -> undoDelete(recentlyDeletedRepo, position));
+        snackbar.show();
+    }
+
+    private void undoDelete(Repo recentlyDeletedRepo, int position) {
+        RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
+        repoViewModel.insert(recentlyDeletedRepo);
+        notifyItemInserted(position);
     }
 }
