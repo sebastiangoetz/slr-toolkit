@@ -9,8 +9,6 @@ android:layout_height="wrap_content">
         android:id="@+id/textview_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@android:color/secondary_text_light"
-        android:padding="8dp"
+        android:padding="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 </LinearLayout>

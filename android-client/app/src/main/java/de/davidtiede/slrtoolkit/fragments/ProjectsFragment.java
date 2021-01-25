@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,12 +43,13 @@ public class ProjectsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         textview_no_project = view.findViewById(R.id.textview_no_project);
+        repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
 
         recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
-        repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
-        recyclerView.setAdapter(repoListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(repoListAdapter);
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallback(repoListAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
