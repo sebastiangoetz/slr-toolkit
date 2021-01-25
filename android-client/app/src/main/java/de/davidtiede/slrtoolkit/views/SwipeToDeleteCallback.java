@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.davidtiede.slrtoolkit.R;
 
 public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
-    private RepoListAdapter repoListAdapter;
-
-    private Drawable icon;
+    private final RepoListAdapter repoListAdapter;
+    private final Drawable icon;
     private final ColorDrawable background;
 
 
