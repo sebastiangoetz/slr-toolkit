@@ -21,4 +21,5 @@
     <string name="textinput_name">Projektname</string>
     <string name="toast_empty_name">Bitte lassen sie \"Projekt Name\" nicht leer.</string>
     <string name="snackbar_undo">Rückgängig</string>
+    <string name="please_wait">Bitte warten…</string>
 </resources>
