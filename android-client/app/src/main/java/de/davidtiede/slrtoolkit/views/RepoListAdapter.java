@@ -39,7 +39,7 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
         @Override
         public boolean areItemsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
-            return oldItem == newItem;
+            return oldItem.getId() == newItem.getId();
         }
 
         @Override
