@@ -20,6 +20,7 @@ public class Repo {
         this.token = token;
         this.git_name = git_name;
         this.git_email = git_email;
+        this.name = "Unnamed";
     }
 
     public int getId() {
