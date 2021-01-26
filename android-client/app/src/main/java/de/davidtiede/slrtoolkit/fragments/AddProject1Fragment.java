@@ -78,6 +78,8 @@ public class AddProject1Fragment extends Fragment {
                         .setInputData(
                                 new Data.Builder()
                                         .putString("REMOTE_URL", repo.getRemote_url())
+                                        .putString("USERNAME", repo.getUsername())
+                                        .putString("TOKEN", repo.getToken())
                                         .build()
                         )
                         .build();
