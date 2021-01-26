@@ -51,20 +51,20 @@ public class Repo {
         return git_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getGit_email() {
+        return git_email;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setLocal_path(String local_path) {
-        this.local_path = local_path;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getGit_email() {
-        return git_email;
+    public void setLocal_path(String local_path) {
+        this.local_path = local_path;
     }
 
 }
