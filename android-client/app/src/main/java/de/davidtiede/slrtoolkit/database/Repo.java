@@ -27,7 +27,7 @@ public class Repo {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String getLocal_path() {
@@ -35,7 +35,7 @@ public class Repo {
     }
 
     public String getRemote_url() {
-        return this.remote_url;
+        return remote_url;
     }
 
     public String getUsername() {
