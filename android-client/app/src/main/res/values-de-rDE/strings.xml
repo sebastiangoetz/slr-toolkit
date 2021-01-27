@@ -21,5 +21,7 @@
     <string name="textinput_name">Projektname</string>
     <string name="toast_empty_name">Bitte lassen sie \"Projekt Name\" nicht leer.</string>
     <string name="snackbar_undo">Rückgängig</string>
-    <string name="please_wait">Bitte warten…</string>
+    <string name="progressbutton_onloading">Bitte warten…</string>
+    <string name="progressbutton_onfailed">Das Projekt konnte nicht geklont werden.</string>
+    <string name="progressbutton_succeeded">Weiter</string>
 </resources>

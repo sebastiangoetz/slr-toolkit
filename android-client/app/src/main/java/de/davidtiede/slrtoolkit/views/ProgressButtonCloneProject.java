@@ -24,20 +24,20 @@ public class ProgressButtonCloneProject {
         textView = view.findViewById(R.id.textview_clone_project);
     }
 
-    void buttonLoading() {
+    public void onLoading() {
         progressBar.setVisibility(View.VISIBLE);
-        textView.setText(context.getResources().getString(R.string.please_wait));
+        textView.setText(context.getResources().getString(R.string.progressbutton_onloading));
     }
 
-    void buttonSuccessful() {
+    public void onSucceeded() {
         cardView.setBackgroundColor(Color.GREEN);
         progressBar.setVisibility(View.GONE);
-        textView.setText(context.getResources().getString(R.string.please_wait));
+        textView.setText(context.getResources().getString(R.string.progressbutton_succeeded));
     }
 
-    void buttonFailure() {
+    public void onFailed() {
         cardView.setBackgroundColor(Color.RED);
         progressBar.setVisibility(View.GONE);
-        textView.setText(context.getResources().getString(R.string.please_wait));
+        textView.setText(context.getResources().getString(R.string.progressbutton_onfailed));
     }
 }
