@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ProjectView: View {
     enum Sheet: Int, Identifiable {
-        case projectsView, projectSettingsView, settingsView
+        case projectsView, projectSettingsView, settingsView, filterEntriesView
 
         var id: Int { rawValue }
     }
@@ -36,7 +36,9 @@ struct ProjectView: View {
     var body: some View {
         List {
             ButtonRow(buttons: [
-                ("Filter", unfilteredEntries.isEmpty ? "All done!" : "\(unfilteredEntries.count) entries", !unfilteredEntries.isEmpty, false, {}),
+                ("Filter", unfilteredEntries.isEmpty ? "All done!" : "\(unfilteredEntries.count) entries", !unfilteredEntries.isEmpty, false, {
+                    presentedSheet = .filterEntriesView
+                }),
                 ("Classify", unclassifiedEntries.isEmpty ? "All done!" : "\(unclassifiedEntries.count) entries", !unclassifiedEntries.isEmpty, false, {})
             ])
             Section(header: Text("Source Control")) {
@@ -85,6 +87,8 @@ struct ProjectView: View {
                     .environment(\.managedObjectContext, managedObjectContext)
             case .settingsView:
                 SettingsView()
+            case .filterEntriesView:
+                FilterEntriesView(entries: unfilteredEntries.map { $0 })
             }
         }
     }

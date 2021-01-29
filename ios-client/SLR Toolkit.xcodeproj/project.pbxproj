@@ -23,6 +23,7 @@
 		504F3EEC25AFBD7C0055C19F /* ProjectSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */; };
 		50500402257934F100B79470 /* EntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50500401257934F100B79470 /* EntriesView.swift */; };
 		5051E85025B1A37E00819F75 /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5051E84F25B1A37E00819F75 /* AlertContent.swift */; };
+		506EC53625C4786700D38978 /* FilterEntriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506EC53525C4786700D38978 /* FilterEntriesView.swift */; };
 		50744ADE25A4826F00AE8F57 /* ProjectViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */; };
 		5077EC6D25A37DC40001EF49 /* ButtonRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC6C25A37DC40001EF49 /* ButtonRow.swift */; };
 		5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5077EC7225A37FAB0001EF49 /* ProjectView.swift */; };
@@ -111,6 +112,7 @@
 		504F3EEB25AFBD7C0055C19F /* ProjectSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSettingsView.swift; sourceTree = "<group>"; };
 		50500401257934F100B79470 /* EntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntriesView.swift; sourceTree = "<group>"; };
 		5051E84F25B1A37E00819F75 /* AlertContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertContent.swift; sourceTree = "<group>"; };
+		506EC53525C4786700D38978 /* FilterEntriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterEntriesView.swift; sourceTree = "<group>"; };
 		50744ADD25A4826F00AE8F57 /* ProjectViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewInteractor.swift; sourceTree = "<group>"; };
 		5077EC6C25A37DC40001EF49 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
 		5077EC7225A37FAB0001EF49 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
@@ -271,6 +273,14 @@
 			path = "SLR ToolkitUITests";
 			sourceTree = "<group>";
 		};
+		506EC53425C4784400D38978 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				506EC53525C4786700D38978 /* FilterEntriesView.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		507F185125A37BE600D88CD3 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,6 +365,7 @@
 				507F185125A37BE600D88CD3 /* Projects */,
 				50BB355D25A5D43600189AA6 /* Settings */,
 				5002A2EF259390EB00847F55 /* Entries */,
+				506EC53425C4784400D38978 /* Filter */,
 				5002A2F0259390F700847F55 /* Add Project */,
 				5002A2F12593910C00847F55 /* Common */,
 			);
@@ -570,6 +581,7 @@
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
 				5002A2F32593912800847F55 /* EntryRow.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
+				506EC53625C4786700D38978 /* FilterEntriesView.swift in Sources */,
 				50BB356925A5DD1700189AA6 /* Acknowledgements.swift in Sources */,
 				5051E85025B1A37E00819F75 /* AlertContent.swift in Sources */,
 				50864A5125541590001F0007 /* GitManager.swift in Sources */,
