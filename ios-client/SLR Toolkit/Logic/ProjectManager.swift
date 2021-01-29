@@ -3,6 +3,20 @@ import Foundation
 import SwiftyBibtex
 
 enum ProjectManager {
+    static func projectName(forProjectAt url: URL) -> String? {
+        guard let xmlFileURL = FileManager.default.contentsOfDirectory(at: url, matching: { $1 == ".project" }).first else { return nil }
+        do {
+            let content = try String(contentsOf: xmlFileURL)
+            let regex = try NSRegularExpression(pattern: "<name>(.*)</name>", options: [])
+            let match = regex.firstMatch(in: content, options: [], range: NSRange(location: 0, length: content.utf16.count))
+            guard let nsRange = match?.range(at: 1) else { return nil }
+            guard let swiftRange = Range(nsRange, in: content) else { return nil }
+            return String(content[swiftRange])
+        } catch {
+            return nil
+        }
+    }
+
     static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext

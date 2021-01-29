@@ -7,7 +7,7 @@ struct AddProjectDetailsView: View {
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     
-    @State private var projectName = ""
+    @State private var projectName: String
     @State private var selection: Directory
     @State private var isDirectoryValid = false
 
@@ -21,7 +21,9 @@ struct AddProjectDetailsView: View {
         self.username = username
         self.token = token
         self.repositoryURL = repositoryURL
-        
+
+        _projectName = State(initialValue: ProjectManager.projectName(forProjectAt: repositoryDirectory) ?? "")
+
         directories = [Directory(url: repositoryDirectory, isRoot: true)]
         _selection = State(initialValue: directories[0])
         _isDirectoryValid = State(initialValue: directories[0].isValidProjectDirectory)
@@ -77,6 +79,10 @@ struct AddProjectDetailsView: View {
     private func selectDirectory(_ directory: Directory) {
         selection = directory
         isDirectoryValid = directory.isValidProjectDirectory
+
+        if let nameFromConfig = ProjectManager.projectName(forProjectAt: selection.url) {
+            projectName = nameFromConfig
+        }
     }
     
     private func done() {
