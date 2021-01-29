@@ -17,6 +17,23 @@ enum ProjectManager {
         }
     }
 
+    static func setName(_ newName: String, for project: Project) -> Bool {
+        guard let xmlFileURL = FileManager.default.contentsOfDirectory(at: project.url, matching: { $1 == ".project" }).first else { return false }
+        do {
+            var content = try String(contentsOf: xmlFileURL)
+            let regex = try NSRegularExpression(pattern: "<name>(.*)</name>", options: [])
+            let match = regex.firstMatch(in: content, options: [], range: NSRange(location: 0, length: content.utf16.count))
+            guard let nsRange = match?.range(at: 1) else { return false }
+            guard let swiftRange = Range(nsRange, in: content) else { return false }
+            content.replaceSubrange(swiftRange, with: newName)
+            try content.write(to: xmlFileURL, atomically: true, encoding: .utf8)
+            // TODO show as change in UI (on commit button)
+            return true
+        } catch {
+            return false
+        }
+    }
+
     static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext
@@ -53,6 +70,8 @@ enum ProjectManager {
     }
 
     static func commitChanges(project: Project) throws -> (Int, Int) {
+        _ = setName(project.name, for: project)
+
         // TODO handle multiple bib files, each entry needs to know to which file it belongs; new CD entity?
         let bibFileURL = FileManager.default.contentsOfDirectory(at: project.url) { $1.hasSuffix(".bib") }.first!
         let bibText = try String(contentsOf: bibFileURL)

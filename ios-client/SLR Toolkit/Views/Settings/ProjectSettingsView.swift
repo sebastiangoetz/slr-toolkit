@@ -6,12 +6,14 @@ struct ProjectSettingsView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.managedObjectContext) private var managedObjectContext
 
+    @State private var projectName: String
     @State private var commitName: String
     @State private var commitEmail: String
 
     init(project: Project) {
         self.project = project
 
+        _projectName = State(initialValue: project.name)
         _commitName = State(initialValue: project.commitName ?? "")
         _commitEmail = State(initialValue: project.commitEmail ?? "")
     }
@@ -20,7 +22,7 @@ struct ProjectSettingsView: View {
         NavigationView {
             List {
                 Section(header: Text("Project Name")) {
-                    Text(project.name)  // TODO make editable
+                    TextField("Project Name", text: $projectName)
                 }
                 Section(header: Text("Commit Identity")) {
                     TextField("Name", text: $commitName)
@@ -46,6 +48,11 @@ struct ProjectSettingsView: View {
 
         let trimmedCommitEmail = commitEmail.trimmingCharacters(in: .whitespaces)
         project.commitEmail = trimmedCommitEmail.isEmpty ? nil : trimmedCommitEmail
+
+        let trimmedProjectName = projectName.trimmingCharacters(in: .whitespaces)
+        if !trimmedProjectName.isEmpty && trimmedProjectName != project.name {
+            project.name = trimmedProjectName
+        }
 
         managedObjectContext.saveAndLogError()
 
