@@ -2,6 +2,7 @@ import SwiftUI
 
 /// View that is shown when no projects have been created,
 struct WelcomeView: View {
+    /// The WelcomeView is replaces by ProjectView as soon as this is set to a non-nil value.
     @Binding var project: Project?
 
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -29,6 +30,10 @@ struct WelcomeView: View {
 
 struct WelcomeView_Previews: PreviewProvider {
     static var previews: some View {
-        WelcomeView(project: .constant(nil))
+        Group {
+            WelcomeView(project: .constant(nil))
+            WelcomeView(project: .constant(nil))
+                .colorScheme(.dark)
+        }
     }
 }

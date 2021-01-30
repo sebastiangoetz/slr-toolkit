@@ -2,6 +2,7 @@ import SwiftUI
 
 /// View to let users filter all entries for which they haven't made a decision yet.
 struct FilterEntriesView: View {
+    /// The list of entries with an outstanding decision.
     private let entries: [Entry]
 
     @Environment(\.managedObjectContext) private var managedObjectContext

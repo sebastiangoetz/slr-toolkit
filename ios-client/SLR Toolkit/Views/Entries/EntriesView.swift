@@ -3,16 +3,15 @@ import SwiftUI
 
 /// View for showing a list of entries with sort controls.
 struct EntriesView: View {
-
     @Environment(\.managedObjectContext) private var managedObjectContext
 
     @State private var fetchRequest: NSFetchRequest<Entry>
 
     @FetchRequest private var entries: FetchedResults<Entry>
 
+    /// Mode for sorting entries.
     private enum SortMode: String {
-        case title
-        case date
+        case title, date
     }
 
     @State private var sortMode: SortMode

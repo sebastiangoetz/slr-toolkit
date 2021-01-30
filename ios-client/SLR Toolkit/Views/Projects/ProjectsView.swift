@@ -1,13 +1,15 @@
 import CoreData
 import SwiftUI
 
-///
+/// View for changing the active project or creating a new one.
 struct ProjectsView: View {
+    /// The currently active project (shown in ProjectView).
     @Binding var activeProject: Project?
     
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.presentationMode) private var presentationMode
-    
+
+    /// All projects.
     @FetchRequest(sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]) private var projects: FetchedResults<Project>
     
     @State private var addProjectViewIsPresented = false

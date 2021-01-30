@@ -12,7 +12,7 @@ struct SubtitleButton: View {
                 Text(title)
                 Text(subtitle)
                     .font(.caption)
-                    .opacity(0.75)
+                    .opacity(0.75)  // let background color shine through
             }
             .padding(.vertical, 8)
         }
@@ -22,5 +22,7 @@ struct SubtitleButton: View {
 struct SubtitleButton_Previews: PreviewProvider {
     static var previews: some View {
         SubtitleButton(title: "Title", subtitle: "Subtitle") {}
+        SubtitleButton(title: "Title", subtitle: "Subtitle") {}
+            .colorScheme(.dark)
     }
 }

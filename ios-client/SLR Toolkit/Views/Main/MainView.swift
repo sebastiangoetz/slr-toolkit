@@ -19,9 +19,9 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            NavigationView {
-                MainView(project: nil)
-            }
+            MainView(project: nil)
+            MainView(project: nil)
+                .colorScheme(.dark)
         }
     }
 }

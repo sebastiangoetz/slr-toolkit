@@ -129,13 +129,3 @@ struct ProjectView: View {
         }
     }
 }
-
-struct ProjectView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationView {
-                MainView(project: nil)
-            }
-        }
-    }
-}

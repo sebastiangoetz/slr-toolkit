@@ -2,14 +2,14 @@ import SwiftUI
 
 /// Shows multiple buttons in a row.
 struct ButtonRow: View {
-    typealias ButtonConfiguration = (title: String, subtitle: String, enabled: Bool, loading: Bool, action: () -> Void)
+    typealias ButtonConfiguration = (title: String, subtitle: String, enabled: Bool, isLoading: Bool, action: () -> Void)
 
     var buttons: [ButtonConfiguration]
 
     var body: some View {
         HStack(spacing: 20) {
             ForEach(buttons, id: \.0) { configuration in
-                if configuration.loading {
+                if configuration.isLoading {
                     ExpandingButton(action: {}) {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -29,10 +29,15 @@ struct ButtonRow: View {
 
 struct ButtonRow_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonRow(buttons: [
+        let buttonConfiguration = [
             ("Title1", "Subtitle1", true, false, {}),
             ("Title2", "Subtitle2", false, false, {}),
             ("Title2", "Subtitle2", true, true, {})
-        ])
+        ]
+        return Group {
+            ButtonRow(buttons: buttonConfiguration)
+            ButtonRow(buttons: buttonConfiguration)
+                .colorScheme(.dark)
+        }
     }
 }

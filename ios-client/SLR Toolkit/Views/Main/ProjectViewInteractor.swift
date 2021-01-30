@@ -40,11 +40,13 @@ struct ProjectViewInteractorImplementation: ProjectViewInteractor {
     }
 
     func commit(project: Project, isLoading: Binding<Bool>, alertContent: Binding<AlertContent?>) {
+        // Ensure there are changes to commit
         guard !project.discardedEntries.isEmpty || !project.classifiedEntries.isEmpty else {
             alertContent.wrappedValue = AlertContent(title: "Nothing to commit.", message: nil)
             return
         }
 
+        // Ensure a commit identity has been set
         guard project.commitName?.isEmpty == false && project.commitName?.isEmpty == false else {
             alertContent.wrappedValue = AlertContent(title: "No commit identity", message: "Please enter a name and email address for your commits in project settings.")  // TODO Add button that links to ProjectSettingsView
             return

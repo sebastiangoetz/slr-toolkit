@@ -7,6 +7,7 @@ struct ClassifyEntryView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.managedObjectContext) private var managedObjectContext
 
+    /// The classes to assign. On init, a copy of the entry's classes is created. When tapping Done, the new classes set will be assigned to the entry,
     @State private var classes: Set<TaxonomyClass>
 
     init(entry: Entry) {

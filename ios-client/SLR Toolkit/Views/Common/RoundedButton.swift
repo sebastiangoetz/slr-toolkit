@@ -25,5 +25,9 @@ struct RoundedButton_Previews: PreviewProvider {
         RoundedButton(action: {}) {
             Text("OK")
         }
+        RoundedButton(action: {}) {
+            Text("OK")
+        }
+        .colorScheme(.dark)
     }
 }

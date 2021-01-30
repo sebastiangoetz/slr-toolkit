@@ -82,6 +82,7 @@ struct AddProjectDetailsView: View {
         selection = directory
         isDirectoryValid = directory.isValidProjectDirectory
 
+        // Try to read project name from .project file in the directory
         if let nameFromConfig = ProjectManager.projectName(forProjectAt: selection.url) {
             projectName = nameFromConfig
         }
@@ -105,6 +106,8 @@ struct AddProjectDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             AddProjectDetailsView(username: "", token: "", repositoryURL: "", repositoryDirectory: URL(fileURLWithPath: ""), project: .constant(nil), isPresented: .constant(true))
+            AddProjectDetailsView(username: "", token: "", repositoryURL: "", repositoryDirectory: URL(fileURLWithPath: ""), project: .constant(nil), isPresented: .constant(true))
+                .colorScheme(.dark)
         }
     }
 }

@@ -24,5 +24,7 @@ struct TextButton: View {
 struct TextButton_Previews: PreviewProvider {
     static var previews: some View {
         TextButton("OK") {}
+        TextButton("OK") {}
+            .colorScheme(.dark)
     }
 }

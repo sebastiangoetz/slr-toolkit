@@ -56,6 +56,10 @@ extension String {
     }
 }
 
+extension String: Identifiable {
+    public var id: String { self }
+}
+
 // Foundation
 
 extension FileManager {
@@ -106,6 +110,7 @@ extension NSManagedObjectContext {
 // SwiftyBibtex
 
 extension Publication {
+    /// Parses a publication's "classes" field and returns it as a set. Each node in the taxonomy tree is represented by a string denoting its path starting from root (joined with "###").
     var classes: Set<String> {
         guard let classesString = fields["classes"], let taxonomy = TaxonomyParser.parse(classesString) else { return [] }
         var classes = Set<String>()
@@ -123,7 +128,7 @@ extension Publication {
 }
 
 extension RangeInFile: Comparable {
-    // Publications don't overlap
+    // Assuming that publications don't overlap
     public static func < (lhs: RangeInFile, rhs: RangeInFile) -> Bool {
         if lhs.start.line != rhs.start.line {
             return lhs.start.line < rhs.start.line

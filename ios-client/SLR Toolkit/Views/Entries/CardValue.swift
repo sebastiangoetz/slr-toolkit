@@ -20,3 +20,11 @@ struct CardValue<Content>: View where Content: View {
         }
     }
 }
+
+struct CardValue_Previews: PreviewProvider {
+    static var previews: some View {
+        CardValue(title: "Title") { Text("Content") }
+        CardValue(title: "Title") { Text("Content") }
+            .colorScheme(.dark)
+    }
+}

@@ -27,5 +27,9 @@ struct ExpandingButton_Previews: PreviewProvider {
         ExpandingButton(action: {}) {
             Text("OK")
         }
+        ExpandingButton(action: {}) {
+            Text("OK")
+        }
+        .colorScheme(.dark)
     }
 }

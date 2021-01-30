@@ -16,7 +16,6 @@ struct AddProjectView: View {
     
     @State private var isLoading = false
     @State private var progress: Float?
-    @State private var cloneErrorAlertIsPresented = false
     @State private var cloneError: String?
     
     @State private var navigateToNextScreen = false
@@ -81,8 +80,8 @@ struct AddProjectView: View {
                     }
                 }
             }
-            .alert(isPresented: $cloneErrorAlertIsPresented) {
-                Alert(title: Text("Clone error"), message: Text(cloneError!), dismissButton: .default(Text("OK")))
+            .alert(item: $cloneError) { cloneError in
+                Alert(title: Text("Clone error"), message: Text(cloneError), dismissButton: .default(Text("OK")))
             }
         }
     }
@@ -112,7 +111,6 @@ struct AddProjectView: View {
                 self.repositoryDirectory = repositoryDirectory
                 navigateToNextScreen = true
             case .failure(let error):
-                cloneErrorAlertIsPresented = true
                 cloneError = error.description
             }
         }
@@ -122,5 +120,7 @@ struct AddProjectView: View {
 struct AddProjectView_Previews: PreviewProvider {
     static var previews: some View {
         AddProjectView(project: .constant(nil), isPresented: .constant(true))
+        AddProjectView(project: .constant(nil), isPresented: .constant(true))
+            .colorScheme(.dark)
     }
 }

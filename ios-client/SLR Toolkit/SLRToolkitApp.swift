@@ -19,7 +19,9 @@ struct SLRToolkitApp: App {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         do {
             if let projects = try container.viewContext.fetch(fetchRequest) as? [Project], let firstProject = projects.first {
-                if let uri = UserDefaults.standard.url(forKey: .activeProject), let managedObjectID = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: uri), let activeProject = container.viewContext.object(with: managedObjectID) as? Project {
+                if let uri = UserDefaults.standard.url(forKey: .activeProject),
+                   let managedObjectID = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: uri),
+                   let activeProject = container.viewContext.object(with: managedObjectID) as? Project {
                     return activeProject
                 }
                 return firstProject
@@ -35,8 +37,7 @@ struct SLRToolkitApp: App {
     /// Marks two entries as having an outstanding decision. This is useful for enabling the "Filter" button.
     private func markTwoEntriesAsOutstanding() {
         let managedObjectContext = PersistenceController.shared.container.viewContext
-        let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "decisionRaw != 2"))
-        if let entries = try? managedObjectContext.fetch(fetchRequest) {
+        if let entries = try? managedObjectContext.fetch(Entry.fetchRequest) {
             entries.first?.decision = .outstanding
             entries.last?.decision = .outstanding
         }
