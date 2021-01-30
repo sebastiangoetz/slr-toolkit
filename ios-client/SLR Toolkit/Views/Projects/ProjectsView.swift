@@ -76,35 +76,10 @@ struct ProjectsView: View {
     }
 }
 
-struct ProjectRow: View {
-    var project: Project
-    var isActiveProject: Bool
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(project.name)
-                Text(project.repositoryURL)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-            }
-            if isActiveProject {
-                Spacer()
-                Image(systemName: "checkmark")
-            }
-        }
+struct ProjectsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProjectsView(activeProject: .constant(nil))
+        ProjectsView(activeProject: .constant(nil))
+            .colorScheme(.dark)
     }
 }
-
-//struct ProjectsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let persistenceController = PersistenceController(inMemory: true)
-//        for i in 1...5 {
-//            Project.newProject(name: "Project \(i)", username: "", token: "", repository: URL(fileURLWithPath: ""), path: "", in: persistenceController.container.viewContext)
-//        }
-//        try? persistenceController.container.viewContext.save()
-//        return ProjectsView()
-//            .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//    }
-//}

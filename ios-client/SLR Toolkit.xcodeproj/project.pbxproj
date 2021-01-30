@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5002A2F32593912800847F55 /* EntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5002A2F22593912800847F55 /* EntryRow.swift */; };
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
+		500FDBFD25C5F47900AAC049 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDBFC25C5F47900AAC049 /* ProjectRow.swift */; };
 		5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034067525583D9100FC8FF4 /* ProjectsView.swift */; };
 		503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLRToolkitApp.swift */; };
 		503E51632553538200EA801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51622553538200EA801A /* Assets.xcassets */; };
@@ -93,6 +94,7 @@
 /* Begin PBXFileReference section */
 		5002A2F22593912800847F55 /* EntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryRow.swift; sourceTree = "<group>"; };
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		500FDBFC25C5F47900AAC049 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
 		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E515E2553538100EA801A /* SLRToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRToolkitApp.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				5034067525583D9100FC8FF4 /* ProjectsView.swift */,
+				500FDBFC25C5F47900AAC049 /* ProjectRow.swift */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -562,6 +565,7 @@
 				50DA689F25B0DC920009F0AD /* EntryDetailsViewController.swift in Sources */,
 				507F184425A3481600D88CD3 /* ProjectManager.swift in Sources */,
 				503E516B2553538200EA801A /* SLR_Toolkit.xcdatamodeld in Sources */,
+				500FDBFD25C5F47900AAC049 /* ProjectRow.swift in Sources */,
 				508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */,
 				50F3A5A12594010B0021E943 /* EntryCard.swift in Sources */,
 				50EFFB042556D587004BA48F /* AddProjectView.swift in Sources */,
