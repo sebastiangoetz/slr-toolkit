@@ -13,7 +13,7 @@ struct SettingsView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Settings", displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         presentationMode.wrappedValue.dismiss()
                     }

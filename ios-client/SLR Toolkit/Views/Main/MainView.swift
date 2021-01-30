@@ -6,7 +6,10 @@ struct MainView: View {
 
     var body: some View {
         if project != nil {
-            ProjectView(project: $project)
+            NavigationView {
+                ProjectView(project: $project)
+                
+            }
         } else {
             WelcomeView(project: $project)
         }

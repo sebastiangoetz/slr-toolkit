@@ -74,9 +74,9 @@ struct ProjectView: View {
                 menu()
             }
         }
-        .alert(item: $alertContent, content: { alertContent in
+        .alert(item: $alertContent) { alertContent in
             Alert(title: Text(alertContent.title), message: alertContent.message == nil ? nil : Text(alertContent.message!), dismissButton: .cancel(Text("OK")))
-        })
+        }
         .sheet(item: $presentedSheet) { sheet in
             switch sheet {
             case .projectsView:
@@ -117,6 +117,7 @@ struct ProjectView: View {
             } label: {
                 Label("App Settings", systemImage: "gearshape")
             }
+            .keyboardShortcut(",", modifiers: .command)
         } label: {
             Image(systemName: "ellipsis.circle")
                 .imageScale(.large)

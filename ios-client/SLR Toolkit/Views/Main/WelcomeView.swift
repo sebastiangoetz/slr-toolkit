@@ -8,18 +8,21 @@ struct WelcomeView: View {
     @State private var addProjectIsPresented = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Welcome to SLR Toolkit!\nAdd a project to get started.")
-                .multilineTextAlignment(.center)
-            TextButton("Add Project", minWidth: 120) {
-                addProjectIsPresented = true
+        NavigationView {
+            VStack(spacing: 20) {
+                Text("Welcome to SLR Toolkit!\nAdd a project to get started.")
+                    .multilineTextAlignment(.center)
+                TextButton("Add Project", minWidth: 120) {
+                    addProjectIsPresented = true
+                }
+            }
+            .navigationBarTitle("SLR Toolkit")
+            .sheet(isPresented: $addProjectIsPresented) {
+                AddProjectView(project: $project, isPresented: $addProjectIsPresented)
+                    .environment(\.managedObjectContext, managedObjectContext)
             }
         }
-        .navigationBarTitle("SLR Toolkit")
-        .sheet(isPresented: $addProjectIsPresented) {
-            AddProjectView(project: $project, isPresented: $addProjectIsPresented)
-                .environment(\.managedObjectContext, managedObjectContext)
-        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

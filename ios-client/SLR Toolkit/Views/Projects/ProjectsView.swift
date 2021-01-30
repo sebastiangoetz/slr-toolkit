@@ -30,23 +30,7 @@ struct ProjectsView: View {
                             presentationMode.wrappedValue.dismiss()
                         }
                 }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        let project = projects[index]
-                        if project == activeProject {
-                            if projects.count <= 1 {
-                                activeProject = nil
-                                UserDefaults.standard.removeURL(forKey: .activeProject)
-                                presentationMode.wrappedValue.dismiss()
-                            } else {
-                                activeProject = projects.first { $0 != project }
-                                UserDefaults.standard.set(activeProject!.objectID.uriRepresentation(), forKey: .activeProject)
-                            }
-                        }
-                        managedObjectContext.delete(project)
-                    }
-                    try? managedObjectContext.save()
-                }
+                .onDelete(perform: deleteProjects)
             }
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Projects", displayMode: .inline)
@@ -57,6 +41,7 @@ struct ProjectsView: View {
                     } label: {
                         Label("Add Project", systemImage: "plus")
                     }
+                    .keyboardShortcut("n", modifiers: .command)
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -69,6 +54,24 @@ struct ProjectsView: View {
                     .environment(\.managedObjectContext, managedObjectContext)
             }
         }
+    }
+
+    private func deleteProjects(indexSet: IndexSet) {
+        for index in indexSet {
+            let project = projects[index]
+            if project == activeProject {
+                if projects.count <= 1 {
+                    activeProject = nil
+                    UserDefaults.standard.removeURL(forKey: .activeProject)
+                    presentationMode.wrappedValue.dismiss()
+                } else {
+                    activeProject = projects.first { $0 != project }
+                    UserDefaults.standard.set(activeProject!.objectID.uriRepresentation(), forKey: .activeProject)
+                }
+            }
+            managedObjectContext.delete(project)
+        }
+        try? managedObjectContext.save()
     }
 }
 

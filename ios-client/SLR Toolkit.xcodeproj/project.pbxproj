@@ -273,12 +273,12 @@
 			path = "SLR ToolkitUITests";
 			sourceTree = "<group>";
 		};
-		506EC53425C4784400D38978 /* Filter */ = {
+		506EC53425C4784400D38978 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
 				506EC53525C4786700D38978 /* FilterEntriesView.swift */,
 			);
-			path = Filter;
+			path = Actions;
 			sourceTree = "<group>";
 		};
 		507F185125A37BE600D88CD3 /* Projects */ = {
@@ -365,7 +365,7 @@
 				507F185125A37BE600D88CD3 /* Projects */,
 				50BB355D25A5D43600189AA6 /* Settings */,
 				5002A2EF259390EB00847F55 /* Entries */,
-				506EC53425C4784400D38978 /* Filter */,
+				506EC53425C4784400D38978 /* Actions */,
 				5002A2F0259390F700847F55 /* Add Project */,
 				5002A2F12593910C00847F55 /* Common */,
 			);

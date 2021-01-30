@@ -15,37 +15,42 @@ struct FilterEntriesView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                ZStack {
-                    if let entry = entries.first {  // to prevent crash after last unfiltered entry is removed
-                        EntryCard(entry: entry)
+            HStack {
+                Spacer()
+                VStack {
+                    ZStack {
+                        if let entry = entries.first {  // to prevent crash after last unfiltered entry is removed
+                            EntryCard(entry: entry)  // TODO make sure ScrollView scrolls
+                        }
+                        Color.red.opacity(Double(-dragAmount) / 2500)
+                        Color.green.opacity(Double(dragAmount) / 2500)
                     }
-                    Color.red.opacity(Double(-dragAmount) / 2500)
-                    Color.green.opacity(Double(dragAmount) / 2500)
+                    .cornerRadius(20)
+                    .zIndex(1)
+                    .offset(x: 1.5 * dragAmount, y: verticalOffset)
+                    .rotationEffect(Angle(degrees: Double(dragAmount / 40)))
+                    .gesture(
+                        DragGesture()
+                            .onChanged { dragAmount = $0.translation.width }
+                            .onEnded { _ in dragGestureEnded() }
+                    )
+                    HStack {
+                        Text("← Discard")
+                        Spacer()
+                        Text(entries.first?.citationKey ?? "")
+                        Spacer()
+                        Text("Keep →")
+                    }
+                    .padding(EdgeInsets(top: 8, leading: 12, bottom: 20, trailing: 12))
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
                 }
-                .cornerRadius(20)
-                .zIndex(1)
-                .offset(x: 1.5 * dragAmount, y: verticalOffset)
-                .rotationEffect(Angle(degrees: Double(dragAmount / 40)))
-                .gesture(
-                    DragGesture()
-                        .onChanged { dragAmount = $0.translation.width }
-                        .onEnded { _ in dragGestureEnded() }
-                )
-                HStack {
-                    Text("← Discard")
-                    Spacer()
-                    Text("\(entries.count) to go")
-                    Spacer()
-                    Text("Keep →")
-                }
-                .padding(EdgeInsets(top: 8, leading: 12, bottom: 0, trailing: 12))
-                .font(.footnote)
-                .foregroundColor(.secondary)
+                .frame(maxWidth: 512)
+                .padding([.top, .leading, .trailing], 24)
+                Spacer()
             }
-            .padding([.top, .leading, .trailing], 24)
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .navigationBarTitle(entries.first?.citationKey ?? "", displayMode: .inline)
+            .navigationBarTitle("Filter (\(entries.count) to go)", displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {

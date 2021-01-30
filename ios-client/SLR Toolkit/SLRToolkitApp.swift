@@ -7,12 +7,8 @@ struct SLRToolkitApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                MainView(project: loadActiveProject())
-                // TODO support iPad
-//                EntryDetailsView()
-            }
-            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MainView(project: loadActiveProject())
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
     

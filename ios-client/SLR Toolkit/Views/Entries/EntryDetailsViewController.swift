@@ -138,6 +138,6 @@ final class EntryDetailsViewController: UICollectionViewController, NSFetchedRes
 
     private var cardSize: CGSize {
         let inset: CGFloat = 24
-        return CGSize(width: collectionView.frame.size.width - 2 * inset, height: collectionView.frame.size.height - 2 * inset)
+        return CGSize(width: min(512, collectionView.frame.size.width - 2 * inset), height: collectionView.frame.size.height - 2 * inset)
     }
 }
