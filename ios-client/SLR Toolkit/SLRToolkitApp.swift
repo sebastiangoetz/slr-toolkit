@@ -28,4 +28,26 @@ struct SLRToolkitApp: App {
         }
         return nil
     }
+
+    // Utility functions (useful for testing/debugging)
+
+    private func markTwoEntriesAsOutstanding() {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "decisionRaw != 2"))
+        if let entries = try? managedObjectContext.fetch(fetchRequest) {
+            entries.first?.decision = .outstanding
+            entries.last?.decision = .outstanding
+        }
+        try? managedObjectContext.save()
+    }
+
+    private func markTwoEntriesAsUnclassified() {
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+        let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "decisionRaw != 2"))
+        if let entries = try? managedObjectContext.fetch(fetchRequest) {
+            entries.first?.classes.removeAll()
+            entries.last?.classes.removeAll()
+        }
+        try? managedObjectContext.save()
+    }
 }
