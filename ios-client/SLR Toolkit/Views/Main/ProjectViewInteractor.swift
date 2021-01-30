@@ -1,8 +1,13 @@
 import SwiftUI
 
 protocol ProjectViewInteractor {
+    /// Fetches updates from origin. Uses bindings to report back whether it's loading, how many commits the local revision is behind origin, and what alert to show.
     func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
+
+    /// Fetches updates from origin and merges them into the main branch. Uses binding to report back whether it's loading, how many commits the local revision is behind origin, and what alert to show.
     func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>)
+
+    /// Commits all local changes. Uses bindings to report back whether it's loading and what alert to show.
     func commit(project: Project, isLoading: Binding<Bool>, alertContent: Binding<AlertContent?>)
 }
 

@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// UICollectionViewCell showing the details of an entry. Wraps the SwiftUI view EntryCard.
 final class EntryCell: UICollectionViewCell {
     private var hostingController: UIHostingController<EntryCard>?
 

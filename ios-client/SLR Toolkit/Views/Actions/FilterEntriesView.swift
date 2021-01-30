@@ -1,12 +1,16 @@
 import SwiftUI
 
+/// View to let users filter all entries for which they haven't made a decision yet.
 struct FilterEntriesView: View {
-    let entries: [Entry]
+    private let entries: [Entry]
 
     @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.presentationMode) private var presentationMode
 
+    /// Horizontal drag amount.
     @State private var dragAmount: CGFloat = 0
+
+    /// Vertical card offset. Used to move next card from the bottom into view.
     @State private var verticalOffset: CGFloat = 0
 
     init(entries: [Entry]) {

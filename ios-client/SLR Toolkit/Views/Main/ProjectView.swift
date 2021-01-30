@@ -1,10 +1,11 @@
 import CoreData
 import SwiftUI
 
+/// Main view for showing a project.
 struct ProjectView: View {
+    /// Used to denote the sheet that should be presented.
     enum Sheet: Int, Identifiable {
         case projectsView, projectSettingsView, settingsView, filterEntriesView
-
         var id: Int { rawValue }
     }
 
@@ -71,7 +72,7 @@ struct ProjectView: View {
             }
         }
         .listStyle(InsetGroupedListStyle())
-        .overlay(NavigationLink(destination: EntryDetailsView(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw != 2 && classes.@count == 0", project)).withSortDescriptors([NSSortDescriptor(key: "citationKey", ascending: true)])), isActive: $isShowingUnclassifiedEntries) { Text("") })
+        .overlay(NavigationLink(destination: EntryDetailsView(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw != 2 && classes.@count == 0", project)).withSortDescriptors([NSSortDescriptor(key: "citationKey", ascending: true)])), isActive: $isShowingUnclassifiedEntries) { Text("") })  // gets triggered by "Classify" button
         .navigationBarTitle(project.name)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

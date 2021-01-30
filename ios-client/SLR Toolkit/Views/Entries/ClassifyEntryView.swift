@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View for classifying an entry.
 struct ClassifyEntryView: View {
     private var entry: Entry
 

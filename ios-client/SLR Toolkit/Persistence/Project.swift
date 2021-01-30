@@ -1,5 +1,6 @@
 import CoreData
 
+/// DB entity for a project.
 final class Project: NSManagedObject {
     @NSManaged var name: String
     
@@ -34,6 +35,7 @@ final class Project: NSManagedObject {
             .appendingPathComponent(pathInRepository, isDirectory: true)
     }
 
+    /// Modification dates for the project's files. Used to determine whether the project's contents have changed.
     var fileModificationDates: [String: Date] {
         do {
             let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey, .contentModificationDateKey])
@@ -53,12 +55,15 @@ final class Project: NSManagedObject {
             return [:]
         }
     }
-    
+
     @discardableResult static func newEntity(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, in managedObjectContext: NSManagedObjectContext) -> Project {
         let project = NSEntityDescription.insertNewObject(forEntityName: String(describing: self), into: managedObjectContext) as! Project
         project.name = name
+
+        // TODO store securely in keychain, e.g. using https://github.com/kishikawakatsumi/KeychainAccess
         project.username = username
         project.token = token
+
         project.repositoryURL = repositoryURL
         project.pathInGitDirectory = pathInGitDirectory
         project.pathInRepository = pathInRepository

@@ -1,8 +1,9 @@
 import SwiftUI
 
+/// Shows title and value of an entry's field.
 struct CardValue<Content>: View where Content: View {
-    let title: String
-    let content: Content
+    private let title: String
+    private let content: Content
 
     init(title: String, @ViewBuilder content: () -> Content) {
         self.title = title

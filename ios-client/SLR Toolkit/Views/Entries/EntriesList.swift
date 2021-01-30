@@ -1,6 +1,7 @@
 import CoreData
 import SwiftUI
 
+/// Shows a list of entries (should be embedded in another view)
 struct EntriesList: View {
     @Environment(\.managedObjectContext) private var managedObjectContext
 

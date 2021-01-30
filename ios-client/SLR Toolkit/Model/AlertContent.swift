@@ -1,3 +1,4 @@
+/// Struct containing the contents of an alert.
 struct AlertContent: Identifiable {
     var id: String { title }
 

@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// A button with a subtitle.
 struct SubtitleButton: View {
     var title: String
     var subtitle: String

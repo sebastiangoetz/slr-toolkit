@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View for third-party libraries.
 struct AcknowledgementsView: View {
     var body: some View {
         List {

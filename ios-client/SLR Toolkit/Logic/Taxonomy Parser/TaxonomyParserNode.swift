@@ -1,6 +1,7 @@
 import Foundation
 import SwiftyBibtex
 
+/// Node in the taxonomy tree.
 final class TaxonomyParserNode: CustomStringConvertible, Equatable {
     let name: String
     let parent: TaxonomyParserNode?

@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Row in list that shows a title on the left and details on the right.
 struct DetailRow: View {
     let text: String
     let detail: String

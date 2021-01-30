@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View for project-specific settings.
 struct ProjectSettingsView: View {
     private let project: Project
 

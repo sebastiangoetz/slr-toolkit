@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Card showing the details of an entry. Shows title, author(s), and abstract, followed by all other values.
 struct EntryCard: View {
     var entry: Entry
 
@@ -29,6 +30,7 @@ struct EntryCard: View {
                 }
                 ForEach(entry.fields.sorted { $0.key < $1.key }, id: \.key) { key, value in
                     CardValue(title: key) {
+                        // Values starting with "http" are shown as tappable buttons.
                         if value.starts(with: "http") {
                             if let url = URL(string: value) {
                                 Button {

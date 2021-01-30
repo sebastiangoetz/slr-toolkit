@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View representing the first step of adding a new project.
 struct AddProjectView: View {
     static private let httpsPrefix = "https://"
     
@@ -85,14 +86,16 @@ struct AddProjectView: View {
             }
         }
     }
-    
+
+    /// Clone repository and show next screen.
     private func next() {
         isLoading = true
         
         let trimmedUsername = username.trimmingCharacters(in: .whitespaces)
         let trimmedToken = token.trimmingCharacters(in: .whitespaces)
-        
+
         if rememberCredentials {
+            // TODO store securely in keychain, e.g. using https://github.com/kishikawakatsumi/KeychainAccess
             UserDefaults.standard.set(trimmedUsername, forKey: .username)
         }
 

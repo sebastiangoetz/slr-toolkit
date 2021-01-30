@@ -38,7 +38,9 @@ struct AddProjectDetailsView: View {
             }
             Section(header: Text("Path"), footer: Text(isDirectoryValid ? "This is a valid directory ✓" : "Select a directory that contains one or more .bib files and a single .taxonomy file.")) {
                 OutlineGroup(self.directories, children: \Directory.directories) { directory in
-                    Button(action: { selectDirectory(directory) }) {
+                    Button {
+                        selectDirectory(directory)
+                    } label: {
                         HStack {
                             if let selection = selection, selection == directory {
                                 Text(directory.name)
@@ -84,7 +86,8 @@ struct AddProjectDetailsView: View {
             projectName = nameFromConfig
         }
     }
-    
+
+    /// Creates the new project and its classes & entries.
     private func done() {
         isLoading = true
         let repositoryDirectory = directories[0].url

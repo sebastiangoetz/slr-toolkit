@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Button with background color and rounded corners.
 struct RoundedButton<Label: View>: View {
     private var action: () -> Void
     private var label: Label

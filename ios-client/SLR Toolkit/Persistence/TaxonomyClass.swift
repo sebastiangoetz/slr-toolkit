@@ -1,6 +1,7 @@
 import CoreData
 import SwiftyBibtex
 
+/// DB entities for taxonomy nodes.
 final class TaxonomyClass: NSManagedObject, Identifiable {
     var id: String { name }
 

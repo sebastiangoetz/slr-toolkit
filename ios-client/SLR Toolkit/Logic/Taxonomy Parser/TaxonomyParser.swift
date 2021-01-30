@@ -1,5 +1,6 @@
 import Foundation
 
+/// Parser for SLR Toolkit taxonomies.
 enum TaxonomyParser {
     static func parse(_ taxonomy: String) -> [TaxonomyParserNode]? {
         guard taxonomy.filter({ $0 == "{" }).count == taxonomy.filter({ $0 == "}" }).count else { return nil }

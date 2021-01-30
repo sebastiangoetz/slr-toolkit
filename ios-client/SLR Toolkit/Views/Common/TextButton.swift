@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Button with a minimum width showing a simple string.
 struct TextButton: View {
     private var title: String
     private var minWidth: CGFloat?

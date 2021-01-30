@@ -1,5 +1,6 @@
 import Foundation
 
+/// Struct that wraps a git client. Transforms git errors into user-readable messages.
 struct GitManager {
     enum CloneError: Error {
         case unsupportedScheme
@@ -22,7 +23,8 @@ struct GitManager {
     }
 
     static let `default` = GitManager(gitClient: HttpsGitClient())
-    
+
+    /// Directory on the device containing this app's git repositories.
     static let gitDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("git", isDirectory: true)
     
     static func deleteGitDirectory() {
@@ -40,7 +42,8 @@ struct GitManager {
     init(gitClient: GitClient) {
         self.gitClient = gitClient
     }
-    
+
+    /// Clones a repository from a remote url.
     func cloneRepository(at url: URL, credentials: GitClient.Credentials, progress: ((Float) -> Void)? = nil, completion: @escaping (Result<URL, CloneError>) -> Void) {
         guard url.scheme == "https" else {
             completion(.failure(.unsupportedScheme))
@@ -83,14 +86,17 @@ struct GitManager {
         }
     }
 
+    /// Fetches changes for a project's git repository from a remote repository.
     func fetch(project: Project, completion: @escaping (Error?) -> Void) {
         gitClient.fetch(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
 
+    /// Fetches changes for a project's git repository from a remote repository and merges them into the local main branch.
     func pull(project: Project, completion: @escaping (Error?) -> Void) {
         gitClient.pull(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
 
+    /// Commits all local changes for a project.
     func commit(project: Project, changes: (Int, Int)) -> Error? {
         guard let commitName = project.commitName, let commitEmail = project.commitEmail, !commitName.isEmpty && !commitEmail.isEmpty else { return nil }  // TODO return proper error
 
@@ -110,10 +116,12 @@ struct GitManager {
         return gitClient.commitAll(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), message: "SLR Toolkit App: " + message, author: (commitName, commitEmail))
     }
 
+    /// Pushes a project's repository's local commits to a remote repository.
     func push(project: Project, completion: @escaping (Error?) -> Void) {
         gitClient.push(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory), credentials: (project.username, project.token), completion: completion)
     }
 
+    /// Reports how many commits the project's repository is ahead or behind its remote counterpart.
     func commitsAheadAndBehindOrigin(project: Project) -> (ahead: Int, behind: Int) {
         switch gitClient.commitsAheadAndBehindOrigin(repositoryURL: Self.gitDirectory.appendingPathComponent(project.pathInGitDirectory)) {
         case .success(let tuple):

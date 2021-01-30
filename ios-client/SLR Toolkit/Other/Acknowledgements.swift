@@ -1,3 +1,4 @@
+/// Third-party libraries and their licenses that are used in this project.
 enum Acknowledgements {
     static let acknowledgements = [
         "ObjectiveGit": """

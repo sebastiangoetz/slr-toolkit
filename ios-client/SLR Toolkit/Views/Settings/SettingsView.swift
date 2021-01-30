@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View for app-wide settings.
 struct SettingsView: View {
     @Environment(\.presentationMode) private var presentationMode
 

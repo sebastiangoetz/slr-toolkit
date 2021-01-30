@@ -1,6 +1,8 @@
 import SwiftUI
 
+/// Row in a list to show an entry.
 struct EntryRow: View {
+    /// The entry to show.
     var entry: Entry
 
     var body: some View {

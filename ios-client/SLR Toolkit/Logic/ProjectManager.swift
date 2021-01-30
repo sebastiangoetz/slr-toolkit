@@ -2,7 +2,9 @@ import CoreData
 import Foundation
 import SwiftyBibtex
 
+/// Utility functions for projects.
 enum ProjectManager {
+    /// Reads a project's name from a .project file in its directory.
     static func projectName(forProjectAt url: URL) -> String? {
         guard let xmlFileURL = FileManager.default.contentsOfDirectory(at: url, matching: { $1 == ".project" }).first else { return nil }
         do {
@@ -17,6 +19,7 @@ enum ProjectManager {
         }
     }
 
+    /// Writes a new name into a project's .project file.
     static func setName(_ newName: String, for project: Project) -> Bool {
         guard let xmlFileURL = FileManager.default.contentsOfDirectory(at: project.url, matching: { $1 == ".project" }).first else { return false }
         do {
@@ -34,6 +37,7 @@ enum ProjectManager {
         }
     }
 
+    /// Creates a new project and its contents.
     static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext
@@ -45,6 +49,7 @@ enum ProjectManager {
         }
     }
 
+    /// Updates a project (after new changes have been pulled) by re-creating its contents.
     static func updateProject(_ project: Project, fileModificationDates: [String: Date], completion: @escaping () -> Void) {
         guard fileModificationDates != project.fileModificationDates else {
             completion()
@@ -52,13 +57,18 @@ enum ProjectManager {
         }
         DispatchQueue.global(qos: .userInitiated).async {
             let managedObjectContext = PersistenceController.shared.container.viewContext
+
+            // Remember non-outstanding decisions
             let decisions = project.entries.reduce(into: [String: Entry.Decision]()) { acc, entry in
                 if entry.decision != .outstanding {
                     acc[entry.citationKey] = entry.decision
                 }
             }
+
+            // Delete all classes and entries
             project.classes.filter { $0.parent == nil }.forEach { managedObjectContext.delete($0) } // Delete rule is "cascade"
             project.entries.forEach { managedObjectContext.delete($0) }
+
             let entries = createContents(for: project, managedObjectContext: managedObjectContext)
             for entry in entries {
                 if let decision = decisions[entry.citationKey] {
@@ -69,18 +79,21 @@ enum ProjectManager {
         }
     }
 
+    /// Commits a project's changes.
     static func commitChanges(project: Project) throws -> (Int, Int) {
         _ = setName(project.name, for: project)
 
-        // TODO handle multiple bib files, each entry needs to know to which file it belongs; new CD entity?
+        // TODO handle multiple bib files, each entry needs to know to which file it belongs. Perhaps with a new Core Data entity that Entries can reference.
         let bibFileURL = FileManager.default.contentsOfDirectory(at: project.url) { $1.hasSuffix(".bib") }.first!
         let bibText = try String(contentsOf: bibFileURL)
         var lines = bibText.split(omittingEmptySubsequences: false) { $0 == "\n" || $0 == "\r\n" }  // TODO Switch to approach on character level
 
+        // Insert or modify "classes" lines
         let classifiedEntries = project.classifiedEntries.count
         for entry in project.classifiedEntries {
             let entryLines = lines[(entry.rangeInFile.start.line - 1)...(entry.rangeInFile.end.line - 1)]
 
+            // Find out original indent
             let indentRegex = try! NSRegularExpression(pattern: "^\\s+", options: [])
             let indent: String
             let secondLine = String(Array(entryLines)[1])
@@ -90,6 +103,7 @@ enum ProjectManager {
                 indent = ""
             }
 
+            // Generate and insert "classes" line
             let classesString = indent + "classes = {\(entry.classesString)}"
             if let index = entryLines.firstIndex(where: { $0.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("classes") }) {
                 lines[index] = classesString + (entryLines[index].hasSuffix(",") ? "," : "")
@@ -102,6 +116,7 @@ enum ProjectManager {
 
         let managedObjectContext = PersistenceController.shared.container.viewContext
 
+        // Delete discarded entries
         let discardedEntries = project.discardedEntries.count
         project.discardedEntries.map(\.rangeInFile).sorted { $0 > $1 }.forEach { lines.remove(atOffsets: IndexSet(integersIn: ($0.start.line - 1)...($0.end.line - 1))) }
         project.discardedEntries.forEach { managedObjectContext.delete($0) }
@@ -122,6 +137,7 @@ enum ProjectManager {
         return (discardedEntries, classifiedEntries)
     }
 
+    /// Creates a project's contents: entries and classes.
     @discardableResult private static func createContents(for project: Project, managedObjectContext: NSManagedObjectContext) -> [Entry] {
         let nodes = parseTaxonomy(project: project) ?? []
         let classes = createTaxonomyClasses(project: project, nodes: nodes, managedObjectContext: managedObjectContext)
@@ -137,6 +153,7 @@ enum ProjectManager {
         return entries.map(\.0)
     }
 
+    /// Parse the project's .taxonomy file.
     private static func parseTaxonomy(project: Project) -> [TaxonomyParserNode]? {
         guard let url = FileManager.default.contentsOfDirectory(at: project.url, matching: { $1.hasSuffix(".taxonomy") }).first else { return nil }
         do {
@@ -148,6 +165,7 @@ enum ProjectManager {
         }
     }
 
+    /// Creates entities from parsed taxonomy class nodes.
     private static func createTaxonomyClasses(project: Project, nodes: [TaxonomyParserNode], managedObjectContext: NSManagedObjectContext) -> [String: TaxonomyClass] {
         var classes = [String: TaxonomyClass]()
 
@@ -164,6 +182,7 @@ enum ProjectManager {
         return classes
     }
 
+    /// Parse the project's .bib file.
     private static func parsePublications(project: Project) -> [Publication] {
         let urls = FileManager.default.contentsOfDirectory(at: project.url) { $1.hasSuffix(".bib") }
         return urls.reduce([Publication]()) {
@@ -177,12 +196,14 @@ enum ProjectManager {
         }
     }
 
+    /// Transforms SwiftyBibtex Publiations into Entry entities.
     private static func createEntries(project: Project, publications: [Publication], managedObjectContext: NSManagedObjectContext) -> [(Entry, Set<String>)] {
         return publications.map {
             return (Entry.newEntity(publication: $0, decision: $0.classes.isEmpty ? .outstanding : .keep, project: project, in: managedObjectContext), $0.classes)
         }
     }
 
+    /// Assigns entries to their respective classes.
     private static func assign(entries: [(Entry, Set<String>)], to classes: [String: TaxonomyClass]) {
         for (entry, assignedClasses) in entries {
             for assignedClass in assignedClasses {

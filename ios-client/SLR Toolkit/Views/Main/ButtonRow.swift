@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Shows multiple buttons in a row.
 struct ButtonRow: View {
     typealias ButtonConfiguration = (title: String, subtitle: String, enabled: Bool, loading: Bool, action: () -> Void)
 

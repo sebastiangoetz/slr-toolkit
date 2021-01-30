@@ -11,7 +11,8 @@ struct SLRToolkitApp: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
-    
+
+    /// Loads the last known active project. If it can't be found, it loads the first one instead.
     private func loadActiveProject() -> Project? {
         let container = PersistenceController.shared.container
         let fetchRequest = Project.fetchRequest()
@@ -31,6 +32,7 @@ struct SLRToolkitApp: App {
 
     // Utility functions (useful for testing/debugging)
 
+    /// Marks two entries as having an outstanding decision. This is useful for enabling the "Filter" button.
     private func markTwoEntriesAsOutstanding() {
         let managedObjectContext = PersistenceController.shared.container.viewContext
         let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "decisionRaw != 2"))
@@ -41,6 +43,7 @@ struct SLRToolkitApp: App {
         try? managedObjectContext.save()
     }
 
+    /// Removed all classes from two entries. This is useful for enabling the "Classify" button.
     private func markTwoEntriesAsUnclassified() {
         let managedObjectContext = PersistenceController.shared.container.viewContext
         let fetchRequest = Entry.fetchRequest.withPredicate(NSPredicate(format: "decisionRaw != 2"))

@@ -1,8 +1,13 @@
 import CoreData
 import SwiftUI
 
+/// UIViewController to show entry details in a horizontally scrollable cards view.
+/// It's a view controller, because SwiftUI doesn't support paged scroll views (yet).
 final class EntryDetailsViewController: UICollectionViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
+    /// Fetch request to fetch the entries to show.
     var fetchRequest: NSFetchRequest<Entry>!
+
+    /// The currently shown entry.
     var currentEntry: Binding<Entry?>!
 
     private var currentIndexPath = IndexPath(item: 0, section: 0) {
@@ -10,8 +15,6 @@ final class EntryDetailsViewController: UICollectionViewController, NSFetchedRes
             currentEntry.wrappedValue = fetchedResultsController.object(at: currentIndexPath)
         }
     }
-
-    private var blocks: [() -> Void]!
 
     private lazy var fetchedResultsController: NSFetchedResultsController<Entry> = {
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: PersistenceController.shared.container.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -62,6 +65,8 @@ final class EntryDetailsViewController: UICollectionViewController, NSFetchedRes
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
+
+    private var blocks: [() -> Void]!
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         blocks = []
@@ -137,6 +142,7 @@ final class EntryDetailsViewController: UICollectionViewController, NSFetchedRes
         return collectionView.frame.size.width - cardSize.width
     }
 
+    /// Size of the card in the UI. Constraint to a max width of 512 to look good on iPad.
     private var cardSize: CGSize {
         let inset: CGFloat = 24
         return CGSize(width: min(512, collectionView.frame.size.width - 2 * inset), height: collectionView.frame.size.height - 2 * inset)

@@ -1,6 +1,7 @@
 import CoreData
 import SwiftUI
 
+/// Root view of the app.
 struct MainView: View {
     @State var project: Project?
 
@@ -8,7 +9,6 @@ struct MainView: View {
         if project != nil {
             NavigationView {
                 ProjectView(project: $project)
-                
             }
         } else {
             WelcomeView(project: $project)

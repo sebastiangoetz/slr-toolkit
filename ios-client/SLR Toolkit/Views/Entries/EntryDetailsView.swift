@@ -1,6 +1,7 @@
 import CoreData
 import SwiftUI
 
+/// View to show entry details in a horizontally scrollable cards view. Wraps EntryDetailsUIView.
 struct EntryDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.managedObjectContext) private var managedObjectContext
@@ -41,7 +42,7 @@ struct EntryDetailsView: View {
                         }
                         ToolbarItemGroup(placement: .navigationBarTrailing) {
                             Menu {
-                                Button(action: discard) {
+                                Button(action: discardEntry) {
                                     Label("Discard entry", systemImage: "trash")
                                 }
                             } label: {
@@ -62,7 +63,7 @@ struct EntryDetailsView: View {
         }
     }
 
-    private func discard() {
+    private func discardEntry() {
         currentEntry?.decision = .discard
         managedObjectContext.saveAndLogError()
     }

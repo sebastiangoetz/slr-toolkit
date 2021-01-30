@@ -46,6 +46,7 @@ extension String {
         ] + (letter == letter.uppercased() ? [] : replacements(for: letter.uppercased(), with: diacritic, replacement: replacement.uppercased()))
     }
 
+    /// Replaces latex macros with their unicode counterparts.
     var withLatexMacrosReplaced: String {
         var string = self
         for (s, r) in Self.latexReplacements {
@@ -58,6 +59,7 @@ extension String {
 // Foundation
 
 extension FileManager {
+    /// Returns the urls for files/folders in a directory matching a predicate. The predicate's parameters are a bool telling whether it's a directory and a string with the file/folder's name
     func contentsOfDirectory(at url: URL, matching predicate: (Bool, String) -> Bool) -> [URL] {
         do {
             let contents = try contentsOfDirectory(at: url, includingPropertiesForKeys: [.isDirectoryKey])

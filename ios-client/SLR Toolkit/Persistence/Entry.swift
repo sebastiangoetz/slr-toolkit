@@ -1,6 +1,7 @@
 import CoreData
 import SwiftyBibtex
 
+/// DB entity for entries in a project.
 final class Entry: NSManagedObject, Identifiable {
     enum Decision: Int16 {
         case outstanding, keep, discard

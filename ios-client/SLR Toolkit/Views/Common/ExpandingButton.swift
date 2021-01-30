@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Button that expands to take as much horizontal space as it can.
 struct ExpandingButton<Label: View>: View {
     private var action: () -> Void
     private var label: Label

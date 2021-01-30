@@ -1,5 +1,6 @@
 import CoreData
 
+/// Sets up the app's persistent container (for Core Data).
 struct PersistenceController {
     static let shared = PersistenceController()
 

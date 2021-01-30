@@ -1,5 +1,6 @@
 import Foundation
 
+/// Directory in a file tree.
 struct Directory: Hashable, Identifiable {
     let url: URL
     let isRoot: Bool
@@ -14,7 +15,8 @@ struct Directory: Hashable, Identifiable {
     var name: String {
         return url.pathComponents.last!
     }
-    
+
+    /// Child directories.
     var directories: [Directory]? {
         return FileManager.default.contentsOfDirectory(at: url) { isDirectory, fileName in
             return isDirectory && (!isRoot || fileName != ".git")
@@ -23,9 +25,6 @@ struct Directory: Hashable, Identifiable {
     
     var isValidProjectDirectory: Bool {
         let bibFiles = FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".bib") }.count
-        if bibFiles != 1 {
-            return false
-        }
-        return FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".taxonomy") }.count == 1
+        return bibFiles == 1 && FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".taxonomy") }.count == 1
     }
 }

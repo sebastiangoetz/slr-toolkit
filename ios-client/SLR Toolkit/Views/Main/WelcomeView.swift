@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// View that is shown when no projects have been created,
 struct WelcomeView: View {
     @Binding var project: Project?
 
@@ -22,7 +23,7 @@ struct WelcomeView: View {
                     .environment(\.managedObjectContext, managedObjectContext)
             }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationViewStyle(StackNavigationViewStyle())  // to disable split on iPad
     }
 }
 
