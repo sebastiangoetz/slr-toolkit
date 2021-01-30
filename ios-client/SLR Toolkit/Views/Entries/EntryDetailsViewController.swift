@@ -28,6 +28,7 @@ final class EntryDetailsViewController: UICollectionViewController, NSFetchedRes
         collectionView.delegate = self
         collectionView.isPagingEnabled = true
         collectionView.bounces = true
+        collectionView.alwaysBounceHorizontal = true
         collectionView.backgroundColor = .systemGroupedBackground
 
         collectionView.register(EntryCell.self, forCellWithReuseIdentifier: "EntryCell")

@@ -20,6 +20,7 @@ struct ProjectView: View {
     @State private var commitsBehindOrigin: Int
     @State private var isFetchingOrPulling = false
     @State private var isCommitting = false
+    @State private var isShowingUnclassifiedEntries = false
     @State private var alertContent: AlertContent?
     @State private var presentedSheet: Sheet?
 
@@ -29,17 +30,19 @@ struct ProjectView: View {
         _commitsBehindOrigin = State(initialValue: GitManager.default.commitsAheadAndBehindOrigin(project: project.wrappedValue!).behind)
 
         _unfilteredEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)).withSortDescriptors([]))
-        _unclassifiedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && classes.@count == 0", project.wrappedValue!)).withSortDescriptors([]))
+        _unclassifiedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw != 2 && classes.@count == 0", project.wrappedValue!)).withSortDescriptors([]))
         _changedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && (decisionRaw == 2 || classesChanged == YES)", project.wrappedValue!)).withSortDescriptors([]))
     }
 
     var body: some View {
         List {
             ButtonRow(buttons: [
-                ("Filter", unfilteredEntries.isEmpty ? "All done!" : "\(unfilteredEntries.count) entries", !unfilteredEntries.isEmpty, false, {
+                ("Filter", unfilteredEntries.isEmpty ? "All done!" : unfilteredEntries.count == 1 ? "1 entry" : "\(unfilteredEntries.count) entries", !unfilteredEntries.isEmpty, false, {
                     presentedSheet = .filterEntriesView
                 }),
-                ("Classify", unclassifiedEntries.isEmpty ? "All done!" : "\(unclassifiedEntries.count) entries", !unclassifiedEntries.isEmpty, false, {})
+                ("Classify", unclassifiedEntries.isEmpty ? "All done!" : unclassifiedEntries.count == 1 ? "1 entry" : "\(unclassifiedEntries.count) entries", !unclassifiedEntries.isEmpty, false, {
+                    isShowingUnclassifiedEntries = true
+                })
             ])
             Section(header: Text("Source Control")) {
                 ButtonRow(buttons: [
@@ -68,6 +71,7 @@ struct ProjectView: View {
             }
         }
         .listStyle(InsetGroupedListStyle())
+        .overlay(NavigationLink(destination: EntryDetailsView(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw != 2 && classes.@count == 0", project)).withSortDescriptors([NSSortDescriptor(key: "citationKey", ascending: true)])), isActive: $isShowingUnclassifiedEntries) { Text("") })
         .navigationBarTitle(project.name)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {

@@ -18,15 +18,7 @@ struct ClassifyEntryView: View {
             List {
                 OutlineGroup(entry.project.sortedRootClasses, children: \.sortedChildren) { taxonomyClass in
                     Button {
-                        entry.classesChanged = true
-                        if classes.contains(taxonomyClass) {
-                            classes.remove(taxonomyClass)
-                            entry.classes.remove(taxonomyClass)
-                        } else {
-                            classes.insert(taxonomyClass)
-                            entry.classes.insert(taxonomyClass)
-                        }
-                        managedObjectContext.saveAndLogError()
+                        didSelectTaxonomyClass(taxonomyClass)
                     } label: {
                         HStack {
                             Text(taxonomyClass.name)
@@ -42,12 +34,30 @@ struct ClassifyEntryView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle("Classify " + entry.citationKey, displayMode: .inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done", action: done)
+                }
             }
         }
+    }
+
+    private func didSelectTaxonomyClass(_ taxonomyClass: TaxonomyClass) {
+        if classes.contains(taxonomyClass) {
+            classes.remove(taxonomyClass)
+        } else {
+            classes.insert(taxonomyClass)
+        }
+    }
+
+    private func done() {
+        entry.classesChanged = true
+        entry.classes = classes
+        managedObjectContext.saveAndLogError()
+        presentationMode.wrappedValue.dismiss()
     }
 }

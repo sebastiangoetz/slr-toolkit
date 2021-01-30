@@ -5,14 +5,14 @@ struct EntryDetailsView: View {
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.managedObjectContext) private var managedObjectContext
 
-    @State private var currentEntry: Entry
+    @State private var currentEntry: Entry?
     @State private var classifyEntryViewIsPresented = false
 
     private var fetchRequest: NSFetchRequest<Entry>
 
-    init(fetchRequest: NSFetchRequest<Entry>, entry: Entry) {
+    init(fetchRequest: NSFetchRequest<Entry>, entry: Entry? = nil) {
         self.fetchRequest = fetchRequest
-        _currentEntry = State(initialValue: entry)
+        _currentEntry = State(initialValue: entry ?? (try? PersistenceController.shared.container.viewContext.fetch(fetchRequest).first))
     }
 
     var body: some View {
@@ -26,36 +26,44 @@ struct EntryDetailsView: View {
                 }
             }
         )
-        return EntryDetailsUIView(fetchRequest: fetchRequest, currentEntry: currentEntryBinding)
-            .background(Color(.systemGroupedBackground).ignoresSafeArea())
-            .navigationBarTitle(currentEntry.citationKey, displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("") {}  // Workaround
-                }
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    Menu {
-                        Button(action: discard) {
-                            Label("Discard entry", systemImage: "trash")
+        return Group {
+            if currentEntry == nil {
+                // To prevent a crash after the last entry has been classified.
+                // It's never shown because the view is dismissed automatically when there aren't any unclassified entries anymore.
+                EmptyView()
+            } else {
+                EntryDetailsUIView(fetchRequest: fetchRequest, currentEntry: currentEntryBinding)
+                    .background(Color(.systemGroupedBackground).ignoresSafeArea())
+                    .navigationBarTitle(currentEntry!.citationKey, displayMode: .inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("") {}  // Workaround
                         }
-                    } label: {
-                        Label("Discard entry", systemImage: "trash")
+                        ToolbarItemGroup(placement: .navigationBarTrailing) {
+                            Menu {
+                                Button(action: discard) {
+                                    Label("Discard entry", systemImage: "trash")
+                                }
+                            } label: {
+                                Label("Discard entry", systemImage: "trash")
+                            }
+                            Button {
+                                classifyEntryViewIsPresented = true
+                            } label: {
+                                Label("Classify", systemImage: "tag")
+                            }
+                        }
                     }
-                    Button {
-                        classifyEntryViewIsPresented = true
-                    } label: {
-                        Label("Classify", systemImage: "tag")
+                    .sheet(isPresented: $classifyEntryViewIsPresented) {
+                        ClassifyEntryView(entry: currentEntry!)
+                            .environment(\.managedObjectContext, managedObjectContext)
                     }
-                }
             }
-            .sheet(isPresented: $classifyEntryViewIsPresented) {
-                ClassifyEntryView(entry: currentEntry)
-                    .environment(\.managedObjectContext, managedObjectContext)
-            }
+        }
     }
 
     private func discard() {
-        currentEntry.decision = .discard
+        currentEntry?.decision = .discard
         managedObjectContext.saveAndLogError()
     }
 }
