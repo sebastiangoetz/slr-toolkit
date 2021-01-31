@@ -94,7 +94,7 @@ struct AddProjectDetailsView: View {
         let repositoryDirectory = directories[0].url
         let pathInGitDirectory = repositoryDirectory.pathComponents[GitManager.gitDirectory.pathComponents.count...].joined(separator: "/")
         let pathInRepository = selection.url.pathComponents[repositoryDirectory.pathComponents.count...].joined(separator: "/")
-        ProjectManager.createProject(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, managedObjectContext: managedObjectContext) { newProject in
+        ProjectManager.createProjectAsync(name: projectName.trimmingCharacters(in: .whitespaces), username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, managedObjectContext: managedObjectContext) { newProject in
             project = newProject
             isLoading = false
             isPresented = false

@@ -3,12 +3,22 @@ import Foundation
 struct MockGitClient: GitClient {
     static func createTestFiles(at url: URL) throws {
         let gitDirectory = url.appendingPathComponent(".git", isDirectory: true)
-        try FileManager.default.createDirectory(at: gitDirectory, withIntermediateDirectories: false)
+        try FileManager.default.createDirectory(at: gitDirectory, withIntermediateDirectories: true)
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
-        let bib = "@article{key,author={max},title={TestArticle}}"
-        try bib.write(to: url.appendingPathComponent("test.bib", isDirectory: false), atomically: false, encoding: .utf8)
+        let bib = """
+        @article{keyA,
+            author={Max},
+            title={TestArticle}
+        }
+        @book{keyB,
+            author={Anna},
+            title={TestBook},
+            abstract={Lorem ipsum}
+        }
+        """
+        try bib.write(to: url.appendingPathComponent("test.bib", isDirectory: false), atomically: true, encoding: .utf8)
         let taxonomy = "A { B C } D"
-        try taxonomy.write(to: url.appendingPathComponent("test.taxonomy", isDirectory: false), atomically: false, encoding: .utf8)
+        try taxonomy.write(to: url.appendingPathComponent("test.taxonomy", isDirectory: false), atomically: true, encoding: .utf8)
     }
 
     func clone(from remoteURL: URL, to localURL: URL, credentials: Credentials, progress: ((Float) -> Void)?, completion: @escaping (Error?) -> Void) {

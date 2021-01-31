@@ -38,14 +38,17 @@ enum ProjectManager {
     }
 
     /// Creates a new project and its contents.
-    static func createProject(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let managedObjectContext = PersistenceController.shared.container.viewContext
-            let project = Project.newEntity(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
-            managedObjectContext.saveAndLogError()  // Workaround, otherwise a Core Data exception is thrown
+    @discardableResult static func createProjectSync(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext) -> Project {
+        let project = Project.newEntity(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, in: managedObjectContext)
+        managedObjectContext.saveAndLogError()  // Workaround, otherwise a Core Data exception is thrown
+        createContents(for: project, managedObjectContext: managedObjectContext)
+        return project
+    }
 
-            createContents(for: project, managedObjectContext: managedObjectContext)
-            completion(project)
+    /// Creates a new project and its contents.
+    static func createProjectAsync(name: String, username: String, token: String, repositoryURL: String, pathInGitDirectory: String, pathInRepository: String, managedObjectContext: NSManagedObjectContext, completion: @escaping (Project) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            completion(createProjectSync(name: name, username: username, token: token, repositoryURL: repositoryURL, pathInGitDirectory: pathInGitDirectory, pathInRepository: pathInRepository, managedObjectContext: managedObjectContext))
         }
     }
 

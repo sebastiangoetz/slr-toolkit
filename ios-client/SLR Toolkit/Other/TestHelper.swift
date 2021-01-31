@@ -12,16 +12,16 @@ enum TestHelper {
             try? FileManager.default.removeItem(at: gitDirectory)
         }
 
+        let managedObjectContext = PersistenceController.shared.container.viewContext
+
         if launchArguments.contains(.testProject) {
-            let managedObjectContext = PersistenceController.shared.container.viewContext
             try? MockGitClient.createTestFiles(at: GitManager.gitDirectory.appendingPathComponent("slr"))
-            ProjectManager.createProject(name: TestConstants.testProjectName, username: TestConstants.testUsername, token: TestConstants.testToken, repositoryURL: TestConstants.testGitURL, pathInGitDirectory: "slr", pathInRepository: "", managedObjectContext: managedObjectContext) { _ in }
+            ProjectManager.createProjectSync(name: TestConstants.testProjectName, username: TestConstants.testUsername, token: TestConstants.testToken, repositoryURL: TestConstants.testGitURL, pathInGitDirectory: "slr", pathInRepository: "", managedObjectContext: managedObjectContext)
         }
 
         if launchArguments.contains(.testProject2) {
-            let managedObjectContext = PersistenceController.shared.container.viewContext
             try? MockGitClient.createTestFiles(at: GitManager.gitDirectory.appendingPathComponent("slr2"))
-            ProjectManager.createProject(name: TestConstants.testProjectName + "2", username: TestConstants.testUsername, token: TestConstants.testToken, repositoryURL: TestConstants.testGitURL, pathInGitDirectory: "slr2", pathInRepository: "", managedObjectContext: managedObjectContext) { _ in }
+            ProjectManager.createProjectSync(name: TestConstants.testProjectName + "2", username: TestConstants.testUsername, token: TestConstants.testToken, repositoryURL: TestConstants.testGitURL, pathInGitDirectory: "slr2", pathInRepository: "", managedObjectContext: managedObjectContext)
         }
     }
 }
