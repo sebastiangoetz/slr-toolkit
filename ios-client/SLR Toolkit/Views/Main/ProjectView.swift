@@ -9,8 +9,9 @@ struct ProjectView: View {
         var id: Int { rawValue }
     }
 
-    @Environment(\.managedObjectContext) private var managedObjectContext
     @Environment(\.projectViewInteractor) private var interactor
+    @Environment(\.gitManager) private var gitManager
+    @Environment(\.managedObjectContext) private var managedObjectContext
 
     @Binding var project: Project!
 
@@ -18,7 +19,7 @@ struct ProjectView: View {
     @FetchRequest private var unclassifiedEntries: FetchedResults<Entry>
     @FetchRequest private var changedEntries: FetchedResults<Entry>
 
-    @State private var commitsBehindOrigin: Int
+    @State private var commitsBehindOrigin = 0
     @State private var isFetchingOrPulling = false
     @State private var isCommitting = false
     @State private var isShowingUnclassifiedEntries = false
@@ -27,8 +28,6 @@ struct ProjectView: View {
 
     init(project: Binding<Project?>) {
         _project = project
-
-        _commitsBehindOrigin = State(initialValue: GitManager.default.commitsAheadAndBehindOrigin(project: project.wrappedValue!).behind)
 
         _unfilteredEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw == 0", project.wrappedValue!)).withSortDescriptors([]))
         _unclassifiedEntries = FetchRequest(fetchRequest: Entry.fetchRequest.withPredicate(NSPredicate(format: "project == %@ && decisionRaw != 2 && classes.@count == 0", project.wrappedValue!)).withSortDescriptors([]))
@@ -96,6 +95,9 @@ struct ProjectView: View {
                 FilterEntriesView(entries: unfilteredEntries.map { $0 })
             }
         }
+        .onAppear {
+            commitsBehindOrigin = gitManager.commitsAheadAndBehindOrigin(project: project).behind
+        }
     }
 
     private func menu() -> some View {
@@ -124,8 +126,7 @@ struct ProjectView: View {
             }
             .keyboardShortcut(",", modifiers: .command)
         } label: {
-            Image(systemName: "ellipsis.circle")
-                .imageScale(.large)
+            Label("Options", systemImage: "ellipsis.circle")
         }
     }
 }

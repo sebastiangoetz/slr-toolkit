@@ -1,14 +1,14 @@
 import Foundation
 
-enum BoolUserDefaultsKey: String {
+enum BoolUserDefaultsKey: String, CaseIterable {
     case sortAscending
 }
 
-enum StringUserDefaultsKey: String {
+enum StringUserDefaultsKey: String, CaseIterable {
     case username, token, sortMode
 }
 
-enum URLUserDefaultsKey: String {
+enum URLUserDefaultsKey: String, CaseIterable {
     case activeProject
 }
 

@@ -17,4 +17,15 @@ struct PersistenceController {
             }
         }
     }
+
+    func deleteAllData() {
+        guard let url = container.persistentStoreDescriptions.first?.url else { return }
+        do {
+            try container.persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: NSSQLiteStoreType, options: nil)
+            try container.persistentStoreCoordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+//            try container.viewContext.fetch(Project.fetchRequest).forEach { container.viewContext.delete($0) } // cascade delete rule ensures that entries and classes are deleted as well
+        } catch {
+            print("Error deleting persisted data: \(error)")
+        }
+    }
 }

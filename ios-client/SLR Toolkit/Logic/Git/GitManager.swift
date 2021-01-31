@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 /// Struct that wraps a git client. Transforms git errors into user-readable messages.
 struct GitManager {
@@ -21,8 +21,6 @@ struct GitManager {
             }
         }
     }
-
-    static let `default` = GitManager(gitClient: HttpsGitClient())
 
     /// Directory on the device containing this app's git repositories.
     static let gitDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("git", isDirectory: true)
@@ -81,6 +79,7 @@ struct GitManager {
             if let error = error {
                 return completion(.failure(.gitError(error)))
             } else {
+                print("Cloning to \(repositoryDirectory)")
                 completion(.success(repositoryDirectory))
             }
         }
@@ -129,5 +128,16 @@ struct GitManager {
         case .failure:
             return (0, 0)
         }
+    }
+}
+
+struct GitManagerKey: EnvironmentKey {
+    static let defaultValue: GitManager = GitManager(gitClient: HttpsGitClient())
+}
+
+extension EnvironmentValues {
+    var gitManager: GitManager {
+        get { self[GitManagerKey.self] }
+        set { self[GitManagerKey.self] = newValue }
     }
 }

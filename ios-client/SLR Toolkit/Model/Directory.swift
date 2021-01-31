@@ -25,6 +25,8 @@ struct Directory: Hashable, Identifiable {
 
     /// Checks whether a directory is a valid project directory (having ≥ 1 .bib files and a .taxonomy file).
     var isValidProjectDirectory: Bool {
+//        print("hiii")
+        print(FileManager.default.contentsOfDirectory(at: url) { a,b in a == false })
         let bibFiles = FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".bib") }.count
         return bibFiles == 1 && FileManager.default.contentsOfDirectory(at: url) { $1.hasSuffix(".taxonomy") }.count == 1
     }

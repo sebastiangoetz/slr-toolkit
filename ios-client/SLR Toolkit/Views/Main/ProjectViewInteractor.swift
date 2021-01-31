@@ -76,6 +76,14 @@ struct ProjectViewInteractorImplementation: ProjectViewInteractor {
     }
 }
 
+struct ProjectViewInteractorMock: ProjectViewInteractor {
+    func fetch(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>) {}
+
+    func pull(project: Project, isLoading: Binding<Bool>, commitsBehindOrigin: Binding<Int>, alertContent: Binding<AlertContent?>) {}
+
+    func commit(project: Project, isLoading: Binding<Bool>, alertContent: Binding<AlertContent?>) {}
+}
+
 struct ProjectViewInteractorKey: EnvironmentKey {
     static let defaultValue: ProjectViewInteractor = ProjectViewInteractorImplementation()
 }

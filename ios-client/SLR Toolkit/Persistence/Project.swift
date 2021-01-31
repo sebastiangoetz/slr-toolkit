@@ -69,4 +69,8 @@ final class Project: NSManagedObject {
         project.pathInRepository = pathInRepository
         return project
     }
+
+    static var fetchRequest: NSFetchRequest<Project> {
+        return NSFetchRequest(entityName: String(describing: self))
+    }
 }

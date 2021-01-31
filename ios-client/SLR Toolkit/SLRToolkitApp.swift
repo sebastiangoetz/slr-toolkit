@@ -3,12 +3,28 @@ import SwiftUI
 
 @main
 struct SLRToolkitApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var applicationDelegateAdaptor
+
     private let persistenceController = PersistenceController.shared
+    private let testing: Bool
+
+    init() {
+        testing = ProcessInfo.processInfo.arguments.contains(LaunchArgument.testing.rawValue)
+    }
 
     var body: some Scene {
         WindowGroup {
-            MainView(project: loadActiveProject())
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            Group {
+                if testing {
+                    MainView(project: loadActiveProject())
+                        .environment(\.addProjectViewInteractor, AddProjectViewInteractorMock())
+                        .environment(\.projectViewInteractor, ProjectViewInteractorMock())
+                        .environment(\.gitManager, GitManager(gitClient: MockGitClient()))
+                } else {
+                    MainView(project: loadActiveProject())
+                }
+            }
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 
@@ -53,5 +69,12 @@ struct SLRToolkitApp: App {
             entries.last?.classes.removeAll()
         }
         try? managedObjectContext.save()
+    }
+}
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        TestHelper.handleLaunchArguments(ProcessInfo.processInfo.arguments)
+        return true
     }
 }
