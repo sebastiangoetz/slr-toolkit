@@ -10,6 +10,9 @@
 		5002A2F32593912800847F55 /* EntryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5002A2F22593912800847F55 /* EntryRow.swift */; };
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
 		500FDBFD25C5F47900AAC049 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDBFC25C5F47900AAC049 /* ProjectRow.swift */; };
+		500FDC3A25C5FA7D00AAC049 /* HttpsGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */; };
+		500FDC4925C6021600AAC049 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
+		500FDC5225C6073900AAC049 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
 		5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034067525583D9100FC8FF4 /* ProjectsView.swift */; };
 		503E515F2553538100EA801A /* SLRToolkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503E515E2553538100EA801A /* SLRToolkitApp.swift */; };
 		503E51632553538200EA801A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 503E51622553538200EA801A /* Assets.xcassets */; };
@@ -42,7 +45,6 @@
 		508399B125580BD300BA21DE /* UserDefaultsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508399B025580BD300BA21DE /* UserDefaultsUtils.swift */; };
 		50864A5125541590001F0007 /* GitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5025541590001F0007 /* GitManager.swift */; };
 		50864A5825542D42001F0007 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
-		50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
 		50BB355F25A5D4B300189AA6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BB355E25A5D4B300189AA6 /* SettingsView.swift */; };
 		50BB356525A5DC6600189AA6 /* AcknowledgementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BB356425A5DC6600189AA6 /* AcknowledgementsView.swift */; };
 		50BB356925A5DD1700189AA6 /* Acknowledgements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50BB356825A5DD1700189AA6 /* Acknowledgements.swift */; };
@@ -95,6 +97,7 @@
 		5002A2F22593912800847F55 /* EntryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryRow.swift; sourceTree = "<group>"; };
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		500FDBFC25C5F47900AAC049 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
+		500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpsGitClient.swift; sourceTree = "<group>"; };
 		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E515E2553538100EA801A /* SLRToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRToolkitApp.swift; sourceTree = "<group>"; };
@@ -259,7 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				503E51752553538200EA801A /* GitManagerTests.swift */,
-				50864A6125542DBF001F0007 /* MockGitClient.swift */,
 				50D345502592D30B00B57191 /* TaxonomyParserTests.swift */,
 				503E51772553538200EA801A /* Info.plist */,
 			);
@@ -319,6 +321,8 @@
 			isa = PBXGroup;
 			children = (
 				50864A5725542D42001F0007 /* GitClient.swift */,
+				500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */,
+				50864A6125542DBF001F0007 /* MockGitClient.swift */,
 				50864A5025541590001F0007 /* GitManager.swift */,
 			);
 			path = Git;
@@ -580,11 +584,13 @@
 				50D345552592D38700B57191 /* TaxonomyParser.swift in Sources */,
 				507F185425A37C1C00D88CD3 /* SubtitleButton.swift in Sources */,
 				5077EC7725A380190001EF49 /* WelcomeView.swift in Sources */,
+				500FDC4925C6021600AAC049 /* MockGitClient.swift in Sources */,
 				507F184E25A374C200D88CD3 /* TextButton.swift in Sources */,
 				504838CB2592ED1A005149B6 /* DetailRow.swift in Sources */,
 				5083998E2557F53900BA21DE /* AddProjectDetailsView.swift in Sources */,
 				5002A2F32593912800847F55 /* EntryRow.swift in Sources */,
 				50066B912553794900EF7EA6 /* MainView.swift in Sources */,
+				500FDC3A25C5FA7D00AAC049 /* HttpsGitClient.swift in Sources */,
 				506EC53625C4786700D38978 /* FilterEntriesView.swift in Sources */,
 				50BB356925A5DD1700189AA6 /* Acknowledgements.swift in Sources */,
 				5051E85025B1A37E00819F75 /* AlertContent.swift in Sources */,
@@ -607,7 +613,7 @@
 			files = (
 				50D345512592D30B00B57191 /* TaxonomyParserTests.swift in Sources */,
 				503E51762553538200EA801A /* GitManagerTests.swift in Sources */,
-				50864A6225542DBF001F0007 /* MockGitClient.swift in Sources */,
+				500FDC5225C6073900AAC049 /* GitClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
