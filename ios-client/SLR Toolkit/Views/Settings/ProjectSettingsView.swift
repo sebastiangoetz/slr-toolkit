@@ -25,6 +25,10 @@ struct ProjectSettingsView: View {
                 Section(header: Text("Project Name")) {
                     TextField("Project Name", text: $projectName)
                 }
+                Section(header: Text("Remote URL")) {
+                    Text(project.repositoryURL)
+                        .minimumScaleFactor(0.67)
+                }
                 Section(header: Text("Commit Identity")) {
                     TextField("Name", text: $commitName)
                     TextField("E-Mail", text: $commitEmail)
