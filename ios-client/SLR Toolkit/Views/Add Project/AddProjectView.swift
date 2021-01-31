@@ -7,7 +7,8 @@ struct AddProjectView: View {
     @Binding var project: Project?
     @Binding var isPresented: Bool
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.addProjectViewInteractor) private var interactor
+    @Environment(\.presentationMode) private var presentationMode
     
     @State private var repositoryURL = ""
     @State private var username = ""
@@ -36,14 +37,9 @@ struct AddProjectView: View {
         NavigationView {
             ZStack {
                 List {
-                    if repositoryURL.isEmpty || repositoryURL.hasPrefix(Self.httpsPrefix) {
-                        Section(header: Text("Repository URL")) {
-                            TextField(Self.httpsPrefix, text: $repositoryURL)
-                        }
-                    } else {
-                        Section(header: Text("Repository URL"), footer: Text("Only https URLs are supported at the moment.")) {
-                            TextField(Self.httpsPrefix, text: $repositoryURL)
-                        }
+                    Section(header: Text("Repository URL"), footer: Text(!repositoryURL.isEmpty && !repositoryURL.hasPrefix(Self.httpsPrefix) ? "Only https URLs are supported at the moment." : "")) {
+                        TextField(Self.httpsPrefix, text: $repositoryURL)
+                            .accessibility(identifier: "URLTextField")
                     }
                     Section(header: Text("Credentials"), footer: Text("GitHub: Navigate to Settings, Developer settings, Personal access tokens, and click Generate new token. Make sure to select the repo scope.\n\nGitLab: Navigate to Settings, Access Tokens. Make sure to select the read_repository and write_repository scopes, and click Create personal access token.")) {
                         TextField("Username", text: $username)
@@ -88,30 +84,15 @@ struct AddProjectView: View {
 
     /// Clone repository and show next screen.
     private func next() {
-        isLoading = true
-        
         let trimmedUsername = username.trimmingCharacters(in: .whitespaces)
         let trimmedToken = token.trimmingCharacters(in: .whitespaces)
-
-        if rememberCredentials {
-            // TODO store securely in keychain, e.g. using https://github.com/kishikawakatsumi/KeychainAccess
-            UserDefaults.standard.set(trimmedUsername, forKey: .username)
-        }
-
-        guard let url = URL(string: repositoryURL) else { return }
-        GitManager.default.cloneRepository(at: url, credentials: (trimmedUsername, trimmedToken)) { progress in
-            self.progress = progress
-        } completion: { result in
+        interactor.cloneProject(username: trimmedUsername, token: trimmedToken, rememberCredentials: rememberCredentials, repositoryURL: repositoryURL, isLoading: $isLoading, progress: $progress) { result in
             switch result {
             case .success(let repositoryDirectory):
-                isLoading = false
-                if rememberCredentials {
-                    UserDefaults.standard.set(trimmedToken, forKey: .token)
-                }
                 self.repositoryDirectory = repositoryDirectory
                 navigateToNextScreen = true
             case .failure(let error):
-                cloneError = error.description
+                cloneError = error.localizedDescription
             }
         }
     }

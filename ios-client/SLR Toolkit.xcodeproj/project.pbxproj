@@ -11,6 +11,7 @@
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
 		500FDBFD25C5F47900AAC049 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDBFC25C5F47900AAC049 /* ProjectRow.swift */; };
 		500FDC3A25C5FA7D00AAC049 /* HttpsGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */; };
+		500FDC4425C5FC5900AAC049 /* AddProjectViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC4325C5FC5900AAC049 /* AddProjectViewInteractor.swift */; };
 		500FDC4925C6021600AAC049 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
 		500FDC5225C6073900AAC049 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
 		5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034067525583D9100FC8FF4 /* ProjectsView.swift */; };
@@ -98,6 +99,7 @@
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		500FDBFC25C5F47900AAC049 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
 		500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpsGitClient.swift; sourceTree = "<group>"; };
+		500FDC4325C5FC5900AAC049 /* AddProjectViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewInteractor.swift; sourceTree = "<group>"; };
 		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503E515E2553538100EA801A /* SLRToolkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLRToolkitApp.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				50EFFB032556D587004BA48F /* AddProjectView.swift */,
+				500FDC4325C5FC5900AAC049 /* AddProjectViewInteractor.swift */,
 				5083998D2557F53900BA21DE /* AddProjectDetailsView.swift */,
 			);
 			path = "Add Project";
@@ -601,6 +604,7 @@
 				504B2EAD2584274A00DBAE31 /* Extensions.swift in Sources */,
 				50DA68A725B102B80009F0AD /* ClassifyEntryView.swift in Sources */,
 				50DA68A325B0DF140009F0AD /* EntryCell.swift in Sources */,
+				500FDC4425C5FC5900AAC049 /* AddProjectViewInteractor.swift in Sources */,
 				508399A62557FC0A00BA21DE /* Directory.swift in Sources */,
 				5034067625583D9100FC8FF4 /* ProjectsView.swift in Sources */,
 				50BB356525A5DC6600189AA6 /* AcknowledgementsView.swift in Sources */,
