@@ -11,6 +11,7 @@
 		50066B912553794900EF7EA6 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50066B902553794900EF7EA6 /* MainView.swift */; };
 		500FDBFD25C5F47900AAC049 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDBFC25C5F47900AAC049 /* ProjectRow.swift */; };
 		500FDC3A25C5FA7D00AAC049 /* HttpsGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */; };
+		500FDC4025C5FAE000AAC049 /* SwiftyBibtexExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC3F25C5FAE000AAC049 /* SwiftyBibtexExtensions.swift */; };
 		500FDC4425C5FC5900AAC049 /* AddProjectViewInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500FDC4325C5FC5900AAC049 /* AddProjectViewInteractor.swift */; };
 		500FDC4925C6021600AAC049 /* MockGitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A6125542DBF001F0007 /* MockGitClient.swift */; };
 		500FDC5225C6073900AAC049 /* GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50864A5725542D42001F0007 /* GitClient.swift */; };
@@ -99,6 +100,7 @@
 		50066B902553794900EF7EA6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		500FDBFC25C5F47900AAC049 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
 		500FDC3925C5FA7D00AAC049 /* HttpsGitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpsGitClient.swift; sourceTree = "<group>"; };
+		500FDC3F25C5FAE000AAC049 /* SwiftyBibtexExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyBibtexExtensions.swift; sourceTree = "<group>"; };
 		500FDC4325C5FC5900AAC049 /* AddProjectViewInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewInteractor.swift; sourceTree = "<group>"; };
 		5034067525583D9100FC8FF4 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		503E515B2553538100EA801A /* SLR Toolkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SLR Toolkit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,6 +318,7 @@
 				50BB356825A5DD1700189AA6 /* Acknowledgements.swift */,
 				508399B025580BD300BA21DE /* UserDefaultsUtils.swift */,
 				504B2EAC2584274A00DBAE31 /* Extensions.swift */,
+				500FDC3F25C5FAE000AAC049 /* SwiftyBibtexExtensions.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -580,6 +583,7 @@
 				50EFFAF32556C6B2004BA48F /* TaxonomyParserNode.swift in Sources */,
 				50F3A5972593EFBC0021E943 /* EntriesList.swift in Sources */,
 				507F183E25A3463000D88CD3 /* TaxonomyClass.swift in Sources */,
+				500FDC4025C5FAE000AAC049 /* SwiftyBibtexExtensions.swift in Sources */,
 				50EFFAF82556CA29004BA48F /* RoundedButton.swift in Sources */,
 				50F3A5A5259403A20021E943 /* CardValue.swift in Sources */,
 				5077EC7325A37FAB0001EF49 /* ProjectView.swift in Sources */,
