@@ -79,7 +79,6 @@ struct GitManager {
             if let error = error {
                 return completion(.failure(.gitError(error)))
             } else {
-                print("Cloning to \(repositoryDirectory)")
                 completion(.success(repositoryDirectory))
             }
         }
