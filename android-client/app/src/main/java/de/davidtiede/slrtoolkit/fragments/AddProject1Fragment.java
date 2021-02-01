@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,13 +58,13 @@ public class AddProject1Fragment extends Fragment {
         edittext_git_name = view.findViewById(R.id.edittext_git_name);
         edittext_git_email = view.findViewById(R.id.edittext_git_email);
         button_clone_project = view.findViewById(R.id.button_clone_project);
-        progressButton = new ProgressButtonCloneProject(requireContext(), view);
+        progressButton = new ProgressButtonCloneProject(view);
 
-        button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo(view));
+        button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo1(view));
 
     }
 
-    private void actionCloneRepo(View view) {
+    private void actionCloneRepo1(View view) {
         if (TextUtils.isEmpty(edittext_url.getText())) {
             Toast.makeText(requireActivity().getApplicationContext(),
                     getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
@@ -89,7 +90,13 @@ public class AddProject1Fragment extends Fragment {
 
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);
-        repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), this::onLoaded);
+        repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), repo_with_id -> actionCloneRepo2(view, repo_with_id));
+    }
+
+    private void actionCloneRepo2(View view, Repo repo){
+        repoViewModel.setCurrentRepo(repo);
+        repo.setLocal_path("repo_" + repo.getId());
+        repoViewModel.update(repo);
 
         WorkRequest cloneWorkRequest =
                 new OneTimeWorkRequest.Builder(CloneWorker.class)
@@ -98,6 +105,7 @@ public class AddProject1Fragment extends Fragment {
                                         .putString("REMOTE_URL", repo.getRemote_url())
                                         .putString("USERNAME", repo.getUsername())
                                         .putString("TOKEN", repo.getToken())
+                                        .putString("LOCAL_PATH", repo.getLocal_path())
                                         .build()
                         )
                         .build();
@@ -105,20 +113,17 @@ public class AddProject1Fragment extends Fragment {
         WorkManager workManager = WorkManager.getInstance(getContext());
         workManager.enqueue(cloneWorkRequest);
         workManager.getWorkInfoByIdLiveData(cloneWorkRequest.getId())
-                .observe(getViewLifecycleOwner(), workInfo -> {
-                    if (workInfo.getState() != null && workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                .observe(getViewLifecycleOwner(), worker -> {
+                    if (worker.getState() != null && worker.getState() == WorkInfo.State.SUCCEEDED) {
                         progressButton.onSucceeded();
                         button_clone_project.setOnClickListener(cardview_clone_project ->
                                 NavHostFragment.findNavController(AddProject1Fragment.this)
-                                .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment));
-                    } else if (workInfo.getState() != null && workInfo.getState() == WorkInfo.State.FAILED) {
+                                        .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment));
+                    } else if (worker.getState() != null && worker.getState() == WorkInfo.State.FAILED) {
                         progressButton.onFailed();
+                        TextView textview_clone_project_failed = view.findViewById(R.id.textview_clone_project_failed);
+                        textview_clone_project_failed.setText(worker.getOutputData().getString("RESULT_MSG"));
                     }
                 });
-
-    }
-
-    private void onLoaded(Repo repo){
-        repoViewModel.setCurrentRepo(repo);
     }
 }

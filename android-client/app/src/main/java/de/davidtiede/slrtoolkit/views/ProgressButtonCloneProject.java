@@ -1,6 +1,5 @@
 package de.davidtiede.slrtoolkit.views;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -12,13 +11,13 @@ import de.davidtiede.slrtoolkit.R;
 
 public class ProgressButtonCloneProject {
 
-    private Context context;
+    private View view;
     private CardView cardView;
     private ProgressBar progressBar;
     private TextView textView;
 
-    public ProgressButtonCloneProject(Context context, View view) {
-        this.context = context;
+    public ProgressButtonCloneProject(View view) {
+        this.view = view;
         cardView = view.findViewById(R.id.button_clone_project);
         progressBar = view.findViewById(R.id.progressbar_clone_project);
         textView = view.findViewById(R.id.textview_clone_project);
@@ -26,18 +25,18 @@ public class ProgressButtonCloneProject {
 
     public void onLoading() {
         progressBar.setVisibility(View.VISIBLE);
-        textView.setText(context.getResources().getString(R.string.progressbutton_onloading));
+        textView.setText(view.getResources().getString(R.string.progressbutton_onloading));
     }
 
     public void onSucceeded() {
         cardView.setBackgroundColor(Color.GREEN);
         progressBar.setVisibility(View.GONE);
-        textView.setText(context.getResources().getString(R.string.progressbutton_succeeded));
+        textView.setText(view.getResources().getString(R.string.progressbutton_succeeded));
     }
 
     public void onFailed() {
-        cardView.setBackgroundColor(Color.RED);
+        cardView.setBackgroundColor(view.getResources().getColor(R.color.design_default_color_error));
         progressBar.setVisibility(View.GONE);
-        textView.setText(context.getResources().getString(R.string.progressbutton_onfailed));
+        textView.setText(view.getResources().getString(R.string.progressbutton_onfailed));
     }
 }

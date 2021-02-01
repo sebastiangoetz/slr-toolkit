@@ -3,6 +3,7 @@ package de.davidtiede.slrtoolkit.worker;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -33,20 +34,20 @@ public class CloneWorker extends Worker {
             path.mkdir();
         }
 
+        Data.Builder outputData = new Data.Builder();
+
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remote_url)
                 .setDirectory(path);
 
         try {
             cloneCommand.call();
-        } catch (InvalidRemoteException e) {
-            return Result.failure();
-        } catch (TransportException e) {
-            return Result.failure();
+        } catch (InvalidRemoteException | TransportException e) {
+            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
         } catch (GitAPIException e) {
-            return Result.failure();
+            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
         } catch (Throwable e) {
-            return Result.failure();
+            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
         }
 
         return Result.success();
