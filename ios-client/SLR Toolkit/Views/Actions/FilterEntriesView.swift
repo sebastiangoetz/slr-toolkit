@@ -14,6 +14,9 @@ struct FilterEntriesView: View {
     /// Vertical card offset. Used to move next card from the bottom into view.
     @State private var verticalOffset: CGFloat = 0
 
+    /// The decided entries of this session. Used for undoing.
+    @State private var undoStack = [Entry]()
+
     init(entries: [Entry]) {
         self.entries = entries
     }
@@ -57,6 +60,15 @@ struct FilterEntriesView: View {
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationBarTitle("Filter (\(entries.count) to go)", displayMode: .inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if !undoStack.isEmpty {
+                        Button("Undo") {
+                            undoStack.popLast()?.decision = .outstanding
+                        }
+                    } else {
+                        EmptyView()  // Workaround: if statements not allowed in ToolbarContentBuilder
+                    }
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
                         presentationMode.wrappedValue.dismiss()
@@ -73,12 +85,10 @@ struct FilterEntriesView: View {
                 dragAmount = 0
             }
         } else {
+            guard let entry = entries.first else { return }
+
             // Modify entry
-            if dragAmount > 0 {
-                entries.first?.decision = .keep
-            } else {
-                entries.first?.decision = .discard
-            }
+            entry.decision = dragAmount > 0 ? .keep : .discard
             managedObjectContext.saveAndLogError()
 
             // Animate card out of the screen
@@ -98,6 +108,8 @@ struct FilterEntriesView: View {
                     }
                 }
             }
+
+            undoStack.append(entry)
         }
     }
 }
