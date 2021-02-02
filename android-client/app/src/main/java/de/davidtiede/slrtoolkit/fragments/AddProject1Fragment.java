@@ -58,7 +58,7 @@ public class AddProject1Fragment extends Fragment {
         edittext_git_name = view.findViewById(R.id.edittext_git_name);
         edittext_git_email = view.findViewById(R.id.edittext_git_email);
         button_clone_project = view.findViewById(R.id.button_clone_project);
-        progressButton = new ProgressButtonCloneProject(view);
+        progressButton = new ProgressButtonCloneProject(getContext(), view);
 
         button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo1(view));
 
