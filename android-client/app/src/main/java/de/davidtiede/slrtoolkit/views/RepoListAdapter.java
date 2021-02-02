@@ -63,7 +63,8 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
         RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
         repoViewModel.delete(recentlyDeletedRepo);
         notifyItemRemoved(position);
-        notifyItemRangeRemoved(position, 1);
+        //notifyItemRangeRemoved(position, 1);
+        //notifyDataSetChanged();
 
         Snackbar snackbar = Snackbar.make(recyclerView, R.string.snackbar_undo, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snackbar_undo, v -> undoDelete(recentlyDeletedRepo, position));
