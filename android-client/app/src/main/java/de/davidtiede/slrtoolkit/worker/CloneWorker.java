@@ -24,17 +24,22 @@ public class CloneWorker extends Worker {
 
     @Override
     public @NonNull Result doWork() {
+        Data.Builder outputData = new Data.Builder();
+
         String remote_url = getInputData().getString("REMOTE_URL");
         if(remote_url == null) {
             return Result.failure();
         }
 
-        File path = new File(getApplicationContext().getFilesDir(),"testrepo");
-        if (!path.exists()) {
-            path.mkdir();
+        String local_path = getInputData().getString("LOCAL_PATH");
+        File path = new File(getApplicationContext().getFilesDir(), local_path);
+        boolean isDirectoryCreated = path.exists();
+        if(!isDirectoryCreated) {
+            isDirectoryCreated = path.mkdir();
         }
-
-        Data.Builder outputData = new Data.Builder();
+        if(!isDirectoryCreated) {
+            return Result.failure(outputData.putString("RESULT_MSG", "Could not create directory.").build());
+        }
 
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remote_url)
