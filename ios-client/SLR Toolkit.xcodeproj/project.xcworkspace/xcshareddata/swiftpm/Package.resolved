@@ -14,9 +14,9 @@
         "package": "SwiftyBibtex",
         "repositoryURL": "https://github.com/MaxHaertwig/SwiftyBibtex.git",
         "state": {
-          "branch": "main",
-          "revision": "abe5d498e5023ed6b8d9e67723bc671438565620",
-          "version": null
+          "branch": null,
+          "revision": "b653c01e6315cf06c2c55a8396a397cdadaddccf",
+          "version": "1.0.0"
         }
       }
     ]
