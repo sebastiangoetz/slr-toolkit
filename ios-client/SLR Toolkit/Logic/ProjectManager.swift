@@ -8,6 +8,7 @@ enum ProjectManager {
     static func projectName(forProjectAt url: URL) -> String? {
         guard let xmlFileURL = FileManager.default.contentsOfDirectory(at: url, matching: { $1 == ".project" }).first else { return nil }
         do {
+            // TODO properly parse xml
             let content = try String(contentsOf: xmlFileURL)
             let regex = try NSRegularExpression(pattern: "<name>(.*)</name>", options: [])
             let match = regex.firstMatch(in: content, options: [], range: NSRange(location: 0, length: content.utf16.count))

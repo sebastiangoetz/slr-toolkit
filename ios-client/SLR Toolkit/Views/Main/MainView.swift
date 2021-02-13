@@ -10,6 +10,7 @@ struct MainView: View {
             NavigationView {
                 ProjectView(project: $project)
             }
+            .navigationViewStyle(DoubleColumnNavigationViewStyle())  // TODO always show sidebar in portrait mode (not possible as of SwiftUI 2)
         } else {
             WelcomeView(project: $project)
         }

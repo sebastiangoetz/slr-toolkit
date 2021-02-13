@@ -27,6 +27,7 @@ struct ProjectSettingsView: View {
                 }
                 Section(header: Text("Remote URL")) {
                     Text(project.repositoryURL)
+                        .font(.callout)
                         .minimumScaleFactor(0.67)
                 }
                 Section(header: Text("Commit Identity")) {

@@ -51,6 +51,7 @@ struct EntriesView: View {
                 }
                 .foregroundColor(.secondary)
             } else {
+                // TODO implement search function
                 EntriesList(fetchRequest: fetchRequest)
                     .toolbar {
                         ToolbarItem(placement: .primaryAction) {
