@@ -109,11 +109,12 @@ enum ProjectManager {
 
             // Generate and insert "classes" line
             let classesString = indent + "classes = {\(entry.classesString)}"
-            if let index = entryLines.firstIndex(where: { $0.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("classes") }) {
+            if let entryLinesIndex = entryLines.firstIndex(where: { $0.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("classes") }) {
+                let index = entry.rangeInFile.start.line - 1 + entryLinesIndex
                 lines[index] = classesString + (entryLines[index].hasSuffix(",") ? "," : "")
             } else {
-                let index = entryLines.count - 2
-                lines[entry.rangeInFile.start.line - 1 + index] += (entryLines[index].hasSuffix(",") ? "" : ",") + "\n" + classesString
+                let index = entry.rangeInFile.start.line - 1 + entryLines.count - 2
+                lines[index] += (entryLines[index].hasSuffix(",") ? "" : ",") + "\n" + classesString
             }
             entry.classesChanged = false
         }
