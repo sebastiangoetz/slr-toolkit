@@ -42,7 +42,7 @@
 <unit id="org.apache.httpcomponents.httpclient" version="4.5.10.v20200830-2311"/>
 <unit id="org.apache.httpcomponents.httpcore" version="4.4.12.v20200108-1212"/>
 <unit id="org.apache.commons.codec" version="1.14.0.v20200818-1422"/>
-<repository location="https://download.eclipse.org/egit/updates"/>
+<repository location="https://download.eclipse.org/egit/updates-5.9/"/>
 </location>
 
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
