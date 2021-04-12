@@ -9,6 +9,14 @@ Find a short video giving an overview of the main features of the tool on [Youtu
 
 Latest release: [here](https://github.com/sebastiangoetz/slr-toolkit/releases)
 
+### iOS App
+
+Since 15.02.2021 there's an iOS App of our tool developed by [Max Härtwig](https://github.com/MaxHaertwig).
+
+All details are in the [ios-client folder](https://github.com/sebastiangoetz/slr-toolkit/tree/master/ios-client).
+
+You can find a short video of the main features on [Youtube](https://youtu.be/P67rSa9asj8)
+
 ### Build
 * From console
 	* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify` for building with tests
