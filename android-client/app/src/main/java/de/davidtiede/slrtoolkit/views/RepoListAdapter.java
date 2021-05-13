@@ -1,6 +1,7 @@
 package de.davidtiede.slrtoolkit.views;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
@@ -19,9 +22,12 @@ import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
     private RecyclerView recyclerView;
+    private RecyclerViewClickListener listener;
 
-    public RepoListAdapter(@NonNull DiffUtil.ItemCallback<Repo> diffCallback) {
+    public RepoListAdapter(@NonNull DiffUtil.ItemCallback<Repo> diffCallback, RecyclerViewClickListener listener) {
+
         super(diffCallback);
+        this.listener = listener;
     }
 
     @NonNull @Override
@@ -32,7 +38,7 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
     @Override
     public void onBindViewHolder(RepoViewHolder holder, int position) {
         Repo current = getItem(position);
-        holder.bind(current.getName());
+        holder.bind(current.getName(), listener);
     }
 
     public static class RepoDiff extends DiffUtil.ItemCallback<Repo> {
@@ -75,5 +81,14 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
         RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
         repoViewModel.insert(recentlyDeletedRepo);
         notifyItemInserted(position);
+    }
+
+    public Repo getItemAtPosition(int position) {
+        Repo repo = getItem(position);
+        return repo;
+    }
+
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
     }
 }

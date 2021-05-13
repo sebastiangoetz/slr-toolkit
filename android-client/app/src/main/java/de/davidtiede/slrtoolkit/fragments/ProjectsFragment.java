@@ -1,5 +1,6 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.MainActivity;
+import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
@@ -30,6 +32,7 @@ public class ProjectsFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView textview_no_project;
     private RepoListAdapter repoListAdapter;
+    private RepoListAdapter.RecyclerViewClickListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +45,9 @@ public class ProjectsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setOnClickListener();
         textview_no_project = view.findViewById(R.id.textview_no_project);
-        repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff());
+        repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff(), listener);
 
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -56,6 +60,18 @@ public class ProjectsFragment extends Fragment {
 
         RepoViewModel repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), this::onLoaded);
+    }
+
+    private void setOnClickListener() {
+        listener = new RepoListAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getActivity(), ProjectActivity.class);
+                Repo clickedRepo = repoListAdapter.getItemAtPosition(position);
+                intent.putExtra("repo", clickedRepo.getId());
+                startActivity(intent);
+            }
+        };
     }
 
     private void onLoaded(List<Repo> list){
