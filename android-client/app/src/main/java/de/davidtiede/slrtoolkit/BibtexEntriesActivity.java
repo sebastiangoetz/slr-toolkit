@@ -50,7 +50,9 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                 Collection<BibTeXEntry> entries = entryMap.values();
                 System.out.println("Before loop");
                 for(BibTeXEntry entry : entries){
-                    org.jbibtex.Value value = entry.getField(org.jbibtex.BibTeXEntry.KEY_TITLE);
+                    org.jbibtex.Value value = entry.getField(BibTeXEntry.KEY_TITLE);
+                    org.jbibtex.Value author = entry.getField(BibTeXEntry.KEY_AUTHOR);
+                    System.out.println(author.toUserString());
                     if(value == null){
                         continue;
                     }

@@ -28,7 +28,7 @@ public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntries
     @Override
     public BibTexEntriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(context)
-                    .inflate(R.layout.recyclerview_item, parent, false);
+                    .inflate(R.layout.bibtex_recyclerview_item, parent, false);
         return new BibTexEntriesViewHolder(view);
     }
 
