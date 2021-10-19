@@ -1,13 +1,15 @@
 package de.davidtiede.slrtoolkit;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
+import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
@@ -20,12 +22,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
+import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
 public class BibtexEntriesActivity extends AppCompatActivity {
-    File file;
-    RecyclerView recyclerView;
+    private File file;
+    private RecyclerView recyclerView;
+    private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
+    private ArrayList<BibTeXEntry> bibtexEntries = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,33 +37,26 @@ public class BibtexEntriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bibtex_entries);
         Bundle extras = getIntent().getExtras();
         String path;
-        RepoViewModel repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
-        ArrayList<String> titles = new ArrayList<>();
         if(extras != null) {
             path = extras.getString("path");
-            System.out.println("In BibtexEntries");
-            System.out.println(path);
             file = accessFiles(path);
-
             try {
-                System.out.println("Trying");
-                Reader reader = new FileReader(file.getAbsolutePath());
-                BibTeXParser bibTeXParser = new BibTeXParser();
-                BibTeXDatabase database = bibTeXParser.parse(reader);
-                Map<Key, BibTeXEntry> entryMap= database.getEntries();
+                BibTexParser parser = BibTexParser.getBibTexParser();
+                parser.setBibTeXDatabase(file);
+                Map<Key, BibTeXEntry> entryMap = parser.getBibTeXEntries();
                 Collection<BibTeXEntry> entries = entryMap.values();
-                System.out.println("Before loop");
                 for(BibTeXEntry entry : entries){
-                    org.jbibtex.Value value = entry.getField(BibTeXEntry.KEY_TITLE);
-                    org.jbibtex.Value author = entry.getField(BibTeXEntry.KEY_AUTHOR);
-                    System.out.println(author.toUserString());
-                    if(value == null){
-                        continue;
-                    }
-                    System.out.println("The value is:");
-                    System.out.println(value.toUserString());
-                    titles.add(value.toUserString());
+                    bibtexEntries.add(entry);
                 }
+                System.out.println("Length is:");
+                System.out.println(bibtexEntries.size());
+                System.out.println("And objects length");
+                //parser.removeObject(parser.getObjects().get(0));
+                BibTeXEntry deleteEntry = bibtexEntries.get(0);
+                BibTeXObject deleteObject = (BibTeXObject) deleteEntry;
+                parser.removeObject(deleteObject);
+                System.out.println(parser.getObjects().size());
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
@@ -67,8 +64,24 @@ public class BibtexEntriesActivity extends AppCompatActivity {
             }
         }
         recyclerView = findViewById(R.id.bibTexEntriesRecyclerView);
-        BibTexEntriesListAdapter adapter = new BibTexEntriesListAdapter(this, titles);
+        setOnClickListener();
+        BibTexEntriesListAdapter adapter = new BibTexEntriesListAdapter(this, listener, bibtexEntries);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void setOnClickListener() {
+        listener = new BibTexEntriesListAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                System.out.println("Clicked in BibtexEntriesActivity");
+                Intent intent = new Intent(getApplicationContext(), BibtexEntryActivity.class);
+                //intent.putExtra("path", path[0]);
+                Bundle extra = new Bundle();
+                extra.putSerializable("bibtexEntry", bibtexEntries.get(position));
+                intent.putExtra("extra", extra);
+                startActivity(intent);
+            }
+        };
     }
 
     private File accessFiles(String path) {
