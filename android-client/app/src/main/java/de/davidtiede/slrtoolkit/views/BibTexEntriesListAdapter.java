@@ -10,18 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jbibtex.BibTeXEntry;
+import org.jbibtex.BibTeXObject;
+import org.jbibtex.Key;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.util.BibTexParser;
 
 public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
-    public ArrayList<BibTeXEntry> bibtexEntries;
+    public Map<Key, BibTeXEntry> bibtexEntries;
     public Context context;
     private RecyclerViewClickListener listener;
+    private RecyclerView recyclerView;
 
-    public BibTexEntriesListAdapter(Context context, RecyclerViewClickListener listener, ArrayList<BibTeXEntry> bibtexEntries) {
+    public BibTexEntriesListAdapter(Context context, RecyclerViewClickListener listener, Map<Key, BibTeXEntry> bibtexEntries) {
         this.bibtexEntries = bibtexEntries;
         this.context = context;
         this.listener = listener;
@@ -37,8 +42,27 @@ public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntries
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull BibTexEntriesViewHolder bibTexEntriesViewHolder, int i) {
-        String title = bibtexEntries.get(i).getField(BibTeXEntry.KEY_TITLE).toUserString();
+        Map.Entry<Key, BibTeXEntry> mapEntry = (Map.Entry<Key, BibTeXEntry>) bibtexEntries.entrySet().toArray()[i];
+        BibTeXEntry entry = mapEntry.getValue();
+        String title = entry.getField(BibTeXEntry.KEY_TITLE).toUserString();
         bibTexEntriesViewHolder.bind(title, listener);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+
+    public Context getContext() {
+        return recyclerView.getContext();
+    }
+
+    public void deleteItem(int i) {
+        Map.Entry<Key, BibTeXEntry> mapEntry = (Map.Entry<Key, BibTeXEntry>) bibtexEntries.entrySet().toArray()[i];
+        BibTeXObject deleteObject = (BibTeXObject) mapEntry.getValue();
+        BibTexParser parser = BibTexParser.getBibTexParser();
+        parser.removeObject(deleteObject);
     }
 
     @Override

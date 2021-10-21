@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jbibtex.BibTeXDatabase;
@@ -20,10 +21,12 @@ import java.io.FileReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
+import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
 
 public class BibtexEntriesActivity extends AppCompatActivity {
     private File file;
@@ -37,25 +40,18 @@ public class BibtexEntriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bibtex_entries);
         Bundle extras = getIntent().getExtras();
         String path;
+        Map<Key, BibTeXEntry> entryMap = new HashMap();
         if(extras != null) {
             path = extras.getString("path");
             file = accessFiles(path);
             try {
                 BibTexParser parser = BibTexParser.getBibTexParser();
                 parser.setBibTeXDatabase(file);
-                Map<Key, BibTeXEntry> entryMap = parser.getBibTeXEntries();
+                entryMap.putAll(parser.getBibTeXEntries());
                 Collection<BibTeXEntry> entries = entryMap.values();
                 for(BibTeXEntry entry : entries){
                     bibtexEntries.add(entry);
                 }
-                System.out.println("Length is:");
-                System.out.println(bibtexEntries.size());
-                System.out.println("And objects length");
-                //parser.removeObject(parser.getObjects().get(0));
-                BibTeXEntry deleteEntry = bibtexEntries.get(0);
-                BibTeXObject deleteObject = (BibTeXObject) deleteEntry;
-                parser.removeObject(deleteObject);
-                System.out.println(parser.getObjects().size());
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -64,9 +60,14 @@ public class BibtexEntriesActivity extends AppCompatActivity {
             }
         }
         recyclerView = findViewById(R.id.bibTexEntriesRecyclerView);
+
         setOnClickListener();
-        BibTexEntriesListAdapter adapter = new BibTexEntriesListAdapter(this, listener, bibtexEntries);
+
+        BibTexEntriesListAdapter adapter = new BibTexEntriesListAdapter(this, listener, entryMap);
         recyclerView.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new
+                        ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
+                itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void setOnClickListener() {
