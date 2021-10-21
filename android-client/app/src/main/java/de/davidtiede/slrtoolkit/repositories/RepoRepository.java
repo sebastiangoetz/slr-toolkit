@@ -10,13 +10,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.RepoDao;
 
 /**
  * Abstracted Repository as promoted by the Architecture Guide. https://developer.android.com/topic/libraries/architecture/guide.html
  */
-
 public class RepoRepository {
     private RepoDao repoDao;
     private LiveData<List<Repo>> allRepos;
@@ -50,6 +50,10 @@ public class RepoRepository {
             e.printStackTrace();
         }
         return id;
+    }
+
+    public void insertEntriesForRepo(Repo repo, List<Entry> entries) {
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insertEntriesForRepo(repo, entries));
     }
 
     public void delete(Repo repo) {

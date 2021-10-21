@@ -10,19 +10,31 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface RepoDao {
+public abstract class RepoDao {
     @Query("SELECT * FROM repo")
-    LiveData<List<Repo>> getAllRepos();
+    public abstract LiveData<List<Repo>> getAllRepos();
 
     @Query("SELECT * FROM repo WHERE id=:id ")
-    LiveData<Repo> getRepoById(int id);
+    public abstract LiveData<Repo> getRepoById(int id);
 
     @Insert
-    long insert(Repo repo);
+    public abstract long insert(Repo repo);
+
+    @Insert
+    abstract void _insertAll(List<Entry> entries);
 
     @Update
-    void update(Repo repo);
+    public abstract void update(Repo repo);
 
     @Delete
-    void delete(Repo repo);
+    public abstract void delete(Repo repo);
+
+    public void insertEntriesForRepo(Repo repo, List<Entry> entries){
+
+        for(Entry entry : entries){
+            entry.setRepoId(repo.getId());
+        }
+
+        _insertAll(entries);
+    }
 }
