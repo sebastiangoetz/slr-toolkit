@@ -47,4 +47,8 @@ public class EntryRepository {
     public void delete(Entry entry) {
         AppDatabase.databaseWriteExecutor.execute(() -> entryDao.delete(entry));
     }
+
+    public LiveData<Entry> getEntryByKey(int repoId, String key) {
+        return entryDao.getEntryByKey(repoId, key);
+    }
 }

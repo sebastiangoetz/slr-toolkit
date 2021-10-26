@@ -15,6 +15,7 @@ import org.jbibtex.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.davidtiede.slrtoolkit.database.Entry;
+import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
@@ -34,6 +36,7 @@ public class BibtexEntriesActivity extends AppCompatActivity {
     private ArrayList<BibTeXEntry> bibtexEntries = new ArrayList<>();
     private BibtexEntriesViewModel bibtexEntriesViewModel;
     BibTexEntriesListAdapter adapter;
+    private int repoId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +45,11 @@ public class BibtexEntriesActivity extends AppCompatActivity {
         bibtexEntriesViewModel = new ViewModelProvider(this).get(BibtexEntriesViewModel.class);
         Bundle extras = getIntent().getExtras();
         String path;
-        int id = -1;
+        repoId = -1;
         Map<Key, BibTeXEntry> entryMap = new HashMap();
         if(extras != null) {
             path = extras.getString("path");
-            id = extras.getInt("repo");
+            repoId = extras.getInt("repo");
             file = accessFiles(path);
             try {
                 BibTexParser parser = BibTexParser.getBibTexParser();
@@ -63,7 +66,7 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        //populateDB(entryMap, id);
+        //populateDB(entryMap, repoId);
 
         recyclerView = findViewById(R.id.bibTexEntriesRecyclerView);
 
@@ -75,7 +78,7 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                         ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
                 itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        bibtexEntriesViewModel.getEntriesForRepo(id).observe(this, this::onLoaded);
+        bibtexEntriesViewModel.getEntriesForRepo(repoId).observe(this, this::onLoaded);
     }
 
     private void setOnClickListener() {
@@ -85,7 +88,9 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                 System.out.println("Clicked in BibtexEntriesActivity");
                 Intent intent = new Intent(getApplicationContext(), BibtexEntryActivity.class);
                 Bundle extra = new Bundle();
-                extra.putSerializable("bibtexEntry", bibtexEntries.get(position));
+                Entry clickedEntry = adapter.getItemAtPosition(position);
+                extra.putString("bibtexEntry", clickedEntry.getKey());
+                extra.putInt("repoId", repoId);
                 intent.putExtra("extra", extra);
                 startActivity(intent);
             }

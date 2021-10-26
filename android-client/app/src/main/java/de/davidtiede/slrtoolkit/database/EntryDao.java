@@ -25,4 +25,7 @@ public interface EntryDao {
 
     @Update
     void update(Entry entry);
+
+    @Query("SELECT * FROM entry WHERE `key`=:key AND repoId=:id")
+    LiveData<Entry> getEntryByKey(int id, String key);
 }
