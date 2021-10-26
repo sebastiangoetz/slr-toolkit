@@ -2,7 +2,6 @@ package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -16,7 +15,7 @@ public class BibtexEntriesViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
 
-    public BibtexEntriesViewModel(@NonNull Application application) {
+    public BibtexEntriesViewModel(Application application) {
         super(application);
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
@@ -28,5 +27,9 @@ public class BibtexEntriesViewModel extends AndroidViewModel {
 
     public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
         return entryRepository.getEntryForRepo(repoId);
+    }
+
+    public void delete(Entry entry) {
+        entryRepository.delete(entry);
     }
 }
