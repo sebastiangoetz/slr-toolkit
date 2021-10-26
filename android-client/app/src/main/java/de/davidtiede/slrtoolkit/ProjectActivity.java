@@ -13,21 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
-import java.util.Collection;
-import java.util.Map;
-
-import org.jbibtex.BibTeXDatabase;
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.BibTeXParser;
-import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-
 public class ProjectActivity extends AppCompatActivity {
-    private File file;
     private Button button;
 
     @Override
@@ -48,28 +34,6 @@ public class ProjectActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable final Repo repo) {
                     path[0] = repo.getLocal_path();
-                    file = accessFiles(path[0]);
-                    /*try {
-                        System.out.println("Trying");
-                        Reader reader = new FileReader(file.getAbsolutePath());
-                        BibTeXParser bibTeXParser = new BibTeXParser();
-                        BibTeXDatabase database = bibTeXParser.parse(reader);
-                        Map<Key, BibTeXEntry> entryMap= database.getEntries();
-                        Collection<BibTeXEntry> entries = entryMap.values();
-                        System.out.println("Before loop");
-                        for(BibTeXEntry entry : entries){
-                            org.jbibtex.Value value = entry.getField(org.jbibtex.BibTeXEntry.KEY_TITLE);
-                            if(value == null){
-                                continue;
-                            }
-                            System.out.println("The value is:");
-                            System.out.println(value.toUserString());
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }*/
                 }
             };
             repoViewModel.getRepoById(id).observe(this, nameObserver);
@@ -78,28 +42,11 @@ public class ProjectActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("Clicked!");
                     Intent intent = new Intent(getApplicationContext(), BibtexEntriesActivity.class);
                     intent.putExtra("path", path[0]);
                     startActivity(intent);
                 }
             });
         }
-    }
-
-    private File accessFiles(String path) {
-        File directoryPath = new File(getApplicationContext().getFilesDir(), path);
-        File[] files = directoryPath.listFiles();
-        File bibFile = null;
-        for(File file: files) {
-            if(file.isDirectory()) {
-                for(File f: file.listFiles()) {
-                    if(f.getName().endsWith(".bib")) {
-                        bibFile = f;
-                    }
-                }
-            }
-        }
-        return bibFile;
     }
 }
