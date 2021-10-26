@@ -12,7 +12,6 @@ import java.util.concurrent.Future;
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
-import de.davidtiede.slrtoolkit.database.Repo;
 
 public class EntryRepository {
     private EntryDao entryDao;

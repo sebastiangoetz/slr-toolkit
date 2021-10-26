@@ -29,10 +29,10 @@ public abstract class RepoDao {
     @Delete
     public abstract void delete(Repo repo);
 
-    public void insertEntriesForRepo(Repo repo, List<Entry> entries){
+    public void insertEntriesForRepo(int repoId, List<Entry> entries){
 
         for(Entry entry : entries){
-            entry.setRepoId(repo.getId());
+            entry.setRepoId(repoId);
         }
 
         _insertAll(entries);

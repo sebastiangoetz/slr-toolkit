@@ -7,45 +7,34 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.BibTeXObject;
-import org.jbibtex.Key;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.util.BibTexParser;
+import de.davidtiede.slrtoolkit.database.Entry;
 
-public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
-    public Map<Key, BibTeXEntry> bibtexEntries;
-    public Context context;
+public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
     private RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
 
-    public BibTexEntriesListAdapter(Context context, RecyclerViewClickListener listener, Map<Key, BibTeXEntry> bibtexEntries) {
-        this.bibtexEntries = bibtexEntries;
-        this.context = context;
+    public BibTexEntriesListAdapter(@NonNull DiffUtil.ItemCallback<Entry> diffCallback, RecyclerViewClickListener listener) {
+        super(diffCallback);
         this.listener = listener;
     }
     @NonNull
     @NotNull
     @Override
     public BibTexEntriesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view = LayoutInflater.from(context)
-                    .inflate(R.layout.bibtex_recyclerview_item, parent, false);
-        return new BibTexEntriesViewHolder(view);
+        return BibTexEntriesViewHolder.create(parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull BibTexEntriesViewHolder bibTexEntriesViewHolder, int i) {
-        Map.Entry<Key, BibTeXEntry> mapEntry = (Map.Entry<Key, BibTeXEntry>) bibtexEntries.entrySet().toArray()[i];
-        BibTeXEntry entry = mapEntry.getValue();
-        String title = entry.getField(BibTeXEntry.KEY_TITLE).toUserString();
-        bibTexEntriesViewHolder.bind(title, listener);
+        Entry current = getItem(i);
+        bibTexEntriesViewHolder.bind(current, listener);
     }
 
     @Override
@@ -59,18 +48,10 @@ public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntries
     }
 
     public void deleteItem(int i) {
-        Map.Entry<Key, BibTeXEntry> mapEntry = (Map.Entry<Key, BibTeXEntry>) bibtexEntries.entrySet().toArray()[i];
-        BibTeXObject deleteObject = (BibTeXObject) mapEntry.getValue();
-        BibTexParser parser = BibTexParser.getBibTexParser();
-        parser.removeObject(deleteObject);
+        System.out.println("Deleted!");
     }
 
-    @Override
-    public int getItemCount() {
-        return bibtexEntries.size();
-    }
-
-    public class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView bibtexItemView;
         private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
 
@@ -80,18 +61,37 @@ public class BibTexEntriesListAdapter extends RecyclerView.Adapter<BibTexEntries
             itemView.setOnClickListener(this);
         }
 
-        public void bind(String text, BibTexEntriesListAdapter.RecyclerViewClickListener listener) {
-            bibtexItemView.setText(text);
-            this.listener = listener;
+        public static BibTexEntriesViewHolder create(ViewGroup parent) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.bibtex_recyclerview_item, parent, false);
+            return new BibTexEntriesViewHolder(view);
         }
+
 
         @Override
         public void onClick(View view) {
             listener.onClick(view, getAdapterPosition());
         }
+
+        public void bind(Entry entry, RecyclerViewClickListener listener) {
+            bibtexItemView.setText(entry.getTitle());
+            this.listener = listener;
+        }
     }
 
     public interface RecyclerViewClickListener {
         void onClick(View v, int position);
+    }
+
+    public static class EntryDiff extends DiffUtil.ItemCallback<Entry> {
+        @Override
+        public boolean areItemsTheSame(@NonNull Entry oldItem, @NonNull Entry newItem) {
+            return false;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Entry oldItem, @NonNull Entry newItem) {
+            return false;
+        }
     }
 }

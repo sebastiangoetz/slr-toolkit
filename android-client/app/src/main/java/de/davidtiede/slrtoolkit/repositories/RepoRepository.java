@@ -52,8 +52,8 @@ public class RepoRepository {
         return id;
     }
 
-    public void insertEntriesForRepo(Repo repo, List<Entry> entries) {
-        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insertEntriesForRepo(repo, entries));
+    public void insertEntriesForRepo(int repoId, List<Entry> entries) {
+        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insertEntriesForRepo(repoId, entries));
     }
 
     public void delete(Repo repo) {

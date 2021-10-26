@@ -5,26 +5,25 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
-import org.jbibtex.BibTeXObject;
-import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
+import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
 
@@ -33,16 +32,21 @@ public class BibtexEntriesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private ArrayList<BibTeXEntry> bibtexEntries = new ArrayList<>();
+    private BibtexEntriesViewModel bibtexEntriesViewModel;
+    BibTexEntriesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bibtex_entries);
+        bibtexEntriesViewModel = new ViewModelProvider(this).get(BibtexEntriesViewModel.class);
         Bundle extras = getIntent().getExtras();
         String path;
+        int id = -1;
         Map<Key, BibTeXEntry> entryMap = new HashMap();
         if(extras != null) {
             path = extras.getString("path");
+            id = extras.getInt("repo");
             file = accessFiles(path);
             try {
                 BibTexParser parser = BibTexParser.getBibTexParser();
@@ -59,15 +63,19 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        //populateDB(entryMap, id);
+
         recyclerView = findViewById(R.id.bibTexEntriesRecyclerView);
 
         setOnClickListener();
 
-        BibTexEntriesListAdapter adapter = new BibTexEntriesListAdapter(this, listener, entryMap);
+        adapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener);
         recyclerView.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new
                         ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
                 itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        bibtexEntriesViewModel.getEntriesForRepo(id).observe(this, this::onLoaded);
     }
 
     private void setOnClickListener() {
@@ -76,7 +84,6 @@ public class BibtexEntriesActivity extends AppCompatActivity {
             public void onClick(View v, int position) {
                 System.out.println("Clicked in BibtexEntriesActivity");
                 Intent intent = new Intent(getApplicationContext(), BibtexEntryActivity.class);
-                //intent.putExtra("path", path[0]);
                 Bundle extra = new Bundle();
                 extra.putSerializable("bibtexEntry", bibtexEntries.get(position));
                 intent.putExtra("extra", extra);
@@ -99,5 +106,27 @@ public class BibtexEntriesActivity extends AppCompatActivity {
             }
         }
         return bibFile;
+    }
+
+    private void populateDB(Map<Key, BibTeXEntry> entryMap, int repoId) {
+        List<Entry> entries = new ArrayList<>();
+
+        for(Key key: entryMap.keySet()) {
+            BibTeXEntry bibTeXEntry = entryMap.get(key);
+            String title = bibTeXEntry.getField(BibTeXEntry.KEY_TITLE).toUserString();
+            Entry entry = new Entry(key.toString(), title);
+            entries.add(entry);
+        }
+
+        bibtexEntriesViewModel.insertEntries(entries, repoId);
+    }
+
+    private void onLoaded(List<Entry> list){
+        if (list.size() == 0) {
+            //TODO: show that there are no entries yet
+        }
+        else {
+            adapter.submitList(list);
+        }
     }
 }

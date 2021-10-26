@@ -17,13 +17,9 @@ public class Entry {
     @TypeConverters(StatusConverter.class)
     private Status status;
 
-    public Entry(String key, String title, String author, String entryAbstract, int year, int month) {
+    public Entry(String key, String title) {
         this.key = key;
         this.title = title;
-        this.author = author;
-        this.entryAbstract = entryAbstract;
-        this.year = year;
-        this.month = month;
         this.status = Status.OPEN;
     }
 
@@ -73,6 +69,22 @@ public class Entry {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setEntryAbstract(String entryAbstract) {
+        this.entryAbstract = entryAbstract;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public enum Status {

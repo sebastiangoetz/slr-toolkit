@@ -22,11 +22,10 @@ public class ProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_project);
 
         Bundle extras = getIntent().getExtras();
-        int id = 0;
         RepoViewModel repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
 
         if(extras != null) {
-            id = extras.getInt("repo");
+            int id = extras.getInt("repo");
             System.out.println(id);
             final String[] path = new String[1];
             // Create the observer
@@ -44,6 +43,7 @@ public class ProjectActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), BibtexEntriesActivity.class);
                     intent.putExtra("path", path[0]);
+                    intent.putExtra("repo", id);
                     startActivity(intent);
                 }
             });
