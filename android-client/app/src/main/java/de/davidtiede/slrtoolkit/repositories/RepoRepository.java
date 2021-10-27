@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
@@ -33,6 +34,12 @@ public class RepoRepository {
 
     public LiveData<Repo> getRepoById(int id) {
         return repoDao.getRepoById(id);
+    }
+
+    public Repo getRepoByIdDirectly(int id) throws ExecutionException, InterruptedException {
+        Callable<Repo> getCallable = () -> repoDao.getRepoByIdDirectly(id);
+        Future<Repo> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
     }
 
     public void update(Repo repo) {

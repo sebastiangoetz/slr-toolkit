@@ -23,10 +23,12 @@ import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
 public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
     private RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
+    private int repoId;
 
-    public BibTexEntriesListAdapter(@NonNull DiffUtil.ItemCallback<Entry> diffCallback, RecyclerViewClickListener listener) {
+    public BibTexEntriesListAdapter(@NonNull DiffUtil.ItemCallback<Entry> diffCallback, RecyclerViewClickListener listener, int repoId) {
         super(diffCallback);
         this.listener = listener;
+        this.repoId = repoId;
     }
     @NonNull
     @NotNull
@@ -54,7 +56,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
     public void deleteItem(int i) {
         Entry deletedEntry = getItem(i);
         BibtexEntriesViewModel bibtexEntriesViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(BibtexEntriesViewModel.class);
-        bibtexEntriesViewModel.delete(deletedEntry);
+        bibtexEntriesViewModel.delete(deletedEntry, repoId);
         notifyItemRemoved(i);
     }
 

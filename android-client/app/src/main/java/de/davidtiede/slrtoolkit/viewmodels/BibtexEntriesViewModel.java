@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
@@ -34,7 +35,22 @@ public class BibtexEntriesViewModel extends AndroidViewModel {
         return repoRepository.getRepoById(id);
     }
 
-    public void delete(Entry entry) {
-        entryRepository.delete(entry);
+    public Repo getRepoByIdDirectly(int id) {
+        Repo repo = null;
+        try {
+            repo = repoRepository.getRepoByIdDirectly(id);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return repo;
+    }
+
+    public void delete(Entry entry, int id) {
+        Repo repo = getRepoByIdDirectly(id);
+        if(repo != null) {
+            entryRepository.delete(entry, repo);
+        }
     }
 }

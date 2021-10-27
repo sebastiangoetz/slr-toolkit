@@ -4,6 +4,12 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import org.jbibtex.BibTeXObject;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -12,14 +18,18 @@ import java.util.concurrent.Future;
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
+import de.davidtiede.slrtoolkit.database.Repo;
+import de.davidtiede.slrtoolkit.util.BibTexParser;
 
 public class EntryRepository {
     private EntryDao entryDao;
     private LiveData<List<Entry>> entries;
+    Application application;
 
     public EntryRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         entryDao = db.entryDao();
+        this.application  = application;
     }
 
 
@@ -44,8 +54,21 @@ public class EntryRepository {
         return id;
     }
 
-    public void delete(Entry entry) {
-        AppDatabase.databaseWriteExecutor.execute(() -> entryDao.delete(entry));
+    public void delete(Entry entry, Repo repo) {
+        String path = repo.getLocal_path();
+        File file = accessFiles(path);
+        try {
+            BibTexParser parser = BibTexParser.getBibTexParser();
+            parser.setBibTeXDatabase(file);
+            Key key = new Key(entry.getKey());
+            BibTeXObject entryToDelete =  parser.getBibTexObject(key);
+            parser.removeObject(entryToDelete);
+            AppDatabase.databaseWriteExecutor.execute(() -> entryDao.delete(entry));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public LiveData<Entry> getEntryByKey(int repoId, String key) {
@@ -54,5 +77,21 @@ public class EntryRepository {
 
     public LiveData<Integer> getEntryAmountForRepo(int repoId) {
         return entryDao.getEntryAmount(repoId);
+    }
+
+    private File accessFiles(String path) {
+        File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
+        File[] files = directoryPath.listFiles();
+        File bibFile = null;
+        for(File file: files) {
+            if(file.isDirectory()) {
+                for(File f: file.listFiles()) {
+                    if(f.getName().endsWith(".bib")) {
+                        bibFile = f;
+                    }
+                }
+            }
+        }
+        return bibFile;
     }
 }

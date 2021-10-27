@@ -11,20 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.davidtiede.slrtoolkit.database.Entry;
-import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
@@ -52,7 +43,7 @@ public class BibtexEntriesActivity extends AppCompatActivity {
 
         setOnClickListener();
 
-        adapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener);
+        adapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
         recyclerView.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new
                         ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
@@ -75,22 +66,6 @@ public class BibtexEntriesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-    }
-
-    private File accessFiles(String path) {
-        File directoryPath = new File(getApplicationContext().getFilesDir(), path);
-        File[] files = directoryPath.listFiles();
-        File bibFile = null;
-        for(File file: files) {
-            if(file.isDirectory()) {
-                for(File f: file.listFiles()) {
-                    if(f.getName().endsWith(".bib")) {
-                        bibFile = f;
-                    }
-                }
-            }
-        }
-        return bibFile;
     }
 
     private void populateDB(Map<Key, BibTeXEntry> entryMap, int repoId) {

@@ -17,6 +17,9 @@ public abstract class RepoDao {
     @Query("SELECT * FROM repo WHERE id=:id ")
     public abstract LiveData<Repo> getRepoById(int id);
 
+    @Query("SELECT * FROM repo WHERE id=:id ")
+    public abstract Repo getRepoByIdDirectly(int id);
+
     @Insert
     public abstract long insert(Repo repo);
 
