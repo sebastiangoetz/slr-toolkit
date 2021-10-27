@@ -30,10 +30,8 @@ import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
 
 public class BibtexEntriesActivity extends AppCompatActivity {
-    private File file;
     private RecyclerView recyclerView;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
-    private ArrayList<BibTeXEntry> bibtexEntries = new ArrayList<>();
     private BibtexEntriesViewModel bibtexEntriesViewModel;
     BibTexEntriesListAdapter adapter;
     private int repoId;
@@ -44,27 +42,9 @@ public class BibtexEntriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bibtex_entries);
         bibtexEntriesViewModel = new ViewModelProvider(this).get(BibtexEntriesViewModel.class);
         Bundle extras = getIntent().getExtras();
-        String path;
         repoId = -1;
-        Map<Key, BibTeXEntry> entryMap = new HashMap();
         if(extras != null) {
-            path = extras.getString("path");
             repoId = extras.getInt("repo");
-            file = accessFiles(path);
-            try {
-                BibTexParser parser = BibTexParser.getBibTexParser();
-                parser.setBibTeXDatabase(file);
-                entryMap.putAll(parser.getBibTeXEntries());
-                Collection<BibTeXEntry> entries = entryMap.values();
-                for(BibTeXEntry entry : entries){
-                    bibtexEntries.add(entry);
-                }
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
         //populateDB(entryMap, repoId);
 
