@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class ProjectActivity extends AppCompatActivity {
-    private Button button;
+    private Button allEntryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +22,13 @@ public class ProjectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_project);
 
         Bundle extras = getIntent().getExtras();
-        RepoViewModel repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
+        ProjectViewModel projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
+        allEntryButton = findViewById(R.id.button_all_entries);
 
         if(extras != null) {
             int id = extras.getInt("repo");
-            System.out.println(id);
             final String[] path = new String[1];
+
             // Create the observer
             final Observer<Repo> nameObserver = new Observer<Repo>() {
                 @Override
@@ -35,10 +36,16 @@ public class ProjectActivity extends AppCompatActivity {
                     path[0] = repo.getLocal_path();
                 }
             };
-            repoViewModel.getRepoById(id).observe(this, nameObserver);
+            final Observer entryAmountObserver = new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer amount) {
+                    allEntryButton.setText("All Entries (" + amount.toString() + ")");
+                }
+            };
+            projectViewModel.getRepoById(id).observe(this, nameObserver);
+            projectViewModel.getEntryAmount(id).observe(this, entryAmountObserver);
 
-            button = findViewById(R.id.button_classify);
-            button.setOnClickListener(new View.OnClickListener() {
+            allEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), BibtexEntriesActivity.class);

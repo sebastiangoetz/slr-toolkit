@@ -28,4 +28,7 @@ public interface EntryDao {
 
     @Query("SELECT * FROM entry WHERE `key`=:key AND repoId=:id")
     LiveData<Entry> getEntryByKey(int id, String key);
+
+    @Query("SELECT COUNT(title) FROM entry WHERE repoId=:id")
+    LiveData<Integer> getEntryAmount(int id);
 }
