@@ -78,6 +78,11 @@ public class EntryRepository {
         return entryDao.getEntryAmount(repoId);
     }
 
+    public LiveData<Integer> getEntryAmountForStatus(int repoId, Entry.Status status) {
+        int statusCode = status.getCode();
+        return entryDao.getEntryAmountForStatus(repoId, statusCode);
+    }
+
     public LiveData<List<Entry>> getEntryForRepoByStatus(int repoId, Entry.Status status) {
         int statusCode = status.getCode();
         return entryDao.getEntryForRepoByStatus(repoId, statusCode);

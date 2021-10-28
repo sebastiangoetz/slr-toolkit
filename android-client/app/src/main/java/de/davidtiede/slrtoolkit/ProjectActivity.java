@@ -38,6 +38,14 @@ public class ProjectActivity extends AppCompatActivity {
             };
             projectViewModel.getEntryAmount(id).observe(this, entryAmountObserver);
 
+            final Observer openEntryAmountObserver = new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer amount) {
+                    filterButton.setText("Filter (" + amount.toString() + ")");
+                }
+            };
+            projectViewModel.getOpenEntryAmount(id).observe(this, openEntryAmountObserver);
+
             allEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
