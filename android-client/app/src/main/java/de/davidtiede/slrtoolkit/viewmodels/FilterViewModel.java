@@ -25,4 +25,8 @@ public class FilterViewModel extends AndroidViewModel {
     public LiveData<List<Entry>> getOpenEntriesForRepo(int repoId) {
         return entryRepository.getEntryForRepoByStatus(repoId, Entry.Status.OPEN);
     }
+
+    public void updateEntry(Entry entry) {
+        entryRepository.update(entry);
+    }
 }

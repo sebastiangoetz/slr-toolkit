@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -44,12 +43,16 @@ public class FilterActivity extends AppCompatActivity {
 
             @Override
             public void onLeftCardExit(Object o) {
-                Toast.makeText(FilterActivity.this, "dislike", Toast.LENGTH_LONG).show();
+                Entry entry = (Entry) o;
+                entry.setStatus(Entry.Status.DISCARD);
+                filterViewModel.updateEntry(entry);
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Toast.makeText(FilterActivity.this, "like", Toast.LENGTH_LONG).show();
+                Entry entry = (Entry) o;
+                entry.setStatus(Entry.Status.KEEP);
+                filterViewModel.updateEntry(entry);
             }
 
             @Override
