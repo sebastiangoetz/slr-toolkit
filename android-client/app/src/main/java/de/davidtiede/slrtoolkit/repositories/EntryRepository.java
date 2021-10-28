@@ -23,7 +23,6 @@ import de.davidtiede.slrtoolkit.util.BibTexParser;
 
 public class EntryRepository {
     private EntryDao entryDao;
-    private LiveData<List<Entry>> entries;
     Application application;
 
     public EntryRepository(Application application) {
@@ -77,6 +76,11 @@ public class EntryRepository {
 
     public LiveData<Integer> getEntryAmountForRepo(int repoId) {
         return entryDao.getEntryAmount(repoId);
+    }
+
+    public LiveData<List<Entry>> getEntryForRepoByStatus(int repoId, Entry.Status status) {
+        int statusCode = status.getCode();
+        return entryDao.getEntryForRepoByStatus(repoId, statusCode);
     }
 
     private File accessFiles(String path) {
