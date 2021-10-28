@@ -15,6 +15,7 @@ import android.widget.Button;
 
 public class ProjectActivity extends AppCompatActivity {
     private Button allEntryButton;
+    private Button filterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class ProjectActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         ProjectViewModel projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
         allEntryButton = findViewById(R.id.button_all_entries);
+        filterButton = findViewById(R.id.button_filter);
 
         if(extras != null) {
             int id = extras.getInt("repo");
@@ -40,6 +42,16 @@ public class ProjectActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), BibtexEntriesActivity.class);
+                    intent.putExtra("repo", id);
+                    startActivity(intent);
+                }
+            });
+
+            filterButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
                     intent.putExtra("repo", id);
                     startActivity(intent);
                 }
