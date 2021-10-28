@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -19,6 +21,8 @@ public class FilterActivity extends AppCompatActivity {
     private FilterEntriesAdapter arrayAdapter;
     private ArrayList<Entry> entries;
     SwipeFlingAdapterView flingAdapterView;
+    private Button keepButton;
+    private Button discardButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,17 @@ public class FilterActivity extends AppCompatActivity {
 
             filterViewModel.getOpenEntriesForRepo(id).observe(this, openEntriesObserver);
         }
+
+        keepButton = findViewById(R.id.keep_button);
+        discardButton = findViewById(R.id.discard_button);
+
+        keepButton.setOnClickListener(view -> {
+            flingAdapterView.getTopCardListener().selectRight();
+        });
+
+        discardButton.setOnClickListener(view -> {
+            flingAdapterView.getTopCardListener().selectLeft();
+        });
 
     }
 }

@@ -17,15 +17,15 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/dislike"
-            android:text="dislike"
+            android:id="@+id/discard_button"
+            android:text="Discard"
             android:layout_margin="5dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="like"
+            android:text="Keep"
             android:layout_margin="5dp"
-            android:id="@+id/like"/>
+            android:id="@+id/keep_button"/>
 
     </LinearLayout>
 
