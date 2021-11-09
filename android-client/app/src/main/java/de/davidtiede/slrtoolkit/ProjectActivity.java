@@ -1,6 +1,5 @@
 package de.davidtiede.slrtoolkit;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,6 +44,16 @@ public class ProjectActivity extends AppCompatActivity {
                 }
             };
             projectViewModel.getOpenEntryAmount(id).observe(this, openEntryAmountObserver);
+
+            //to initialize the database
+            /*final Observer projectPathObserver = new Observer<Repo>() {
+                @Override
+                public void onChanged(Repo repo) {
+                    String path = repo.getLocal_path();
+                    projectViewModel.initializeData(repo.getId(), repo.getLocal_path());
+                }
+            };
+            projectViewModel.getRepoById(id).observe(this, projectPathObserver);*/
 
             allEntryButton.setOnClickListener(new View.OnClickListener() {
                 @Override

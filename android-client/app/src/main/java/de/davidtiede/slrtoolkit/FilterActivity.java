@@ -5,7 +5,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;

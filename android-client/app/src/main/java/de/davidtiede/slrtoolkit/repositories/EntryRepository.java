@@ -20,15 +20,18 @@ import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
+import de.davidtiede.slrtoolkit.util.FileUtil;
 
 public class EntryRepository {
     private EntryDao entryDao;
     Application application;
+    FileUtil fileUtil;
 
     public EntryRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         entryDao = db.entryDao();
         this.application  = application;
+        fileUtil = new FileUtil();
     }
 
 
@@ -55,7 +58,7 @@ public class EntryRepository {
 
     public void delete(Entry entry, Repo repo) {
         String path = repo.getLocal_path();
-        File file = accessFiles(path);
+        File file = fileUtil.accessFiles(path, application);
         try {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
@@ -86,21 +89,5 @@ public class EntryRepository {
     public LiveData<List<Entry>> getEntryForRepoByStatus(int repoId, Entry.Status status) {
         int statusCode = status.getCode();
         return entryDao.getEntryForRepoByStatus(repoId, statusCode);
-    }
-
-    private File accessFiles(String path) {
-        File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
-        File[] files = directoryPath.listFiles();
-        File bibFile = null;
-        for(File file: files) {
-            if(file.isDirectory()) {
-                for(File f: file.listFiles()) {
-                    if(f.getName().endsWith(".bib")) {
-                        bibFile = f;
-                    }
-                }
-            }
-        }
-        return bibFile;
     }
 }

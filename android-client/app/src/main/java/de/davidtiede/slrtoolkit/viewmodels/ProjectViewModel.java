@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import java.util.Stack;
-
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
@@ -29,5 +27,13 @@ public class ProjectViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getOpenEntryAmount(int repoId) {
         return entryRepository.getEntryAmountForStatus(repoId, Entry.Status.OPEN);
+    }
+
+    public LiveData<Repo> getRepoById(int id) {
+        return repoRepository.getRepoById(id);
+    }
+
+    public void initializeData(int repoId, String path) {
+        repoRepository.initializeEntries(repoId, path);
     }
 }
