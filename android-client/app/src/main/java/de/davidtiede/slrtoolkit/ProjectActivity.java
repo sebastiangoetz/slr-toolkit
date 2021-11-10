@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.davidtiede.slrtoolkit.database.Repo;
+import de.davidtiede.slrtoolkit.util.TaxonomyParser;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 import android.content.Intent;
@@ -26,6 +27,8 @@ public class ProjectActivity extends AppCompatActivity {
         allEntryButton = findViewById(R.id.button_all_entries);
         filterButton = findViewById(R.id.button_filter);
 
+        TaxonomyParser parser = new TaxonomyParser();
+        parser.test();
         if(extras != null) {
             int id = extras.getInt("repo");
             // Create the observer
