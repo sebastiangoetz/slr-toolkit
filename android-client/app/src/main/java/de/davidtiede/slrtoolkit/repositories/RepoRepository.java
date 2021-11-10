@@ -82,7 +82,7 @@ public class RepoRepository {
     }
 
     public void initializeEntries(int repoId, String path) {
-        File file = fileUtil.accessFiles(path, application);
+        File file = fileUtil.accessFiles(path, application, ".bib");
         try {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);

@@ -58,7 +58,7 @@ public class EntryRepository {
 
     public void delete(Entry entry, Repo repo) {
         String path = repo.getLocal_path();
-        File file = fileUtil.accessFiles(path, application);
+        File file = fileUtil.accessFiles(path, application, ".bib");
         try {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
