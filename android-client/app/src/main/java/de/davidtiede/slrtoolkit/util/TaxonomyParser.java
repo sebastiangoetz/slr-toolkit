@@ -1,11 +1,9 @@
 package de.davidtiede.slrtoolkit.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 
 public class TaxonomyParser {
     public boolean isEmpty(String string) {
@@ -27,36 +25,52 @@ public class TaxonomyParser {
             if(Character.compare(taxonomy.charAt(i), openingBracet) == 0) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
-                    System.out.println(trimmedNode);
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
+                    taxonomyNode.setName(trimmedNode);
                     if(parentNodes.size() > 0) {
-                        taxonomyNode.setParent(parentNodes.peek());
+                        TaxonomyParserNode currentParent = parentNodes.peek();
+
+                        //set child and parent on respective nodes
+                        taxonomyNode.setParent(currentParent);
+                        currentParent.addChild(taxonomyNode);
+                        int parentIndex = parentNodes.indexOf(currentParent);
+                        parentNodes.set(parentIndex, currentParent);
                     }
                     parentNodes.push(taxonomyNode);
-                    taxonomyNodes.add(taxonomyNode);
                     node = "";
                 }
             } else if(Character.compare(taxonomy.charAt(i), closingBracet) == 0) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
-                    System.out.println(trimmedNode);
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
                     taxonomyNode.setName(trimmedNode);
                     if(parentNodes.size() > 0) {
-                        taxonomyNode.setParent(parentNodes.peek());
+                        TaxonomyParserNode currentParent = parentNodes.pop();
+                        taxonomyNode.setParent(currentParent);
+                        currentParent.addChild(taxonomyNode);
+                        taxonomyNodes.add(currentParent);
                     }
-                    parentNodes.pop();
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
+                } else {
+                    if(parentNodes.size() > 0) {
+                        TaxonomyParserNode currentParent = parentNodes.pop();
+                        taxonomyNodes.add(currentParent);
+                    }
                 }
             } else if(Character.compare(taxonomy.charAt(i), comma) == 0) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
-                    System.out.println(trimmedNode);
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
                     taxonomyNode.setName(trimmedNode);
                     if(parentNodes.size() > 0) {
-                        taxonomyNode.setParent(parentNodes.peek());
+                        TaxonomyParserNode currentParent = parentNodes.peek();
+
+                        //set child and parent on respective nodes
+                        taxonomyNode.setParent(currentParent);
+                        currentParent.addChild(taxonomyNode);
+                        int parentIndex = parentNodes.indexOf(currentParent);
+                        parentNodes.set(parentIndex, currentParent);
                     }
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
@@ -65,7 +79,6 @@ public class TaxonomyParser {
                 node += taxonomy.charAt(i);
             }
         }
-        System.out.println(taxonomyNodes.size());
         return taxonomyNodes;
     }
 }

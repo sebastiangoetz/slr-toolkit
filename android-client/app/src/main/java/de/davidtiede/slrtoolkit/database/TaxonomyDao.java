@@ -16,4 +16,7 @@ public interface TaxonomyDao {
 
     @Insert
     public abstract long insert(Taxonomy taxonomy);
+
+    @Insert
+    public abstract void insertAll(List<Taxonomy> taxonomies);
 }
