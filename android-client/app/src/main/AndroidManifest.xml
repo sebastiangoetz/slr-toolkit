@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
         <activity
+            android:name=".EntriesByTaxonomyActivity"
+            android:exported="false" />
+        <activity
             android:name=".FilterActivity"
             android:exported="false" />
         <activity android:name=".BibtexEntryActivity" />
