@@ -39,6 +39,11 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
         holder.bind(current, listener);
     }
 
+    public Taxonomy getItemAtPosition(int position) {
+        Taxonomy taxonomy = getItem(position);
+        return taxonomy;
+    }
+
     public static class TaxonomyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taxonomyItemView;
         private TaxonomyListAdapter.RecyclerViewClickListener listener;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,11 +100,12 @@ public class TaxonomyListFragment extends Fragment {
         listener = new TaxonomyListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                /*Intent intent = new Intent(getActivity(), ProjectActivity.class);
-                Repo clickedRepo = repoListAdapter.getItemAtPosition(position);
-                intent.putExtra("repo", clickedRepo.getId());
-                startActivity(intent);*/
-                System.out.println("Clicked");
+                Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
+                Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.taxonomyFragment, taxonomyFragment);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         };
     }
