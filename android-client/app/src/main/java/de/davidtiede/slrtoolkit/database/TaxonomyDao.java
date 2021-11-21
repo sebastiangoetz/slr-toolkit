@@ -19,4 +19,8 @@ public interface TaxonomyDao {
 
     @Insert
     public abstract void insertAll(List<Taxonomy> taxonomies);
+
+    @Transaction
+    @Query("SELECT * FROM taxonomy WHERE repoId=:repoId AND parentId=:parentId")
+    public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
 }

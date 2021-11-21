@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,10 +14,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
-import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyDao;
-import de.davidtiede.slrtoolkit.database.TaxonomyDao_Impl;
 import de.davidtiede.slrtoolkit.util.FileUtil;
 import de.davidtiede.slrtoolkit.util.TaxonomyParser;
 import de.davidtiede.slrtoolkit.util.TaxonomyParserNode;
@@ -96,5 +95,9 @@ public class TaxonomyRepository {
                 }
             }
         }
+    }
+
+    public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId) {
+        return taxonomyDao.getChildTaxonomies(repoId, parentId);
     }
 }
