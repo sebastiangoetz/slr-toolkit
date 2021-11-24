@@ -1,11 +1,9 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,35 +14,32 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.EntriesByTaxonomyViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
-import de.davidtiede.slrtoolkit.views.RepoListAdapter;
-import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
+import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaxonomyListFragment#newInstance} factory method to
+ * Use the {@link TaxonomyEntriesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaxonomyListFragment extends Fragment {
+public class TaxonomyEntriesListFragment extends Fragment {
 
+    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "currentTaxonomyId";
     private static final String ARG_PARAM2 = "repoId";
 
     private static EntriesByTaxonomyViewModel entriesByTaxonomyViewModel;
-    private RecyclerView taxonomyRecyclerView;
-    private TaxonomyListAdapter taxonomyListAdapter;
-    private TaxonomyListAdapter.RecyclerViewClickListener listener;
+    private RecyclerView taxonomyEntriesRecyclerView;
+    private BibTexEntriesListAdapter bibTexEntriesListAdapter;
+    private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
 
     private int repoId;
     private int currentTaxonomyId;
 
-    public TaxonomyListFragment() {
+    public TaxonomyEntriesListFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +47,13 @@ public class TaxonomyListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param currentItemId Parameter 1.
-     * @return A new instance of fragment TaxonomyListFragment.
+     * @param repoId Parameter 1.
+     * @param currentItemId Parameter 2.
+     * @return A new instance of fragment TaxonomyEntriesFragment.
      */
-    public static TaxonomyListFragment newInstance(int repoId, int currentItemId) {
-        TaxonomyListFragment fragment = new TaxonomyListFragment();
+    // TODO: Rename and change types and number of parameters
+    public static TaxonomyEntriesListFragment newInstance(int repoId, int currentItemId) {
+        TaxonomyEntriesListFragment fragment = new TaxonomyEntriesListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, repoId);
         args.putInt(ARG_PARAM2, currentItemId);
@@ -77,34 +74,31 @@ public class TaxonomyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_taxonomy_list, container, false);
+        return inflater.inflate(R.layout.fragment_taxonomy_entries_list, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
-        taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
-        taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener, repoId);
-        taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
+        taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
+        taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
+        taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         entriesByTaxonomyViewModel = new ViewModelProvider(requireActivity()).get(EntriesByTaxonomyViewModel.class);
-        entriesByTaxonomyViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        //entriesByTaxonomyViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        //TODO: get entries with that taxonomy
     }
 
-    public void onLoaded(List<Taxonomy> taxonomyList) {
-        taxonomyListAdapter.submitList(taxonomyList);
+    public void onLoaded(List<Entry> entries) {
+        bibTexEntriesListAdapter.submitList(entries);
     }
 
     private void setOnClickListener() {
-        listener = new TaxonomyListAdapter.RecyclerViewClickListener() {
+        listener = new BibTexEntriesListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
-                Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.taxonomyFragment, taxonomyFragment);
-                ft.addToBackStack(null);
-                ft.commit();
+                Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
+                //TODO: navigate to detail view!
             }
         };
     }

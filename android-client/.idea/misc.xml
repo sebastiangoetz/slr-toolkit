@@ -8,7 +8,9 @@
         <entry key="app/src/main/res/layout/activity_project.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/bibtex_recyclerview_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/filter_item.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_entries_list.xml" value="0.18931159420289856" />
         <entry key="app/src/main/res/layout/fragment_projects.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_taxonomy_entries.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list_list.xml" value="0.17916666666666667" />
       </map>
