@@ -1,6 +1,5 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,13 +15,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.viewmodels.EntriesByTaxonomyViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
-import de.davidtiede.slrtoolkit.views.RepoListAdapter;
 import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
 /**
@@ -99,12 +94,15 @@ public class TaxonomyListFragment extends Fragment {
         listener = new TaxonomyListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
+                //TODO: if children
                 Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
                 Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.taxonomyFragment, taxonomyFragment);
                 ft.addToBackStack(null);
                 ft.commit();
+
+                //TODO: code if no children -> display entries
             }
         };
     }

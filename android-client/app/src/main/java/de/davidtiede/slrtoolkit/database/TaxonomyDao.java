@@ -23,4 +23,8 @@ public interface TaxonomyDao {
     @Transaction
     @Query("SELECT * FROM taxonomy WHERE repoId=:repoId AND parentId=:parentId")
     public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
+
+    @Transaction
+    @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND taxonomyId=:taxonomyId")
+    public List<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId);
 }

@@ -10,6 +10,8 @@ public class Taxonomy {
     private String name;
     private int repoId;
     private int parentId;
+    private boolean hasChildren;
+    private String path;
 
     public int getParentId() {
         return parentId;
@@ -27,6 +29,14 @@ public class Taxonomy {
         return name;
     }
 
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -41,5 +51,13 @@ public class Taxonomy {
 
     public void setTaxonomyId(int id) {
         this.taxonomyId = id;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
