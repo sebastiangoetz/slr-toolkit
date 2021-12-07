@@ -18,6 +18,7 @@ public class ProjectActivity extends AppCompatActivity {
     private Button allEntryButton;
     private Button filterButton;
     private Button taxonomyButton;
+    private Button classifyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class ProjectActivity extends AppCompatActivity {
         allEntryButton = findViewById(R.id.button_all_entries);
         filterButton = findViewById(R.id.button_filter);
         taxonomyButton = findViewById(R.id.button_entries_by_taxonomy);
+        classifyButton = findViewById(R.id.button_classify);
 
         if(extras != null) {
             int id = extras.getInt("repo");
@@ -70,24 +72,22 @@ public class ProjectActivity extends AppCompatActivity {
                 }
             });
 
-            filterButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
-                    intent.putExtra("repo", id);
-                    startActivity(intent);
-                }
+            filterButton.setOnClickListener(view -> {
+                Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+                intent.putExtra("repo", id);
+                startActivity(intent);
             });
 
-            taxonomyButton.setOnClickListener(new View.OnClickListener() {
+            taxonomyButton.setOnClickListener(view -> {
+                Intent intent = new Intent(getApplicationContext(), EntriesByTaxonomyActivity.class);
+                intent.putExtra("repo", id);
+                startActivity(intent);
+            });
 
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), EntriesByTaxonomyActivity.class);
-                    intent.putExtra("repo", id);
-                    startActivity(intent);
-                }
+            classifyButton.setOnClickListener(view -> {
+                Intent intent = new Intent(getApplicationContext(), ClassifyActivity.class);
+                intent.putExtra("repo", id);
+                startActivity(intent);
             });
         }
     }

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
         <activity
+            android:name=".ClassifyActivity"
+            android:exported="false" />
+        <activity
             android:name=".EntriesByTaxonomyActivity"
             android:exported="false" />
         <activity
@@ -22,9 +25,9 @@
         <activity android:name=".ProjectActivity" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.SLRToolkit.NoActionBar"
-            android:exported="true">
+            android:theme="@style/Theme.SLRToolkit.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
