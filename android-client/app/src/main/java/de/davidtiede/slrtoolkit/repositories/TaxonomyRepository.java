@@ -72,9 +72,10 @@ public class TaxonomyRepository {
                 if (parent != 0) {
                     taxonomyNode.setParentId(parent);
                 }
-                //insert current node
-                int parentId = (int) insert(taxonomyNode);
                 if(node.getChildren().size() > 0) {
+                    taxonomyNode.setHasChildren(true);
+                    //insert current node
+                    int parentId = (int) insert(taxonomyNode);
                     List<Taxonomy> nodesWithoutChildren = new ArrayList<>();
                     List<TaxonomyParserNode> nodesWithChildren = new ArrayList<>();
                     for(TaxonomyParserNode childNode : node.getChildren()) {
@@ -92,6 +93,9 @@ public class TaxonomyRepository {
                     insertAll(nodesWithoutChildren);
                     //recursively do the same thing for the child nodes
                     addTaxonomyEntries(nodesWithChildren, repoId, parentId);
+                } else {
+                    taxonomyNode.setHasChildren(false);
+                    insert(taxonomyNode);
                 }
             }
         }
