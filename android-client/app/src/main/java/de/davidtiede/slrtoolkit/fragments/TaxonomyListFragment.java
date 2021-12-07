@@ -94,15 +94,22 @@ public class TaxonomyListFragment extends Fragment {
         listener = new TaxonomyListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                //TODO: if children
                 Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
-                Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.taxonomyFragment, taxonomyFragment);
-                ft.addToBackStack(null);
-                ft.commit();
-
-                //TODO: code if no children -> display entries
+                if(clickedTaxonomy.isHasChildren()) {
+                    //there are child taxonomies, display those
+                    Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.taxonomyFragment, taxonomyFragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                } else {
+                    //no child taxonomies, display entries for the taxonomy
+                    Fragment entriesFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.taxonomyFragment, entriesFragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
             }
         };
     }

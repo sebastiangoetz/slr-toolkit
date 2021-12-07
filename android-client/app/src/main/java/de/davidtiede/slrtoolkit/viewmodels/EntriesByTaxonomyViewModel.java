@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
@@ -29,5 +30,9 @@ public class EntriesByTaxonomyViewModel extends AndroidViewModel {
 
     public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
         return taxonomyRepository.getChildTaxonomies(repoId, parentId);
+    }
+
+    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
+        return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

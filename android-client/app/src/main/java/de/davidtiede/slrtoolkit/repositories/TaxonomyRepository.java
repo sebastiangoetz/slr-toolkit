@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyDao;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.util.FileUtil;
 import de.davidtiede.slrtoolkit.util.TaxonomyParser;
 import de.davidtiede.slrtoolkit.util.TaxonomyParserNode;
@@ -103,5 +104,9 @@ public class TaxonomyRepository {
 
     public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId) {
         return taxonomyDao.getChildTaxonomies(repoId, parentId);
+    }
+
+    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
+        return taxonomyDao.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

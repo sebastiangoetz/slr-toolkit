@@ -16,6 +16,7 @@ import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.EntriesByTaxonomyViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
@@ -85,11 +86,12 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         entriesByTaxonomyViewModel = new ViewModelProvider(requireActivity()).get(EntriesByTaxonomyViewModel.class);
-        //entriesByTaxonomyViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
-        //TODO: get entries with that taxonomy
+        
+        entriesByTaxonomyViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    public void onLoaded(List<Entry> entries) {
+    public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
+        List<Entry> entries = taxonomyWithEntries.entries;
         bibTexEntriesListAdapter.submitList(entries);
     }
 
