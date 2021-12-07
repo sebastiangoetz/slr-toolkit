@@ -122,12 +122,12 @@ public class AddProject1Fragment extends Fragment {
         workManager.enqueue(cloneWorkRequest);
         workManager.getWorkInfoByIdLiveData(cloneWorkRequest.getId())
                 .observe(getViewLifecycleOwner(), worker -> {
-                    if (worker.getState() != null && worker.getState() == WorkInfo.State.SUCCEEDED) {
+                    if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         progressButton.onSucceeded();
                         button_clone_project.setOnClickListener(cardview_clone_project ->
                                 NavHostFragment.findNavController(AddProject1Fragment.this)
                                         .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment));
-                    } else if (worker.getState() != null && worker.getState() == WorkInfo.State.FAILED) {
+                    } else if (worker.getState() == WorkInfo.State.FAILED) {
                         progressButton.onFailed();
                         TextView textview_clone_project_failed = view.findViewById(R.id.textview_clone_project_failed);
                         textview_clone_project_failed.setText(worker.getOutputData().getString("RESULT_MSG"));
