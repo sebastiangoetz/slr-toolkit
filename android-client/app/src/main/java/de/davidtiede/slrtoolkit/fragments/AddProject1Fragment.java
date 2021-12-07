@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.MainActivity;
 import de.davidtiede.slrtoolkit.R;
@@ -32,7 +33,6 @@ import de.davidtiede.slrtoolkit.views.ProgressButtonCloneProject;
 import de.davidtiede.slrtoolkit.worker.CloneWorker;
 
 public class AddProject1Fragment extends Fragment {
-
     private RepoViewModel repoViewModel;
     private TextInputEditText edittext_url;
     private TextInputEditText edittext_username;
@@ -90,7 +90,15 @@ public class AddProject1Fragment extends Fragment {
 
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);
-        repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), repo_with_id -> actionCloneRepo2(view, repo_with_id));
+        //repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), repo_with_id -> actionCloneRepo2(view, repo_with_id));
+        try {
+            Repo currentRepo = repoViewModel.getRepoDirectly(id);
+            actionCloneRepo2(view, currentRepo);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void actionCloneRepo2(View view, Repo repo){

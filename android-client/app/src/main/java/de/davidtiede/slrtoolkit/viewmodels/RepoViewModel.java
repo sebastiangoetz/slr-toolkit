@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
@@ -52,5 +53,9 @@ public class RepoViewModel extends AndroidViewModel {
 
     public void delete(Repo repo) {
         repoRepository.delete(repo);
+    }
+
+    public Repo getRepoDirectly(int id) throws ExecutionException, InterruptedException {
+        return repoRepository.getRepoByIdDirectly(id);
     }
 }

@@ -86,7 +86,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         entriesByTaxonomyViewModel = new ViewModelProvider(requireActivity()).get(EntriesByTaxonomyViewModel.class);
-        
+
         entriesByTaxonomyViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
