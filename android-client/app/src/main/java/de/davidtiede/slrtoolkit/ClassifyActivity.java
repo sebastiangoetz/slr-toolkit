@@ -1,5 +1,6 @@
 package de.davidtiede.slrtoolkit;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -16,7 +17,7 @@ import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.fragments.BibtexEntryDetailFragment;
 import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
 
-public class ClassifyActivity extends FragmentActivity {
+public class ClassifyActivity extends AppCompatActivity {
     ViewPager2 viewPager;
     BibtexEntriesViewModel bibtexEntriesViewModel;
     int repoId;
