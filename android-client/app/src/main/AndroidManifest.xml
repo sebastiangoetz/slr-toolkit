@@ -21,7 +21,6 @@
         <activity
             android:name=".FilterActivity"
             android:exported="false" />
-        <activity android:name=".BibtexEntryActivity" />
         <activity android:name=".ProjectActivity" />
         <activity
             android:name=".MainActivity"

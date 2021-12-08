@@ -73,10 +73,6 @@ public class EntryRepository {
         }
     }
 
-    public LiveData<Entry> getEntryByKey(int repoId, String key) {
-        return entryDao.getEntryByKey(repoId, key);
-    }
-
     public LiveData<Integer> getEntryAmountForRepo(int repoId) {
         return entryDao.getEntryAmount(repoId);
     }
@@ -89,5 +85,9 @@ public class EntryRepository {
     public LiveData<List<Entry>> getEntryForRepoByStatus(int repoId, Entry.Status status) {
         int statusCode = status.getCode();
         return entryDao.getEntryForRepoByStatus(repoId, statusCode);
+    }
+
+    public LiveData<Entry> getEntryById(int id) {
+        return entryDao.getEntryById(id);
     }
 }

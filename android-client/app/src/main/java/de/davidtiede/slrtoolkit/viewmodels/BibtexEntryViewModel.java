@@ -16,8 +16,8 @@ public class BibtexEntryViewModel extends AndroidViewModel {
         entryRepository = new EntryRepository(application);
     }
 
-    public LiveData<Entry> getEntryByRepoAndKey(int repoId, String key) {
-        return entryRepository.getEntryByKey(repoId, key);
+    public LiveData<Entry> getEntryById(int id) {
+        return entryRepository.getEntryById(id);
     }
 
 
