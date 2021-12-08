@@ -41,6 +41,7 @@ dependencies {
     implementation 'org.jbibtex:jbibtex:1.0.19'
     implementation "com.lorentzos.swipecards:library:1.0.9"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
