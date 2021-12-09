@@ -96,9 +96,7 @@ public class RepoRepository {
                 entries.add(entry);
             }
             insertEntriesForRepo(repoId, entries);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (FileNotFoundException | ParseException e) {
             e.printStackTrace();
         }
     }
