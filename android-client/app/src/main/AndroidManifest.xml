@@ -12,15 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
-        <activity
-            android:name=".ClassifyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EntriesByTaxonomyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FilterActivity"
-            android:exported="false" />
         <activity android:name=".ProjectActivity" />
         <activity
             android:name=".MainActivity"
@@ -33,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BibtexEntriesActivity" />
     </application>
 
 </manifest>

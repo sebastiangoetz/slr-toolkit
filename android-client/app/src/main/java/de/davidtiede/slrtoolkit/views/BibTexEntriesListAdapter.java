@@ -17,8 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
-import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.viewmodels.BibtexEntriesViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
     private RecyclerViewClickListener listener;
@@ -55,8 +54,8 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
     public void deleteItem(int i) {
         Entry deletedEntry = getItem(i);
-        BibtexEntriesViewModel bibtexEntriesViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(BibtexEntriesViewModel.class);
-        bibtexEntriesViewModel.delete(deletedEntry, repoId);
+        ProjectViewModel projectViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(ProjectViewModel.class);
+        projectViewModel.delete(deletedEntry, repoId);
         notifyItemRemoved(i);
     }
 

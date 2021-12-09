@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,21 +16,14 @@ import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.viewmodels.EntriesByTaxonomyViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaxonomyClassificationFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class TaxonomyClassificationFragment extends Fragment {
-
-    private static final String ARG_PARAM1 = "currentTaxonomyId";
-    private static final String ARG_PARAM2 = "repoId";
-    private static final String ARG_PARAM3 = "entryId";
-
-    private static EntriesByTaxonomyViewModel entriesByTaxonomyViewModel;
+    private static ProjectViewModel projectViewModel;
     private RecyclerView taxonomyRecyclerView;
     private TaxonomyListAdapter taxonomyListAdapter;
     private TaxonomyListAdapter.RecyclerViewClickListener listener;
@@ -44,32 +36,9 @@ public class TaxonomyClassificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param entryId Parameter 1.
-     * @param repoId Parameter 2.
-     * @return A new instance of fragment TaxonomyClassificationFragment.
-     */
-    public static TaxonomyClassificationFragment newInstance(int taxonomyId, int repoId, int entryId) {
-        TaxonomyClassificationFragment fragment = new TaxonomyClassificationFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, taxonomyId);
-        args.putInt(ARG_PARAM2, repoId);
-        args.putInt(ARG_PARAM3, entryId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentTaxonomyId = getArguments().getInt(ARG_PARAM1);
-            repoId = getArguments().getInt(ARG_PARAM2);
-            entryId = getArguments().getInt(ARG_PARAM3);
-        }
     }
 
     @Override
@@ -85,9 +54,10 @@ public class TaxonomyClassificationFragment extends Fragment {
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener, repoId);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
+        repoId = projectViewModel.getCurrentRepoId();
 
-        entriesByTaxonomyViewModel = new ViewModelProvider(requireActivity()).get(EntriesByTaxonomyViewModel.class);
-        entriesByTaxonomyViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
+        projectViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
     public void onLoaded(List<Taxonomy> taxonomyList) {
@@ -101,18 +71,18 @@ public class TaxonomyClassificationFragment extends Fragment {
                 Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
                 if(clickedTaxonomy.isHasChildren()) {
                     //there are child taxonomies, display those
-                    Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
+                    /*Fragment taxonomyFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.taxonomyFragment, taxonomyFragment);
                     ft.addToBackStack(null);
-                    ft.commit();
+                    ft.commit();*/
                 } else {
                     //no child taxonomies, display entries for the taxonomy
-                    Fragment entriesFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
+                    /*Fragment entriesFragment = TaxonomyListFragment.newInstance(repoId, clickedTaxonomy.getTaxonomyId());
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.taxonomyFragment, entriesFragment);
                     ft.addToBackStack(null);
-                    ft.commit();
+                    ft.commit();*/
                 }
             }
         };
