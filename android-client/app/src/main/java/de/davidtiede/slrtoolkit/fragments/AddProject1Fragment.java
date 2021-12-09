@@ -60,11 +60,11 @@ public class AddProject1Fragment extends Fragment {
         button_clone_project = view.findViewById(R.id.button_clone_project);
         progressButton = new ProgressButtonCloneProject(getContext(), view);
 
-        button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo1(view));
+        button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo(view));
 
     }
 
-    private void actionCloneRepo1(View view) {
+    private void actionCloneRepo(View view) {
         if (TextUtils.isEmpty(edittext_url.getText())) {
             Toast.makeText(requireActivity().getApplicationContext(),
                     getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
@@ -90,18 +90,12 @@ public class AddProject1Fragment extends Fragment {
 
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);
-        //repoViewModel.getRepoById(id).observe(getViewLifecycleOwner(), repo_with_id -> actionCloneRepo2(view, repo_with_id));
         try {
-            Repo currentRepo = repoViewModel.getRepoDirectly(id);
-            actionCloneRepo2(view, currentRepo);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            repo = repoViewModel.getRepoDirectly(id);
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-    }
 
-    private void actionCloneRepo2(View view, Repo repo){
         repoViewModel.setCurrentRepo(repo);
         repo.setLocal_path("repo_" + repo.getId());
         repoViewModel.update(repo);
@@ -118,7 +112,7 @@ public class AddProject1Fragment extends Fragment {
                         )
                         .build();
 
-        WorkManager workManager = WorkManager.getInstance(getContext());
+        WorkManager workManager = WorkManager.getInstance(view.getContext());
         workManager.enqueue(cloneWorkRequest);
         workManager.getWorkInfoByIdLiveData(cloneWorkRequest.getId())
                 .observe(getViewLifecycleOwner(), worker -> {
