@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ClassifyActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/bibtexEntriesClassificationFragment"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/classify_entries_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

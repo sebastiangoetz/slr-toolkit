@@ -22,13 +22,14 @@ import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaxonomyListFragment#newInstance} factory method to
+ * Use the {@link TaxonomyClassificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaxonomyListFragment extends Fragment {
+public class TaxonomyClassificationFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "currentTaxonomyId";
     private static final String ARG_PARAM2 = "repoId";
+    private static final String ARG_PARAM3 = "entryId";
 
     private static EntriesByTaxonomyViewModel entriesByTaxonomyViewModel;
     private RecyclerView taxonomyRecyclerView;
@@ -37,8 +38,9 @@ public class TaxonomyListFragment extends Fragment {
 
     private int repoId;
     private int currentTaxonomyId;
+    private int entryId;
 
-    public TaxonomyListFragment() {
+    public TaxonomyClassificationFragment() {
         // Required empty public constructor
     }
 
@@ -46,14 +48,16 @@ public class TaxonomyListFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param currentItemId Parameter 1.
-     * @return A new instance of fragment TaxonomyListFragment.
+     * @param entryId Parameter 1.
+     * @param repoId Parameter 2.
+     * @return A new instance of fragment TaxonomyClassificationFragment.
      */
-    public static TaxonomyListFragment newInstance(int repoId, int currentItemId) {
-        TaxonomyListFragment fragment = new TaxonomyListFragment();
+    public static TaxonomyClassificationFragment newInstance(int taxonomyId, int repoId, int entryId) {
+        TaxonomyClassificationFragment fragment = new TaxonomyClassificationFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, repoId);
-        args.putInt(ARG_PARAM2, currentItemId);
+        args.putInt(ARG_PARAM1, taxonomyId);
+        args.putInt(ARG_PARAM2, repoId);
+        args.putInt(ARG_PARAM3, entryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,8 +66,9 @@ public class TaxonomyListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            repoId = getArguments().getInt(ARG_PARAM1);
-            currentTaxonomyId = getArguments().getInt(ARG_PARAM2);
+            currentTaxonomyId = getArguments().getInt(ARG_PARAM1);
+            repoId = getArguments().getInt(ARG_PARAM2);
+            entryId = getArguments().getInt(ARG_PARAM3);
         }
     }
 
@@ -71,7 +76,7 @@ public class TaxonomyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_taxonomy_list, container, false);
+        return inflater.inflate(R.layout.fragment_taxonomy_classification, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
