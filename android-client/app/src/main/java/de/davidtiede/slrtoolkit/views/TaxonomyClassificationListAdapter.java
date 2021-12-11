@@ -21,12 +21,12 @@ import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
     private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
-    private int repoId;
+    private int entryId;
 
-    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int repoId) {
+    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
         super(diffCallback);
         this.listener = listener;
-        this.repoId = repoId;
+        this.entryId = entryId;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     @Override
     public void onBindViewHolder(@NonNull TaxonomyClassificationViewHolder holder, int position) {
         TaxonomyWithEntries current = getItem(position);
-        holder.bind(current, listener);
+        holder.bind(current, listener, entryId);
     }
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
@@ -49,6 +49,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taxonomyItemView;
         private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
+        private int entryId;
 
         public TaxonomyClassificationViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -68,7 +69,20 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             listener.onClick(view, getAdapterPosition());
         }
 
-        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener) {
+        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
+            //maybe set background color here?
+            //loop through entries, set current entry in construtor, check equality
+            System.out.println("Binding");
+            System.out.println(entryId);
+            boolean taxonomyInEntry = false;
+            for(Entry entry: taxonomy.entries) {
+                System.out.println(entry.getTitle());
+                System.out.println(entry.getId());
+                if(entry.getId() == entryId) taxonomyInEntry = true;
+            }
+            if(taxonomyInEntry) {
+                taxonomyItemView.setBackgroundColor(Color.BLUE);
+            }
             taxonomyItemView.setText(taxonomy.taxonomy.getName());
             this.listener = listener;
         }

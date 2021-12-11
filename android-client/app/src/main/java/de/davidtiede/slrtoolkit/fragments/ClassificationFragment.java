@@ -80,7 +80,7 @@ public class ClassificationFragment extends Fragment {
         entryId = classificationViewModel.getCurrentEntryId();
         taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, repoId);
+        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, entryId);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
 
         classificationViewModel.getChildTaxonomiesWithEntries(repoId, currentTaxonomy).observe(getViewLifecycleOwner(), this::onLoaded);
@@ -101,18 +101,20 @@ public class ClassificationFragment extends Fragment {
                 ft.commit();
             } else {
                 boolean entryContainsTaxonomy = false;
+                System.out.println("Has no children");
+                System.out.println(clickedTaxonomy.taxonomy.getName());
                 for(Entry entry :clickedTaxonomy.entries) {
                     if(entry.getId() == entryId) {
                         entryContainsTaxonomy = true;
                     }
                 }
                 if(entryContainsTaxonomy) {
-                    v.setBackgroundColor(Color.WHITE);
+                    //v.setBackgroundColor(Color.WHITE);
                     System.out.println("Deleting");
                     classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
 
                 } else {
-                    v.setBackgroundColor(Color.BLUE);
+                    //v.setBackgroundColor(Color.BLUE);
                     System.out.println("Saving");
                     classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
                     System.out.println("Saved!");
