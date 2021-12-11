@@ -14,6 +14,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract RepoDao repoDao();
     public abstract EntryDao entryDao();
     public abstract TaxonomyDao taxonomyDao();
+    public abstract TaxonomyWithEntriesDao taxonomyWithEntriesDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

@@ -108,10 +108,14 @@ public class ClassificationFragment extends Fragment {
                 }
                 if(entryContainsTaxonomy) {
                     v.setBackgroundColor(Color.WHITE);
-                    //TODO: delete taxonomy from entry
+                    System.out.println("Deleting");
+                    classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
+
                 } else {
                     v.setBackgroundColor(Color.BLUE);
-                    //TODO: add taxonomy to entry
+                    System.out.println("Saving");
+                    classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
+                    System.out.println("Saved!");
                 }
             }
         };

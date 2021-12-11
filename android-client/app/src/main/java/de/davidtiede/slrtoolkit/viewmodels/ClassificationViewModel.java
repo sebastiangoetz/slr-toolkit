@@ -13,11 +13,13 @@ import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
+import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepo;
 
 public class ClassificationViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
     private final TaxonomyRepository taxonomyRepository;
+    private final TaxonomyWithEntriesRepo taxonomyWithEntriesRepo;
     private Application application;
     private int currentRepoId;
     private int currentEntryId;
@@ -27,6 +29,8 @@ public class ClassificationViewModel extends AndroidViewModel {
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
+        taxonomyWithEntriesRepo = new TaxonomyWithEntriesRepo(application);
+
         this.application = application;
     }
 
@@ -52,5 +56,14 @@ public class ClassificationViewModel extends AndroidViewModel {
 
     public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int parentId) {
         return taxonomyRepository.getChildTaxonomiesWithEntries(repoId, parentId);
+    }
+
+    public void insertEntryForTaxonomy(int taxonomyId, int entryId) {
+        System.out.println("Hello from viewmodel");
+        taxonomyWithEntriesRepo.insert(taxonomyId, entryId);
+    }
+
+    public void delete(int taxonomyId, int entryId) {
+        taxonomyWithEntriesRepo.delete(taxonomyId, entryId);
     }
 }

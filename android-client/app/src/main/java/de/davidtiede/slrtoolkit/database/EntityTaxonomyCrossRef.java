@@ -6,4 +6,12 @@ import androidx.room.Entity;
 public class EntityTaxonomyCrossRef {
     public int taxonomyId;
     public int id;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTaxonomyId(int taxonomyId) {
+        this.taxonomyId = taxonomyId;
+    }
 }
