@@ -72,13 +72,12 @@ public class TaxonomyListFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
+        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
+        repoId = projectViewModel.getCurrentRepoId();
         taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener, repoId);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
-
-        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
-        repoId = projectViewModel.getCurrentRepoId();
 
         projectViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }

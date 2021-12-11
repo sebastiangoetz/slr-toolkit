@@ -12,6 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
+        <activity
+            android:name=".ClassificationActivity"
+            android:exported="false" />
         <activity android:name=".ProjectActivity" />
         <activity
             android:name=".MainActivity"
