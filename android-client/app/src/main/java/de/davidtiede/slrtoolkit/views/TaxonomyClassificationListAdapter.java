@@ -1,22 +1,30 @@
 package de.davidtiede.slrtoolkit.views;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
+import de.davidtiede.slrtoolkit.viewmodels.ClassificationViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
     private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
@@ -27,6 +35,16 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
         super(diffCallback);
         this.listener = listener;
         this.entryId = entryId;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
+
+    public Context getContext() {
+        return recyclerView.getContext();
     }
 
     @NonNull
@@ -49,7 +67,6 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taxonomyItemView;
         private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
-        private int entryId;
 
         public TaxonomyClassificationViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -70,14 +87,9 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
         }
 
         public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
-            //maybe set background color here?
-            //loop through entries, set current entry in construtor, check equality
-            System.out.println("Binding");
-            System.out.println(entryId);
+            System.out.println("bind");
             boolean taxonomyInEntry = false;
             for(Entry entry: taxonomy.entries) {
-                System.out.println(entry.getTitle());
-                System.out.println(entry.getId());
                 if(entry.getId() == entryId) taxonomyInEntry = true;
             }
             if(taxonomyInEntry) {

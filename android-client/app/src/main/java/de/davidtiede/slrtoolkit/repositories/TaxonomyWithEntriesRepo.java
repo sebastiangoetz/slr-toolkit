@@ -2,12 +2,15 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.EntityTaxonomyCrossRef;
+import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntriesDao;
@@ -45,5 +48,11 @@ public class TaxonomyWithEntriesRepo {
         entityTaxonomyCrossRef.setTaxonomyId(taxonomyId);
         entityTaxonomyCrossRef.setId(entryId);
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entityTaxonomyCrossRef));
+    }
+
+    public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyWithEntriesDirectly(repoId, parentId);
+        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
     }
 }

@@ -1,12 +1,15 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
@@ -23,6 +26,7 @@ public class ClassificationViewModel extends AndroidViewModel {
     private Application application;
     private int currentRepoId;
     private int currentEntryId;
+    private List<Integer> selectedTaxonomies;
 
     public ClassificationViewModel(@NonNull Application application) {
         super(application);
@@ -50,6 +54,16 @@ public class ClassificationViewModel extends AndroidViewModel {
         this.currentRepoId = currentRepoId;
     }
 
+    public List<Integer> getSelectedTaxonomies() {
+        return selectedTaxonomies;
+    }
+
+    public void setSelectedTaxonomies(List<Integer> selectedTaxonomies) {
+        System.out.println("Setting selected taxonomies");
+        System.out.println(selectedTaxonomies.size());
+        this.selectedTaxonomies = selectedTaxonomies;
+    }
+
     public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
         return taxonomyRepository.getChildTaxonomies(repoId, parentId);
     }
@@ -59,11 +73,19 @@ public class ClassificationViewModel extends AndroidViewModel {
     }
 
     public void insertEntryForTaxonomy(int taxonomyId, int entryId) {
-        System.out.println("Hello from viewmodel");
+        this.selectedTaxonomies.add(taxonomyId);
         taxonomyWithEntriesRepo.insert(taxonomyId, entryId);
     }
 
     public void delete(int taxonomyId, int entryId) {
+        int indexOfSelectedTaxonomy = this.selectedTaxonomies.indexOf(taxonomyId);
+        if(indexOfSelectedTaxonomy != -1) {
+            this.selectedTaxonomies.remove(indexOfSelectedTaxonomy);
+        }
         taxonomyWithEntriesRepo.delete(taxonomyId, entryId);
+    }
+
+    public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        return taxonomyWithEntriesRepo.getTaxonomyWithEntriesDirectly(repoId, parentId);
     }
 }
