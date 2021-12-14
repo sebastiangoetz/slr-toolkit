@@ -9,32 +9,34 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.database.Entry;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
-import de.davidtiede.slrtoolkit.viewmodels.ClassificationViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
     private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
     private int entryId;
+    List<Integer> currentTaxonomyIds;
 
     public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
         super(diffCallback);
         this.listener = listener;
         this.entryId = entryId;
+        this.currentTaxonomyIds = new ArrayList<>();
+    }
+
+    public void setCurrentTaxonomyIds(List<Integer> currentTaxonomyIds) {
+        this.currentTaxonomyIds = currentTaxonomyIds;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     @Override
     public void onBindViewHolder(@NonNull TaxonomyClassificationViewHolder holder, int position) {
         TaxonomyWithEntries current = getItem(position);
-        holder.bind(current, listener, entryId);
+        holder.bind(current, listener, entryId, currentTaxonomyIds);
     }
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
@@ -86,14 +88,17 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             listener.onClick(view, getAdapterPosition());
         }
 
-        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
-            System.out.println("bind");
+        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId, List<Integer> selectedTaxonomyIds) {
             boolean taxonomyInEntry = false;
-            for(Entry entry: taxonomy.entries) {
-                if(entry.getId() == entryId) taxonomyInEntry = true;
+            for(int taxonomyId: selectedTaxonomyIds) {
+                if(taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
+                    taxonomyInEntry = true;
+                }
             }
             if(taxonomyInEntry) {
                 taxonomyItemView.setBackgroundColor(Color.BLUE);
+            } else {
+                taxonomyItemView.setBackgroundColor(Color.WHITE);
             }
             taxonomyItemView.setText(taxonomy.taxonomy.getName());
             this.listener = listener;

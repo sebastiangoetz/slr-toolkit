@@ -1,7 +1,5 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,14 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.ClassificationViewModel;
 import de.davidtiede.slrtoolkit.views.TaxonomyClassificationListAdapter;
@@ -88,8 +84,6 @@ public class ClassificationFragment extends Fragment {
         taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, entryId);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
 
-        //classificationViewModel.getChildTaxonomiesWithEntries(repoId, currentTaxonomy).observe(getViewLifecycleOwner(), this::onLoaded);
-
         try {
             List<TaxonomyWithEntries> taxonomyWithEntries = classificationViewModel.getTaxonomyWithEntriesDirectly(repoId, currentTaxonomy);
             setSelectedTaxonomies(taxonomyWithEntries);
@@ -114,10 +108,7 @@ public class ClassificationFragment extends Fragment {
             }
         }
         classificationViewModel.setSelectedTaxonomies(selectedTaxonomies);
-    }
-
-    public void onLoaded(List<TaxonomyWithEntries> taxonomyList) {
-        taxonomyListAdapter.submitList(taxonomyList);
+        taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
     }
 
     private void setOnClickListener() {
@@ -131,13 +122,6 @@ public class ClassificationFragment extends Fragment {
                 ft.commit();
             } else {
                 boolean entryContainsTaxonomy = false;
-                /*System.out.println("Has no children");
-                System.out.println(clickedTaxonomy.taxonomy.getName());
-                for(Entry entry :clickedTaxonomy.entries) {
-                    if(entry.getId() == entryId) {
-                        entryContainsTaxonomy = true;
-                    }
-                }*/
                 List<Integer> selectedTaxonomyIds = classificationViewModel.getSelectedTaxonomies();
                 for(int taxId: selectedTaxonomyIds) {
                     if(taxId == clickedTaxonomy.taxonomy.getTaxonomyId()) {
@@ -145,15 +129,14 @@ public class ClassificationFragment extends Fragment {
                     }
                 }
                 if(entryContainsTaxonomy) {
-                    v.setBackgroundColor(Color.WHITE);
                     System.out.println("Deleting");
                     classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
+                    taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
 
                 } else {
-                    v.setBackgroundColor(Color.BLUE);
-                    //v.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.MULTIPLY);
                     System.out.println("Saving");
                     classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
+                    taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
                     System.out.println("Saved!");
                 }
             }

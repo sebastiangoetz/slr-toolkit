@@ -1,6 +1,5 @@
 package de.davidtiede.slrtoolkit.views;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 
 public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapter.TaxonomyViewHolder> {
