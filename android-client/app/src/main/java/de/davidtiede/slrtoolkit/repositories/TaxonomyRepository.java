@@ -109,4 +109,8 @@ public class TaxonomyRepository {
     public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
         return taxonomyDao.getTaxonomyWithEntries(repoId, taxonomyId);
     }
+
+    public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int taxonomyId) {
+        return taxonomyDao.getChildTaxonomiesWithEntries(repoId, taxonomyId);
+    }
 }

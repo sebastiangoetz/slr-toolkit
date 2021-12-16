@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_project"
+    app:startDestination="@id/projectOverviewFragment">
+
+    <fragment
+        android:id="@+id/projectOverviewFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.ProjectOverviewFragment"
+        android:label="ProjectOverviewFragment" >
+        <action
+            android:id="@+id/action_projectOverviewFragment_to_bibtexEntriesListFragment"
+            app:destination="@id/bibtexEntriesListFragment" />
+        <action
+            android:id="@+id/action_projectOverviewFragment_to_filterFragment"
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_projectOverviewFragment_to_taxonomyListFragment"
+            app:destination="@id/taxonomyListFragment" />
+        <action
+            android:id="@+id/action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment"
+            app:destination="@id/entriesToClassifyViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bibtexEntriesListFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntriesListFragment"
+        android:label="fragment_bibtex_entries_list"
+        tools:layout="@layout/fragment_bibtex_entries_list" >
+        <action
+            android:id="@+id/action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment"
+            app:destination="@id/bibtexEntryDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bibtexEntryDetailFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntryDetailFragment"
+        android:label="BibtexEntryDetailFragment" />
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.FilterFragment"
+        android:label="FilterFragment" />
+    <fragment
+        android:id="@+id/taxonomyListFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.TaxonomyListFragment"
+        android:label="fragment_taxonomy_list"
+        tools:layout="@layout/fragment_taxonomy_list" />
+    <fragment
+        android:id="@+id/entriesToClassifyViewPagerFragment"
+        android:name="de.davidtiede.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"
+        android:label="EntriesToClassifyViewPagerFragment" />
+</navigation>

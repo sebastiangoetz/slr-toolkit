@@ -17,7 +17,7 @@ import java.util.List;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
-import de.davidtiede.slrtoolkit.viewmodels.EntriesByTaxonomyViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
 /**
@@ -32,7 +32,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private static final String ARG_PARAM1 = "currentTaxonomyId";
     private static final String ARG_PARAM2 = "repoId";
 
-    private static EntriesByTaxonomyViewModel entriesByTaxonomyViewModel;
+    private static ProjectViewModel projectViewModel;
     private RecyclerView taxonomyEntriesRecyclerView;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
@@ -75,6 +75,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        System.out.println("In here!");
         return inflater.inflate(R.layout.fragment_taxonomy_entries_list, container, false);
     }
 
@@ -85,9 +86,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
-        entriesByTaxonomyViewModel = new ViewModelProvider(requireActivity()).get(EntriesByTaxonomyViewModel.class);
+        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
 
-        entriesByTaxonomyViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        projectViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {

@@ -8,8 +8,13 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
+import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
@@ -19,6 +24,8 @@ public class ProjectViewModel extends AndroidViewModel {
     private final EntryRepository entryRepository;
     private final TaxonomyRepository taxonomyRepository;
     private Application application;
+    private int currentRepoId;
+    private int currentEntryIdForCard;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
@@ -26,6 +33,22 @@ public class ProjectViewModel extends AndroidViewModel {
         entryRepository = new EntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
         this.application = application;
+    }
+
+    public int getCurrentRepoId() {
+        return currentRepoId;
+    }
+
+    public void setCurrentRepoId(int currentRepoId) {
+        this.currentRepoId = currentRepoId;
+    }
+
+    public int getCurrentEntryIdForCard() {
+        return currentEntryIdForCard;
+    }
+
+    public void setCurrentEntryIdForCard(int currentEntryIdForCard) {
+        this.currentEntryIdForCard = currentEntryIdForCard;
     }
 
     public LiveData<Integer> getEntryAmount(int repoId) {
@@ -47,5 +70,44 @@ public class ProjectViewModel extends AndroidViewModel {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeTaxonomy(int repoId, String path) {
         taxonomyRepository.initializeTaxonomy(repoId, path, application);
+    }
+
+    public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
+        return entryRepository.getEntryForRepo(repoId);
+    }
+
+    public Repo getRepoByIdDirectly(int id) {
+        Repo repo = null;
+        try {
+            repo = repoRepository.getRepoByIdDirectly(id);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return repo;
+    }
+
+    public void delete(Entry entry, int id) {
+        Repo repo = getRepoByIdDirectly(id);
+        if(repo != null) {
+            entryRepository.delete(entry, repo);
+        }
+    }
+
+    public LiveData<Entry> getEntryById(int id) {
+        return entryRepository.getEntryById(id);
+    }
+
+    public LiveData<List<Entry>> getOpenEntriesForRepo(int repoId) {
+        return entryRepository.getEntryForRepoByStatus(repoId, Entry.Status.OPEN);
+    }
+
+    public void updateEntry(Entry entry) {
+        entryRepository.update(entry);
+    }
+
+    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
+        return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

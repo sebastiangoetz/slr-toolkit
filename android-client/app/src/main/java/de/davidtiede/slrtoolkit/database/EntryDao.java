@@ -26,9 +26,6 @@ public interface EntryDao {
     @Update
     void update(Entry entry);
 
-    @Query("SELECT * FROM entry WHERE `key`=:key AND repoId=:id")
-    LiveData<Entry> getEntryByKey(int id, String key);
-
     @Query("SELECT COUNT(title) FROM entry WHERE repoId=:id")
     LiveData<Integer> getEntryAmount(int id);
 
@@ -37,4 +34,7 @@ public interface EntryDao {
 
     @Query("SELECT * FROM entry WHERE status=:status AND repoId=:id")
     LiveData<List<Entry>> getEntryForRepoByStatus(int id, int status);
+
+    @Query("SELECT * FROM entry WHERE id=:id")
+    LiveData<Entry> getEntryById(int id);
 }
