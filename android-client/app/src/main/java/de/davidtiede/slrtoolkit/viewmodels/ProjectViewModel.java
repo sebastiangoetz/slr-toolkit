@@ -107,10 +107,6 @@ public class ProjectViewModel extends AndroidViewModel {
         entryRepository.update(entry);
     }
 
-    public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
-        return taxonomyRepository.getChildTaxonomies(repoId, parentId);
-    }
-
     public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
         return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
     }

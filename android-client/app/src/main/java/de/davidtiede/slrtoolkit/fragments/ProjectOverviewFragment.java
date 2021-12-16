@@ -1,9 +1,12 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.TaxonomiesActivity;
+import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +29,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button filterButton;
     private Button taxonomyButton;
     private Button classifyButton;
+    private ProjectViewModel projectViewModel;
 
 
     @Override
@@ -44,6 +50,7 @@ public class ProjectOverviewFragment extends Fragment {
         filterButton = view.findViewById(R.id.button_filter);
         taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         classifyButton = view.findViewById(R.id.button_classify);
+        projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
 
         allEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +66,10 @@ public class ProjectOverviewFragment extends Fragment {
         });
 
         taxonomyButton.setOnClickListener(v -> {
-            NavHostFragment.findNavController(ProjectOverviewFragment.this)
-                    .navigate(R.id.action_projectOverviewFragment_to_taxonomyListFragment);
+            Intent intent = new Intent(getActivity(), TaxonomiesActivity.class);
+            intent.putExtra("repo", projectViewModel.getCurrentRepoId());
+            startActivity(intent);
+            ((Activity) getActivity()).overridePendingTransition(0, 0);
         });
 
         classifyButton.setOnClickListener(v -> {

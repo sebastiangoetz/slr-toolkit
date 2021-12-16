@@ -10,6 +10,7 @@
         <entry key="app/src/main/res/layout/activity_filter.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_project.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_taxonomies.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/activity_taxonomy_classification_fragment.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/bibtex_recyclerview_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/classify_entry_viewpager_item.xml" value="0.16770833333333332" />
