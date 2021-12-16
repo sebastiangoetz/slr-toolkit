@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/taxonomy_textview_recyclerview"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:text="Aligned left but too long and would squash the other view" />
+    <ImageView
+        android:id="@+id/taxonomy_arrow_textview_recyclerview"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="20dp"
+        android:gravity="end" />
+</LinearLayout>

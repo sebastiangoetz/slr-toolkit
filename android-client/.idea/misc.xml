@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/arrow.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/layout/activity_bibtex_entries.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_classification.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/activity_classify.xml" value="0.15364583333333334" />
@@ -29,6 +30,7 @@
         <entry key="app/src/main/res/layout/fragment_taxonomy_entries.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list_list.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_classify.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.16770833333333332" />
       </map>

@@ -87,16 +87,12 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
-        System.out.println("Current taxonomy");
-        System.out.println(currentTaxonomyId);
 
         projectViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
-        System.out.println(taxonomyWithEntries.taxonomy.getName());
         List<Entry> entries = taxonomyWithEntries.entries;
-        System.out.println(entries.size());
         bibTexEntriesListAdapter.submitList(entries);
     }
 

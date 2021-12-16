@@ -3,12 +3,15 @@ package de.davidtiede.slrtoolkit.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +61,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     @Override
     public void onBindViewHolder(@NonNull TaxonomyClassificationViewHolder holder, int position) {
         TaxonomyWithEntries current = getItem(position);
-        holder.bind(current, listener, entryId, currentTaxonomyIds);
+        holder.bind(current, listener, entryId, currentTaxonomyIds, getContext());
     }
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
@@ -68,17 +71,19 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
 
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taxonomyItemView;
+        private ImageView taxonomyArrowItemView;
         private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
 
         public TaxonomyClassificationViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            taxonomyItemView = itemView.findViewById(R.id.textview_recyclerview);
+            taxonomyItemView = itemView.findViewById(R.id.taxonomy_textview_recyclerview);
+            taxonomyArrowItemView = itemView.findViewById(R.id.taxonomy_arrow_textview_recyclerview);
             itemView.setOnClickListener(this);
         }
 
         public static TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder create(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recyclerview_item, parent, false);
+                    .inflate(R.layout.taxonomy_classification_recyclerview_item, parent, false);
             return new TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder(view);
         }
 
@@ -88,7 +93,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             listener.onClick(view, getAdapterPosition());
         }
 
-        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId, List<Integer> selectedTaxonomyIds) {
+        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId, List<Integer> selectedTaxonomyIds, Context context) {
             boolean taxonomyInEntry = false;
             for(int taxonomyId: selectedTaxonomyIds) {
                 if(taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
@@ -99,6 +104,10 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
                 taxonomyItemView.setBackgroundColor(Color.BLUE);
             } else {
                 taxonomyItemView.setBackgroundColor(Color.WHITE);
+            }
+            if(taxonomy.taxonomy.isHasChildren()) {
+                Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
+                taxonomyArrowItemView.setImageDrawable(arrow);
             }
             taxonomyItemView.setText(taxonomy.taxonomy.getName());
             this.listener = listener;
