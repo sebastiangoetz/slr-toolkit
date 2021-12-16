@@ -7,10 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -72,12 +74,14 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView taxonomyItemView;
         private ImageView taxonomyArrowItemView;
+        private ConstraintLayout constraintLayout;
         private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
 
         public TaxonomyClassificationViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             taxonomyItemView = itemView.findViewById(R.id.taxonomy_textview_recyclerview);
             taxonomyArrowItemView = itemView.findViewById(R.id.taxonomy_arrow_textview_recyclerview);
+            constraintLayout = itemView.findViewById(R.id.taxonomy_constraint_layout);
             itemView.setOnClickListener(this);
         }
 
@@ -101,9 +105,9 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
                 }
             }
             if(taxonomyInEntry) {
-                taxonomyItemView.setBackgroundColor(Color.BLUE);
+                constraintLayout.setBackgroundColor(Color.BLUE);
             } else {
-                taxonomyItemView.setBackgroundColor(Color.WHITE);
+                constraintLayout.setBackgroundColor(Color.WHITE);
             }
             if(taxonomy.taxonomy.isHasChildren()) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);

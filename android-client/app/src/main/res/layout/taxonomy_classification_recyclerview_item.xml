@@ -9,12 +9,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/taxonomy_constraint_layout">
 
         <TextView
             android:id="@+id/taxonomy_textview_recyclerview"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="32dp"
             android:layout_weight="5"
             android:padding="16dp"
@@ -30,10 +31,10 @@
             android:layout_height="20dp"
             android:layout_width="10dp"
             android:gravity="end"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/taxonomy_textview_recyclerview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/taxonomy_textview_recyclerview"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/taxonomy_textview_recyclerview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
