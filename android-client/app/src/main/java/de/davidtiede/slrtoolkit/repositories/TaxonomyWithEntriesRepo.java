@@ -47,6 +47,10 @@ public class TaxonomyWithEntriesRepo {
 
     }
 
+    public void insertAll(List<EntityTaxonomyCrossRef> entityTaxonomyCrossRefs) {
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.insertAll(entityTaxonomyCrossRefs));
+    }
+
     public void delete(int taxonomyId, int entryId) {
         EntityTaxonomyCrossRef entityTaxonomyCrossRef = new EntityTaxonomyCrossRef();
         entityTaxonomyCrossRef.setTaxonomyId(taxonomyId);

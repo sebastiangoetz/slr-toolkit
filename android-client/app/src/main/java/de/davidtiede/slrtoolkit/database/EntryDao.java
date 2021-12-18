@@ -35,6 +35,9 @@ public abstract class EntryDao {
     @Query("SELECT * FROM entry WHERE status=:status AND repoId=:id")
     public abstract LiveData<List<Entry>> getEntryForRepoByStatus(int id, int status);
 
+    @Query("SELECT * FROM entry WHERE `key`=:key and repoId=:id")
+    public abstract Entry getEntryByRepoAndKeyDirectly(int id, String key);
+
     @Query("SELECT * FROM entry WHERE id=:id")
     public abstract LiveData<Entry> getEntryById(int id);
 

@@ -15,6 +15,9 @@ public interface TaxonomyWithEntriesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert(EntityTaxonomyCrossRef entityTaxonomyCrossRef);
 
+    @Insert
+    void insertAll(List<EntityTaxonomyCrossRef> entityTaxonomyCrossRef);
+
     @Delete
     void delete(EntityTaxonomyCrossRef entityTaxonomyCrossRef);
 

@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
+import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyDao;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
@@ -114,5 +116,12 @@ public class TaxonomyRepository {
 
     public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int taxonomyId) {
         return taxonomyDao.getChildTaxonomiesWithEntries(repoId, taxonomyId);
+    }
+
+    public Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path) throws ExecutionException, InterruptedException {
+        Callable<Taxonomy> getCallable = () -> taxonomyDao.getTaxonomyByRepoAndPathDirectly(repoId, path);
+        Future<Taxonomy> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+
     }
 }
