@@ -23,21 +23,9 @@ public abstract class RepoDao {
     @Insert
     public abstract long insert(Repo repo);
 
-    @Insert
-    abstract void _insertAll(List<Entry> entries);
-
     @Update
     public abstract void update(Repo repo);
 
     @Delete
     public abstract void delete(Repo repo);
-
-    public void insertEntriesForRepo(int repoId, List<Entry> entries){
-
-        for(Entry entry : entries){
-            entry.setRepoId(repoId);
-        }
-
-        _insertAll(entries);
-    }
 }

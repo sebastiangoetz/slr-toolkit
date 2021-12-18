@@ -70,6 +70,7 @@ public class TaxonomyRepository {
                 Taxonomy taxonomyNode = new Taxonomy();
                 taxonomyNode.setName(node.getName());
                 taxonomyNode.setRepoId(repoId);
+                taxonomyNode.setPath(node.getPath());
                 if (parent != 0) {
                     taxonomyNode.setParentId(parent);
                 }

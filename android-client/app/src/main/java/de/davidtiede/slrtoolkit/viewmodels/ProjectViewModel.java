@@ -8,7 +8,16 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.database.Entry;
@@ -18,6 +27,8 @@ import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
+import de.davidtiede.slrtoolkit.util.BibTexParser;
+import de.davidtiede.slrtoolkit.util.FileUtil;
 
 public class ProjectViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
@@ -63,8 +74,32 @@ public class ProjectViewModel extends AndroidViewModel {
         return repoRepository.getRepoById(id);
     }
 
+    public void saveAll(List<Entry> entries) {
+       entryRepository.saveAll(entries);
+    }
+
     public void initializeData(int repoId, String path) {
-        repoRepository.initializeEntries(repoId, path);
+        FileUtil fileUtil = new FileUtil();
+        File file = fileUtil.accessFiles(path, application, ".bib");
+        try {
+            BibTexParser parser = BibTexParser.getBibTexParser();
+            parser.setBibTeXDatabase(file);
+            Map<Entry, String> entriesWithTaxonomies = parser.parseBibTexFile(file, repoId);
+            List<Entry> entries = new ArrayList<>();
+            for(Entry entry : entriesWithTaxonomies.keySet()) {
+                entries.add(entry);
+            }
+            System.out.println("What entries are we trying to save?");
+            for(Entry e: entries) {
+                System.out.println(e.getTitle());
+            }
+            saveAll(entries);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
