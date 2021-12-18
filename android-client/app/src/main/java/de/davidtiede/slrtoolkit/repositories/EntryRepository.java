@@ -101,37 +101,4 @@ public class EntryRepository {
     public void insertEntriesForRepo(int repoId, List<Entry> entries) {
         AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertEntriesForRepo(repoId, entries));
     }
-
-    public void initializeEntries(int repoId, String path) {
-        File file = fileUtil.accessFiles(path, application, ".bib");
-        try {
-            BibTexParser parser = BibTexParser.getBibTexParser();
-            parser.setBibTeXDatabase(file);
-            Map<Key, BibTeXEntry> entryMap = parser.getBibTeXEntries();
-            List<Entry> entries = new ArrayList<>();
-
-            for(Key key: entryMap.keySet()) {
-                BibTeXEntry bibTeXEntry = entryMap.get(key);
-                String title = bibTeXEntry.getField(BibTeXEntry.KEY_TITLE).toUserString();
-                String author = bibTeXEntry.getField(BibTeXEntry.KEY_AUTHOR).toUserString();
-                String year = bibTeXEntry.getField(BibTeXEntry.KEY_YEAR).toUserString();
-                String month = bibTeXEntry.getField(BibTeXEntry.KEY_MONTH).toUserString();
-                String journal = bibTeXEntry.getField(BibTeXEntry.KEY_JOURNAL).toUserString();
-                String volume = bibTeXEntry.getField(BibTeXEntry.KEY_VOLUME).toUserString();
-                String url = bibTeXEntry.getField(BibTeXEntry.KEY_URL).toUserString();
-                Key KEY_CLASSES = new Key("classes");
-                String classes = bibTeXEntry.getField(KEY_CLASSES).toUserString();
-                Entry entry = new Entry(key.toString(), title);
-                entry.setAuthor(author);
-                entry.setYear(year);
-                entry.setMonth(month);
-                entries.add(entry);
-            }
-            insertEntriesForRepo(repoId, entries);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 }

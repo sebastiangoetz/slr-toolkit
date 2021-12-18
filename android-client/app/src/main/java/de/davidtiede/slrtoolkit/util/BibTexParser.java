@@ -80,7 +80,7 @@ public class BibTexParser {
         return "";
     }
 
-    public Map<Entry, String> parseBibTexFile(File file, int repoId) throws FileNotFoundException, ParseException {
+    public Map<Entry, String> parseBibTexFile(File file) throws FileNotFoundException, ParseException {
         HashMap<Entry, String> entryTaxMap = new HashMap<>();
         setBibTeXDatabase(file);
         Map<Key, BibTeXEntry> entryMap = getBibTeXEntries();
@@ -96,7 +96,6 @@ public class BibTexParser {
             String url = safeGetField(bibTeXEntry, BibTeXEntry.KEY_URL);
             String classes = safeGetField(bibTeXEntry, new Key("classes"));
             Entry entry = new Entry(key.toString(), title);
-            entry.setRepoId(repoId);
             entry.setAuthor(author);
             entry.setYear(year);
             entry.setMonth(month);

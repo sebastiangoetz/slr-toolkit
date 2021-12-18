@@ -15,6 +15,7 @@ import org.jbibtex.ParseException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,32 +75,34 @@ public class ProjectViewModel extends AndroidViewModel {
         return repoRepository.getRepoById(id);
     }
 
-    public void saveAll(List<Entry> entries) {
-       entryRepository.saveAll(entries);
+    public void saveAllEntriesForRepo(List<Entry> entries, int repoId) {
+       entryRepository.insertEntriesForRepo(repoId, entries);
     }
 
-    public void initializeData(int repoId, String path) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void initializeDataForRepo(int repoId, String path) {
         FileUtil fileUtil = new FileUtil();
         File file = fileUtil.accessFiles(path, application, ".bib");
+        Map<Entry, String> entriesWithTaxonomies = new HashMap<>();
         try {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
-            Map<Entry, String> entriesWithTaxonomies = parser.parseBibTexFile(file, repoId);
-            List<Entry> entries = new ArrayList<>();
-            for(Entry entry : entriesWithTaxonomies.keySet()) {
-                entries.add(entry);
-            }
-            System.out.println("What entries are we trying to save?");
-            for(Entry e: entries) {
-                System.out.println(e.getTitle());
-            }
-            saveAll(entries);
-
+            entriesWithTaxonomies = parser.parseBibTexFile(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        initializeEntries(repoId, entriesWithTaxonomies);
+        initializeTaxonomy(repoId, path);
+    }
+
+    public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
+        List<Entry> entries = new ArrayList<>();
+        for(Entry entry : entriesWithTaxonomies.keySet()) {
+            entries.add(entry);
+        }
+        saveAllEntriesForRepo(entries, repoId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

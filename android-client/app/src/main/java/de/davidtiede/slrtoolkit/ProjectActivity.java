@@ -32,8 +32,7 @@ public class ProjectActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(Repo repo) {
                     String path = repo.getLocal_path();
-                    projectViewModel.initializeData(repo.getId(), repo.getLocal_path());
-                    //projectViewModel.initializeTaxonomy(repo.getId(), repo.getLocal_path());
+                    projectViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
                 }
             };
             projectViewModel.getRepoById(id).observe(this, projectPathObserver);
