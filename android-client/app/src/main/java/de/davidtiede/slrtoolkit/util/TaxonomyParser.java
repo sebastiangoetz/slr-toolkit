@@ -36,7 +36,7 @@ public class TaxonomyParser {
                         int parentIndex = parentNodes.indexOf(currentParent);
                         parentNodes.set(parentIndex, currentParent);
                     }
-                    String path = getTaxonomyPath(parentNodes, trimmedNode);
+                    String path = getTaxonomyPath(taxonomyNode);
                     taxonomyNode.setPath(path);
                     parentNodes.push(taxonomyNode);
                     node = "";
@@ -52,7 +52,7 @@ public class TaxonomyParser {
                         currentParent.addChild(taxonomyNode);
                         taxonomyNodes.add(currentParent);
                     }
-                    String path = getTaxonomyPath(parentNodes, trimmedNode);
+                    String path = getTaxonomyPath(taxonomyNode);
                     taxonomyNode.setPath(path);
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
@@ -76,7 +76,7 @@ public class TaxonomyParser {
                         int parentIndex = parentNodes.indexOf(currentParent);
                         parentNodes.set(parentIndex, currentParent);
                     }
-                    String path = getTaxonomyPath(parentNodes, trimmedNode);
+                    String path = getTaxonomyPath(taxonomyNode);
                     taxonomyNode.setPath(path);
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
@@ -88,13 +88,12 @@ public class TaxonomyParser {
         return taxonomyNodes;
     }
 
-    public String getTaxonomyPath(Stack<TaxonomyParserNode> stack, String taxonomyName) {
+    public String getTaxonomyPath(TaxonomyParserNode taxonomyNode) {
         String path = "";
-        for(int i = 0; i < stack.size(); i++) {
-            TaxonomyParserNode node = stack.get(i);
-            path += node.getName() + "#";
+        if(taxonomyNode.getParent() != null) {
+            path += taxonomyNode.getParent().getPath();
         }
-        path+= taxonomyName;
+        path += "#" + taxonomyNode.getName();
         return path;
     }
 }

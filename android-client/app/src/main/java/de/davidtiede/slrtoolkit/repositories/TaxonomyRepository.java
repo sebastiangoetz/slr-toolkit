@@ -84,6 +84,7 @@ public class TaxonomyRepository {
                         if(childNode.getChildren().size() == 0) {
                             Taxonomy childTaxonomy = new Taxonomy();
                             childTaxonomy.setName(childNode.getName());
+                            childTaxonomy.setPath(childNode.getPath());
                             childTaxonomy.setRepoId(repoId);
                             childTaxonomy.setParentId(parentId);
                             nodesWithoutChildren.add(childTaxonomy);
