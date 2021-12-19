@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -52,4 +53,8 @@ public abstract class EntryDao {
 
         _insertAll(entries);
     }
+
+    @Transaction
+    @Query("SELECT * FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntityTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
+    public abstract LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId);
 }

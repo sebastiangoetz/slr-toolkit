@@ -109,4 +109,8 @@ public class EntryRepository {
         Future<Entry> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
     }
+
+    public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
+        return entryDao.getEntriesWithoutTaxonomies(repoId);
+    }
 }
