@@ -96,8 +96,6 @@ public class ClassificationFragment extends Fragment {
     }
 
     public void setSelectedTaxonomies(List<TaxonomyWithEntries> taxonomyWithEntries) {
-        System.out.println("Setting selected taxonomies");
-        System.out.println(entryId);
         ArrayList<Integer> selectedTaxonomies = new ArrayList<>();
         for(int i = 0; i < taxonomyWithEntries.size(); i++) {
             TaxonomyWithEntries currentTaxWithEntries = taxonomyWithEntries.get(i);
@@ -129,15 +127,12 @@ public class ClassificationFragment extends Fragment {
                     }
                 }
                 if(entryContainsTaxonomy) {
-                    System.out.println("Deleting");
                     classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
                     taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
 
                 } else {
-                    System.out.println("Saving");
                     classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
                     taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
-                    System.out.println("Saved!");
                 }
             }
         };

@@ -59,8 +59,6 @@ public class ClassificationViewModel extends AndroidViewModel {
     }
 
     public void setSelectedTaxonomies(List<Integer> selectedTaxonomies) {
-        System.out.println("Setting selected taxonomies");
-        System.out.println(selectedTaxonomies.size());
         this.selectedTaxonomies = selectedTaxonomies;
     }
 

@@ -68,12 +68,10 @@ public class TaxonomyListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.println("Creating");
         return inflater.inflate(R.layout.fragment_taxonomy_list, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        System.out.println("Hello");
         setOnClickListener();
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
         repoId = taxonomiesViewModel.getCurrentRepoId();

@@ -35,7 +35,7 @@ public class BibTexParser {
         try {
             parser = new BibTeXParser();
         } catch (Exception e) {
-            System.out.println("An error occured trying to set the BibTeXParser!");
+            e.printStackTrace();
         }
     }
 
@@ -65,9 +65,7 @@ public class BibTexParser {
         try {
             Writer writer = new FileWriter(this.file.getAbsolutePath());
             formatter.format(bibTeXDatabase, writer);
-            System.out.println("Deleted item!");
         } catch (IOException e) {
-            System.out.println("Didn't work!");
             e.printStackTrace();
         }
 
