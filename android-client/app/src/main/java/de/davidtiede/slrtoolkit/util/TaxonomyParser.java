@@ -36,6 +36,8 @@ public class TaxonomyParser {
                         int parentIndex = parentNodes.indexOf(currentParent);
                         parentNodes.set(parentIndex, currentParent);
                     }
+                    String path = getTaxonomyPath(taxonomyNode);
+                    taxonomyNode.setPath(path);
                     parentNodes.push(taxonomyNode);
                     node = "";
                 }
@@ -50,6 +52,8 @@ public class TaxonomyParser {
                         currentParent.addChild(taxonomyNode);
                         taxonomyNodes.add(currentParent);
                     }
+                    String path = getTaxonomyPath(taxonomyNode);
+                    taxonomyNode.setPath(path);
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
                 } else {
@@ -72,6 +76,8 @@ public class TaxonomyParser {
                         int parentIndex = parentNodes.indexOf(currentParent);
                         parentNodes.set(parentIndex, currentParent);
                     }
+                    String path = getTaxonomyPath(taxonomyNode);
+                    taxonomyNode.setPath(path);
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
                 }
@@ -80,5 +86,14 @@ public class TaxonomyParser {
             }
         }
         return taxonomyNodes;
+    }
+
+    public String getTaxonomyPath(TaxonomyParserNode taxonomyNode) {
+        String path = "";
+        if(taxonomyNode.getParent() != null) {
+            path += taxonomyNode.getParent().getPath();
+        }
+        path += "#" + taxonomyNode.getName();
+        return path;
     }
 }

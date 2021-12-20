@@ -1,10 +1,14 @@
 package de.davidtiede.slrtoolkit;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
+import android.os.Build;
 import android.os.Bundle;
 
 public class ProjectActivity extends AppCompatActivity {
@@ -23,16 +27,15 @@ public class ProjectActivity extends AppCompatActivity {
             projectViewModel.setCurrentRepoId(id);
             // Create the observer
             //to initialize the database
-            /*final Observer projectPathObserver = new Observer<Repo>() {
+            final Observer projectPathObserver = new Observer<Repo>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onChanged(Repo repo) {
                     String path = repo.getLocal_path();
-                    projectViewModel.initializeData(repo.getId(), repo.getLocal_path());
-                    projectViewModel.initializeTaxonomy(repo.getId(), repo.getLocal_path());
+                    //projectViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
                 }
             };
-            projectViewModel.getRepoById(id).observe(this, projectPathObserver);*/
+            projectViewModel.getRepoById(id).observe(this, projectPathObserver);
         }
     }
 }

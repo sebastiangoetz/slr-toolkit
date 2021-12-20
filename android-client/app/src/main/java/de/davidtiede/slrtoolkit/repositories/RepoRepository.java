@@ -73,31 +73,7 @@ public class RepoRepository {
         return id;
     }
 
-    public void insertEntriesForRepo(int repoId, List<Entry> entries) {
-        AppDatabase.databaseWriteExecutor.execute(() -> repoDao.insertEntriesForRepo(repoId, entries));
-    }
-
     public void delete(Repo repo) {
         AppDatabase.databaseWriteExecutor.execute(() -> repoDao.delete(repo));
-    }
-
-    public void initializeEntries(int repoId, String path) {
-        File file = fileUtil.accessFiles(path, application, ".bib");
-        try {
-            BibTexParser parser = BibTexParser.getBibTexParser();
-            parser.setBibTeXDatabase(file);
-            Map<Key, BibTeXEntry> entryMap = parser.getBibTeXEntries();
-            List<Entry> entries = new ArrayList<>();
-
-            for(Key key: entryMap.keySet()) {
-                BibTeXEntry bibTeXEntry = entryMap.get(key);
-                String title = bibTeXEntry.getField(BibTeXEntry.KEY_TITLE).toUserString();
-                Entry entry = new Entry(key.toString(), title);
-                entries.add(entry);
-            }
-            insertEntriesForRepo(repoId, entries);
-        } catch (FileNotFoundException | ParseException e) {
-            e.printStackTrace();
-        }
     }
 }

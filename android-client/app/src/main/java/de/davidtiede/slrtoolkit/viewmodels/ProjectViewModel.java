@@ -8,21 +8,39 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
+import de.davidtiede.slrtoolkit.database.EntityTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.Entry;
+import de.davidtiede.slrtoolkit.database.EntryWithTaxonomies;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
+import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepo;
+import de.davidtiede.slrtoolkit.util.BibTexParser;
+import de.davidtiede.slrtoolkit.util.FileUtil;
+import de.davidtiede.slrtoolkit.util.TaxonomyParser;
+import de.davidtiede.slrtoolkit.util.TaxonomyParserNode;
 
 public class ProjectViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
     private final TaxonomyRepository taxonomyRepository;
+    private final TaxonomyWithEntriesRepo taxonomyWithEntriesRepo;
     private Application application;
     private int currentRepoId;
     private int currentEntryIdForCard;
@@ -32,6 +50,7 @@ public class ProjectViewModel extends AndroidViewModel {
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
+        taxonomyWithEntriesRepo = new TaxonomyWithEntriesRepo(application);
         this.application = application;
     }
 
@@ -63,13 +82,68 @@ public class ProjectViewModel extends AndroidViewModel {
         return repoRepository.getRepoById(id);
     }
 
-    public void initializeData(int repoId, String path) {
-        repoRepository.initializeEntries(repoId, path);
+    public void saveAllEntriesForRepo(List<Entry> entries, int repoId) {
+       entryRepository.insertEntriesForRepo(repoId, entries);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void initializeDataForRepo(int repoId, String path) {
+        FileUtil fileUtil = new FileUtil();
+        File file = fileUtil.accessFiles(path, application, ".bib");
+        Map<Entry, String> entriesWithTaxonomies = new HashMap<>();
+        try {
+            BibTexParser parser = BibTexParser.getBibTexParser();
+            parser.setBibTeXDatabase(file);
+            entriesWithTaxonomies = parser.parseBibTexFile(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        initializeEntries(repoId, entriesWithTaxonomies);
+        initializeTaxonomy(repoId, path);
+        initializeTaxonomiesWithEntries(entriesWithTaxonomies, repoId);
+    }
+
+    public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
+        List<Entry> entries = new ArrayList<>();
+        for(Entry entry : entriesWithTaxonomies.keySet()) {
+            entries.add(entry);
+        }
+        saveAllEntriesForRepo(entries, repoId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeTaxonomy(int repoId, String path) {
         taxonomyRepository.initializeTaxonomy(repoId, path, application);
+    }
+
+    public void initializeTaxonomiesWithEntries(Map<Entry, String> entriesWithTaxonomies, int repoId) {
+        List<EntityTaxonomyCrossRef> entityTaxonomyCrossRefs = new ArrayList<>();
+        TaxonomyParser taxonomyParser = new TaxonomyParser();
+        for(Map.Entry<Entry, String> e : entriesWithTaxonomies.entrySet()) {
+            String taxonomyString = e.getValue();
+            if(taxonomyString.compareTo("") != 0) {
+                List<TaxonomyParserNode> taxonomyParserNodes = taxonomyParser.parse(taxonomyString);
+                for (TaxonomyParserNode node : taxonomyParserNodes) {
+                    try {
+                        Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
+                        Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
+                        if(taxonomy != null && entry != null) {
+                            EntityTaxonomyCrossRef entityTaxonomyCrossRef = new EntityTaxonomyCrossRef();
+                            entityTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
+                            entityTaxonomyCrossRef.setId(entry.getId());
+                            entityTaxonomyCrossRefs.add(entityTaxonomyCrossRef);
+                        }
+                    } catch (ExecutionException exception) {
+                        exception.printStackTrace();
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        }
+        taxonomyWithEntriesRepo.insertAll(entityTaxonomyCrossRefs);
     }
 
     public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
@@ -109,5 +183,9 @@ public class ProjectViewModel extends AndroidViewModel {
 
     public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
         return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
+    }
+
+    public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
+        return entryRepository.getEntriesWithoutTaxonomies(repoId);
     }
 }

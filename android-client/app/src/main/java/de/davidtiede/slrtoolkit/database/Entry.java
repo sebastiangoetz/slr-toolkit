@@ -12,8 +12,12 @@ public class Entry {
     private String title;
     private String author;
     private String entryAbstract;
-    private int year;
-    private int month;
+    private String year;
+    private String month;
+    private String journal;
+    private String volume;
+    private String url;
+    private String abstractText;
     @TypeConverters(StatusConverter.class)
     private Status status;
 
@@ -47,16 +51,32 @@ public class Entry {
         return entryAbstract;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public int getMonth() {
+    public String getMonth() {
         return month;
     }
 
     public Status getStatus() {
         return status;
+    }
+
+    public String getAbstractText() {
+        return abstractText;
+    }
+
+    public String getJournal() {
+        return journal;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getVolume() {
+        return volume;
     }
 
     public void setId(int id) {
@@ -79,12 +99,28 @@ public class Entry {
         this.entryAbstract = entryAbstract;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
+    }
+
+    public void setAbstractText(String abstractText) {
+        this.abstractText = abstractText;
+    }
+
+    public void setJournal(String journal) {
+        this.journal = journal;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
     }
 
     public enum Status {

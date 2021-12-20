@@ -5,6 +5,7 @@ import java.util.List;
 
 public class TaxonomyParserNode {
     private String name;
+    private String path;
     private TaxonomyParserNode parent;
     private List<TaxonomyParserNode> children;
 
@@ -16,12 +17,20 @@ public class TaxonomyParserNode {
         return name;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public TaxonomyParserNode getParent() {
         return parent;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setParent(TaxonomyParserNode parent) {

@@ -4,21 +4,26 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
 import de.davidtiede.slrtoolkit.database.Repo;
+import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.util.FileUtil;
 
@@ -89,5 +94,23 @@ public class EntryRepository {
 
     public LiveData<Entry> getEntryById(int id) {
         return entryDao.getEntryById(id);
+    }
+
+    public void saveAll(List<Entry> entries) {
+        AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertAll(entries));
+    }
+
+    public void insertEntriesForRepo(int repoId, List<Entry> entries) {
+        AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertEntriesForRepo(repoId, entries));
+    }
+
+    public Entry getEntryByRepoAndKeyDirectly(int repoId, String key) throws ExecutionException, InterruptedException {
+        Callable<Entry> getCallable = () -> entryDao.getEntryByRepoAndKeyDirectly(repoId, key);
+        Future<Entry> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+    }
+
+    public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
+        return entryDao.getEntriesWithoutTaxonomies(repoId);
     }
 }

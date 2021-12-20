@@ -5,36 +5,56 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
-public interface EntryDao {
+public abstract class EntryDao {
     @Query("SELECT * FROM entry WHERE repoId=:id ")
-    LiveData<List<Entry>> getEntriesForRepo(int id);
+    public abstract LiveData<List<Entry>> getEntriesForRepo(int id);
 
     @Delete
-    void delete(Entry entry);
+    public abstract void delete(Entry entry);
 
     @Insert
-    public void insertAll(List<Entry> entries);
+    public abstract void insertAll(List<Entry> entries);
 
     @Insert
     public abstract long insert(Entry entry);
 
     @Update
-    void update(Entry entry);
+    public abstract void update(Entry entry);
 
     @Query("SELECT COUNT(title) FROM entry WHERE repoId=:id")
-    LiveData<Integer> getEntryAmount(int id);
+    public abstract LiveData<Integer> getEntryAmount(int id);
 
     @Query("SELECT COUNT(title) FROM entry WHERE status=:status AND repoId=:id")
-    LiveData<Integer> getEntryAmountForStatus(int id, int status);
+    public abstract LiveData<Integer> getEntryAmountForStatus(int id, int status);
 
     @Query("SELECT * FROM entry WHERE status=:status AND repoId=:id")
-    LiveData<List<Entry>> getEntryForRepoByStatus(int id, int status);
+    public abstract LiveData<List<Entry>> getEntryForRepoByStatus(int id, int status);
+
+    @Query("SELECT * FROM entry WHERE `key`=:key and repoId=:id")
+    public abstract Entry getEntryByRepoAndKeyDirectly(int id, String key);
 
     @Query("SELECT * FROM entry WHERE id=:id")
-    LiveData<Entry> getEntryById(int id);
+    public abstract LiveData<Entry> getEntryById(int id);
+
+    @Insert
+    public abstract void _insertAll(List<Entry> entries);
+
+    public void insertEntriesForRepo(int repoId, List<Entry> entries){
+
+        for(Entry entry : entries){
+            entry.setRepoId(repoId);
+        }
+
+        _insertAll(entries);
+    }
+
+    @Transaction
+    @Query("SELECT * FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntityTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
+    public abstract LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId);
 }
