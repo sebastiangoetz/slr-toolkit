@@ -8,19 +8,18 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
-import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepo;
+import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
     private int currentRepoId;
     private final TaxonomyRepository taxonomyRepository;
-    private final TaxonomyWithEntriesRepo taxonomyWithEntriesRepo;
+    private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
 
     public TaxonomiesViewModel(Application application) {
         super(application);
         taxonomyRepository = new TaxonomyRepository(application);
-        taxonomyWithEntriesRepo = new TaxonomyWithEntriesRepo(application);
+        taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
     }
 
     public void setCurrentRepoId(int currentRepoId) {

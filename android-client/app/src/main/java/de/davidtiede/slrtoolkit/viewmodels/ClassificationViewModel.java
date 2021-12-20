@@ -1,10 +1,8 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -16,13 +14,13 @@ import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
-import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepo;
+import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class ClassificationViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
     private final TaxonomyRepository taxonomyRepository;
-    private final TaxonomyWithEntriesRepo taxonomyWithEntriesRepo;
+    private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private Application application;
     private int currentRepoId;
     private int currentEntryId;
@@ -33,7 +31,7 @@ public class ClassificationViewModel extends AndroidViewModel {
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
-        taxonomyWithEntriesRepo = new TaxonomyWithEntriesRepo(application);
+        taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
 
         this.application = application;
     }
@@ -72,7 +70,7 @@ public class ClassificationViewModel extends AndroidViewModel {
 
     public void insertEntryForTaxonomy(int taxonomyId, int entryId) {
         this.selectedTaxonomies.add(taxonomyId);
-        taxonomyWithEntriesRepo.insert(taxonomyId, entryId);
+        taxonomyWithEntriesRepository.insert(taxonomyId, entryId);
     }
 
     public void delete(int taxonomyId, int entryId) {
@@ -80,10 +78,10 @@ public class ClassificationViewModel extends AndroidViewModel {
         if(indexOfSelectedTaxonomy != -1) {
             this.selectedTaxonomies.remove(indexOfSelectedTaxonomy);
         }
-        taxonomyWithEntriesRepo.delete(taxonomyId, entryId);
+        taxonomyWithEntriesRepository.delete(taxonomyId, entryId);
     }
 
     public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        return taxonomyWithEntriesRepo.getTaxonomyWithEntriesDirectly(repoId, parentId);
+        return taxonomyWithEntriesRepository.getTaxonomyWithEntriesDirectly(repoId, parentId);
     }
 }

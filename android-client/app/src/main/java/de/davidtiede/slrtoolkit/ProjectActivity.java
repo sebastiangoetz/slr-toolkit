@@ -31,7 +31,6 @@ public class ProjectActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onChanged(Repo repo) {
-                    String path = repo.getLocal_path();
                     //projectViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
                 }
             };

@@ -55,6 +55,6 @@ public abstract class EntryDao {
     }
 
     @Transaction
-    @Query("SELECT * FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntityTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
+    @Query("SELECT * FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntryTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
     public abstract LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId);
 }

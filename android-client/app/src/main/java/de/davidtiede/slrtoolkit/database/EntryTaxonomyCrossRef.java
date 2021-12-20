@@ -3,7 +3,7 @@ package de.davidtiede.slrtoolkit.database;
 import androidx.room.Entity;
 
 @Entity(primaryKeys = {"taxonomyId", "id"})
-public class EntityTaxonomyCrossRef {
+public class EntryTaxonomyCrossRef {
     public int taxonomyId;
     public int id;
 

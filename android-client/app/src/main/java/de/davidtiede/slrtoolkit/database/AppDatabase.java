@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntityTaxonomyCrossRef.class}, version = 1, exportSchema = false)
+@Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntryTaxonomyCrossRef.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RepoDao repoDao();
     public abstract EntryDao entryDao();

@@ -2,10 +2,6 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Query;
-import androidx.room.Transaction;
-
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -13,28 +9,25 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
-import de.davidtiede.slrtoolkit.database.EntityTaxonomyCrossRef;
-import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntriesDao;
-import de.davidtiede.slrtoolkit.util.FileUtil;
 
-public class TaxonomyWithEntriesRepo {
+public class TaxonomyWithEntriesRepository {
     TaxonomyWithEntriesDao taxonomyWithEntriesDao;
     Application application;
 
-    public TaxonomyWithEntriesRepo(Application application) {
+    public TaxonomyWithEntriesRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyWithEntriesDao = db.taxonomyWithEntriesDao();
         this.application  = application;
     }
 
     public long insert(int taxonomyId, int entryId) {
-        EntityTaxonomyCrossRef entityTaxonomyCrossRef = new EntityTaxonomyCrossRef();
-        entityTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entityTaxonomyCrossRef.setId(entryId);
-        Callable<Long> insertCallable = () -> taxonomyWithEntriesDao.insert(entityTaxonomyCrossRef);
+        EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
+        entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
+        entryTaxonomyCrossRef.setId(entryId);
+        Callable<Long> insertCallable = () -> taxonomyWithEntriesDao.insert(entryTaxonomyCrossRef);
         long id = 0;
 
         Future<Long> future = AppDatabase.databaseWriteExecutor.submit(insertCallable);
@@ -47,15 +40,15 @@ public class TaxonomyWithEntriesRepo {
 
     }
 
-    public void insertAll(List<EntityTaxonomyCrossRef> entityTaxonomyCrossRefs) {
-        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.insertAll(entityTaxonomyCrossRefs));
+    public void insertAll(List<EntryTaxonomyCrossRef> entryTaxonomyCrossRefs) {
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.insertAll(entryTaxonomyCrossRefs));
     }
 
     public void delete(int taxonomyId, int entryId) {
-        EntityTaxonomyCrossRef entityTaxonomyCrossRef = new EntityTaxonomyCrossRef();
-        entityTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entityTaxonomyCrossRef.setId(entryId);
-        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entityTaxonomyCrossRef));
+        EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
+        entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
+        entryTaxonomyCrossRef.setId(entryId);
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entryTaxonomyCrossRef));
     }
 
     public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
