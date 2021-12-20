@@ -27,10 +27,10 @@ public abstract class EntryDao {
     @Update
     public abstract void update(Entry entry);
 
-    @Query("SELECT COUNT(title) FROM entry WHERE repoId=:id")
+    @Query("SELECT COUNT(id) FROM entry WHERE repoId=:id")
     public abstract LiveData<Integer> getEntryAmount(int id);
 
-    @Query("SELECT COUNT(title) FROM entry WHERE status=:status AND repoId=:id")
+    @Query("SELECT COUNT(id) FROM entry WHERE status=:status AND repoId=:id")
     public abstract LiveData<Integer> getEntryAmountForStatus(int id, int status);
 
     @Query("SELECT * FROM entry WHERE status=:status AND repoId=:id")
@@ -57,4 +57,7 @@ public abstract class EntryDao {
     @Transaction
     @Query("SELECT * FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntryTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
     public abstract LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId);
+
+    @Query("SELECT COUNT(id) FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntryTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
+    public abstract LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId);
 }

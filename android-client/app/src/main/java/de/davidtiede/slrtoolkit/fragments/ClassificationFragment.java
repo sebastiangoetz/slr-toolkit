@@ -50,7 +50,6 @@ public class ClassificationFragment extends Fragment {
      * @param currentTaxonomy Parameter 1.
      * @return A new instance of fragment ClassificationFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ClassificationFragment newInstance(int currentTaxonomy) {
         ClassificationFragment fragment = new ClassificationFragment();
         Bundle args = new Bundle();

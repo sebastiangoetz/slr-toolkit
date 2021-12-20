@@ -184,4 +184,8 @@ public class ProjectViewModel extends AndroidViewModel {
     public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
         return entryRepository.getEntriesWithoutTaxonomies(repoId);
     }
+
+    public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
+        return entryRepository.getEntriesWithoutTaxonomiesCount(repoId);
+    }
 }

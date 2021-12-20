@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -30,6 +31,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button taxonomyButton;
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
+    private int repoId;
 
 
     @Override
@@ -45,14 +47,14 @@ public class ProjectOverviewFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-
         allEntryButton = view.findViewById(R.id.button_all_entries);
         filterButton = view.findViewById(R.id.button_filter);
         taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         classifyButton = view.findViewById(R.id.button_classify);
         projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+        repoId = projectViewModel.getCurrentRepoId();
 
-        allEntryButton.setOnClickListener(new View.OnClickListener() {
+                allEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(ProjectOverviewFragment.this)
@@ -77,24 +79,13 @@ public class ProjectOverviewFragment extends Fragment {
                     .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment);
         });
 
-        /*final Observer entryAmountObserver = new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer amount) {
-                allEntryButton.setText("All Entries (" + amount.toString() + ")");
-            }
-        };
-        projectViewModel.getEntryAmount(id).observe(this, entryAmountObserver);
+        final Observer entryAmountObserver = (Observer<Integer>) amount -> allEntryButton.setText("All Entries (" + amount.toString() + ")");
+        projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
 
-        final Observer openEntryAmountObserver = new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer amount) {
-                filterButton.setText("Filter (" + amount.toString() + ")");
-            }
-        };
-        projectViewModel.getOpenEntryAmount(id).observe(this, openEntryAmountObserver); */
+        final Observer openEntryAmountObserver = (Observer<Integer>) amount -> filterButton.setText("Filter (" + amount.toString() + ")");
+        projectViewModel.getOpenEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
 
-
-        /*
-        */
+        final Observer entriesToClassifyObserver = (Observer<Integer>) amount -> classifyButton.setText("Classify (" + amount.toString() + ")");
+        projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
     }
 }

@@ -113,4 +113,8 @@ public class EntryRepository {
     public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
         return entryDao.getEntriesWithoutTaxonomies(repoId);
     }
+
+    public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
+        return entryDao.getEntriesWithoutTaxonomiesCount(repoId);
+    }
 }
