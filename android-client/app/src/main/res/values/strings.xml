@@ -23,6 +23,7 @@
     <string name="progressbutton_onloading">Please wait…</string>
     <string name="progressbutton_onfailed">The project could not be cloned.</string>
     <string name="progressbutton_succeeded">Next</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textview_no_entries">No entries</string>
+    <string name="textview_no_taxonomies">No taxonomies</string>
+    <string name="textview_no_taxonomy_entries">No entries for the taxonomy.</string>
 </resources>

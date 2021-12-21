@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/fragment_projects.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_classification.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_entries.xml" value="0.15364583333333334" />
+        <entry key="app/src/main/res/layout/fragment_taxonomy_entries_list.xml" value="0.16757246376811594" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list_list.xml" value="0.17916666666666667" />
         <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.16770833333333332" />

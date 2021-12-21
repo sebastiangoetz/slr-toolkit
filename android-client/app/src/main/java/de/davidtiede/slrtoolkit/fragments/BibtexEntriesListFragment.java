@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
 public class BibtexEntriesListFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private TextView noEntriesTextView;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     BibTexEntriesListAdapter adapter;
     private int repoId;
@@ -49,6 +51,7 @@ public class BibtexEntriesListFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.bibTexEntriesRecyclerView);
+        noEntriesTextView = view.findViewById(R.id.textview_no_entries);
 
         setOnClickListener();
 
@@ -82,9 +85,11 @@ public class BibtexEntriesListFragment extends Fragment {
 
     private void onLoaded(List<Entry> list){
         if (list.size() == 0) {
-            //TODO: show that there are no entries yet
+            System.out.println("No entries");
+            noEntriesTextView.setVisibility(View.VISIBLE);
         }
         else {
+            noEntriesTextView.setVisibility(View.INVISIBLE);
             adapter.submitList(list);
         }
     }

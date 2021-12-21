@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private RecyclerView taxonomyEntriesRecyclerView;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
+    private TextView noTaxonomyEntriesTextview;
 
     private int repoId;
     private int currentTaxonomyId;
@@ -52,7 +54,6 @@ public class TaxonomyEntriesListFragment extends Fragment {
      * @param currentItemId Parameter 2.
      * @return A new instance of fragment TaxonomyEntriesFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TaxonomyEntriesListFragment newInstance(int repoId, int currentItemId) {
         TaxonomyEntriesListFragment fragment = new TaxonomyEntriesListFragment();
         Bundle args = new Bundle();
@@ -81,6 +82,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
+        noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
@@ -92,7 +94,12 @@ public class TaxonomyEntriesListFragment extends Fragment {
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
         List<Entry> entries = taxonomyWithEntries.entries;
-        bibTexEntriesListAdapter.submitList(entries);
+        if(entries.size() == 0) {
+            noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
+        } else {
+            noTaxonomyEntriesTextview.setVisibility(View.INVISIBLE);
+            bibTexEntriesListAdapter.submitList(entries);
+        }
     }
 
     private void setOnClickListener() {

@@ -24,4 +24,7 @@
     <string name="progressbutton_onloading">Bitte warten…</string>
     <string name="progressbutton_onfailed">Das Projekt konnte nicht geklont werden.</string>
     <string name="progressbutton_succeeded">Weiter</string>
+    <string name="textview_no_entries">Keine Einträge</string>
+    <string name="textview_no_taxonomies">Keine Taxonomien</string>
+    <string name="textview_no_taxonomy_entries">Keine Einträge für die Taxonomie.</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class TaxonomyListFragment extends Fragment {
     private RecyclerView taxonomyRecyclerView;
     private TaxonomyListAdapter taxonomyListAdapter;
     private TaxonomyListAdapter.RecyclerViewClickListener listener;
+    private TextView noTaxonomiesTextview;
 
     private int repoId;
     private int currentTaxonomyId;
@@ -76,6 +78,7 @@ public class TaxonomyListFragment extends Fragment {
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
         repoId = taxonomiesViewModel.getCurrentRepoId();
         taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
+        noTaxonomiesTextview = view.findViewById(R.id.textview_no_taxonomies);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener, repoId);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
@@ -84,7 +87,12 @@ public class TaxonomyListFragment extends Fragment {
     }
 
     public void onLoaded(List<Taxonomy> taxonomyList) {
-        taxonomyListAdapter.submitList(taxonomyList);
+        if(taxonomyList.size() == 0) {
+            noTaxonomiesTextview.setVisibility(View.VISIBLE);
+        } else {
+            noTaxonomiesTextview.setVisibility(View.INVISIBLE);
+            taxonomyListAdapter.submitList(taxonomyList);
+        }
     }
 
     private void setOnClickListener() {
