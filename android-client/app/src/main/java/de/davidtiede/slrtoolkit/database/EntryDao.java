@@ -42,16 +42,13 @@ public abstract class EntryDao {
     @Query("SELECT * FROM entry WHERE id=:id")
     public abstract LiveData<Entry> getEntryById(int id);
 
-    @Insert
-    public abstract void _insertAll(List<Entry> entries);
-
     public void insertEntriesForRepo(int repoId, List<Entry> entries){
 
         for(Entry entry : entries){
             entry.setRepoId(repoId);
         }
 
-        _insertAll(entries);
+        insertAll(entries);
     }
 
     @Transaction
