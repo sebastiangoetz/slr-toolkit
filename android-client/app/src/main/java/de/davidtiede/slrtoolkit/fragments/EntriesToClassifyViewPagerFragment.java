@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     ViewPager2 viewPager;
     ProjectViewModel projectViewModel;
     private FragmentStateAdapter pagerAdapter;
+    private TextView noEntriesToClassifyTextview;
     private static final String ARG_PARAM1 = "repoId";
     int repoId;
 
@@ -51,14 +53,20 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         repoId = projectViewModel.getCurrentRepoId();
         viewPager = view.findViewById(R.id.classify_entries_viewpager);
+        noEntriesToClassifyTextview = view.findViewById(R.id.textview_no_entries_to_classify);
         pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
         viewPager.setAdapter(pagerAdapter);
 
         projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> entries) {
-                pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), entries);
-                viewPager.setAdapter(pagerAdapter);
+                if(entries.size() == 0) {
+                    noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
+                } else {
+                    noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
+                    pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), entries);
+                    viewPager.setAdapter(pagerAdapter);
+                }
             }
         });
     }

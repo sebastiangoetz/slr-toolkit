@@ -27,4 +27,6 @@
     <string name="textview_no_entries">Keine Einträge</string>
     <string name="textview_no_taxonomies">Keine Taxonomien</string>
     <string name="textview_no_taxonomy_entries">Keine Einträge für die Taxonomie.</string>
+    <string name="textview_no_entries_to_classify">Keine Einträge zu klassifizieren</string>
+    <string name="textview_no_entries_to_filter">Keine Einträge zu filtern</string>
 </resources>

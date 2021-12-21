@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -31,6 +32,7 @@ public class FilterFragment extends Fragment {
     SwipeFlingAdapterView flingAdapterView;
     private Button keepButton;
     private Button discardButton;
+    private TextView noEntriesToFilterTextview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class FilterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
 
+        noEntriesToFilterTextview = view.findViewById(R.id.textview_no_entries_to_filter);
         flingAdapterView = view.findViewById(R.id.swipe_entries);
         entries = new ArrayList<>();
 
@@ -90,9 +93,19 @@ public class FilterFragment extends Fragment {
             @Override
             public void onChanged(List<Entry> data) {
                 entries = (ArrayList<Entry>) data;
-                ArrayList<Entry> newItems = new ArrayList<>();
-                newItems.addAll(data);
-                arrayAdapter.setEntries(newItems);
+                if(entries.size() == 0) {
+                    noEntriesToFilterTextview.setVisibility(View.VISIBLE);
+                    flingAdapterView.setVisibility(View.INVISIBLE);
+                    keepButton.setVisibility(View.INVISIBLE);
+                    discardButton.setVisibility(View.INVISIBLE);
+                } else {
+                    noEntriesToFilterTextview.setVisibility(View.INVISIBLE);
+                    keepButton.setVisibility(View.VISIBLE);
+                    discardButton.setVisibility(View.VISIBLE);
+                    ArrayList<Entry> newItems = new ArrayList<>();
+                    newItems.addAll(data);
+                    arrayAdapter.setEntries(newItems);
+                }
             }
         };
 
