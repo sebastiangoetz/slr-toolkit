@@ -66,11 +66,13 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
     public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView bibtexItemView;
+        private TextView bibtexDescriptionItemView;
         private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
 
         public BibTexEntriesViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             bibtexItemView = itemView.findViewById(R.id.textview_recyclerview);
+            bibtexDescriptionItemView = itemView.findViewById(R.id.description_textview_recyclerview);
             itemView.setOnClickListener(this);
         }
 
@@ -88,6 +90,12 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
         public void bind(Entry entry, RecyclerViewClickListener listener) {
             bibtexItemView.setText(entry.getTitle());
+            String description = entry.getYear();
+            if(!entry.getYear().equals("")) {
+                description = entry.getYear() + ", ";
+            }
+            description += entry.getAuthor();
+            bibtexDescriptionItemView.setText(description);
             this.listener = listener;
         }
     }
