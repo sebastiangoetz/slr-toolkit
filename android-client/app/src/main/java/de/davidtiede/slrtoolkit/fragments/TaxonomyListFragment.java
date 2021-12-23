@@ -80,7 +80,7 @@ public class TaxonomyListFragment extends Fragment {
         taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
         noTaxonomiesTextview = view.findViewById(R.id.textview_no_taxonomies);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener, repoId);
+        taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
 
         taxonomiesViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);

@@ -80,7 +80,7 @@ public class ClassificationFragment extends Fragment {
         entryId = classificationViewModel.getCurrentEntryId();
         taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, entryId);
+        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
 
         try {
