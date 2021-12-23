@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,6 +84,8 @@ public class TaxonomyEntriesListFragment extends Fragment {
         noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyEntriesRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        taxonomyEntriesRecyclerView.addItemDecoration(dividerItemDecoration);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);

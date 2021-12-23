@@ -80,7 +80,7 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
 
         public void bind(Taxonomy taxonomy, TaxonomyListAdapter.RecyclerViewClickListener listener, Context context) {
             taxonomyItemView.setText(taxonomy.getName());
-            if(!taxonomy.isHasChildren()) {
+            if(taxonomy.isHasChildren()) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }
