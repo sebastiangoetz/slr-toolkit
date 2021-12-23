@@ -42,13 +42,11 @@ public class BibTexParser {
     }
 
     public Map<Key, BibTeXEntry> getBibTeXEntries() {
-        Map<Key, BibTeXEntry> entryMap= bibTeXDatabase.getEntries();
-        return entryMap;
+        return bibTeXDatabase.getEntries();
     }
 
     public List<BibTeXObject> getObjects() {
-        List<BibTeXObject> entryList= bibTeXDatabase.getObjects();
-        return entryList;
+        return bibTeXDatabase.getObjects();
     }
 
     public BibTeXObject getBibTexObject(Key key) {
@@ -69,10 +67,8 @@ public class BibTexParser {
 
     public void addObjectToFile(BibTeXObject object)  {
         BibTeXFormatter formatter = new BibTeXFormatter();
-        System.out.println("Trying to add object");
         bibTeXDatabase.addObject(object);
         try {
-            System.out.println(this.file.getAbsolutePath());
             Writer writer = new FileWriter(this.file.getAbsolutePath());
             formatter.format(bibTeXDatabase, writer);
         } catch (IOException e) {
@@ -94,27 +90,20 @@ public class BibTexParser {
 
         for(Key key: entryMap.keySet()) {
             BibTeXEntry bibTeXEntry = entryMap.get(key);
-            String title = safeGetField(bibTeXEntry, BibTeXEntry.KEY_TITLE);
-            String author = safeGetField(bibTeXEntry, BibTeXEntry.KEY_AUTHOR);
-            String year = safeGetField(bibTeXEntry, BibTeXEntry.KEY_YEAR);
-            String month = safeGetField(bibTeXEntry, BibTeXEntry.KEY_MONTH);
-            String journal = safeGetField(bibTeXEntry, BibTeXEntry.KEY_JOURNAL);
-            String volume = safeGetField(bibTeXEntry, BibTeXEntry.KEY_VOLUME);
-            String url = safeGetField(bibTeXEntry, BibTeXEntry.KEY_URL);
-            String keywords = safeGetField(bibTeXEntry, new Key("keywords"));
-            String doi = safeGetField(bibTeXEntry, new Key("doi"));
-            String abstractText = safeGetField(bibTeXEntry, new Key("abstract"));
+            assert bibTeXEntry != null;
+            Entry entry = new Entry(key.toString(), safeGetField(bibTeXEntry, BibTeXEntry.KEY_TITLE));
+            entry.setAuthor(safeGetField(bibTeXEntry, BibTeXEntry.KEY_AUTHOR));
+            entry.setYear(safeGetField(bibTeXEntry, BibTeXEntry.KEY_YEAR));
+            entry.setMonth(safeGetField(bibTeXEntry, BibTeXEntry.KEY_MONTH));
+            entry.setJournal(safeGetField(bibTeXEntry, BibTeXEntry.KEY_JOURNAL));
+            entry.setVolume(safeGetField(bibTeXEntry, BibTeXEntry.KEY_VOLUME));
+            entry.setUrl(safeGetField(bibTeXEntry, BibTeXEntry.KEY_URL));
+            entry.setKeywords(safeGetField(bibTeXEntry, new Key("keywords")));
+            entry.setDoi(safeGetField(bibTeXEntry, new Key("doi")));
+            entry.setAbstractText(safeGetField(bibTeXEntry, new Key("abstract")));
+
             String classes = safeGetField(bibTeXEntry, new Key("classes"));
-            Entry entry = new Entry(key.toString(), title);
-            entry.setAuthor(author);
-            entry.setYear(year);
-            entry.setMonth(month);
-            entry.setJournal(journal);
-            entry.setVolume(volume);
-            entry.setUrl(url);
-            entry.setKeywords(keywords);
-            entry.setDoi(doi);
-            entry.setAbstractText(abstractText);
+
             entryTaxMap.put(entry, classes);
         }
 

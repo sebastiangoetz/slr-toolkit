@@ -44,7 +44,6 @@ public class FileUtil {
     public File createFileIfNotExists(Application application, String path, String name) throws IOException {
         File file = new File(application.getApplicationContext().getFilesDir(), path + "/" + name);
         if(!file.exists() && !file.isDirectory()) {
-            System.out.println("Creating file");
             file.createNewFile();
         }
         return file;
