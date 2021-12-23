@@ -90,9 +90,7 @@ public class ClassificationFragment extends Fragment {
             List<TaxonomyWithEntries> taxonomyWithEntries = classificationViewModel.getTaxonomyWithEntriesDirectly(repoId, currentTaxonomy);
             setSelectedTaxonomies(taxonomyWithEntries);
             taxonomyListAdapter.submitList(taxonomyWithEntries);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -124,8 +122,9 @@ public class ClassificationFragment extends Fragment {
                 boolean entryContainsTaxonomy = false;
                 List<Integer> selectedTaxonomyIds = classificationViewModel.getSelectedTaxonomies();
                 for(int taxId: selectedTaxonomyIds) {
-                    if(taxId == clickedTaxonomy.taxonomy.getTaxonomyId()) {
+                    if (taxId == clickedTaxonomy.taxonomy.getTaxonomyId()) {
                         entryContainsTaxonomy = true;
+                        break;
                     }
                 }
                 if(entryContainsTaxonomy) {

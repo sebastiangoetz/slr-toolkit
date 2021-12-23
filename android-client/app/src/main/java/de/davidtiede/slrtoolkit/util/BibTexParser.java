@@ -8,17 +8,13 @@ import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +65,19 @@ public class BibTexParser {
             e.printStackTrace();
         }
 
+    }
+
+    public void addObjectToFile(BibTeXObject object)  {
+        BibTeXFormatter formatter = new BibTeXFormatter();
+        System.out.println("Trying to add object");
+        bibTeXDatabase.addObject(object);
+        try {
+            System.out.println(this.file.getAbsolutePath());
+            Writer writer = new FileWriter(this.file.getAbsolutePath());
+            formatter.format(bibTeXDatabase, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String safeGetField(BibTeXEntry entry, Key key) {

@@ -5,14 +5,15 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class FileUtil {
     public File accessFiles(String path, Application application, String type) {
@@ -38,5 +39,14 @@ public class FileUtil {
         String text = scanner.useDelimiter("\\A").next();
         scanner.close();
         return text;
+    }
+
+    public File createFileIfNotExists(Application application, String path, String name) throws IOException {
+        File file = new File(application.getApplicationContext().getFilesDir(), path + "/" + name);
+        if(!file.exists() && !file.isDirectory()) {
+            System.out.println("Creating file");
+            file.createNewFile();
+        }
+        return file;
     }
 }

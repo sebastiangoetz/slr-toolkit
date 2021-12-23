@@ -11,6 +11,7 @@ import org.jbibtex.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,15 +66,19 @@ public class EntryRepository {
         String path = repo.getLocal_path();
         File file = fileUtil.accessFiles(path, application, ".bib");
         try {
+            //remove entry from file
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
             Key key = new Key(entry.getKey());
             BibTeXObject entryToDelete =  parser.getBibTexObject(key);
             parser.removeObject(entryToDelete);
+            //add entry to separate file where deleted entries are stored
+            File fileForDeletedEntries = fileUtil.createFileIfNotExists(application, path, "deletedItems.bib");
+            parser.setBibTeXDatabase(fileForDeletedEntries);
+            parser.addObjectToFile(entryToDelete);
+            //remove entry from database
             AppDatabase.databaseWriteExecutor.execute(() -> entryDao.delete(entry));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
     }
