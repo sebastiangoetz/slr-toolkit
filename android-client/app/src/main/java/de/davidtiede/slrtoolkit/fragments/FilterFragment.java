@@ -33,6 +33,7 @@ public class FilterFragment extends Fragment {
     private Button keepButton;
     private Button discardButton;
     private TextView noEntriesToFilterTextview;
+    private int repoId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class FilterFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+
+        repoId = projectViewModel.getCurrentRepoId();
 
         noEntriesToFilterTextview = view.findViewById(R.id.textview_no_entries_to_filter);
         flingAdapterView = view.findViewById(R.id.swipe_entries);
@@ -65,8 +68,7 @@ public class FilterFragment extends Fragment {
             @Override
             public void onLeftCardExit(Object o) {
                 Entry entry = (Entry) o;
-                entry.setStatus(Entry.Status.DISCARD);
-                projectViewModel.updateEntry(entry);
+                projectViewModel.delete(entry, repoId);
             }
 
             @Override
