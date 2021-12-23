@@ -31,6 +31,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_title"
+                android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Some other text to test"
@@ -40,6 +42,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_authors_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_authors"
@@ -58,6 +62,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_year_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_year"
@@ -76,6 +82,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_month_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_month"
@@ -94,6 +102,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_abstract_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_abstract"
@@ -112,6 +122,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_doi_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_doi"
@@ -130,6 +142,8 @@
 
             <TextView
                 android:id="@+id/bibtex_entry_keywords_heading"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/entry_detail_heading_keywords"
