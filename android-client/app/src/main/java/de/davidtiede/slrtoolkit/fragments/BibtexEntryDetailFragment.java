@@ -16,20 +16,45 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import de.davidtiede.slrtoolkit.ClassificationActivity;
+import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.TaxonomiesActivity;
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BibtexEntryDetailFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "repoId";
+    private static final String ARG_PARAM2 = "entryId";
     private TextView titleTextView;
     private Button classifyButton;
-    private ProjectViewModel projectViewModel;
     private int entryId;
     private int repoId;
 
+    public BibtexEntryDetailFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param repoId Parameter 1.
+     * @param entryId Parameter 2.
+     * @return A new instance of fragment TaxonomyEntriesFragment.
+     */
+    public static BibtexEntryDetailFragment newInstance(int repoId, int entryId) {
+        BibtexEntryDetailFragment fragment = new BibtexEntryDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PARAM1, repoId);
+        args.putInt(ARG_PARAM2, entryId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,14 +71,25 @@ public class BibtexEntryDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         titleTextView = view.findViewById(R.id.bibtex_entry_title);
         classifyButton = view.findViewById(R.id.classify_entry_button);
-        projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
 
-        entryId = projectViewModel.getCurrentEntryIdForCard();
-        repoId = projectViewModel.getCurrentRepoId();
-
-        projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-            titleTextView.setText(entry.getTitle());
-        });
+        if(getActivity() instanceof ProjectActivity) {
+            ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+            entryId = projectViewModel.getCurrentEntryIdForCard();
+            repoId = projectViewModel.getCurrentRepoId();
+            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
+                //titleTextView.setText(entry.getTitle());
+                setEntryInformation(entry);
+            });
+        } else if(getActivity() instanceof TaxonomiesActivity){
+            if (getArguments() != null) {
+                repoId = getArguments().getInt(ARG_PARAM1);
+                entryId = getArguments().getInt(ARG_PARAM2);
+            }
+            TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
+            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
+                setEntryInformation(entry);
+            });
+        }
 
         classifyButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), ClassificationActivity.class);
@@ -62,5 +98,10 @@ public class BibtexEntryDetailFragment extends Fragment {
             startActivity(intent);
             ((Activity) getActivity()).overridePendingTransition(0, 0);
         });
+    }
+
+    public void setEntryInformation(Entry entry) {
+        titleTextView.setText(entry.getTitle());
+        //TODO: set other fields
     }
 }

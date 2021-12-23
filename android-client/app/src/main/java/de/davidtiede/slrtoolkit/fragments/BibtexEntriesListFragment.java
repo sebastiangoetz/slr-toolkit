@@ -72,11 +72,6 @@ public class BibtexEntriesListFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             Entry clickedEntry = adapter.getItemAtPosition(position);
-            /*Fragment bibtexEntryDetailFragment = BibtexEntryDetailFragment.newInstance(clickedEntry.getId());
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.bibtexEntriesFragment, bibtexEntryDetailFragment);
-            ft.addToBackStack(null);
-            ft.commit();*/
             projectViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
                     .navigate(R.id.action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment);

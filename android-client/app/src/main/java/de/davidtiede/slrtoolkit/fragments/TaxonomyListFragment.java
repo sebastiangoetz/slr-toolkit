@@ -18,7 +18,6 @@ import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
@@ -96,25 +95,22 @@ public class TaxonomyListFragment extends Fragment {
     }
 
     private void setOnClickListener() {
-        listener = new TaxonomyListAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
-                if(clickedTaxonomy.isHasChildren()) {
-                    //there are child taxonomies, display those
-                    Fragment taxonomyFragment = TaxonomyListFragment.newInstance(clickedTaxonomy.getTaxonomyId());
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.taxonomies_fragment_container_view, taxonomyFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                } else {
-                    //no child taxonomies, display entries for the taxonomy
-                    Fragment entriesFragment = TaxonomyEntriesListFragment.newInstance(taxonomiesViewModel.getCurrentRepoId(), clickedTaxonomy.getTaxonomyId());
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.taxonomies_fragment_container_view, entriesFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
+        listener = (v, position) -> {
+            Taxonomy clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
+            if(clickedTaxonomy.isHasChildren()) {
+                //there are child taxonomies, display those
+                Fragment taxonomyFragment = TaxonomyListFragment.newInstance(clickedTaxonomy.getTaxonomyId());
+                FragmentTransaction ft = this.getParentFragmentManager().beginTransaction();
+                ft.replace(R.id.taxonomies_fragment_container_view, taxonomyFragment);
+                ft.addToBackStack(null);
+                ft.commit();
+            } else {
+                //no child taxonomies, display entries for the taxonomy
+                Fragment entriesFragment = TaxonomyEntriesListFragment.newInstance(taxonomiesViewModel.getCurrentRepoId(), clickedTaxonomy.getTaxonomyId());
+                FragmentTransaction ft = this.getParentFragmentManager().beginTransaction();
+                ft.replace(R.id.taxonomies_fragment_container_view, entriesFragment);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         };
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,11 +28,8 @@ import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
  * create an instance of this fragment.
  */
 public class TaxonomyEntriesListFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "currentTaxonomyId";
-    private static final String ARG_PARAM2 = "repoId";
+    private static final String ARG_PARAM1 = "repoId";
+    private static final String ARG_PARAM2 = "currentTaxonomyId";
 
     private static ProjectViewModel projectViewModel;
     private RecyclerView taxonomyEntriesRecyclerView;
@@ -107,7 +105,11 @@ public class TaxonomyEntriesListFragment extends Fragment {
             @Override
             public void onClick(View v, int position) {
                 Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-                //TODO: navigate to detail view!
+                Fragment entryFragment = BibtexEntryDetailFragment.newInstance(repoId, clickedEntry.getId());
+                FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
+                ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
+                ft.addToBackStack(null);
+                ft.commit();
             }
         };
     }
