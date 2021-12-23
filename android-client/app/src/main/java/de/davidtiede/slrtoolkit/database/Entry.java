@@ -18,6 +18,8 @@ public class Entry {
     private String volume;
     private String url;
     private String abstractText;
+    private String doi;
+    private String keywords;
     @TypeConverters(StatusConverter.class)
     private Status status;
 
@@ -79,6 +81,14 @@ public class Entry {
         return volume;
     }
 
+    public String getDoi() {
+        return doi;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -121,6 +131,14 @@ public class Entry {
 
     public void setVolume(String volume) {
         this.volume = volume;
+    }
+
+    public void setDoi(String doi) {
+        this.doi = doi;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public enum Status {

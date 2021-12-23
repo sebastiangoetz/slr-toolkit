@@ -29,6 +29,12 @@ public class BibtexEntryDetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "repoId";
     private static final String ARG_PARAM2 = "entryId";
     private TextView titleTextView;
+    private TextView authorsTextView;
+    private TextView yearTextView;
+    private TextView monthTextView;
+    private TextView abstractTextView;
+    private TextView doiTextView;
+    private TextView keywordsTextView;
     private Button classifyButton;
     private int entryId;
     private int repoId;
@@ -68,6 +74,12 @@ public class BibtexEntryDetailFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         titleTextView = view.findViewById(R.id.bibtex_entry_title);
+        authorsTextView = view.findViewById(R.id.bibtex_entry_authors);
+        yearTextView = view.findViewById(R.id.bibtex_entry_year);
+        monthTextView = view.findViewById(R.id.bibtex_entry_month);
+        abstractTextView = view.findViewById(R.id.bibtex_entry_abstract);
+        doiTextView = view.findViewById(R.id.bibtex_entry_doi);
+        keywordsTextView = view.findViewById(R.id.bibtex_entry_keywords);
         classifyButton = view.findViewById(R.id.classify_entry_button);
 
         if(getActivity() instanceof ProjectActivity) {
@@ -89,7 +101,12 @@ public class BibtexEntryDetailFragment extends Fragment {
 
     public void setEntryInformation(Entry entry) {
         titleTextView.setText(entry.getTitle());
-        //TODO: set other fields
+        authorsTextView.setText(entry.getAuthor());
+        yearTextView.setText(entry.getYear());
+        monthTextView.setText(entry.getMonth());
+        abstractTextView.setText(entry.getAbstractText());
+        doiTextView.setText(entry.getDoi());
+        keywordsTextView.setText(entry.getKeywords());
     }
 
     public void setOnClickListener() {

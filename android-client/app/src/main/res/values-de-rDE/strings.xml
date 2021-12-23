@@ -29,4 +29,11 @@
     <string name="textview_no_taxonomy_entries">Keine Einträge für die Taxonomie.</string>
     <string name="textview_no_entries_to_classify">Keine Einträge zu klassifizieren</string>
     <string name="textview_no_entries_to_filter">Keine Einträge zu filtern</string>
+    <string name="entry_detail_heading_authors">Autoren</string>
+    <string name="entry_detail_heading_year">Jahr</string>
+    <string name="entry_detail_heading_month">Monat</string>
+    <string name="entry_detail_heading_abstract">Abstrakt</string>
+    <string name="entry_detail_heading_doi">DOI</string>
+    <string name="entry_detail_heading_keywords">Schlüsselworte</string>
+    <string name="entry_detail_heading_url">URL</string>
 </resources>

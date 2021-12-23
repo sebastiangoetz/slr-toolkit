@@ -28,4 +28,11 @@
     <string name="textview_no_taxonomy_entries">No entries for the taxonomy.</string>
     <string name="textview_no_entries_to_classify">No entries to classify</string>
     <string name="textview_no_entries_to_filter">No entries to filter</string>
+    <string name="entry_detail_heading_authors">Authors</string>
+    <string name="entry_detail_heading_year">Year</string>
+    <string name="entry_detail_heading_month">Month</string>
+    <string name="entry_detail_heading_abstract">Abstract</string>
+    <string name="entry_detail_heading_doi">DOI</string>
+    <string name="entry_detail_heading_keywords">Keywords</string>
+    <string name="entry_detail_heading_url">URL</string>
 </resources>

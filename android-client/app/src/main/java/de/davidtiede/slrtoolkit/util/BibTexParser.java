@@ -92,6 +92,9 @@ public class BibTexParser {
             String journal = safeGetField(bibTeXEntry, BibTeXEntry.KEY_JOURNAL);
             String volume = safeGetField(bibTeXEntry, BibTeXEntry.KEY_VOLUME);
             String url = safeGetField(bibTeXEntry, BibTeXEntry.KEY_URL);
+            String keywords = safeGetField(bibTeXEntry, new Key("keywords"));
+            String doi = safeGetField(bibTeXEntry, new Key("doi"));
+            String abstractText = safeGetField(bibTeXEntry, new Key("abstract"));
             String classes = safeGetField(bibTeXEntry, new Key("classes"));
             Entry entry = new Entry(key.toString(), title);
             entry.setAuthor(author);
@@ -100,6 +103,9 @@ public class BibTexParser {
             entry.setJournal(journal);
             entry.setVolume(volume);
             entry.setUrl(url);
+            entry.setKeywords(keywords);
+            entry.setDoi(doi);
+            entry.setAbstractText(abstractText);
             entryTaxMap.put(entry, classes);
         }
 
