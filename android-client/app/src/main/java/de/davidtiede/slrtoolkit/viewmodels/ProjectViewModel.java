@@ -123,13 +123,19 @@ public class ProjectViewModel extends AndroidViewModel {
                 List<TaxonomyParserNode> taxonomyParserNodes = taxonomyParser.parse(taxonomyString);
                 for (TaxonomyParserNode node : taxonomyParserNodes) {
                     try {
-                        Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
-                        Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
-                        if(taxonomy != null && entry != null) {
-                            EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
-                            entryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
-                            entryTaxonomyCrossRef.setId(entry.getId());
-                            entryTaxonomyCrossRefs.add(entryTaxonomyCrossRef);
+                        //only if the taxonomy has no child taxonomies a relation is added
+                        if(node.getChildren().size() == 0) {
+                            Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
+                            Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
+                            if (taxonomy != null && entry != null) {
+                                //saved taxonomy also can't have children
+                                if(!taxonomy.isHasChildren()) {
+                                    EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
+                                    entryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
+                                    entryTaxonomyCrossRef.setId(entry.getId());
+                                    entryTaxonomyCrossRefs.add(entryTaxonomyCrossRef);
+                                }
+                            }
                         }
                     } catch (ExecutionException exception) {
                         exception.printStackTrace();

@@ -101,16 +101,13 @@ public class TaxonomyEntriesListFragment extends Fragment {
     }
 
     private void setOnClickListener() {
-        listener = new BibTexEntriesListAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-                Fragment entryFragment = BibtexEntryDetailFragment.newInstance(repoId, clickedEntry.getId());
-                FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
-                ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
-                ft.addToBackStack(null);
-                ft.commit();
-            }
+        listener = (v, position) -> {
+            Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
+            Fragment entryFragment = BibtexEntryDetailFragment.newInstance(repoId, clickedEntry.getId());
+            FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
+            ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
+            ft.addToBackStack(null);
+            ft.commit();
         };
     }
 }

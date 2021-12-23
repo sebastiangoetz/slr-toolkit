@@ -1,13 +1,11 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,32 +74,30 @@ public class BibtexEntryDetailFragment extends Fragment {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
             entryId = projectViewModel.getCurrentEntryIdForCard();
             repoId = projectViewModel.getCurrentRepoId();
-            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-                //titleTextView.setText(entry.getTitle());
-                setEntryInformation(entry);
-            });
+            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         } else if(getActivity() instanceof TaxonomiesActivity){
             if (getArguments() != null) {
                 repoId = getArguments().getInt(ARG_PARAM1);
                 entryId = getArguments().getInt(ARG_PARAM2);
             }
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
-            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-                setEntryInformation(entry);
-            });
+            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         }
 
-        classifyButton.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), ClassificationActivity.class);
-            intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entryId);
-            startActivity(intent);
-            ((Activity) getActivity()).overridePendingTransition(0, 0);
-        });
+        setOnClickListener();
     }
 
     public void setEntryInformation(Entry entry) {
         titleTextView.setText(entry.getTitle());
         //TODO: set other fields
+    }
+
+    public void setOnClickListener() {
+        classifyButton.setOnClickListener(view1 -> {
+            Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+            intent.putExtra("repo", repoId);
+            intent.putExtra("entry", entryId);
+            startActivity(intent);
+        });
     }
 }
