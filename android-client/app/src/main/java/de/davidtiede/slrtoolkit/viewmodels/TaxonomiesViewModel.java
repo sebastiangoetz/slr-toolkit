@@ -9,12 +9,14 @@ import java.util.List;
 
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
-import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
     private int currentRepoId;
+    private int currentEntryIdForCard;
+    private int currentTaxonomyId;
     private final TaxonomyRepository taxonomyRepository;
     private final EntryRepository entryRepository;
 
@@ -32,11 +34,31 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         return currentRepoId;
     }
 
+    public void setCurrentEntryIdForCard(int currentEntryIdForCard) {
+        this.currentEntryIdForCard = currentEntryIdForCard;
+    }
+
+    public void setCurrentTaxonomyId(int currentTaxonomyId) {
+        this.currentTaxonomyId = currentTaxonomyId;
+    }
+
+    public int getCurrentEntryIdForCard() {
+        return currentEntryIdForCard;
+    }
+
+    public int getCurrentTaxonomyId() {
+        return currentTaxonomyId;
+    }
+
     public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
         return taxonomyRepository.getChildTaxonomies(repoId, parentId);
     }
 
     public LiveData<Entry> getEntryById(int id) {
         return entryRepository.getEntryById(id);
+    }
+
+    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
+        return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

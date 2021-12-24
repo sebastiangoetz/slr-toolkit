@@ -109,7 +109,8 @@ public class TaxonomyListFragment extends Fragment {
                 ft.commit();
             } else {
                 //no child taxonomies, display entries for the taxonomy
-                Fragment entriesFragment = TaxonomyEntriesListFragment.newInstance(taxonomiesViewModel.getCurrentRepoId(), clickedTaxonomy.getTaxonomyId());
+                taxonomiesViewModel.setCurrentTaxonomyId(clickedTaxonomy.getTaxonomyId());
+                Fragment entriesFragment = new TaxonomyEntriesListFragment();
                 FragmentTransaction ft = this.getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.taxonomies_fragment_container_view, entriesFragment);
                 ft.addToBackStack(null);

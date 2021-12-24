@@ -20,19 +20,14 @@ import java.util.List;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
-import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaxonomyEntriesListFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class TaxonomyEntriesListFragment extends Fragment {
-    private static final String ARG_PARAM1 = "repoId";
-    private static final String ARG_PARAM2 = "currentTaxonomyId";
-
-    private static ProjectViewModel projectViewModel;
+    private static TaxonomiesViewModel taxonomiesViewModel;
     private RecyclerView taxonomyEntriesRecyclerView;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
@@ -45,30 +40,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param repoId Parameter 1.
-     * @param currentItemId Parameter 2.
-     * @return A new instance of fragment TaxonomyEntriesFragment.
-     */
-    public static TaxonomyEntriesListFragment newInstance(int repoId, int currentItemId) {
-        TaxonomyEntriesListFragment fragment = new TaxonomyEntriesListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, repoId);
-        args.putInt(ARG_PARAM2, currentItemId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            repoId = getArguments().getInt(ARG_PARAM1);
-            currentTaxonomyId = getArguments().getInt(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -80,6 +54,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
+        taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
+        repoId = taxonomiesViewModel.getCurrentRepoId();
+        currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
         taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
         noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -88,9 +65,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.addItemDecoration(dividerItemDecoration);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
-        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
-
-        projectViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
@@ -106,7 +81,8 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-            Fragment entryFragment = BibtexEntryDetailFragment.newInstance(repoId, clickedEntry.getId());
+            taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
+            Fragment entryFragment = new BibtexEntryDetailFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
             ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
             ft.addToBackStack(null);

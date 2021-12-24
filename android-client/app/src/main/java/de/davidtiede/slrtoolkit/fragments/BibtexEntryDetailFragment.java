@@ -26,8 +26,6 @@ import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
  */
 public class BibtexEntryDetailFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "repoId";
-    private static final String ARG_PARAM2 = "entryId";
     private TextView titleTextView;
     private TextView authorsTextView;
     private TextView yearTextView;
@@ -41,23 +39,6 @@ public class BibtexEntryDetailFragment extends Fragment {
 
     public BibtexEntryDetailFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param repoId Parameter 1.
-     * @param entryId Parameter 2.
-     * @return A new instance of fragment TaxonomyEntriesFragment.
-     */
-    public static BibtexEntryDetailFragment newInstance(int repoId, int entryId) {
-        BibtexEntryDetailFragment fragment = new BibtexEntryDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, repoId);
-        args.putInt(ARG_PARAM2, entryId);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -88,11 +69,9 @@ public class BibtexEntryDetailFragment extends Fragment {
             repoId = projectViewModel.getCurrentRepoId();
             projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         } else if(getActivity() instanceof TaxonomiesActivity){
-            if (getArguments() != null) {
-                repoId = getArguments().getInt(ARG_PARAM1);
-                entryId = getArguments().getInt(ARG_PARAM2);
-            }
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
+            repoId = taxonomiesViewModel.getCurrentRepoId();
+            entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         }
 
