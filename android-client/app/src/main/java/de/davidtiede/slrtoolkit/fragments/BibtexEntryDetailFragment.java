@@ -34,6 +34,7 @@ public class BibtexEntryDetailFragment extends Fragment {
     private TextView doiTextView;
     private TextView keywordsTextView;
     private Button classifyButton;
+    private Button deleteButton;
     private int entryId;
     private int repoId;
 
@@ -62,20 +63,38 @@ public class BibtexEntryDetailFragment extends Fragment {
         doiTextView = view.findViewById(R.id.bibtex_entry_doi);
         keywordsTextView = view.findViewById(R.id.bibtex_entry_keywords);
         classifyButton = view.findViewById(R.id.classify_entry_button);
+        deleteButton = view.findViewById(R.id.delete_entry_button);
 
         if(getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
             entryId = projectViewModel.getCurrentEntryIdForCard();
             repoId = projectViewModel.getCurrentRepoId();
-            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
+            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
+                setEntryInformation(entry);
+
+                deleteButton.setOnClickListener(v -> {
+                    //getActivity().getFragmentManager().popBackStack();
+                    projectViewModel.delete(entry, repoId);
+                    getActivity().onBackPressed();
+                });
+            });
+
+
         } else if(getActivity() instanceof TaxonomiesActivity){
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
             repoId = taxonomiesViewModel.getCurrentRepoId();
             entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
-            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
+            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
+                setEntryInformation(entry);
+
+                deleteButton.setOnClickListener(v -> {
+                    taxonomiesViewModel.deleteEntry(entry, repoId);
+                    getActivity().onBackPressed();
+                });
+            });
         }
 
-        setOnClickListener();
+        setClassifyOnClickListener();
     }
 
     public void setEntryInformation(Entry entry) {
@@ -88,7 +107,7 @@ public class BibtexEntryDetailFragment extends Fragment {
         keywordsTextView.setText(entry.getKeywords());
     }
 
-    public void setOnClickListener() {
+    public void setClassifyOnClickListener() {
         classifyButton.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), ClassificationActivity.class);
             intent.putExtra("repo", repoId);
