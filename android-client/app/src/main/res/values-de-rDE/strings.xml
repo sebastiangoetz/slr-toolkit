@@ -36,4 +36,13 @@
     <string name="entry_detail_heading_doi">DOI</string>
     <string name="entry_detail_heading_keywords">Schlüsselworte</string>
     <string name="entry_detail_heading_url">URL</string>
+    <string name="button_classify">Klassifizieren</string>
+    <string name="button_filter">Filtern</string>
+    <string name="button_pull">Pull</string>
+    <string name="button_commit">Commit</string>
+    <string name="button_entries_by_taxonomy">Einträge nach Taxonomie</string>
+    <string name="button_all_entries">Alle Einträge</string>
+    <string name="button_keep">Behalten</string>
+    <string name="button_discard">Verwerfen</string>
+    <string name="button_delete">Löschen</string>
 </resources>

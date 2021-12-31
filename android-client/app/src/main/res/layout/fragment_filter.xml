@@ -38,14 +38,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Discard" />
+            android:text="@string/button_discard" />
 
         <Button
             android:id="@+id/keep_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Keep" />
+            android:text="@string/button_keep" />
 
     </LinearLayout>
 
