@@ -20,6 +20,7 @@ public class Entry {
     private String abstractText;
     private String doi;
     private String keywords;
+    private String type;
     @TypeConverters(StatusConverter.class)
     private Status status;
 
@@ -89,6 +90,10 @@ public class Entry {
         return keywords;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -139,6 +144,10 @@ public class Entry {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public enum Status {

@@ -101,6 +101,7 @@ public class BibTexParser {
             entry.setKeywords(safeGetField(bibTeXEntry, new Key("keywords")));
             entry.setDoi(safeGetField(bibTeXEntry, new Key("doi")));
             entry.setAbstractText(safeGetField(bibTeXEntry, new Key("abstract")));
+            entry.setType(safeGetField(bibTeXEntry, BibTeXEntry.KEY_TYPE));
 
             String classes = safeGetField(bibTeXEntry, new Key("classes"));
 

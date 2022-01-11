@@ -2,7 +2,10 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -10,6 +13,7 @@ import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
+import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntriesDao;
 
@@ -55,5 +59,19 @@ public class TaxonomyWithEntriesRepository {
         Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyWithEntriesDirectly(repoId, parentId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
+    }
+
+    public Map<Taxonomy, Integer> getNumberOfEntriesForTaxonomy(int repoId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomiesWithEntriesDirectly(repoId);
+        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        List<TaxonomyWithEntries> taxonomyWithEntries = future.get();
+        Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
+        for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
+            Taxonomy currentTaxonomy = taxWithEntries.taxonomy;
+            if(!currentTaxonomy.isHasChildren()) {
+                numberOfEntriesForTaxonomy.put(currentTaxonomy, taxWithEntries.entries.size());
+            }
+        }
+        return numberOfEntriesForTaxonomy;
     }
 }
