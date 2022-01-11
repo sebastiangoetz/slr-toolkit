@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import de.davidtiede.slrtoolkit.AnalyzeActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.TaxonomiesActivity;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
@@ -30,6 +31,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button filterButton;
     private Button taxonomyButton;
     private Button classifyButton;
+    private Button analyzeButton;
     private ProjectViewModel projectViewModel;
     private int repoId;
 
@@ -51,6 +53,7 @@ public class ProjectOverviewFragment extends Fragment {
         filterButton = view.findViewById(R.id.button_filter);
         taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         classifyButton = view.findViewById(R.id.button_classify);
+        analyzeButton = view.findViewById(R.id.button_analyze);
         projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
         repoId = projectViewModel.getCurrentRepoId();
 
@@ -77,6 +80,13 @@ public class ProjectOverviewFragment extends Fragment {
         classifyButton.setOnClickListener(v -> {
             NavHostFragment.findNavController(ProjectOverviewFragment.this)
                     .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment);
+        });
+
+        analyzeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AnalyzeActivity.class);
+            intent.putExtra("repo", projectViewModel.getCurrentRepoId());
+            startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
         });
 
         final Observer entryAmountObserver = (Observer<Integer>) amount -> allEntryButton.setText("All Entries (" + amount.toString() + ")");

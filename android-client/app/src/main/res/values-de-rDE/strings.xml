@@ -42,6 +42,7 @@
     <string name="button_commit">Commit</string>
     <string name="button_entries_by_taxonomy">Einträge nach Taxonomie</string>
     <string name="button_all_entries">Alle Einträge</string>
+    <string name="button_analyze">Analyze</string>
     <string name="button_keep">Behalten</string>
     <string name="button_discard">Verwerfen</string>
     <string name="button_delete">Löschen</string>
