@@ -14,10 +14,19 @@ import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 public class AnalyzeViewModel extends AndroidViewModel {
 
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
+    private int currentRepoId;
 
     public AnalyzeViewModel(@NonNull Application application) {
         super(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
+    }
+
+    public int getCurrentRepoId() {
+        return currentRepoId;
+    }
+
+    public void setCurrentRepoId(int currentRepoId) {
+        this.currentRepoId = currentRepoId;
     }
 
     public Map<Taxonomy, Integer> getNumberOfEntriesForTaxonomy(int repoId) throws ExecutionException, InterruptedException {
