@@ -1,6 +1,5 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,24 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +54,7 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         AnalyzeViewModel analyzeViewModel = new ViewModelProvider(requireActivity()).get(AnalyzeViewModel.class);
-        int repoId = 1;
+        int repoId = analyzeViewModel.getCurrentRepoId();
         barChart = view.findViewById(R.id.barchart);
 
         try{
@@ -66,30 +67,108 @@ public class BarChartFragment extends Fragment {
         }
     }
 
-    private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
+    /*private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
         List<BarEntry> entries = new ArrayList<>();
 
         int count = 0;
-        ArrayList<String> xAxisLabels = new ArrayList<>();
+        //ArrayList<String> xAxisLabels = new ArrayList<>();
+        String xAxisLabels[] = new String[taxonomyWithNumEntries.keySet().size()];
+        int num = 0;
+        for(Taxonomy taxonomy : taxonomyWithNumEntries.keySet()) {
+            xAxisLabels[num] = taxonomy.getName();
+            num++;
+        }
         for(Taxonomy taxonomy: taxonomyWithNumEntries.keySet()) {
             int number = taxonomyWithNumEntries.get(taxonomy);
-            BarEntry entry = new BarEntry(count, number, taxonomy.getName());
+            BarEntry entry = new BarEntry(count, number, xAxisLabels);
             entries.add(entry);
-            xAxisLabels.add(taxonomy.getName());
+            //xAxisLabels.add(taxonomy.getName());
+            System.out.println("number and name");
+            System.out.println(number);
+            System.out.println(taxonomy.getName());
             count++;
         }
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setLabelCount(xAxisLabels.size(), true);
+        xAxis.setLabelCount(10, true);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
         xAxis.setLabelRotationAngle(-45);
+        xAxis.setCenterAxisLabels(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
+        //xAxis.setGranularity(1f);
+        //xAxis.setGranularityEnabled(true);
 
         BarDataSet dataSet = new BarDataSet(entries, "Taxonomies"); // add entries to dataset
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
+        barChart.setVisibleXRangeMaximum(10);
         barChart.invalidate(); // refresh
+    }*/
+
+    /*private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
+        int[] numArr = {1, 2, 3, 4, 2, 2};
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+        int index = 1;
+        for (int num : numArr) {
+            entries.add(new BarEntry(index, num));
+            index ++;
+        }
+        BarDataSet dataSet = new BarDataSet(entries, "Numbers");
+        BarData data = new BarData(dataSet);
+
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+        xAxis.setValueFormatter(xAxisFormatter);
+
+        barChart.setData(data);
+        barChart.invalidate();
+    }*/
+
+    private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+        int index = 1;
+        for(Taxonomy taxonomy : taxonomyWithNumEntries.keySet()) {
+            if(index > 7) {
+                break;
+            }
+            BarEntry barEntry = new BarEntry(index, taxonomyWithNumEntries.get(taxonomy), taxonomy.getName());
+            entries.add(barEntry);
+            index++;
+        }
+        BarDataSet dataSet = new BarDataSet(entries, "Numbers");
+        BarData data = new BarData(dataSet);
+
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart, entries);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+        xAxis.setLabelRotationAngle(45);
+        xAxis.setValueFormatter(xAxisFormatter);
+
+        barChart.setData(data);
+        barChart.invalidate();
+    }
+
+    public class DayAxisValueFormatter extends ValueFormatter {
+        private final BarLineChartBase<?> chart;
+        List<BarEntry> entries;
+        public DayAxisValueFormatter(BarLineChartBase<?> chart, List<BarEntry> entries) {
+            this.chart = chart;
+            this.entries = entries;
+        }
+        @Override
+        public String getFormattedValue(float value) {
+            String title = (String) entries.get(Math.round(value)-1).getData();
+            if(title.length() < 15) {
+                return title;
+            }
+            return title.substring(0, 20) + "...";
+        }
     }
 }
