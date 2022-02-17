@@ -2,13 +2,16 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 import android.os.Build;
+import android.telecom.Call;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -122,6 +125,5 @@ public class TaxonomyRepository {
         Callable<Taxonomy> getCallable = () -> taxonomyDao.getTaxonomyByRepoAndPathDirectly(repoId, path);
         Future<Taxonomy> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
-
     }
 }

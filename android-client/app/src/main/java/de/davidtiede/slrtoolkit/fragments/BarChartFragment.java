@@ -11,25 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.BarLineChartBase;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
 
 /**
@@ -60,25 +54,23 @@ public class BarChartFragment extends Fragment {
         try{
             Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForTaxonomy(repoId);
             setBarChart(taxonomyWithNumEntries);
-        } catch (InterruptedException exception) {
-            exception.printStackTrace();
-        } catch (ExecutionException exception) {
+        } catch (InterruptedException | ExecutionException exception) {
             exception.printStackTrace();
         }
     }
 
     private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
-        List<BarEntry> entries = new ArrayList<BarEntry>();
+        List<BarEntry> entries = new ArrayList<>();
         int index = 1;
         for(Taxonomy taxonomy : taxonomyWithNumEntries.keySet()) {
             BarEntry barEntry = new BarEntry(index, taxonomyWithNumEntries.get(taxonomy), taxonomy.getName());
             entries.add(barEntry);
             index++;
         }
-        BarDataSet dataSet = new BarDataSet(entries, "Numbers");
+        BarDataSet dataSet = new BarDataSet(entries, "Amount of entries for taxonomy");
         BarData data = new BarData(dataSet);
 
-        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(barChart, entries);
+        ValueFormatter xAxisFormatter = new DayAxisValueFormatter(entries);
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -91,11 +83,9 @@ public class BarChartFragment extends Fragment {
         barChart.invalidate();
     }
 
-    public class DayAxisValueFormatter extends ValueFormatter {
-        private final BarLineChartBase<?> chart;
+    public static class DayAxisValueFormatter extends ValueFormatter {
         List<BarEntry> entries;
-        public DayAxisValueFormatter(BarLineChartBase<?> chart, List<BarEntry> entries) {
-            this.chart = chart;
+        public DayAxisValueFormatter(List<BarEntry> entries) {
             this.entries = entries;
         }
         @Override

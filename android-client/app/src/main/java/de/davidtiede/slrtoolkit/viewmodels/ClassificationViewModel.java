@@ -82,6 +82,6 @@ public class ClassificationViewModel extends AndroidViewModel {
     }
 
     public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        return taxonomyWithEntriesRepository.getTaxonomyWithEntriesDirectly(repoId, parentId);
+        return taxonomyWithEntriesRepository.getChildTaxonomiesForTaxonomyId(repoId, parentId);
     }
 }

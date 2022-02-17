@@ -2,7 +2,6 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +54,8 @@ public class TaxonomyWithEntriesRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entryTaxonomyCrossRef));
     }
 
-    public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyWithEntriesDirectly(repoId, parentId);
+    public List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getChildTaxonomiesForTaxonomyId(repoId, parentId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
     }
@@ -73,5 +72,11 @@ public class TaxonomyWithEntriesRepository {
             }
         }
         return numberOfEntriesForTaxonomy;
+    }
+
+    public List<TaxonomyWithEntries> getTaxonomyIdsWithLeafChildTaxonomies(int repoId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyIdsWithLeafChildTaxonomies(repoId);
+        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
     }
 }
