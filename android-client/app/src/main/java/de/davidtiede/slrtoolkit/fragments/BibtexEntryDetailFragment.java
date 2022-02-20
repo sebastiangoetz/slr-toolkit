@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,14 +36,8 @@ public class BibtexEntryDetailFragment extends Fragment {
     private TextView abstractTextView;
     private TextView doiTextView;
     private TextView keywordsTextView;
-    private Button classifyButton;
-    private Button deleteButton;
     private int entryId;
     private int repoId;
-
-    public BibtexEntryDetailFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +47,7 @@ public class BibtexEntryDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bibtex_entry_detail, container, false);
     }
@@ -62,8 +60,6 @@ public class BibtexEntryDetailFragment extends Fragment {
         abstractTextView = view.findViewById(R.id.bibtex_entry_abstract);
         doiTextView = view.findViewById(R.id.bibtex_entry_doi);
         keywordsTextView = view.findViewById(R.id.bibtex_entry_keywords);
-        classifyButton = view.findViewById(R.id.classify_entry_button);
-        deleteButton = view.findViewById(R.id.delete_entry_button);
 
         if(getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
@@ -71,12 +67,6 @@ public class BibtexEntryDetailFragment extends Fragment {
             repoId = projectViewModel.getCurrentRepoId();
             projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
                 setEntryInformation(entry);
-
-                deleteButton.setOnClickListener(v -> {
-                    //getActivity().getFragmentManager().popBackStack();
-                    projectViewModel.delete(entry, repoId);
-                    getActivity().onBackPressed();
-                });
             });
 
 
@@ -86,15 +76,9 @@ public class BibtexEntryDetailFragment extends Fragment {
             entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
                 setEntryInformation(entry);
-
-                deleteButton.setOnClickListener(v -> {
-                    taxonomiesViewModel.deleteEntry(entry, repoId);
-                    getActivity().onBackPressed();
-                });
             });
         }
 
-        setClassifyOnClickListener();
     }
 
     public void setEntryInformation(Entry entry) {
@@ -107,12 +91,49 @@ public class BibtexEntryDetailFragment extends Fragment {
         keywordsTextView.setText(entry.getKeywords());
     }
 
-    public void setClassifyOnClickListener() {
-        classifyButton.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), ClassificationActivity.class);
-            intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entryId);
-            startActivity(intent);
-        });
+    private void deleteEntry() {
+        if(getActivity() instanceof ProjectActivity) {
+            ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+            entryId = projectViewModel.getCurrentEntryIdForCard();
+            repoId = projectViewModel.getCurrentRepoId();
+            projectViewModel.deleteById(entryId, repoId);
+            getActivity().onBackPressed();
+
+        } else if(getActivity() instanceof TaxonomiesActivity){
+            TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
+            repoId = taxonomiesViewModel.getCurrentRepoId();
+            entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
+            taxonomiesViewModel.deleteEntryById(entryId, repoId);
+            getActivity().onBackPressed();
+        }
+    }
+
+    private void classifyEntry() {
+        Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+        intent.putExtra("repo", repoId);
+        intent.putExtra("entry", entryId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_entry_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_delete: {
+                System.out.println("Delete");
+                deleteEntry();
+                break;
+            }
+            case R.id.action_classify: {
+                System.out.println("classify");
+                classifyEntry();
+            }
+        }
+        return false;
     }
 }

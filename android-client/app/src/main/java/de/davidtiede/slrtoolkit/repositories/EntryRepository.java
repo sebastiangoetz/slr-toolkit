@@ -121,4 +121,10 @@ public class EntryRepository {
     public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
         return entryDao.getEntriesWithoutTaxonomiesCount(repoId);
     }
+
+    public Entry getEntryByIdDirectly(int id) throws ExecutionException, InterruptedException {
+        Callable<Entry> getCallable = () -> entryDao.getEntryByIdDirectly(id);
+        Future<Entry> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+    }
 }

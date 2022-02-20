@@ -170,8 +170,27 @@ public class ProjectViewModel extends AndroidViewModel {
         }
     }
 
+    public void deleteById(int entryId, int id) {
+        Entry entry = getEntryByIdDirectly(entryId);
+        if(entry != null) {
+            delete(entry, id);
+        }
+    }
+
     public LiveData<Entry> getEntryById(int id) {
         return entryRepository.getEntryById(id);
+    }
+
+    public Entry getEntryByIdDirectly(int id) {
+        Entry entry;
+        try {
+            return entryRepository.getEntryByIdDirectly(id);
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        } catch (ExecutionException exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 
     public LiveData<List<Entry>> getOpenEntriesForRepo(int repoId) {

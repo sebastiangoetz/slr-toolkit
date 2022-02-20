@@ -86,4 +86,23 @@ public class TaxonomiesViewModel extends AndroidViewModel {
             entryRepository.delete(entry, repo);
         }
     }
+
+    public void deleteEntryById(int entryId, int id) {
+        Entry entry = getEntryByIdDirectly(entryId);
+        if(entry != null) {
+            deleteEntry(entry, id);
+        }
+    }
+
+    public Entry getEntryByIdDirectly(int id) {
+        Entry entry;
+        try {
+            return entryRepository.getEntryByIdDirectly(id);
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        } catch (ExecutionException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
 }

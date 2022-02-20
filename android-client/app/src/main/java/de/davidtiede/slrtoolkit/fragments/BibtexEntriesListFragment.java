@@ -48,7 +48,6 @@ public class BibtexEntriesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.println("IN BIBTEX ENTRIES LIST FRAGMENT");
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_bibtex_entries_list, container, false);
     }

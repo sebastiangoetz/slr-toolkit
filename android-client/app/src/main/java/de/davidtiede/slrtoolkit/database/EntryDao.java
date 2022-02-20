@@ -57,4 +57,7 @@ public abstract class EntryDao {
 
     @Query("SELECT COUNT(id) FROM ENTRY e WHERE repoId=:repoId AND NOT EXISTS (SELECT * FROM EntryTaxonomyCrossRef etcr WHERE e.id=etcr.id)")
     public abstract LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId);
+
+    @Query("SELECT * FROM entry WHERE id=:id")
+    public abstract Entry getEntryByIdDirectly(int id);
 }
