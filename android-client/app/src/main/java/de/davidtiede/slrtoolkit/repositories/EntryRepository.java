@@ -40,9 +40,8 @@ public class EntryRepository {
         fileUtil = new FileUtil();
     }
 
-
-    public LiveData<List<Entry>> getEntryForRepo(int id) {
-        return entryDao.getEntriesForRepo(id);
+    public LiveData<List<Entry>> getEntriesForRepoWithSearchQuery(int repoId, String searchQuery) {
+        return entryDao.getEntriesForRepoWithSearchQuery(repoId, searchQuery);
     }
 
     public void update(Entry entry) {

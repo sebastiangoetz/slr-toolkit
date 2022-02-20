@@ -12,8 +12,8 @@ import java.util.List;
 
 @Dao
 public abstract class EntryDao {
-    @Query("SELECT * FROM entry WHERE repoId=:id ")
-    public abstract LiveData<List<Entry>> getEntriesForRepo(int id);
+    @Query("SELECT * FROM entry WHERE repoId=:id AND title LIKE '%' || :searchQuery || '%' ")
+    public abstract LiveData<List<Entry>> getEntriesForRepoWithSearchQuery(int id, String searchQuery);
 
     @Delete
     public abstract void delete(Entry entry);

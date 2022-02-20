@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/arrow.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/layout/activity_analyze.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/activity_bibtex_entries.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_classification.xml" value="0.15364583333333334" />
@@ -39,6 +40,7 @@
         <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_classify.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/menu/menu_project.xml" value="0.165" />
       </map>
     </option>
   </component>

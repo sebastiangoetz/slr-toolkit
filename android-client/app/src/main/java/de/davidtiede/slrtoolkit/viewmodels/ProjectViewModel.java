@@ -22,7 +22,6 @@ import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
@@ -148,8 +147,8 @@ public class ProjectViewModel extends AndroidViewModel {
         taxonomyWithEntriesRepository.insertAll(entryTaxonomyCrossRefs);
     }
 
-    public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
-        return entryRepository.getEntryForRepo(repoId);
+    public LiveData<List<Entry>> getEntriesForRepoWithSearchQuery(int repoId, String searchQueary) {
+        return entryRepository.getEntriesForRepoWithSearchQuery(repoId, searchQueary);
     }
 
     public Repo getRepoByIdDirectly(int id) {

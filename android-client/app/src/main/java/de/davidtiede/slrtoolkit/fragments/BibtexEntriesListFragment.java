@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -12,8 +11,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,8 +29,6 @@ import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link BibtexEntriesListFragment} factory method to
- * create an instance of this fragment.
  */
 public class BibtexEntriesListFragment extends Fragment {
 
@@ -47,6 +48,8 @@ public class BibtexEntriesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        System.out.println("IN BIBTEX ENTRIES LIST FRAGMENT");
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_bibtex_entries_list, container, false);
     }
 
@@ -68,8 +71,7 @@ public class BibtexEntriesListFragment extends Fragment {
                 ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        projectViewModel.getEntriesForRepo(repoId).observe(getViewLifecycleOwner(), this::onLoaded);
-
+        this.setEntries("");
     }
 
     private void setOnClickListener() {
@@ -81,14 +83,39 @@ public class BibtexEntriesListFragment extends Fragment {
         };
     }
 
+    private void setEntries(String searchQuery) {
+        projectViewModel.getEntriesForRepoWithSearchQuery(repoId, searchQuery).observe(getViewLifecycleOwner(), this::onLoaded);
+    }
+
     private void onLoaded(List<Entry> list){
         if (list.size() == 0) {
-            System.out.println("No entries");
+            recyclerView.setVisibility(View.INVISIBLE);
             noEntriesTextView.setVisibility(View.VISIBLE);
         }
         else {
+            recyclerView.setVisibility(View.VISIBLE);
             noEntriesTextView.setVisibility(View.INVISIBLE);
             adapter.submitList(list);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_entries_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                setEntries(s);
+                return true;
+            }
+        });
     }
 }
