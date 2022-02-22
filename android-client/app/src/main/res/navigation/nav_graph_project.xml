@@ -29,7 +29,7 @@
         tools:layout="@layout/fragment_bibtex_entries_list" >
         <action
             android:id="@+id/action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment"
-            app:destination="@id/bibtexEntryDetailFragment" />
+            app:destination="@id/bibtexEntriesDetailViewPager" />
     </fragment>
     <fragment
         android:id="@+id/bibtexEntryDetailFragment"
@@ -48,4 +48,8 @@
         android:id="@+id/entriesToClassifyViewPagerFragment"
         android:name="de.davidtiede.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"
         android:label="EntriesToClassifyViewPagerFragment" />
+    <fragment
+        android:id="@+id/bibtexEntriesDetailViewPager"
+        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntriesDetailViewPagerFragment"
+        android:label="EntriesDetailViewPagerFragment" />
 </navigation>

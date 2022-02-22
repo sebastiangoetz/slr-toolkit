@@ -23,6 +23,7 @@
         <entry key="app/src/main/res/layout/fragment_add_project_1.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_add_project_2.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_bar_chart.xml" value="0.14387031408308004" />
+        <entry key="app/src/main/res/layout/fragment_bibtex_entries_detail_view_pager.xml" value="0.13677536231884058" />
         <entry key="app/src/main/res/layout/fragment_bibtex_entries_list.xml" value="0.15364583333333334" />
         <entry key="app/src/main/res/layout/fragment_bibtex_entry_detail.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_bubble_chart.xml" value="0.15070921985815602" />

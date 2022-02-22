@@ -11,6 +11,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,12 +28,11 @@ import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EntriesToClassifyViewPagerFragment extends Fragment {
-
+public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     ViewPager2 viewPager;
     ProjectViewModel projectViewModel;
+    private TextView noEntriesDetails;
     private FragmentStateAdapter pagerAdapter;
-    private TextView noEntriesToClassifyTextview;
     int repoId;
 
     @Override
@@ -42,29 +44,51 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_entries_to_classify_view_pager, container, false);
+        return inflater.inflate(R.layout.fragment_bibtex_entries_detail_view_pager, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         repoId = projectViewModel.getCurrentRepoId();
-        viewPager = view.findViewById(R.id.classify_entries_viewpager);
-        noEntriesToClassifyTextview = view.findViewById(R.id.textview_no_entries_to_classify);
-        pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
+        viewPager = view.findViewById(R.id.entries_detail_viewpager);
+        noEntriesDetails = view.findViewById(R.id.textview_no_entries_details);
+        pagerAdapter = new BibtexEntriesDetailViewPagerFragment.EntrySlidePagerAdapter(BibtexEntriesDetailViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
         viewPager.setAdapter(pagerAdapter);
 
-        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
-            @Override
-            public void onChanged(List<Entry> entries) {
-                if(entries.size() == 0) {
-                    noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
-                } else {
-                    noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
-                    pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), entries);
-                    viewPager.setAdapter(pagerAdapter);
-                }
+        List<Entry> entries = projectViewModel.getCurrentEntriesInList();
+        if(entries.size() == 0) {
+            noEntriesDetails.setVisibility(View.VISIBLE);
+        } else {
+            noEntriesDetails.setVisibility(View.INVISIBLE);
+            pagerAdapter = new BibtexEntriesDetailViewPagerFragment.EntrySlidePagerAdapter(BibtexEntriesDetailViewPagerFragment.this.getActivity(), entries);
+            viewPager.setAdapter(pagerAdapter);
+        }
+        int currentItemPosition = projectViewModel.getCurrentEntryInListCount();
+        if(currentItemPosition != 0 && currentItemPosition < entries.size()) {
+            viewPager.setCurrentItem(currentItemPosition, false);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_entry_detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_delete: {
+                System.out.println("Delete");
+                //deleteEntry();
+                break;
             }
-        });
+            case R.id.action_classify: {
+                System.out.println("classify");
+                //classifyEntry();
+            }
+        }
+        return false;
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {

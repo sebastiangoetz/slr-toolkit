@@ -39,6 +39,8 @@ public class ProjectViewModel extends AndroidViewModel {
     private Application application;
     private int currentRepoId;
     private int currentEntryIdForCard;
+    private List<Entry> currentEntriesInList;
+    private int currentEntryInListCount;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
@@ -47,6 +49,22 @@ public class ProjectViewModel extends AndroidViewModel {
         taxonomyRepository = new TaxonomyRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
         this.application = application;
+    }
+
+    public int getCurrentEntryInListCount() {
+        return currentEntryInListCount;
+    }
+
+    public void setCurrentEntryInListCount(int currentEntryInListCount) {
+        this.currentEntryInListCount = currentEntryInListCount;
+    }
+
+    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+        this.currentEntriesInList = currentEntriesInList;
+    }
+
+    public List<Entry> getCurrentEntriesInList() {
+        return currentEntriesInList;
     }
 
     public int getCurrentRepoId() {

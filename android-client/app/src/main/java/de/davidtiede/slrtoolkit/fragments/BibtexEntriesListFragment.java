@@ -77,6 +77,7 @@ public class BibtexEntriesListFragment extends Fragment {
         listener = (v, position) -> {
             Entry clickedEntry = adapter.getItemAtPosition(position);
             projectViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
+            projectViewModel.setCurrentEntryInListCount(position);
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
                     .navigate(R.id.action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment);
         };
@@ -87,6 +88,7 @@ public class BibtexEntriesListFragment extends Fragment {
     }
 
     private void onLoaded(List<Entry> list){
+        projectViewModel.setCurrentEntriesInList(list);
         if (list.size() == 0) {
             recyclerView.setVisibility(View.INVISIBLE);
             noEntriesTextView.setVisibility(View.VISIBLE);

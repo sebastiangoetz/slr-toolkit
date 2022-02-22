@@ -114,26 +114,4 @@ public class BibtexEntryDetailFragment extends Fragment {
         intent.putExtra("entry", entryId);
         startActivity(intent);
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_entry_detail, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_delete: {
-                System.out.println("Delete");
-                deleteEntry();
-                break;
-            }
-            case R.id.action_classify: {
-                System.out.println("classify");
-                classifyEntry();
-            }
-        }
-        return false;
-    }
 }
