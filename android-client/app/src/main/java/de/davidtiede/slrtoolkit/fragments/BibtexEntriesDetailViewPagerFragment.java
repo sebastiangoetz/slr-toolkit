@@ -1,5 +1,6 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.davidtiede.slrtoolkit.ClassificationActivity;
+import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.TaxonomiesActivity;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +48,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bibtex_entries_detail_view_pager, container, false);
     }
@@ -69,6 +75,20 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         }
     }
 
+    private void classifyEntry() {
+        Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+        Entry entry = projectViewModel.getCurrentEntriesInList().get(viewPager.getCurrentItem());
+        intent.putExtra("repo", repoId);
+        intent.putExtra("entry", entry.getId());
+        startActivity(intent);
+    }
+
+    private void deleteEntry() {
+        Entry entry = projectViewModel.getCurrentEntriesInList().get(viewPager.getCurrentItem());
+        projectViewModel.deleteById(entry.getId(), repoId);
+        getActivity().onBackPressed();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_entry_detail, menu);
@@ -79,13 +99,11 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_delete: {
-                System.out.println("Delete");
-                //deleteEntry();
+                deleteEntry();
                 break;
             }
             case R.id.action_classify: {
-                System.out.println("classify");
-                //classifyEntry();
+                classifyEntry();
             }
         }
         return false;
