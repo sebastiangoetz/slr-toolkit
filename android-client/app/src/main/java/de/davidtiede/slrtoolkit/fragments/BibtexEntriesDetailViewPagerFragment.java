@@ -104,7 +104,11 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
             }
             case R.id.action_classify: {
                 classifyEntry();
+                break;
             }
+            default:
+                System.out.println("An error occurred");
+                break;
         }
         return false;
     }

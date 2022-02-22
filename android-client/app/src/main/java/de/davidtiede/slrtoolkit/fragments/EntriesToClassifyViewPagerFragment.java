@@ -1,5 +1,6 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.davidtiede.slrtoolkit.ClassificationActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
@@ -32,6 +37,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     private FragmentStateAdapter pagerAdapter;
     private TextView noEntriesToClassifyTextview;
     int repoId;
+    List<Entry> entries;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_entries_to_classify_view_pager, container, false);
     }
@@ -55,7 +62,8 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
         projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
             @Override
-            public void onChanged(List<Entry> entries) {
+            public void onChanged(List<Entry> list) {
+                entries = list;
                 if(entries.size() == 0) {
                     noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
                 } else {
@@ -65,6 +73,34 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void classifyEntry() {
+        Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+        Entry entry = entries.get(viewPager.getCurrentItem());
+        intent.putExtra("repo", repoId);
+        intent.putExtra("entry", entry.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_classification, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_classify: {
+                classifyEntry();
+                break;
+            }
+            default:
+                System.out.println("An error occurred");
+                break;
+        }
+        return false;
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {
