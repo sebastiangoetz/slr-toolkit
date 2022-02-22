@@ -76,11 +76,15 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     private void classifyEntry() {
-        Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+        if(entries.size() == 0) return;
         Entry entry = entries.get(viewPager.getCurrentItem());
-        intent.putExtra("repo", repoId);
-        intent.putExtra("entry", entry.getId());
-        startActivity(intent);
+
+        if(entry != null) {
+            Intent intent = new Intent(getActivity(), ClassificationActivity.class);
+            intent.putExtra("repo", repoId);
+            intent.putExtra("entry", entry.getId());
+            startActivity(intent);
+        }
     }
 
     @Override
