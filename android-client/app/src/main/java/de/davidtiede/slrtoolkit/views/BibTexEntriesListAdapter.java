@@ -60,6 +60,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
     }
 
     public Entry getItemAtPosition(int position) {
+        if(position > getCurrentList().size()) return null;
         Entry entry = getItem(position);
         return entry;
     }

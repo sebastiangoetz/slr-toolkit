@@ -81,6 +81,8 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
+            if(clickedEntry == null) return;
+
             taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
             Fragment entryFragment = new BibtexEntryDetailFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();

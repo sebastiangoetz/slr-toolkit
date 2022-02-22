@@ -19,7 +19,9 @@ import android.view.ViewGroup;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
@@ -76,8 +78,12 @@ public class BibtexEntriesListFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             Entry clickedEntry = adapter.getItemAtPosition(position);
+
+            if(clickedEntry == null) return;
+
             projectViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
-            projectViewModel.setCurrentEntryInListCount(position);
+            int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
+            projectViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
                     .navigate(R.id.action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment);
         };
@@ -100,6 +106,16 @@ public class BibtexEntriesListFragment extends Fragment {
         }
     }
 
+    private void filterList(String searchTerm) {
+        List<Entry> filteredEntries = new ArrayList<>();
+        for(Entry e: projectViewModel.getCurrentEntriesInList()) {
+            if(e.getTitle().toLowerCase(Locale.ROOT).contains(searchTerm.toLowerCase(Locale.ROOT))) {
+                filteredEntries.add(e);
+            }
+        }
+        adapter.submitList(filteredEntries);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_entries_list, menu);
@@ -114,7 +130,8 @@ public class BibtexEntriesListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                setEntries(s);
+                //setEntries(s);
+                filterList(s);
                 return true;
             }
         });
