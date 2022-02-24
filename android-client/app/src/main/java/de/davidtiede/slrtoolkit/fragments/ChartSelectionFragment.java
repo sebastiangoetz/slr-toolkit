@@ -32,6 +32,7 @@ public class ChartSelectionFragment extends Fragment {
     String selectedChart;
     TaxonomyWithEntries selectedTaxonomy1;
     TaxonomyWithEntries selectedTaxonomy2;
+    private static final String BUBBLECHART_STRING = "Bubblechart";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class ChartSelectionFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedChart = chartSpinner.getSelectedItem().toString();
 
-                if(selectedChart.equals("Bubblechart")) {
+                if(selectedChart.equals(BUBBLECHART_STRING)) {
                     taxonomySpinner2.setVisibility(View.VISIBLE);
                 } else {
                     taxonomySpinner2.setVisibility(View.INVISIBLE);
@@ -121,7 +122,7 @@ public class ChartSelectionFragment extends Fragment {
         });
 
         analyzeButton.setOnClickListener(v -> {
-            if(selectedChart.equals("Bubblechart")) {
+            if(selectedChart.equals(BUBBLECHART_STRING)) {
                 Fragment bubblechartFragment = new BubbleChartFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.analyze_fragment_container_view, bubblechartFragment);
