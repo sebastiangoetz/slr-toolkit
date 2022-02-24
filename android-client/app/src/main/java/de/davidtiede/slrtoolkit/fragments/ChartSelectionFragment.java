@@ -80,6 +80,12 @@ public class ChartSelectionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedChart = chartSpinner.getSelectedItem().toString();
+
+                if(selectedChart.equals("Bubblechart")) {
+                    taxonomySpinner2.setVisibility(View.VISIBLE);
+                } else {
+                    taxonomySpinner2.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
