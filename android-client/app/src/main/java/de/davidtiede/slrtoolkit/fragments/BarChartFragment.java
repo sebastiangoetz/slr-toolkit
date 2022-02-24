@@ -48,11 +48,12 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         AnalyzeViewModel analyzeViewModel = new ViewModelProvider(requireActivity()).get(AnalyzeViewModel.class);
-        int repoId = analyzeViewModel.getCurrentRepoId();
         barChart = view.findViewById(R.id.barchart);
+        int repoId = analyzeViewModel.getCurrentRepoId();
+        int currentParentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
 
         try{
-            Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForTaxonomy(repoId);
+            Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, currentParentTaxonomyId);
             setBarChart(taxonomyWithNumEntries);
         } catch (InterruptedException | ExecutionException exception) {
             exception.printStackTrace();

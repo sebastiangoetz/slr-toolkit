@@ -66,9 +66,10 @@ public class ChartSelectionFragment extends Fragment {
         //set Spinner for taxonomy Selection
         try {
             List<TaxonomyWithEntries> taxonomyWithEntriesList = analyzeViewModel.getTaxonomiesWithLeafChildTaxonomies(repoId);
-            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
-            taxonomySpinner1.setAdapter(spinnerAdapter);
-            taxonomySpinner2.setAdapter(spinnerAdapter);
+            SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
+            SpinnerAdapter spinnerAdapter2 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
+            taxonomySpinner1.setAdapter(spinnerAdapter1);
+            taxonomySpinner2.setAdapter(spinnerAdapter2);
         } catch (ExecutionException exception) {
             exception.printStackTrace();
         } catch (InterruptedException exception) {
@@ -79,7 +80,6 @@ public class ChartSelectionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedChart = chartSpinner.getSelectedItem().toString();
-                System.out.println(selectedChart);
             }
 
             @Override
@@ -92,7 +92,7 @@ public class ChartSelectionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTaxonomy1 = (TaxonomyWithEntries) taxonomySpinner1.getSelectedItem();
-                System.out.println(selectedTaxonomy1.taxonomy.getName());
+                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor1(selectedTaxonomy1.taxonomy.getTaxonomyId());
             }
 
             @Override
@@ -104,8 +104,8 @@ public class ChartSelectionFragment extends Fragment {
         taxonomySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedTaxonomy2 = (TaxonomyWithEntries) taxonomySpinner1.getSelectedItem();
-                System.out.println(selectedTaxonomy1.taxonomy.getName());
+                selectedTaxonomy2 = (TaxonomyWithEntries) taxonomySpinner2.getSelectedItem();
+                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor2(selectedTaxonomy2.taxonomy.getTaxonomyId());
             }
 
             @Override
@@ -115,8 +115,6 @@ public class ChartSelectionFragment extends Fragment {
         });
 
         analyzeButton.setOnClickListener(v -> {
-            System.out.println("Currently selected");
-            System.out.println(selectedChart);
             if(selectedChart.equals("Bubblechart")) {
                 Fragment bubblechartFragment = new BubbleChartFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();

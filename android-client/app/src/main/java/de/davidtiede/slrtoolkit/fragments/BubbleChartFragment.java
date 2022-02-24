@@ -59,9 +59,8 @@ public class BubbleChartFragment extends Fragment {
         AnalyzeViewModel analyzeViewModel = new ViewModelProvider(requireActivity()).get(AnalyzeViewModel.class);
         int repoId = analyzeViewModel.getCurrentRepoId();
         try {
-            List<TaxonomyWithEntries> parentTaxonomies = analyzeViewModel.getTaxonomiesWithLeafChildTaxonomies(repoId);
-            int parentTaxonomyId1 = parentTaxonomies.get(0).taxonomy.getTaxonomyId();
-            int parentTaxonomyId2 = parentTaxonomies.get(1).taxonomy.getTaxonomyId();
+            int parentTaxonomyId1 = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
+            int parentTaxonomyId2 = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor2();
             List<TaxonomyWithEntries> childTaxonomies1 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId1);
             List<TaxonomyWithEntries> childTaxonomies2 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId2);
             setBubbleChart(childTaxonomies1, childTaxonomies2);

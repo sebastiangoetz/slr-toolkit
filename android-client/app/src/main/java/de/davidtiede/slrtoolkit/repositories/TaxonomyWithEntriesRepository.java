@@ -74,6 +74,20 @@ public class TaxonomyWithEntriesRepository {
         return numberOfEntriesForTaxonomy;
     }
 
+    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getChildTaxonomiesForTaxonomyId(repoId, parentId);
+        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        List<TaxonomyWithEntries> taxonomyWithEntries = future.get();
+        Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
+        for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
+            Taxonomy currentTaxonomy = taxWithEntries.taxonomy;
+            if(!currentTaxonomy.isHasChildren()) {
+                numberOfEntriesForTaxonomy.put(currentTaxonomy, taxWithEntries.entries.size());
+            }
+        }
+        return numberOfEntriesForTaxonomy;
+    }
+
     public List<TaxonomyWithEntries> getTaxonomyIdsWithLeafChildTaxonomies(int repoId) throws ExecutionException, InterruptedException {
         Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyIdsWithLeafChildTaxonomies(repoId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
