@@ -40,6 +40,7 @@
         <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_taxonomy_list_list.xml" value="0.17916666666666667" />
         <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.16666666666666666" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.1308876811594203" />
         <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_classification.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/menu/menu_classify.xml" value="0.16770833333333332" />

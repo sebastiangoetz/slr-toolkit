@@ -46,4 +46,8 @@
     <string name="button_keep">Behalten</string>
     <string name="button_discard">Verwerfen</string>
     <string name="button_delete">Löschen</string>
+    <string-array name="chart_array">
+        <item>Barchart</item>
+        <item>Bubblechart</item>
+    </string-array>
 </resources>

@@ -45,6 +45,8 @@
     <string name="button_keep">Keep</string>
     <string name="button_discard">Discard</string>
     <string name="button_delete">Delete</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="chart_array">
+        <item>Barchart</item>
+        <item>Bubblechart</item>
+    </string-array>
 </resources>
