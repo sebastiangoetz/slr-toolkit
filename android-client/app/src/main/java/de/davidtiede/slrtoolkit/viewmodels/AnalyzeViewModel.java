@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
@@ -61,6 +62,31 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {
         return taxonomyWithEntriesRepository.getChildTaxonomiesForTaxonomyId(repoId, parentId);
+    }
+
+    public List<TaxonomyWithEntries> getChildTaxonomiesWithAggregatedChildrenForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        List<TaxonomyWithEntries> childTaxonomies = taxonomyWithEntriesRepository.getChildTaxonomiesForTaxonomyId(repoId, parentId);
+        for(TaxonomyWithEntries taxonomy : childTaxonomies) {
+            if(taxonomy.taxonomy.isHasChildren()) {
+                List<TaxonomyWithEntries> aggregatedChildren = aggregateChildrenOfTaxonomy(repoId, taxonomy);
+                List<Entry> entries = getAllEntriesForTaxonomies(aggregatedChildren);
+                taxonomy.entries.addAll(entries);
+            }
+        }
+
+        return childTaxonomies;
+    }
+
+    public List<Entry> getAllEntriesForTaxonomies(List<TaxonomyWithEntries> taxonomyWithEntries) {
+        List<Entry> entries = new ArrayList<>();
+
+        for(TaxonomyWithEntries taxonomy : taxonomyWithEntries) {
+            if(taxonomy.entries.size() > 0) {
+                entries.addAll(taxonomy.entries);
+            }
+        }
+
+        return entries;
     }
 
     public List<TaxonomyWithEntries> aggregateChildrenOfTaxonomy(int repoId, TaxonomyWithEntries taxonomyWithEntries) throws ExecutionException, InterruptedException {
