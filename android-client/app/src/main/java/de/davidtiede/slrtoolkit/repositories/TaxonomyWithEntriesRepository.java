@@ -1,7 +1,6 @@
 package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,20 +61,6 @@ public class TaxonomyWithEntriesRepository {
 
     public Map<Taxonomy, Integer> getNumberOfEntriesForTaxonomy(int repoId) throws ExecutionException, InterruptedException {
         Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomiesWithEntriesDirectly(repoId);
-        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
-        List<TaxonomyWithEntries> taxonomyWithEntries = future.get();
-        Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
-        for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
-            Taxonomy currentTaxonomy = taxWithEntries.taxonomy;
-            if(!currentTaxonomy.isHasChildren()) {
-                numberOfEntriesForTaxonomy.put(currentTaxonomy, taxWithEntries.entries.size());
-            }
-        }
-        return numberOfEntriesForTaxonomy;
-    }
-
-    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getChildTaxonomiesForTaxonomyId(repoId, parentId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
         List<TaxonomyWithEntries> taxonomyWithEntries = future.get();
         Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();

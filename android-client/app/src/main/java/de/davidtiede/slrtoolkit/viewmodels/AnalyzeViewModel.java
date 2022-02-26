@@ -5,10 +5,15 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
@@ -50,16 +55,48 @@ public class AnalyzeViewModel extends AndroidViewModel {
         this.currentRepoId = currentRepoId;
     }
 
-
-    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        return taxonomyWithEntriesRepository.getNumberOfEntriesForChildrenOfTaxonomy(repoId, parentId);
-    }
-
     public List<TaxonomyWithEntries> getTaxonomiesWithLeafChildTaxonomies(int repoId) throws ExecutionException, InterruptedException {
         return taxonomyWithEntriesRepository.getTaxonomyIdsWithLeafChildTaxonomies(repoId);
     }
 
     public List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {
         return taxonomyWithEntriesRepository.getChildTaxonomiesForTaxonomyId(repoId, parentId);
+    }
+
+    public List<TaxonomyWithEntries> aggregateChildrenOfTaxonomy(int repoId, TaxonomyWithEntries taxonomyWithEntries) throws ExecutionException, InterruptedException {
+        List<TaxonomyWithEntries> childTaxonomies = new ArrayList<>();
+        if(taxonomyWithEntries.taxonomy.isHasChildren()) {
+            List<TaxonomyWithEntries> children = getChildTaxonomiesForTaxonomyId(repoId, taxonomyWithEntries.taxonomy.getTaxonomyId());
+            for(TaxonomyWithEntries child: children) {
+                childTaxonomies.addAll(aggregateChildrenOfTaxonomy(repoId, child));
+            }
+        } else {
+            childTaxonomies.add(taxonomyWithEntries);
+        }
+        return childTaxonomies;
+    }
+
+    public int getNumberOfEntriesForTaxonomy(List<TaxonomyWithEntries> taxonomyWithEntries) {
+        int numberOfEntries = 0;
+        for(TaxonomyWithEntries t : taxonomyWithEntries) {
+            numberOfEntries += t.entries.size();
+        }
+        return numberOfEntries;
+    }
+
+    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, int parentId) throws ExecutionException, InterruptedException {
+        List<TaxonomyWithEntries> taxonomyWithEntries = getChildTaxonomiesForTaxonomyId(repoId, parentId);
+        Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
+        for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
+            Taxonomy currentTaxonomy = taxWithEntries.taxonomy;
+            if(!currentTaxonomy.isHasChildren()) {
+                numberOfEntriesForTaxonomy.put(currentTaxonomy, taxWithEntries.entries.size());
+            } else {
+                List<TaxonomyWithEntries> children = aggregateChildrenOfTaxonomy(repoId, taxWithEntries);
+                int numberOfEntries = getNumberOfEntriesForTaxonomy(children);
+                numberOfEntriesForTaxonomy.put(currentTaxonomy, numberOfEntries);
+            }
+        }
+        return numberOfEntriesForTaxonomy;
     }
 }
