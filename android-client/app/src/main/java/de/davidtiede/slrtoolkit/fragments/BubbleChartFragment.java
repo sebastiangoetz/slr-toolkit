@@ -100,8 +100,8 @@ public class BubbleChartFragment extends Fragment {
                 yCount++;
                 List<Entry> t1Entries = t1.entries;
                 List<Entry> t2Entries = t2.entries;
-                List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getId).collect(Collectors.toList());
-                List<Integer> t2EntryIds = t2Entries.stream().map(Entry::getId).collect(Collectors.toList());
+                List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
+                List<Integer> t2EntryIds = t2Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
                 t1EntryIds.retainAll(t2EntryIds);
                 bubbleEntries.add(new BubbleEntry(xCount, yCount, t1EntryIds.size()));
             }

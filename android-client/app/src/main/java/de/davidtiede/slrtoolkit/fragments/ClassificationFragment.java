@@ -100,7 +100,7 @@ public class ClassificationFragment extends Fragment {
         for(int i = 0; i < taxonomyWithEntries.size(); i++) {
             TaxonomyWithEntries currentTaxWithEntries = taxonomyWithEntries.get(i);
             for(Entry entry: currentTaxWithEntries.entries) {
-                if(entry.getId() == entryId) {
+                if(entry.getEntryId() == entryId) {
                     selectedTaxonomies.add(currentTaxWithEntries.taxonomy.getTaxonomyId());
                 }
             }

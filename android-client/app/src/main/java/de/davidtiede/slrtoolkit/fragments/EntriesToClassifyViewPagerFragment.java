@@ -82,7 +82,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         if(entry != null) {
             Intent intent = new Intent(getActivity(), ClassificationActivity.class);
             intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entry.getId());
+            intent.putExtra("entry", entry.getEntryId());
             startActivity(intent);
         }
     }
@@ -118,7 +118,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             Entry entry = entries.get(position);
-            projectViewModel.setCurrentEntryIdForCard(entry.getId());
+            projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
             Fragment fragment = new BibtexEntryDetailFragment();
             return fragment;
         }

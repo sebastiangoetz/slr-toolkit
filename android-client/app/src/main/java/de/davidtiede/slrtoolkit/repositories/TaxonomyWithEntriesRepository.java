@@ -25,7 +25,7 @@ public class TaxonomyWithEntriesRepository {
     public long insert(int taxonomyId, int entryId) {
         EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
         entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entryTaxonomyCrossRef.setId(entryId);
+        entryTaxonomyCrossRef.setEntryId(entryId);
         Callable<Long> insertCallable = () -> taxonomyWithEntriesDao.insert(entryTaxonomyCrossRef);
         long id = 0;
 
@@ -46,7 +46,7 @@ public class TaxonomyWithEntriesRepository {
     public void delete(int taxonomyId, int entryId) {
         EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
         entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entryTaxonomyCrossRef.setId(entryId);
+        entryTaxonomyCrossRef.setEntryId(entryId);
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entryTaxonomyCrossRef));
     }
 

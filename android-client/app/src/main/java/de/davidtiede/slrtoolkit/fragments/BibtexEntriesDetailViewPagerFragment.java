@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -23,12 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.ClassificationActivity;
-import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.TaxonomiesActivity;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,13 +75,13 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ClassificationActivity.class);
         Entry entry = projectViewModel.getCurrentEntriesInList().get(viewPager.getCurrentItem());
         intent.putExtra("repo", repoId);
-        intent.putExtra("entry", entry.getId());
+        intent.putExtra("entry", entry.getEntryId());
         startActivity(intent);
     }
 
     private void deleteEntry() {
         Entry entry = projectViewModel.getCurrentEntriesInList().get(viewPager.getCurrentItem());
-        projectViewModel.deleteById(entry.getId(), repoId);
+        projectViewModel.deleteById(entry.getEntryId(), repoId);
         getActivity().onBackPressed();
     }
 
@@ -124,7 +120,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             Entry entry = entries.get(position);
-            projectViewModel.setCurrentEntryIdForCard(entry.getId());
+            projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
             Fragment fragment = new BibtexEntryDetailFragment();
             return fragment;
         }

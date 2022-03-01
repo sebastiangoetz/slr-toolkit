@@ -9,7 +9,7 @@ import java.util.List;
 public class EntryWithTaxonomies {
     @Embedded public Entry entry;
     @Relation(
-            parentColumn = "id",
+            parentColumn = "entryId",
             entityColumn = "taxonomyId",
             associateBy = @Junction(EntryTaxonomyCrossRef.class)
     )

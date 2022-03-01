@@ -1,12 +1,17 @@
 package de.davidtiede.slrtoolkit.database;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity
 public class Entry {
-    @PrimaryKey(autoGenerate = true) private int id;
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private int entryId;
+
     private int repoId;
     private String key;
     private String title;
@@ -30,8 +35,8 @@ public class Entry {
         this.status = Status.OPEN;
     }
 
-    public int getId() {
-        return id;
+    public int getEntryId() {
+        return entryId;
     }
 
     public int getRepoId() {
@@ -94,8 +99,8 @@ public class Entry {
         return type;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setEntryId(int entryId) {
+        this.entryId = entryId;
     }
 
     public void setRepoId(int repoId) {

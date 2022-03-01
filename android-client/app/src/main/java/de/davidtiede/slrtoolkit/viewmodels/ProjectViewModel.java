@@ -149,7 +149,7 @@ public class ProjectViewModel extends AndroidViewModel {
                                 if(!taxonomy.isHasChildren()) {
                                     EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
                                     entryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
-                                    entryTaxonomyCrossRef.setId(entry.getId());
+                                    entryTaxonomyCrossRef.setEntryId(entry.getEntryId());
                                     entryTaxonomyCrossRefs.add(entryTaxonomyCrossRef);
                                 }
                             }

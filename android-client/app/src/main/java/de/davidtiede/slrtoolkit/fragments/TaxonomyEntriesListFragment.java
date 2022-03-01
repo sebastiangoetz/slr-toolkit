@@ -83,7 +83,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
             Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
             if(clickedEntry == null) return;
 
-            taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
+            taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
             Fragment entryFragment = new BibtexEntryDetailFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
             ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);

@@ -81,7 +81,7 @@ public class BibtexEntriesListFragment extends Fragment {
 
             if(clickedEntry == null) return;
 
-            projectViewModel.setCurrentEntryIdForCard(clickedEntry.getId());
+            projectViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
             int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
             projectViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
