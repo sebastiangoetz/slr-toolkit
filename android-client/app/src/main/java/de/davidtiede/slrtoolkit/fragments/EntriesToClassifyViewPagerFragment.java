@@ -60,7 +60,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
         viewPager.setAdapter(pagerAdapter);
 
-        projectViewModel.getOpenEntriesForRepo(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
+        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> list) {
                 entries = list;
