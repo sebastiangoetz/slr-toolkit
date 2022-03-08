@@ -60,7 +60,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
         viewPager.setAdapter(pagerAdapter);
 
-        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
+        projectViewModel.getOpenEntriesForRepo(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
             @Override
             public void onChanged(List<Entry> list) {
                 entries = list;
@@ -87,6 +87,22 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         }
     }
 
+    private void deleteEntry() {
+        int i = viewPager.getCurrentItem();
+        if(entries.size() <= 1) {
+            noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.INVISIBLE);
+        } else {
+            noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
+        }
+        Entry entry = entries.get(i);
+        projectViewModel.deleteById(entry.getEntryId(), repoId);
+        pagerAdapter.notifyDataSetChanged();
+        viewPager.invalidate();
+        viewPager.setCurrentItem(i);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_classification, menu);
@@ -98,6 +114,10 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.action_classify: {
                 classifyEntry();
+                break;
+            }
+            case R.id.action_delete: {
+                deleteEntry();
                 break;
             }
             default:
