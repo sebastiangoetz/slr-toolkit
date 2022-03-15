@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,8 +32,8 @@ public class ChartSelectionFragment extends Fragment {
     TaxonomyWithEntries selectedTaxonomy1;
     TaxonomyWithEntries selectedTaxonomy2;
     private static final String BUBBLECHART_STRING = "Bubblechart";
-    boolean initialSpinnerPressed1 = false;
-    boolean initialSpinnerPressed2 = false;
+    boolean isSpinnerTouch1;
+    boolean isSpinnerTouch2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class ChartSelectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         analyzeViewModel = new ViewModelProvider(requireActivity()).get(AnalyzeViewModel.class);
         repoId = analyzeViewModel.getCurrentRepoId();
+        isSpinnerTouch1 = false;
+        isSpinnerTouch2 = false;
         Button analyzeButton = view.findViewById(R.id.analyze_button);
         Spinner chartSpinner = view.findViewById(R.id.chart_selection_spinner);
         Spinner taxonomySpinner1 = view.findViewById(R.id.taxonomy_selection_spinner1);
@@ -95,6 +98,21 @@ public class ChartSelectionFragment extends Fragment {
             }
         });
 
+        taxonomySpinner1.setOnTouchListener(new View.OnTouchListener() {
+            @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+                isSpinnerTouch1=true;
+                return false;
+            }
+        });
+
+        taxonomySpinner2.setOnTouchListener(new View.OnTouchListener() {
+            @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+                isSpinnerTouch2=true;
+                return false;
+            }
+        });
+
+
         taxonomySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -104,9 +122,7 @@ public class ChartSelectionFragment extends Fragment {
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay1(children);
 
-                if(!initialSpinnerPressed1) {
-                    initialSpinnerPressed1 = true;
-                } else {
+                if(isSpinnerTouch1) {
                     analyzeViewModel.setCurrentTaxonomySpinner(1);
                     new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
                 }
@@ -127,9 +143,7 @@ public class ChartSelectionFragment extends Fragment {
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay2(children);
 
-                if(!initialSpinnerPressed2) {
-                    initialSpinnerPressed2 = true;
-                } else {
+                if(isSpinnerTouch2) {
                     analyzeViewModel.setCurrentTaxonomySpinner(2);
                     new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
                 }

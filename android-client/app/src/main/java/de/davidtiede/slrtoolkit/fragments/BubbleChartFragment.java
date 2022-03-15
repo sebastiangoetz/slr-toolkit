@@ -132,7 +132,7 @@ public class BubbleChartFragment extends Fragment {
             if(index == 0) {
                 return "";
             }
-            if(taxonomyWithEntries.size() >= index-1) {
+            if(taxonomyWithEntries.size() > index-1) {
                 String title = taxonomyWithEntries.get(index - 1).taxonomy.getName();
                 if (title.length() > 20) {
                     return title.substring(0, 20);
