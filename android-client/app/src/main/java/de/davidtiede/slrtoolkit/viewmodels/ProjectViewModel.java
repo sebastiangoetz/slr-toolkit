@@ -25,6 +25,10 @@ public class ProjectViewModel extends AndroidViewModel {
         entryRepository = new EntryRepository(application);
     }
 
+    public LiveData<Repo> getRepoById(int id) {
+       return repoRepository.getRepoById(id);
+    }
+
     public int getCurrentEntryInListCount() {
         return currentEntryInListCount;
     }
