@@ -28,6 +28,7 @@ public class AnalyzeViewModel extends AndroidViewModel {
     private int parentTaxonomyToDisplayChildrenFor2;
     private List<TaxonomyWithEntries> childTaxonomiesToDisplay1;
     private List<TaxonomyWithEntries> childTaxonomiesToDisplay2;
+    private int currentTaxonomySpinner;
 
     public AnalyzeViewModel(@NonNull Application application) {
         super(application);
@@ -40,6 +41,14 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public void setChildTaxonomiesToDisplay1(List<TaxonomyWithEntries> childTaxonomiesToDisplay1) {
         this.childTaxonomiesToDisplay1 = childTaxonomiesToDisplay1;
+    }
+
+    public int getCurrentTaxonomySpinner() {
+        return currentTaxonomySpinner;
+    }
+
+    public void setCurrentTaxonomySpinner(int currentTaxonomySpinner) {
+        this.currentTaxonomySpinner = currentTaxonomySpinner;
     }
 
     public List<TaxonomyWithEntries> getChildTaxonomiesToDisplay2() {

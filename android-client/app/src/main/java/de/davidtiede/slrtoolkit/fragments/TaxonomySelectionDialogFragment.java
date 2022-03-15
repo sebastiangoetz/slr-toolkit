@@ -29,7 +29,7 @@ import de.davidtiede.slrtoolkit.views.TaxonomyClassificationListAdapter;
 import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
 public class TaxonomySelectionDialogFragment extends DialogFragment {
-    public static String TAG = "PurchaseConfirmationDialog";
+    public static String TAG = "TaxonomySelectionDialog";
     private RecyclerView recyclerView;
     private Button confirmButton;
     AnalyzeViewModel analyzeViewModel;
@@ -45,7 +45,6 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         recyclerView = dialog.findViewById(R.id.taxonomy_select_list_view);
         confirmButton = dialog.findViewById(R.id.confirm_taxonomies_button);
         setOnConfirmButtonListener();
-        setListView();
         initListViewData();
         return dialog;
     }
@@ -54,12 +53,13 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         confirmButton.setOnClickListener(v -> dismiss());
     }
 
-    private void setListView() {
-
-    }
-
     private void initListViewData()  {
-        int parentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
+        int parentTaxonomyId = 0;
+        if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+            parentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
+        } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+            parentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor2();
+        }
         int repoId = analyzeViewModel.getCurrentRepoId();
         List<TaxonomyWithEntries> taxonomies = new ArrayList<>();
         try {
@@ -71,12 +71,7 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         }
 
         setOnClickListener();
-        System.out.println("Hello");
-        System.out.println(recyclerView);
-        System.out.println(taxonomies);
 
-        // android.R.layout.simple_list_item_checked:
-        // ListItem is very simple (Only one CheckedTextView).
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -91,17 +86,56 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             TaxonomyWithEntries clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
+            List<TaxonomyWithEntries> selectedTaxonomies = getSelectedTaxonomies();
+            List<TaxonomyWithEntries> updatedSelectedTaxonomies = new ArrayList<>();
+            List<Integer> selectedTaxonomiesIds = getTaxonomyIds(selectedTaxonomies);
+
+            if(selectedTaxonomiesIds.contains(clickedTaxonomy.taxonomy.getTaxonomyId())) {
+                for(TaxonomyWithEntries taxonomyWithEntries: selectedTaxonomies) {
+                    if(taxonomyWithEntries.taxonomy.getTaxonomyId() != clickedTaxonomy.taxonomy.getTaxonomyId()) {
+                        updatedSelectedTaxonomies.add(taxonomyWithEntries);
+                    }
+                }
+            } else {
+                updatedSelectedTaxonomies.addAll(selectedTaxonomies);
+                updatedSelectedTaxonomies.add(clickedTaxonomy);
+            }
+
+            if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+                analyzeViewModel.setChildTaxonomiesToDisplay1(updatedSelectedTaxonomies);
+            } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+                analyzeViewModel.setChildTaxonomiesToDisplay2(updatedSelectedTaxonomies);
+            }
+            setSelectedTaxonomies();
         };
     }
 
     public void setSelectedTaxonomies() {
-        List<TaxonomyWithEntries> selectedTaxonomies = analyzeViewModel.getChildTaxonomiesToDisplay1();
+        List<TaxonomyWithEntries> selectedTaxonomies = getSelectedTaxonomies();
+        List<Integer> selectedTaxonomiesIds = getTaxonomyIds(selectedTaxonomies);
+
+        taxonomyListAdapter.setCurrentTaxonomyIds(selectedTaxonomiesIds);
+    }
+
+    public List<Integer> getTaxonomyIds(List<TaxonomyWithEntries> taxonomyWithEntries) {
         ArrayList<Integer> selectedTaxonomiesIds = new ArrayList<>();
 
-        for(TaxonomyWithEntries selectedTaxonomy: selectedTaxonomies) {
+        for(TaxonomyWithEntries selectedTaxonomy: taxonomyWithEntries) {
             selectedTaxonomiesIds.add(selectedTaxonomy.taxonomy.getTaxonomyId());
         }
 
-        taxonomyListAdapter.setCurrentTaxonomyIds(selectedTaxonomiesIds);
+        return selectedTaxonomiesIds;
+    }
+
+    public List<TaxonomyWithEntries> getSelectedTaxonomies() {
+        List<TaxonomyWithEntries> selectedTaxonomies = new ArrayList<>();
+
+        if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+            selectedTaxonomies = analyzeViewModel.getChildTaxonomiesToDisplay1();
+
+        } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+            selectedTaxonomies = analyzeViewModel.getChildTaxonomiesToDisplay2();
+        }
+        return  selectedTaxonomies;
     }
 }

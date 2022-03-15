@@ -31,6 +31,8 @@ public class ChartSelectionFragment extends Fragment {
     TaxonomyWithEntries selectedTaxonomy1;
     TaxonomyWithEntries selectedTaxonomy2;
     private static final String BUBBLECHART_STRING = "Bubblechart";
+    boolean initialSpinnerPressed1 = false;
+    boolean initialSpinnerPressed2 = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,13 @@ public class ChartSelectionFragment extends Fragment {
                 analyzeViewModel.setParentTaxonomyToDisplayChildrenFor1(taxonomyId);
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay1(children);
+
+                if(!initialSpinnerPressed1) {
+                    initialSpinnerPressed1 = true;
+                } else {
+                    analyzeViewModel.setCurrentTaxonomySpinner(1);
+                    new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
+                }
             }
 
             @Override
@@ -117,12 +126,18 @@ public class ChartSelectionFragment extends Fragment {
                 analyzeViewModel.setParentTaxonomyToDisplayChildrenFor2(taxonomyId);
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay2(children);
-                new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
+
+                if(!initialSpinnerPressed2) {
+                    initialSpinnerPressed2 = true;
+                } else {
+                    analyzeViewModel.setCurrentTaxonomySpinner(2);
+                    new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                selectedTaxonomy1 = null;
+                selectedTaxonomy2 = null;
             }
         });
 
