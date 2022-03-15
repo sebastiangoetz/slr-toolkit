@@ -61,8 +61,21 @@ public class BubbleChartFragment extends Fragment {
         try {
             int parentTaxonomyId1 = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
             int parentTaxonomyId2 = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor2();
-            List<TaxonomyWithEntries> childTaxonomies1 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId1);
-            List<TaxonomyWithEntries> childTaxonomies2 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId2);
+            List<TaxonomyWithEntries> childTaxonomies1;
+            List<TaxonomyWithEntries> childTaxonomies2;
+
+            if(analyzeViewModel.getChildTaxonomiesToDisplay1() == null || analyzeViewModel.getChildTaxonomiesToDisplay1().size() == 0) {
+                childTaxonomies1 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId1);
+            } else {
+                childTaxonomies1 = analyzeViewModel.getChildTaxonomiesToDisplay1();
+            }
+
+            if(analyzeViewModel.getChildTaxonomiesToDisplay2() == null || analyzeViewModel.getChildTaxonomiesToDisplay2().size() == 0) {
+                childTaxonomies2 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId2);
+            } else {
+                childTaxonomies2 = analyzeViewModel.getChildTaxonomiesToDisplay2();
+            }
+
             setBubbleChart(childTaxonomies1, childTaxonomies2);
         } catch (ExecutionException | InterruptedException exception) {
             exception.printStackTrace();

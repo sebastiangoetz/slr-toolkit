@@ -54,7 +54,7 @@ public class BarChartFragment extends Fragment {
         int currentParentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
         List<TaxonomyWithEntries> childTaxonomiesToDisplay = analyzeViewModel.getChildTaxonomiesToDisplay1();
         try {
-            if(childTaxonomiesToDisplay == null && childTaxonomiesToDisplay.size() > 0) {
+            if(childTaxonomiesToDisplay == null || childTaxonomiesToDisplay.size() == 0) {
                 List<TaxonomyWithEntries> parentTaxonomies = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, currentParentTaxonomyId);
                 Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, parentTaxonomies);
                 setBarChart(taxonomyWithNumEntries);
