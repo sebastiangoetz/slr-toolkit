@@ -137,8 +137,7 @@ public class AnalyzeViewModel extends AndroidViewModel {
         return numberOfEntries;
     }
 
-    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        List<TaxonomyWithEntries> taxonomyWithEntries = getChildTaxonomiesForTaxonomyId(repoId, parentId);
+    public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
         Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
         for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
             Taxonomy currentTaxonomy = taxWithEntries.taxonomy;

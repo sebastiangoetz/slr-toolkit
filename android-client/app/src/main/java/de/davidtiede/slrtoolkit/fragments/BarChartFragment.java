@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
 
 /**
@@ -51,13 +52,20 @@ public class BarChartFragment extends Fragment {
         barChart = view.findViewById(R.id.barchart);
         int repoId = analyzeViewModel.getCurrentRepoId();
         int currentParentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
-
-        try{
-            Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, currentParentTaxonomyId);
-            setBarChart(taxonomyWithNumEntries);
+        List<TaxonomyWithEntries> childTaxonomiesToDisplay = analyzeViewModel.getChildTaxonomiesToDisplay1();
+        try {
+            if(childTaxonomiesToDisplay == null && childTaxonomiesToDisplay.size() > 0) {
+                List<TaxonomyWithEntries> parentTaxonomies = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, currentParentTaxonomyId);
+                Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, parentTaxonomies);
+                setBarChart(taxonomyWithNumEntries);
+            } else {
+                Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, childTaxonomiesToDisplay);
+                setBarChart(taxonomyWithNumEntries);
+            }
         } catch (InterruptedException | ExecutionException exception) {
             exception.printStackTrace();
         }
+
     }
 
     private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
