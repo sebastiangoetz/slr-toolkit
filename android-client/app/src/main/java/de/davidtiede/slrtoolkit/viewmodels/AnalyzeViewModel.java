@@ -26,10 +26,28 @@ public class AnalyzeViewModel extends AndroidViewModel {
     private int currentRepoId;
     private int parentTaxonomyToDisplayChildrenFor1;
     private int parentTaxonomyToDisplayChildrenFor2;
+    private List<TaxonomyWithEntries> childTaxonomiesToDisplay1;
+    private List<TaxonomyWithEntries> childTaxonomiesToDisplay2;
 
     public AnalyzeViewModel(@NonNull Application application) {
         super(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
+    }
+
+    public List<TaxonomyWithEntries> getChildTaxonomiesToDisplay1() {
+        return childTaxonomiesToDisplay1;
+    }
+
+    public void setChildTaxonomiesToDisplay1(List<TaxonomyWithEntries> childTaxonomiesToDisplay1) {
+        this.childTaxonomiesToDisplay1 = childTaxonomiesToDisplay1;
+    }
+
+    public List<TaxonomyWithEntries> getChildTaxonomiesToDisplay2() {
+        return childTaxonomiesToDisplay2;
+    }
+
+    public void setChildTaxonomiesToDisplay2(List<TaxonomyWithEntries> childTaxonomiesToDisplay2) {
+        this.childTaxonomiesToDisplay2 = childTaxonomiesToDisplay2;
     }
 
     public int getParentTaxonomyToDisplayChildrenFor1() {

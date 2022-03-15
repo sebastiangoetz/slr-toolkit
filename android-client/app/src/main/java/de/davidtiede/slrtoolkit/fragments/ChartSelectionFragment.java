@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
@@ -99,7 +97,10 @@ public class ChartSelectionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTaxonomy1 = (TaxonomyWithEntries) taxonomySpinner1.getSelectedItem();
-                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor1(selectedTaxonomy1.taxonomy.getTaxonomyId());
+                int taxonomyId = selectedTaxonomy1.taxonomy.getTaxonomyId();
+                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor1(taxonomyId);
+                List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
+                analyzeViewModel.setChildTaxonomiesToDisplay1(children);
             }
 
             @Override
@@ -112,7 +113,11 @@ public class ChartSelectionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTaxonomy2 = (TaxonomyWithEntries) taxonomySpinner2.getSelectedItem();
-                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor2(selectedTaxonomy2.taxonomy.getTaxonomyId());
+                int taxonomyId = selectedTaxonomy2.taxonomy.getTaxonomyId();
+                analyzeViewModel.setParentTaxonomyToDisplayChildrenFor2(taxonomyId);
+                List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
+                analyzeViewModel.setChildTaxonomiesToDisplay2(children);
+                new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
             }
 
             @Override
@@ -136,5 +141,17 @@ public class ChartSelectionFragment extends Fragment {
                 ft.commit();
             }
         });
+    }
+
+    private List<TaxonomyWithEntries> getChildrenForTaxonomy(int taxonomyId) {
+        List<TaxonomyWithEntries> children = new ArrayList<>();
+        try {
+            children = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, taxonomyId);
+        } catch (ExecutionException exception) {
+            exception.printStackTrace();
+        } catch (InterruptedException exception) {
+            exception.printStackTrace();
+        }
+        return children;
     }
 }
