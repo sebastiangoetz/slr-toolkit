@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,12 +25,16 @@ import de.davidtiede.slrtoolkit.views.SpinnerAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class ChartSelectionFragment extends Fragment {
+    private static final String BUBBLECHART_STRING = "Bubblechart";
     AnalyzeViewModel analyzeViewModel;
     int repoId;
     String selectedChart;
     TaxonomyWithEntries selectedTaxonomy1;
     TaxonomyWithEntries selectedTaxonomy2;
-    private static final String BUBBLECHART_STRING = "Bubblechart";
+    Spinner chartSpinner;
+    Spinner taxonomySpinner1;
+    Spinner taxonomySpinner2;
+    Button analyzeButton;
     boolean isSpinnerTouch1;
     boolean isSpinnerTouch2;
 
@@ -54,10 +57,10 @@ public class ChartSelectionFragment extends Fragment {
         repoId = analyzeViewModel.getCurrentRepoId();
         isSpinnerTouch1 = false;
         isSpinnerTouch2 = false;
-        Button analyzeButton = view.findViewById(R.id.analyze_button);
-        Spinner chartSpinner = view.findViewById(R.id.chart_selection_spinner);
-        Spinner taxonomySpinner1 = view.findViewById(R.id.taxonomy_selection_spinner1);
-        Spinner taxonomySpinner2 = view.findViewById(R.id.taxonomy_selection_spinner2);
+        analyzeButton = view.findViewById(R.id.analyze_button);
+        chartSpinner = view.findViewById(R.id.chart_selection_spinner);
+        taxonomySpinner1 = view.findViewById(R.id.taxonomy_selection_spinner1);
+        taxonomySpinner2 = view.findViewById(R.id.taxonomy_selection_spinner2);
         //set Spinner for chart selection
         ArrayAdapter<CharSequence> staticAdapter = ArrayAdapter
                 .createFromResource(this.getContext(), R.array.chart_array, android.R.layout.simple_spinner_item);
@@ -65,21 +68,13 @@ public class ChartSelectionFragment extends Fragment {
                 .setDropDownViewResource(R.layout.spinner_item);
         chartSpinner.setAdapter(staticAdapter);
 
-        chartSpinner.getSelectedItem().toString();
+        setSpinnerData();
+        setSpinnerOnTouchListeners();
+        setSpinnerSelectionListener();
+        setButtonOnClickListener();
+    }
 
-        //set Spinner for taxonomy Selection
-        try {
-            List<TaxonomyWithEntries> taxonomyWithEntriesList = analyzeViewModel.getTaxonomiesWithLeafChildTaxonomies(repoId);
-            SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
-            SpinnerAdapter spinnerAdapter2 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
-            taxonomySpinner1.setAdapter(spinnerAdapter1);
-            taxonomySpinner2.setAdapter(spinnerAdapter2);
-        } catch (ExecutionException exception) {
-            exception.printStackTrace();
-        } catch (InterruptedException exception) {
-            exception.printStackTrace();
-        }
-
+    private void setSpinnerData() {
         chartSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -98,21 +93,33 @@ public class ChartSelectionFragment extends Fragment {
             }
         });
 
-        taxonomySpinner1.setOnTouchListener(new View.OnTouchListener() {
-            @Override public boolean onTouch(View view, MotionEvent motionEvent) {
-                isSpinnerTouch1=true;
-                return false;
-            }
+        //set Spinner for taxonomy Selection
+        try {
+            List<TaxonomyWithEntries> taxonomyWithEntriesList = analyzeViewModel.getTaxonomiesWithLeafChildTaxonomies(repoId);
+            SpinnerAdapter spinnerAdapter1 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
+            SpinnerAdapter spinnerAdapter2 = new SpinnerAdapter(getContext(), taxonomyWithEntriesList);
+            taxonomySpinner1.setAdapter(spinnerAdapter1);
+            taxonomySpinner2.setAdapter(spinnerAdapter2);
+        } catch (ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private void setSpinnerOnTouchListeners() {
+        taxonomySpinner1.setOnTouchListener((view1, motionEvent) -> {
+            view1.performClick();
+            isSpinnerTouch1=true;
+            return false;
         });
 
-        taxonomySpinner2.setOnTouchListener(new View.OnTouchListener() {
-            @Override public boolean onTouch(View view, MotionEvent motionEvent) {
-                isSpinnerTouch2=true;
-                return false;
-            }
+        taxonomySpinner2.setOnTouchListener((view2, motionEvent) -> {
+            view2.performClick();
+            isSpinnerTouch2=true;
+            return false;
         });
+    }
 
-
+    private void setSpinnerSelectionListener() {
         taxonomySpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -154,17 +161,19 @@ public class ChartSelectionFragment extends Fragment {
                 selectedTaxonomy2 = null;
             }
         });
+    }
 
+    private void setButtonOnClickListener() {
         analyzeButton.setOnClickListener(v -> {
             if(selectedChart.equals(BUBBLECHART_STRING)) {
                 Fragment bubblechartFragment = new BubbleChartFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.analyze_fragment_container_view, bubblechartFragment);
                 ft.addToBackStack(null);
                 ft.commit();
             } else {
                 Fragment barchartFragment = new BarChartFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.analyze_fragment_container_view, barchartFragment);
                 ft.addToBackStack(null);
                 ft.commit();
@@ -176,9 +185,7 @@ public class ChartSelectionFragment extends Fragment {
         List<TaxonomyWithEntries> children = new ArrayList<>();
         try {
             children = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, taxonomyId);
-        } catch (ExecutionException exception) {
-            exception.printStackTrace();
-        } catch (InterruptedException exception) {
+        } catch (ExecutionException | InterruptedException exception) {
             exception.printStackTrace();
         }
         return children;
