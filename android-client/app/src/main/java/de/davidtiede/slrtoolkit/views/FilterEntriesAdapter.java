@@ -16,12 +16,10 @@ import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 
 public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
-    private Context context;
-    private ArrayList<Entry> entries;
+    private final ArrayList<Entry> entries;
 
     public FilterEntriesAdapter(@NonNull Context context, @NonNull ArrayList<Entry> entries) {
         super(context, 0, entries);
-        this.context = context;
         this.entries = entries;
     }
 

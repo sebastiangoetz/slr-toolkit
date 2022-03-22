@@ -20,7 +20,7 @@ import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
     private RecyclerView recyclerView;
-    private RecyclerViewClickListener listener;
+    private final RecyclerViewClickListener listener;
 
     public RepoListAdapter(@NonNull DiffUtil.ItemCallback<Repo> diffCallback, RecyclerViewClickListener listener) {
 
@@ -67,8 +67,6 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
         RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
         repoViewModel.delete(recentlyDeletedRepo);
         notifyItemRemoved(position);
-        //notifyItemRangeRemoved(position, 1);
-        //notifyDataSetChanged();
 
         Snackbar snackbar = Snackbar.make(recyclerView, R.string.snackbar_undo, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.snackbar_undo, v -> undoDelete(recentlyDeletedRepo, position));
@@ -82,8 +80,7 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
     }
 
     public Repo getItemAtPosition(int position) {
-        Repo repo = getItem(position);
-        return repo;
+        return getItem(position);
     }
 
     public interface RecyclerViewClickListener {

@@ -20,9 +20,9 @@ import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
-    private RecyclerViewClickListener listener;
+    private final RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
-    private int repoId;
+    private final int repoId;
 
     public BibTexEntriesListAdapter(@NonNull DiffUtil.ItemCallback<Entry> diffCallback, RecyclerViewClickListener listener, int repoId) {
         super(diffCallback);
@@ -61,13 +61,12 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
     public Entry getItemAtPosition(int position) {
         if(position > getCurrentList().size()) return null;
-        Entry entry = getItem(position);
-        return entry;
+        return getItem(position);
     }
 
     public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView bibtexItemView;
-        private TextView bibtexDescriptionItemView;
+        private final TextView bibtexItemView;
+        private final TextView bibtexDescriptionItemView;
         private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
 
         public BibTexEntriesViewHolder(@NonNull @NotNull View itemView) {

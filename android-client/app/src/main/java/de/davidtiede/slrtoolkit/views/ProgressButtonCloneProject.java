@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat;
 import de.davidtiede.slrtoolkit.R;
 
 public class ProgressButtonCloneProject {
-
     private final View view;
     private final Context context;
     private final CardView cardView;

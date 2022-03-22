@@ -1,7 +1,5 @@
 package de.davidtiede.slrtoolkit.database;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -9,12 +7,11 @@ import androidx.room.TypeConverters;
 @Entity
 public class Entry {
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private int entryId;
 
     private int repoId;
-    private String key;
-    private String title;
+    private final String key;
+    private final String title;
     private String author;
     private String entryAbstract;
     private String year;
@@ -160,7 +157,7 @@ public class Entry {
         KEEP(1),
         DISCARD(2);
 
-        private int code;
+        private final int code;
 
         Status(int code) {
             this.code = code;

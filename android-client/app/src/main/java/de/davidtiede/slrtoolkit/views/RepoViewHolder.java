@@ -16,7 +16,7 @@ class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
     private RepoViewHolder(View itemView) {
         super(itemView);
         projectItemView = itemView.findViewById(R.id.textview_recyclerview);
-        itemView.setOnClickListener((View.OnClickListener) this);
+        itemView.setOnClickListener(this);
     }
 
     public void bind(String text, RepoListAdapter.RecyclerViewClickListener listener) {
