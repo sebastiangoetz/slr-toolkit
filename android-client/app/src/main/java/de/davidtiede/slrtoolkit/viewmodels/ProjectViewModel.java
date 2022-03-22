@@ -69,8 +69,8 @@ public class ProjectViewModel extends AndroidViewModel {
         return entryRepository.getEntryAmountForStatus(repoId, Entry.Status.OPEN);
     }
     
-    public LiveData<List<Entry>> getEntriesForRepoWithSearchQuery(int repoId, String searchQuery) {
-        return entryRepository.getEntriesForRepoWithSearchQuery(repoId, searchQuery);
+    public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
+        return entryRepository.getEntriesForRepo(repoId);
     }
 
     public Repo getRepoByIdDirectly(int id) {

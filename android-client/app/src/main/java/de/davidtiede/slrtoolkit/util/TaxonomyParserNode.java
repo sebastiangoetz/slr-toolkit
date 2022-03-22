@@ -1,5 +1,7 @@
 package de.davidtiede.slrtoolkit.util;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ public class TaxonomyParserNode {
     private String name;
     private String path;
     private TaxonomyParserNode parent;
-    private List<TaxonomyParserNode> children;
+    private final List<TaxonomyParserNode> children;
 
     public TaxonomyParserNode() {
         children = new ArrayList<>();
@@ -45,11 +47,12 @@ public class TaxonomyParserNode {
         children.add(child);
     }
 
+    @NonNull
     @Override
     public String toString() {
-        String children = "";
+        StringBuilder children = new StringBuilder();
         for(TaxonomyParserNode child: getChildren()) {
-            children += child.getName();
+            children.append(child.getName());
         }
         String string = "Name: " + getName() + ", Children: " + children;
         if(parent != null) {

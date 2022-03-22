@@ -2,16 +2,11 @@ package de.davidtiede.slrtoolkit.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,11 +17,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.davidtiede.slrtoolkit.R;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
 import de.davidtiede.slrtoolkit.views.TaxonomyClassificationListAdapter;
-import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
 public class TaxonomySelectionDialogFragment extends DialogFragment {
     public static String TAG = "TaxonomySelectionDialog";
@@ -64,9 +57,7 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         List<TaxonomyWithEntries> taxonomies = new ArrayList<>();
         try {
             taxonomies = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId);
-        } catch (ExecutionException exception) {
-            exception.printStackTrace();
-        } catch (InterruptedException exception) {
+        } catch (ExecutionException | InterruptedException exception) {
             exception.printStackTrace();
         }
 

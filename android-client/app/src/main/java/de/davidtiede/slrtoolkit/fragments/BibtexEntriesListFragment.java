@@ -72,7 +72,7 @@ public class BibtexEntriesListFragment extends Fragment {
                 ItemTouchHelper(new SwipeToDeleteCallbackBibTexEntries(adapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        this.setEntries("");
+        this.setEntries();
     }
 
     private void setOnClickListener() {
@@ -89,8 +89,8 @@ public class BibtexEntriesListFragment extends Fragment {
         };
     }
 
-    private void setEntries(String searchQuery) {
-        projectViewModel.getEntriesForRepoWithSearchQuery(repoId, searchQuery).observe(getViewLifecycleOwner(), this::onLoaded);
+    private void setEntries() {
+        projectViewModel.getEntriesForRepo(repoId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
     private void onLoaded(List<Entry> list){
@@ -117,7 +117,7 @@ public class BibtexEntriesListFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_entries_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem searchItem = menu.findItem(R.id.action_search);

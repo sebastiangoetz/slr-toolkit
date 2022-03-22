@@ -31,12 +31,9 @@ public class TaxonomyListFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "currentTaxonomyId";
     private TaxonomiesViewModel taxonomiesViewModel;
-    private RecyclerView taxonomyRecyclerView;
     private TaxonomyListAdapter taxonomyListAdapter;
     private TaxonomyListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomiesTextview;
-
-    private int repoId;
     private int currentTaxonomyId;
 
     public TaxonomyListFragment() {
@@ -76,8 +73,8 @@ public class TaxonomyListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        repoId = taxonomiesViewModel.getCurrentRepoId();
-        taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
+        int repoId = taxonomiesViewModel.getCurrentRepoId();
+        RecyclerView taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
         noTaxonomiesTextview = view.findViewById(R.id.textview_no_taxonomies);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener);

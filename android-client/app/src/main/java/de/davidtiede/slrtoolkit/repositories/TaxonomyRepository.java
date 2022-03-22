@@ -2,23 +2,17 @@ package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
 import android.os.Build;
-import android.telecom.Call;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import de.davidtiede.slrtoolkit.database.AppDatabase;
-import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyDao;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
@@ -27,15 +21,13 @@ import de.davidtiede.slrtoolkit.util.TaxonomyParser;
 import de.davidtiede.slrtoolkit.util.TaxonomyParserNode;
 
 public class TaxonomyRepository {
-    private TaxonomyDao taxonomyDao;
-    private Application application;
-    private FileUtil fileUtil;
+    private final TaxonomyDao taxonomyDao;
+    private final FileUtil fileUtil;
 
 
     public TaxonomyRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyDao = db.taxonomyDao();
-        this.application  = application;
         this.fileUtil = new FileUtil();
     }
 

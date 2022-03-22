@@ -28,17 +28,9 @@ import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
  */
 public class TaxonomyEntriesListFragment extends Fragment {
     private static TaxonomiesViewModel taxonomiesViewModel;
-    private RecyclerView taxonomyEntriesRecyclerView;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomyEntriesTextview;
-
-    private int repoId;
-    private int currentTaxonomyId;
-
-    public TaxonomyEntriesListFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,9 +47,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        repoId = taxonomiesViewModel.getCurrentRepoId();
-        currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
-        taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
+        int repoId = taxonomiesViewModel.getCurrentRepoId();
+        int currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
+        RecyclerView taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
         noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);

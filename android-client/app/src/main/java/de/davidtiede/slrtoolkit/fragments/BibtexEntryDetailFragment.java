@@ -27,8 +27,6 @@ public class BibtexEntryDetailFragment extends Fragment {
     private TextView abstractTextView;
     private TextView doiTextView;
     private TextView keywordsTextView;
-    private int entryId;
-    private int repoId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,20 +51,14 @@ public class BibtexEntryDetailFragment extends Fragment {
 
         if(getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
-            entryId = projectViewModel.getCurrentEntryIdForCard();
-            repoId = projectViewModel.getCurrentRepoId();
-            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-                setEntryInformation(entry);
-            });
+            int entryId = projectViewModel.getCurrentEntryIdForCard();
+            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
 
         } else if(getActivity() instanceof TaxonomiesActivity){
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
-            repoId = taxonomiesViewModel.getCurrentRepoId();
-            entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
-            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-                setEntryInformation(entry);
-            });
+            int entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
+            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         }
 
     }

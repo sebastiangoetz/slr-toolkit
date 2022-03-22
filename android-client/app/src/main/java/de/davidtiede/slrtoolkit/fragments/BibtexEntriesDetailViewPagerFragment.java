@@ -54,9 +54,13 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         repoId = projectViewModel.getCurrentRepoId();
         viewPager = view.findViewById(R.id.entries_detail_viewpager);
         noEntriesDetails = view.findViewById(R.id.textview_no_entries_details);
-        pagerAdapter = new BibtexEntriesDetailViewPagerFragment.EntrySlidePagerAdapter(BibtexEntriesDetailViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
+        pagerAdapter = new BibtexEntriesDetailViewPagerFragment.EntrySlidePagerAdapter(BibtexEntriesDetailViewPagerFragment.this.getActivity(), new ArrayList<>());
         viewPager.setAdapter(pagerAdapter);
 
+        setViewPager();
+    }
+
+    private void setViewPager() {
         List<Entry> entries = projectViewModel.getCurrentEntriesInList();
         if(entries.size() == 0) {
             noEntriesDetails.setVisibility(View.VISIBLE);
@@ -82,11 +86,11 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     private void deleteEntry() {
         Entry entry = projectViewModel.getCurrentEntriesInList().get(viewPager.getCurrentItem());
         projectViewModel.deleteById(entry.getEntryId(), repoId);
-        getActivity().onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_entry_detail, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -117,12 +121,12 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
             this.entries = entries;
         }
 
+        @NonNull
         @Override
         public Fragment createFragment(int position) {
             Entry entry = entries.get(position);
             projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
-            Fragment fragment = new BibtexEntryDetailFragment();
-            return fragment;
+            return new BibtexEntryDetailFragment();
         }
 
         @Override

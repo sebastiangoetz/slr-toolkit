@@ -28,8 +28,6 @@ import de.davidtiede.slrtoolkit.views.RepoListAdapter;
 import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallback;
 
 public class ProjectsFragment extends Fragment {
-
-    private RecyclerView recyclerView;
     private TextView textview_no_project;
     private RepoListAdapter repoListAdapter;
     private RepoListAdapter.RecyclerViewClickListener listener;
@@ -49,7 +47,7 @@ public class ProjectsFragment extends Fragment {
         textview_no_project = view.findViewById(R.id.textview_no_project);
         repoListAdapter = new RepoListAdapter(new RepoListAdapter.RepoDiff(), listener);
 
-        recyclerView = view.findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
@@ -63,14 +61,11 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void setOnClickListener() {
-        listener = new RepoListAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(getActivity(), ProjectActivity.class);
-                Repo clickedRepo = repoListAdapter.getItemAtPosition(position);
-                intent.putExtra("repo", clickedRepo.getId());
-                startActivity(intent);
-            }
+        listener = (v, position) -> {
+            Intent intent = new Intent(getActivity(), ProjectActivity.class);
+            Repo clickedRepo = repoListAdapter.getItemAtPosition(position);
+            intent.putExtra("repo", clickedRepo.getId());
+            startActivity(intent);
         };
     }
 

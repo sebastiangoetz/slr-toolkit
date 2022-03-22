@@ -48,7 +48,7 @@ public class FilterFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+        ProjectViewModel projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
 
         repoId = projectViewModel.getCurrentRepoId();
 
@@ -56,7 +56,7 @@ public class FilterFragment extends Fragment {
         flingAdapterView = view.findViewById(R.id.swipe_entries);
         entries = new ArrayList<>();
 
-        arrayAdapter = new FilterEntriesAdapter(getContext(), entries);
+        arrayAdapter = new FilterEntriesAdapter(requireContext(), entries);
         flingAdapterView.setAdapter(arrayAdapter);
 
         flingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -91,23 +91,19 @@ public class FilterFragment extends Fragment {
 
         int id = projectViewModel.getCurrentRepoId();
 
-        final Observer openEntriesObserver = new Observer<List<Entry>>() {
-            @Override
-            public void onChanged(List<Entry> data) {
-                entries = (ArrayList<Entry>) data;
-                if(entries.size() == 0) {
-                    noEntriesToFilterTextview.setVisibility(View.VISIBLE);
-                    flingAdapterView.setVisibility(View.INVISIBLE);
-                    keepButton.setVisibility(View.INVISIBLE);
-                    discardButton.setVisibility(View.INVISIBLE);
-                } else {
-                    noEntriesToFilterTextview.setVisibility(View.INVISIBLE);
-                    keepButton.setVisibility(View.VISIBLE);
-                    discardButton.setVisibility(View.VISIBLE);
-                    ArrayList<Entry> newItems = new ArrayList<>();
-                    newItems.addAll(data);
-                    arrayAdapter.setEntries(newItems);
-                }
+        final Observer<List<Entry>> openEntriesObserver = data -> {
+            entries = (ArrayList<Entry>) data;
+            if(entries.size() == 0) {
+                noEntriesToFilterTextview.setVisibility(View.VISIBLE);
+                flingAdapterView.setVisibility(View.INVISIBLE);
+                keepButton.setVisibility(View.INVISIBLE);
+                discardButton.setVisibility(View.INVISIBLE);
+            } else {
+                noEntriesToFilterTextview.setVisibility(View.INVISIBLE);
+                keepButton.setVisibility(View.VISIBLE);
+                discardButton.setVisibility(View.VISIBLE);
+                ArrayList<Entry> newItems = new ArrayList<>(data);
+                arrayAdapter.setEntries(newItems);
             }
         };
 
@@ -116,12 +112,16 @@ public class FilterFragment extends Fragment {
         keepButton = view.findViewById(R.id.keep_button);
         discardButton = view.findViewById(R.id.discard_button);
 
-        keepButton.setOnClickListener(v -> {
-            flingAdapterView.getTopCardListener().selectRight();
-        });
+        keepButton.setOnClickListener(this::selectRight);
 
-        discardButton.setOnClickListener(v -> {
-            flingAdapterView.getTopCardListener().selectLeft();
-        });
+        discardButton.setOnClickListener(this::selectLeft);
+    }
+
+    private void selectRight(View v) {
+        flingAdapterView.getTopCardListener().selectRight();
+    }
+
+    private void selectLeft(View v) {
+        flingAdapterView.getTopCardListener().selectLeft();
     }
 }

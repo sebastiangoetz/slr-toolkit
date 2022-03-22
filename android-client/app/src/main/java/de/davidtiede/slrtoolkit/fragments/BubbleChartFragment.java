@@ -38,7 +38,7 @@ public class BubbleChartFragment extends Fragment {
     BubbleChart bubbleChart;
     BubbleData bubbleData;
     BubbleDataSet bubbleDataSet;
-    List bubbleEntries = new ArrayList();
+    List<BubbleEntry> bubbleEntries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

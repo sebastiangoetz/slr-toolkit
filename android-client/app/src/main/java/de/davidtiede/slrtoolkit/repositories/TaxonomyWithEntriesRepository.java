@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;

@@ -2,17 +2,11 @@ package de.davidtiede.slrtoolkit.util;
 
 import android.app.Application;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class FileUtil {
@@ -20,9 +14,9 @@ public class FileUtil {
         File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
         File[] files = directoryPath.listFiles();
         File bibFile = null;
-        for(File file: files) {
+        for(File file: Objects.requireNonNull(files)) {
             if(file.isDirectory()) {
-                for(File f: file.listFiles()) {
+                for(File f: Objects.requireNonNull(file.listFiles())) {
                     if(f.getName().endsWith(type)) {
                         bibFile = f;
                     }

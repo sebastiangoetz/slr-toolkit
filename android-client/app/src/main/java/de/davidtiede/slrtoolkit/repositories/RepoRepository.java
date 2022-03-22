@@ -1,45 +1,27 @@
 package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import de.davidtiede.slrtoolkit.database.AppDatabase;
-import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.database.RepoDao;
-import de.davidtiede.slrtoolkit.util.BibTexParser;
-import de.davidtiede.slrtoolkit.util.FileUtil;
 
 /**
  * Abstracted Repository as promoted by the Architecture Guide. https://developer.android.com/topic/libraries/architecture/guide.html
  */
 public class RepoRepository {
-    private RepoDao repoDao;
-    private LiveData<List<Repo>> allRepos;
-    private FileUtil fileUtil;
-    private Application application;
+    private final RepoDao repoDao;
+    private final LiveData<List<Repo>> allRepos;
 
     public RepoRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.repoDao = db.repoDao();
         this.allRepos = repoDao.getAllRepos();
-        this.fileUtil = new FileUtil();
-        this.application = application;
     }
 
     public LiveData<List<Repo>> getAllRepos() {

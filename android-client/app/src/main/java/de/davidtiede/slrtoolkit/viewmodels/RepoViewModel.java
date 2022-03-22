@@ -2,13 +2,10 @@ package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import org.jbibtex.ParseException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -16,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.Repo;

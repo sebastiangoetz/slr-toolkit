@@ -4,17 +4,13 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -24,12 +20,11 @@ import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
 import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.util.FileUtil;
 
 public class EntryRepository {
-    private EntryDao entryDao;
+    private final EntryDao entryDao;
     Application application;
     FileUtil fileUtil;
 
@@ -40,8 +35,8 @@ public class EntryRepository {
         fileUtil = new FileUtil();
     }
 
-    public LiveData<List<Entry>> getEntriesForRepoWithSearchQuery(int repoId, String searchQuery) {
-        return entryDao.getEntriesForRepoWithSearchQuery(repoId, searchQuery);
+    public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
+        return entryDao.getEntriesForRepo(repoId);
     }
 
     public void update(Entry entry) {
@@ -98,10 +93,6 @@ public class EntryRepository {
 
     public LiveData<Entry> getEntryById(int id) {
         return entryDao.getEntryById(id);
-    }
-
-    public void saveAll(List<Entry> entries) {
-        AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertAll(entries));
     }
 
     public void insertEntriesForRepo(int repoId, List<Entry> entries) {

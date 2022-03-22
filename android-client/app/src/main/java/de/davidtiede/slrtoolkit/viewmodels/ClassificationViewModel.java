@@ -1,14 +1,11 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;

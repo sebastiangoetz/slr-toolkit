@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -57,20 +56,17 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         repoId = projectViewModel.getCurrentRepoId();
         viewPager = view.findViewById(R.id.classify_entries_viewpager);
         noEntriesToClassifyTextview = view.findViewById(R.id.textview_no_entries_to_classify);
-        pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<Entry>());
+        pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<>());
         viewPager.setAdapter(pagerAdapter);
 
-        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), new Observer<List<Entry>>() {
-            @Override
-            public void onChanged(List<Entry> list) {
-                entries = list;
-                if(entries.size() == 0) {
-                    noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
-                } else {
-                    noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
-                    pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), entries);
-                    viewPager.setAdapter(pagerAdapter);
-                }
+        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), list -> {
+            entries = list;
+            if(entries.size() == 0) {
+                noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
+            } else {
+                noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
+                pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), entries);
+                viewPager.setAdapter(pagerAdapter);
             }
         });
     }
@@ -104,7 +100,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_classification, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -135,12 +131,12 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
             this.entries = entries;
         }
 
+        @NonNull
         @Override
         public Fragment createFragment(int position) {
             Entry entry = entries.get(position);
             projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
-            Fragment fragment = new BibtexEntryDetailFragment();
-            return fragment;
+            return new BibtexEntryDetailFragment();
         }
 
         @Override

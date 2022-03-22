@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">SLR Toolkit</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="next">Weiter</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
     <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
     <string name="fragment_label_projects">Projects Fragment</string>
@@ -35,7 +34,6 @@
     <string name="entry_detail_heading_abstract">Abstrakt</string>
     <string name="entry_detail_heading_doi">DOI</string>
     <string name="entry_detail_heading_keywords">Schlüsselworte</string>
-    <string name="entry_detail_heading_url">URL</string>
     <string name="button_classify">Klassifizieren</string>
     <string name="button_filter">Filtern</string>
     <string name="button_pull">Pull</string>
@@ -45,7 +43,6 @@
     <string name="button_analyze">Analyze</string>
     <string name="button_keep">Behalten</string>
     <string name="button_discard">Verwerfen</string>
-    <string name="button_delete">Löschen</string>
     <string-array name="chart_array">
         <item>Barchart</item>
         <item>Bubblechart</item>

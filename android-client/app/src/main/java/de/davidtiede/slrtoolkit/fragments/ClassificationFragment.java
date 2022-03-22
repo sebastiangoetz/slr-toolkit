@@ -26,23 +26,15 @@ import de.davidtiede.slrtoolkit.views.TaxonomyClassificationListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ClassificationFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class ClassificationFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "currentTaxonomy";
     private int currentTaxonomy;
-    private int repoId;
     private int entryId;
-    private RecyclerView taxonomyRecyclerView;
     private TaxonomyClassificationListAdapter taxonomyListAdapter;
     private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     private ClassificationViewModel classificationViewModel;
-
-    public ClassificationFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -77,9 +69,9 @@ public class ClassificationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         classificationViewModel = new ViewModelProvider(requireActivity()).get(ClassificationViewModel.class);
-        repoId = classificationViewModel.getCurrentRepoId();
+        int repoId = classificationViewModel.getCurrentRepoId();
         entryId = classificationViewModel.getCurrentEntryId();
-        taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
+        RecyclerView taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -114,7 +106,7 @@ public class ClassificationFragment extends Fragment {
             TaxonomyWithEntries clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
             if(clickedTaxonomy.taxonomy.isHasChildren()) {
                 Fragment classificationFragment = ClassificationFragment.newInstance(clickedTaxonomy.taxonomy.getTaxonomyId());
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.classification_fragment_container_view, classificationFragment);
                 ft.addToBackStack(null);
                 ft.commit();

@@ -45,10 +45,6 @@ public class BibTexParser {
         return bibTeXDatabase.getEntries();
     }
 
-    public List<BibTeXObject> getObjects() {
-        return bibTeXDatabase.getObjects();
-    }
-
     public BibTeXObject getBibTexObject(Key key) {
         return bibTeXDatabase.resolveEntry(key);
     }
