@@ -46,4 +46,5 @@
         <item>Barchart</item>
         <item>Bubblechart</item>
     </string-array>
+    <string name="button_okay">Okay</string>
 </resources>
