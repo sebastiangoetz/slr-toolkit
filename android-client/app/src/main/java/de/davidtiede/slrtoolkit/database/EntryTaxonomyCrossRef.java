@@ -1,8 +1,11 @@
 package de.davidtiede.slrtoolkit.database;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 
-@Entity(primaryKeys = {"taxonomyId", "entryId"})
+@Entity(primaryKeys = {"taxonomyId", "entryId"}, indices = {
+        @Index(value = "entryId")
+})
 public class EntryTaxonomyCrossRef {
     public int taxonomyId;
     public int entryId;

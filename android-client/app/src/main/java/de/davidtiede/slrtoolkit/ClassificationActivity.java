@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import de.davidtiede.slrtoolkit.fragments.ClassificationFragment;
 import de.davidtiede.slrtoolkit.viewmodels.ClassificationViewModel;
-import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 public class ClassificationActivity extends AppCompatActivity {
     private int repoId;
