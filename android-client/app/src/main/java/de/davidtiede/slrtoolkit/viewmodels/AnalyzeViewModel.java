@@ -5,9 +5,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
+
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
@@ -96,11 +100,13 @@ public class AnalyzeViewModel extends AndroidViewModel {
     }
 
     public int getNumberOfEntriesForTaxonomy(List<TaxonomyWithEntries> taxonomyWithEntries) {
-        int numberOfEntries = 0;
+        Set<Integer> entries = new HashSet<>();
         for(TaxonomyWithEntries t : taxonomyWithEntries) {
-            numberOfEntries += t.entries.size();
+            for(Entry entry: t.entries) {
+                entries.add(entry.getEntryId());
+            }
         }
-        return numberOfEntries;
+        return entries.size();
     }
 
     public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
