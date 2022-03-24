@@ -14,6 +14,8 @@ supported:
 In order to run the project import the project into android studio and press build and run.
 
 ## Architecture
+The arcitecture followed in this project follows the promoted arcitectural pattern by google,
+which is the MVVM (Model-View-Viewmodel) alongside the repository architectural pattern.
 
 ## Project Structure
 

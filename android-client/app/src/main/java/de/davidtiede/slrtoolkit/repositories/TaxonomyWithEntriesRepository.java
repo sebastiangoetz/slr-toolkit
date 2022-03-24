@@ -1,6 +1,9 @@
 package de.davidtiede.slrtoolkit.repositories;
 
 import android.app.Application;
+
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -59,5 +62,13 @@ public class TaxonomyWithEntriesRepository {
         Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomyIdsWithLeafChildTaxonomies(repoId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
+    }
+
+    public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int taxonomyId) {
+        return taxonomyWithEntriesDao.getChildTaxonomiesWithEntries(repoId, taxonomyId);
+    }
+
+    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
+        return taxonomyWithEntriesDao.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

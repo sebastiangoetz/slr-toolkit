@@ -12,6 +12,7 @@ import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
+import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
     private int currentRepoId;
@@ -19,11 +20,13 @@ public class TaxonomiesViewModel extends AndroidViewModel {
     private int currentTaxonomyId;
     private final TaxonomyRepository taxonomyRepository;
     private final EntryRepository entryRepository;
+    private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
 
     public TaxonomiesViewModel(Application application) {
         super(application);
         taxonomyRepository = new TaxonomyRepository(application);
         entryRepository = new EntryRepository(application);
+        taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
     }
 
     public void setCurrentRepoId(int currentRepoId) {
@@ -59,6 +62,6 @@ public class TaxonomiesViewModel extends AndroidViewModel {
     }
 
     public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
-        return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
+        return taxonomyWithEntriesRepository.getTaxonomyWithEntries(repoId, taxonomyId);
     }
 }

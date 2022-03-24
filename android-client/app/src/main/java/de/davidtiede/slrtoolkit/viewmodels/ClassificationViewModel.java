@@ -62,7 +62,7 @@ public class ClassificationViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int parentId) {
-        return taxonomyRepository.getChildTaxonomiesWithEntries(repoId, parentId);
+        return taxonomyWithEntriesRepository.getChildTaxonomiesWithEntries(repoId, parentId);
     }
 
     public void insertEntryForTaxonomy(int taxonomyId, int entryId) {
