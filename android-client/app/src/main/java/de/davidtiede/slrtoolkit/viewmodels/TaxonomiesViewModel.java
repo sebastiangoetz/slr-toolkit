@@ -20,13 +20,23 @@ public class TaxonomiesViewModel extends AndroidViewModel {
     private int currentTaxonomyId;
     private final TaxonomyRepository taxonomyRepository;
     private final EntryRepository entryRepository;
+    private List<Entry> currentEntriesInList;
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
+    private int currentEntryInListCount;
 
     public TaxonomiesViewModel(Application application) {
         super(application);
         taxonomyRepository = new TaxonomyRepository(application);
         entryRepository = new EntryRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
+    }
+
+    public int getCurrentEntryInListCount() {
+        return currentEntryInListCount;
+    }
+
+    public void setCurrentEntryInListCount(int currentEntryInListCount) {
+        this.currentEntryInListCount = currentEntryInListCount;
     }
 
     public void setCurrentRepoId(int currentRepoId) {
@@ -51,6 +61,14 @@ public class TaxonomiesViewModel extends AndroidViewModel {
 
     public int getCurrentTaxonomyId() {
         return currentTaxonomyId;
+    }
+
+    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+        this.currentEntriesInList = currentEntriesInList;
+    }
+
+    public List<Entry> getCurrentEntriesInList() {
+        return currentEntriesInList;
     }
 
     public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {

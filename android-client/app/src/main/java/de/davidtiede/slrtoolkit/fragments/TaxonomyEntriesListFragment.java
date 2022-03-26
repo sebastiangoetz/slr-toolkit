@@ -62,6 +62,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
         List<Entry> entries = taxonomyWithEntries.entries;
+        taxonomiesViewModel.setCurrentEntriesInList(entries);
         if(entries.size() == 0) {
             noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
         } else {
@@ -76,7 +77,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
             if(clickedEntry == null) return;
 
             taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
-            Fragment entryFragment = new BibtexEntryDetailFragment();
+            int indexOfEntryInOriginalList = taxonomiesViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
+            taxonomiesViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
+            Fragment entryFragment = new BibtexEntriesDetailViewPagerFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
             ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
             ft.addToBackStack(null);

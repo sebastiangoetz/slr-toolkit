@@ -3,52 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/arrow.xml" value="0.18385416666666668" />
-        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.2361111111111111" />
-        <entry key="app/src/main/res/drawable/ic_label.xml" value="0.2361111111111111" />
-        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.18385416666666668" />
-        <entry key="app/src/main/res/layout/activity_analyze.xml" value="0.14764492753623187" />
-        <entry key="app/src/main/res/layout/activity_bibtex_entries.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/activity_classification.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/activity_classify.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/activity_entries_by_taxonomy.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_filter.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_project.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/activity_taxonomies.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/activity_taxonomy_classification_fragment.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/bibtex_recyclerview_item.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/classify_entry_viewpager_item.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/filter_item.xml" value="0.13559322033898305" />
-        <entry key="app/src/main/res/layout/fragment_add_project_1.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/fragment_add_project_2.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/fragment_bar_chart.xml" value="0.14387031408308004" />
-        <entry key="app/src/main/res/layout/fragment_bibtex_entries_detail_view_pager.xml" value="0.13677536231884058" />
-        <entry key="app/src/main/res/layout/fragment_bibtex_entries_list.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_bibtex_entry_detail.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/fragment_bubble_chart.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/fragment_chart_selection.xml" value="0.14387031408308004" />
-        <entry key="app/src/main/res/layout/fragment_classification.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_entries_list.xml" value="0.18931159420289856" />
-        <entry key="app/src/main/res/layout/fragment_entries_to_classify_view_pager.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_project_overview.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_projects.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_classification.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_entries.xml" value="0.15364583333333334" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_entries_list.xml" value="0.16757246376811594" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_list_list.xml" value="0.17916666666666667" />
-        <entry key="app/src/main/res/layout/fragment_taxonomy_selection_dialog.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.16666666666666666" />
-        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.1308876811594203" />
-        <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/menu/menu_classification.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/menu/menu_classify.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/menu/menu_entries_list.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/menu/menu_entry_detail.xml" value="0.2796296296296296" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/menu/menu_project.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/filter_item.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_bibtex_entries_detail_view_pager.xml" value="0.1" />
       </map>
     </option>
   </component>

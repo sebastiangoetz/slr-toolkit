@@ -130,7 +130,6 @@ public class BibtexEntriesListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                //setEntries(s);
                 filterList(s);
                 return true;
             }
