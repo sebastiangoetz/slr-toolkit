@@ -31,6 +31,9 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomyEntriesTextview;
+    private TextView taxonomiesBreadCrumbTextview;
+    int repoId;
+    int currentTaxonomyId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +50,11 @@ public class TaxonomyEntriesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        int repoId = taxonomiesViewModel.getCurrentRepoId();
-        int currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
+        repoId = taxonomiesViewModel.getCurrentRepoId();
+        currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
         RecyclerView taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
         noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
+        taxonomiesBreadCrumbTextview = view.findViewById(R.id.textview_entries_taxonomies_breadcrumb);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyEntriesRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -58,6 +62,23 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        setHeader();
+    }
+
+    public void setHeader() {
+        if(currentTaxonomyId > 0) {
+            taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), t -> {
+                String path = t.taxonomy.getPath();
+                if(path.length() > 1) {
+                    path = path.replaceAll("#", " > ");
+                    if (path.charAt(1) == ">".charAt(0)) {
+                        path = path.replaceFirst(" > ", "");
+                    }
+                    path = getResources().getString(R.string.entries_for_taxonomy) + "\n" + path;
+                    taxonomiesBreadCrumbTextview.setText(path);
+                }
+            });
+        }
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {

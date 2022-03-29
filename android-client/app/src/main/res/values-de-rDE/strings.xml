@@ -49,4 +49,5 @@
     </string-array>
     <string name="button_okay">Okay</string>
     <string name="taxonomy_select_description">Bitte wählen Sie die Kinder der Taxonomie, die dargestellt werden sollen.</string>
+    <string name="entries_for_taxonomy">Einträge für:</string>
 </resources>
