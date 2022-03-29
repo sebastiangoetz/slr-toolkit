@@ -38,7 +38,6 @@ public class BubbleChartFragment extends Fragment {
     BubbleChart bubbleChart;
     BubbleData bubbleData;
     BubbleDataSet bubbleDataSet;
-    List<BubbleEntry> bubbleEntries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,8 @@ public class BubbleChartFragment extends Fragment {
             } else {
                 childTaxonomies2 = analyzeViewModel.getChildTaxonomiesToDisplay2();
             }
-
+            childTaxonomies1 = analyzeViewModel.getTaxonomiesWithAggregatedChildren(repoId, childTaxonomies1);
+            childTaxonomies2 = analyzeViewModel.getTaxonomiesWithAggregatedChildren(repoId, childTaxonomies2);
             setBubbleChart(childTaxonomies1, childTaxonomies2);
         } catch (ExecutionException | InterruptedException exception) {
             exception.printStackTrace();
@@ -84,7 +84,7 @@ public class BubbleChartFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setBubbleChart(List<TaxonomyWithEntries> taxonomies1, List<TaxonomyWithEntries> taxonomies2) {
-        getData(taxonomies1, taxonomies2);
+        List<BubbleEntry> bubbleEntries = getData(taxonomies1, taxonomies2);
         bubbleDataSet = new BubbleDataSet(bubbleEntries, "");
         bubbleData = new BubbleData(bubbleDataSet);
         bubbleChart.setData(bubbleData);
@@ -104,21 +104,41 @@ public class BubbleChartFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void getData(List<TaxonomyWithEntries> taxonomyWithEntries1, List<TaxonomyWithEntries> taxonomyWithEntries2) {
+    public List<BubbleEntry> getData(List<TaxonomyWithEntries> taxonomyWithEntries1, List<TaxonomyWithEntries> taxonomyWithEntries2) {
+        List<BubbleEntry> bubbleEntries = new ArrayList<>();
         int xCount = 0;
         for(TaxonomyWithEntries t1: taxonomyWithEntries1) {
             int yCount = 0;
-            xCount++;
             for(TaxonomyWithEntries t2: taxonomyWithEntries2) {
-                yCount++;
                 List<Entry> t1Entries = t1.entries;
+                System.out.println("t1 entries!");
+                System.out.println("name: " + t1.taxonomy.getName());
+                for(Entry entry: t1Entries) {
+                    System.out.println(entry.getTitle());
+                }
                 List<Entry> t2Entries = t2.entries;
+                System.out.println("t2 entries!");
+                System.out.println("name: " + t2.taxonomy.getName());
+                for(Entry entry: t2Entries) {
+                    System.out.println(entry.getTitle());
+                }
                 List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
                 List<Integer> t2EntryIds = t2Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
+                System.out.println(t1EntryIds);
+                System.out.println(t2EntryIds);
                 t1EntryIds.retainAll(t2EntryIds);
-                bubbleEntries.add(new BubbleEntry(xCount, yCount, t1EntryIds.size()));
+                System.out.println(t1EntryIds);
+                System.out.println("Adding!");
+                BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
+                System.out.println(t1EntryIds.size());
+                bubbleEntries.add(bubbleEntry);
+                yCount++;
             }
+            xCount++;
         }
+        System.out.println("what is the size?");
+        System.out.println(bubbleEntries.size());
+        return bubbleEntries;
     }
 
     public static class AxisValueFormatter extends ValueFormatter {
@@ -129,11 +149,8 @@ public class BubbleChartFragment extends Fragment {
         @Override
         public String getFormattedValue(float value) {
             int index = Math.round(value);
-            if(index == 0) {
-                return "";
-            }
-            if(taxonomyWithEntries.size() > index-1) {
-                String title = taxonomyWithEntries.get(index - 1).taxonomy.getName();
+            if(taxonomyWithEntries.size() > index) {
+                String title = taxonomyWithEntries.get(index).taxonomy.getName();
                 if (title.length() > 20) {
                     return title.substring(0, 20);
                 }

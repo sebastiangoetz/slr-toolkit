@@ -109,6 +109,32 @@ public class AnalyzeViewModel extends AndroidViewModel {
         return entries.size();
     }
 
+    public List<TaxonomyWithEntries> getTaxonomiesWithAggregatedChildren(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
+        List<TaxonomyWithEntries> taxonomiesWithAggregatedChildren = new ArrayList<>();
+        for (TaxonomyWithEntries currentTaxonomy: taxonomyWithEntries) {
+            if(!currentTaxonomy.taxonomy.isHasChildren()) {
+                taxonomiesWithAggregatedChildren.add(currentTaxonomy);
+            } else {
+                List<TaxonomyWithEntries> children = aggregateChildrenOfTaxonomy(repoId, currentTaxonomy);
+                List<Entry> entries = new ArrayList<>();
+                ArrayList<Integer> entryIds =  new ArrayList<>();
+
+                for(TaxonomyWithEntries child: children) {
+                    for (Entry entry : child.entries) {
+                        if(!entryIds.contains(entry.getEntryId())) {
+                            entryIds.add(entry.getEntryId());
+                            entries.add(entry);
+                        }
+                    }
+                }
+                currentTaxonomy.entries = entries;
+                taxonomiesWithAggregatedChildren.add(currentTaxonomy);
+            }
+        }
+
+        return taxonomiesWithAggregatedChildren;
+    }
+
     public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
         Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
         for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
