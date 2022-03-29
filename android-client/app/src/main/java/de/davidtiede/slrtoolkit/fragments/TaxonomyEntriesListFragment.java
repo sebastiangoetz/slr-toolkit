@@ -62,26 +62,17 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
         taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
-        setHeader();
     }
 
-    public void setHeader() {
-        if(currentTaxonomyId > 0) {
-            taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), t -> {
-                String path = t.taxonomy.getPath();
-                if(path.length() > 1) {
-                    path = path.replaceAll("#", " > ");
-                    if (path.charAt(1) == ">".charAt(0)) {
-                        path = path.replaceFirst(" > ", "");
-                    }
-                    path = getResources().getString(R.string.entries_for_taxonomy) + "\n" + path;
-                    taxonomiesBreadCrumbTextview.setText(path);
-                }
-            });
+    public void setHeader(TaxonomyWithEntries taxonomyWithEntries) {
+        if(taxonomyWithEntries != null) {
+            String title = getResources().getString(R.string.entries_for_taxonomy) + " " + taxonomyWithEntries.taxonomy.getName();
+            taxonomiesBreadCrumbTextview.setText(title);
         }
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
+        setHeader(taxonomyWithEntries);
         List<Entry> entries = taxonomyWithEntries.entries;
         taxonomiesViewModel.setCurrentEntriesInList(entries);
         if(entries.size() == 0) {
