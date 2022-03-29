@@ -78,13 +78,16 @@ public class ProjectOverviewFragment extends Fragment {
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());
         projectViewModel.getRepoById(repoId).observe(getViewLifecycleOwner(), repoTitleObserver);
 
-        final Observer<Integer> entryAmountObserver = amount -> allEntryButton.setText(String.format("All Entries (%s)", amount.toString()));
+        final Observer<Integer> entryAmountObserver =
+                amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() +")");
         projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
 
-        final Observer<Integer> openEntryAmountObserver = amount -> filterButton.setText(String.format("Filter (%s)", amount.toString()));
+        final Observer<Integer> openEntryAmountObserver =
+                amount -> filterButton.setText(getResources().getString(R.string.button_filter) + " (" + amount.toString() +")");
         projectViewModel.getOpenEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
 
-        final Observer<Integer> entriesToClassifyObserver = amount -> classifyButton.setText(String.format("Classify (%s)", amount.toString()));
+        final Observer<Integer> entriesToClassifyObserver =
+                amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() +")");
         projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
     }
 }
