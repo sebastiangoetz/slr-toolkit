@@ -73,7 +73,7 @@ public class ClassificationFragment extends Fragment {
         entryId = classificationViewModel.getCurrentEntryId();
         RecyclerView taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener);
+        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
         taxonomyRecyclerView.addItemDecoration(dividerItemDecoration);
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
@@ -121,12 +121,11 @@ public class ClassificationFragment extends Fragment {
                 }
                 if(entryContainsTaxonomy) {
                     classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
-                    taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
 
                 } else {
                     classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
-                    taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
                 }
+                taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
             }
         };
     }

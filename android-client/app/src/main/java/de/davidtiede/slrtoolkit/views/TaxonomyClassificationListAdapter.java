@@ -28,11 +28,13 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     private final TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
     List<Integer> currentTaxonomyIds;
+    boolean showArrows;
 
-    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener) {
+    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, boolean showArrows) {
         super(diffCallback);
         this.listener = listener;
         this.currentTaxonomyIds = new ArrayList<>();
+        this.showArrows = showArrows;
     }
 
     public void setCurrentTaxonomyIds(List<Integer> currentTaxonomyIds) {
@@ -59,7 +61,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     @Override
     public void onBindViewHolder(@NonNull TaxonomyClassificationViewHolder holder, int position) {
         TaxonomyWithEntries current = getItem(position);
-        holder.bind(current, listener, currentTaxonomyIds, getContext());
+        holder.bind(current, listener, currentTaxonomyIds, getContext(), showArrows);
     }
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
@@ -92,7 +94,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             listener.onClick(view, getAdapterPosition());
         }
 
-        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, List<Integer> selectedTaxonomyIds, Context context) {
+        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, List<Integer> selectedTaxonomyIds, Context context, boolean showArrows) {
             boolean taxonomyInEntry = false;
             for(int taxonomyId: selectedTaxonomyIds) {
                 if (taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
@@ -105,7 +107,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             } else {
                 constraintLayout.setBackgroundColor(Color.WHITE);
             }
-            if(taxonomy.taxonomy.isHasChildren()) {
+            if(taxonomy.taxonomy.isHasChildren() && showArrows) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }

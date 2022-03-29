@@ -64,8 +64,8 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         setOnClickListener();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this.requireContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setAdapter(taxonomyListAdapter);
         setSelectedTaxonomies();
