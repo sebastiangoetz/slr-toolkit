@@ -3,6 +3,8 @@ package de.davidtiede.slrtoolkit.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,10 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
+import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 
@@ -34,7 +39,10 @@ public class TaxonomyListFragment extends Fragment {
     private TaxonomyListAdapter taxonomyListAdapter;
     private TaxonomyListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomiesTextview;
+    private TextView taxonomiesBreadCrumbTextview;
+    ConstraintLayout constraintLayout;
     private int currentTaxonomyId;
+    private int repoId;
 
     public TaxonomyListFragment() {
         // Required empty public constructor
@@ -73,9 +81,11 @@ public class TaxonomyListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        int repoId = taxonomiesViewModel.getCurrentRepoId();
+        repoId = taxonomiesViewModel.getCurrentRepoId();
         RecyclerView taxonomyRecyclerView = view.findViewById(R.id.taxonomyRecyclerview);
         noTaxonomiesTextview = view.findViewById(R.id.textview_no_taxonomies);
+        taxonomiesBreadCrumbTextview = view.findViewById(R.id.textview_taxonomies_breadcrumb);
+        constraintLayout = view.findViewById(R.id.taxonomy_list_constraint_layout);
         taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         taxonomyListAdapter = new TaxonomyListAdapter(new TaxonomyListAdapter.TaxonomyDiff(), listener);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -83,6 +93,28 @@ public class TaxonomyListFragment extends Fragment {
         taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
 
         taxonomiesViewModel.getChildrenForTaxonomy(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        setHeader();
+    }
+
+    public void setHeader() {
+        if(currentTaxonomyId > 0) {
+            taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), t -> {
+                String path = t.taxonomy.getPath();
+                if(path.length() > 1) {
+                    path = path.replaceAll("#", " > ");
+                    if (path.charAt(1) == ">".charAt(0)) {
+                        path = path.replaceFirst(" > ", "");
+                    }
+                    taxonomiesBreadCrumbTextview.setText(path);
+                }
+            });
+        } else {
+            taxonomiesBreadCrumbTextview.setVisibility(View.INVISIBLE);
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.connect(R.id.taxonomyRecyclerview, ConstraintSet.TOP,0,ConstraintSet.TOP,0);
+            constraintSet.applyTo(constraintLayout);
+        }
     }
 
     public void onLoaded(List<Taxonomy> taxonomyList) {

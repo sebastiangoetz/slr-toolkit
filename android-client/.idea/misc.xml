@@ -6,8 +6,15 @@
         <entry key="app/src/main/res/layout/activity_filter.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_project.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/bibtex_recyclerview_item.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/child_item.xml" value="0.1766304347826087" />
         <entry key="app/src/main/res/layout/filter_item.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/fragment_bibtex_entries_detail_view_pager.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_bibtex_entries_list.xml" value="0.10190217391304347" />
+        <entry key="app/src/main/res/layout/fragment_taxonomy_list.xml" value="0.10190217391304347" />
+        <entry key="app/src/main/res/layout/group_item.xml" value="0.1766304347826087" />
+        <entry key="app/src/main/res/layout/recyclerview_item.xml" value="0.10190217391304347" />
+        <entry key="app/src/main/res/layout/spinner_item.xml" value="0.16458333333333333" />
+        <entry key="app/src/main/res/layout/taxonomy_classification_recyclerview_item.xml" value="0.25" />
       </map>
     </option>
   </component>
