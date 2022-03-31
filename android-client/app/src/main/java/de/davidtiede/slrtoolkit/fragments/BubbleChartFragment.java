@@ -129,8 +129,8 @@ public class BubbleChartFragment extends Fragment {
                 t1EntryIds.retainAll(t2EntryIds);
                 System.out.println(t1EntryIds);
                 System.out.println("Adding!");
-                BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
                 System.out.println(t1EntryIds.size());
+                BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
                 bubbleEntries.add(bubbleEntry);
                 yCount++;
             }

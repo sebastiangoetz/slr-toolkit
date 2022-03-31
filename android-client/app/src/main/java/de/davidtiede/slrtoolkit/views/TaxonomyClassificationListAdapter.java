@@ -103,7 +103,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
                 }
             }
             if(taxonomyInEntry) {
-                constraintLayout.setBackgroundColor(Color.BLUE);
+                constraintLayout.setBackgroundColor(Color.LTGRAY);
             } else {
                 constraintLayout.setBackgroundColor(Color.WHITE);
             }
