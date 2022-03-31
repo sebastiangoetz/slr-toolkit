@@ -99,11 +99,15 @@ public class BarChartFragment extends Fragment {
         }
         @Override
         public String getFormattedValue(float value) {
-            String title = (String) entries.get(Math.round(value)-1).getData();
-            if(title.length() < 20) {
-                return title;
+            int index = Math.round(value)-1;
+            if(entries.size() > index && index >= 0) {
+                String title = (String) entries.get(index).getData();
+                if (title.length() < 20) {
+                    return title;
+                }
+                return title.substring(0, 20) + "...";
             }
-            return title.substring(0, 20) + "...";
+            return "";
         }
     }
 }

@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -38,6 +40,7 @@ public class BubbleChartFragment extends Fragment {
     BubbleChart bubbleChart;
     BubbleData bubbleData;
     BubbleDataSet bubbleDataSet;
+    TextView noBubbleEntriesTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class BubbleChartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         bubbleChart = view.findViewById(R.id.bubblechart);
+        noBubbleEntriesTextView = view.findViewById(R.id.textview_no_bubblechart);
         AnalyzeViewModel analyzeViewModel = new ViewModelProvider(requireActivity()).get(AnalyzeViewModel.class);
         int repoId = analyzeViewModel.getCurrentRepoId();
         try {
@@ -85,22 +89,28 @@ public class BubbleChartFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setBubbleChart(List<TaxonomyWithEntries> taxonomies1, List<TaxonomyWithEntries> taxonomies2) {
         List<BubbleEntry> bubbleEntries = getData(taxonomies1, taxonomies2);
-        bubbleDataSet = new BubbleDataSet(bubbleEntries, "");
-        bubbleData = new BubbleData(bubbleDataSet);
-        bubbleChart.setData(bubbleData);
-        bubbleDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        bubbleDataSet.setValueTextColor(Color.BLACK);
-        bubbleDataSet.setValueTextSize(18f);
-        ValueFormatter xAxisFormatter = new AxisValueFormatter(taxonomies1);
-        ValueFormatter yAxisFormatter = new AxisValueFormatter(taxonomies2);
-        XAxis xAxis = bubbleChart.getXAxis();
-        YAxis yAxis = bubbleChart.getAxisLeft();
-        yAxis.setGranularity(1f);
-        xAxis.setGranularity(1f);
-        yAxis.setValueFormatter(yAxisFormatter);
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(taxonomies1.size());
-        xAxis.setValueFormatter(xAxisFormatter);
+        if(bubbleEntries.size() > 0) {
+            noBubbleEntriesTextView.setVisibility(View.INVISIBLE);
+            bubbleDataSet = new BubbleDataSet(bubbleEntries, "");
+            bubbleData = new BubbleData(bubbleDataSet);
+            bubbleChart.setData(bubbleData);
+            bubbleDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+            bubbleDataSet.setValueTextColor(Color.BLACK);
+            bubbleDataSet.setValueTextSize(18f);
+            ValueFormatter xAxisFormatter = new AxisValueFormatter(taxonomies1);
+            ValueFormatter yAxisFormatter = new AxisValueFormatter(taxonomies2);
+            XAxis xAxis = bubbleChart.getXAxis();
+            YAxis yAxis = bubbleChart.getAxisLeft();
+            yAxis.setGranularity(1f);
+            xAxis.setGranularity(1f);
+            yAxis.setValueFormatter(yAxisFormatter);
+            xAxis.setAxisMinimum(0);
+            xAxis.setAxisMaximum(taxonomies1.size());
+            xAxis.setValueFormatter(xAxisFormatter);
+        } else {
+            bubbleChart.setVisibility(View.INVISIBLE);
+            noBubbleEntriesTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -130,8 +140,10 @@ public class BubbleChartFragment extends Fragment {
                 System.out.println(t1EntryIds);
                 System.out.println("Adding!");
                 System.out.println(t1EntryIds.size());
-                BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
-                bubbleEntries.add(bubbleEntry);
+                if(t1EntryIds.size() > 0) {
+                    BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
+                    bubbleEntries.add(bubbleEntry);
+                }
                 yCount++;
             }
             xCount++;
@@ -149,7 +161,7 @@ public class BubbleChartFragment extends Fragment {
         @Override
         public String getFormattedValue(float value) {
             int index = Math.round(value);
-            if(taxonomyWithEntries.size() > index) {
+            if(taxonomyWithEntries.size() > index && index >= 0) {
                 String title = taxonomyWithEntries.get(index).taxonomy.getName();
                 if (title.length() > 20) {
                     return title.substring(0, 20);

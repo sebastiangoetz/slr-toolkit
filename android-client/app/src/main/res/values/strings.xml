@@ -49,4 +49,5 @@
     <string name="button_okay">Okay</string>
     <string name="taxonomy_select_description">Please select the child taxonomies you want to display.</string>
     <string name="entries_for_taxonomy">Entries for:</string>
+    <string name="no_matches">No Matches</string>
 </resources>
