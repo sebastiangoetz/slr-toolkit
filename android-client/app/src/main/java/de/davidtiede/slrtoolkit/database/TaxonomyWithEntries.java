@@ -11,8 +11,8 @@ public class TaxonomyWithEntries {
     public Taxonomy taxonomy;
     @Relation(
             parentColumn = "taxonomyId",
-            entityColumn = "id",
-            associateBy = @Junction(EntityTaxonomyCrossRef.class)
+            entityColumn = "entryId",
+            associateBy = @Junction(EntryTaxonomyCrossRef.class)
     )
     public List<Entry> entries;
 }

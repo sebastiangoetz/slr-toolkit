@@ -7,10 +7,7 @@ import java.util.Stack;
 
 public class TaxonomyParser {
     public boolean isEmpty(String string) {
-        if(string != null && !string.trim().isEmpty()) {
-            return false;
-        }
-        return true;
+        return string == null || string.trim().isEmpty();
     }
 
     public List<TaxonomyParserNode> parse(String taxonomy) {
@@ -22,7 +19,7 @@ public class TaxonomyParser {
         List<TaxonomyParserNode> taxonomyNodes = new ArrayList<>();
 
         for(int i = 0; i < taxonomy.length(); i++) {
-            if(Character.compare(taxonomy.charAt(i), openingBracet) == 0) {
+            if(taxonomy.charAt(i) == openingBracet) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
@@ -41,7 +38,7 @@ public class TaxonomyParser {
                     parentNodes.push(taxonomyNode);
                     node = "";
                 }
-            } else if(Character.compare(taxonomy.charAt(i), closingBracet) == 0) {
+            } else if(taxonomy.charAt(i) == closingBracet) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
@@ -62,7 +59,7 @@ public class TaxonomyParser {
                         taxonomyNodes.add(currentParent);
                     }
                 }
-            } else if(Character.compare(taxonomy.charAt(i), comma) == 0) {
+            } else if(taxonomy.charAt(i) == comma) {
                 if(!isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();

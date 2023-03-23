@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root_vg">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/taxonomy_select_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@+id/taxonomy_select_list_view"
+            android:text="@string/taxonomy_select_description"
+            android:layout_marginEnd="32dp"
+            android:layout_weight="5"
+            android:padding="10dp"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/taxonomy_select_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/confirm_taxonomies_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/taxonomy_select_description"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <Button
+            android:id="@+id/confirm_taxonomies_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="@string/button_okay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taxonomy_select_list_view" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

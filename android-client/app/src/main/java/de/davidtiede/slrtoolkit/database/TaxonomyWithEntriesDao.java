@@ -13,20 +13,27 @@ import java.util.List;
 @Dao
 public interface TaxonomyWithEntriesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(EntityTaxonomyCrossRef entityTaxonomyCrossRef);
+    long insert(EntryTaxonomyCrossRef entryTaxonomyCrossRef);
 
     @Insert
-    void insertAll(List<EntityTaxonomyCrossRef> entityTaxonomyCrossRef);
+    void insertAll(List<EntryTaxonomyCrossRef> entryTaxonomyCrossRef);
 
     @Delete
-    void delete(EntityTaxonomyCrossRef entityTaxonomyCrossRef);
+    void delete(EntryTaxonomyCrossRef entryTaxonomyCrossRef);
 
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND parentId=:parentId")
-    public abstract List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId);
+    List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId);
+
+    @Transaction
+    @Query("SELECT * FROM TAXONOMY WHERE taxonomyId IN (SELECT parentId FROM TAXONOMY WHERE repoId=:repoId AND NOT hasChildren)")
+    List<TaxonomyWithEntries> getTaxonomyIdsWithLeafChildTaxonomies(int repoId);
+
+    @Transaction
+    @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND parentId=:parentId")
+    LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int parentId);
 
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND taxonomyId=:taxonomyId")
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId);
-
+    LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId);
 }

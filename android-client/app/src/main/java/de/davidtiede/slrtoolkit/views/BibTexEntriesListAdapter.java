@@ -20,9 +20,9 @@ import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 
 public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesListAdapter.BibTexEntriesViewHolder> {
-    private RecyclerViewClickListener listener;
+    private final RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
-    private int repoId;
+    private final int repoId;
 
     public BibTexEntriesListAdapter(@NonNull DiffUtil.ItemCallback<Entry> diffCallback, RecyclerViewClickListener listener, int repoId) {
         super(diffCallback);
@@ -60,17 +60,19 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
     }
 
     public Entry getItemAtPosition(int position) {
-        Entry entry = getItem(position);
-        return entry;
+        if(position > getCurrentList().size()) return null;
+        return getItem(position);
     }
 
     public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView bibtexItemView;
+        private final TextView bibtexItemView;
+        private final TextView bibtexDescriptionItemView;
         private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
 
         public BibTexEntriesViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             bibtexItemView = itemView.findViewById(R.id.textview_recyclerview);
+            bibtexDescriptionItemView = itemView.findViewById(R.id.description_textview_recyclerview);
             itemView.setOnClickListener(this);
         }
 
@@ -88,6 +90,12 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
         public void bind(Entry entry, RecyclerViewClickListener listener) {
             bibtexItemView.setText(entry.getTitle());
+            String description = entry.getYear();
+            if(!entry.getYear().equals("")) {
+                description = entry.getYear() + ", ";
+            }
+            description += entry.getAuthor();
+            bibtexDescriptionItemView.setText(description);
             this.listener = listener;
         }
     }

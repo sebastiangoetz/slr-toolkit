@@ -4,105 +4,98 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
-import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaxonomyEntriesListFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class TaxonomyEntriesListFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "currentTaxonomyId";
-    private static final String ARG_PARAM2 = "repoId";
-
-    private static ProjectViewModel projectViewModel;
-    private RecyclerView taxonomyEntriesRecyclerView;
+    private static TaxonomiesViewModel taxonomiesViewModel;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
-
-    private int repoId;
-    private int currentTaxonomyId;
-
-    public TaxonomyEntriesListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param repoId Parameter 1.
-     * @param currentItemId Parameter 2.
-     * @return A new instance of fragment TaxonomyEntriesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TaxonomyEntriesListFragment newInstance(int repoId, int currentItemId) {
-        TaxonomyEntriesListFragment fragment = new TaxonomyEntriesListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, repoId);
-        args.putInt(ARG_PARAM2, currentItemId);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private TextView noTaxonomyEntriesTextview;
+    private TextView taxonomiesBreadCrumbTextview;
+    int repoId;
+    int currentTaxonomyId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            repoId = getArguments().getInt(ARG_PARAM1);
-            currentTaxonomyId = getArguments().getInt(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.println("In here!");
         return inflater.inflate(R.layout.fragment_taxonomy_entries_list, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         setOnClickListener();
-        taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
+        taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
+        repoId = taxonomiesViewModel.getCurrentRepoId();
+        currentTaxonomyId = taxonomiesViewModel.getCurrentTaxonomyId();
+        RecyclerView taxonomyEntriesRecyclerView = view.findViewById(R.id.taxonomyEntriesRecyclerview);
+        noTaxonomyEntriesTextview = view.findViewById(R.id.textview_no_taxonomy_entries);
+        taxonomiesBreadCrumbTextview = view.findViewById(R.id.textview_entries_taxonomies_breadcrumb);
         taxonomyEntriesRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         bibTexEntriesListAdapter = new BibTexEntriesListAdapter(new BibTexEntriesListAdapter.EntryDiff(), listener, repoId);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyEntriesRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        taxonomyEntriesRecyclerView.addItemDecoration(dividerItemDecoration);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
-        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
+        taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+    }
 
-        projectViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+    public void setHeader(TaxonomyWithEntries taxonomyWithEntries) {
+        if(taxonomyWithEntries != null) {
+            String title = getResources().getString(R.string.entries_for_taxonomy) + " " + taxonomyWithEntries.taxonomy.getName();
+            taxonomiesBreadCrumbTextview.setText(title);
+        }
     }
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
+        setHeader(taxonomyWithEntries);
         List<Entry> entries = taxonomyWithEntries.entries;
-        bibTexEntriesListAdapter.submitList(entries);
+        taxonomiesViewModel.setCurrentEntriesInList(entries);
+        if(entries.size() == 0) {
+            noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
+        } else {
+            noTaxonomyEntriesTextview.setVisibility(View.INVISIBLE);
+            bibTexEntriesListAdapter.submitList(entries);
+        }
     }
 
     private void setOnClickListener() {
-        listener = new BibTexEntriesListAdapter.RecyclerViewClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-                //TODO: navigate to detail view!
-            }
+        listener = (v, position) -> {
+            Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
+            if(clickedEntry == null) return;
+
+            taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
+            int indexOfEntryInOriginalList = taxonomiesViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
+            taxonomiesViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
+            Fragment entryFragment = new BibtexEntriesDetailViewPagerFragment();
+            FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
+            ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
+            ft.addToBackStack(null);
+            ft.commit();
         };
     }
 }

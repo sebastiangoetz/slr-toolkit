@@ -12,27 +12,19 @@ import java.util.List;
 public interface TaxonomyDao {
     @Transaction
     @Query("SELECT * FROM taxonomy")
-    public LiveData<List<TaxonomyWithEntries>> getTaxonomyWithEntries();
+    LiveData<List<TaxonomyWithEntries>> getTaxonomyWithEntries();
 
     @Insert
-    public abstract long insert(Taxonomy taxonomy);
+    long insert(Taxonomy taxonomy);
 
     @Insert
-    public abstract void insertAll(List<Taxonomy> taxonomies);
+    void insertAll(List<Taxonomy> taxonomies);
 
     @Transaction
     @Query("SELECT * FROM taxonomy WHERE repoId=:repoId AND parentId=:parentId")
-    public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
-
-    @Transaction
-    @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND taxonomyId=:taxonomyId")
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId);
-
-    @Transaction
-    @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND parentId=:parentId")
-    public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int parentId);
+    LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
 
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND path=:path")
-    public Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path);
+    Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path);
 }

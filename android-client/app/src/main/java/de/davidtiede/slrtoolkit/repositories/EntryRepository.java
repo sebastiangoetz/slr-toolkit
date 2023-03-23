@@ -4,16 +4,13 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -23,12 +20,11 @@ import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryDao;
 import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.util.BibTexParser;
 import de.davidtiede.slrtoolkit.util.FileUtil;
 
 public class EntryRepository {
-    private EntryDao entryDao;
+    private final EntryDao entryDao;
     Application application;
     FileUtil fileUtil;
 
@@ -39,9 +35,8 @@ public class EntryRepository {
         fileUtil = new FileUtil();
     }
 
-
-    public LiveData<List<Entry>> getEntryForRepo(int id) {
-        return entryDao.getEntriesForRepo(id);
+    public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
+        return entryDao.getEntriesForRepo(repoId);
     }
 
     public void update(Entry entry) {
@@ -65,15 +60,19 @@ public class EntryRepository {
         String path = repo.getLocal_path();
         File file = fileUtil.accessFiles(path, application, ".bib");
         try {
+            //remove entry from file
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
             Key key = new Key(entry.getKey());
             BibTeXObject entryToDelete =  parser.getBibTexObject(key);
             parser.removeObject(entryToDelete);
+            //add entry to separate file where deleted entries are stored
+            File fileForDeletedEntries = fileUtil.createFileIfNotExists(application, path, "deletedItems.bib");
+            parser.setBibTeXDatabase(fileForDeletedEntries);
+            parser.addObjectToFile(entryToDelete);
+            //remove entry from database
             AppDatabase.databaseWriteExecutor.execute(() -> entryDao.delete(entry));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -96,10 +95,6 @@ public class EntryRepository {
         return entryDao.getEntryById(id);
     }
 
-    public void saveAll(List<Entry> entries) {
-        AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertAll(entries));
-    }
-
     public void insertEntriesForRepo(int repoId, List<Entry> entries) {
         AppDatabase.databaseWriteExecutor.execute(() -> entryDao.insertEntriesForRepo(repoId, entries));
     }
@@ -112,5 +107,15 @@ public class EntryRepository {
 
     public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
         return entryDao.getEntriesWithoutTaxonomies(repoId);
+    }
+
+    public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
+        return entryDao.getEntriesWithoutTaxonomiesCount(repoId);
+    }
+
+    public Entry getEntryByIdDirectly(int id) throws ExecutionException, InterruptedException {
+        Callable<Entry> getCallable = () -> entryDao.getEntryByIdDirectly(id);
+        Future<Entry> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
     }
 }

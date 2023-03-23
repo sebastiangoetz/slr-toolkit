@@ -25,17 +25,6 @@ public class ProjectActivity extends AppCompatActivity {
         if(extras != null) {
             int id = extras.getInt("repo");
             projectViewModel.setCurrentRepoId(id);
-            // Create the observer
-            //to initialize the database
-            final Observer projectPathObserver = new Observer<Repo>() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onChanged(Repo repo) {
-                    String path = repo.getLocal_path();
-                    //projectViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
-                }
-            };
-            projectViewModel.getRepoById(id).observe(this, projectPathObserver);
         }
     }
 }

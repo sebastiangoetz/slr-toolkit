@@ -2,7 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -18,9 +17,11 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="32dp"
             android:layout_weight="5"
-            android:padding="16dp"
-            android:text="Aligned left but too long and would squash the other view"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:padding="10dp"
+            android:text=""
+            android:lines="1"
+            android:singleLine="true"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

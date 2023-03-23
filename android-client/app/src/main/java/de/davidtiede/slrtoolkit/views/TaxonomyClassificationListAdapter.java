@@ -2,12 +2,10 @@ package de.davidtiede.slrtoolkit.views;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,16 +25,16 @@ import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
-    private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
+    private final TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     private RecyclerView recyclerView;
-    private int entryId;
     List<Integer> currentTaxonomyIds;
+    boolean showArrows;
 
-    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId) {
+    public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, boolean showArrows) {
         super(diffCallback);
         this.listener = listener;
-        this.entryId = entryId;
         this.currentTaxonomyIds = new ArrayList<>();
+        this.showArrows = showArrows;
     }
 
     public void setCurrentTaxonomyIds(List<Integer> currentTaxonomyIds) {
@@ -63,18 +61,17 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
     @Override
     public void onBindViewHolder(@NonNull TaxonomyClassificationViewHolder holder, int position) {
         TaxonomyWithEntries current = getItem(position);
-        holder.bind(current, listener, entryId, currentTaxonomyIds, getContext());
+        holder.bind(current, listener, currentTaxonomyIds, getContext(), showArrows);
     }
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
-        TaxonomyWithEntries taxonomy = getItem(position);
-        return taxonomy;
+        return getItem(position);
     }
 
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private TextView taxonomyItemView;
-        private ImageView taxonomyArrowItemView;
-        private ConstraintLayout constraintLayout;
+        private final TextView taxonomyItemView;
+        private final ImageView taxonomyArrowItemView;
+        private final ConstraintLayout constraintLayout;
         private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
 
         public TaxonomyClassificationViewHolder(@NonNull @NotNull View itemView) {
@@ -97,19 +94,20 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             listener.onClick(view, getAdapterPosition());
         }
 
-        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, int entryId, List<Integer> selectedTaxonomyIds, Context context) {
+        public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, List<Integer> selectedTaxonomyIds, Context context, boolean showArrows) {
             boolean taxonomyInEntry = false;
             for(int taxonomyId: selectedTaxonomyIds) {
-                if(taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
+                if (taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
                     taxonomyInEntry = true;
+                    break;
                 }
             }
             if(taxonomyInEntry) {
-                constraintLayout.setBackgroundColor(Color.BLUE);
+                constraintLayout.setBackgroundColor(Color.LTGRAY);
             } else {
                 constraintLayout.setBackgroundColor(Color.WHITE);
             }
-            if(taxonomy.taxonomy.isHasChildren()) {
+            if(taxonomy.taxonomy.isHasChildren() && showArrows) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }

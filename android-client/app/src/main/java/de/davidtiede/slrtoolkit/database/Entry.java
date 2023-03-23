@@ -6,10 +6,12 @@ import androidx.room.TypeConverters;
 
 @Entity
 public class Entry {
-    @PrimaryKey(autoGenerate = true) private int id;
+    @PrimaryKey(autoGenerate = true)
+    private int entryId;
+
     private int repoId;
-    private String key;
-    private String title;
+    private final String key;
+    private final String title;
     private String author;
     private String entryAbstract;
     private String year;
@@ -18,6 +20,9 @@ public class Entry {
     private String volume;
     private String url;
     private String abstractText;
+    private String doi;
+    private String keywords;
+    private String type;
     @TypeConverters(StatusConverter.class)
     private Status status;
 
@@ -27,8 +32,8 @@ public class Entry {
         this.status = Status.OPEN;
     }
 
-    public int getId() {
-        return id;
+    public int getEntryId() {
+        return entryId;
     }
 
     public int getRepoId() {
@@ -79,8 +84,20 @@ public class Entry {
         return volume;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getDoi() {
+        return doi;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setEntryId(int entryId) {
+        this.entryId = entryId;
     }
 
     public void setRepoId(int repoId) {
@@ -123,12 +140,24 @@ public class Entry {
         this.volume = volume;
     }
 
+    public void setDoi(String doi) {
+        this.doi = doi;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public enum Status {
         OPEN(0),
         KEEP(1),
         DISCARD(2);
 
-        private int code;
+        private final int code;
 
         Status(int code) {
             this.code = code;

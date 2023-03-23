@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">SLR Toolkit</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="next">Weiter</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
     <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
     <string name="fragment_label_projects">Projects Fragment</string>
@@ -24,4 +23,32 @@
     <string name="progressbutton_onloading">Bitte warten…</string>
     <string name="progressbutton_onfailed">Das Projekt konnte nicht geklont werden.</string>
     <string name="progressbutton_succeeded">Weiter</string>
+    <string name="textview_no_entries">Keine Einträge</string>
+    <string name="textview_no_taxonomies">Keine Taxonomien</string>
+    <string name="textview_no_taxonomy_entries">Keine Einträge für die Taxonomie.</string>
+    <string name="textview_no_entries_to_classify">Keine Einträge zu klassifizieren</string>
+    <string name="textview_no_entries_to_filter">Keine Einträge zu filtern</string>
+    <string name="entry_detail_heading_authors">Autoren</string>
+    <string name="entry_detail_heading_year">Jahr</string>
+    <string name="entry_detail_heading_month">Monat</string>
+    <string name="entry_detail_heading_abstract">Abstrakt</string>
+    <string name="entry_detail_heading_doi">DOI</string>
+    <string name="entry_detail_heading_keywords">Schlüsselworte</string>
+    <string name="button_classify">Klassifizieren</string>
+    <string name="button_filter">Filtern</string>
+    <string name="button_pull">Pull</string>
+    <string name="button_commit">Commit</string>
+    <string name="button_entries_by_taxonomy">Einträge nach Taxonomie</string>
+    <string name="button_all_entries">Alle Einträge</string>
+    <string name="button_analyze">Analyze</string>
+    <string name="button_keep">Behalten</string>
+    <string name="button_discard">Verwerfen</string>
+    <string-array name="chart_array">
+        <item>Barchart</item>
+        <item>Bubblechart</item>
+    </string-array>
+    <string name="button_okay">Okay</string>
+    <string name="taxonomy_select_description">Bitte wählen Sie die Kinder der Taxonomie, die dargestellt werden sollen.</string>
+    <string name="entries_for_taxonomy">Einträge für:</string>
+    <string name="no_matches">Keine Übereinstimmungen</string>
 </resources>

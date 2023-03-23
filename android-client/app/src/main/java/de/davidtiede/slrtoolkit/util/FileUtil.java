@@ -2,26 +2,21 @@ package de.davidtiede.slrtoolkit.util;
 
 import android.app.Application;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class FileUtil {
     public File accessFiles(String path, Application application, String type) {
         File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
         File[] files = directoryPath.listFiles();
         File bibFile = null;
-        for(File file: files) {
+        for(File file: Objects.requireNonNull(files)) {
             if(file.isDirectory()) {
-                for(File f: file.listFiles()) {
+                for(File f: Objects.requireNonNull(file.listFiles())) {
                     if(f.getName().endsWith(type)) {
                         bibFile = f;
                     }
@@ -38,5 +33,13 @@ public class FileUtil {
         String text = scanner.useDelimiter("\\A").next();
         scanner.close();
         return text;
+    }
+
+    public File createFileIfNotExists(Application application, String path, String name) throws IOException {
+        File file = new File(application.getApplicationContext().getFilesDir(), path + "/" + name);
+        if(!file.exists() && !file.isDirectory()) {
+            file.createNewFile();
+        }
+        return file;
     }
 }

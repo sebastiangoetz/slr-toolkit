@@ -1,23 +1,19 @@
 package de.davidtiede.slrtoolkit.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-
-import de.davidtiede.slrtoolkit.ClassificationActivity;
+import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
+import de.davidtiede.slrtoolkit.TaxonomiesActivity;
+import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,11 +21,12 @@ import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 public class BibtexEntryDetailFragment extends Fragment {
 
     private TextView titleTextView;
-    private Button classifyButton;
-    private ProjectViewModel projectViewModel;
-    private int entryId;
-    private int repoId;
-
+    private TextView authorsTextView;
+    private TextView yearTextView;
+    private TextView monthTextView;
+    private TextView abstractTextView;
+    private TextView doiTextView;
+    private TextView keywordsTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,22 +42,37 @@ public class BibtexEntryDetailFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         titleTextView = view.findViewById(R.id.bibtex_entry_title);
-        classifyButton = view.findViewById(R.id.classify_entry_button);
-        projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+        authorsTextView = view.findViewById(R.id.bibtex_entry_authors);
+        yearTextView = view.findViewById(R.id.bibtex_entry_year);
+        monthTextView = view.findViewById(R.id.bibtex_entry_month);
+        abstractTextView = view.findViewById(R.id.bibtex_entry_abstract);
+        doiTextView = view.findViewById(R.id.bibtex_entry_doi);
+        keywordsTextView = view.findViewById(R.id.bibtex_entry_keywords);
 
-        entryId = projectViewModel.getCurrentEntryIdForCard();
-        repoId = projectViewModel.getCurrentRepoId();
+        if(getActivity() instanceof ProjectActivity) {
+            ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
+            int entryId = projectViewModel.getCurrentEntryIdForCard();
+            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
-        projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), entry -> {
-            titleTextView.setText(entry.getTitle());
-        });
 
-        classifyButton.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getActivity(), ClassificationActivity.class);
-            intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entryId);
-            startActivity(intent);
-            ((Activity) getActivity()).overridePendingTransition(0, 0);
-        });
+        } else if(getActivity() instanceof TaxonomiesActivity){
+            TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
+            int entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
+            taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
+        }
+
+    }
+
+    public void setEntryInformation(Entry entry) {
+        if(entry == null) {
+            return;
+        }
+        titleTextView.setText(entry.getTitle());
+        authorsTextView.setText(entry.getAuthor());
+        yearTextView.setText(entry.getYear());
+        monthTextView.setText(entry.getMonth());
+        abstractTextView.setText(entry.getAbstractText());
+        doiTextView.setText(entry.getDoi());
+        keywordsTextView.setText(entry.getKeywords());
     }
 }

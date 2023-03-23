@@ -1,57 +1,48 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
-import android.os.Build;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
-import org.jbibtex.BibTeXEntry;
-import org.jbibtex.Key;
-import org.jbibtex.ParseException;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
-
-import de.davidtiede.slrtoolkit.database.EntityTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.Entry;
-import de.davidtiede.slrtoolkit.database.EntryWithTaxonomies;
 import de.davidtiede.slrtoolkit.database.Repo;
-import de.davidtiede.slrtoolkit.database.Taxonomy;
-import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
 import de.davidtiede.slrtoolkit.repositories.RepoRepository;
-import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
-import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepo;
-import de.davidtiede.slrtoolkit.util.BibTexParser;
-import de.davidtiede.slrtoolkit.util.FileUtil;
-import de.davidtiede.slrtoolkit.util.TaxonomyParser;
-import de.davidtiede.slrtoolkit.util.TaxonomyParserNode;
 
 public class ProjectViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
-    private final TaxonomyRepository taxonomyRepository;
-    private final TaxonomyWithEntriesRepo taxonomyWithEntriesRepo;
-    private Application application;
     private int currentRepoId;
     private int currentEntryIdForCard;
+    private List<Entry> currentEntriesInList;
+    private int currentEntryInListCount;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
-        taxonomyRepository = new TaxonomyRepository(application);
-        taxonomyWithEntriesRepo = new TaxonomyWithEntriesRepo(application);
-        this.application = application;
+    }
+
+    public LiveData<Repo> getRepoById(int id) {
+       return repoRepository.getRepoById(id);
+    }
+
+    public int getCurrentEntryInListCount() {
+        return currentEntryInListCount;
+    }
+
+    public void setCurrentEntryInListCount(int currentEntryInListCount) {
+        this.currentEntryInListCount = currentEntryInListCount;
+    }
+
+    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+        this.currentEntriesInList = currentEntriesInList;
+    }
+
+    public List<Entry> getCurrentEntriesInList() {
+        return currentEntriesInList;
     }
 
     public int getCurrentRepoId() {
@@ -77,86 +68,16 @@ public class ProjectViewModel extends AndroidViewModel {
     public LiveData<Integer> getOpenEntryAmount(int repoId) {
         return entryRepository.getEntryAmountForStatus(repoId, Entry.Status.OPEN);
     }
-
-    public LiveData<Repo> getRepoById(int id) {
-        return repoRepository.getRepoById(id);
-    }
-
-    public void saveAllEntriesForRepo(List<Entry> entries, int repoId) {
-       entryRepository.insertEntriesForRepo(repoId, entries);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void initializeDataForRepo(int repoId, String path) {
-        FileUtil fileUtil = new FileUtil();
-        File file = fileUtil.accessFiles(path, application, ".bib");
-        Map<Entry, String> entriesWithTaxonomies = new HashMap<>();
-        try {
-            BibTexParser parser = BibTexParser.getBibTexParser();
-            parser.setBibTeXDatabase(file);
-            entriesWithTaxonomies = parser.parseBibTexFile(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        initializeEntries(repoId, entriesWithTaxonomies);
-        initializeTaxonomy(repoId, path);
-        initializeTaxonomiesWithEntries(entriesWithTaxonomies, repoId);
-    }
-
-    public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
-        List<Entry> entries = new ArrayList<>();
-        for(Entry entry : entriesWithTaxonomies.keySet()) {
-            entries.add(entry);
-        }
-        saveAllEntriesForRepo(entries, repoId);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void initializeTaxonomy(int repoId, String path) {
-        taxonomyRepository.initializeTaxonomy(repoId, path, application);
-    }
-
-    public void initializeTaxonomiesWithEntries(Map<Entry, String> entriesWithTaxonomies, int repoId) {
-        List<EntityTaxonomyCrossRef> entityTaxonomyCrossRefs = new ArrayList<>();
-        TaxonomyParser taxonomyParser = new TaxonomyParser();
-        for(Map.Entry<Entry, String> e : entriesWithTaxonomies.entrySet()) {
-            String taxonomyString = e.getValue();
-            if(taxonomyString.compareTo("") != 0) {
-                List<TaxonomyParserNode> taxonomyParserNodes = taxonomyParser.parse(taxonomyString);
-                for (TaxonomyParserNode node : taxonomyParserNodes) {
-                    try {
-                        Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
-                        Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
-                        if(taxonomy != null && entry != null) {
-                            EntityTaxonomyCrossRef entityTaxonomyCrossRef = new EntityTaxonomyCrossRef();
-                            entityTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
-                            entityTaxonomyCrossRef.setId(entry.getId());
-                            entityTaxonomyCrossRefs.add(entityTaxonomyCrossRef);
-                        }
-                    } catch (ExecutionException exception) {
-                        exception.printStackTrace();
-                    } catch (InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        }
-        taxonomyWithEntriesRepo.insertAll(entityTaxonomyCrossRefs);
-    }
-
+    
     public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
-        return entryRepository.getEntryForRepo(repoId);
+        return entryRepository.getEntriesForRepo(repoId);
     }
 
     public Repo getRepoByIdDirectly(int id) {
         Repo repo = null;
         try {
             repo = repoRepository.getRepoByIdDirectly(id);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return repo;
@@ -169,8 +90,25 @@ public class ProjectViewModel extends AndroidViewModel {
         }
     }
 
+    public void deleteById(int entryId, int id) {
+        Entry entry = getEntryByIdDirectly(entryId);
+        if(entry != null) {
+            delete(entry, id);
+        }
+    }
+
     public LiveData<Entry> getEntryById(int id) {
         return entryRepository.getEntryById(id);
+    }
+
+    public Entry getEntryByIdDirectly(int id) {
+        Entry entry = null;
+        try {
+            entry = entryRepository.getEntryByIdDirectly(id);
+        } catch (InterruptedException | ExecutionException exception) {
+            exception.printStackTrace();
+        }
+        return entry;
     }
 
     public LiveData<List<Entry>> getOpenEntriesForRepo(int repoId) {
@@ -181,11 +119,11 @@ public class ProjectViewModel extends AndroidViewModel {
         entryRepository.update(entry);
     }
 
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
-        return taxonomyRepository.getTaxonomyWithEntries(repoId, taxonomyId);
-    }
-
     public LiveData<List<Entry>> getEntriesWithoutTaxonomies(int repoId) {
         return entryRepository.getEntriesWithoutTaxonomies(repoId);
+    }
+
+    public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
+        return entryRepository.getEntriesWithoutTaxonomiesCount(repoId);
     }
 }

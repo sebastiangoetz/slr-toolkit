@@ -1,5 +1,6 @@
 package de.davidtiede.slrtoolkit.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -34,6 +36,7 @@ public class AddProject2Fragment extends Fragment {
         return inflater.inflate(R.layout.fragment_add_project_2, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -49,6 +52,9 @@ public class AddProject2Fragment extends Fragment {
             Repo repo = repoViewModel.getCurrentRepo();
             repo.setName(Objects.requireNonNull(edittext_name.getText()).toString());
             repoViewModel.update(repo);
+
+            repoViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
+
 
             NavHostFragment.findNavController(AddProject2Fragment.this)
                     .navigate(R.id.action_AddProject2Fragment_to_ProjectsFragment);

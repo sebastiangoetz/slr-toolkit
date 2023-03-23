@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
         <activity
+            android:name=".AnalyzeActivity"
+            android:exported="false" />
+        <activity
             android:name=".TaxonomiesActivity"
             android:exported="false" />
         <activity

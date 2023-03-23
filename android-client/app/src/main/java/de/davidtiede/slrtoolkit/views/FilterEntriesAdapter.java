@@ -16,12 +16,10 @@ import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.Entry;
 
 public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
-    private Context context;
-    private ArrayList<Entry> entries;
+    private final ArrayList<Entry> entries;
 
     public FilterEntriesAdapter(@NonNull Context context, @NonNull ArrayList<Entry> entries) {
         super(context, 0, entries);
-        this.context = context;
         this.entries = entries;
     }
 
@@ -35,8 +33,18 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
 
         Entry currentEntry = entries.get(position);
 
-        TextView titleTextView = listItem.findViewById(R.id.entry_title);
+        TextView titleTextView = listItem.findViewById(R.id.filter_entry_title);
+        TextView authorTextView = listItem.findViewById(R.id.filter_entry_authors);
+        TextView doiTextView = listItem.findViewById(R.id.filter_entry_doi);
+        TextView keywordsTextView = listItem.findViewById(R.id.filter_entry_keywords);
+        TextView yearTextView = listItem.findViewById(R.id.filter_entry_year);
+        TextView monthTextView = listItem.findViewById(R.id.filter_entry_month);
         titleTextView.setText(currentEntry.getTitle());
+        authorTextView.setText(currentEntry.getAuthor());
+        doiTextView.setText(currentEntry.getDoi());
+        keywordsTextView.setText(currentEntry.getKeywords());
+        yearTextView.setText(currentEntry.getYear());
+        monthTextView.setText(currentEntry.getMonth());
 
         return listItem;
     }
