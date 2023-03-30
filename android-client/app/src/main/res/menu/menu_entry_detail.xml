@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/icon_delete"
-        android:icon="@drawable/ic_delete"
+        android:icon="@drawable/baseline_delete_forever_24"
         android:title="@string/button_delete"
         app:showAsAction="ifRoom">
 
@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/action_classify"
-        android:icon="@drawable/ic_label"
+        android:icon="@drawable/baseline_label_24"
         android:title="@string/button_classify"
         app:showAsAction="ifRoom" />
 

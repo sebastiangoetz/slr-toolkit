@@ -22,7 +22,7 @@ public class SwipeToDeleteCallbackBibTexEntries extends ItemTouchHelper.SimpleCa
     public SwipeToDeleteCallbackBibTexEntries(BibTexEntriesListAdapter adapter) {
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         bibTexEntriesListAdapter = adapter;
-        icon = ContextCompat.getDrawable(bibTexEntriesListAdapter.getContext(), R.drawable.ic_baseline_delete_forever_24);
+        icon = ContextCompat.getDrawable(bibTexEntriesListAdapter.getContext(), R.drawable.baseline_delete_forever_24);
         background = new ColorDrawable(Color.RED);
     }
 
