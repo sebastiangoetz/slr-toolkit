@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.BibtexEntriesListFragment">
+
     <TextView
         android:id="@+id/textview_no_entries"
         android:layout_width="0dp"
@@ -26,7 +27,6 @@
         android:id="@+id/bibTexEntriesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

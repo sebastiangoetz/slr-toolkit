@@ -51,4 +51,5 @@
     <string name="taxonomy_select_description">Bitte wählen Sie die Kinder der Taxonomie, die dargestellt werden sollen.</string>
     <string name="entries_for_taxonomy">Einträge für:</string>
     <string name="no_matches">Keine Übereinstimmungen</string>
+    <string name="test_text">This is some text to test</string>
 </resources>
