@@ -26,9 +26,9 @@ import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
     private final TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
-    private RecyclerView recyclerView;
     List<Integer> currentTaxonomyIds;
     boolean showArrows;
+    private RecyclerView recyclerView;
 
     public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, boolean showArrows) {
         super(diffCallback);
@@ -66,6 +66,10 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
 
     public TaxonomyWithEntries getItemAtPosition(int position) {
         return getItem(position);
+    }
+
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
     }
 
     public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -114,10 +118,6 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
             taxonomyItemView.setText(taxonomy.taxonomy.getName());
             this.listener = listener;
         }
-    }
-
-    public interface RecyclerViewClickListener {
-        void onClick(View v, int position);
     }
 
     public static class TaxonomyDiff extends DiffUtil.ItemCallback<TaxonomyWithEntries> {

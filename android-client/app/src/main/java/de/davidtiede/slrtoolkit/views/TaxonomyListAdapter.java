@@ -54,6 +54,10 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
         return getItem(position);
     }
 
+    public interface RecyclerViewClickListener {
+        void onClick(View v, int position);
+    }
+
     public static class TaxonomyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView taxonomyItemView;
         private final ImageView taxonomyArrowItemView;
@@ -86,10 +90,6 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
             }
             this.listener = listener;
         }
-    }
-
-    public interface RecyclerViewClickListener {
-        void onClick(View v, int position);
     }
 
     public static class TaxonomyDiff extends DiffUtil.ItemCallback<Taxonomy> {

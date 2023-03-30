@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaxonomyParserNode {
+    private final List<TaxonomyParserNode> children;
     private String name;
     private String path;
     private TaxonomyParserNode parent;
-    private final List<TaxonomyParserNode> children;
 
     public TaxonomyParserNode() {
         children = new ArrayList<>();
@@ -19,20 +19,20 @@ public class TaxonomyParserNode {
         return name;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public TaxonomyParserNode getParent() {
-        return parent;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public TaxonomyParserNode getParent() {
+        return parent;
     }
 
     public void setParent(TaxonomyParserNode parent) {

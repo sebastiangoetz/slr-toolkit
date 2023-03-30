@@ -28,12 +28,24 @@ public class Repo {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getLocal_path() {
         return local_path;
+    }
+
+    public void setLocal_path(String local_path) {
+        this.local_path = local_path;
     }
 
     public String getRemote_url() {
@@ -54,18 +66,6 @@ public class Repo {
 
     public String getGit_email() {
         return git_email;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLocal_path(String local_path) {
-        this.local_path = local_path;
     }
 
 }

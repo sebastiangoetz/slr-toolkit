@@ -11,19 +11,10 @@ import java.util.concurrent.Executors;
 
 @Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntryTaxonomyCrossRef.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract RepoDao repoDao();
-
-    public abstract EntryDao entryDao();
-
-    public abstract TaxonomyDao taxonomyDao();
-
-    public abstract TaxonomyWithEntriesDao taxonomyWithEntriesDao();
-
-    private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static volatile AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
@@ -37,4 +28,12 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    public abstract RepoDao repoDao();
+
+    public abstract EntryDao entryDao();
+
+    public abstract TaxonomyDao taxonomyDao();
+
+    public abstract TaxonomyWithEntriesDao taxonomyWithEntriesDao();
 }

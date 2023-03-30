@@ -23,11 +23,11 @@ import de.davidtiede.slrtoolkit.views.TaxonomyClassificationListAdapter;
 
 public class TaxonomySelectionDialogFragment extends DialogFragment {
     public static String TAG = "TaxonomySelectionDialog";
+    AnalyzeViewModel analyzeViewModel;
+    TaxonomyClassificationListAdapter taxonomyListAdapter;
     private RecyclerView recyclerView;
     private Button confirmButton;
-    AnalyzeViewModel analyzeViewModel;
     private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
-    TaxonomyClassificationListAdapter taxonomyListAdapter;
 
     @NonNull
     @Override

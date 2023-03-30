@@ -26,9 +26,9 @@ import de.davidtiede.slrtoolkit.views.FilterEntriesAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class FilterFragment extends Fragment {
+    SwipeFlingAdapterView flingAdapterView;
     private FilterEntriesAdapter arrayAdapter;
     private ArrayList<Entry> entries;
-    SwipeFlingAdapterView flingAdapterView;
     private Button keepButton;
     private Button discardButton;
     private TextView noEntriesToFilterTextview;

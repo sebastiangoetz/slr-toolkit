@@ -33,10 +33,10 @@ import de.davidtiede.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
  */
 public class BibtexEntriesListFragment extends Fragment {
 
+    BibTexEntriesListAdapter adapter;
     private RecyclerView recyclerView;
     private TextView noEntriesTextView;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
-    BibTexEntriesListAdapter adapter;
     private int repoId;
     private ProjectViewModel projectViewModel;
 

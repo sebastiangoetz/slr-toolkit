@@ -27,12 +27,12 @@ import de.davidtiede.slrtoolkit.views.BibTexEntriesListAdapter;
  */
 public class TaxonomyEntriesListFragment extends Fragment {
     private static TaxonomiesViewModel taxonomiesViewModel;
+    int repoId;
+    int currentTaxonomyId;
     private BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomyEntriesTextview;
     private TextView taxonomiesBreadCrumbTextview;
-    int repoId;
-    int currentTaxonomyId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

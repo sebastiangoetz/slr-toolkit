@@ -32,10 +32,10 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
     ViewPager2 viewPager;
     ProjectViewModel projectViewModel;
-    private FragmentStateAdapter pagerAdapter;
-    private TextView noEntriesToClassifyTextview;
     int repoId;
     List<Entry> entries;
+    private FragmentStateAdapter pagerAdapter;
+    private TextView noEntriesToClassifyTextview;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

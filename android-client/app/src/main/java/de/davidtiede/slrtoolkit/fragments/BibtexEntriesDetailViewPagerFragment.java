@@ -35,9 +35,9 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     ViewPager2 viewPager;
     ProjectViewModel projectViewModel;
     TaxonomiesViewModel taxonomiesViewModel;
+    int repoId;
     private TextView noEntriesDetails;
     private FragmentStateAdapter pagerAdapter;
-    int repoId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

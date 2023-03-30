@@ -18,44 +18,44 @@ public class Taxonomy {
         return parentId;
     }
 
-    public int getTaxonomyId() {
-        return taxonomyId;
-    }
-
-    public int getRepoId() {
-        return repoId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isHasChildren() {
-        return hasChildren;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setRepoId(int repoId) {
-        this.repoId = repoId;
-    }
-
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    public int getTaxonomyId() {
+        return taxonomyId;
     }
 
     public void setTaxonomyId(int id) {
         this.taxonomyId = id;
     }
 
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
     public void setHasChildren(boolean hasChildren) {
         this.hasChildren = hasChildren;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public void setPath(String path) {

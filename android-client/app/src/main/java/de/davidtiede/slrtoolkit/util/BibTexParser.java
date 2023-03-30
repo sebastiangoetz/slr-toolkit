@@ -21,10 +21,10 @@ import java.util.Map;
 import de.davidtiede.slrtoolkit.database.Entry;
 
 public class BibTexParser {
-    private BibTeXParser parser;
     private static BibTexParser bibTexParser;
-    private BibTeXDatabase bibTeXDatabase;
     File file;
+    private BibTeXParser parser;
+    private BibTeXDatabase bibTeXDatabase;
 
     private BibTexParser() {
         try {
@@ -32,6 +32,14 @@ public class BibTexParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //make BibTexParser Singleton
+    public static BibTexParser getBibTexParser() {
+        if (bibTexParser == null)
+            bibTexParser = new BibTexParser();
+
+        return bibTexParser;
     }
 
     public void setBibTeXDatabase(File file) throws FileNotFoundException, ParseException {
@@ -104,13 +112,5 @@ public class BibTexParser {
         }
 
         return entryTaxMap;
-    }
-
-    //make BibTexParser Singleton
-    public static BibTexParser getBibTexParser() {
-        if (bibTexParser == null)
-            bibTexParser = new BibTexParser();
-
-        return bibTexParser;
     }
 }

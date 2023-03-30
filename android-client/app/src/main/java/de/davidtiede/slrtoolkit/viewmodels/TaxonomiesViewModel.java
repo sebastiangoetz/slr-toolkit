@@ -15,13 +15,13 @@ import de.davidtiede.slrtoolkit.repositories.TaxonomyRepository;
 import de.davidtiede.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
+    private final TaxonomyRepository taxonomyRepository;
+    private final EntryRepository entryRepository;
+    private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private int currentRepoId;
     private int currentEntryIdForCard;
     private int currentTaxonomyId;
-    private final TaxonomyRepository taxonomyRepository;
-    private final EntryRepository entryRepository;
     private List<Entry> currentEntriesInList;
-    private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private int currentEntryInListCount;
 
     public TaxonomiesViewModel(Application application) {
@@ -39,36 +39,36 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         this.currentEntryInListCount = currentEntryInListCount;
     }
 
-    public void setCurrentRepoId(int currentRepoId) {
-        this.currentRepoId = currentRepoId;
-    }
-
     public int getCurrentRepoId() {
         return currentRepoId;
     }
 
-    public void setCurrentEntryIdForCard(int currentEntryIdForCard) {
-        this.currentEntryIdForCard = currentEntryIdForCard;
-    }
-
-    public void setCurrentTaxonomyId(int currentTaxonomyId) {
-        this.currentTaxonomyId = currentTaxonomyId;
+    public void setCurrentRepoId(int currentRepoId) {
+        this.currentRepoId = currentRepoId;
     }
 
     public int getCurrentEntryIdForCard() {
         return currentEntryIdForCard;
     }
 
+    public void setCurrentEntryIdForCard(int currentEntryIdForCard) {
+        this.currentEntryIdForCard = currentEntryIdForCard;
+    }
+
     public int getCurrentTaxonomyId() {
         return currentTaxonomyId;
     }
 
-    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
-        this.currentEntriesInList = currentEntriesInList;
+    public void setCurrentTaxonomyId(int currentTaxonomyId) {
+        this.currentTaxonomyId = currentTaxonomyId;
     }
 
     public List<Entry> getCurrentEntriesInList() {
         return currentEntriesInList;
+    }
+
+    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+        this.currentEntriesInList = currentEntriesInList;
     }
 
     public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {

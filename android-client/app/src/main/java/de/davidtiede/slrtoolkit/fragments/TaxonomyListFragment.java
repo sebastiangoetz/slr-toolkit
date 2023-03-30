@@ -31,12 +31,12 @@ import de.davidtiede.slrtoolkit.views.TaxonomyListAdapter;
 public class TaxonomyListFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "currentTaxonomyId";
+    ConstraintLayout constraintLayout;
     private TaxonomiesViewModel taxonomiesViewModel;
     private TaxonomyListAdapter taxonomyListAdapter;
     private TaxonomyListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomiesTextview;
     private TextView taxonomiesBreadCrumbTextview;
-    ConstraintLayout constraintLayout;
     private int currentTaxonomyId;
     private int repoId;
 

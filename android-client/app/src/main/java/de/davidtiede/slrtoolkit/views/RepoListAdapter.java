@@ -19,8 +19,8 @@ import de.davidtiede.slrtoolkit.viewmodels.RepoViewModel;
 
 public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
-    private RecyclerView recyclerView;
     private final RecyclerViewClickListener listener;
+    private RecyclerView recyclerView;
 
     public RepoListAdapter(@NonNull DiffUtil.ItemCallback<Repo> diffCallback, RecyclerViewClickListener listener) {
 
@@ -38,19 +38,6 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
     public void onBindViewHolder(RepoViewHolder holder, int position) {
         Repo current = getItem(position);
         holder.bind(current.getName(), listener);
-    }
-
-    public static class RepoDiff extends DiffUtil.ItemCallback<Repo> {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
-            return oldItem.getName().equals(newItem.getName());
-        }
     }
 
     @Override
@@ -86,5 +73,18 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
 
     public interface RecyclerViewClickListener {
         void onClick(View v, int position);
+    }
+
+    public static class RepoDiff extends DiffUtil.ItemCallback<Repo> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Repo oldItem, @NonNull Repo newItem) {
+            return oldItem.getName().equals(newItem.getName());
+        }
     }
 }

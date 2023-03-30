@@ -40,12 +40,12 @@ public class ClassificationViewModel extends AndroidViewModel {
         return currentEntryId;
     }
 
-    public int getCurrentRepoId() {
-        return currentRepoId;
-    }
-
     public void setCurrentEntryId(int currentEntryId) {
         this.currentEntryId = currentEntryId;
+    }
+
+    public int getCurrentRepoId() {
+        return currentRepoId;
     }
 
     public void setCurrentRepoId(int currentRepoId) {

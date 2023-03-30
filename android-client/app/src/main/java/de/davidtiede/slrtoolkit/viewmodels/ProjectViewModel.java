@@ -40,12 +40,12 @@ public class ProjectViewModel extends AndroidViewModel {
         this.currentEntryInListCount = currentEntryInListCount;
     }
 
-    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
-        this.currentEntriesInList = currentEntriesInList;
-    }
-
     public List<Entry> getCurrentEntriesInList() {
         return currentEntriesInList;
+    }
+
+    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+        this.currentEntriesInList = currentEntriesInList;
     }
 
     public int getCurrentRepoId() {
