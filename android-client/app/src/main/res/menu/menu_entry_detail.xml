@@ -2,24 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_delete"
         android:icon="@drawable/ic_delete"
-        android:title="Sort"
-        app:showAsAction="always">
-
-        <menu>
-
-            <item
-                android:id="@+id/action_delete"
-                android:title="Delete" />
-
-        </menu>
+        android:title="@string/button_delete"
+        app:showAsAction="ifRoom">
 
     </item>
 
     <item
         android:id="@+id/action_classify"
         android:icon="@drawable/ic_label"
-        android:title="Search"
-        app:showAsAction="always|collapseActionView" />
+        android:title="@string/button_classify"
+        app:showAsAction="ifRoom" />
 
 </menu>
