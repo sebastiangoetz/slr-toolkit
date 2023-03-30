@@ -16,7 +16,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="8dp"
             android:minHeight="550dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
             app:cardMaxElevation="12dp"
@@ -25,28 +25,29 @@
             app:contentPadding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/filter_entry_title"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Some other text to test"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/filter_entry_authors_heading"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/entry_detail_heading_authors"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_entry_title" />
@@ -62,11 +63,11 @@
 
                 <TextView
                     android:id="@+id/filter_entry_year_heading"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/entry_detail_heading_year"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_entry_authors" />
@@ -82,11 +83,11 @@
 
                 <TextView
                     android:id="@+id/filter_entry_month_heading"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/entry_detail_heading_month"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_entry_year" />
@@ -103,11 +104,11 @@
 
                 <TextView
                     android:id="@+id/filter_entry_doi_heading"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/entry_detail_heading_doi"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_entry_month" />
@@ -123,11 +124,11 @@
 
                 <TextView
                     android:id="@+id/filter_entry_keywords_heading"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="@string/entry_detail_heading_keywords"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/filter_entry_doi" />
