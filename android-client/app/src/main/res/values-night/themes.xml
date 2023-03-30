@@ -12,6 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="colorSurface">@color/material_dynamic_neutral10</item>
+        <item name="colorSurface">@color/material_dynamic_neutral20</item>
     </style>
 </resources>
