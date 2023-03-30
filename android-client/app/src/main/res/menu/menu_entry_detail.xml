@@ -2,10 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_delete"
+        android:id="@+id/icon_delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/button_delete"
         app:showAsAction="ifRoom">
+
+        <menu>
+
+            <item
+                android:id="@+id/action_delete"
+                android:title="@string/button_delete_confirm" />
+
+        </menu>
 
     </item>
 
