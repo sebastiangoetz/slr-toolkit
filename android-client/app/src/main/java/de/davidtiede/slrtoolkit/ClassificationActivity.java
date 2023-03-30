@@ -1,10 +1,10 @@
 package de.davidtiede.slrtoolkit;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
 
 import de.davidtiede.slrtoolkit.fragments.ClassificationFragment;
 import de.davidtiede.slrtoolkit.viewmodels.ClassificationViewModel;
@@ -22,7 +22,7 @@ public class ClassificationActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if(extras != null) {
+        if (extras != null) {
             repoId = extras.getInt("repo");
             entryId = extras.getInt("entry");
         }

@@ -6,7 +6,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Taxonomy {
-    @PrimaryKey(autoGenerate = true) private int taxonomyId;
+    @PrimaryKey(autoGenerate = true)
+    private int taxonomyId;
     private String name;
     private int repoId;
     private int parentId;

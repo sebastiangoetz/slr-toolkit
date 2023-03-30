@@ -6,7 +6,8 @@ import androidx.room.Relation;
 import java.util.List;
 
 public class TaxonomyWithTaxonomies {
-    @Embedded Taxonomy parent;
+    @Embedded
+    Taxonomy parent;
 
     @Relation(
             parentColumn = "taxonomyId",

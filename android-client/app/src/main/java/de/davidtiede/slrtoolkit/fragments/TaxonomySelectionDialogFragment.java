@@ -46,11 +46,11 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
         confirmButton.setOnClickListener(v -> dismiss());
     }
 
-    private void initListViewData()  {
+    private void initListViewData() {
         int parentTaxonomyId = 0;
-        if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+        if (analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
             parentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
-        } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+        } else if (analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
             parentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor2();
         }
         int repoId = analyzeViewModel.getCurrentRepoId();
@@ -81,9 +81,9 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
             List<TaxonomyWithEntries> updatedSelectedTaxonomies = new ArrayList<>();
             List<Integer> selectedTaxonomiesIds = getTaxonomyIds(selectedTaxonomies);
 
-            if(selectedTaxonomiesIds.contains(clickedTaxonomy.taxonomy.getTaxonomyId())) {
-                for(TaxonomyWithEntries taxonomyWithEntries: selectedTaxonomies) {
-                    if(taxonomyWithEntries.taxonomy.getTaxonomyId() != clickedTaxonomy.taxonomy.getTaxonomyId()) {
+            if (selectedTaxonomiesIds.contains(clickedTaxonomy.taxonomy.getTaxonomyId())) {
+                for (TaxonomyWithEntries taxonomyWithEntries : selectedTaxonomies) {
+                    if (taxonomyWithEntries.taxonomy.getTaxonomyId() != clickedTaxonomy.taxonomy.getTaxonomyId()) {
                         updatedSelectedTaxonomies.add(taxonomyWithEntries);
                     }
                 }
@@ -92,9 +92,9 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
                 updatedSelectedTaxonomies.add(clickedTaxonomy);
             }
 
-            if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+            if (analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
                 analyzeViewModel.setChildTaxonomiesToDisplay1(updatedSelectedTaxonomies);
-            } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+            } else if (analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
                 analyzeViewModel.setChildTaxonomiesToDisplay2(updatedSelectedTaxonomies);
             }
             setSelectedTaxonomies();
@@ -111,7 +111,7 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
     public List<Integer> getTaxonomyIds(List<TaxonomyWithEntries> taxonomyWithEntries) {
         ArrayList<Integer> selectedTaxonomiesIds = new ArrayList<>();
 
-        for(TaxonomyWithEntries selectedTaxonomy: taxonomyWithEntries) {
+        for (TaxonomyWithEntries selectedTaxonomy : taxonomyWithEntries) {
             selectedTaxonomiesIds.add(selectedTaxonomy.taxonomy.getTaxonomyId());
         }
 
@@ -121,12 +121,12 @@ public class TaxonomySelectionDialogFragment extends DialogFragment {
     public List<TaxonomyWithEntries> getSelectedTaxonomies() {
         List<TaxonomyWithEntries> selectedTaxonomies = new ArrayList<>();
 
-        if(analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
+        if (analyzeViewModel.getCurrentTaxonomySpinner() == 1) {
             selectedTaxonomies = analyzeViewModel.getChildTaxonomiesToDisplay1();
 
-        } else if(analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
+        } else if (analyzeViewModel.getCurrentTaxonomySpinner() == 2) {
             selectedTaxonomies = analyzeViewModel.getChildTaxonomiesToDisplay2();
         }
-        return  selectedTaxonomies;
+        return selectedTaxonomies;
     }
 }

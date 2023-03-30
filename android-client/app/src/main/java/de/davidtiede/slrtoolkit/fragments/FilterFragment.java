@@ -1,17 +1,16 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -93,7 +92,7 @@ public class FilterFragment extends Fragment {
 
         final Observer<List<Entry>> openEntriesObserver = data -> {
             entries = (ArrayList<Entry>) data;
-            if(entries.size() == 0) {
+            if (entries.size() == 0) {
                 noEntriesToFilterTextview.setVisibility(View.VISIBLE);
                 flingAdapterView.setVisibility(View.INVISIBLE);
                 keepButton.setVisibility(View.INVISIBLE);

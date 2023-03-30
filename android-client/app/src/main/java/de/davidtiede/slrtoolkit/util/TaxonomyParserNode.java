@@ -51,11 +51,11 @@ public class TaxonomyParserNode {
     @Override
     public String toString() {
         StringBuilder children = new StringBuilder();
-        for(TaxonomyParserNode child: getChildren()) {
+        for (TaxonomyParserNode child : getChildren()) {
             children.append(child.getName());
         }
         String string = "Name: " + getName() + ", Children: " + children;
-        if(parent != null) {
+        if (parent != null) {
             string += "Parent: " + parent.getName();
         }
         return string;

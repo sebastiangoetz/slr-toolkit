@@ -1,11 +1,6 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +8,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
 import de.davidtiede.slrtoolkit.viewmodels.AnalyzeViewModel;
@@ -80,7 +82,7 @@ public class ChartSelectionFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedChart = chartSpinner.getSelectedItem().toString();
 
-                if(selectedChart.equals(BUBBLECHART_STRING)) {
+                if (selectedChart.equals(BUBBLECHART_STRING)) {
                     taxonomySpinner2.setVisibility(View.VISIBLE);
                 } else {
                     taxonomySpinner2.setVisibility(View.INVISIBLE);
@@ -108,13 +110,13 @@ public class ChartSelectionFragment extends Fragment {
     private void setSpinnerOnTouchListeners() {
         taxonomySpinner1.setOnTouchListener((view1, motionEvent) -> {
             view1.performClick();
-            isSpinnerTouch1=true;
+            isSpinnerTouch1 = true;
             return false;
         });
 
         taxonomySpinner2.setOnTouchListener((view2, motionEvent) -> {
             view2.performClick();
-            isSpinnerTouch2=true;
+            isSpinnerTouch2 = true;
             return false;
         });
     }
@@ -129,7 +131,7 @@ public class ChartSelectionFragment extends Fragment {
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay1(children);
 
-                if(isSpinnerTouch1) {
+                if (isSpinnerTouch1) {
                     analyzeViewModel.setCurrentTaxonomySpinner(1);
                     new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
                 }
@@ -150,7 +152,7 @@ public class ChartSelectionFragment extends Fragment {
                 List<TaxonomyWithEntries> children = getChildrenForTaxonomy(taxonomyId);
                 analyzeViewModel.setChildTaxonomiesToDisplay2(children);
 
-                if(isSpinnerTouch2) {
+                if (isSpinnerTouch2) {
                     analyzeViewModel.setCurrentTaxonomySpinner(2);
                     new TaxonomySelectionDialogFragment().show(getChildFragmentManager(), TaxonomySelectionDialogFragment.TAG);
                 }
@@ -165,7 +167,7 @@ public class ChartSelectionFragment extends Fragment {
 
     private void setButtonOnClickListener() {
         analyzeButton.setOnClickListener(v -> {
-            if(selectedChart.equals(BUBBLECHART_STRING)) {
+            if (selectedChart.equals(BUBBLECHART_STRING)) {
                 Fragment bubblechartFragment = new BubbleChartFragment();
                 FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.analyze_fragment_container_view, bubblechartFragment);

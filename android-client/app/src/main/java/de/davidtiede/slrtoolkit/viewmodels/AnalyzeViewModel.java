@@ -1,8 +1,10 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -88,9 +90,9 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public List<TaxonomyWithEntries> aggregateChildrenOfTaxonomy(int repoId, TaxonomyWithEntries taxonomyWithEntries) throws ExecutionException, InterruptedException {
         List<TaxonomyWithEntries> childTaxonomies = new ArrayList<>();
-        if(taxonomyWithEntries.taxonomy.isHasChildren()) {
+        if (taxonomyWithEntries.taxonomy.isHasChildren()) {
             List<TaxonomyWithEntries> children = getChildTaxonomiesForTaxonomyId(repoId, taxonomyWithEntries.taxonomy.getTaxonomyId());
-            for(TaxonomyWithEntries child: children) {
+            for (TaxonomyWithEntries child : children) {
                 childTaxonomies.addAll(aggregateChildrenOfTaxonomy(repoId, child));
             }
         } else {
@@ -101,8 +103,8 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public int getNumberOfEntriesForTaxonomy(List<TaxonomyWithEntries> taxonomyWithEntries) {
         Set<Integer> entries = new HashSet<>();
-        for(TaxonomyWithEntries t : taxonomyWithEntries) {
-            for(Entry entry: t.entries) {
+        for (TaxonomyWithEntries t : taxonomyWithEntries) {
+            for (Entry entry : t.entries) {
                 entries.add(entry.getEntryId());
             }
         }
@@ -111,17 +113,17 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public List<TaxonomyWithEntries> getTaxonomiesWithAggregatedChildren(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
         List<TaxonomyWithEntries> taxonomiesWithAggregatedChildren = new ArrayList<>();
-        for (TaxonomyWithEntries currentTaxonomy: taxonomyWithEntries) {
-            if(!currentTaxonomy.taxonomy.isHasChildren()) {
+        for (TaxonomyWithEntries currentTaxonomy : taxonomyWithEntries) {
+            if (!currentTaxonomy.taxonomy.isHasChildren()) {
                 taxonomiesWithAggregatedChildren.add(currentTaxonomy);
             } else {
                 List<TaxonomyWithEntries> children = aggregateChildrenOfTaxonomy(repoId, currentTaxonomy);
                 List<Entry> entries = new ArrayList<>();
-                ArrayList<Integer> entryIds =  new ArrayList<>();
+                ArrayList<Integer> entryIds = new ArrayList<>();
 
-                for(TaxonomyWithEntries child: children) {
+                for (TaxonomyWithEntries child : children) {
                     for (Entry entry : child.entries) {
-                        if(!entryIds.contains(entry.getEntryId())) {
+                        if (!entryIds.contains(entry.getEntryId())) {
                             entryIds.add(entry.getEntryId());
                             entries.add(entry);
                         }
@@ -137,9 +139,9 @@ public class AnalyzeViewModel extends AndroidViewModel {
 
     public Map<Taxonomy, Integer> getNumberOfEntriesForChildrenOfTaxonomy(int repoId, List<TaxonomyWithEntries> taxonomyWithEntries) throws ExecutionException, InterruptedException {
         Map<Taxonomy, Integer> numberOfEntriesForTaxonomy = new HashMap<>();
-        for(TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
+        for (TaxonomyWithEntries taxWithEntries : taxonomyWithEntries) {
             Taxonomy currentTaxonomy = taxWithEntries.taxonomy;
-            if(!currentTaxonomy.isHasChildren()) {
+            if (!currentTaxonomy.isHasChildren()) {
                 numberOfEntriesForTaxonomy.put(currentTaxonomy, taxWithEntries.entries.size());
             } else {
                 List<TaxonomyWithEntries> children = aggregateChildrenOfTaxonomy(repoId, taxWithEntries);

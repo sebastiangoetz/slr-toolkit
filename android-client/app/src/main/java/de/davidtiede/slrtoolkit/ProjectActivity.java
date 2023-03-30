@@ -1,15 +1,11 @@
 package de.davidtiede.slrtoolkit;
 
-import androidx.annotation.RequiresApi;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
-
-import android.os.Build;
-import android.os.Bundle;
 
 public class ProjectActivity extends AppCompatActivity {
 
@@ -22,7 +18,7 @@ public class ProjectActivity extends AppCompatActivity {
         ProjectViewModel projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
 
 
-        if(extras != null) {
+        if (extras != null) {
             int id = extras.getInt("repo");
             projectViewModel.setCurrentRepoId(id);
         }

@@ -2,10 +2,13 @@ package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
 import org.jbibtex.ParseException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.Repo;
@@ -111,19 +115,19 @@ public class RepoViewModel extends AndroidViewModel {
     public void initializeTaxonomiesWithEntries(Map<Entry, String> entriesWithTaxonomies, int repoId) {
         List<EntryTaxonomyCrossRef> entryTaxonomyCrossRefs = new ArrayList<>();
         TaxonomyParser taxonomyParser = new TaxonomyParser();
-        for(Map.Entry<Entry, String> e : entriesWithTaxonomies.entrySet()) {
+        for (Map.Entry<Entry, String> e : entriesWithTaxonomies.entrySet()) {
             String taxonomyString = e.getValue();
-            if(taxonomyString.compareTo("") != 0) {
+            if (taxonomyString.compareTo("") != 0) {
                 List<TaxonomyParserNode> taxonomyParserNodes = taxonomyParser.parse(taxonomyString);
                 for (TaxonomyParserNode node : taxonomyParserNodes) {
                     try {
                         //only if the taxonomy has no child taxonomies a relation is added
-                        if(node.getChildren().size() == 0) {
+                        if (node.getChildren().size() == 0) {
                             Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
                             Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
                             if (taxonomy != null && entry != null) {
                                 //saved taxonomy also can't have children
-                                if(!taxonomy.isHasChildren()) {
+                                if (!taxonomy.isHasChildren()) {
                                     EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
                                     entryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
                                     entryTaxonomyCrossRef.setEntryId(entry.getEntryId());

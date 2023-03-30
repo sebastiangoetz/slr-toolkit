@@ -2,14 +2,6 @@ package de.davidtiede.slrtoolkit.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +55,9 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        if(requireActivity() instanceof ProjectActivity) {
+        if (requireActivity() instanceof ProjectActivity) {
             repoId = projectViewModel.getCurrentRepoId();
-        } else if(requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof TaxonomiesActivity) {
             repoId = taxonomiesViewModel.getCurrentRepoId();
         }
         viewPager = view.findViewById(R.id.entries_detail_viewpager);
@@ -71,7 +70,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
 
     private void setViewPager() {
         List<Entry> entries = getCurrentEntries();
-        if(entries.size() == 0) {
+        if (entries.size() == 0) {
             noEntriesDetails.setVisibility(View.VISIBLE);
         } else {
             noEntriesDetails.setVisibility(View.INVISIBLE);
@@ -79,12 +78,12 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
             viewPager.setAdapter(pagerAdapter);
         }
         int currentItemPosition = 0;
-        if(requireActivity() instanceof ProjectActivity) {
+        if (requireActivity() instanceof ProjectActivity) {
             currentItemPosition = projectViewModel.getCurrentEntryInListCount();
-        } else if(requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof TaxonomiesActivity) {
             currentItemPosition = taxonomiesViewModel.getCurrentEntryInListCount();
         }
-        if(currentItemPosition != 0 && currentItemPosition < entries.size()) {
+        if (currentItemPosition != 0 && currentItemPosition < entries.size()) {
             viewPager.setCurrentItem(currentItemPosition, false);
         }
     }
@@ -93,7 +92,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         Intent intent = new Intent(getActivity(), ClassificationActivity.class);
         List<Entry> entries = getCurrentEntries();
         int index = viewPager.getCurrentItem();
-        if(entries.size() > index) {
+        if (entries.size() > index) {
             Entry entry = entries.get(index);
             intent.putExtra("repo", repoId);
             intent.putExtra("entry", entry.getEntryId());
@@ -104,7 +103,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     private void deleteEntry() {
         int index = viewPager.getCurrentItem();
         List<Entry> entries = getCurrentEntries();
-        if(entries.size() > index) {
+        if (entries.size() > index) {
             Entry entry = entries.get(index);
             projectViewModel.deleteById(entry.getEntryId(), repoId);
             requireActivity().onBackPressed();
@@ -113,9 +112,9 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
 
     public List<Entry> getCurrentEntries() {
         List<Entry> entries = new ArrayList<>();
-        if(requireActivity() instanceof ProjectActivity) {
+        if (requireActivity() instanceof ProjectActivity) {
             entries = projectViewModel.getCurrentEntriesInList();
-        } else if(requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof TaxonomiesActivity) {
             entries = taxonomiesViewModel.getCurrentEntriesInList();
         }
         return entries;
@@ -129,7 +128,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_delete: {
                 deleteEntry();
                 break;
@@ -159,9 +158,9 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             Entry entry = entries.get(position);
-            if(fa instanceof ProjectActivity) {
+            if (fa instanceof ProjectActivity) {
                 projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
-            } else if(fa instanceof TaxonomiesActivity) {
+            } else if (fa instanceof TaxonomiesActivity) {
                 taxonomiesViewModel.setCurrentEntryIdForCard(entry.getEntryId());
             }
             return new BibtexEntryDetailFragment();

@@ -28,7 +28,8 @@ public class RepoListAdapter extends ListAdapter<Repo, RepoViewHolder> {
         this.listener = listener;
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public RepoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         return RepoViewHolder.create(viewGroup);
     }

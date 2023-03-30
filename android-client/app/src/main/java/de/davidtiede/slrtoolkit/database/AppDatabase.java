@@ -12,8 +12,11 @@ import java.util.concurrent.Executors;
 @Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntryTaxonomyCrossRef.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RepoDao repoDao();
+
     public abstract EntryDao entryDao();
+
     public abstract TaxonomyDao taxonomyDao();
+
     public abstract TaxonomyWithEntriesDao taxonomyWithEntriesDao();
 
     private static volatile AppDatabase INSTANCE;
@@ -27,7 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "app_database")
+                                    AppDatabase.class, "app_database")
                             .build();
                 }
             }

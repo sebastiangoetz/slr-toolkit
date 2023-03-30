@@ -1,23 +1,22 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +78,7 @@ public class BibtexEntriesListFragment extends Fragment {
         listener = (v, position) -> {
             Entry clickedEntry = adapter.getItemAtPosition(position);
 
-            if(clickedEntry == null) return;
+            if (clickedEntry == null) return;
 
             projectViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
             int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
@@ -93,13 +92,12 @@ public class BibtexEntriesListFragment extends Fragment {
         projectViewModel.getEntriesForRepo(repoId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    private void onLoaded(List<Entry> list){
+    private void onLoaded(List<Entry> list) {
         projectViewModel.setCurrentEntriesInList(list);
         if (list.size() == 0) {
             recyclerView.setVisibility(View.INVISIBLE);
             noEntriesTextView.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             noEntriesTextView.setVisibility(View.INVISIBLE);
             adapter.submitList(list);
@@ -108,8 +106,8 @@ public class BibtexEntriesListFragment extends Fragment {
 
     private void filterList(String searchTerm) {
         List<Entry> filteredEntries = new ArrayList<>();
-        for(Entry e: projectViewModel.getCurrentEntriesInList()) {
-            if(e.getTitle().toLowerCase(Locale.ROOT).contains(searchTerm.toLowerCase(Locale.ROOT))) {
+        for (Entry e : projectViewModel.getCurrentEntriesInList()) {
+            if (e.getTitle().toLowerCase(Locale.ROOT).contains(searchTerm.toLowerCase(Locale.ROOT))) {
                 filteredEntries.add(e);
             }
         }

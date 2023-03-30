@@ -1,6 +1,9 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,10 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,10 +88,10 @@ public class ClassificationFragment extends Fragment {
 
     public void setSelectedTaxonomies(List<TaxonomyWithEntries> taxonomyWithEntries) {
         ArrayList<Integer> selectedTaxonomies = new ArrayList<>();
-        for(int i = 0; i < taxonomyWithEntries.size(); i++) {
+        for (int i = 0; i < taxonomyWithEntries.size(); i++) {
             TaxonomyWithEntries currentTaxWithEntries = taxonomyWithEntries.get(i);
-            for(Entry entry: currentTaxWithEntries.entries) {
-                if(entry.getEntryId() == entryId) {
+            for (Entry entry : currentTaxWithEntries.entries) {
+                if (entry.getEntryId() == entryId) {
                     selectedTaxonomies.add(currentTaxWithEntries.taxonomy.getTaxonomyId());
                 }
             }
@@ -104,7 +103,7 @@ public class ClassificationFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             TaxonomyWithEntries clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
-            if(clickedTaxonomy.taxonomy.isHasChildren()) {
+            if (clickedTaxonomy.taxonomy.isHasChildren()) {
                 Fragment classificationFragment = ClassificationFragment.newInstance(clickedTaxonomy.taxonomy.getTaxonomyId());
                 FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.classification_fragment_container_view, classificationFragment);
@@ -113,13 +112,13 @@ public class ClassificationFragment extends Fragment {
             } else {
                 boolean entryContainsTaxonomy = false;
                 List<Integer> selectedTaxonomyIds = classificationViewModel.getSelectedTaxonomies();
-                for(int taxId: selectedTaxonomyIds) {
+                for (int taxId : selectedTaxonomyIds) {
                     if (taxId == clickedTaxonomy.taxonomy.getTaxonomyId()) {
                         entryContainsTaxonomy = true;
                         break;
                     }
                 }
-                if(entryContainsTaxonomy) {
+                if (entryContainsTaxonomy) {
                     classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
 
                 } else {

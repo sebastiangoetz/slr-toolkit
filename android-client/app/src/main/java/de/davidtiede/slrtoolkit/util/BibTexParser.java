@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.davidtiede.slrtoolkit.database.Entry;
@@ -61,7 +60,7 @@ public class BibTexParser {
 
     }
 
-    public void addObjectToFile(BibTeXObject object)  {
+    public void addObjectToFile(BibTeXObject object) {
         BibTeXFormatter formatter = new BibTeXFormatter();
         bibTeXDatabase.addObject(object);
         try {
@@ -84,7 +83,7 @@ public class BibTexParser {
         setBibTeXDatabase(file);
         Map<Key, BibTeXEntry> entryMap = getBibTeXEntries();
 
-        for(Key key: entryMap.keySet()) {
+        for (Key key : entryMap.keySet()) {
             BibTeXEntry bibTeXEntry = entryMap.get(key);
             assert bibTeXEntry != null;
             Entry entry = new Entry(key.toString(), safeGetField(bibTeXEntry, BibTeXEntry.KEY_TITLE));
@@ -108,8 +107,7 @@ public class BibTexParser {
     }
 
     //make BibTexParser Singleton
-    public static BibTexParser getBibTexParser()
-    {
+    public static BibTexParser getBibTexParser() {
         if (bibTexParser == null)
             bibTexParser = new BibTexParser();
 

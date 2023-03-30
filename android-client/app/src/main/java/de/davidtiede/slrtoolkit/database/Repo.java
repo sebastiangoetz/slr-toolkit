@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Repo {
-    @PrimaryKey(autoGenerate = true) private int id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     private String local_path;
     private String remote_url;

@@ -31,7 +31,7 @@ public class EntryRepository {
     public EntryRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         entryDao = db.entryDao();
-        this.application  = application;
+        this.application = application;
         fileUtil = new FileUtil();
     }
 
@@ -64,7 +64,7 @@ public class EntryRepository {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
             Key key = new Key(entry.getKey());
-            BibTeXObject entryToDelete =  parser.getBibTexObject(key);
+            BibTeXObject entryToDelete = parser.getBibTexObject(key);
             parser.removeObject(entryToDelete);
             //add entry to separate file where deleted entries are stored
             File fileForDeletedEntries = fileUtil.createFileIfNotExists(application, path, "deletedItems.bib");

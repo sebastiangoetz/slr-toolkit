@@ -153,9 +153,7 @@ public class Entry {
     }
 
     public enum Status {
-        OPEN(0),
-        KEEP(1),
-        DISCARD(2);
+        OPEN(0), KEEP(1), DISCARD(2);
 
         private final int code;
 

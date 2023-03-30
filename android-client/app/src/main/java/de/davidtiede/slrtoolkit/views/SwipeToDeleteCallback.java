@@ -20,7 +20,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
 
 
     public SwipeToDeleteCallback(RepoListAdapter adapter) {
-        super(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         repoListAdapter = adapter;
         icon = ContextCompat.getDrawable(repoListAdapter.getContext(), R.drawable.ic_baseline_delete_forever_24);
         background = new ColorDrawable(Color.RED);

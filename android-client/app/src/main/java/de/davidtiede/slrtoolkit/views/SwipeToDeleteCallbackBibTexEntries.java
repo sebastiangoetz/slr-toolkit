@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.davidtiede.slrtoolkit.R;
 
-public class SwipeToDeleteCallbackBibTexEntries extends ItemTouchHelper.SimpleCallback{
+public class SwipeToDeleteCallbackBibTexEntries extends ItemTouchHelper.SimpleCallback {
     private final BibTexEntriesListAdapter bibTexEntriesListAdapter;
     private final Drawable icon;
     private final ColorDrawable background;

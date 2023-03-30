@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.EntryTaxonomyCrossRef;
 import de.davidtiede.slrtoolkit.database.TaxonomyWithEntries;
@@ -21,7 +22,7 @@ public class TaxonomyWithEntriesRepository {
     public TaxonomyWithEntriesRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyWithEntriesDao = db.taxonomyWithEntriesDao();
-        this.application  = application;
+        this.application = application;
     }
 
     public long insert(int taxonomyId, int entryId) {

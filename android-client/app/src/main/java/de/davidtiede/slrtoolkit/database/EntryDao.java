@@ -42,9 +42,9 @@ public abstract class EntryDao {
     @Query("SELECT * FROM entry WHERE entryId=:id")
     public abstract LiveData<Entry> getEntryById(int id);
 
-    public void insertEntriesForRepo(int repoId, List<Entry> entries){
+    public void insertEntriesForRepo(int repoId, List<Entry> entries) {
 
-        for(Entry entry : entries){
+        for (Entry entry : entries) {
             entry.setRepoId(repoId);
         }
 

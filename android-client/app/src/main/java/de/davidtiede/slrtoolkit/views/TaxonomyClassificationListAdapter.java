@@ -68,7 +68,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
         return getItem(position);
     }
 
-    public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class TaxonomyClassificationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView taxonomyItemView;
         private final ImageView taxonomyArrowItemView;
         private final ConstraintLayout constraintLayout;
@@ -96,18 +96,18 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
 
         public void bind(TaxonomyWithEntries taxonomy, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, List<Integer> selectedTaxonomyIds, Context context, boolean showArrows) {
             boolean taxonomyInEntry = false;
-            for(int taxonomyId: selectedTaxonomyIds) {
+            for (int taxonomyId : selectedTaxonomyIds) {
                 if (taxonomyId == taxonomy.taxonomy.getTaxonomyId()) {
                     taxonomyInEntry = true;
                     break;
                 }
             }
-            if(taxonomyInEntry) {
+            if (taxonomyInEntry) {
                 constraintLayout.setBackgroundColor(Color.LTGRAY);
             } else {
                 constraintLayout.setBackgroundColor(Color.WHITE);
             }
-            if(taxonomy.taxonomy.isHasChildren() && showArrows) {
+            if (taxonomy.taxonomy.isHasChildren() && showArrows) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }

@@ -1,6 +1,10 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,11 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     }
 
     public void setHeader(TaxonomyWithEntries taxonomyWithEntries) {
-        if(taxonomyWithEntries != null) {
+        if (taxonomyWithEntries != null) {
             String title = getResources().getString(R.string.entries_for_taxonomy) + " " + taxonomyWithEntries.taxonomy.getName();
             taxonomiesBreadCrumbTextview.setText(title);
         }
@@ -75,7 +74,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
         setHeader(taxonomyWithEntries);
         List<Entry> entries = taxonomyWithEntries.entries;
         taxonomiesViewModel.setCurrentEntriesInList(entries);
-        if(entries.size() == 0) {
+        if (entries.size() == 0) {
             noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
         } else {
             noTaxonomyEntriesTextview.setVisibility(View.INVISIBLE);
@@ -86,7 +85,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private void setOnClickListener() {
         listener = (v, position) -> {
             Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-            if(clickedEntry == null) return;
+            if (clickedEntry == null) return;
 
             taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
             int indexOfEntryInOriginalList = taxonomiesViewModel.getCurrentEntriesInList().indexOf(clickedEntry);

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab_add_project);
 
         fab.setOnClickListener(view -> NavHostFragment.findNavController(
-                Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
+                        Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
                 .navigate(R.id.action_ProjectsFragment_to_AddProjectFragment));
     }
 

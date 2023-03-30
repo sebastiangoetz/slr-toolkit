@@ -54,7 +54,7 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
         return getItem(position);
     }
 
-    public static class TaxonomyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class TaxonomyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView taxonomyItemView;
         private final ImageView taxonomyArrowItemView;
         private TaxonomyListAdapter.RecyclerViewClickListener listener;
@@ -80,7 +80,7 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
 
         public void bind(Taxonomy taxonomy, TaxonomyListAdapter.RecyclerViewClickListener listener, Context context) {
             taxonomyItemView.setText(taxonomy.getName());
-            if(taxonomy.isHasChildren()) {
+            if (taxonomy.isHasChildren()) {
                 Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }

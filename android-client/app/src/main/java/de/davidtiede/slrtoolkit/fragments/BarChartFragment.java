@@ -1,14 +1,13 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -54,7 +53,7 @@ public class BarChartFragment extends Fragment {
         int currentParentTaxonomyId = analyzeViewModel.getParentTaxonomyToDisplayChildrenFor1();
         List<TaxonomyWithEntries> childTaxonomiesToDisplay = analyzeViewModel.getChildTaxonomiesToDisplay1();
         try {
-            if(childTaxonomiesToDisplay == null || childTaxonomiesToDisplay.size() == 0) {
+            if (childTaxonomiesToDisplay == null || childTaxonomiesToDisplay.size() == 0) {
                 List<TaxonomyWithEntries> parentTaxonomies = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, currentParentTaxonomyId);
                 Map<Taxonomy, Integer> taxonomyWithNumEntries = analyzeViewModel.getNumberOfEntriesForChildrenOfTaxonomy(repoId, parentTaxonomies);
                 setBarChart(taxonomyWithNumEntries);
@@ -71,7 +70,7 @@ public class BarChartFragment extends Fragment {
     private void setBarChart(Map<Taxonomy, Integer> taxonomyWithNumEntries) {
         List<BarEntry> entries = new ArrayList<>();
         int index = 1;
-        for(Taxonomy taxonomy : taxonomyWithNumEntries.keySet()) {
+        for (Taxonomy taxonomy : taxonomyWithNumEntries.keySet()) {
             BarEntry barEntry = new BarEntry(index, taxonomyWithNumEntries.get(taxonomy), taxonomy.getName());
             entries.add(barEntry);
             index++;
@@ -94,13 +93,15 @@ public class BarChartFragment extends Fragment {
 
     public static class DayAxisValueFormatter extends ValueFormatter {
         List<BarEntry> entries;
+
         public DayAxisValueFormatter(List<BarEntry> entries) {
             this.entries = entries;
         }
+
         @Override
         public String getFormattedValue(float value) {
-            int index = Math.round(value)-1;
-            if(entries.size() > index && index >= 0) {
+            int index = Math.round(value) - 1;
+            if (entries.size() > index && index >= 0) {
                 String title = (String) entries.get(index).getData();
                 if (title.length() < 20) {
                     return title;

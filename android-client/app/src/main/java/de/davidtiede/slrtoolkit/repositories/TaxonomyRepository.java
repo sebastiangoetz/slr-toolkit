@@ -5,6 +5,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import de.davidtiede.slrtoolkit.database.AppDatabase;
 import de.davidtiede.slrtoolkit.database.Taxonomy;
 import de.davidtiede.slrtoolkit.database.TaxonomyDao;
@@ -60,9 +62,9 @@ public class TaxonomyRepository {
     }
 
     private void addTaxonomyEntries(List<TaxonomyParserNode> nodes, int repoId, int parent) {
-        for(TaxonomyParserNode node: nodes) {
+        for (TaxonomyParserNode node : nodes) {
             //if node is root node
-            if(node.getParent() == null || parent != 0) {
+            if (node.getParent() == null || parent != 0) {
                 Taxonomy taxonomyNode = new Taxonomy();
                 taxonomyNode.setName(node.getName());
                 taxonomyNode.setRepoId(repoId);
@@ -70,14 +72,14 @@ public class TaxonomyRepository {
                 if (parent != 0) {
                     taxonomyNode.setParentId(parent);
                 }
-                if(node.getChildren().size() > 0) {
+                if (node.getChildren().size() > 0) {
                     taxonomyNode.setHasChildren(true);
                     //insert current node
                     int parentId = (int) insert(taxonomyNode);
                     List<Taxonomy> nodesWithoutChildren = new ArrayList<>();
                     List<TaxonomyParserNode> nodesWithChildren = new ArrayList<>();
-                    for(TaxonomyParserNode childNode : node.getChildren()) {
-                        if(childNode.getChildren().size() == 0) {
+                    for (TaxonomyParserNode childNode : node.getChildren()) {
+                        if (childNode.getChildren().size() == 0) {
                             Taxonomy childTaxonomy = new Taxonomy();
                             childTaxonomy.setName(childNode.getName());
                             childTaxonomy.setPath(childNode.getPath());

@@ -27,7 +27,7 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
     @Override
     public View getView(int position, @Nullable View converView, @NonNull ViewGroup parent) {
         View listItem = converView;
-        if(listItem == null) {
+        if (listItem == null) {
             listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.filter_item, parent, false);
         }
 

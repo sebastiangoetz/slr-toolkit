@@ -1,17 +1,20 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
+
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import de.davidtiede.slrtoolkit.AnalyzeActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.TaxonomiesActivity;
@@ -72,22 +75,22 @@ public class ProjectOverviewFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AnalyzeActivity.class);
             intent.putExtra("repo", projectViewModel.getCurrentRepoId());
             startActivity(intent);
-            requireActivity().overridePendingTransition(0,0);
+            requireActivity().overridePendingTransition(0, 0);
         });
 
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());
         projectViewModel.getRepoById(repoId).observe(getViewLifecycleOwner(), repoTitleObserver);
 
         final Observer<Integer> entryAmountObserver =
-                amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() +")");
+                amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() + ")");
         projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
 
         final Observer<Integer> openEntryAmountObserver =
-                amount -> filterButton.setText(getResources().getString(R.string.button_filter) + " (" + amount.toString() +")");
+                amount -> filterButton.setText(getResources().getString(R.string.button_filter) + " (" + amount.toString() + ")");
         projectViewModel.getOpenEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
 
         final Observer<Integer> entriesToClassifyObserver =
-                amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() +")");
+                amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() + ")");
         projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
     }
 }

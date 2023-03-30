@@ -2,14 +2,6 @@ package de.davidtiede.slrtoolkit.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
         projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), list -> {
             entries = list;
-            if(entries.size() == 0) {
+            if (entries.size() == 0) {
                 noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
             } else {
                 noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
@@ -72,10 +71,10 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     private void classifyEntry() {
-        if(entries.size() == 0) return;
+        if (entries.size() == 0) return;
         Entry entry = entries.get(viewPager.getCurrentItem());
 
-        if(entry != null) {
+        if (entry != null) {
             Intent intent = new Intent(getActivity(), ClassificationActivity.class);
             intent.putExtra("repo", repoId);
             intent.putExtra("entry", entry.getEntryId());
@@ -85,7 +84,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
     private void deleteEntry() {
         int i = viewPager.getCurrentItem();
-        if(entries.size() <= 1) {
+        if (entries.size() <= 1) {
             noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
             viewPager.setVisibility(View.INVISIBLE);
         } else {
@@ -107,7 +106,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_classify: {
                 classifyEntry();
                 break;

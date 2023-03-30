@@ -1,13 +1,15 @@
 package de.davidtiede.slrtoolkit.fragments;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import de.davidtiede.slrtoolkit.ProjectActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.TaxonomiesActivity;
@@ -49,13 +51,13 @@ public class BibtexEntryDetailFragment extends Fragment {
         doiTextView = view.findViewById(R.id.bibtex_entry_doi);
         keywordsTextView = view.findViewById(R.id.bibtex_entry_keywords);
 
-        if(getActivity() instanceof ProjectActivity) {
+        if (getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
             int entryId = projectViewModel.getCurrentEntryIdForCard();
             projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
 
-        } else if(getActivity() instanceof TaxonomiesActivity){
+        } else if (getActivity() instanceof TaxonomiesActivity) {
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
             int entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
@@ -64,7 +66,7 @@ public class BibtexEntryDetailFragment extends Fragment {
     }
 
     public void setEntryInformation(Entry entry) {
-        if(entry == null) {
+        if (entry == null) {
             return;
         }
         titleTextView.setText(entry.getTitle());

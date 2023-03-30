@@ -1,11 +1,14 @@
 package de.davidtiede.slrtoolkit.viewmodels;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import de.davidtiede.slrtoolkit.database.Entry;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.repositories.EntryRepository;
@@ -26,7 +29,7 @@ public class ProjectViewModel extends AndroidViewModel {
     }
 
     public LiveData<Repo> getRepoById(int id) {
-       return repoRepository.getRepoById(id);
+        return repoRepository.getRepoById(id);
     }
 
     public int getCurrentEntryInListCount() {
@@ -68,7 +71,7 @@ public class ProjectViewModel extends AndroidViewModel {
     public LiveData<Integer> getOpenEntryAmount(int repoId) {
         return entryRepository.getEntryAmountForStatus(repoId, Entry.Status.OPEN);
     }
-    
+
     public LiveData<List<Entry>> getEntriesForRepo(int repoId) {
         return entryRepository.getEntriesForRepo(repoId);
     }
@@ -85,14 +88,14 @@ public class ProjectViewModel extends AndroidViewModel {
 
     public void delete(Entry entry, int id) {
         Repo repo = getRepoByIdDirectly(id);
-        if(repo != null) {
+        if (repo != null) {
             entryRepository.delete(entry, repo);
         }
     }
 
     public void deleteById(int entryId, int id) {
         Entry entry = getEntryByIdDirectly(entryId);
-        if(entry != null) {
+        if (entry != null) {
             delete(entry, id);
         }
     }

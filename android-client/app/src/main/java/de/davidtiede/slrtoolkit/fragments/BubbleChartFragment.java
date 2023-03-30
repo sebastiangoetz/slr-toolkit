@@ -3,16 +3,15 @@ package de.davidtiede.slrtoolkit.fragments;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -67,13 +66,13 @@ public class BubbleChartFragment extends Fragment {
             List<TaxonomyWithEntries> childTaxonomies1;
             List<TaxonomyWithEntries> childTaxonomies2;
 
-            if(analyzeViewModel.getChildTaxonomiesToDisplay1() == null || analyzeViewModel.getChildTaxonomiesToDisplay1().size() == 0) {
+            if (analyzeViewModel.getChildTaxonomiesToDisplay1() == null || analyzeViewModel.getChildTaxonomiesToDisplay1().size() == 0) {
                 childTaxonomies1 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId1);
             } else {
                 childTaxonomies1 = analyzeViewModel.getChildTaxonomiesToDisplay1();
             }
 
-            if(analyzeViewModel.getChildTaxonomiesToDisplay2() == null || analyzeViewModel.getChildTaxonomiesToDisplay2().size() == 0) {
+            if (analyzeViewModel.getChildTaxonomiesToDisplay2() == null || analyzeViewModel.getChildTaxonomiesToDisplay2().size() == 0) {
                 childTaxonomies2 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId2);
             } else {
                 childTaxonomies2 = analyzeViewModel.getChildTaxonomiesToDisplay2();
@@ -89,7 +88,7 @@ public class BubbleChartFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setBubbleChart(List<TaxonomyWithEntries> taxonomies1, List<TaxonomyWithEntries> taxonomies2) {
         List<BubbleEntry> bubbleEntries = getData(taxonomies1, taxonomies2);
-        if(bubbleEntries.size() > 0) {
+        if (bubbleEntries.size() > 0) {
             noBubbleEntriesTextView.setVisibility(View.INVISIBLE);
             bubbleDataSet = new BubbleDataSet(bubbleEntries, "");
             bubbleData = new BubbleData(bubbleDataSet);
@@ -117,19 +116,19 @@ public class BubbleChartFragment extends Fragment {
     public List<BubbleEntry> getData(List<TaxonomyWithEntries> taxonomyWithEntries1, List<TaxonomyWithEntries> taxonomyWithEntries2) {
         List<BubbleEntry> bubbleEntries = new ArrayList<>();
         int xCount = 0;
-        for(TaxonomyWithEntries t1: taxonomyWithEntries1) {
+        for (TaxonomyWithEntries t1 : taxonomyWithEntries1) {
             int yCount = 0;
-            for(TaxonomyWithEntries t2: taxonomyWithEntries2) {
+            for (TaxonomyWithEntries t2 : taxonomyWithEntries2) {
                 List<Entry> t1Entries = t1.entries;
                 System.out.println("t1 entries!");
                 System.out.println("name: " + t1.taxonomy.getName());
-                for(Entry entry: t1Entries) {
+                for (Entry entry : t1Entries) {
                     System.out.println(entry.getTitle());
                 }
                 List<Entry> t2Entries = t2.entries;
                 System.out.println("t2 entries!");
                 System.out.println("name: " + t2.taxonomy.getName());
-                for(Entry entry: t2Entries) {
+                for (Entry entry : t2Entries) {
                     System.out.println(entry.getTitle());
                 }
                 List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
@@ -140,7 +139,7 @@ public class BubbleChartFragment extends Fragment {
                 System.out.println(t1EntryIds);
                 System.out.println("Adding!");
                 System.out.println(t1EntryIds.size());
-                if(t1EntryIds.size() > 0) {
+                if (t1EntryIds.size() > 0) {
                     BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
                     bubbleEntries.add(bubbleEntry);
                 }
@@ -155,13 +154,15 @@ public class BubbleChartFragment extends Fragment {
 
     public static class AxisValueFormatter extends ValueFormatter {
         List<TaxonomyWithEntries> taxonomyWithEntries;
+
         public AxisValueFormatter(List<TaxonomyWithEntries> taxonomyWithEntries) {
             this.taxonomyWithEntries = taxonomyWithEntries;
         }
+
         @Override
         public String getFormattedValue(float value) {
             int index = Math.round(value);
-            if(taxonomyWithEntries.size() > index && index >= 0) {
+            if (taxonomyWithEntries.size() > index && index >= 0) {
                 String title = taxonomyWithEntries.get(index).taxonomy.getName();
                 if (title.length() > 20) {
                     return title.substring(0, 20);

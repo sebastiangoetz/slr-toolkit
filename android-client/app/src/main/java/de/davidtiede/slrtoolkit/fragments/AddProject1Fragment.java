@@ -67,7 +67,7 @@ public class AddProject1Fragment extends Fragment {
     private void actionCloneRepo(View view) {
         if (TextUtils.isEmpty(edittext_url.getText())) {
             Toast.makeText(requireActivity().getApplicationContext(),
-                    getString(R.string.toast_empty_url),  Toast.LENGTH_SHORT).show();
+                    getString(R.string.toast_empty_url), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -86,7 +86,7 @@ public class AddProject1Fragment extends Fragment {
                 Objects.requireNonNull(edittext_token.getText()).toString(),
                 Objects.requireNonNull(edittext_git_name.getText()).toString(),
                 Objects.requireNonNull(edittext_git_email.getText()).toString()
-                );
+        );
 
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);

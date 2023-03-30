@@ -27,17 +27,17 @@ public class CloneWorker extends Worker {
         Data.Builder outputData = new Data.Builder();
 
         String remote_url = getInputData().getString("REMOTE_URL");
-        if(remote_url == null) {
+        if (remote_url == null) {
             return Result.failure();
         }
 
         String local_path = getInputData().getString("LOCAL_PATH");
         File path = new File(getApplicationContext().getFilesDir(), local_path);
         boolean isDirectoryCreated = path.exists();
-        if(!isDirectoryCreated) {
+        if (!isDirectoryCreated) {
             isDirectoryCreated = path.mkdir();
         }
-        if(!isDirectoryCreated) {
+        if (!isDirectoryCreated) {
             return Result.failure(outputData.putString("RESULT_MSG", "Could not create directory.").build());
         }
 

@@ -1,11 +1,11 @@
 package de.davidtiede.slrtoolkit;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
 
 import de.davidtiede.slrtoolkit.fragments.TaxonomyListFragment;
 import de.davidtiede.slrtoolkit.viewmodels.TaxonomiesViewModel;
@@ -22,7 +22,7 @@ TaxonomiesActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(this).get(TaxonomiesViewModel.class);
 
-        if(extras != null) {
+        if (extras != null) {
             repoId = extras.getInt("repo");
             taxonomiesViewModel.setCurrentRepoId(repoId);
         }

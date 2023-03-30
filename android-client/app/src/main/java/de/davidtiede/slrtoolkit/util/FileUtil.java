@@ -2,7 +2,9 @@ package de.davidtiede.slrtoolkit.util;
 
 import android.app.Application;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,10 +16,10 @@ public class FileUtil {
         File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
         File[] files = directoryPath.listFiles();
         File bibFile = null;
-        for(File file: Objects.requireNonNull(files)) {
-            if(file.isDirectory()) {
-                for(File f: Objects.requireNonNull(file.listFiles())) {
-                    if(f.getName().endsWith(type)) {
+        for (File file : Objects.requireNonNull(files)) {
+            if (file.isDirectory()) {
+                for (File f : Objects.requireNonNull(file.listFiles())) {
+                    if (f.getName().endsWith(type)) {
                         bibFile = f;
                     }
                 }
@@ -29,7 +31,7 @@ public class FileUtil {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String readContentFromFile(String path, Application application) throws FileNotFoundException {
         File file = accessFiles(path, application, ".taxonomy");
-        Scanner scanner = new Scanner( file );
+        Scanner scanner = new Scanner(file);
         String text = scanner.useDelimiter("\\A").next();
         scanner.close();
         return text;
@@ -37,7 +39,7 @@ public class FileUtil {
 
     public File createFileIfNotExists(Application application, String path, String name) throws IOException {
         File file = new File(application.getApplicationContext().getFilesDir(), path + "/" + name);
-        if(!file.exists() && !file.isDirectory()) {
+        if (!file.exists() && !file.isDirectory()) {
             file.createNewFile();
         }
         return file;

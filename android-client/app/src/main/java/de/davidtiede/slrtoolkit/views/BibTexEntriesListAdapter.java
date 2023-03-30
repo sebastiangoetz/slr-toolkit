@@ -29,6 +29,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
         this.listener = listener;
         this.repoId = repoId;
     }
+
     @NonNull
     @NotNull
     @Override
@@ -60,11 +61,11 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
     }
 
     public Entry getItemAtPosition(int position) {
-        if(position > getCurrentList().size()) return null;
+        if (position > getCurrentList().size()) return null;
         return getItem(position);
     }
 
-    public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class BibTexEntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView bibtexItemView;
         private final TextView bibtexDescriptionItemView;
         private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
@@ -91,7 +92,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
         public void bind(Entry entry, RecyclerViewClickListener listener) {
             bibtexItemView.setText(entry.getTitle());
             String description = entry.getYear();
-            if(!entry.getYear().equals("")) {
+            if (!entry.getYear().equals("")) {
                 description = entry.getYear() + ", ";
             }
             description += entry.getAuthor();
