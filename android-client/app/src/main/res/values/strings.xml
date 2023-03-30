@@ -53,4 +53,5 @@
     <string name="test_text">This is some text to test</string>
     <string name="button_delete">Delete</string>
     <string name="button_delete_confirm">Really?</string>
+    <string name="button_search">Search</string>
 </resources>
