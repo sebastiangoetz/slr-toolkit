@@ -12,7 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="colorSurface">@color/material_dynamic_neutral80</item>
+        <item name="colorSurface">@color/material_dynamic_neutral90</item>
     </style>
 
     <style name="Theme.SLRToolkit.NoActionBar">
