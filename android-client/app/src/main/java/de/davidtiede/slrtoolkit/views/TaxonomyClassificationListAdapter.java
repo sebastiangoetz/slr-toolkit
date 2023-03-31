@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.color.MaterialColors;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -107,12 +109,12 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
                 }
             }
             if (taxonomyInEntry) {
-                constraintLayout.setBackgroundColor(Color.LTGRAY);
+                constraintLayout.setBackgroundColor(MaterialColors.getColor(context, R.attr.colorSecondary, Color.LTGRAY));
             } else {
-                constraintLayout.setBackgroundColor(Color.WHITE);
+                constraintLayout.setBackgroundColor(MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE));
             }
             if (taxonomy.taxonomy.isHasChildren() && showArrows) {
-                Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
+                Drawable arrow = ContextCompat.getDrawable(context, R.drawable.baseline_keyboard_arrow_right_24);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }
             taxonomyItemView.setText(taxonomy.taxonomy.getName());
