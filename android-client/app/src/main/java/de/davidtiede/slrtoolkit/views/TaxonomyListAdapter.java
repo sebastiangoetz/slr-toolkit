@@ -85,7 +85,7 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
         public void bind(Taxonomy taxonomy, TaxonomyListAdapter.RecyclerViewClickListener listener, Context context) {
             taxonomyItemView.setText(taxonomy.getName());
             if (taxonomy.isHasChildren()) {
-                Drawable arrow = ContextCompat.getDrawable(context, R.drawable.arrow);
+                Drawable arrow = ContextCompat.getDrawable(context, R.drawable.baseline_keyboard_arrow_right_24);
                 taxonomyArrowItemView.setImageDrawable(arrow);
             }
             this.listener = listener;
