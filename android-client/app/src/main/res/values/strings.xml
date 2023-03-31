@@ -54,4 +54,5 @@
     <string name="button_delete">Delete</string>
     <string name="button_delete_confirm">Really?</string>
     <string name="button_search">Search</string>
+    <string name="image_arrow">Arrow</string>
 </resources>

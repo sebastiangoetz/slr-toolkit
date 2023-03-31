@@ -55,4 +55,5 @@
     <string name="button_delete">Löschen</string>
     <string name="button_delete_confirm">Wirklich?</string>
     <string name="button_search">Suche</string>
+    <string name="image_arrow">Pfeil</string>
 </resources>
