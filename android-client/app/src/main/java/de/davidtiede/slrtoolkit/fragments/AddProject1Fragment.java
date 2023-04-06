@@ -125,6 +125,11 @@ public class AddProject1Fragment extends Fragment {
                         progressButton.onFailed();
                         TextView textview_clone_project_failed = view.findViewById(R.id.textview_clone_project_failed);
                         textview_clone_project_failed.setText(worker.getOutputData().getString("RESULT_MSG"));
+                        edittext_url.setEnabled(true);
+                        edittext_username.setEnabled(true);
+                        edittext_token.setEnabled(true);
+                        edittext_git_name.setEnabled(true);
+                        edittext_git_email.setEnabled(true);
                     }
                 });
     }

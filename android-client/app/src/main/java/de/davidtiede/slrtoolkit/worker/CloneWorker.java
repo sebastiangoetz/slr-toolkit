@@ -15,6 +15,8 @@ import org.eclipse.jgit.api.errors.TransportException;
 
 import java.io.File;
 
+import de.davidtiede.slrtoolkit.R;
+
 public class CloneWorker extends Worker {
     public CloneWorker(
             @NonNull Context context,
@@ -48,11 +50,20 @@ public class CloneWorker extends Worker {
         try {
             cloneCommand.call();
         } catch (InvalidRemoteException | TransportException e) {
-            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_clone_failed)
+                            + System.getProperty("line.separator")
+                            + e.getMessage()).build());
         } catch (GitAPIException e) {
-            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_clone_failed)
+                            + System.getProperty("line.separator")
+                            + e.getMessage()).build());
         } catch (Throwable e) {
-            return Result.failure(outputData.putString("RESULT_MSG", e.getMessage()).build());
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_clone_failed)
+                            + System.getProperty("line.separator")
+                            + e.getMessage()).build());
         }
 
         return Result.success();

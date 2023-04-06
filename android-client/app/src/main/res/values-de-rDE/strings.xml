@@ -21,7 +21,7 @@
     <string name="toast_empty_name">Bitte lassen sie \"Projekt Name\" nicht leer.</string>
     <string name="snackbar_undo">Rückgängig</string>
     <string name="progressbutton_onloading">Bitte warten…</string>
-    <string name="progressbutton_onfailed">Das Projekt konnte nicht geklont werden.</string>
+    <string name="progressbutton_onfailed">Erneut Projekt clonen.</string>
     <string name="progressbutton_succeeded">Weiter</string>
     <string name="textview_no_entries">Keine Einträge</string>
     <string name="textview_no_taxonomies">Keine Taxonomien</string>
@@ -56,4 +56,5 @@
     <string name="button_delete_confirm">Wirklich?</string>
     <string name="button_search">Suche</string>
     <string name="image_arrow">Pfeil</string>
+    <string name="error_clone_failed">Fehler beim Clonen des Repositories.</string>
 </resources>

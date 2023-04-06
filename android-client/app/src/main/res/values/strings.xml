@@ -20,7 +20,7 @@
     <string name="toast_empty_name">Please leave \'project name\' not empty.</string>
     <string name="snackbar_undo">Undo</string>
     <string name="progressbutton_onloading">Please wait…</string>
-    <string name="progressbutton_onfailed">The project could not be cloned.</string>
+    <string name="progressbutton_onfailed">Retry clone Project.</string>
     <string name="progressbutton_succeeded">Next</string>
     <string name="textview_no_entries">No entries</string>
     <string name="textview_no_taxonomies">No taxonomies</string>
@@ -55,4 +55,5 @@
     <string name="button_delete_confirm">Really?</string>
     <string name="button_search">Search</string>
     <string name="image_arrow">Arrow</string>
+    <string name="error_clone_failed">Error during cloning the repository.</string>
 </resources>
