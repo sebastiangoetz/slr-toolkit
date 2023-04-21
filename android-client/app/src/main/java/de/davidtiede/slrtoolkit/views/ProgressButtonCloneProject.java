@@ -27,6 +27,7 @@ public class ProgressButtonCloneProject {
     }
 
     public void onLoading() {
+        cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.design_default_color_primary));
         progressBar.setVisibility(View.VISIBLE);
         textView.setText(view.getResources().getString(R.string.progressbutton_onloading));
     }

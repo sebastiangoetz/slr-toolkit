@@ -12,6 +12,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 
@@ -46,6 +47,14 @@ public class CloneWorker extends Worker {
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(remote_url)
                 .setDirectory(path);
+
+        String username = getInputData().getString("USERNAME");
+        String password = getInputData().getString("TOKEN");
+
+        if (username != null && password != null && !username.trim().isEmpty() && !password.trim().isEmpty()) {
+            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(username, password);
+            cloneCommand.setCredentialsProvider(auth);
+        }
 
         try {
             cloneCommand.call();

@@ -59,7 +59,6 @@ public class AddProject1Fragment extends Fragment {
         edittext_git_email = view.findViewById(R.id.edittext_git_email);
         button_clone_project = view.findViewById(R.id.button_clone_project);
         progressButton = new ProgressButtonCloneProject(getContext(), view);
-
         button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo(view));
 
     }
@@ -77,7 +76,6 @@ public class AddProject1Fragment extends Fragment {
         edittext_git_name.setEnabled(false);
         edittext_git_email.setEnabled(false);
         button_clone_project.setOnClickListener(null);
-
         progressButton.onLoading();
 
         Repo repo = new Repo(
@@ -130,6 +128,7 @@ public class AddProject1Fragment extends Fragment {
                         edittext_token.setEnabled(true);
                         edittext_git_name.setEnabled(true);
                         edittext_git_email.setEnabled(true);
+                        button_clone_project.setOnClickListener(cardview_clone_project -> actionCloneRepo(view));
                     }
                 });
     }
