@@ -46,20 +46,26 @@ public class ProjectOverviewFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        allEntryButton = view.findViewById(R.id.button_all_entries);
-        filterButton = view.findViewById(R.id.button_filter);
-        Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         classifyButton = view.findViewById(R.id.button_classify);
+        filterButton = view.findViewById(R.id.button_filter);
+
+        allEntryButton = view.findViewById(R.id.button_all_entries);
+        Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         Button analyzeButton = view.findViewById(R.id.button_analyze);
+
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         int repoId = projectViewModel.getCurrentRepoId();
 
-        allEntryButton.setOnClickListener(view1 -> findNavController(ProjectOverviewFragment.this)
-                .navigate(R.id.action_projectOverviewFragment_to_bibtexEntriesListFragment));
+
+        classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
+                .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment));
 
         filterButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
+
+        allEntryButton.setOnClickListener(view1 -> findNavController(ProjectOverviewFragment.this)
+                .navigate(R.id.action_projectOverviewFragment_to_bibtexEntriesListFragment));
 
         taxonomyButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), TaxonomiesActivity.class);
@@ -68,9 +74,6 @@ public class ProjectOverviewFragment extends Fragment {
             (requireActivity()).overridePendingTransition(0, 0);
         });
 
-        classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
-                .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment));
-
         analyzeButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AnalyzeActivity.class);
             intent.putExtra("repo", projectViewModel.getCurrentRepoId());
@@ -78,19 +81,20 @@ public class ProjectOverviewFragment extends Fragment {
             requireActivity().overridePendingTransition(0, 0);
         });
 
+
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());
         projectViewModel.getRepoById(repoId).observe(getViewLifecycleOwner(), repoTitleObserver);
 
-        final Observer<Integer> entryAmountObserver =
-                amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() + ")");
-        projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
+        final Observer<Integer> entriesToClassifyObserver =
+                amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() + ")");
+        projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
 
         final Observer<Integer> openEntryAmountObserver =
                 amount -> filterButton.setText(getResources().getString(R.string.button_filter) + " (" + amount.toString() + ")");
         projectViewModel.getOpenEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
 
-        final Observer<Integer> entriesToClassifyObserver =
-                amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() + ")");
-        projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
+        final Observer<Integer> entryAmountObserver =
+                amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() + ")");
+        projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
     }
 }
