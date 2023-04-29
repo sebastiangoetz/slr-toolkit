@@ -28,6 +28,9 @@ public class ProjectOverviewFragment extends Fragment {
 
     private Button allEntryButton;
     private Button filterButton;
+
+    private Button pullButton;
+    private Button commitButton;
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
     private TextView projectNameTextView;
@@ -49,6 +52,9 @@ public class ProjectOverviewFragment extends Fragment {
         classifyButton = view.findViewById(R.id.button_classify);
         filterButton = view.findViewById(R.id.button_filter);
 
+        pullButton = view.findViewById(R.id.button_pull);
+        commitButton = view.findViewById(R.id.button_commit);
+
         allEntryButton = view.findViewById(R.id.button_all_entries);
         Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         Button analyzeButton = view.findViewById(R.id.button_analyze);
@@ -64,7 +70,11 @@ public class ProjectOverviewFragment extends Fragment {
         filterButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
 
-        allEntryButton.setOnClickListener(view1 -> findNavController(ProjectOverviewFragment.this)
+        pullButton.setOnClickListener(v -> actionPullRepo(view));
+
+        commitButton.setOnClickListener(v -> actionCommitRepo(view));
+
+        allEntryButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_bibtexEntriesListFragment));
 
         taxonomyButton.setOnClickListener(v -> {
@@ -96,5 +106,13 @@ public class ProjectOverviewFragment extends Fragment {
         final Observer<Integer> entryAmountObserver =
                 amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() + ")");
         projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
+    }
+
+    private void actionPullRepo(View view) {
+        pullButton.setEnabled(false);
+    }
+
+    private void actionCommitRepo(View view) {
+        commitButton.setEnabled(false);
     }
 }
