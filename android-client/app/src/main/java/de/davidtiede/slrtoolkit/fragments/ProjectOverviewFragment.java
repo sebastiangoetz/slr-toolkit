@@ -9,17 +9,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import de.davidtiede.slrtoolkit.AnalyzeActivity;
 import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.TaxonomiesActivity;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.worker.PullWorker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,6 +117,32 @@ public class ProjectOverviewFragment extends Fragment {
 
     private void actionPullRepo(View view) {
         pullButton.setEnabled(false);
+
+        WorkRequest pullWorkRequest =
+                new OneTimeWorkRequest.Builder(PullWorker.class)
+                        .setInputData(
+                                new Data.Builder()
+                                        .putInt("REPOID", projectViewModel.getCurrentRepoId())
+                                        .build()
+                        )
+                        .build();
+
+        WorkManager workManager = WorkManager.getInstance(view.getContext());
+        workManager.enqueue(pullWorkRequest);
+        workManager.getWorkInfoByIdLiveData(pullWorkRequest.getId())
+                .observe(getViewLifecycleOwner(), worker -> {
+                    if (worker.getState() == WorkInfo.State.SUCCEEDED) {
+                        pullButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                getString(R.string.toast_pull_succeeded),
+                                Toast.LENGTH_SHORT).show();
+                    } else if (worker.getState() == WorkInfo.State.FAILED) {
+                        pullButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                worker.getOutputData().getString("RESULT_MSG"),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void actionCommitRepo(View view) {
