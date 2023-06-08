@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Eclipse 4.14 RCP" sequenceNumber="71">
+<target name="Eclipse 4.14 RCP new" sequenceNumber="71">
 <locations>
 <location includeAllPlatforms="true" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="com.ibm.icu" version="64.2.0.v20190507-1337"/> 
