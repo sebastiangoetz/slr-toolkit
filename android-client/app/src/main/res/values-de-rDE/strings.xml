@@ -64,4 +64,7 @@
     <string name="error_commit_git_email">Bitte trage deine Git E-Mail ein.</string>
     <string name="error_commit_git_message">Bitte trage eine Commit-Nachricht ein.</string>
     <string name="toast_commit_succeeded">Aktueller Stand wurde committet.</string>
+    <string name="error_push_failed">Fehler beim Pushen zum Remote-Repository.</string>
+    <string name="button_push">Push</string>
+    <string name="toast_push_succeeded">Commits wurden erfolgreich ins Remote-Repository gepushed.</string>
 </resources>

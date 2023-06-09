@@ -57,10 +57,13 @@
     <string name="image_arrow">Arrow</string>
     <string name="error_clone_failed">Error during cloning the repository.</string>
     <string name="toast_pull_succeeded">Repo was pulled successfully.</string>
-    <string name="error_pull_failed">Error during cloning the repository.</string>
+    <string name="error_pull_failed">Error during pulling the repository.</string>
     <string name="error_commit_failed">Error during committing.</string>
     <string name="error_commit_git_name">Please set your Git name.</string>
     <string name="error_commit_git_email">Please set your Git email.</string>
     <string name="error_commit_git_message">Please include a commit message.</string>
     <string name="toast_commit_succeeded">Current status has been committed.</string>
+    <string name="error_push_failed">Error during pushing to remote repository.</string>
+    <string name="button_push">Push</string>
+    <string name="toast_push_succeeded">Commits have been pushed to remote repository.</string>
 </resources>

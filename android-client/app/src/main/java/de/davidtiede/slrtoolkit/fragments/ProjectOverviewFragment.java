@@ -28,6 +28,7 @@ import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
 import de.davidtiede.slrtoolkit.worker.CommitWorker;
 import de.davidtiede.slrtoolkit.worker.PullWorker;
+import de.davidtiede.slrtoolkit.worker.PushWorker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +40,8 @@ public class ProjectOverviewFragment extends Fragment {
 
     private Button pullButton;
     private Button commitButton;
+    private Button pushButton;
+
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
     private TextView projectNameTextView;
@@ -62,6 +65,7 @@ public class ProjectOverviewFragment extends Fragment {
 
         pullButton = view.findViewById(R.id.button_pull);
         commitButton = view.findViewById(R.id.button_commit);
+        pushButton = view.findViewById(R.id.button_push);
 
         allEntryButton = view.findViewById(R.id.button_all_entries);
         Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
@@ -79,8 +83,8 @@ public class ProjectOverviewFragment extends Fragment {
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
 
         pullButton.setOnClickListener(v -> actionPullRepo(view));
-
         commitButton.setOnClickListener(v -> actionCommitRepo(view));
+        pushButton.setOnClickListener(v -> actionPushRepo(view));
 
         allEntryButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_bibtexEntriesListFragment));
@@ -119,7 +123,7 @@ public class ProjectOverviewFragment extends Fragment {
     private void actionPullRepo(View view) {
         pullButton.setEnabled(false);
 
-        WorkRequest pullWorkRequest =
+        WorkRequest workRequest =
                 new OneTimeWorkRequest.Builder(PullWorker.class)
                         .setInputData(
                                 new Data.Builder()
@@ -129,8 +133,8 @@ public class ProjectOverviewFragment extends Fragment {
                         .build();
 
         WorkManager workManager = WorkManager.getInstance(view.getContext());
-        workManager.enqueue(pullWorkRequest);
-        workManager.getWorkInfoByIdLiveData(pullWorkRequest.getId())
+        workManager.enqueue(workRequest);
+        workManager.getWorkInfoByIdLiveData(workRequest.getId())
                 .observe(getViewLifecycleOwner(), worker -> {
                     if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         pullButton.setEnabled(true);
@@ -149,7 +153,7 @@ public class ProjectOverviewFragment extends Fragment {
     private void actionCommitRepo(View view) {
         commitButton.setEnabled(false);
 
-        WorkRequest pullWorkRequest =
+        WorkRequest workRequest =
                 new OneTimeWorkRequest.Builder(CommitWorker.class)
                         .setInputData(
                                 new Data.Builder()
@@ -159,8 +163,8 @@ public class ProjectOverviewFragment extends Fragment {
                         .build();
 
         WorkManager workManager = WorkManager.getInstance(view.getContext());
-        workManager.enqueue(pullWorkRequest);
-        workManager.getWorkInfoByIdLiveData(pullWorkRequest.getId())
+        workManager.enqueue(workRequest);
+        workManager.getWorkInfoByIdLiveData(workRequest.getId())
                 .observe(getViewLifecycleOwner(), worker -> {
                     if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         commitButton.setEnabled(true);
@@ -169,6 +173,36 @@ public class ProjectOverviewFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                     } else if (worker.getState() == WorkInfo.State.FAILED) {
                         commitButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                worker.getOutputData().getString("RESULT_MSG"),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void actionPushRepo(View view) {
+        pushButton.setEnabled(false);
+
+        WorkRequest workRequest =
+                new OneTimeWorkRequest.Builder(PushWorker.class)
+                        .setInputData(
+                                new Data.Builder()
+                                        .putInt("REPOID", projectViewModel.getCurrentRepoId())
+                                        .build()
+                        )
+                        .build();
+
+        WorkManager workManager = WorkManager.getInstance(view.getContext());
+        workManager.enqueue(workRequest);
+        workManager.getWorkInfoByIdLiveData(workRequest.getId())
+                .observe(getViewLifecycleOwner(), worker -> {
+                    if (worker.getState() == WorkInfo.State.SUCCEEDED) {
+                        pushButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                getString(R.string.toast_push_succeeded),
+                                Toast.LENGTH_SHORT).show();
+                    } else if (worker.getState() == WorkInfo.State.FAILED) {
+                        pushButton.setEnabled(true);
                         Toast.makeText(view.getContext(),
                                 worker.getOutputData().getString("RESULT_MSG"),
                                 Toast.LENGTH_LONG).show();
