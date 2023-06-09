@@ -10,6 +10,9 @@ import androidx.work.WorkerParameters;
 
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.StatusCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +54,33 @@ public class CommitWorker extends Worker {
             ).build());
         }
 
+        File path = new File(getApplicationContext().getFilesDir(), repo.getLocal_path());
+
+        Git git;
+        try {
+            git = Git.open(path);
+        } catch (IOException e) {
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_commit_failed)
+            ).build());
+        }
+
+        Status status;
+        StatusCommand statusCommand = git.status();
+        try {
+            status = statusCommand.call();
+        } catch (GitAPIException e) {
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_commit_failed)
+                            + System.getProperty("line.separator")
+                            + e.getMessage()).build());
+        }
+
+        if (!status.hasUncommittedChanges()) {
+            return Result.failure(outputData.putString("RESULT_MSG",
+                    getApplicationContext().getString(R.string.error_git_no_changes)).build());
+        }
+
         String gitName = repo.getGit_name();
         String gitEmail = repo.getGit_email();
 
@@ -74,17 +104,6 @@ public class CommitWorker extends Worker {
                     getApplicationContext().getString(R.string.error_commit_git_message)
              ).build());
             */
-        }
-
-        File path = new File(getApplicationContext().getFilesDir(), repo.getLocal_path());
-
-        Git git;
-        try {
-            git = Git.open(path);
-        } catch (IOException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_commit_failed)
-            ).build());
         }
 
         CommitCommand commitCommand = git.commit();

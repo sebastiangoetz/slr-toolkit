@@ -66,4 +66,5 @@
     <string name="error_push_failed">Error during pushing to remote repository.</string>
     <string name="button_push">Push</string>
     <string name="toast_push_succeeded">Commits have been pushed to remote repository.</string>
+    <string name="error_git_no_changes">There are no changes to commit.</string>
 </resources>
