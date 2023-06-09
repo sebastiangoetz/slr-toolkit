@@ -26,6 +26,7 @@ import de.davidtiede.slrtoolkit.R;
 import de.davidtiede.slrtoolkit.TaxonomiesActivity;
 import de.davidtiede.slrtoolkit.database.Repo;
 import de.davidtiede.slrtoolkit.viewmodels.ProjectViewModel;
+import de.davidtiede.slrtoolkit.worker.CommitWorker;
 import de.davidtiede.slrtoolkit.worker.PullWorker;
 
 /**
@@ -147,5 +148,31 @@ public class ProjectOverviewFragment extends Fragment {
 
     private void actionCommitRepo(View view) {
         commitButton.setEnabled(false);
+
+        WorkRequest pullWorkRequest =
+                new OneTimeWorkRequest.Builder(CommitWorker.class)
+                        .setInputData(
+                                new Data.Builder()
+                                        .putInt("REPOID", projectViewModel.getCurrentRepoId())
+                                        .build()
+                        )
+                        .build();
+
+        WorkManager workManager = WorkManager.getInstance(view.getContext());
+        workManager.enqueue(pullWorkRequest);
+        workManager.getWorkInfoByIdLiveData(pullWorkRequest.getId())
+                .observe(getViewLifecycleOwner(), worker -> {
+                    if (worker.getState() == WorkInfo.State.SUCCEEDED) {
+                        commitButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                getString(R.string.toast_commit_succeeded),
+                                Toast.LENGTH_SHORT).show();
+                    } else if (worker.getState() == WorkInfo.State.FAILED) {
+                        commitButton.setEnabled(true);
+                        Toast.makeText(view.getContext(),
+                                worker.getOutputData().getString("RESULT_MSG"),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }

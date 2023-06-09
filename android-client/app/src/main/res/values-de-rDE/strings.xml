@@ -59,4 +59,9 @@
     <string name="error_clone_failed">Fehler beim Clonen des Repositories.</string>
     <string name="toast_pull_succeeded">Pullen von Repo war erfolgreich.</string>
     <string name="error_pull_failed">Fehler beim Pullen des Repositories.</string>
+    <string name="error_commit_failed">Fehler beim Committen.</string>
+    <string name="error_commit_git_name">Bitte trage dein Git Namen ein.</string>
+    <string name="error_commit_git_email">Bitte trage deine Git E-Mail ein.</string>
+    <string name="error_commit_git_message">Bitte trage eine Commit-Nachricht ein.</string>
+    <string name="toast_commit_succeeded">Aktueller Stand wurde committet.</string>
 </resources>
