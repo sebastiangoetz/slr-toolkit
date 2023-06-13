@@ -106,7 +106,7 @@ public class ModelRegistry extends Observable {
 		if (injector == null)
 			injector = new TaxonomyStandaloneSetup().createInjectorAndDoEMFRegistration();
 		XtextResourceSet resourceSet = injector.getInstance(XtextResourceSet.class);
-		Resource res = resourceSet.getResource(URI.createFileURI(taxonomyFile.getFullPath().toString()), true);
+		Resource res = resourceSet.getResource(URI.createPlatformResourceURI(taxonomyFile.getFullPath().toString(),true), true);
 		model = (Model) res.getContents().get(0);
 		return model;
 	}
