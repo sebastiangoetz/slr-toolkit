@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  de.tudresden.slr.model.bibtex,
  org.eclipse.jface,
  org.eclipse.emf.edit,
- jakarta.xml.bind
+ jakarta.xml.bind,
+ com.sun.xml.bind
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: de.tudresden.slr.metainformation
 Bundle-ActivationPolicy: lazy
