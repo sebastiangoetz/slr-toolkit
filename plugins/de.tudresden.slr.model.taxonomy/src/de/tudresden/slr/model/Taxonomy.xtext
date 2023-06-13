@@ -1,0 +1,37 @@
+grammar de.tudresden.slr.model.Taxonomy with org.eclipse.xtext.common.Terminals hidden(ML_COMMENT, SL_COMMENT, WS, NEWLINE)
+
+generate taxonomy "http://www.tudresden.de/slr/model/Taxonomy"
+
+Model:
+	(dimensions += Term (',' dimensions += Term)*)?
+;
+
+@Override 
+terminal SL_COMMENT:
+	'//'
+;
+
+@Override 
+terminal ML_COMMENT:
+	'/*' -> '*/'
+;
+
+@Override 
+terminal WS:
+    (' ' | '\t')+
+;
+
+terminal NEWLINE:
+    '\r'? '\n'
+;
+
+@Override 
+terminal ID:
+	  ('A'..'Z' | 'a'..'z') ('A'..'Z' | 'a'..'z' | '_' | '-' | '0'..'9' | ' ')*
+;
+
+Term:
+	name = ID ('{'
+		(subclasses += Term (',' subclasses += Term)*)?
+	'}')?
+;

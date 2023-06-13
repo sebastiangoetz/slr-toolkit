@@ -14,9 +14,10 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="SLR"
             class="de.tudresden.slr.app.Perspective"
-            id="de.tudresden.slr.app.perspective">
+            icon="icons/icon_128.png"
+            id="de.tudresden.slr.app.perspective"
+            name="SLR">
       </perspective>
    </extension>
 <extension
@@ -43,7 +44,7 @@
          </view>
          <view
                closeable="true"
-               id="de.tudresden.slr.model.taxonomy.ui.views.TaxonomyCheckboxListView"
+               id="de.tudresden.slr.classification.views.TaxonomyCheckboxListView"
                minimized="false"
                ratio="0.75"
                relationship="right"
@@ -55,8 +56,8 @@
                id="de.tudresden.slr.questionnaire.QuestionnaireView"
                minimized="false"
                ratio="0.75"
-               relationship="right"
-               relative="org.eclipse.ui.editorss"
+               relationship="stack"
+               relative="de.tudresden.slr.classification.views.TaxonomyCheckboxListView"
                visible="true">
          </view>
          <view
@@ -77,6 +78,12 @@
                minimized="false"
                relationship="stack"
                relative="de.tudresden.slr.model.bibtex.presentation.BibtexEntryView">
+         </view>
+         <view
+               id="chart.view.chartview"
+               minimized="false"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss">
          </view>
       </perspectiveExtension>
    </extension>

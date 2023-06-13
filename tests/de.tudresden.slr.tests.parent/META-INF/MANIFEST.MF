@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Parent
 Bundle-SymbolicName: de.tudresden.slr.tests.parent
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Automatic-Module-Name: de.tudresden.slr.tests.parent
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: net.bytebuddy.byte-buddy;visibility:=reexport,
  org.objenesis;visibility:=reexport,
- org.mockito;visibility:=reexport,
+ org.mockito.mockito-core;visibility:=reexport,
  org.junit;visibility:=reexport

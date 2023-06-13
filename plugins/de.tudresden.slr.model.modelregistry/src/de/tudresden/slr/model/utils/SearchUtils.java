@@ -18,14 +18,14 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermUtils;
 
 public class SearchUtils {
 	
 	public static Term findTermInDocument(Document document, Term other) {
+		if(other == null) return null;
 		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
 		Stream<Term> stream = StreamSupport.stream(iter.spliterator(), false);
-		Optional<Term> result = stream.filter(term -> TermUtils.equals(term, other)).findAny();
+		Optional<Term> result = stream.filter(term -> term.getName().equals(other.getName())).findAny();
 		return result.isPresent() ? result.get() : null;
 	}
 
@@ -40,9 +40,10 @@ public class SearchUtils {
 	}
 	
 	public static Term findTermInTaxonomy(Model taxonomy, Term other) {
+		if(other == null) return null;
 		TaxonomyIterator iter = new TaxonomyIterator(taxonomy);
 		for (Term term : iter) {
-			if (TermUtils.equals(term, other)) {
+			if (term.getName().equals(other.getName())) {
 				if (term.eContainer() instanceof Model) {
 					return term;
 				} else {

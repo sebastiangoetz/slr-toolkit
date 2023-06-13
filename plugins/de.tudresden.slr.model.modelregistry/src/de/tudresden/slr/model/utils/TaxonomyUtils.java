@@ -14,8 +14,8 @@ public class TaxonomyUtils {
 		try {					
 			SaveOptions.Builder optionsBuilder = SaveOptions.newBuilder();
 			optionsBuilder.format();
-			if (taxonomy.getResource() == null) taxonomy.setResource(taxonomy.eResource());
-			taxonomy.getResource().save(optionsBuilder.getOptions().toOptionsMap());
+			//if (taxonomy.eResource() == null) taxonomy.setResource(taxonomy.eResource()); TODO what the hell?
+			taxonomy.eResource().save(optionsBuilder.getOptions().toOptionsMap());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

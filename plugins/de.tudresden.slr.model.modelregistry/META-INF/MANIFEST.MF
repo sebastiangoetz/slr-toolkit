@@ -2,18 +2,19 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Modelregistry
 Bundle-SymbolicName: de.tudresden.slr.model.modelregistry
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-Activator: de.tudresden.slr.model.modelregistry.ModelRegistryPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.tudresden.slr.model.bibtex,
  org.eclipse.emf.edit,
  de.tudresden.slr.model.bibtex.edit,
- de.tudresden.slr.model.taxonomy.model,
+ de.tudresden.slr.model.taxonomy,
  org.eclipse.core.resources,
  de.tudresden.slr.model.taxonomy,
- org.eclipse.core.filesystem
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ org.eclipse.core.filesystem,
+ org.eclipse.xtext
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.model.modelregistry,
  de.tudresden.slr.model.utils
