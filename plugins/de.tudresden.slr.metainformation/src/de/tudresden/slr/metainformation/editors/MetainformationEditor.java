@@ -2,6 +2,7 @@ package de.tudresden.slr.metainformation.editors;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -45,6 +46,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
+import com.sun.xml.bind.v2.ContextFactory;
+
 import de.tudresden.slr.metainformation.MetainformationActivator;
 import de.tudresden.slr.metainformation.data.Author;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
@@ -79,7 +82,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		try {
 			// marshalling of metainformation object to xml data
 			File file = new File(activeFilePath.toOSString());
-			JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
+			JAXBContext jaxbContext = ContextFactory.createContext(new Class[] { SlrProjectMetainformation.class }, Collections.<String, Object>emptyMap());
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -591,7 +594,7 @@ public class MetainformationEditor extends EditorPart implements IEditorPart {
 		try {
 
 			File file = new File(path);
-			JAXBContext jaxbContext = JAXBContext.newInstance(SlrProjectMetainformation.class);
+			JAXBContext jaxbContext = ContextFactory.createContext(new Class[] { SlrProjectMetainformation.class }, Collections.<String, Object>emptyMap());
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
