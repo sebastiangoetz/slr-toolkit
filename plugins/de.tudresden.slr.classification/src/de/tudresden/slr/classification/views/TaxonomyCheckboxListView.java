@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.IElementComparer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -53,6 +54,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
+import de.tudresden.slr.model.TermUtils;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Model;
@@ -89,6 +91,26 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		viewer.setLabelProvider(p);
 		viewer.addCheckStateListener(this);
 		viewer.setSorter(null);
+		viewer.setComparer(new IElementComparer() {
+
+			@Override
+			public int hashCode(Object element) {
+				if (element instanceof Term t) {
+					return TermUtils.termToString(t).hashCode();
+				} else {
+					return 0;
+				}
+			}
+
+			@Override
+			public boolean equals(Object a, Object b) {
+				if (a instanceof Term t1 && b instanceof Term t2) {
+					return TermUtils.termToString(t1).equals(TermUtils.termToString(t2));
+				} else {
+					return false;
+				}
+			}
+		});
 
 		cellEditor = new MyTextCellEditor(viewer.getTree());
 
@@ -122,10 +144,10 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	public void setFocus() {
 		viewer.getControl().setFocus();
 	}
-	
+
 	private Term findTermByName(String name) {
-		for(Object o : viewer.getExpandedElements()) {
-			if(o instanceof Term t && t.getName().equals(name)) {
+		for (Object o : viewer.getExpandedElements()) {
+			if (o instanceof Term t && t.getName().equals(name)) {
 				return t;
 			}
 		}
@@ -133,28 +155,18 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 	}
 
 	private void checkTheseTerms(EList<Term> terms) {
-		for(Term t : terms) {
-			System.out.println("checking "+t.getName());
+		for (Term t : terms) {
+			System.out.println("checking " + t.getName());
 			Term tt = findTermByName(t.getName());
 			viewer.setChecked(t, true);
-			if(!t.getSubclasses().isEmpty()) {
+			if (!t.getSubclasses().isEmpty()) {
 				checkTheseTerms(t.getSubclasses());
 			}
 		}
 	}
-	
+
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (!selection.isEmpty()) { 
-			if(selection instanceof TreeSelection ts) {
-				Object o = ts.getFirstElement();
-				if(o instanceof Document doc) { //Bibtex Entry Selected
-					Model classification = doc.getTaxonomy();
-					EList<Term> terms = classification.getDimensions();
-					checkTheseTerms(terms);
-				}
-			}
-		}
 		if (part instanceof XtextEditor && !selection.isEmpty()) {
 			final XtextEditor editor = (XtextEditor) part;
 			final IXtextDocument document = editor.getDocument();
@@ -274,7 +286,8 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 		viewer.setCheckedElements(new Object[0]);
 		TaxonomyIterator iter = new TaxonomyIterator(document.getTaxonomy());
 		Stream<Term> stream = StreamSupport.stream(iter.spliterator(), false);
-		List<Term> checkedTerms = stream.map(term -> SearchUtils.findTermInTaxonomy(term))
+		Model taxonomy = (Model) viewer.getInput();
+		List<Term> checkedTerms = stream.map(term -> SearchUtils.findTermInTaxonomy(taxonomy, term))
 				.filter(term -> term.getSubclasses().isEmpty()).collect(Collectors.toList());
 		viewer.setCheckedElements(checkedTerms.toArray());
 	}
@@ -431,5 +444,5 @@ public class TaxonomyCheckboxListView extends ViewPart implements ISelectionList
 			}
 			return data;
 		}
-	}	
+	}
 }

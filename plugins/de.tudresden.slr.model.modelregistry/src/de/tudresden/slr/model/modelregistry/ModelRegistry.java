@@ -1,6 +1,5 @@
 package de.tudresden.slr.model.modelregistry;
 
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Observable;
@@ -26,7 +25,6 @@ import com.google.inject.Injector;
 import de.tudresden.slr.model.TaxonomyStandaloneSetup;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.bibtex.provider.BibtexItemProviderAdapterFactory;
-import de.tudresden.slr.model.parser.antlr.TaxonomyParser;
 import de.tudresden.slr.model.taxonomy.Model;
 
 public class ModelRegistry extends Observable {
