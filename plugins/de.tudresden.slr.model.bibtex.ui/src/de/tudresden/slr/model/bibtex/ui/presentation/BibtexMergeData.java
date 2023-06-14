@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.ecore.EObject;
 
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
@@ -170,7 +169,7 @@ public class BibtexMergeData {
 			reservedKeys.add(conflict.getKey());
 		}
 
-		return StringUtils.join(entries, "\n");
+		return String.join("\n",entries);
 	}
 
 	public String writeUnion() {
@@ -182,6 +181,6 @@ public class BibtexMergeData {
 			reservedKeys.add(conflict.getKey());
 		}
 
-		return StringUtils.join(entries, "\n");
+		return String.join("\n",entries);
 	}
 }

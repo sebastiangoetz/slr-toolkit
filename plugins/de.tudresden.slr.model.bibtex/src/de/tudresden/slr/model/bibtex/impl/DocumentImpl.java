@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -349,7 +348,7 @@ public class DocumentImpl extends MinimalEObjectImpl.Container implements Docume
 	}
 	
 	public String getAuthorsJoined() {
-		return StringUtils.join(getAuthors(), ", ");
+		return String.join(", ",getAuthors());
 	}
 
 	/**

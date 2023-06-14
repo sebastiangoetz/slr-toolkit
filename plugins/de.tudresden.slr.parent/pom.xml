@@ -5,7 +5,7 @@
 
 	<groupId>de.tudresden</groupId>
 	<artifactId>de.tudresden.slr.parent</artifactId>
-	<version>0.3.3-SNAPSHOT</version>
+	<version>0.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Systematic Literature Review</name>
@@ -25,50 +25,26 @@
 		<url>https://github.com/sebastiangoetz/slr-toolkit</url>
 		<connection>scm:git:git://github.com/sebastiangoetz/slr-toolkit.git
 		</connection>
-		<developerConnection>scm:git:git@github.com:sebastiangoetz/slr-toolkit.git
+		<developerConnection>
+			scm:git:git@github.com:sebastiangoetz/slr-toolkit.git
 		</developerConnection>
 	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 		<tycho-groupid>org.eclipse.tycho</tycho-groupid>
-		<tycho.version>1.6.0</tycho.version>
-		<tycho-extras.version>1.6.0</tycho-extras.version>
+		<tycho.version>3.0.4</tycho.version>
+		<tycho-extras.version>3.0.4</tycho-extras.version>
+		<xtextVersion>2.31.0</xtextVersion>
+		<mwe2Version>2.14.0</mwe2Version>
+		<project.build.sourceEncoding>windows-1252</project.build.sourceEncoding>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>xtend-maven-plugin</artifactId>
-				<version>2.20.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.platform</groupId>
-						<artifactId>org.eclipse.equinox.common</artifactId>
-						<version>3.10.0</version>
-					</dependency>
-					
-					<dependency>
-			            <groupId>org.eclipse.platform</groupId>
-			            <artifactId>org.eclipse.core.resources</artifactId>
-			            <version>3.13.500</version>
-			       	</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<!-- optionally you can configure a different target folder -->
-						<configuration>
-							<outputDirectory>${basedir}/xtend-gen</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-compiler-plugin</artifactId>
@@ -85,7 +61,8 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho.version}</version>
-				<!-- <configuration> <useUIHarness>true</useUIHarness> </configuration> -->
+				<!-- <configuration> <useUIHarness>true</useUIHarness>
+				</configuration> -->
 			</plugin>
 
 			<plugin>
@@ -93,103 +70,11 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
-					<filters>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.ui</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.debug.core</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.debug.ui</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.debug</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.debug.core</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.debug.ui</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.emf.codegen.ecore</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.emf.codegen</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.emf.ecore.edit</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.emf.ecore.editor</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.equinox.concurrent</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.core.manipulation</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.core</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.jdt.launching</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.xtext.common.types.edit</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.xtext.common.types.ui</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.xtext.generator</id>
-							<removeAll />
-						</filter>
-						<filter>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.xtext.xtext.generator</id>
-							<removeAll />
-						</filter>
-					</filters>
 					<target>
 						<artifact>
 							<groupId>de.tudresden</groupId>
 							<artifactId>de.tudresden.slr.target</artifactId>
-							<version>0.3.3-SNAPSHOT</version>
+							<version>0.4.0-SNAPSHOT</version>
 						</artifact>
 					</target>
 					<pomDependencies>consider</pomDependencies>
@@ -208,6 +93,11 @@
 							<os>macosx</os>
 							<ws>cocoa</ws>
 							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>aarch64</arch>
 						</environment>
 					</environments>
 				</configuration>
@@ -232,19 +122,122 @@
 				<executions>
 					<execution>
 						<id>plugin-source</id>
-						<goals>
+						<goals> 
 							<goal>plugin-source</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.xtend</groupId>
+					<artifactId>xtend-maven-plugin</artifactId>
+					<version>${xtextVersion}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>
+								<goal>xtend-install-debug-info</goal>
+								<goal>testCompile</goal>
+								<goal>xtend-test-install-debug-info</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<outputDirectory>${basedir}/xtend-gen</outputDirectory>
+						<testOutputDirectory>${basedir}/xtend-gen</testOutputDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.2.0</version>
+					<configuration>
+						<filesets>
+							<fileset>
+								<directory>${basedir}/xtend-gen</directory>
+								<includes>
+									<include>**/*</include>
+								</includes>
+							</fileset>
+						</filesets>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											build-helper-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.9.1,)
+										</versionRange>
+										<goals>
+											<goal>add-resource</goal>
+											<goal>add-source</goal>
+											<goal>add-test-resource</goal>
+											<goal>add-test-source</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>		
+			</plugins>
+		</pluginManagement>
 	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>xtext-dev-bom</artifactId>
+				<version>${xtextVersion}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<profiles>
 		<profile>
 			<id>skipUnitAndUiTests</id>
 			<properties>
 				<skipTests>true</skipTests>
+			</properties>
+		</profile>
+		<profile>
+			<id>macos</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<!-- THE FOLLOWING LINE MUST NOT BE BROKEN BY AUTOFORMATTING -->
+				<platformSystemProperties>-XstartOnFirstThread</platformSystemProperties>
+			</properties>
+		</profile>
+		<profile>
+			<id>jdk9-or-newer</id>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<properties>
+				<moduleProperties>--add-modules=ALL-SYSTEM</moduleProperties>
 			</properties>
 		</profile>
 	</profiles>
@@ -254,20 +247,18 @@
 		<module>../../features/de.tudresden.slr.app.feature</module>
 		<module>../de.tudresden.slr.app</module>
 		<module>../../features/de.tudresden.slr.product</module>
+		<module>../de.tudresden.slr.model.taxonomy</module>
+		<module>../de.tudresden.slr.model.taxonomy.ide</module>
+		<module>../de.tudresden.slr.model.taxonomy.ui</module>
+		<!--module>../de.tudresden.slr.model.taxonomy.tests</module>
+		<module>../de.tudresden.slr.model.taxonomy.ui.tests</module-->
 		<module>../de.tudresden.slr.model.bibtex</module>
 		<module>../de.tudresden.slr.model.bibtex.edit</module>
 		<module>../de.tudresden.slr.model.modelregistry</module>
 		<module>../de.tudresden.slr.ui.chart</module>
-
 		<module>../de.tudresden.slr.model.bibtex.ui</module>
-
-		<module>../de.tudresden.slr.model.taxonomy.model</module>
-		<module>../../features/de.tudresden.slr.model.taxonomy.sdk</module>
-		<module>../de.tudresden.slr.model.taxonomy.ui</module>
-		<module>../de.tudresden.slr.model.mendeley</module>
 		<module>../de.tudresden.slr.googlescholar</module>
 		<module>../de.tudresden.slr.utils</module>
-		<module>../de.tudresden.slr.model.taxonomy</module>
 		<module>../de.tudresden.slr.metainformation</module>
 		<module>../de.tudresden.slr.latexexport</module>
 		<module>../de.tudresden.slr.questionnaire</module>
@@ -278,9 +269,6 @@
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.latexexport.tests
-		</module>
-		<module>
-			../../tests/de.tudresden.slr.model.taxonomy.tests
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.metainformation.tests
@@ -295,19 +283,88 @@
 		<module>
 			../../tests/de.tudresden.slr.questionnaire.tests
 		</module>
-				<module>
+		<module>
 			../../tests/de.tudresden.slr.model.modelregistry.tests
 		</module>
 		<module>
 			../../tests/de.tudresden.slr.classification.tests
 		</module>
-
-		<!-- IMPORTANT! keep the uitests project at the very bottom of the modules, 
-			these tests will run the longest -->
+		<!-- IMPORTANT keep at the bottom -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
-		<!-- IMPORTANT! -->
-
-		
-
 	</modules>
+	
+	<repositories>
+		<repository>
+			<id>codehaus-snapshots</id>
+			<name>disable dead 'Codehaus Snapshots' repository, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<!-- This must be disabled explicitly, otherwise it is enabled by https://github.com/mojohaus/mojo-parent 
+			which is taken from exec-maven-plugin from at least version 1.6.0 -->
+		<repository>
+			<id>ossrh-snapshots</id>
+			<name>ossrh-snapshots</name>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<!-- This is enabled by /org/sonatype/oss/oss-parent/7 used as parent by 
+			org/xtext/antlr-generator/3.2.1 -->
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>codehaus-snapshots</id>
+			<name>disable dead 'Codehaus Snapshots' repository, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
+			<url>http://nexus.codehaus.org/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>ossrh-snapshots</id>
+			<name>ossrh-snapshots</name>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>

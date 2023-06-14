@@ -13,7 +13,6 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.modelregistry.ModelRegistryPlugin;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 
 public class ChartDataProvider {
@@ -61,7 +60,8 @@ public class ChartDataProvider {
 	private boolean isTermIncludedInTaxonomy(Term startNode, Term searchTerm) {
 		
 		//if (startNode.hashCode() == searchTerm.hashCode())
-		if(TermUtils.equals(startNode, searchTerm)){
+		//if(TermUtils.equals(startNode, searchTerm)){
+		if(startNode.getName().equals(searchTerm.getName())) {
 			return true;
 		}
 		ArrayList<Term> subclasses = new ArrayList<>(startNode.getSubclasses());

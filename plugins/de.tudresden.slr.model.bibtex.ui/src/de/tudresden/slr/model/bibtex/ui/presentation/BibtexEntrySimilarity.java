@@ -2,8 +2,6 @@ package de.tudresden.slr.model.bibtex.ui.presentation;
 
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.ui.presentation.BibtexMergeData.Criteria;
 import de.tudresden.slr.util.stringSimilarity.Cosine;
@@ -19,28 +17,28 @@ public class BibtexEntrySimilarity {
 	
 	public BibtexEntrySimilarity(DocumentImpl entry1, DocumentImpl entry2) {			
 		// if doi empty -> try to get doi from url
-		if (StringUtils.isBlank(entry1.getDoi()))
+		if (entry1.getDoi() == null || entry1.getDoi().isBlank())
 			entry1.setDoi(getDoiFromUrl(entry1.getUrl()));
-		if (StringUtils.isBlank(entry2.getDoi()))
+		if (entry2.getDoi() == null || entry2.getDoi().isBlank())
 			entry2.setDoi(getDoiFromUrl(entry2.getUrl()));
 		
 		// compare doi
-		entry1.setDoi(StringUtils.trimToEmpty(entry1.getDoi()));
-		entry2.setDoi(StringUtils.trimToEmpty(entry2.getDoi()));
-		DoiEquals = StringUtils.equals(entry1.getDoi(), entry2.getDoi());
+		if(entry1.getDoi() != null) entry1.setDoi(entry1.getDoi().trim());
+		if(entry2.getDoi() != null) entry2.setDoi(entry2.getDoi().trim());
+		DoiEquals = entry1.getDoi().equals(entry2.getDoi());
 		
 		// get author similarity
 		JaroWinkler jw = new JaroWinkler();
-		authorSimilarity = jw.similarity(escapeLatexSpecialChars(StringUtils.join(entry1.getAuthors(), ", ")), 
-				escapeLatexSpecialChars(StringUtils.join(entry2.getAuthors(), ", ")));
+		authorSimilarity = jw.similarity(escapeLatexSpecialChars(String.join(", ",entry1.getAuthors())), 
+				escapeLatexSpecialChars(String.join(", ",entry2.getAuthors())));
 		
 		// get title similarity
 		Cosine c = new Cosine(2);
-		titleSimilarity = c.similarity(c.getProfile(escapeLatexSpecialChars(StringUtils.trimToEmpty(entry1.getTitle()))), 
-				c.getProfile(escapeLatexSpecialChars(StringUtils.trimToEmpty(entry2.getTitle()))));
+		titleSimilarity = c.similarity(c.getProfile(escapeLatexSpecialChars(entry1.getTitle().trim())), 
+				c.getProfile(escapeLatexSpecialChars(entry2.getTitle().trim())));
 		
 		// get year difference
-		yearDifference = StringUtils.isNotBlank(entry1.getYear()) && StringUtils.isNotBlank(entry2.getYear())
+		yearDifference = !entry1.getYear().isBlank() && !entry2.getYear().isBlank()
 				? Math.abs(Long.parseLong(entry1.getYear()) - Long.parseLong(entry2.getYear()))
 				: 100;
 	}

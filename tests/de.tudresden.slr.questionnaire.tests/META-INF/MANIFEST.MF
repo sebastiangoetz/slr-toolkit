@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: de.tudresden.slr.questionnaire.tests
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Fragment-Host: de.tudresden.slr.questionnaire;bundle-version="0.3.0"
 Automatic-Module-Name: de.tudresden.slr.questionnaire.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0"

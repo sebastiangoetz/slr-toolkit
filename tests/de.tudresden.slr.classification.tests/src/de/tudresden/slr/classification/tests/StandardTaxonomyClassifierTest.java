@@ -175,7 +175,7 @@ public class StandardTaxonomyClassifierTest {
 	private Model createTestModel(String type, String venueType, String venue) {
 		Model model = TaxonomyFactory.eINSTANCE.createModel();
 		Resource resource = new NonPersistentResource();
-		model.setResource(resource);
+		//model.setResource(resource);
 		
 		if(type != null) {
 			Term termType = TermCreator.createChildIfNotExisting(model, "Document Type",false);

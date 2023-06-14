@@ -5,8 +5,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.text.StrSubstitutor;
-
 import de.tudresden.slr.metainformation.data.Author;
 import de.tudresden.slr.metainformation.data.SlrProjectMetainformation;
 import de.tudresden.slr.metainformation.util.DataProvider;
@@ -40,7 +38,7 @@ public class TemplateACMSigplanConf extends SlrLatexTemplate {
 		double imageToTextWidthFactor = 0.4;
 		valuesMap.put(SLRVARIABLE_DIMENSIONCHARTS, this.generateDimensionCharts(mainDimensions, imageToTextWidthFactor));
 
-		StrSubstitutor sub = new StrSubstitutor(valuesMap);
+		StringSubstituter sub = new StringSubstituter(valuesMap);
 		String resolvedString = sub.replace(document);
 
 		return resolvedString;

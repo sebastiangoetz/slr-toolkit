@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
-
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl;
 import de.tudresden.slr.model.bibtex.impl.DocumentImpl.DocumentImplFields;
 
@@ -101,8 +99,8 @@ public class BibtexMergeConflict {
 	}
 
 	private String createKey() {
-		String authors = StringUtils.trimToEmpty(getField(DocumentImplFields.AUTHORS, "NO_AUTHOR"));
-		String year = StringUtils.trimToEmpty(getField(DocumentImplFields.YEAR, "00"));
+		String authors = getField(DocumentImplFields.AUTHORS, "NO_AUTHOR").trim();
+		String year = getField(DocumentImplFields.YEAR, "00").trim();
 		if (authors.length() > 2 && year.length() > 3) {
 			return authors.substring(0, 2).concat(year.substring(2, 3));
 		} else {
@@ -112,9 +110,9 @@ public class BibtexMergeConflict {
 
 	private String getField(DocumentImplFields field, String defaultValue) {
 		if (fields.containsKey(field.getName()))
-			return StringUtils.trimToEmpty(fields.get(field.getName()));
+			return fields.get(field.getName()).trim();
 		if (duplicatedFields.containsKey(field.getName()))
-			return StringUtils.trimToEmpty(duplicatedFields.get(field.getName()).getFirst());
+			return duplicatedFields.get(field.getName()).getFirst().trim();
 		return defaultValue;
 	}
 
