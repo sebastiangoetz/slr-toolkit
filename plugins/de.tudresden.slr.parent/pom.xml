@@ -122,7 +122,7 @@
 				<executions>
 					<execution>
 						<id>plugin-source</id>
-						<goals> 
+						<goals>
 							<goal>plugin-source</goal>
 						</goals>
 					</execution>
@@ -197,7 +197,7 @@
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
-				</plugin>		
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -292,11 +292,12 @@
 		<!-- IMPORTANT keep at the bottom -->
 		<module>../../tests/de.tudresden.slr.uitests</module>
 	</modules>
-	
+
 	<repositories>
 		<repository>
 			<id>codehaus-snapshots</id>
-			<name>disable dead 'Codehaus Snapshots' repository, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
+			<name>disable dead 'Codehaus Snapshots' repository, see
+				https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
 			<url>http://nexus.codehaus.org/snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
@@ -305,7 +306,8 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<!-- This must be disabled explicitly, otherwise it is enabled by https://github.com/mojohaus/mojo-parent 
+		<!-- This must be disabled explicitly, otherwise it is enabled by
+		https://github.com/mojohaus/mojo-parent 
 			which is taken from exec-maven-plugin from at least version 1.6.0 -->
 		<repository>
 			<id>ossrh-snapshots</id>
@@ -335,7 +337,8 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>codehaus-snapshots</id>
-			<name>disable dead 'Codehaus Snapshots' repository, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
+			<name>disable dead 'Codehaus Snapshots' repository, see
+				https://bugs.eclipse.org/bugs/show_bug.cgi?id=481478</name>
 			<url>http://nexus.codehaus.org/snapshots/</url>
 			<releases>
 				<enabled>false</enabled>

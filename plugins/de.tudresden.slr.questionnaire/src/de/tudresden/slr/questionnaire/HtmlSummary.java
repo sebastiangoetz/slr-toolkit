@@ -8,7 +8,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.tudresden.slr.questionnaire.model.ChoiceQuestion;
 import de.tudresden.slr.questionnaire.model.FreeTextQuestion;
@@ -32,16 +34,20 @@ public class HtmlSummary {
         try {
             File file = File.createTempFile("questionnaire-summary-", ".html");
             file.deleteOnExit();
-
-            PrintWriter pw = new PrintWriter(file);
-            pw.write(generateSummary());
-            pw.close();
-
+            writeSummaryToFile(file);            
             Desktop.getDesktop().browse(file.toURI());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+	private void writeSummaryToFile(File file) {
+		try(PrintWriter pw = new PrintWriter(file)) {
+			pw.write(generateSummary());
+		} catch(IOException ioe) {
+			Logger.getLogger(Activator.PLUGIN_ID, "Could not write summary file");
+		}
+	}
 
     public String generateSummary() {
         str.setLength(0);
@@ -110,29 +116,22 @@ public class HtmlSummary {
     }
 
     protected void addCssFile(String cssName) {
-        InputStream stream = null;
-        try {
+        try(InputStream stream = HtmlSummary.class.getResourceAsStream(cssName)) {
             System.out.println("cssName: " + cssName);
-            stream = HtmlSummary.class.getResourceAsStream(cssName);
+            
             System.out.println("stream: " + stream);
             Scanner scanner = new Scanner(stream).useDelimiter("\\A");
             String content = scanner.hasNext() ? scanner.next() : "";
             System.out.println("content:" + content);
             str.append(String.format("<style>%s</style>", content));
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                stream.close();
-            } catch (Exception e) {
-                // no-op
-            }
+            Logger.getLogger(Activator.PLUGIN_ID, "Could not add css file: "+cssName);
         }
     }
 
     protected void addCssFile(File file) {
-        try {
-            String content = Files.lines(file.toPath()).collect(Collectors.joining());
+        try(Stream<String> s = Files.lines(file.toPath())) {
+            String content = s.collect(Collectors.joining());
             str.append("<style>").append(content).append("</style>");
         } catch (IOException e) {
             throw new RuntimeException(e);

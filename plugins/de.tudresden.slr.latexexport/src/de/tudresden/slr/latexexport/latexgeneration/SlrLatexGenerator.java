@@ -14,6 +14,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
@@ -45,7 +46,7 @@ public class SlrLatexGenerator {
 	 */
 	protected SlrLatexTemplate concreteDocument;
 	Map<Term, String> mainDimensions;
-	
+
 	public SlrLatexGenerator(SlrProjectMetainformation metainformation, DataProvider dataProvider, String filename,
 			String templateName) throws MalformedURLException {
 		super();
@@ -71,7 +72,7 @@ public class SlrLatexGenerator {
 	}
 
 	protected SlrLatexGenerator() {
-		
+
 	}
 
 	/**
@@ -90,8 +91,7 @@ public class SlrLatexGenerator {
 	 * Tries to read a certain file, addressed by it's URL, and read it's contents
 	 * into a String, which is later on used for the templates.
 	 * 
-	 * @param url
-	 *            URL to the file
+	 * @param url URL to the file
 	 * @return File content as String
 	 */
 	public String getResourceContentAsString(URL url) {
@@ -117,21 +117,20 @@ public class SlrLatexGenerator {
 	/**
 	 * Copies resources given by an array of URLs to the LaTex document's folder.
 	 * 
-	 * @param resources
-	 *            Array of URLs, which point to files which are to be
-	 *            exported/copied to the LaTex document's folder.
+	 * @param resources Array of URLs, which point to files which are to be
+	 *                  exported/copied to the LaTex document's folder.
 	 * @throws IOException
 	 */
-	public void copyResources(URL[] resources) throws IOException {
+	public void copyResources(URL[] resources) {
 		String folder = FileHelper.extractFolderFromFilepath(filename);
 		for (URL url : resources) {
-			InputStream inputStream = url.openConnection().getInputStream();
-
-			String filenameToCopy = FileHelper.extractFileNameFromURL(url);
-			File dest = new File(folder + File.separator + filenameToCopy);
-			Files.copy(inputStream, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-			inputStream.close();
+			try (InputStream inputStream = url.openConnection().getInputStream()) {
+				String filenameToCopy = FileHelper.extractFileNameFromURL(url);
+				File dest = new File(folder + File.separator + filenameToCopy);
+				Files.copy(inputStream, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException ioe) {
+				Logger.getLogger(this.getClass().getName(), "Could not read from URL: " + url.toString());
+			}
 		}
 	}
 
@@ -142,21 +141,27 @@ public class SlrLatexGenerator {
 	 * 
 	 * @throws IOException
 	 */
-	public final void performExport() throws IOException {
+	public final void performExport() {
 		if (this.concreteDocument != null) {
 			copyResources(this.concreteDocument.getFilesToCopy());
-			mainDimensions = exportCharts();
+			try {
+				mainDimensions = exportCharts();
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+				Logger.getLogger(this.getClass().getName(), "Could not export charts");
+			}
 			String filledDocument = fillDocument(concreteDocument);
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			writer.write(filledDocument);
-			writer.close();
-			
-			String informationMessage = 
-					"Please be advised - check the generated LaTex template for parts which are still to be filled out. "
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+				writer.write(filledDocument);
+			} catch (IOException ioe) {
+				Logger.getLogger(this.getClass().getName(), "Could not write latex file.");
+			}
+
+			String informationMessage = "Please be advised - check the generated LaTex template for parts which are still to be filled out. "
 					+ "\r\n\r\n"
 					+ "Due to the nature of the bar charts, charts were just generated for dimensions which have subdimensions as children.";
-			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Attention", informationMessage);
+			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Attention",
+					informationMessage);
 		} else {
 			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Error",
 					"No valid template selected.");

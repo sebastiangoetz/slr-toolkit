@@ -10,6 +10,9 @@
 	</parent>
 	<artifactId>de.tudresden.slr.model.taxonomy</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	<properties>
+		<sonar.sources>src</sonar.sources>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

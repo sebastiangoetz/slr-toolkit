@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,13 +19,13 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Activator implements BundleActivator {
-	
+
 	public static final String PLUGIN_ID = "de.tudresden.slr.classification"; //$NON-NLS-1$
-	
+
 	private static String URL;
 
 	private static String WEB_APP_WORKSPACE;
-	
+
 	private static BundleContext context;
 
 	static BundleContext getContext() {
@@ -32,11 +34,13 @@ public class Activator implements BundleActivator {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
-		
+
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		String webappRoot = workspace.getRoot().getLocation().toString().concat("/webapp");
 		new File(webappRoot).mkdirs();
@@ -73,15 +77,15 @@ public class Activator implements BundleActivator {
 
 		writeVegaFiles();
 	}
-	
+
 	/**
-	 * Takes the preconfigured vega source and graph files from within the bundle and writes
-	 * them to the workspace folder.
+	 * Takes the preconfigured vega source and graph files from within the bundle
+	 * and writes them to the workspace folder.
 	 * 
 	 * @return true, if the file was written successfully
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private void writeVegaFiles() throws IOException {
+	private void writeVegaFiles() {
 		writeFileToWorkspace("vega.min.js");
 		writeFileToWorkspace("v5.json");
 		writeFileToWorkspace("knockout-3.5.1.js");
@@ -91,16 +95,19 @@ public class Activator implements BundleActivator {
 		writeFileToWorkspace("bubble.index.html");
 	}
 
-	private void writeFileToWorkspace(String file) throws IOException {
+	private void writeFileToWorkspace(String file) {
 		InputStream in = getClass().getResourceAsStream("/html/" + file);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(in));
-	    String st;
-	    File writeToFile = new File(Activator.WEB_APP_WORKSPACE + "/" + file);
-	    PrintWriter writer = new PrintWriter(new FileWriter(writeToFile));
-	    while ((st = br.readLine()) != null) {
-    		writer.println(st);
-	    }
-	    writer.close(); 
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String st;
+		File writeToFile = new File(Activator.WEB_APP_WORKSPACE + "/" + file);
+		try (PrintWriter writer = new PrintWriter(new FileWriter(writeToFile))) {
+			while ((st = br.readLine()) != null) {
+				writer.println(st);
+			}
+		} catch (IOException ioe) {
+			Logger.getLogger(PLUGIN_ID).log(Level.SEVERE,
+					"Could not read or write files required for new charting feature.");
+		}
 	}
 
 	public static String getUrl() {
@@ -113,7 +120,9 @@ public class Activator implements BundleActivator {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
