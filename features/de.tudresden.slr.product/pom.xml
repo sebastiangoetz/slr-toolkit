@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.tudresden.slr.product</artifactId>
@@ -24,7 +25,8 @@
 						</goals>
 					</execution>
 					<execution>
-						<!-- Uncomment to create zip file with the installed product -->
+						<!-- Uncomment to create zip file with the installed
+						product -->
 						<id>archive-products</id>
 						<goals>
 							<goal>archive-products</goal>
@@ -41,12 +43,24 @@
 				<configuration>
 					<products>
 						<product>
-							<!-- select product with ID product.id; the archives get the classifiers 
+							<!-- select product with ID product.id; the archives
+							get the classifiers 
 								<os>.<ws>.<arch> -->
 							<id>product</id>
-                            <archiveFileName>slr-toolkit.${buildQualifier}</archiveFileName>
+							<archiveFileName>slr-toolkit.${buildQualifier}</archiveFileName>
 						</product>
 					</products>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<includeAllDependencies>true</includeAllDependencies>
+					<profileProperties>
+						<macosx-bundled>true</macosx-bundled>
+					</profileProperties>
 				</configuration>
 			</plugin>
 		</plugins>
