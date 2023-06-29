@@ -14,3 +14,5 @@
 .cxx
 keystore.properties
 local.properties
+
+!/gradle/wrapper/gradle-wrapper.jar
