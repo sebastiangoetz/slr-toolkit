@@ -59,13 +59,13 @@ jobs:
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Run Ktlint
-        run: ./gradlew ktlintStagingDebugCheck
+        run: ./android-client/gradlew ktlintStagingDebugCheck
 
       - name: Run Unit Tests
-        run: ./gradlew testStagingDebugUnitTest
+        run: ./android-client/gradlew testStagingDebugUnitTest
 
       - name: Run Linters and Test
-        run: ./gradlew check
+        run: ./android-client/gradlew check
 
       - name: Upload reports
         uses: actions/upload-artifact@v2
