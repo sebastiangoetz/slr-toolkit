@@ -3,7 +3,7 @@ plugins {
 }
 apply plugin: 'kotlin-android'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystorePropertiesFile = rootProject.file('keystore.properties')
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
@@ -47,25 +47,21 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.10.0'
-    implementation "com.google.android.material:material:1.8.0"
-    //implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
+    implementation 'com.google.android.material:material:1.8.0'
+    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version'
 
-    implementation "org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r"
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
     implementation 'org.jbibtex:jbibtex:1.0.20'
-    implementation "com.lorentzos.swipecards:library:1.0.9"
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.lorentzos.swipecards:library:1.0.9'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
-
-    def nav_version = "2.5.3"
+    def nav_version = '2.5.3'
     implementation "androidx.navigation:navigation-fragment:$nav_version" // Java language implementation
     implementation "androidx.navigation:navigation-ui:$nav_version" // Java language implementation
     //implementation "androidx.navigation:navigation-fragment-ktx:$nav_version" // Kotlin
@@ -73,19 +69,23 @@ dependencies {
     //implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version" // Feature module Support
     //androidTestImplementation "androidx.navigation:navigation-testing:$nav_version" // Testing Navigation
 
-    def work_version = "2.8.1"
+    def work_version = '2.8.1'
     //implementation "androidx.work:work-runtime:$work_version" // (Java only)
     implementation "androidx.work:work-runtime-ktx:$work_version" // Kotlin + coroutines
     //implementation "androidx.work:work-rxjava2:$work_version" // optional - RxJava2 support
     //implementation "androidx.work:work-gcm:$work_version" // optional - GCMNetworkManager support
     //androidTestImplementation "androidx.work:work-testing:$work_version" // optional - Test helpers
 
-    def room_version = "2.5.1"
+    def room_version = '2.5.1'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     //implementation "androidx.room:room-rxjava2:$room_version" // optional - RxJava support for Room
     //implementation "androidx.room:room-guava:$room_version" // optional - Guava support for Room, including Optional and ListenableFuture
     //testImplementation "androidx.room:room-testing:$room_version" // optional - Test helpers
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 repositories {
     mavenCentral()
