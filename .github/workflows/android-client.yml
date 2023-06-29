@@ -58,6 +58,15 @@ jobs:
           versionCode: ${{ github.run_number }}
           versionName: ${{ env.VERSION_NAME }}
 
+      - name: Run Ktlint
+        run: ./gradlew ktlintStagingDebugCheck
+
+      - name: Run Unit Tests
+        run: ./gradlew testStagingDebugUnitTest
+
+      - name: Run Linters and Test
+        run: ./gradlew check
+
       - name: Upload reports
         uses: actions/upload-artifact@v2
         with:
