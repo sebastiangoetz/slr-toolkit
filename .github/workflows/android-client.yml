@@ -1,6 +1,9 @@
 # Workflow name
 name: Release Android Client
 
+env:
+  # The name of the App
+  app_name: SLR Toolkit
 
 # When it will be triggered
 on:
@@ -22,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Number of commits to fetch. 0 indicates all history for all branches and tags.
           fetch-depth: 1
@@ -32,18 +35,10 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+          cache: 'gradle'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-
-      # Cache Gradle dependencies and Gradle Wrapper
-      - name: Setup Gradle cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+      #- name: Setup Android SDK
+      #  uses: android-actions/setup-android@v2
 
       - name: Make gradlew executable
         run: chmod +x ./android-client/gradlew
@@ -58,18 +53,36 @@ jobs:
           versionCode: ${{ github.run_number }}
           versionName: ${{ env.VERSION_NAME }}
 
-      - name: Run Ktlint
-        run: ./android-client/gradlew ktlintStagingDebugCheck
-
       - name: Run Unit Tests
-        run: ./android-client/gradlew testStagingDebugUnitTest
+        run: ./android-client/gradlew test
 
-      - name: Run Linters and Test
-        run: ./android-client/gradlew check
+      - name: Run Lint
+        run: ./android-client/gradlew lint
 
-      - name: Upload reports
+      - name: Upload lint reports
         uses: actions/upload-artifact@v2
         with:
-          name: Test-Reports
+          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} Test-Reports
           path: android-client/app/build/reports
         if: always()
+
+      - name: Build gradle project
+        run: ./gradlew build
+
+      - name: Build APK Release
+        run: ./gradlew assemble
+
+      - name: Upload APK Release
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK
+          path: android-client/app/build/outputs/apk/debug/
+
+      #- name: Build APK Debug
+      #  run: ./gradlew assembleDebug
+
+      #- name: Upload APK Debug
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
+      #    path: android-client/app/build/outputs/apk/debug/
