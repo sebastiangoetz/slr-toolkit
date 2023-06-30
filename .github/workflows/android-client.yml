@@ -4,6 +4,7 @@ name: Release Android Client
 env:
   # The name of the App
   app_name: SLR Toolkit
+  GRADLE_USER_HOME: ./android-client/
 
 # When it will be triggered
 on:
@@ -53,7 +54,7 @@ jobs:
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Run Unit Tests
-        run: ./android-client/gradlew test --stacktrace --debug
+        run: ./android-client/gradlew test
 
       - name: Run Lint
         run: ./android-client/gradlew lint
