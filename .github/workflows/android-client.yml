@@ -60,7 +60,7 @@ jobs:
           working-directory: ./android-client
 
       - name: Run Lint
-        run: .gradlew lint
+        run: ./gradlew lint
         with:
           working-directory: ./android-client
 
