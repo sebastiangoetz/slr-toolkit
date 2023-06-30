@@ -49,40 +49,54 @@ jobs:
       - name: Bump version
         uses: chkfung/android-version-actions@v1.1
         with:
-          gradlePath: android-client/app/build.gradle
+          working-directory: ./android-client
+          gradlePath: app/build.gradle
           versionCode: ${{ github.run_number }}
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Run Unit Tests
-        run: ./android-client/gradlew test
+        run: ./gradlew test
+        with:
+          working-directory: ./android-client
 
       - name: Run Lint
-        run: ./android-client/gradlew lint
+        run: .gradlew lint
+        with:
+          working-directory: ./android-client
 
       - name: Upload lint reports
         uses: actions/upload-artifact@v2
         with:
+          working-directory: ./android-client
           name: ${{ env.app_name }} ${{ env.VERSION_NAME }} Test-Reports
-          path: android-client/app/build/reports
+          path: ./app/build/reports
         if: always()
 
       - name: Build gradle project
         run: ./gradlew build
+        with:
+          working-directory: ./android-client
 
       - name: Build APK Release
         run: ./gradlew assemble
+        with:
+          working-directory: ./android-client
 
       - name: Upload APK Release
         uses: actions/upload-artifact@v3
         with:
+          working-directory: ./android-client
           name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK
-          path: android-client/app/build/outputs/apk/debug/
+          path: ./app/build/outputs/apk/debug/
 
       #- name: Build APK Debug
       #  run: ./gradlew assembleDebug
+      #    with:
+      #      working-directory: ./android-client
 
       #- name: Upload APK Debug
       #  uses: actions/upload-artifact@v3
       #  with:
+      #    working-directory: ./android-client
       #    name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
-      #    path: android-client/app/build/outputs/apk/debug/
+      #    path: ./app/build/outputs/apk/debug/
