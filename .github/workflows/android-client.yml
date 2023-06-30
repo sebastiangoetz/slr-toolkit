@@ -53,7 +53,7 @@ jobs:
           versionName: ${{ env.VERSION_NAME }}
 
       - name: Run Unit Tests
-        run: ./android-client/gradlew test
+        run: ./android-client/gradlew test --stacktrace --debug
 
       - name: Run Lint
         run: ./android-client/gradlew lint
