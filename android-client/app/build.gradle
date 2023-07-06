@@ -27,8 +27,8 @@ android {
         applicationId 'de.davidtiede.slrtoolkit'
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 1
-        versionName '1.0'
+        versionCode 1  // Overwritten in Github Actions by android.yml
+        versionName '1.0'  // Overwritten in Github Actions by android.yml
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         //signingConfig signingConfigs.release

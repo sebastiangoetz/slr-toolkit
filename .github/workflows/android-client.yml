@@ -5,6 +5,7 @@ env:
   # The name of the App
   app_name: SLR Toolkit
   GRADLE_USER_HOME: ./android-client/
+  VERSION_NAME: '1.0'
 
 # When it will be triggered
 on:
@@ -40,11 +41,8 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./android-client/gradlew
 
-      - name: Generate app version name
-        run: echo "VERSION_NAME=$(git describe --tags | sed 's/\(.*\)-/\1./' | sed 's/\(.*\)-/\1+/')" >> $GITHUB_ENV
-
       - name: Bump version
-        uses: chkfung/android-version-actions@v1.1
+        uses: chkfung/android-version-actions@v1.2
         with:
           gradlePath: android-client/app/build.gradle
           versionCode: ${{ github.run_number }}
