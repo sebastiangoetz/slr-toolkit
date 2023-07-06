@@ -55,11 +55,11 @@ jobs:
 
       - name: Run Unit Tests
         run: ./gradlew test
-        working-directory: ./android-client
+        working-directory: android-client
 
       - name: Run Lint
         run: ./gradlew lint
-        working-directory: ./android-client
+        working-directory: android-client
 
       - name: Upload lint reports
         uses: actions/upload-artifact@v2
@@ -70,9 +70,11 @@ jobs:
 
       - name: Build gradle project
         run: ./gradlew build
+        working-directory: android-client
 
       - name: Build APK Release
         run: ./gradlew assemble
+        working-directory: android-client
 
       - name: Upload APK Release
         uses: actions/upload-artifact@v3
