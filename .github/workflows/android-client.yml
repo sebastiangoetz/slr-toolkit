@@ -84,6 +84,7 @@ jobs:
 
       #- name: Build APK Debug
       #  run: ./gradlew assembleDebug
+      #  working-directory: android-client
 
       #- name: Upload APK Debug
       #  uses: actions/upload-artifact@v3
