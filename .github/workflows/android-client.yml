@@ -20,7 +20,7 @@ on:
 
 
 jobs:
-  build:
+  Test & Build Android Client:
     # Where it will run
     runs-on: ubuntu-latest
 
@@ -59,7 +59,7 @@ jobs:
         working-directory: android-client
 
       - name: Upload lint reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.app_name }} ${{ env.VERSION_NAME }} Test-Reports
           path: android-client/app/build/reports
