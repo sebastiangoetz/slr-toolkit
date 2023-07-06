@@ -67,22 +67,22 @@ jobs:
         run: ./gradlew build
         working-directory: android-client
 
-      - name: Build APK Release
-        run: ./gradlew assembleRelease
+#      - name: Build APK Release
+#        run: ./gradlew assembleRelease
+#        working-directory: android-client
+#
+#      - name: Upload APK Release
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Release
+#          path: android-client/app/build/outputs/apk/release/
+
+      - name: Build APK Debug
+        run: ./gradlew assembleDebug
         working-directory: android-client
 
-      - name: Upload APK Release
+      - name: Upload APK Debug
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK
-          path: android-client/app/build/outputs/apk/release/
-
-      #- name: Build APK Debug
-      #  run: ./gradlew assembleDebug
-      #  working-directory: android-client
-
-      #- name: Upload APK Debug
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
-      #    path: android-client/app/build/outputs/apk/debug/
+          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
+          path: android-client/app/build/outputs/apk/debug/
