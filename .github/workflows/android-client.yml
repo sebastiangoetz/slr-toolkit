@@ -20,7 +20,7 @@ on:
 
 
 jobs:
-  Test_and_Build_Android-Client:
+  Test_and_build:
     # Where it will run
     runs-on: ubuntu-latest
 
