@@ -58,9 +58,11 @@ The project contains the following directories:
 
 
 ## Dependencies
-The project's dependency are managed with gradle. The following dependencies are used:
-
-- MPAndroid chart: library for visualizing data
-- JGit: library used for executing all functions relating git
+The project's dependency are managed with Gradle. The following dependencies are used:
+- Android Jetpack: Successor to the Android Support Library
 - JBibtex: library for parsing bibtex files
+- JGit: library used for executing all functions relating git
+- JUnit: library for testing
+- Material Components for Android: library to help execute Material Design
+- MPAndroid Chart: library for visualizing data
 - Swipecards: library for swiping cards
