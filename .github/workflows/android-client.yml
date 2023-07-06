@@ -58,7 +58,8 @@ jobs:
         working-directory: ./android-client
 
       - name: Run Lint
-        run: ./android-client/gradlew lint
+        run: ./gradlew lint
+        working-directory: ./android-client
 
       - name: Upload lint reports
         uses: actions/upload-artifact@v2
