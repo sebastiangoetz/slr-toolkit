@@ -3,14 +3,17 @@ plugins {
 }
 apply plugin: 'kotlin-android'
 
+/*
 def keystorePropertiesFile = rootProject.file('keystore.properties')
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+*/
 
 android {
     compileSdkVersion 33
     buildToolsVersion '30.0.3'
 
+/*
     signingConfigs {
         release {
             storeFile file(keystoreProperties['KEYSTORE_FILE'])
@@ -19,7 +22,7 @@ android {
             keyPassword keystoreProperties['SIGNING_KEY_PASSWORD']
         }
     }
-
+*/
     defaultConfig {
         applicationId 'de.davidtiede.slrtoolkit'
         minSdkVersion 21
@@ -28,7 +31,7 @@ android {
         versionName '1.0'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
-        signingConfig signingConfigs.release
+        //signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -36,7 +39,7 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.release
         }
     }
     compileOptions {
