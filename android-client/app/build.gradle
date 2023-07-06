@@ -64,7 +64,7 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    def nav_version = '2.6.30'
+    def nav_version = '2.6.0'
     implementation "androidx.navigation:navigation-fragment:$nav_version" // Java language implementation
     implementation "androidx.navigation:navigation-ui:$nav_version" // Java language implementation
     //implementation "androidx.navigation:navigation-fragment-ktx:$nav_version" // Kotlin
