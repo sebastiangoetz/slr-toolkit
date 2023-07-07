@@ -10,7 +10,7 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>net.sourceforge.htmlunit</groupId>
+			<groupId>org.htmlunit</groupId>
 		    <artifactId>htmlunit</artifactId>
 		</dependency>
 	</dependencies>
@@ -32,9 +32,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>net.sourceforge.htmlunit</groupId>
+				<groupId>org.htmlunit</groupId>
 				<artifactId>htmlunit</artifactId>
-				<version>2.37.0</version>
+				<version>3.3.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
