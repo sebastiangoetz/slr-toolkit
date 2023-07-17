@@ -69,7 +69,7 @@ jobs:
 
       - name: Assemble APK release
         run: ./gradlew
-          -Pandroid.injected.signing.store.file="../slr-toolkit.jks"
+          -Pandroid.injected.signing.store.file="slr-toolkit.jks"
           -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }}
           -Pandroid.injected.signing.key.alias=${{ secrets.SIGNING_KEY_ALIAS }}
           -Pandroid.injected.signing.key.password=${{ secrets.SIGNING_KEY_PASSWORD }}
