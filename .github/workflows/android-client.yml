@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Release
-          path: android-client/app/build/outputs/bundle/release/
+          path: android-client/app/build/outputs/apk/release/
 
 #      - name: Assemble APK debug
 #        run: ./gradlew assembleDebug
