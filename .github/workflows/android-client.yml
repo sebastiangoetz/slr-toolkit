@@ -6,6 +6,9 @@ env:
   app_name: SLR Toolkit
   GRADLE_USER_HOME: ./android-client/
   VERSION_NAME: '1.0.0-${{ github.run_number }}'
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+  SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
 
 # When it will be triggered
 on:
