@@ -9,7 +9,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../slr-toolkit.jks')
+            storeFile file('../../slr-toolkit.jks')
             storePassword System.getenv('KEYSTORE_PASSWORD')
             keyAlias System.getenv('SIGNING_KEY_ALIAS')
             keyPassword System.getenv('SIGNING_KEY_PASSWORD')
