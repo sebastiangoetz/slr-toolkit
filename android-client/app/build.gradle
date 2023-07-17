@@ -7,6 +7,7 @@ android {
     compileSdkVersion 33
     buildToolsVersion '30.0.3'
 
+    /*
     signingConfigs {
         release {
             storeFile file('../slr-toolkit.jks')
@@ -14,7 +15,7 @@ android {
             keyAlias System.getenv('secrets.SIGNING_KEY_ALIAS')
             keyPassword System.getenv('secrets.SIGNING_KEY_PASSWORD')
         }
-    }
+    }*/
 
     defaultConfig {
         applicationId 'de.davidtiede.slrtoolkit'
@@ -31,7 +32,7 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            /*signingConfig signingConfigs.release*/
         }
     }
     compileOptions {
