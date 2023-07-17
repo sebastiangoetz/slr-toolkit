@@ -71,12 +71,7 @@ jobs:
         working-directory: android-client
 
       - name: Assemble APK release
-        run: ./gradlew
-          -Pandroid.injected.signing.store.file="slr-toolkit.jks"
-          -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }}
-          -Pandroid.injected.signing.key.alias=${{ secrets.SIGNING_KEY_ALIAS }}
-          -Pandroid.injected.signing.key.password=${{ secrets.SIGNING_KEY_PASSWORD }}
-          app:assembleRelease  # app:bundleRelease for AAB
+        run: ./gradlew app:assembleRelease  # app:bundleRelease for AAB
         working-directory: android-client
 
       - name: Upload APK release
