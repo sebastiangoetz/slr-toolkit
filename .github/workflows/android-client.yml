@@ -73,21 +73,21 @@ jobs:
          -PKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
          -PSIGNING_KEY_ALIAS=${{ secrets.SIGNING_KEY_ALIAS }}
          -PSIGNING_KEY_PASSWORD=${{ secrets.SIGNING_KEY_PASSWORD }}
-         app:bundleRelease
+         app:assembleRelease
         working-directory: android-client
 
       - name: Upload APK release
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Release
-          path: android-client/app/build/outputs/apk/release/
+          path: android-client/app/build/release/
 
-      - name: Assemble APK debug
-        run: ./gradlew assembleDebug
-        working-directory: android-client
-
-      - name: Upload APK debug
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
-          path: android-client/app/build/outputs/apk/debug/
+#      - name: Assemble APK debug
+#        run: ./gradlew assembleDebug
+#        working-directory: android-client
+#
+#      - name: Upload APK debug
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: ${{ env.app_name }} ${{ env.VERSION_NAME }} APK Debug
+#          path: android-client/app/build/outputs/apk/debug/
