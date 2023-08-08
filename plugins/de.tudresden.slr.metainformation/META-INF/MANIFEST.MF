@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metainformation
 Bundle-SymbolicName: de.tudresden.slr.metainformation;singleton:=true
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-Activator: de.tudresden.slr.metainformation.MetainformationActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -14,14 +14,15 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem,
  org.eclipse.ui.ide,
  de.tudresden.slr.model.taxonomy,
- de.tudresden.slr.model.taxonomy.model,
  de.tudresden.slr.model.modelregistry,
  org.eclipse.emf.common,
  org.eclipse.emf.ecore,
  de.tudresden.slr.model.bibtex,
  org.eclipse.jface,
- org.eclipse.emf.edit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ org.eclipse.emf.edit,
+ jakarta.xml.bind,
+ com.sun.xml.bind
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: de.tudresden.slr.metainformation
 Bundle-ActivationPolicy: lazy
 Export-Package: de.tudresden.slr.metainformation,

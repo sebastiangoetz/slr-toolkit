@@ -634,7 +634,7 @@ public class BibtexEntryView extends ViewPart {
 	}
 
 	public void setSelectionToViewer(Collection<?> collection) {
-		// TODO: check if it is necessary
+		
 		final Collection<?> theSelection = collection;
 		// Make sure it's okay.
 		if (theSelection != null && !theSelection.isEmpty()) {

@@ -2,8 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Metainformation plugin tests
 Bundle-SymbolicName: de.tudresden.slr.metainformation.tests
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Fragment-Host: de.tudresden.slr.metainformation;bundle-version="0.3.0"
 Automatic-Module-Name: de.tudresden.slr.metainformation.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0",
+ com.sun.xml.bind;bundle-version="2.3.3", jakarta.xml.bind;bundle-version="2.3.3"

@@ -2,10 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: de.tudresden.slr.model.bibtex.tests
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Automatic-Module-Name: de.tudresden.slr.model.bibtex.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0",
  de.tudresden.slr.model.bibtex.ui,
- de.tudresden.slr.model.bibtex
+ de.tudresden.slr.model.bibtex,
+ org.mockito.mockito-core
 Import-Package: org.eclipse.core.resources

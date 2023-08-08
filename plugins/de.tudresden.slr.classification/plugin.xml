@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-
+	<extension
+         point="org.eclipse.ui.views">
+      <category
+            id="de.tudresden.slr.views"
+            name="SLR Toolkit"/>
+      <view
+            category="de.tudresden.slr.views"
+            class="de.tudresden.slr.classification.views.TaxonomyCheckboxListView"
+            id="de.tudresden.slr.classification.views.TaxonomyCheckboxListView"
+            icon="icons/tree_mode.gif"
+            name="Taxonomy">
+      </view>
+   </extension>
    <extension
          point="org.eclipse.ui.commands">
       <category
@@ -13,6 +25,54 @@
             categoryId="de.tudresden.slr.classification.commands.category"
             id="de.tudresden.slr.classification.commands.generateTaxonomyCommand">
       </command>
+      <command
+            defaultHandler="de.tudresden.slr.classification.handlers.OpenBubbleChartHandler"
+            description="Open a BubbleChart for two taxonomy terms in the browser"
+            id="de.tudresden.slr.model.taxonomy.ui.openbubblechart"
+            name="Open BubbleChart">
+      </command>
+      <command
+            defaultHandler="de.tudresden.slr.classification.handlers.OpenCiteHandler"
+            description="Open a Bar Chart for one taxonomy term in the browser"
+            id="de.tudresden.slr.model.taxonomy.ui.opencitebar"
+            name="Open Cite Bar">
+      </command>
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.CreateTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.createterm"
+      		name="New Term">
+      </command>    
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.RenameTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.renameterm"
+      		name="Rename Selected Term">
+      </command> 
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.DeleteTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+      		name="Delete Selected Term(s)">
+      </command>
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.MoveTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.moveterm"
+      		name="Move Selected Term(s)">
+      </command>    
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.MergeTermsHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.mergeterms"
+      		name="Merge Selected Terms">
+      </command> 
+      <command
+      		defaultHandler="de.tudresden.slr.classification.handlers.SplitTermHandler"
+      		id="de.tudresden.slr.model.taxonomy.ui.splitterm"
+      		name="Split Selected Term">
+      </command>
+      <command
+            defaultHandler="de.tudresden.slr.classification.handlers.OpenCiteCountHandler"
+            description="Open a Bar Chart for cumulative cite counts per year in the browser"
+            id="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
+            name="Open Cumulative Cite Count Per Year Bar">
+      </command> 
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -45,6 +105,141 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+               allPopups="false"
+               locationURI="toolbar:de.tudresden.slr.classification.views.TaxonomyCheckboxListView">
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.openbubblechart"
+                  icon="icons/bubble_chart.png"
+                  label="Open Bubblechart"
+                  style="push"
+                  tooltip="Open Bubblechart in Browser for 2 chosen Taxonomy Terms">
+            </command>
+            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.opencitebar"
+                  id="de.tudresden.slr.model.taxonomy.ui.opencitebarbutton"
+                  icon="icons/chart_bar.png"
+                  label="Open Cite Barchart"
+                  style="push"
+                  tooltip="Open bar chart in Browser for the chosen Taxonomy Term">
+            </command>
+			            <command
+                  commandId="de.tudresden.slr.model.taxonomy.ui.opencitecountbar"
+                  icon="icons/cite.png"
+                  id="de.tudresden.slr.model.taxonomy.ui.opencitecountbarbutton"
+                  label="Open cumulative cite count bar chart"
+                  style="push"
+                  tooltip="Open a bar chart in Browser for cumulative, per year (scopus) cite counts">
+            </command>
+         </menuContribution>
+         <menuContribution
+         		locationURI="popup:de.tudresden.slr.classification.views.TaxonomyCheckboxListView">
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.createterm"
+     		 	tooltip="New Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.renameterm"
+     		 	tooltip="Rename Selected Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command> 
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.deleteterm"
+     		 	tooltip="Delete Selected Term(s)">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>  
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.moveterm"
+     		 	tooltip="Move Selected Term(s)">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command> 
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.mergeterms"
+     		 	tooltip="Merge Selected Terms">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="(1-"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>
+     		<command
+ 		 		commandId="de.tudresden.slr.model.taxonomy.ui.splitterm"
+     		 	tooltip="Split Selected Term">
+     		 	<visibleWhen
+     		 		checkEnabled="false">
+   					<with variable="selection">
+   						<count value="1"/>
+      					<iterate
+           					ifEmpty="false">
+          					<instanceof value="de.tudresden.slr.model.taxonomy.Term"/>
+      					</iterate>
+   					</with>
+				</visibleWhen>
+     		</command>                    				 
+         </menuContribution>
    </extension>
-
+	<extension point="org.eclipse.ui.handlers">
+		<handler 
+			class="de.tudresden.slr.model.taxonomy.ui.TaxonomyExecutableExtensionFactory:org.eclipse.xtext.ui.refactoring.ui.DefaultRenameElementHandler"
+			commandId="org.eclipse.xtext.ui.refactoring.RenameElement">
+			<activeWhen>
+				<reference
+					definitionId="de.tudresden.slr.model.taxonomy.Taxonomy.Editor.opened">
+				</reference>
+			</activeWhen>
+		</handler>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+         <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.edit">
+         <command commandId="org.eclipse.xtext.ui.refactoring.RenameElement"
+               style="push">
+            <visibleWhen checkEnabled="false">
+               <reference
+                     definitionId="de.tudresden.slr.model.taxonomy.Taxonomy.Editor.opened">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
 </plugin>

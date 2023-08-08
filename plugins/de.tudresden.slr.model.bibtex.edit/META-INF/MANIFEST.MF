@@ -2,17 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.tudresden.slr.model.bibtex.edit;singleton:=true
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.tudresden.slr.model.bibtex.provider.BibtexEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: de.tudresden.slr.model.bibtex.provider
 Require-Bundle: org.eclipse.core.runtime,
  de.tudresden.slr.model.bibtex;visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
- de.tudresden.slr.model.taxonomy.model;visibility:=reexport,
  de.tudresden.slr.model.taxonomy
 Import-Package: org.osgi.framework
 Bundle-ActivationPolicy: lazy

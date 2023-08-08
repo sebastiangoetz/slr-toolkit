@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Utils
 Bundle-SymbolicName: de.tudresden.slr.utils;singleton:=true
-Bundle-Version: 0.3.3.qualifier
+Bundle-Version: 0.4.0.qualifier
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.emf.common,
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.resources,
  de.tudresden.slr.model.modelregistry,
  org.eclipse.ui.ide
 Automatic-Module-Name: de.tudresden.slr.utils
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: de.tudresden.slr.utils,
  de.tudresden.slr.utils.taxonomy.manipulation
 Import-Package: de.tudresden.slr.model.bibtex,

@@ -1,9 +1,14 @@
-[![Join the chat at https://gitter.im/sebastiangoetz/slr-toolkit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sebastiangoetz/slr-toolkit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub issues](https://img.shields.io/github/issues/sebastiangoetz/slr-toolkit.svg)](https://github.com/sebastiangoetz/slr-toolkit/issues) [![GitHub license](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/sebastiangoetz/slr-toolkit/master/LICENSE) [![Build Status](https://travis-ci.org/sebastiangoetz/slr-toolkit.svg?branch=master)](https://travis-ci.org/sebastiangoetz/slr-toolkit)
+[![Join the chat at https://gitter.im/sebastiangoetz/slr-toolkit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sebastiangoetz/slr-toolkit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![GitHub issues](https://img.shields.io/github/issues/sebastiangoetz/slr-toolkit.svg)](https://github.com/sebastiangoetz/slr-toolkit/issues) [![GitHub license](https://img.shields.io/badge/license-EPL-blue.svg)](https://raw.githubusercontent.com/sebastiangoetz/slr-toolkit/master/LICENSE) [![Build Status](https://github.com/sebastiangoetz/slr-toolkit/actions/workflows/maven.yml/badge.svg)](https://github.com/sebastiangoetz/slr-toolkit/actions/workflows/maven.yml)
 # SLR Toolkit
 
 A Toolkit for Systematic Literature Reviews
 
 Find a short video giving an overview of the main features of the tool on [Youtube](https://youtu.be/IB4d9CJt144).
+
+If you use the SLR Toolkit for your research, please cite the following demo paper:
+
+| Sebastian Götz. 2018. Supporting systematic literature reviews in computer science: the systematic literature review toolkit. In Proceedings of the 21st ACM/IEEE International Conference on Model Driven Engineering Languages and Systems: Companion Proceedings (MODELS '18). Association for Computing Machinery, New York, NY, USA, 22–26. https://doi.org/10.1145/3270112.3270117 |
+| - |
 
 ### Releases
 
@@ -17,6 +22,10 @@ All details are in the [ios-client folder](https://github.com/sebastiangoetz/slr
 
 You can find a short video of the main features on [Youtube](https://youtu.be/P67rSa9asj8)
 
+### Android App
+
+An Android App is under development, too. It's currently in the android-client branch and can hopefully be released soon.
+
 ### Build
 * From console
 	* `mvn -f ./plugins/de.tudresden.slr.parent/pom.xml clean verify` for building with tests
@@ -27,11 +36,11 @@ You can find a short video of the main features on [Youtube](https://youtu.be/P6
 	* for plugins/de.tudresden.slr.parent/pom.xml with `clean package`
  
 ### Dependencies
-* JDK 1.8
-* Eclipse RCP 4.5.1 (EPL)
+* JDK 17+
+* Eclipse 2023-06 (EPL)
 * JBibTex 1.0.15 (BSD 3-clause)
 * Eclipse BIRT (EPL)
-* Xtext 2.9.1 (EPL)
+* Xtext 2.31 (EPL)
 
 ### License
 EPL 1.0

@@ -29,7 +29,6 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -38,7 +37,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -207,9 +205,9 @@ public class BibtexEditor extends MultiPageEditorPart implements ISelectionProvi
 	private void createPageLabel(Composite composite, GridData gridData) {
 		Label label = new Label(composite, SWT.LEFT);
 		label.setText(document.getTitle());
-		FontDescriptor boldDescriptor = FontDescriptor.createFrom(label.getFont()).setStyle(SWT.BOLD);
-		Font boldFont = boldDescriptor.createFont(label.getDisplay());
-		label.setFont(boldFont);
+//		FontDescriptor boldDescriptor = FontDescriptor.createFrom(label.getFont()).setStyle(SWT.BOLD);
+//		Font boldFont = boldDescriptor.createFont(label.getDisplay());
+//		label.setFont(boldFont);
 		label.setLayoutData(gridData);
 	}
 

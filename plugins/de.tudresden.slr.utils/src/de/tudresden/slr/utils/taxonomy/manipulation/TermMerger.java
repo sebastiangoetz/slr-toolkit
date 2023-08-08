@@ -17,7 +17,6 @@ import de.tudresden.slr.model.bibtex.util.BibtexFileWriter;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TermUtils;
 import de.tudresden.slr.model.utils.SearchUtils;
 import de.tudresden.slr.model.utils.TaxonomyUtils;
 
@@ -100,7 +99,8 @@ public class TermMerger {
 	private static Model doMerge(Model taxonomy, Collection<Term> termsToMerge, Term targetTerm) {
 		Term targetTermInTaxonomy = SearchUtils.findTermInTaxonomy(taxonomy, targetTerm);
 		for (Term term : termsToMerge) {			
-			if (!TermUtils.equals(term, targetTerm)) {
+			//if (!TermUtils.equals(term, targetTerm)) {
+			if (!term.getName().equals(targetTerm.getName())) {
 				Term termInTaxonomy = SearchUtils.findTermInTaxonomy(taxonomy, term);				
 				// remove container
 				EcoreUtil.remove(termInTaxonomy);

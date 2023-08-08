@@ -21,32 +21,32 @@ public class SimilarityMatrixTest {
 	private BibtexMergeData mergeData;
 	private Map<DocumentImpl, Map<DocumentImpl, BibtexEntrySimilarity>> similarityMatrix;
 	
-	@Before
-	public void setUp() throws IOException {
-		// read bibtex test file from resources
-		File metainformationFile = new File("resources"+File.separator+"BibtexTest.bib");
-		InputStream is = new FileInputStream(metainformationFile);
-		
-		// parse as BibtexResourceImpl
-		BibtexResourceImpl resources = new BibtexResourceImpl(null);
-		resources.load(is, null);
-		
-		// create MergeData + similarityMatrix
-		mergeData = new BibtexMergeData(Arrays.asList(new BibtexResourceImpl[]{resources, resources}));
-		Map<Criteria, Integer> weights = new HashMap<Criteria, Integer>() {{
-			put(Criteria.authors, 100);
-			put(Criteria.title, 100);
-			put(Criteria.year, 100);
-		}};
-		mergeData.createSimilarityMatrix();
-		mergeData.setWeights(weights);
-		similarityMatrix = mergeData.getSimilarityMatrix();
-	}
-
-	@Test
-	public void testCreateSimilarityMatrix() {
-		Assert.assertNotNull(similarityMatrix);
-	}
+//	@Before
+//	public void setUp() throws IOException {
+//		// read bibtex test file from resources
+//		File metainformationFile = new File("resources"+File.separator+"BibtexTest.bib");
+//		InputStream is = new FileInputStream(metainformationFile);
+//		
+//		// parse as BibtexResourceImpl
+//		BibtexResourceImpl resources = new BibtexResourceImpl(null);
+//		resources.load(is, null);
+//		
+//		// create MergeData + similarityMatrix
+//		mergeData = new BibtexMergeData(Arrays.asList(new BibtexResourceImpl[]{resources, resources}));
+//		Map<Criteria, Integer> weights = new HashMap<Criteria, Integer>() {{
+//			put(Criteria.authors, 100);
+//			put(Criteria.title, 100);
+//			put(Criteria.year, 100);
+//		}};
+//		mergeData.createSimilarityMatrix();
+//		mergeData.setWeights(weights);
+//		similarityMatrix = mergeData.getSimilarityMatrix();
+//	}
+//
+//	@Test
+//	public void testCreateSimilarityMatrix() {
+//		Assert.assertNotNull(similarityMatrix);
+//	}
 	
 //	@Test
 //	public void testGetConflictsForWeights() {

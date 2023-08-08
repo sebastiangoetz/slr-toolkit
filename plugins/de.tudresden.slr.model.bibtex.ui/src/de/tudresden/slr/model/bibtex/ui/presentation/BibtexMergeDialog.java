@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -595,7 +594,7 @@ public class BibtexMergeDialog extends Dialog {
 			if (saveIntersection.getSelection())
 				parts.add(mergeData.writeIntersection());
 
-			Files.write(Paths.get(getFilePath()), StringUtils.join(parts, "\n").getBytes());
+			Files.write(Paths.get(getFilePath()), String.join("\n",parts).getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -10,6 +10,7 @@ import static org.jbibtex.BibTeXEntry.KEY_URL;
 import static org.jbibtex.BibTeXEntry.KEY_YEAR;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,6 +28,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.jbibtex.BibTeXDatabase;
@@ -48,7 +50,6 @@ import de.tudresden.slr.model.bibtex.Document;
 import de.tudresden.slr.model.taxonomy.Model;
 import de.tudresden.slr.model.taxonomy.TaxonomyFactory;
 import de.tudresden.slr.model.taxonomy.Term;
-import de.tudresden.slr.model.taxonomy.util.TaxonomyStandaloneParser;
 
 /**
  * <!-- begin-user-doc --> The <b>Resource </b> associated with the package.
@@ -66,6 +67,7 @@ public class BibtexResourceImpl extends ResourceImpl {
 	//scopus
 	private static final Key KEY_SOURCE = new Key("source");
 	private static final Key KEY_NOTE = new Key("note");
+	
 	/**
 	 * Creates an instance of the resource. <!-- begin-user-doc --> <!--
 	 * end-user-doc -->
@@ -146,13 +148,16 @@ public class BibtexResourceImpl extends ResourceImpl {
 		}
 	}
 
-	private Model parseClasses(String taxonomyString) {
+	private Model parseClasses(String taxonomyString) throws IOException {
 		if (taxonomyString == null || taxonomyString.isEmpty()) {
 			return TaxonomyFactory.eINSTANCE.createModel();
 		}
-		TaxonomyStandaloneParser tsp = new TaxonomyStandaloneParser();
-		return tsp.parseTaxonomyText(taxonomyString);
-
+		Resource resource = resourceSet.createResource(URI.createURI("dummy:/temp2.taxonomy"));
+		InputStream in = new ByteArrayInputStream(taxonomyString.getBytes());
+		resource.load(in, resourceSet.getLoadOptions());
+		Model m = (Model)resource.getContents().get(0);
+		resourceSet.getResources().remove(resource);
+		return m;
 	}
 
 	@Override
