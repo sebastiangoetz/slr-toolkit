@@ -18,7 +18,7 @@ In Android Studio:
 2. Select the device that you want to run the app on in the target device menu.
 If you don't have any devices configured, you need to either create an Android Virtual Device to use the Android Emulator or connect a physical device.
 3. Click "Run".
-Tested with Android Studio Flamingo, 2022.2.1 Patch 2.
+Tested with Android Studio Giraffe, 2022.3.1.
 
 
 ## Architecture
@@ -53,7 +53,7 @@ The project contains the following directories:
   - views: contains all views like adapters and buttons used in the fragments and activities
   - viewmodels: contains the view-models that are used in the fragments and activities
   - worker: contains the workers
-- gradle
+- gradle: contains the Gradle Wrapper
 - img: contains the images for the README.md
 
 
