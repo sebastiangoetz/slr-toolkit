@@ -11,8 +11,10 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "fix-build", "master" ]
+    paths-ignore: [ "android-client/**" ]
   pull_request:
     branches: [ "fix-build", "master" ]
+    paths-ignore: [ "android-client/**" ]
 
 jobs:
   build:
