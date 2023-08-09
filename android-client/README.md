@@ -66,3 +66,7 @@ The project's dependency are managed with Gradle. The following dependencies are
 - Material Components for Android: library to help execute Material Design
 - MPAndroid Chart: library for visualizing data
 - Swipecards: library for swiping cards
+
+## Features which are not implemented
+- Solving of merge conflicts
+- Writing of the classification to the local repository
