@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context="de.slrtoolkit.MainActivity">
 
     <TextView
         android:id="@+id/textview_no_entries_to_filter"

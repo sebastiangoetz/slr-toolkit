@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProjectActivity">
+    tools:context="de.slrtoolkit.ProjectActivity">
 
     <TextView
         android:id="@+id/project_name_text_view"

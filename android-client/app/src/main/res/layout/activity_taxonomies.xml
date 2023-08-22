@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TaxonomiesActivity">
+    tools:context="de.slrtoolkit.TaxonomiesActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/taxonomies_fragment_container_view"
