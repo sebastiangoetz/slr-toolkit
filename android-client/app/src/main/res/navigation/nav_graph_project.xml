@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/projectOverviewFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.ProjectOverviewFragment"
+        android:name="de.slrtoolkit.fragments.ProjectOverviewFragment"
         android:label="ProjectOverviewFragment" >
         <action
             android:id="@+id/action_projectOverviewFragment_to_bibtexEntriesListFragment"
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/bibtexEntriesListFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntriesListFragment"
+        android:name="de.slrtoolkit.fragments.BibtexEntriesListFragment"
         android:label="fragment_bibtex_entries_list"
         tools:layout="@layout/fragment_bibtex_entries_list" >
         <action
@@ -33,23 +33,23 @@
     </fragment>
     <fragment
         android:id="@+id/bibtexEntryDetailFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntryDetailFragment"
+        android:name="de.slrtoolkit.fragments.BibtexEntryDetailFragment"
         android:label="BibtexEntryDetailFragment" />
     <fragment
         android:id="@+id/filterFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.FilterFragment"
+        android:name="de.slrtoolkit.fragments.FilterFragment"
         android:label="FilterFragment" />
     <fragment
         android:id="@+id/taxonomyListFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.TaxonomyListFragment"
+        android:name="de.slrtoolkit.fragments.TaxonomyListFragment"
         android:label="fragment_taxonomy_list"
         tools:layout="@layout/fragment_taxonomy_list" />
     <fragment
         android:id="@+id/entriesToClassifyViewPagerFragment"
-        android:name="de.davidtiede.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"
+        android:name="de.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"
         android:label="EntriesToClassifyViewPagerFragment" />
     <fragment
         android:id="@+id/bibtexEntriesDetailViewPager"
-        android:name="de.davidtiede.slrtoolkit.fragments.BibtexEntriesDetailViewPagerFragment"
+        android:name="de.slrtoolkit.fragments.BibtexEntriesDetailViewPagerFragment"
         android:label="EntriesDetailViewPagerFragment" />
 </navigation>

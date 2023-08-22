@@ -12,17 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SLRToolkit">
         <activity
-            android:name=".AnalyzeActivity"
+            android:name="de.slrtoolkit.AnalyzeActivity"
             android:exported="false" />
         <activity
-            android:name=".TaxonomiesActivity"
+            android:name="de.slrtoolkit.TaxonomiesActivity"
             android:exported="false" />
         <activity
-            android:name=".ClassificationActivity"
+            android:name="de.slrtoolkit.ClassificationActivity"
             android:exported="false" />
-        <activity android:name=".ProjectActivity" />
+        <activity android:name="de.slrtoolkit.ProjectActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="de.slrtoolkit.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.SLRToolkit.NoActionBar">
             <intent-filter>

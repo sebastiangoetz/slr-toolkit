@@ -33,6 +33,7 @@
     <string name="entry_detail_heading_abstract">Abstract</string>
     <string name="entry_detail_heading_doi">DOI</string>
     <string name="entry_detail_heading_keywords">Keywords</string>
+    <string name="entry_detail_heading_published">Published in</string>
     <string name="button_classify">Classify</string>
     <string name="button_filter">Filter</string>
     <string name="button_pull">Pull</string>

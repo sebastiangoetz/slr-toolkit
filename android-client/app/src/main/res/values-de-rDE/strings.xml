@@ -34,6 +34,7 @@
     <string name="entry_detail_heading_abstract">Abstrakt</string>
     <string name="entry_detail_heading_doi">DOI</string>
     <string name="entry_detail_heading_keywords">Schlüsselworte</string>
+    <string name="entry_detail_heading_published">Publiziert in</string>
     <string name="button_classify">Klassifizieren</string>
     <string name="button_filter">Filtern</string>
     <string name="button_pull">Pull</string>
