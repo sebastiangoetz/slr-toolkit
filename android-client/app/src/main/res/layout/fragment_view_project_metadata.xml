@@ -20,29 +20,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textview_project_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Name"
-        app:layout_constraintEnd_toStartOf="@id/textinput_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_add_project" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinput_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:hint="@string/textinput_name"
         app:endIconMode="clear_text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textview_project_name"
         app:layout_constraintTop_toBottomOf="@id/textview_add_project">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -50,6 +38,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textUri" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_abstract"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="@string/textinput_abstract"
+        app:endIconMode="clear_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textinput_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext_abstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text|textUri|textMultiLine"
+            android:singleLine="false" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,6 +75,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textinput_name" />
+        app:layout_constraintTop_toBottomOf="@+id/textinput_abstract" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

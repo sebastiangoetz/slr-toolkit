@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
+        android:textAlignment="center"
         android:textSize="35sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button_filter"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/project_name_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/button_edit_project_metadata"
         app:layout_constraintVertical_bias="0.00" />
 
     <Button
@@ -43,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button_commit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_classify"
-        app:layout_constraintTop_toBottomOf="@+id/project_name_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/button_edit_project_metadata"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -125,9 +127,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@id/project_name_text_view"
-        app:layout_constraintStart_toEndOf="@id/project_name_text_view"
-        app:layout_constraintTop_toTopOf="@id/project_name_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/project_name_text_view"
         app:srcCompat="@android:drawable/ic_menu_edit" />
 
 

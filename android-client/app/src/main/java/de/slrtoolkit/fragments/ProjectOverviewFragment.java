@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button pullButton;
     private Button commitButton;
     private Button pushButton;
+    private ImageButton editMetadataButton;
 
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
@@ -63,6 +65,8 @@ public class ProjectOverviewFragment extends Fragment {
         classifyButton = view.findViewById(R.id.button_classify);
         filterButton = view.findViewById(R.id.button_filter);
 
+        editMetadataButton = view.findViewById(R.id.button_edit_project_metadata);
+
         pullButton = view.findViewById(R.id.button_pull);
         commitButton = view.findViewById(R.id.button_commit);
         pushButton = view.findViewById(R.id.button_push);
@@ -81,6 +85,8 @@ public class ProjectOverviewFragment extends Fragment {
 
         filterButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
+
+        editMetadataButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this).navigate(R.id.action_projectOverviewFragment_to_editProjectMetadataFragment));
 
         pullButton.setOnClickListener(v -> actionPullRepo(view));
         commitButton.setOnClickListener(v -> actionCommitRepo(view));

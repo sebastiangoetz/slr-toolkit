@@ -2,15 +2,22 @@ package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
 import android.os.Build;
+import android.util.Xml;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import org.jbibtex.ParseException;
+import org.xml.sax.XMLReader;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +95,26 @@ public class RepoViewModel extends AndroidViewModel {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeDataForRepo(int repoId, String path) {
         FileUtil fileUtil = new FileUtil();
+        File metadata = fileUtil.accessFiles(path, application, ".slrproject");
+        try(BufferedReader br = new BufferedReader(new FileReader(metadata))) {
+            String line;
+            StringBuilder contents = new StringBuilder();
+            while((line = br.readLine()) != null) {
+                contents.append(line);
+                contents.append(System.lineSeparator());
+            }
+            String title = contents.subSequence(contents.indexOf("<title>")+7, contents.indexOf("</title>")).toString();
+            currentRepo.setName(title);
+
+            String abs = contents.subSequence(contents.indexOf("<projectAbstract>")+17, contents.indexOf("</projectAbstract>")).toString();
+            currentRepo.setTextAbstract(abs);
+
+            String taxAbs = contents.subSequence(contents.indexOf("<taxonomyDescription>")+21, contents.indexOf("</taxonomyDescription>")).toString();
+            currentRepo.setTaxonomyDescription(taxAbs);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
         File file = fileUtil.accessFiles(path, application, ".bib");
         Map<Entry, String> entriesWithTaxonomies = new HashMap<>();
         try {
