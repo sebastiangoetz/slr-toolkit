@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">SLR Toolkit</string>
     <string name="action_settings">Einstellungen</string>
+    <string name="textview_view_project_metadata">Metadaten des Projekts</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
     <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
     <string name="fragment_label_projects">Projects Fragment</string>
@@ -17,6 +18,7 @@
     <string name="textinput_git_email">E-Mail</string>
     <string name="button_clone_project">Clone Projekt</string>
     <string name="button_add_project">Projekt hinzufügen</string>
+    <string name="button_edit_project">Projekt-Metadaten bearbeiten</string>
     <string name="textinput_name">Projektname</string>
     <string name="toast_empty_name">Bitte lassen sie \"Projekt Name\" nicht leer.</string>
     <string name="snackbar_undo">Rückgängig</string>

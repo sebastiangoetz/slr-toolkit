@@ -8,15 +8,12 @@
 
     <TextView
         android:id="@+id/project_name_text_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:padding="10dp"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,6 +119,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_entries_by_taxonomy" />
+
+    <ImageButton
+        android:id="@+id/button_edit_project_metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/project_name_text_view"
+        app:layout_constraintStart_toEndOf="@id/project_name_text_view"
+        app:layout_constraintTop_toTopOf="@id/project_name_text_view"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
