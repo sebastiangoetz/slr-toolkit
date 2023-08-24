@@ -24,11 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Entry;
 import de.slrtoolkit.database.EntryTaxonomyCrossRef;
+import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.database.Taxonomy;
+import de.slrtoolkit.repositories.AuthorRepository;
 import de.slrtoolkit.repositories.EntryRepository;
+import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
@@ -44,6 +48,8 @@ public class RepoViewModel extends AndroidViewModel {
 
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
+    private final AuthorRepository authorRepository;
+    private final KeywordRepository keywordRepository;
     private final TaxonomyRepository taxonomyRepository;
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private final LiveData<List<Repo>> allRepos;
@@ -54,6 +60,8 @@ public class RepoViewModel extends AndroidViewModel {
         super(application);
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
+        authorRepository = new AuthorRepository(application);
+        keywordRepository = new KeywordRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
         allRepos = repoRepository.getAllRepos();
@@ -103,14 +111,40 @@ public class RepoViewModel extends AndroidViewModel {
                 contents.append(line);
                 contents.append(System.lineSeparator());
             }
-            String title = contents.subSequence(contents.indexOf("<title>")+7, contents.indexOf("</title>")).toString();
+            String title = getValueOfTag("title", contents.toString());
             currentRepo.setName(title);
 
-            String abs = contents.subSequence(contents.indexOf("<projectAbstract>")+17, contents.indexOf("</projectAbstract>")).toString();
+            String abs = getValueOfTag("projectAbstract", contents.toString());
             currentRepo.setTextAbstract(abs);
 
-            String taxAbs = contents.subSequence(contents.indexOf("<taxonomyDescription>")+21, contents.indexOf("</taxonomyDescription>")).toString();
+            String taxAbs = getValueOfTag("taxonomyDescription", contents.toString());
             currentRepo.setTaxonomyDescription(taxAbs);
+
+            String keywords = getValueOfTag("keywords", contents.toString());
+            for(String keyword : keywords.split(",")) {
+                keyword = keyword.trim();
+                Keyword k = new Keyword(keyword);
+                k.setRepoId(currentRepo.getId());
+                keywordRepository.insert(k);
+            }
+
+            int lastAuthorIndex = 0;
+            int nextAuthorIndex = 0;
+            while(true) {
+                nextAuthorIndex = contents.indexOf("<authorsList>", lastAuthorIndex);
+                if(nextAuthorIndex == -1) break;
+                int nextAuthorIndexClose = contents.indexOf("</authorsList>", lastAuthorIndex);
+                lastAuthorIndex = nextAuthorIndexClose+14;
+                String authors = contents.subSequence(nextAuthorIndex+13, nextAuthorIndexClose).toString().trim();
+                String name = getValueOfTag("name", authors);
+                String email = getValueOfTag("email", authors);
+                String affiliation = getValueOfTag("organisation", authors);
+                Author author = new Author(name, affiliation, email);
+                author.setRepoId(currentRepo.getId());
+                authorRepository.insert(author);
+            }
+
+
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -127,6 +161,10 @@ public class RepoViewModel extends AndroidViewModel {
         initializeEntries(repoId, entriesWithTaxonomies);
         initializeTaxonomy(repoId, path);
         initializeTaxonomiesWithEntries(entriesWithTaxonomies, repoId);
+    }
+
+    private String getValueOfTag(String tag, String xml) {
+        return xml.subSequence(xml.indexOf("<"+tag+">")+tag.length()+2, xml.indexOf("</"+tag+">")).toString().trim();
     }
 
     public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
