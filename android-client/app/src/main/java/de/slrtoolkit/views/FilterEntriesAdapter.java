@@ -28,23 +28,30 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
     public View getView(int position, @Nullable View converView, @NonNull ViewGroup parent) {
         View listItem = converView;
         if (listItem == null) {
-            listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.filter_item, parent, false);
+            listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_bibtex_entry_detail, parent, false);
         }
 
         Entry currentEntry = entries.get(position);
 
-        TextView titleTextView = listItem.findViewById(R.id.filter_entry_title);
-        TextView authorTextView = listItem.findViewById(R.id.filter_entry_authors);
-        TextView doiTextView = listItem.findViewById(R.id.filter_entry_doi);
-        TextView keywordsTextView = listItem.findViewById(R.id.filter_entry_keywords);
-        TextView yearTextView = listItem.findViewById(R.id.filter_entry_year);
-        TextView monthTextView = listItem.findViewById(R.id.filter_entry_month);
+        TextView titleTextView = listItem.findViewById(R.id.bibtex_entry_title);
+        TextView authorTextView = listItem.findViewById(R.id.bibtex_entry_authors);
+        TextView doiTextView = listItem.findViewById(R.id.bibtex_entry_doi);
+        TextView keywordsTextView = listItem.findViewById(R.id.bibtex_entry_keywords);
+        TextView yearTextView = listItem.findViewById(R.id.bibtex_entry_year);
+        TextView monthTextView = listItem.findViewById(R.id.bibtex_entry_month);
+        TextView abstractTextView = listItem.findViewById(R.id.bibtex_entry_abstract);
+        TextView publishedTextView = listItem.findViewById(R.id.bibtex_entry_published);
         titleTextView.setText(currentEntry.getTitle());
         authorTextView.setText(currentEntry.getAuthor());
         doiTextView.setText(currentEntry.getDoi());
         keywordsTextView.setText(currentEntry.getKeywords());
         yearTextView.setText(currentEntry.getYear());
         monthTextView.setText(currentEntry.getMonth());
+        abstractTextView.setText(currentEntry.getAbstractText());
+        if(currentEntry.getJournal() != null && currentEntry.getJournal().length() > 0)
+            publishedTextView.setText(currentEntry.getJournal());
+        else
+            publishedTextView.setText(currentEntry.getBooktitle());
 
         return listItem;
     }

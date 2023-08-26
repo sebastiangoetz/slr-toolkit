@@ -23,6 +23,7 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import de.slrtoolkit.AnalyzeActivity;
+import de.slrtoolkit.ManageTaxonomyActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
 import de.slrtoolkit.database.Repo;
@@ -42,7 +43,6 @@ public class ProjectOverviewFragment extends Fragment {
     private Button pullButton;
     private Button commitButton;
     private Button pushButton;
-    private ImageButton editMetadataButton;
 
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
@@ -65,11 +65,13 @@ public class ProjectOverviewFragment extends Fragment {
         classifyButton = view.findViewById(R.id.button_classify);
         filterButton = view.findViewById(R.id.button_filter);
 
-        editMetadataButton = view.findViewById(R.id.button_edit_project_metadata);
+        ImageButton editMetadataButton = view.findViewById(R.id.button_edit_project_metadata);
 
         pullButton = view.findViewById(R.id.button_pull);
         commitButton = view.findViewById(R.id.button_commit);
         pushButton = view.findViewById(R.id.button_push);
+
+        Button manageTaxonomyButton = view.findViewById(R.id.button_manage_taxonomy);
 
         allEntryButton = view.findViewById(R.id.button_all_entries);
         Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
@@ -109,6 +111,12 @@ public class ProjectOverviewFragment extends Fragment {
             requireActivity().overridePendingTransition(0, 0);
         });
 
+        manageTaxonomyButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ManageTaxonomyActivity.class);
+            intent.putExtra("repo", projectViewModel.getCurrentRepoId());
+            startActivity(intent);
+            requireActivity().overridePendingTransition(0, 0);
+        });
 
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());
         projectViewModel.getRepoById(repoId).observe(getViewLifecycleOwner(), repoTitleObserver);

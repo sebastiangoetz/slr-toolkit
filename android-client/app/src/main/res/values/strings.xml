@@ -72,4 +72,5 @@
     <string name="error_git_no_changes">There are no changes to commit.</string>
     <string name="textinput_abstract">Abstract</string>
     <string name="authors">Authors</string>
+    <string name="manage_taxonomy">Manage Taxonomy</string>
 </resources>

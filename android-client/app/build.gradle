@@ -45,7 +45,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'com.google.android.material:material:1.9.0'
-    //implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version'
+    implementation 'io.github.amrdeveloper:treeview:1.1.4'
 
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
     implementation 'org.jbibtex:jbibtex:1.0.20'
