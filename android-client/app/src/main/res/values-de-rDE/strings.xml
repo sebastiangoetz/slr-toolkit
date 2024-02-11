@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">SLR Toolkit</string>
     <string name="action_settings">Einstellungen</string>
+    <string name="textview_view_project_metadata">Metadaten des Projekts</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
     <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
     <string name="fragment_label_projects">Projects Fragment</string>
@@ -16,7 +17,14 @@
     <string name="textinput_git_name">Name</string>
     <string name="textinput_git_email">E-Mail</string>
     <string name="button_clone_project">Clone Projekt</string>
+    <string name="button_create_project">Create Project</string>
     <string name="button_add_project">Projekt hinzufügen</string>
+    <string name="button_edit_project">Projekt-Metadaten bearbeiten</string>
+    <string name="button_add_project_file">Add Project file</string>
+    <string name="button_add_bib">Add BIB</string>
+    <string name="button_add_taxonomy">Add taxonomy</string>
+    <string name="button_add_default_file">Default-Datei hinzufügen</string>
+    <string name="button_add_file">Datei auswählen</string>
     <string name="textinput_name">Projektname</string>
     <string name="toast_empty_name">Bitte lassen sie \"Projekt Name\" nicht leer.</string>
     <string name="snackbar_undo">Rückgängig</string>
@@ -69,4 +77,7 @@
     <string name="button_push">Push</string>
     <string name="toast_push_succeeded">Commits wurden erfolgreich ins Remote-Repository gepushed.</string>
     <string name="error_git_no_changes">Es gibt keine Änderungen zum Committen.</string>
+    <string name="textinput_abstract">Abstract</string>
+    <string name="authors">Authors</string>
+    <string name="manage_taxonomy">Manage Taxonomy</string>
 </resources>

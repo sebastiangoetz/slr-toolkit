@@ -3,14 +3,30 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Required only if your app needs to access images or photos
+     that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <!-- Required only if your app needs to access videos
+         that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Required only if your app needs to access audio files
+         that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+
+    <!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
+<!--        android:maxSdkVersion="29" />-->
+<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SLRToolkit">
+        android:theme="@style/Theme.SLRToolkit"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name="de.slrtoolkit.AnalyzeActivity"
             android:exported="false" />
@@ -21,6 +37,7 @@
             android:name="de.slrtoolkit.ClassificationActivity"
             android:exported="false" />
         <activity android:name="de.slrtoolkit.ProjectActivity" />
+        <activity android:name="de.slrtoolkit.ManageTaxonomyActivity" />
         <activity
             android:name="de.slrtoolkit.MainActivity"
             android:exported="true"
@@ -31,6 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

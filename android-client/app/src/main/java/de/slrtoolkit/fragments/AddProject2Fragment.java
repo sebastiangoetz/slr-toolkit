@@ -40,7 +40,11 @@ public class AddProject2Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initializeFromFiles();
+
         edittext_name = view.findViewById(R.id.edittext_name);
+        edittext_name.setText(repoViewModel.getCurrentRepo().getName());
+
         view.findViewById(R.id.button_add_project).setOnClickListener(view1 -> {
             if (TextUtils.isEmpty(edittext_name.getText())) {
                 Toast.makeText(requireActivity().getApplicationContext(),
@@ -48,16 +52,21 @@ public class AddProject2Fragment extends Fragment {
                 return;
             }
 
-            repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
-            Repo repo = repoViewModel.getCurrentRepo();
-            repo.setName(Objects.requireNonNull(edittext_name.getText()).toString());
-            repoViewModel.update(repo);
-
-            repoViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
-
+            repoViewModel.getCurrentRepo().setName(edittext_name.getText().toString());
+            repoViewModel.update(repoViewModel.getCurrentRepo());
 
             NavHostFragment.findNavController(AddProject2Fragment.this)
                     .navigate(R.id.action_AddProject2Fragment_to_ProjectsFragment);
         });
+    }
+
+    private void initializeFromFiles() {
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+        Repo repo = repoViewModel.getCurrentRepo();
+        //TODO: modify initializeDataForRepo() || make another function for the fall of creation
+
+        repoViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path()); //real function
+        // repoViewModel.initializeDataForEmptyRepo(repo.getId(), repo.getLocal_path()); //custom function
+
     }
 }

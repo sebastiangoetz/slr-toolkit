@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class FileUtil {
     public File accessFiles(String path, Application application, String type) {
-        File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
+        File directoryPath = new File(application.getApplicationContext().getFilesDir(),path);
         File[] files = directoryPath.listFiles();
         File bibFile = null;
         for (File file : Objects.requireNonNull(files)) {
@@ -26,6 +26,11 @@ public class FileUtil {
             //}
         }
         return bibFile;
+    }
+
+    public void accessFilesOfLocalRepo(String path, Application application, String type){
+        File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

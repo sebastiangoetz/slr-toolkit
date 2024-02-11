@@ -24,8 +24,6 @@ import de.slrtoolkit.util.TaxonomyParserNode;
 public class TaxonomyRepository {
     private final TaxonomyDao taxonomyDao;
     private final FileUtil fileUtil;
-
-
     public TaxonomyRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyDao = db.taxonomyDao();
@@ -49,7 +47,6 @@ public class TaxonomyRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.insertAll(taxonomies));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeTaxonomy(int repoId, String path, Application application) {
         try {
             String taxonomyString = fileUtil.readContentFromFile(path, application);
@@ -104,6 +101,10 @@ public class TaxonomyRepository {
 
     public LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId) {
         return taxonomyDao.getChildTaxonomies(repoId, parentId);
+    }
+
+    public LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId) {
+        return taxonomyDao.getAllTaxonomiesForRepo(repoId);
     }
 
     public Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path) throws ExecutionException, InterruptedException {

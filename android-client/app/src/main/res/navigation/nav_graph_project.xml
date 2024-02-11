@@ -10,6 +10,9 @@
         android:name="de.slrtoolkit.fragments.ProjectOverviewFragment"
         android:label="ProjectOverviewFragment" >
         <action
+            android:id="@+id/action_projectOverviewFragment_to_editProjectMetadataFragment"
+            app:destination="@id/editProjectMetadataFragment" />
+        <action
             android:id="@+id/action_projectOverviewFragment_to_bibtexEntriesListFragment"
             app:destination="@id/bibtexEntriesListFragment" />
         <action
@@ -22,6 +25,10 @@
             android:id="@+id/action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment"
             app:destination="@id/entriesToClassifyViewPagerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editProjectMetadataFragment"
+        android:name="de.slrtoolkit.fragments.ViewProjectMetadataFragment"
+        android:label="EditProjectMetadataFragment" />
     <fragment
         android:id="@+id/bibtexEntriesListFragment"
         android:name="de.slrtoolkit.fragments.BibtexEntriesListFragment"

@@ -1,7 +1,9 @@
 package de.slrtoolkit.database;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 @Entity
 public class Repo {
@@ -14,6 +16,9 @@ public class Repo {
     private String token;
     private String git_name;
     private String git_email;
+    private String textAbstract;
+    private String taxonomyDescription;
+
 
     public Repo(String remote_url, String username, String token, String git_name, String git_email) {
         this.remote_url = remote_url;
@@ -68,4 +73,19 @@ public class Repo {
         return git_email;
     }
 
+    public String getTextAbstract() {
+        return textAbstract;
+    }
+
+    public void setTextAbstract(String textAbstract) {
+        this.textAbstract = textAbstract;
+    }
+
+    public String getTaxonomyDescription() {
+        return taxonomyDescription;
+    }
+
+    public void setTaxonomyDescription(String taxonomyDescription) {
+        this.taxonomyDescription = taxonomyDescription;
+    }
 }
