@@ -79,5 +79,8 @@
     <string name="textinput_abstract">Abstract</string>
     <string name="authors">Authors</string>
     <string name="manage_taxonomy">Manage Taxonomy</string>
+    <string name="create_keyword">Create keyword</string>
+    <string name="name_new_keyword">Enter name for a new keyword</string>
+    <string name="create_new_keyword">Create new keyword</string>
 
 </resources>

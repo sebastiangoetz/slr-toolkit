@@ -10,11 +10,10 @@
         android:id="@+id/textview_create_project1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/button_add_project_file"
-        tools:layout_editor_absoluteX="0dp"
-        />
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
         android:id="@+id/slr_layout"
@@ -27,36 +26,23 @@
 
         <Button
             android:id="@+id/button_default_slr"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_default_file"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/button_add_default_file" />
 
         <Button
             android:id="@+id/button_choose_slr"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_file"
-            style="?android:attr/buttonBarButtonStyle" />
-
-        <!--        <Button-->
-        <!--            android:id="@+id/button_choose_slrproject"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:text="@string/button_add_project_file"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="1.0"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/textview_create_project" />-->
+            android:text="@string/button_add_file" />
 
     </LinearLayout>
 
@@ -84,44 +70,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slr_layout" >
+        app:layout_constraintTop_toBottomOf="@+id/slr_layout">
 
         <Button
             android:id="@+id/button_default_bib"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_default_file"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/button_add_default_file" />
 
         <Button
             android:id="@+id/button_choose_bib"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_file"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/button_add_file" />
 
     </LinearLayout>
-
-<!--    <Button-->
-<!--        android:id="@+id/button_choose_bib"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="52dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:text="@string/button_add_bib"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/slr_layout" />-->
-
-
 
     <TextView
         android:id="@+id/textview_create_project"
@@ -147,41 +118,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bib_layout" >
+        app:layout_constraintTop_toBottomOf="@+id/bib_layout">
 
         <Button
             android:id="@+id/button_default_tax"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_default_file"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/button_add_default_file" />
 
         <Button
             android:id="@+id/button_choose_tax"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
-            android:text="@string/button_add_file"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="@string/button_add_file" />
 
     </LinearLayout>
-<!--    <Button-->
-<!--        android:id="@+id/button_choose_taxonomy"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginTop="44dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:text="@string/button_add_taxonomy"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/bib_layout" />-->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/button_create_project"

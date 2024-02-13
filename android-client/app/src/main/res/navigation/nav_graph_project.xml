@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/projectOverviewFragment"
         android:name="de.slrtoolkit.fragments.ProjectOverviewFragment"
-        android:label="ProjectOverviewFragment" >
+        android:label="ProjectOverviewFragment">
         <action
             android:id="@+id/action_projectOverviewFragment_to_editProjectMetadataFragment"
             app:destination="@id/editProjectMetadataFragment" />
@@ -28,12 +28,17 @@
     <fragment
         android:id="@+id/editProjectMetadataFragment"
         android:name="de.slrtoolkit.fragments.ViewProjectMetadataFragment"
-        android:label="EditProjectMetadataFragment" />
+        android:label="EditProjectMetadataFragment"
+        tools:layout="@layout/fragment_view_project_metadata">
+        <action
+            android:id="@+id/action_editProjectMetadata_to_projectOverview"
+            app:destination="@id/projectOverviewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bibtexEntriesListFragment"
         android:name="de.slrtoolkit.fragments.BibtexEntriesListFragment"
         android:label="fragment_bibtex_entries_list"
-        tools:layout="@layout/fragment_bibtex_entries_list" >
+        tools:layout="@layout/fragment_bibtex_entries_list">
         <action
             android:id="@+id/action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment"
             app:destination="@id/bibtexEntriesDetailViewPager" />
