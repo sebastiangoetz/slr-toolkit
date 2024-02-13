@@ -43,6 +43,11 @@ public class ProjectViewModel extends AndroidViewModel {
     public LiveData<List<Keyword>> getKeywordsForCurrentProject() {
         return keywordRepository.getKeywordsForRepo(currentRepoId);
     }
+
+    public void deleteKeyword(Keyword keyword){
+        keywordRepository.delete(keyword);
+    }
+
     public LiveData<List<Author>> getAuthorsForCurrentProject() {
         return authorRepository.getAuthorsForRepo(currentRepoId);
     }

@@ -17,8 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.Objects;
-
 import de.slrtoolkit.MainActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Repo;
@@ -63,10 +61,6 @@ public class AddProject2Fragment extends Fragment {
     private void initializeFromFiles() {
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         Repo repo = repoViewModel.getCurrentRepo();
-        //TODO: modify initializeDataForRepo() || make another function for the fall of creation
-
-        repoViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path()); //real function
-        // repoViewModel.initializeDataForEmptyRepo(repo.getId(), repo.getLocal_path()); //custom function
-
+        repoViewModel.initializeDataForRepo(repo.getId(), repo.getLocal_path());
     }
 }

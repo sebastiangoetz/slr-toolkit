@@ -37,6 +37,19 @@ public class KeywordRepository {
         return id;
     }
 
+    public void delete(Keyword keyword) {
+        keywordDao.delete(keyword);
+    }
+
+    public void deleteAsync(Keyword keyword, OnDeleteCompleteListener listener) {
+        Runnable deleteRunnable = () -> {
+            keywordDao.delete(keyword);
+            listener.onDeleteComplete();
+        };
+        AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
+    }
+
+
     public LiveData<List<Keyword>> getKeywordsForRepo(int repoId) {
         return keywordDao.getKeywordsForRepo(repoId);
     }

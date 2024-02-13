@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -11,15 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.repositories.KeywordRepository;
+import de.slrtoolkit.repositories.OnDeleteCompleteListener;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.views.AuthorListAdapter;
@@ -30,11 +38,16 @@ public class ViewProjectMetadataFragment extends Fragment {
     private EditText textAbstract;
     private ProjectViewModel projectViewModel;
     private RepoViewModel repoViewModel;
+    private KeywordRepository keywordRepository;
     private KeywordListAdapter keywordListAdapter;
     private AuthorListAdapter authorListAdapter;
+    private Button updateMetadata;
+    private FloatingActionButton plusKeyword;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        keywordRepository = new KeywordRepository(getActivity().getApplication());
     }
 
     @Nullable
@@ -49,8 +62,16 @@ public class ViewProjectMetadataFragment extends Fragment {
 
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+        try {
+            repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Repo currentRepository = repoViewModel.getCurrentRepo();
+        updateMetadata = view.findViewById(R.id.button_edit_metadata);
+        plusKeyword = view.findViewById(R.id.plus_keyword);
 
-        keywordListAdapter = new KeywordListAdapter(new KeywordListAdapter.KeywordsDiff());
+        keywordListAdapter = new KeywordListAdapter(getActivity().getSupportFragmentManager(), keywordRepository, new KeywordListAdapter.KeywordsDiff());
         RecyclerView keywordsRecycler = view.findViewById(R.id.list_keywords);
         LinearLayoutManager lm = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         keywordsRecycler.setLayoutManager(lm);
@@ -72,6 +93,41 @@ public class ViewProjectMetadataFragment extends Fragment {
 
         projectViewModel.getKeywordsForCurrentProject().observe(getViewLifecycleOwner(), this::onKeywordsLoaded);
         projectViewModel.getAuthorsForCurrentProject().observe(getViewLifecycleOwner(), this::onAuthorsLoaded);
+
+        plusKeyword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //new CreateKeywordDialog().show(getActivity().getSupportFragmentManager(), CreateKeywordDialog.TAG);
+                CreateKeywordDialog dialog = new CreateKeywordDialog();
+                dialog.show(getChildFragmentManager(), CreateKeywordDialog.TAG);
+
+//                Keyword keyword = new Keyword("test");
+//                keyword.setRepoId(repoViewModel.getCurrentRepo().getId());
+//                keywordRepository.insert(keyword);
+                List<Keyword> keywords = keywordListAdapter.getCurrentList();
+                if (!(keywords.isEmpty()))
+                    if (keywords.get(0).getName().equals("")) {
+                        keywordRepository.deleteAsync(keywords.get(0), new OnDeleteCompleteListener() {
+                            @Override
+                            public void onDeleteComplete() {
+
+                            }
+                        });
+                    }
+            }
+        });
+
+        updateMetadata.setOnClickListener(view1 -> {
+            currentRepository.setName(textName.getText().toString());
+            currentRepository.setTextAbstract(textAbstract.getText().toString());
+            repoViewModel.update(currentRepository);
+
+            //TODO: add keywords and authors. like lists
+
+            NavHostFragment.findNavController(
+                            Objects.requireNonNull(ViewProjectMetadataFragment.this))
+                    .navigate(R.id.action_editProjectMetadata_to_projectOverview);
+        });
     }
 
     private void onKeywordsLoaded(List<Keyword> keywordList) {
@@ -81,4 +137,6 @@ public class ViewProjectMetadataFragment extends Fragment {
     private void onAuthorsLoaded(List<Author> authorList) {
         authorListAdapter.submitList(authorList);
     }
+
+
 }

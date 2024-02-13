@@ -1,20 +1,29 @@
 package de.slrtoolkit.views;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.slrtoolkit.database.Keyword;
-import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.repositories.KeywordRepository;
+import de.slrtoolkit.repositories.OnDeleteCompleteListener;
+import de.slrtoolkit.util.DoubleClickListener;
 
 public class KeywordListAdapter extends ListAdapter<Keyword, KeywordViewHolder> {
     private RecyclerView recyclerView;
+    private KeywordRepository keywordRepository;
+    private FragmentManager fragmentManager;
 
-    public KeywordListAdapter(@NonNull DiffUtil.ItemCallback<Keyword> diffCallback) {
+
+    public KeywordListAdapter(FragmentManager fragmentManager, KeywordRepository keywordRepository, @NonNull DiffUtil.ItemCallback<Keyword> diffCallback) {
         super(diffCallback);
+        this.keywordRepository = keywordRepository;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -27,6 +36,18 @@ public class KeywordListAdapter extends ListAdapter<Keyword, KeywordViewHolder> 
     public void onBindViewHolder(@NonNull KeywordViewHolder holder, int position) {
         Keyword current = getItem(position);
         holder.bind(current.getName());
+
+        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), new DoubleClickListener.OnDoubleClickListener() {
+            @Override
+            public void onDoubleClick(View v) {
+                keywordRepository.deleteAsync(current, new OnDeleteCompleteListener() {
+                    @Override
+                    public void onDeleteComplete() {
+
+                    }
+                });
+            }
+        }));
     }
 
     @Override

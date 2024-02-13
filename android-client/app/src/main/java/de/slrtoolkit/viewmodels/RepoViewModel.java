@@ -69,7 +69,6 @@ public class RepoViewModel extends AndroidViewModel {
     }
 
     public Repo getCurrentRepo() {
-        //TODO: analyze why app crashes here. (maybe because of the nullable files of proj)
         return currentRepo;
     }
 
