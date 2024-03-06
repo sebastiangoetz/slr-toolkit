@@ -2,6 +2,7 @@ package de.slrtoolkit.fragments;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,12 +23,15 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.concurrent.ExecutionException;
+
 import de.slrtoolkit.AnalyzeActivity;
 import de.slrtoolkit.ManageTaxonomyActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
+import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.worker.CommitWorker;
 import de.slrtoolkit.worker.PullWorker;
 import de.slrtoolkit.worker.PushWorker;
@@ -35,7 +39,7 @@ import de.slrtoolkit.worker.PushWorker;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectOverviewFragment extends Fragment {
+public class ProjectOverviewFragment extends Fragment implements AddGitDataDialog.DialogListener {
 
     private Button allEntryButton;
     private Button filterButton;
@@ -47,7 +51,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
     private TextView projectNameTextView;
-
+    private RepoViewModel repoViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +84,7 @@ public class ProjectOverviewFragment extends Fragment {
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         int repoId = projectViewModel.getCurrentRepoId();
-
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment));
@@ -91,7 +95,21 @@ public class ProjectOverviewFragment extends Fragment {
         editMetadataButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this).navigate(R.id.action_projectOverviewFragment_to_editProjectMetadataFragment));
 
         pullButton.setOnClickListener(v -> actionPullRepo(view));
-        commitButton.setOnClickListener(v -> actionCommitRepo(view));
+        commitButton.setOnClickListener(v -> {
+            try {
+                repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
+                Repo currentRepo = repoViewModel.getCurrentRepo();
+                if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
+                    AddGitDataDialog dialog = new AddGitDataDialog();
+                    dialog.setDialogListener(this);
+                    dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
+                } else {
+                    actionCommitRepo(view);
+                }
+            } catch (ExecutionException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
         pushButton.setOnClickListener(v -> actionPushRepo(view));
 
         allEntryButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
@@ -222,5 +240,10 @@ public class ProjectOverviewFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    @Override
+    public void onDialogDismissed(View view) {
+        actionCommitRepo(view);
     }
 }

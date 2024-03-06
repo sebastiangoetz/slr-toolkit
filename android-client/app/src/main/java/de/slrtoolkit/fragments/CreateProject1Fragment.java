@@ -162,7 +162,6 @@ public class CreateProject1Fragment extends Fragment {
         });
 
         button_create_project.setOnClickListener(null);
-        //TODO: create progress button for this type
         Repo repo = new Repo("", "", "", "", "");
         repoViewModel = new
 
@@ -178,7 +177,6 @@ public class CreateProject1Fragment extends Fragment {
             e.printStackTrace();
         }
         repoViewModel.setCurrentRepo(repo);
-        //TODO: maybe set local path by choosing the directory in file picker
         repo.setLocal_path("repo_" + repo.getId());
         repoViewModel.update(repo);
 
@@ -190,7 +188,6 @@ public class CreateProject1Fragment extends Fragment {
 
     private void actionCreateProject(View view) {
         button_create_project.setOnClickListener(null);
-        //TODO: create progress button for this type
         Repo repo = new Repo("", "", "", "", "");
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);
@@ -200,7 +197,6 @@ public class CreateProject1Fragment extends Fragment {
             e.printStackTrace();
         }
         repoViewModel.setCurrentRepo(repo);
-        //TODO: maybe set local path by choosing the directory in file picker
         repo.setLocal_path("repo_" + repo.getId());
         repoViewModel.update(repo);
 
@@ -243,7 +239,6 @@ public class CreateProject1Fragment extends Fragment {
 
         File expFile = new File(dst.getPath() + File.separator + "test" + ".slrproject");
         try {
-            //TODO: stopped here. try to give access to files HOW?
             InputStream inputStream = new FileInputStream(src);
             OutputStream outputStream = new FileOutputStream(expFile);
             byte[] byteArrayBuffer = new byte[1824];

@@ -19,7 +19,7 @@ import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class CreateKeywordDialog extends DialogFragment {
-    public static String TAG = "DeleteKeywordDialog";
+    public static String TAG = "CreateKeywordDialog";
     private Button createButton;
     private TextInputEditText editKeywordName;
     private RepoViewModel repoViewModel;

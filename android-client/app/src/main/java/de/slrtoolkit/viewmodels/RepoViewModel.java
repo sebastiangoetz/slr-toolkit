@@ -167,6 +167,10 @@ public class RepoViewModel extends AndroidViewModel {
         return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
     }
 
+    private String setValueOfTag(String tag, String xml, String valueToSet){
+        return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
+    }
+
     public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
         List<Entry> entries = new ArrayList<>(entriesWithTaxonomies.keySet());
         saveAllEntriesForRepo(entries, repoId);

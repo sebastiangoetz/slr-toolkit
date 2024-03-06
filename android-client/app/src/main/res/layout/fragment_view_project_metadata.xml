@@ -24,13 +24,13 @@
         android:id="@+id/textinput_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:hint="@string/textinput_name"
         app:endIconMode="clear_text"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_add_project">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -46,14 +46,14 @@
         android:id="@+id/textinput_abstract"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="200dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:hint="@string/textinput_abstract"
         app:endIconMode="clear_text"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="200dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textinput_name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -78,8 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/container_list_authors" />
 
 
-
-        <TextView
+    <TextView
         android:id="@+id/text_keywords"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -97,13 +96,17 @@
     <LinearLayout
         android:id="@+id/container_list_keywords"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/text_keywords"
-        app:layout_constraintBottom_toTopOf="@id/text_authors">
+        app:layout_constraintBottom_toTopOf="@id/text_authors"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_keywords">
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="294dp"-->
+        <!--            android:layout_height="50dp">-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_keywords"
@@ -115,6 +118,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_keywords"
             tools:listitem="@layout/keyword_item" />
+        <!--        </LinearLayout>-->
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/plus_keyword"
@@ -143,16 +148,16 @@
         android:id="@+id/container_list_authors"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/text_authors"
-        app:layout_constraintBottom_toTopOf="@id/button_edit_metadata">
+        app:layout_constraintBottom_toTopOf="@id/button_edit_metadata"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_authors">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_authors"
-            android:layout_width="wrap_content"
+            android:layout_width="294dp"
             android:layout_height="200dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/button_add_project"
@@ -160,6 +165,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_authors"
             tools:listitem="@layout/author_item" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/plus_author"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/fab_add_project"
+            app:srcCompat="@android:drawable/ic_input_add" />
     </LinearLayout>
 
 

@@ -88,4 +88,24 @@ public class Repo {
     public void setTaxonomyDescription(String taxonomyDescription) {
         this.taxonomyDescription = taxonomyDescription;
     }
+
+    public void setRemote_url(String remote_url) {
+        this.remote_url = remote_url;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setGit_name(String git_name) {
+        this.git_name = git_name;
+    }
+
+    public void setGit_email(String git_email) {
+        this.git_email = git_email;
+    }
 }

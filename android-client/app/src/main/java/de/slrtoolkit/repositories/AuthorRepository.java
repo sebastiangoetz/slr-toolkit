@@ -15,7 +15,6 @@ import de.slrtoolkit.database.AuthorDao;
 
 public class AuthorRepository {
     private final AuthorDao authorDao;
-
     Application application;
 
     public AuthorRepository(Application application) {
@@ -43,6 +42,14 @@ public class AuthorRepository {
             e.printStackTrace();
         }
         return id;
+    }
+
+    public void deleteAsync(Author author, OnDeleteCompleteListener listener) {
+        Runnable deleteRunnable = () -> {
+            authorDao.delete(author);
+            listener.onDeleteComplete();
+        };
+        AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
     }
 
     public LiveData<Author> getAuthorById(int authorId) {
