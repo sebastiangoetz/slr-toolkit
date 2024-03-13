@@ -17,9 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
+
 import de.slrtoolkit.MainActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.util.FileUtil;
+import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class AddProject2Fragment extends Fragment {
@@ -52,6 +56,14 @@ public class AddProject2Fragment extends Fragment {
 
             repoViewModel.getCurrentRepo().setName(edittext_name.getText().toString());
             repoViewModel.update(repoViewModel.getCurrentRepo());
+
+            Repo currentRepo = repoViewModel.getCurrentRepo();
+
+            SlrprojectParser slrprojectParser = new SlrprojectParser();
+            FileUtil fileUtil = new FileUtil();
+            File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+            slrprojectParser.parseSlr(String.valueOf(file), currentRepo.getName(), currentRepo.getTextAbstract());
+
 
             NavHostFragment.findNavController(AddProject2Fragment.this)
                     .navigate(R.id.action_AddProject2Fragment_to_ProjectsFragment);

@@ -2,18 +2,17 @@ package de.slrtoolkit.util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -60,26 +59,70 @@ public class SlrprojectParser {
         Document doc = dBuilder.parse(inputFile);
         Element root = doc.getDocumentElement();
 
-        Element newAuthorsList = doc.createElement("authorsList");
+        NodeList authorsList = root.getElementsByTagName("authorsList");
+        if (authorsList.getLength() > 0) {
+            Element authorsListElement = (Element) authorsList.item(0);
+            if (isEmptyAuthorsList(authorsListElement)) {
+                root.removeChild(authorsListElement);
+            }
+        }
+
+//        Element newAuthorsList = doc.createElement("authorsList");
+//        Element emailElement = doc.createElement("email");
+//        emailElement.setTextContent(email);
+//        newAuthorsList.appendChild(emailElement);
+//
+//        Element nameElement = doc.createElement("name");
+//        nameElement.setTextContent(name);
+//        newAuthorsList.appendChild(nameElement);
+//
+//        Element organisationElement = doc.createElement("organisation");
+//        organisationElement.setTextContent(organisation);
+//        newAuthorsList.appendChild(organisationElement);
+//
+//        root.appendChild(newAuthorsList);
         Element emailElement = doc.createElement("email");
-        emailElement.setTextContent(email);
-        newAuthorsList.appendChild(emailElement);
-
+        emailElement.appendChild(doc.createTextNode(email));
         Element nameElement = doc.createElement("name");
-        nameElement.setTextContent(name);
-        newAuthorsList.appendChild(nameElement);
-
+        nameElement.appendChild(doc.createTextNode(name));
         Element organisationElement = doc.createElement("organisation");
-        organisationElement.setTextContent(organisation);
-        newAuthorsList.appendChild(organisationElement);
+        organisationElement.appendChild(doc.createTextNode(organisation));
 
-        root.appendChild(newAuthorsList);
+        // Create the <authorsList> element and append the child elements
+        Element authorsListElement = doc.createElement("authorsList");
+        authorsListElement.appendChild(emailElement);
+        authorsListElement.appendChild(nameElement);
+        authorsListElement.appendChild(organisationElement);
 
+        // Append the <authorsList> element to the root element
+        root.appendChild(authorsListElement);
+//
+//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//        Transformer transformer = transformerFactory.newTransformer();
+//        DOMSource source = new DOMSource(doc);
+//        StreamResult result = new StreamResult(inputFile);
+//        transformer.transform(source, result);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4"); // Number of spaces for indentation
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(inputFile);
+        StreamResult result = new StreamResult(new FileOutputStream(inputFile));
         transformer.transform(source, result);
+    }
+
+    private static boolean isEmptyAuthorsList(Element authorsListElement) {
+        NodeList childNodes = authorsListElement.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            if (childNodes.item(i).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                Element childElement = (Element) childNodes.item(i);
+                String textContent = childElement.getTextContent().trim();
+                if (!textContent.isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void deleteAuthorList(String localpath, String email) throws ParserConfigurationException, IOException, SAXException, TransformerException {
@@ -109,69 +152,66 @@ public class SlrprojectParser {
         transformer.transform(source, result);
     }
 
-    public void editKeywords(String localpath){
+    public void editKeywords(String localpath, String keyword, Boolean toAdd){
         try {
-            // Load the XML file
             File inputFile = new File(localpath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
 
-            // Get the root element
             Element root = doc.getDocumentElement();
 
-            // Find the keywords tag
             NodeList keywordsList = root.getElementsByTagName("keywords");
             if (keywordsList.getLength() > 0) {
                 Element keywordsElement = (Element) keywordsList.item(0);
 
-                // Get the current content of keywords
-                String keywordsContent = keywordsElement.getTextContent();
+                String keywordsContent = keywordsElement.getTextContent().trim();
 
-                // Modify the keywords content as needed
-                // Example: Split the content into individual keywords
-                String[] keywords = keywordsContent.split(",");
-
-                // Example: Add a new keyword
-                String newKeyword = "new_keyword";
-
-                // Example: Remove a keyword
-                String keywordToRemove = "keyword_to_remove";
-
-                // Example: Modify a keyword
-                String keywordToModify = "keyword_to_modify";
-                String modifiedKeyword = "modified_keyword";
-
-                // Rebuild the keywords content
-                StringBuilder updatedKeywords = new StringBuilder();
-                for (String keyword : keywords) {
-                    // Remove leading and trailing whitespaces
-                    keyword = keyword.trim();
-
-                    // Skip the keyword to be removed
-                    if (keyword.equals(keywordToRemove)) {
-                        continue;
-                    }
-
-                    // Modify the keyword if needed
-                    if (keyword.equals(keywordToModify)) {
-                        keyword = modifiedKeyword;
-                    }
-
-                    // Add the keyword to the updated content
-                    updatedKeywords.append(keyword).append(",");
+                if (keywordsContent.isEmpty()) {
+                    keywordsElement.setTextContent(keyword);
+                } else {
+                    keywordsElement.setTextContent(keywordsContent + ", " + keyword);
                 }
-
-                // Remove the trailing comma if any
-                if (updatedKeywords.length() > 0) {
-                    updatedKeywords.deleteCharAt(updatedKeywords.length() - 1);
-                }
-
-                // Set the updated keywords content
-                keywordsElement.setTextContent(updatedKeywords.toString());
             }
 
-            // Write the updated XML content to the file
+
+//            NodeList keywordsList = root.getElementsByTagName("keywords");
+//            if (keywordsList.getLength() > 0) {
+//                Element keywordsElement = (Element) keywordsList.item(0);
+//
+//                String keywordsContent = keywordsElement.getTextContent();
+//
+//                String[] keywords = keywordsContent.split(",");
+//
+//                String newKeyword = "new_keyword";
+//
+//                String keywordToRemove = "keyword_to_remove";
+//
+//                String keywordToModify = "keyword_to_modify";
+//                String modifiedKeyword = "modified_keyword";
+//
+//                StringBuilder updatedKeywords = new StringBuilder();
+//                for (String keyword : keywords) {
+//                    keyword = keyword.trim();
+//
+//                    if (keyword.equals(keywordToRemove)) {
+//                        continue;
+//                    }
+//
+//                    if (keyword.equals(keywordToModify)) {
+//                        keyword = modifiedKeyword;
+//                    }
+//
+//                    updatedKeywords.append(keyword).append(",");
+//                }
+//
+//                if (updatedKeywords.length() > 0) {
+//                    updatedKeywords.deleteCharAt(updatedKeywords.length() - 1);
+//                }
+//
+//                keywordsElement.setTextContent(updatedKeywords.toString());
+//            }
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -179,6 +219,38 @@ public class SlrprojectParser {
             transformer.transform(source, result);
 
         } catch (ParserConfigurationException | IOException | org.xml.sax.SAXException | TransformerException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deleteKeyword(String localPath, String keywordToDelete){
+        try {
+            File inputFile = new File(localPath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+
+            Element root = doc.getDocumentElement();
+
+            NodeList keywordsList = root.getElementsByTagName("keywords");
+            if (keywordsList.getLength() > 0) {
+                Element keywordsElement = (Element) keywordsList.item(0);
+
+                String keywordsContent = keywordsElement.getTextContent().trim();
+
+                keywordsContent = keywordsContent.replaceAll("\\b" + keywordToDelete + "\\b", "").replaceAll(",\\s*,", ",").replaceAll("^,|,$", "").trim();
+                keywordsElement.setTextContent(keywordsContent);
+            }
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(inputFile);
+            transformer.transform(source, result);
+
+
+        } catch (ParserConfigurationException | org.xml.sax.SAXException | javax.xml.transform.TransformerException | java.io.IOException e) {
             e.printStackTrace();
         }
     }

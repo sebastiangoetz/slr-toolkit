@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Author;
@@ -35,6 +36,7 @@ import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.worker.CloneWorker;
+import de.slrtoolkit.worker.InitWorker;
 
 public class AddGitDataDialog extends DialogFragment {
 
@@ -46,26 +48,6 @@ public class AddGitDataDialog extends DialogFragment {
     private TextInputEditText gitEmail;
 
     private RepoViewModel repoViewModel;
-
-    public interface DialogListener {
-        void onDialogDismissed(View view);
-    }
-
-    private DialogListener mListener;
-
-    public void setDialogListener(DialogListener listener) {
-        mListener = listener;
-    }
-
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-//        if (mListener != null) {
-//            // Pass arguments when triggering the callback
-//          //  mListener.onDialogDismissed("view", 42); // Example arguments
-//        }
-    }
-
 
     @NonNull
     @Override
@@ -83,47 +65,63 @@ public class AddGitDataDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Repo repo = repoViewModel.getCurrentRepo();
-                repo.setRemote_url(remoteUrl.getText().toString());
-                repo.setToken(token.getText().toString());
-                repo.setGit_name(gitName.getText().toString());
-                repo.setGit_email(gitEmail.getText().toString());
-                repo.setUsername(gitName.getText().toString());
+                //ToDO: change code piece
+//                repo.setRemote_url(remoteUrl.getText().toString());
+//                repo.setToken(token.getText().toString());
+//                repo.setGit_name(gitName.getText().toString());
+//                repo.setGit_email(gitEmail.getText().toString());
+//                repo.setUsername(gitName.getText().toString());
+                repo.setRemote_url("https://github.com/Nastasja-Z/empty_slrtoolkit.git");
+                repo.setToken("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");
+                repo.setGit_name("NastasjaZ");
+                repo.setGit_email("anastasia.zimnenko@gmail.com");
+                repo.setUsername("NastasjaZ");
 
                 repoViewModel.update(repo);
 
-                WorkRequest cloneWorkRequest =
-                        new OneTimeWorkRequest.Builder(CloneWorker.class)
+                FileUtil fileUtil = new FileUtil();
+                //TODO: stopped here. add files from repo dir to git_repo dir. delete repo dir and rename git_repo dir to repo
+                File fileSlr = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".slrproject");
+                File fileBib = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".bib");
+                File fileTaxonomy = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".taxonomy");
+
+                File newFileSlr = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileSlr.getName());
+                File newFileBib = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileBib.getName());
+                File newFileTaxonomy = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileTaxonomy.getName());
+
+                WorkRequest initWorkRequest =
+                        new OneTimeWorkRequest.Builder(InitWorker.class)
                                 .setInputData(
                                         new Data.Builder()
                                                 .putString("REMOTE_URL", repo.getRemote_url())
                                                 .putString("USERNAME", repo.getUsername())
+                                                .putString("EMAIL", repo.getGit_email())
                                                 .putString("TOKEN", repo.getToken())
-                                                .putString("LOCAL_PATH", repo.getLocal_path() + "git")
+                                                .putString("LOCAL_PATH", repo.getLocal_path())
+                                                .putString("LOCAL_PATH_GIT", repo.getLocal_path()+"git")
+                                                .putString("PATH_SLR", fileSlr.toString())
+                                                .putString("PATH_BIB", fileBib.toString())
+                                                .putString("PATH_TAX", fileTaxonomy.toString())
+                                                .putString("NEW_PATH_SLR", newFileSlr.toString())
+                                                .putString("NEW_PATH_BIB", newFileBib.toString())
+                                                .putString("NEW_PATH_TAX", newFileTaxonomy.toString())
                                                 .build()
                                 )
                                 .build();
 
                 WorkManager workManager = WorkManager.getInstance(getContext());
-                workManager.enqueue(cloneWorkRequest);
+                workManager.enqueue(initWorkRequest);
 
-                workManager.getWorkInfoByIdLiveData(cloneWorkRequest.getId())
+                workManager.getWorkInfoByIdLiveData(initWorkRequest.getId())
                         .observe(getParentFragment(), worker -> {
                             if (worker.getState() == WorkInfo.State.SUCCEEDED) {
-                                FileUtil fileUtil = new FileUtil();
-                                //TODO: stopped here. add files from repo dir to git_repo dir. delete repo dir and rename git_repo dir to repo
-//                                File fileSlr = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".slrproject");
-//                                File fileBib = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".bib");
-//                                File fileTaxonomy = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".taxonomy");
-//                                repo.setLocal_path(repo.getLocal_path()+"git");
-//                                repoViewModel.update(repo);
-//                                try {
-////                                    FileUtils.copy(new FileInputStream(fileSlr), new FileOutputStream(repo.getLocal_path() + "git/meta.srlproject"));
-////                                    FileUtils.copy(new FileInputStream(fileBib), new FileOutputStream(repo.getLocal_path() + "git/bib.bib"));
-////                                    FileUtils.copy(new FileInputStream(fileTaxonomy), new FileOutputStream(repo.getLocal_path() + "git/tax.taxonomy"));
-//                                } catch (IOException e) {
-//                                    throw new RuntimeException(e);
-//                                }
-                           //     fileUtil.copyFile(new File(""),new File(repo.getLocal_path() + "git" ));
+//                                    fileUtil.copyFile(fileSlr, newFileSlr);
+//                                    fileUtil.copyFile(fileBib, newFileBib);
+//                                    fileUtil.copyFile(fileTaxonomy, newFileTaxonomy);
+
+                                    repo.setLocal_path(repo.getLocal_path() + "git");
+                                    repoViewModel.update(repo);
+
 
                                 Toast.makeText(view.getContext(),
                                         getString(R.string.toast_commit_succeeded),
@@ -134,6 +132,7 @@ public class AddGitDataDialog extends DialogFragment {
                                         Toast.LENGTH_LONG).show();
                             }
                         });
+
                 dismiss();
             }
         });

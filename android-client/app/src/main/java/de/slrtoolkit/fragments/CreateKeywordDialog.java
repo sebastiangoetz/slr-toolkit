@@ -13,9 +13,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
+
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.repositories.KeywordRepository;
+import de.slrtoolkit.util.FileUtil;
+import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class CreateKeywordDialog extends DialogFragment {
@@ -41,6 +45,13 @@ public class CreateKeywordDialog extends DialogFragment {
                 Keyword keyword = new Keyword(editKeywordName.getText().toString());
                 keyword.setRepoId(repoViewModel.getCurrentRepo().getId());
                 keywordRepository.insert(keyword);
+
+                SlrprojectParser slrprojectParser = new SlrprojectParser();
+
+                FileUtil fileUtil= new FileUtil();
+                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+
+                slrprojectParser.editKeywords(String.valueOf(file), editKeywordName.getText().toString(),true);
                 dismiss();
             }
         });

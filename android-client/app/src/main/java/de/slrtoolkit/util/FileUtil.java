@@ -2,6 +2,7 @@ package de.slrtoolkit.util;
 
 import android.app.Application;
 import android.os.Build;
+import android.os.FileUtils;
 
 import androidx.annotation.RequiresApi;
 
@@ -54,33 +55,11 @@ public class FileUtil {
         return file;
     }
 
-    public boolean copyFile(File sourceFile, File destFile) {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
+    public void copyFile(File sourceFile, File destFile)  {
         try {
-            inputStream = new FileInputStream(sourceFile);
-            outputStream = new FileOutputStream(destFile);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-            outputStream.flush();
-            return true;
+            FileUtils.copy(new FileInputStream(sourceFile.toString()), new FileOutputStream(destFile.toString()));
         } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            throw new RuntimeException(e);
         }
     }
 }

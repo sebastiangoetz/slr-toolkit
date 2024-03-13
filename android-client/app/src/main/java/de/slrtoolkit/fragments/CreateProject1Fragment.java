@@ -138,7 +138,7 @@ public class CreateProject1Fragment extends Fragment {
         });
         bibDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".bib";
-           // Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.bib"));
+            // Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.bib"));
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, "");
@@ -154,7 +154,7 @@ public class CreateProject1Fragment extends Fragment {
         });
         taxonomyDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".taxonomy";
-          //  Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.taxonomy"));
+            //  Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.taxonomy"));
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, "Venue ,\n" +
@@ -163,11 +163,7 @@ public class CreateProject1Fragment extends Fragment {
 
         button_create_project.setOnClickListener(null);
         Repo repo = new Repo("", "", "", "", "");
-        repoViewModel = new
-
-                ViewModelProvider(requireActivity()).
-
-                get(RepoViewModel.class);
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         int id = (int) repoViewModel.insert(repo);
         try {
@@ -257,16 +253,16 @@ public class CreateProject1Fragment extends Fragment {
     private void addDefaultFile(String repoFolder, String fileType, String body) {
 
         File dir = new File(getContext().getFilesDir(), repoFolder);
-        if(!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdir();
         }
         try {
-            File gpxfile = new File(dir, "temp"+fileType);
+            File gpxfile = new File(dir, "temp" + fileType);
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(body);
             writer.flush();
             writer.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -79,7 +79,7 @@ public class ViewProjectMetadataFragment extends Fragment {
         plusKeyword = view.findViewById(R.id.plus_keyword);
         plusAuthor = view.findViewById(R.id.plus_author);
 
-        keywordListAdapter = new KeywordListAdapter(getActivity().getSupportFragmentManager(), keywordRepository, new KeywordListAdapter.KeywordsDiff());
+        keywordListAdapter = new KeywordListAdapter(getActivity().getApplication(),getActivity().getSupportFragmentManager(), keywordRepository, new KeywordListAdapter.KeywordsDiff());
         RecyclerView keywordsRecycler = view.findViewById(R.id.list_keywords);
         LinearLayoutManager lm = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         keywordsRecycler.setLayoutManager(lm);
@@ -105,7 +105,6 @@ public class ViewProjectMetadataFragment extends Fragment {
         plusKeyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new CreateKeywordDialog().show(getActivity().getSupportFragmentManager(), CreateKeywordDialog.TAG);
                 CreateKeywordDialog dialog = new CreateKeywordDialog();
                 dialog.show(getChildFragmentManager(), CreateKeywordDialog.TAG);
 

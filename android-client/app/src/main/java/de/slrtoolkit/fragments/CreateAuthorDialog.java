@@ -13,9 +13,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Author;
 import de.slrtoolkit.repositories.AuthorRepository;
+import de.slrtoolkit.util.FileUtil;
+import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class CreateAuthorDialog extends DialogFragment {
@@ -44,6 +54,17 @@ public class CreateAuthorDialog extends DialogFragment {
                 Author author = new Author(editAuthorName.getText().toString(), editAuthorAffilation.getText().toString(), editAuthorEmail.getText().toString());
                 author.setRepoId(repoViewModel.getCurrentRepo().getId());
                 authorRepository.insert(author);
+
+                SlrprojectParser slrprojectParser = new SlrprojectParser();
+
+                FileUtil fileUtil= new FileUtil();
+                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+
+                try {
+                    slrprojectParser.addAuthorList(String.valueOf(file),editAuthorName.getText().toString(), editAuthorEmail.getText().toString(), editAuthorAffilation.getText().toString());
+                } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
+                    throw new RuntimeException(e);
+                }
                 dismiss();
             }
         });

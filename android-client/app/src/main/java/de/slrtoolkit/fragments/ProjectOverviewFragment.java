@@ -2,7 +2,6 @@ package de.slrtoolkit.fragments;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ import de.slrtoolkit.worker.PushWorker;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProjectOverviewFragment extends Fragment implements AddGitDataDialog.DialogListener {
+public class ProjectOverviewFragment extends Fragment {
 
     private Button allEntryButton;
     private Button filterButton;
@@ -101,7 +100,7 @@ public class ProjectOverviewFragment extends Fragment implements AddGitDataDialo
                 Repo currentRepo = repoViewModel.getCurrentRepo();
                 if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
                     AddGitDataDialog dialog = new AddGitDataDialog();
-                    dialog.setDialogListener(this);
+                   // dialog.setDialogListener(this);
                     dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
                 } else {
                     actionCommitRepo(view);
@@ -240,10 +239,5 @@ public class ProjectOverviewFragment extends Fragment implements AddGitDataDialo
                                 Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    @Override
-    public void onDialogDismissed(View view) {
-        actionCommitRepo(view);
     }
 }
