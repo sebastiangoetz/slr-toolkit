@@ -65,18 +65,11 @@ public class AddGitDataDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Repo repo = repoViewModel.getCurrentRepo();
-                //ToDO: change code piece
-//                repo.setRemote_url(remoteUrl.getText().toString());
-//                repo.setToken(token.getText().toString());
-//                repo.setGit_name(gitName.getText().toString());
-//                repo.setGit_email(gitEmail.getText().toString());
-//                repo.setUsername(gitName.getText().toString());
-                repo.setRemote_url("https://github.com/Nastasja-Z/empty_slrtoolkit.git");
-                repo.setToken("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");
-                repo.setGit_name("NastasjaZ");
-                repo.setGit_email("anastasia.zimnenko@gmail.com");
-                repo.setUsername("NastasjaZ");
-
+                repo.setRemote_url(remoteUrl.getText().toString());
+                repo.setToken(token.getText().toString());
+                repo.setGit_name(gitName.getText().toString());
+                repo.setGit_email(gitEmail.getText().toString());
+                repo.setUsername(gitName.getText().toString());
                 repoViewModel.update(repo);
 
                 FileUtil fileUtil = new FileUtil();
