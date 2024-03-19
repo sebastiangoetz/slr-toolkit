@@ -75,7 +75,6 @@ public class AddGitDataDialog extends DialogFragment {
                 repoViewModel.update(repo);
 
                 FileUtil fileUtil = new FileUtil();
-                //TODO: delete repo dir
                 File fileSlr = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".slrproject");
                 File fileBib = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".bib");
                 File fileTaxonomy = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".taxonomy");
@@ -110,6 +109,7 @@ public class AddGitDataDialog extends DialogFragment {
                 workManager.getWorkInfoByIdLiveData(initWorkRequest.getId())
                         .observe(getParentFragment(), worker -> {
                             if (worker.getState() == WorkInfo.State.SUCCEEDED) {
+
                                     repo.setLocal_path(repo.getLocal_path() + "git");
                                     repoViewModel.update(repo);
 

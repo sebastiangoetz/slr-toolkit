@@ -23,7 +23,7 @@
     <string name="button_add_taxonomy">Add taxonomy</string>
     <string name="button_add_default_file">Add default file</string>
     <string name="button_edit_project">Edit Project Metadata</string>
-    <string name="button_add_file">Datei auswählen</string>
+    <string name="button_add_file">Choose file</string>
     <string name="textinput_name">Project Name</string>
     <string name="toast_empty_name">Please leave \'project name\' not empty.</string>
     <string name="snackbar_undo">Undo</string>
