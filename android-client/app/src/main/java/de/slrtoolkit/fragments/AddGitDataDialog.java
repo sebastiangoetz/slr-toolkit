@@ -70,10 +70,12 @@ public class AddGitDataDialog extends DialogFragment {
                 repo.setGit_name(gitName.getText().toString());
                 repo.setGit_email(gitEmail.getText().toString());
                 repo.setUsername(gitName.getText().toString());
+
+
                 repoViewModel.update(repo);
 
                 FileUtil fileUtil = new FileUtil();
-                //TODO: stopped here. add files from repo dir to git_repo dir. delete repo dir and rename git_repo dir to repo
+                //TODO: delete repo dir
                 File fileSlr = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".slrproject");
                 File fileBib = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".bib");
                 File fileTaxonomy = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".taxonomy");
@@ -108,10 +110,6 @@ public class AddGitDataDialog extends DialogFragment {
                 workManager.getWorkInfoByIdLiveData(initWorkRequest.getId())
                         .observe(getParentFragment(), worker -> {
                             if (worker.getState() == WorkInfo.State.SUCCEEDED) {
-//                                    fileUtil.copyFile(fileSlr, newFileSlr);
-//                                    fileUtil.copyFile(fileBib, newFileBib);
-//                                    fileUtil.copyFile(fileTaxonomy, newFileTaxonomy);
-
                                     repo.setLocal_path(repo.getLocal_path() + "git");
                                     repoViewModel.update(repo);
 

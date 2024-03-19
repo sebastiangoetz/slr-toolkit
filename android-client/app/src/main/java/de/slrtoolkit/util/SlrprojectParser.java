@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -125,11 +126,21 @@ public class SlrprojectParser {
         return true;
     }
 
-    public void deleteAuthorList(String localpath, String email) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public void deleteAuthorList(String localpath, String email) {
         File inputFile = new File(localpath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(inputFile);
+        DocumentBuilder dBuilder = null;
+        try {
+            dBuilder = dbFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        Document doc = null;
+        try {
+            doc = dBuilder.parse(inputFile);
+        } catch (IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
         Element root = doc.getDocumentElement();
 
         NodeList authorsListNodes = root.getElementsByTagName("authorsList");
@@ -146,10 +157,19 @@ public class SlrprojectParser {
         }
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException(e);
+        }
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(inputFile);
-        transformer.transform(source, result);
+        try {
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void editKeywords(String localpath, String keyword, Boolean toAdd){
@@ -173,44 +193,6 @@ public class SlrprojectParser {
                     keywordsElement.setTextContent(keywordsContent + ", " + keyword);
                 }
             }
-
-
-//            NodeList keywordsList = root.getElementsByTagName("keywords");
-//            if (keywordsList.getLength() > 0) {
-//                Element keywordsElement = (Element) keywordsList.item(0);
-//
-//                String keywordsContent = keywordsElement.getTextContent();
-//
-//                String[] keywords = keywordsContent.split(",");
-//
-//                String newKeyword = "new_keyword";
-//
-//                String keywordToRemove = "keyword_to_remove";
-//
-//                String keywordToModify = "keyword_to_modify";
-//                String modifiedKeyword = "modified_keyword";
-//
-//                StringBuilder updatedKeywords = new StringBuilder();
-//                for (String keyword : keywords) {
-//                    keyword = keyword.trim();
-//
-//                    if (keyword.equals(keywordToRemove)) {
-//                        continue;
-//                    }
-//
-//                    if (keyword.equals(keywordToModify)) {
-//                        keyword = modifiedKeyword;
-//                    }
-//
-//                    updatedKeywords.append(keyword).append(",");
-//                }
-//
-//                if (updatedKeywords.length() > 0) {
-//                    updatedKeywords.deleteCharAt(updatedKeywords.length() - 1);
-//                }
-//
-//                keywordsElement.setTextContent(updatedKeywords.toString());
-//            }
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

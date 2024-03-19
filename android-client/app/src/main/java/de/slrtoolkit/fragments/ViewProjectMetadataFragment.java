@@ -85,7 +85,7 @@ public class ViewProjectMetadataFragment extends Fragment {
         keywordsRecycler.setLayoutManager(lm);
         keywordsRecycler.setAdapter(keywordListAdapter);
 
-        authorListAdapter = new AuthorListAdapter(new AuthorListAdapter.AuhtorsDiff());
+        authorListAdapter = new AuthorListAdapter(getActivity().getApplication(),authorRepository,new AuthorListAdapter.AuhtorsDiff());
         RecyclerView authorsRecycler = view.findViewById(R.id.list_authors);
         LinearLayoutManager lm2 = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false);
         authorsRecycler.setLayoutManager(lm2);

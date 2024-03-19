@@ -1,20 +1,38 @@
 package de.slrtoolkit.views;
 
+import android.app.Application;
+import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+
 import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Keyword;
+import de.slrtoolkit.repositories.AuthorRepository;
+import de.slrtoolkit.repositories.OnDeleteCompleteListener;
+import de.slrtoolkit.util.DoubleClickListener;
+import de.slrtoolkit.util.FileUtil;
+import de.slrtoolkit.util.SlrprojectParser;
+import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
     private RecyclerView recyclerView;
 
-    public AuthorListAdapter(@NonNull DiffUtil.ItemCallback<Author> diffCallback) {
+    private Application application;
+
+    private AuthorRepository authorRepository;
+    public AuthorListAdapter(Application application,AuthorRepository authorRepository, @NonNull DiffUtil.ItemCallback<Author> diffCallback) {
         super(diffCallback);
+        this.application= application;
+        this.authorRepository = authorRepository;
     }
 
     @NonNull
@@ -27,6 +45,30 @@ public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
     public void onBindViewHolder(@NonNull AuthorViewHolder holder, int position) {
         Author current = getItem(position);
         holder.bind(current.getName(), current.getAffilation(), current.getEmail());
+        RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
+
+        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), new DoubleClickListener.OnDoubleClickListener() {
+
+            @Override
+            public void onDoubleClick(View v) {
+
+
+                FileUtil fileUtil= new FileUtil();
+                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application,".slrproject");
+                SlrprojectParser slrprojectParser = new SlrprojectParser();
+                slrprojectParser.deleteAuthorList(String.valueOf(file), current.getName());
+
+                authorRepository.deleteAsync(current, new OnDeleteCompleteListener() {
+                    @Override
+                    public void onDeleteComplete() {
+
+                    }
+                });
+            }
+        }));
+    }
+    public Context getContext() {
+        return recyclerView.getContext();
     }
 
     @Override

@@ -18,10 +18,14 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -50,7 +54,7 @@ public class InitWorker extends Worker {
             return Result.failure();
         }
 
-        String local_path = getInputData().getString("LOCAL_PATH");
+        //String local_path = getInputData().getString("LOCAL_PATH");
         String local_path_git = getInputData().getString("LOCAL_PATH_GIT");
         File path = new File(getApplicationContext().getFilesDir(), local_path_git);
         boolean isDirectoryCreated = path.exists();
@@ -92,6 +96,16 @@ public class InitWorker extends Worker {
                             + e.getMessage()).build());
         }
 
+        Git git;
+        try {
+            git = Git.open(path);
+            Repository repository = git.getRepository();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Status status = null;
+
         FileUtil fileUtil = new FileUtil();
         String oldSlr = getInputData().getString("PATH_SLR");
         String oldBib = getInputData().getString("PATH_BIB");
@@ -105,74 +119,45 @@ public class InitWorker extends Worker {
         fileUtil.copyFile(new File(oldTax), new File(newTax));
 
 
-        Git git;
+        File slrFile = new File(git.getRepository().getDirectory().getParent(), new File(newSlr).getName());
+        File bibFile = new File(git.getRepository().getDirectory().getParent(), new File(newBib).getName());
+        File taxonomyFile = new File(git.getRepository().getDirectory().getParent(), new File(newTax).getName());
+
         try {
-            git = Git.open(path);
-
-
-            AddCommand add = git.add();
-//            add.addFilepattern(getApplicationContext().getFilesDir() + local_path_git);
-            add.addFilepattern(newSlr);
-            add.addFilepattern(newBib);
-            add.addFilepattern(newTax);
-
-            add.call();
-
-
-
+            status = git.status().call();
+            git.add().addFilepattern(new File(newSlr).getName()).addFilepattern(new File(newBib).getName()).addFilepattern(new File(newTax).getName()).call();
+            status = git.status().call();
             String gitName = getInputData().getString("USERNAME");
             String gitEmail = getInputData().getString("EMAIL");
+            git.commit().setCommitter(gitName, gitEmail).setMessage("Initial commit").call();
+            status = git.status().call();
 
-            String gitMessage = getInputData().getString("GIT_MESSAGE");
-            if (gitMessage == null || gitMessage.isEmpty()) {
-                gitMessage = "Commit by Android-App";
-            }
-
-            CommitCommand commitCommand = git.commit();
-            commitCommand.setCommitter(gitName, gitEmail).setMessage(gitMessage);
-            commitCommand.call();
-        } catch (IOException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_push_failed)
-            ).build());
-        } catch (NoFilepatternException e) {
-            throw new RuntimeException(e);
         } catch (GitAPIException e) {
             throw new RuntimeException(e);
-        } catch (Exception e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_commit_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
         }
 
-        Status status = null;
         try {
             status = git.status().call();
         } catch (GitAPIException e) {
             throw new RuntimeException(e);
         }
 
-        Set<String> added = status.getAdded();
-        for (String add : added) {
-            System.out.println("Added: " + add);
-        }
-        Set<String> uncommittedChanges = status.getUncommittedChanges();
-        for (String uncommitted : uncommittedChanges) {
-            System.out.println("Uncommitted: " + uncommitted);
-        }
-
-        Set<String> untracked = status.getUntracked();
-        for (String untrack : untracked) {
-            System.out.println("Untracked: " + untrack);
-        }
-
+//        Set<String> added = status.getAdded();
+//
+//        Set<String> uncommittedChanges = status.getUncommittedChanges();
+//
+//        Set<String> untracked = status.getUntracked();
+//
+//
+//        ObjectId lastCommitId = null;
+//        try {
+//            lastCommitId = git.getRepository().resolve(Constants.HEAD);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
         return Result.success();
     }
-
-
-
 
 
 }
