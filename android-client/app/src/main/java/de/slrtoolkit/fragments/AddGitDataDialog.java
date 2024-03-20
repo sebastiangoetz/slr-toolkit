@@ -71,7 +71,6 @@ public class AddGitDataDialog extends DialogFragment {
                 repo.setGit_email(gitEmail.getText().toString());
                 repo.setUsername(gitName.getText().toString());
 
-
                 repoViewModel.update(repo);
 
                 FileUtil fileUtil = new FileUtil();
@@ -80,9 +79,9 @@ public class AddGitDataDialog extends DialogFragment {
                 File fileBib = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".bib");
                 File fileTaxonomy = fileUtil.accessFiles(repo.getLocal_path(), getParentFragment().getActivity().getApplication(), ".taxonomy");
 
-                File newFileSlr = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileSlr.getName());
-                File newFileBib = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileBib.getName());
-                File newFileTaxonomy = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/"+fileTaxonomy.getName());
+                File newFileSlr = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/" + fileSlr.getName());
+                File newFileBib = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/" + fileBib.getName());
+                File newFileTaxonomy = new File(getParentFragment().getActivity().getApplication().getApplicationContext().getFilesDir(), repo.getLocal_path() + "git/" + fileTaxonomy.getName());
 
                 WorkRequest initWorkRequest =
                         new OneTimeWorkRequest.Builder(InitWorker.class)
@@ -93,7 +92,7 @@ public class AddGitDataDialog extends DialogFragment {
                                                 .putString("EMAIL", repo.getGit_email())
                                                 .putString("TOKEN", repo.getToken())
                                                 .putString("LOCAL_PATH", repo.getLocal_path())
-                                                .putString("LOCAL_PATH_GIT", repo.getLocal_path()+"git")
+                                                .putString("LOCAL_PATH_GIT", repo.getLocal_path() + "git")
                                                 .putString("PATH_SLR", fileSlr.toString())
                                                 .putString("PATH_BIB", fileBib.toString())
                                                 .putString("PATH_TAX", fileTaxonomy.toString())
