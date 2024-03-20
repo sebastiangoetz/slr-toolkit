@@ -92,21 +92,30 @@ public class ProjectOverviewFragment extends Fragment {
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
 
         editMetadataButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this).navigate(R.id.action_projectOverviewFragment_to_editProjectMetadataFragment));
-
+        try {
+            repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Repo currentRepo = repoViewModel.getCurrentRepo();
+        if (currentRepo.getRemote_url().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("") || currentRepo.getGit_name().equals("")) {
+            pullButton.setEnabled(false);
+            pushButton.setEnabled(false);
+        }
         pullButton.setOnClickListener(v -> actionPullRepo(view));
         commitButton.setOnClickListener(v -> {
-            try {
-                repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
-                Repo currentRepo = repoViewModel.getCurrentRepo();
-                if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
-                    AddGitDataDialog dialog = new AddGitDataDialog();
-                   // dialog.setDialogListener(this);
-                    dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
-                } else {
-                    actionCommitRepo(view);
+
+            if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
+                AddGitDataDialog dialog = new AddGitDataDialog();
+
+                dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
+                if (!currentRepo.getRemote_url().equals("") || !currentRepo.getToken().equals("") || !currentRepo.getGit_email().equals("") || !currentRepo.getGit_name().equals("")) {
+                    pullButton.setEnabled(true);
+                    pushButton.setEnabled(true);
                 }
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
+
+            } else {
+                actionCommitRepo(view);
             }
         });
         pushButton.setOnClickListener(v -> actionPushRepo(view));

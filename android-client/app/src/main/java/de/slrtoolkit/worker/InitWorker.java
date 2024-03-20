@@ -129,7 +129,7 @@ public class InitWorker extends Worker {
             status = git.status().call();
             String gitName = getInputData().getString("USERNAME");
             String gitEmail = getInputData().getString("EMAIL");
-            git.commit().setCommitter(gitName, gitEmail).setMessage("Initial commit").call();
+            git.commit().setCommitter(gitName, gitEmail).setMessage("Commit from Android App").call();
             status = git.status().call();
 
         } catch (GitAPIException e) {

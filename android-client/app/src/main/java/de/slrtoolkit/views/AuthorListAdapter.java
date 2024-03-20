@@ -1,7 +1,9 @@
 package de.slrtoolkit.views;
 
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,9 +31,10 @@ public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
     private Application application;
 
     private AuthorRepository authorRepository;
-    public AuthorListAdapter(Application application,AuthorRepository authorRepository, @NonNull DiffUtil.ItemCallback<Author> diffCallback) {
+
+    public AuthorListAdapter(Application application, AuthorRepository authorRepository, @NonNull DiffUtil.ItemCallback<Author> diffCallback) {
         super(diffCallback);
-        this.application= application;
+        this.application = application;
         this.authorRepository = authorRepository;
     }
 
@@ -51,24 +54,41 @@ public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
 
             @Override
             public void onDoubleClick(View v) {
-
-
-                FileUtil fileUtil= new FileUtil();
-                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application,".slrproject");
-                SlrprojectParser slrprojectParser = new SlrprojectParser();
-                slrprojectParser.deleteAuthorList(String.valueOf(file), current.getName());
-
-                authorRepository.deleteAsync(current, new OnDeleteCompleteListener() {
-                    @Override
-                    public void onDeleteComplete() {
-
-                    }
-                });
+                showDialog(repoViewModel, current);
             }
         }));
     }
+
     public Context getContext() {
         return recyclerView.getContext();
+    }
+
+    private void showDialog(RepoViewModel repoViewModel, Author current) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete Author?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FileUtil fileUtil = new FileUtil();
+                        File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application, ".slrproject");
+                        SlrprojectParser slrprojectParser = new SlrprojectParser();
+                        slrprojectParser.deleteAuthorList(String.valueOf(file), current.getEmail());
+
+                        authorRepository.deleteAsync(current, new OnDeleteCompleteListener() {
+                            @Override
+                            public void onDeleteComplete() {
+
+                            }
+                        });
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

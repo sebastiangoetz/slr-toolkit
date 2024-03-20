@@ -22,8 +22,6 @@ import javax.xml.transform.stream.StreamResult;
 public class SlrprojectParser {
     public void parseSlr(String localpath, String newTitle, String newAbstract) {
         try {
-            //TODO: intergate parser for slr to the fragment. check if changes are there. try to commit them
-            // add also other tags to be changed
             File inputFile = new File(localpath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -68,20 +66,6 @@ public class SlrprojectParser {
             }
         }
 
-//        Element newAuthorsList = doc.createElement("authorsList");
-//        Element emailElement = doc.createElement("email");
-//        emailElement.setTextContent(email);
-//        newAuthorsList.appendChild(emailElement);
-//
-//        Element nameElement = doc.createElement("name");
-//        nameElement.setTextContent(name);
-//        newAuthorsList.appendChild(nameElement);
-//
-//        Element organisationElement = doc.createElement("organisation");
-//        organisationElement.setTextContent(organisation);
-//        newAuthorsList.appendChild(organisationElement);
-//
-//        root.appendChild(newAuthorsList);
         Element emailElement = doc.createElement("email");
         emailElement.appendChild(doc.createTextNode(email));
         Element nameElement = doc.createElement("name");
@@ -89,24 +73,17 @@ public class SlrprojectParser {
         Element organisationElement = doc.createElement("organisation");
         organisationElement.appendChild(doc.createTextNode(organisation));
 
-        // Create the <authorsList> element and append the child elements
         Element authorsListElement = doc.createElement("authorsList");
         authorsListElement.appendChild(emailElement);
         authorsListElement.appendChild(nameElement);
         authorsListElement.appendChild(organisationElement);
 
-        // Append the <authorsList> element to the root element
         root.appendChild(authorsListElement);
-//
-//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//        Transformer transformer = transformerFactory.newTransformer();
-//        DOMSource source = new DOMSource(doc);
-//        StreamResult result = new StreamResult(inputFile);
-//        transformer.transform(source, result);
+
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4"); // Number of spaces for indentation
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(new FileOutputStream(inputFile));
         transformer.transform(source, result);
@@ -205,7 +182,6 @@ public class SlrprojectParser {
         }
     }
 
-
     public void deleteKeyword(String localPath, String keywordToDelete){
         try {
             File inputFile = new File(localPath);
@@ -236,33 +212,4 @@ public class SlrprojectParser {
             e.printStackTrace();
         }
     }
-
-//    public void editAuthorList(String localpath, String name, String email, String organisation) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-//        File inputFile = new File(localpath);
-//        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//        Document doc = dBuilder.parse(inputFile);
-//        Element root = doc.getDocumentElement();
-//
-//        NodeList authorsListNodes = root.getElementsByTagName("authorsList");
-//        for (int i = 0; i < authorsListNodes.getLength(); i++) {
-//            Element authorsListElement = (Element) authorsListNodes.item(i);
-//
-//            // Edit specific child elements of the <authorsList> tag
-//            Element emailElement = (Element) authorsListElement.getElementsByTagName("email").item(0);
-//            emailElement.setTextContent("edited_email@example.com");
-//
-//            Element nameElement = (Element) authorsListElement.getElementsByTagName("name").item(0);
-//            nameElement.setTextContent("Edited Author");
-//
-//            Element organisationElement = (Element) authorsListElement.getElementsByTagName("organisation").item(0);
-//            organisationElement.setTextContent("Edited Organisation");
-//        }
-//
-//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//        Transformer transformer = transformerFactory.newTransformer();
-//        DOMSource source = new DOMSource(doc);
-//        StreamResult result = new StreamResult(inputFile);
-//        transformer.transform(source, result);
-//    }
 }
