@@ -54,7 +54,6 @@ public class InitWorker extends Worker {
             return Result.failure();
         }
 
-        //String local_path = getInputData().getString("LOCAL_PATH");
         String local_path_git = getInputData().getString("LOCAL_PATH_GIT");
         File path = new File(getApplicationContext().getFilesDir(), local_path_git);
         boolean isDirectoryCreated = path.exists();
@@ -141,21 +140,6 @@ public class InitWorker extends Worker {
         } catch (GitAPIException e) {
             throw new RuntimeException(e);
         }
-
-//        Set<String> added = status.getAdded();
-//
-//        Set<String> uncommittedChanges = status.getUncommittedChanges();
-//
-//        Set<String> untracked = status.getUntracked();
-//
-//
-//        ObjectId lastCommitId = null;
-//        try {
-//            lastCommitId = git.getRepository().resolve(Constants.HEAD);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
         return Result.success();
     }
 

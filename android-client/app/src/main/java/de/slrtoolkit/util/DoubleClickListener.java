@@ -34,7 +34,7 @@ public class DoubleClickListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (onDoubleClickListener != null) {
-                onDoubleClickListener.onDoubleClick(null); // You can pass the View v here if needed
+                onDoubleClickListener.onDoubleClick(null);
             }
             return true;
         }
