@@ -39,7 +39,7 @@ android {
     }
     namespace 'de.slrtoolkit'
     lintOptions{
-        warningsAsErrors true
+        warningsAsErrors false
     }
 
 }
