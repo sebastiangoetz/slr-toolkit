@@ -40,7 +40,6 @@ android {
     namespace 'de.slrtoolkit'
     lintOptions{
         warningsAsErrors true
-        disable 'deprecation'
     }
 
 }
