@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +22,15 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.concurrent.ExecutionException;
+
 import de.slrtoolkit.AnalyzeActivity;
+import de.slrtoolkit.ManageTaxonomyActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
+import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.worker.CommitWorker;
 import de.slrtoolkit.worker.PullWorker;
 import de.slrtoolkit.worker.PushWorker;
@@ -45,7 +50,7 @@ public class ProjectOverviewFragment extends Fragment {
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
     private TextView projectNameTextView;
-
+    private RepoViewModel repoViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,9 +68,13 @@ public class ProjectOverviewFragment extends Fragment {
         classifyButton = view.findViewById(R.id.button_classify);
         filterButton = view.findViewById(R.id.button_filter);
 
+        ImageButton editMetadataButton = view.findViewById(R.id.button_edit_project_metadata);
+
         pullButton = view.findViewById(R.id.button_pull);
         commitButton = view.findViewById(R.id.button_commit);
         pushButton = view.findViewById(R.id.button_push);
+
+        Button manageTaxonomyButton = view.findViewById(R.id.button_manage_taxonomy);
 
         allEntryButton = view.findViewById(R.id.button_all_entries);
         Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
@@ -74,7 +83,7 @@ public class ProjectOverviewFragment extends Fragment {
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         int repoId = projectViewModel.getCurrentRepoId();
-
+        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment));
@@ -82,8 +91,33 @@ public class ProjectOverviewFragment extends Fragment {
         filterButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_filterFragment));
 
+        editMetadataButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this).navigate(R.id.action_projectOverviewFragment_to_editProjectMetadataFragment));
+        try {
+            repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Repo currentRepo = repoViewModel.getCurrentRepo();
+        if (currentRepo.getRemote_url().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("") || currentRepo.getGit_name().equals("")) {
+            pullButton.setEnabled(false);
+            pushButton.setEnabled(false);
+        }
         pullButton.setOnClickListener(v -> actionPullRepo(view));
-        commitButton.setOnClickListener(v -> actionCommitRepo(view));
+        commitButton.setOnClickListener(v -> {
+
+            if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
+                AddGitDataDialog dialog = new AddGitDataDialog();
+
+                dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
+                if (!currentRepo.getRemote_url().equals("") || !currentRepo.getToken().equals("") || !currentRepo.getGit_email().equals("") || !currentRepo.getGit_name().equals("")) {
+                    pullButton.setEnabled(true);
+                    pushButton.setEnabled(true);
+                }
+
+            } else {
+                actionCommitRepo(view);
+            }
+        });
         pushButton.setOnClickListener(v -> actionPushRepo(view));
 
         allEntryButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
@@ -103,6 +137,12 @@ public class ProjectOverviewFragment extends Fragment {
             requireActivity().overridePendingTransition(0, 0);
         });
 
+        manageTaxonomyButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ManageTaxonomyActivity.class);
+            intent.putExtra("repo", projectViewModel.getCurrentRepoId());
+            startActivity(intent);
+            requireActivity().overridePendingTransition(0, 0);
+        });
 
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());
         projectViewModel.getRepoById(repoId).observe(getViewLifecycleOwner(), repoTitleObserver);

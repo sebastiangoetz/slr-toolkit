@@ -75,6 +75,11 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         return taxonomyRepository.getChildTaxonomies(repoId, parentId);
     }
 
+    public LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId) {
+        return taxonomyRepository.getAllTaxonomiesForRepo(repoId);
+    }
+
+
     public LiveData<Entry> getEntryById(int id) {
         return entryRepository.getEntryById(id);
     }

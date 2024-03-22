@@ -9,14 +9,20 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.repositories.AuthorRepository;
 import de.slrtoolkit.repositories.EntryRepository;
+import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.repositories.RepoRepository;
 
 public class ProjectViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
     private final EntryRepository entryRepository;
+    private final AuthorRepository authorRepository;
+    private final KeywordRepository keywordRepository;
     private int currentRepoId;
     private int currentEntryIdForCard;
     private List<Entry> currentEntriesInList;
@@ -26,12 +32,25 @@ public class ProjectViewModel extends AndroidViewModel {
         super(application);
         repoRepository = new RepoRepository(application);
         entryRepository = new EntryRepository(application);
+        authorRepository = new AuthorRepository(application);
+        keywordRepository = new KeywordRepository(application);
     }
 
     public LiveData<Repo> getRepoById(int id) {
         return repoRepository.getRepoById(id);
     }
 
+    public LiveData<List<Keyword>> getKeywordsForCurrentProject() {
+        return keywordRepository.getKeywordsForRepo(currentRepoId);
+    }
+
+    public void deleteKeyword(Keyword keyword){
+        keywordRepository.delete(keyword);
+    }
+
+    public LiveData<List<Author>> getAuthorsForCurrentProject() {
+        return authorRepository.getAuthorsForRepo(currentRepoId);
+    }
     public int getCurrentEntryInListCount() {
         return currentEntryInListCount;
     }
