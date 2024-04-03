@@ -38,7 +38,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     namespace 'de.slrtoolkit'
-    lintOptions{
+    lint {
         warningsAsErrors false
     }
 
@@ -48,7 +48,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'io.github.amrdeveloper:treeview:1.1.4'
 
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
