@@ -33,11 +33,6 @@ public class FileUtil {
         return bibFile;
     }
 
-    public void accessFilesOfLocalRepo(String path, Application application, String type){
-        File directoryPath = new File(application.getApplicationContext().getFilesDir(), path);
-
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String readContentFromFile(String path, Application application) throws FileNotFoundException {
         File file = accessFiles(path, application, ".taxonomy");

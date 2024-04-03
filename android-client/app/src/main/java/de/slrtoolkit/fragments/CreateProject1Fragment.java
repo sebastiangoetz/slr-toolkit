@@ -99,7 +99,6 @@ public class CreateProject1Fragment extends Fragment {
 
         slrDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".slrproject";
-            //Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.slrproject"));
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
@@ -114,8 +113,6 @@ public class CreateProject1Fragment extends Fragment {
                     "        <organisation></organisation>\n" +
                     "    </authorsList>\n" +
                     "</slrProjectMetainformation>\n");
-
-//            copyDocumentFile(getContext(), selectedDoc, repo);
         });
 
         slrChooseBtn.setOnClickListener(view1 -> {
@@ -125,8 +122,6 @@ public class CreateProject1Fragment extends Fragment {
             currentType = ".slrproject";
             resultLauncher.launch(intent);
         });
-
-        //  new FileSelectionDialogFragment().show(getChildFragmentManager(), FileSelectionDialogFragment.TAG);
 
         bibChooseBtn.setOnClickListener(view1 ->
         {
@@ -138,7 +133,6 @@ public class CreateProject1Fragment extends Fragment {
         });
         bibDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".bib";
-            // Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.bib"));
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, "");
@@ -154,7 +148,6 @@ public class CreateProject1Fragment extends Fragment {
         });
         taxonomyDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".taxonomy";
-            //  Uri selectedDoc = Uri.fromFile(new File(getContext().getFilesDir() + File.separator + "temp.taxonomy"));
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, "Venue ,\n" +
