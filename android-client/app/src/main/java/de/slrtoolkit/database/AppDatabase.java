@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntryTaxonomyCrossRef.class}, version = 1, exportSchema = false)
+@Database(entities = {Repo.class, Entry.class, Taxonomy.class, EntryTaxonomyCrossRef.class, Keyword.class, Author.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseWriteExecutor =
@@ -34,6 +34,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract EntryDao entryDao();
 
     public abstract TaxonomyDao taxonomyDao();
+
+    public abstract AuthorDao authorDao();
+
+    public abstract KeywordDao keywordDao();
 
     public abstract TaxonomyWithEntriesDao taxonomyWithEntriesDao();
 }

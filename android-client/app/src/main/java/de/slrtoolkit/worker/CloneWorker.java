@@ -74,7 +74,6 @@ public class CloneWorker extends Worker {
                             + System.getProperty("line.separator")
                             + e.getMessage()).build());
         }
-
         return Result.success();
     }
 }

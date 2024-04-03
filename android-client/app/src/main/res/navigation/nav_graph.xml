@@ -14,6 +14,10 @@
         <action
             android:id="@+id/action_ProjectsFragment_to_AddProjectFragment"
             app:destination="@id/AddProject1Fragment" />
+        <action
+            android:id="@+id/actionProjectsFragment_to_CreateProjectFragment"
+            app:destination="@+id/CreateProjectFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/AddProject1Fragment"
@@ -24,6 +28,16 @@
         <action
             android:id="@+id/action_AddProject1Fragment_to_AddProject2Fragment"
             app:destination="@id/AddProject2Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CreateProjectFragment"
+        android:name="de.slrtoolkit.fragments.CreateProject1Fragment"
+        android:label="@string/fragment_label_add_project"
+        tools:layout="@layout/fragment_create_project_1"
+        >
+        <action
+            android:id="@+id/action_CreateProjectFragment_to_AddProject2Fragment"
+            app:destination="@+id/AddProject2Fragment"/>
     </fragment>
     <fragment
         android:id="@+id/AddProject2Fragment"

@@ -25,6 +25,10 @@ public interface TaxonomyDao {
     LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
 
     @Transaction
+    @Query("SELECT * FROM taxonomy WHERE repoId=:repoId")
+    LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId);
+
+    @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND path=:path")
     Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path);
 }

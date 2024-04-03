@@ -10,12 +10,15 @@ import androidx.work.WorkerParameters;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
@@ -55,10 +58,16 @@ public class PushWorker extends Worker {
         }
 
         File path = new File(getApplicationContext().getFilesDir(), repo.getLocal_path());
+        Status status = null;
 
         Git git;
         try {
             git = Git.open(path);
+            try {
+                status = git.status().call();
+            } catch (GitAPIException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_push_failed)
@@ -69,7 +78,7 @@ public class PushWorker extends Worker {
 
         if (repo.getUsername() != null && repo.getToken() != null && !repo.getUsername().trim().isEmpty() && !repo.getToken().trim().isEmpty()) {
             UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(repo.getUsername(), repo.getToken());
-            pushCommand.setCredentialsProvider(auth);
+            pushCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider(repo.getToken(), "" ) );
         }
 
         try {
@@ -89,6 +98,12 @@ public class PushWorker extends Worker {
                     getApplicationContext().getString(R.string.error_push_failed)
                             + System.getProperty("line.separator")
                             + e.getMessage()).build());
+        }
+
+        try {
+            status = git.status().call();
+        } catch (GitAPIException e) {
+            throw new RuntimeException(e);
         }
 
         return Result.success();
