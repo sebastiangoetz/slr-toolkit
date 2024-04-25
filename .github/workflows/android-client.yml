@@ -14,10 +14,10 @@ env:
 on:
   # Triggers the workflow on push or pull request events
   push:
-    branches: ['master', 'android-client']
+    branches: ['master', 'android-client', 'android-client-2024']
     paths: ['android-client/**']
   pull_request:
-    branches: ['master', 'android-client']
+    branches: ['master', 'android-client', 'android-client-2024']
     paths: ['android-client/**']
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
