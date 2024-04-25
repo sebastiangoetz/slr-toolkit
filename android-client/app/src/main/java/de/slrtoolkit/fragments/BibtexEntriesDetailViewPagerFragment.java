@@ -70,7 +70,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
 
     private void setViewPager() {
         List<Entry> entries = getCurrentEntries();
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             noEntriesDetails.setVisibility(View.VISIBLE);
         } else {
             noEntriesDetails.setVisibility(View.INVISIBLE);
@@ -145,8 +145,8 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {
-        List<Entry> entries;
-        FragmentActivity fa;
+        final List<Entry> entries;
+        final FragmentActivity fa;
 
         public EntrySlidePagerAdapter(FragmentActivity fa, List<Entry> entries) {
             super(fa);

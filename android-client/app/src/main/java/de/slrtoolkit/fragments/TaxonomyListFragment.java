@@ -98,7 +98,7 @@ public class TaxonomyListFragment extends Fragment {
                 String path = t.taxonomy.getPath();
                 if (path.length() > 1) {
                     path = path.replaceAll("#", " > ");
-                    if (path.charAt(1) == ">".charAt(0)) {
+                    if (path.charAt(1) == '>') {
                         path = path.replaceFirst(" > ", "");
                     }
                     taxonomiesBreadCrumbTextview.setText(path);
@@ -114,7 +114,7 @@ public class TaxonomyListFragment extends Fragment {
     }
 
     public void onLoaded(List<Taxonomy> taxonomyList) {
-        if (taxonomyList.size() == 0) {
+        if (taxonomyList.isEmpty()) {
             noTaxonomiesTextview.setVisibility(View.VISIBLE);
         } else {
             noTaxonomiesTextview.setVisibility(View.INVISIBLE);

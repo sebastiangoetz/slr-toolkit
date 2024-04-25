@@ -70,7 +70,6 @@
     <string name="error_commit_failed">Error during committing.</string>
     <string name="error_commit_git_name">Please set your Git name.</string>
     <string name="error_commit_git_email">Please set your Git email.</string>
-    <string name="error_commit_git_message">Please include a commit message.</string>
     <string name="toast_commit_succeeded">Current status has been committed.</string>
     <string name="error_push_failed">Error during pushing to remote repository.</string>
     <string name="button_push">Push</string>

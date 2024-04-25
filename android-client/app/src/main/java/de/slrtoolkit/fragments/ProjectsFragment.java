@@ -70,7 +70,7 @@ public class ProjectsFragment extends Fragment {
     }
 
     private void onLoaded(List<Repo> list) {
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             textview_no_project.setVisibility(View.VISIBLE);
         } else {
             textview_no_project.setVisibility(View.INVISIBLE);

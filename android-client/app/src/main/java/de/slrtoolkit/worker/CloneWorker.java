@@ -9,9 +9,6 @@ import androidx.work.WorkerParameters;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
@@ -35,6 +32,7 @@ public class CloneWorker extends Worker {
         }
 
         String local_path = getInputData().getString("LOCAL_PATH");
+        if(local_path == null) local_path = "";
         File path = new File(getApplicationContext().getFilesDir(), local_path);
         boolean isDirectoryCreated = path.exists();
         if (!isDirectoryCreated) {
@@ -57,17 +55,7 @@ public class CloneWorker extends Worker {
         }
 
         try {
-            cloneCommand.call();
-        } catch (InvalidRemoteException | TransportException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_clone_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
-        } catch (GitAPIException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_clone_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
+            cloneCommand.call()
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_clone_failed)

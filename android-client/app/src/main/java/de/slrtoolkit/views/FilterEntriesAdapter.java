@@ -48,7 +48,7 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
         yearTextView.setText(currentEntry.getYear());
         monthTextView.setText(currentEntry.getMonth());
         abstractTextView.setText(currentEntry.getAbstractText());
-        if(currentEntry.getJournal() != null && currentEntry.getJournal().length() > 0)
+        if(currentEntry.getJournal() != null && !currentEntry.getJournal().isEmpty())
             publishedTextView.setText(currentEntry.getJournal());
         else
             publishedTextView.setText(currentEntry.getBooktitle());

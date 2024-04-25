@@ -1,8 +1,5 @@
 package de.slrtoolkit.fragments;
 
-
-import static android.content.Context.MODE_PRIVATE;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -39,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.io.OutputStreamWriter;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -59,17 +55,18 @@ public class CreateProject1Fragment extends Fragment {
     private static String currentType;
     private static boolean isSlrChoosen = false, isBibChoosen = false, isTaxonomyChoosen = false;
 
-    private ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
+    private final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        Uri selectedDoc = data.getData();
-                        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
-                        Repo repo = repoViewModel.getCurrentRepo();
-                        copyDocumentFile(getContext(), selectedDoc, repo);
-
+                        if(data != null) {
+                            Uri selectedDoc = data.getData();
+                            repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+                            Repo repo = repoViewModel.getCurrentRepo();
+                            copyDocumentFile(getContext(), selectedDoc, repo);
+                        }
                     }
                 }
             });
@@ -101,18 +98,20 @@ public class CreateProject1Fragment extends Fragment {
             currentType = ".slrproject";
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
-            addDefaultFile(repo.getLocal_path(), currentType, "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                    "<slrProjectMetainformation>\n" +
-                    "    <title></title>\n" +
-                    "    <keywords></keywords>\n" +
-                    "    <projectAbstract></projectAbstract>\n" +
-                    "    <taxonomyDescription></taxonomyDescription>\n" +
-                    "    <authorsList>\n" +
-                    "        <email></email>\n" +
-                    "        <name></name>\n" +
-                    "        <organisation></organisation>\n" +
-                    "    </authorsList>\n" +
-                    "</slrProjectMetainformation>\n");
+            addDefaultFile(repo.getLocal_path(), currentType, """
+                    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                    <slrProjectMetainformation>
+                        <title></title>
+                        <keywords></keywords>
+                        <projectAbstract></projectAbstract>
+                        <taxonomyDescription></taxonomyDescription>
+                        <authorsList>
+                            <email></email>
+                            <name></name>
+                            <organisation></organisation>
+                        </authorsList>
+                    </slrProjectMetainformation>
+                    """);
         });
 
         slrChooseBtn.setOnClickListener(view1 -> {
@@ -150,8 +149,10 @@ public class CreateProject1Fragment extends Fragment {
             currentType = ".taxonomy";
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
-            addDefaultFile(repo.getLocal_path(), currentType, "Venue ,\n" +
-                    "Venue Type \n");
+            addDefaultFile(repo.getLocal_path(), currentType, """
+                    Venue ,
+                    Venue Type\s
+                    """);
         });
 
         button_create_project.setOnClickListener(null);
@@ -163,13 +164,13 @@ public class CreateProject1Fragment extends Fragment {
             repo = repoViewModel.getRepoDirectly(id);
         } catch (ExecutionException |
                  InterruptedException e) {
-            e.printStackTrace();
+            Log.e("slr-toolkit", "onViewCreated: ", e);
         }
         repoViewModel.setCurrentRepo(repo);
         repo.setLocal_path("repo_" + repo.getId());
         repoViewModel.update(repo);
 
-        File repoFolder = new File(getActivity().getFilesDir(), repo.getLocal_path());
+        File repoFolder = new File(requireActivity().getFilesDir(), repo.getLocal_path());
         if (!repoFolder.exists()) {
             repoFolder.mkdir();
         }
@@ -238,16 +239,18 @@ public class CreateProject1Fragment extends Fragment {
             inputStream.close();
             outputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("slr-toolkit", "addFileToInternalStorage: ", e);
         }
 
     }
 
     private void addDefaultFile(String repoFolder, String fileType, String body) {
 
-        File dir = new File(getContext().getFilesDir(), repoFolder);
+        File dir = new File(requireContext().getFilesDir(), repoFolder);
         if (!dir.exists()) {
-            dir.mkdir();
+            if(!dir.mkdir()) {
+                Log.e("slr-toolkit", "addDefaultFile: couldn't create directory", null);
+            }
         }
         try {
             File gpxfile = new File(dir, "temp" + fileType);
@@ -256,7 +259,7 @@ public class CreateProject1Fragment extends Fragment {
             writer.flush();
             writer.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("slr-toolkit", "addDefaultFile: ", e);
         }
 
         if (Objects.equals(currentType, ".slrproject")) {
@@ -295,20 +298,20 @@ public class CreateProject1Fragment extends Fragment {
             return;
         }
         try (InputStream inputStream = contentResolver.openInputStream(documentUri)) {
-
-            File internalFile = new File(context.getFilesDir() + File.separator + repo.getLocal_path(), fileName);
-            try (OutputStream outputStream = new FileOutputStream(internalFile)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
+            if(inputStream != null) {
+                File internalFile = new File(context.getFilesDir() + File.separator + repo.getLocal_path(), fileName);
+                try (OutputStream outputStream = new FileOutputStream(internalFile)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                } catch (IOException e) {
+                    Log.e("slr-toolkit", "copyDocumentFile: ", e);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("slr-toolkit", "copyDocumentFile: ", e);
         }
         if (Objects.equals(currentType, ".slrproject")) {
             isSlrChoosen = true;
@@ -350,7 +353,7 @@ public class CreateProject1Fragment extends Fragment {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("slr-toolkit", "getFileNameFromUri: ", e);
         }
         return fileName;
     }

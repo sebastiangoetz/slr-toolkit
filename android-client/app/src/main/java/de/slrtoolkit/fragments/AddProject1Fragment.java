@@ -33,7 +33,6 @@ import de.slrtoolkit.views.ProgressButtonCloneProject;
 import de.slrtoolkit.worker.CloneWorker;
 
 public class AddProject1Fragment extends Fragment {
-    private RepoViewModel repoViewModel;
     private TextInputEditText edittext_url;
     private TextInputEditText edittext_username;
     private TextInputEditText edittext_token;
@@ -86,7 +85,7 @@ public class AddProject1Fragment extends Fragment {
                 Objects.requireNonNull(edittext_git_email.getText()).toString()
         );
 
-        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+        RepoViewModel repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         int id = (int) repoViewModel.insert(repo);
         try {
             repo = repoViewModel.getRepoDirectly(id);

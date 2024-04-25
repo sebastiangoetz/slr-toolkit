@@ -1,9 +1,7 @@
 package de.slrtoolkit.repositories;
 
 import android.app.Application;
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 
 import java.io.FileNotFoundException;
@@ -69,14 +67,14 @@ public class TaxonomyRepository {
                 if (parent != 0) {
                     taxonomyNode.setParentId(parent);
                 }
-                if (node.getChildren().size() > 0) {
+                if (!node.getChildren().isEmpty()) {
                     taxonomyNode.setHasChildren(true);
                     //insert current node
                     int parentId = (int) insert(taxonomyNode);
                     List<Taxonomy> nodesWithoutChildren = new ArrayList<>();
                     List<TaxonomyParserNode> nodesWithChildren = new ArrayList<>();
                     for (TaxonomyParserNode childNode : node.getChildren()) {
-                        if (childNode.getChildren().size() == 0) {
+                        if (childNode.getChildren().isEmpty()) {
                             Taxonomy childTaxonomy = new Taxonomy();
                             childTaxonomy.setName(childNode.getName());
                             childTaxonomy.setPath(childNode.getPath());

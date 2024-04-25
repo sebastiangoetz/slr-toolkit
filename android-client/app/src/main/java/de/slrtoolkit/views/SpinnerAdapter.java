@@ -13,9 +13,9 @@ import de.slrtoolkit.R;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 
 public class SpinnerAdapter extends BaseAdapter {
-    Context context;
-    List<TaxonomyWithEntries> taxonomyWithEntries;
-    LayoutInflater inflater;
+    final Context context;
+    final List<TaxonomyWithEntries> taxonomyWithEntries;
+    final LayoutInflater inflater;
 
     public SpinnerAdapter(Context context, List<TaxonomyWithEntries> taxonomyWithEntries) {
         this.context = context;

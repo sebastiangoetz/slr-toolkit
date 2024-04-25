@@ -1,6 +1,7 @@
 package de.slrtoolkit.repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -16,7 +17,7 @@ import de.slrtoolkit.database.KeywordDao;
 public class KeywordRepository {
     private final KeywordDao keywordDao;
 
-    Application application;
+    final Application application;
 
     public KeywordRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -32,7 +33,7 @@ public class KeywordRepository {
         try {
             id = future.get();
         } catch(InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e("KeywordRepository", "insert: ", e);
         }
         return id;
     }

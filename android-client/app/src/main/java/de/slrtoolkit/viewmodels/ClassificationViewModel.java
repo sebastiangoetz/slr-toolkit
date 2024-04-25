@@ -17,23 +17,19 @@ import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class ClassificationViewModel extends AndroidViewModel {
-    private final RepoRepository repoRepository;
-    private final EntryRepository entryRepository;
     private final TaxonomyRepository taxonomyRepository;
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
-    private Application application;
     private int currentRepoId;
     private int currentEntryId;
     private List<Integer> selectedTaxonomies;
 
     public ClassificationViewModel(@NonNull Application application) {
         super(application);
-        repoRepository = new RepoRepository(application);
-        entryRepository = new EntryRepository(application);
+        RepoRepository repoRepository = new RepoRepository(application);
+        EntryRepository entryRepository = new EntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
 
-        this.application = application;
     }
 
     public int getCurrentEntryId() {

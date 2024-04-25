@@ -1,34 +1,21 @@
 package de.slrtoolkit;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.Objects;
-
-import de.slrtoolkit.R;
-import de.slrtoolkit.fragments.CreateProject1Fragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,37 +30,29 @@ public class MainActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.fab_add_project);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.choose_option_dialog_layout, null);
-                Button button_create_project_with_git = view1.findViewById(R.id.button_create_project_with_git);
-                Button button_create_project_manually = view1.findViewById(R.id.button_create_project_manualy);
+        fab.setOnClickListener(view -> {
+            View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.choose_option_dialog_layout, null);
+            Button button_create_project_with_git = view1.findViewById(R.id.button_create_project_with_git);
+            Button button_create_project_manually = view1.findViewById(R.id.button_create_project_manualy);
 
-                AlertDialog alertDialog = new MaterialAlertDialogBuilder(MainActivity.this)
-                        .setTitle("Choose option to add a new project")
-                        .setView(view1)
-                    .setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create();
-                alertDialog.show();
+            AlertDialog alertDialog = new MaterialAlertDialogBuilder(MainActivity.this)
+                    .setTitle("Choose option to add a new project")
+                    .setView(view1)
+                .setNegativeButton("Close", (dialogInterface, i) -> dialogInterface.dismiss()).create();
+            alertDialog.show();
 
-                button_create_project_with_git.setOnClickListener(view2 -> {
-                    alertDialog.dismiss();
-                    NavHostFragment.findNavController(
-                                    Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
-                            .navigate(R.id.action_ProjectsFragment_to_AddProjectFragment);
-                });
-                button_create_project_manually.setOnClickListener(view2 -> {
-                    alertDialog.dismiss();
-                    NavHostFragment.findNavController(
-                                    Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
-                            .navigate((R.id.actionProjectsFragment_to_CreateProjectFragment));
-                });
-            }
+            button_create_project_with_git.setOnClickListener(view2 -> {
+                alertDialog.dismiss();
+                NavHostFragment.findNavController(
+                                Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
+                        .navigate(R.id.action_ProjectsFragment_to_AddProjectFragment);
+            });
+            button_create_project_manually.setOnClickListener(view2 -> {
+                alertDialog.dismiss();
+                NavHostFragment.findNavController(
+                                Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
+                        .navigate((R.id.actionProjectsFragment_to_CreateProjectFragment));
+            });
         });
     }
 

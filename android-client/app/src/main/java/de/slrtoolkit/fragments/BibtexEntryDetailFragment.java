@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.slrtoolkit.MainActivity;
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
@@ -69,13 +67,10 @@ public class BibtexEntryDetailFragment extends Fragment {
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         }
 
-        doiTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openDoiIntent = new Intent(Intent.ACTION_VIEW);
-                openDoiIntent.setData(Uri.parse("https://doi.org/"+doiTextView.getText()));
-                startActivity(openDoiIntent);
-            }
+        doiTextView.setOnClickListener(view1 -> {
+            Intent openDoiIntent = new Intent(Intent.ACTION_VIEW);
+            openDoiIntent.setData(Uri.parse("https://doi.org/"+doiTextView.getText()));
+            startActivity(openDoiIntent);
         });
 
     }
@@ -91,7 +86,7 @@ public class BibtexEntryDetailFragment extends Fragment {
         abstractTextView.setText(entry.getAbstractText());
         doiTextView.setText(entry.getDoi());
         keywordsTextView.setText(entry.getKeywords());
-        if(entry.getJournal() == null || entry.getJournal().trim().length() == 0) {
+        if(entry.getJournal() == null || entry.getJournal().trim().isEmpty()) {
             publishedTextView.setText(entry.getBooktitle());
         } else {
             publishedTextView.setText(entry.getJournal());

@@ -3,8 +3,6 @@ package de.slrtoolkit.views;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 
 import de.slrtoolkit.database.Author;
-import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.repositories.AuthorRepository;
-import de.slrtoolkit.repositories.OnDeleteCompleteListener;
 import de.slrtoolkit.util.DoubleClickListener;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.SlrprojectParser;
@@ -28,9 +24,9 @@ import de.slrtoolkit.viewmodels.RepoViewModel;
 public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
     private RecyclerView recyclerView;
 
-    private Application application;
+    private final Application application;
 
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     public AuthorListAdapter(Application application, AuthorRepository authorRepository, @NonNull DiffUtil.ItemCallback<Author> diffCallback) {
         super(diffCallback);
@@ -50,13 +46,7 @@ public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
         holder.bind(current.getName(), current.getAffilation(), current.getEmail());
         RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
 
-        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), new DoubleClickListener.OnDoubleClickListener() {
-
-            @Override
-            public void onDoubleClick(View v) {
-                showDialog(repoViewModel, current);
-            }
-        }));
+        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), v -> showDialog(repoViewModel, current)));
     }
 
     public Context getContext() {
@@ -66,26 +56,17 @@ public class AuthorListAdapter extends ListAdapter<Author, AuthorViewHolder> {
     private void showDialog(RepoViewModel repoViewModel, Author current) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Author?")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FileUtil fileUtil = new FileUtil();
-                        File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application, ".slrproject");
-                        SlrprojectParser slrprojectParser = new SlrprojectParser();
-                        slrprojectParser.deleteAuthorList(String.valueOf(file), current.getEmail());
+                .setPositiveButton("OK", (dialog, which) -> {
+                    FileUtil fileUtil = new FileUtil();
+                    File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application, ".slrproject");
+                    SlrprojectParser slrprojectParser = new SlrprojectParser();
+                    slrprojectParser.deleteAuthorList(String.valueOf(file), current.getEmail());
 
-                        authorRepository.deleteAsync(current, new OnDeleteCompleteListener() {
-                            @Override
-                            public void onDeleteComplete() {
+                    authorRepository.deleteAsync(current, () -> {
 
-                            }
-                        });
-                    }
+                    });
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setNegativeButton("Cancel", (dialog, which) -> {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();

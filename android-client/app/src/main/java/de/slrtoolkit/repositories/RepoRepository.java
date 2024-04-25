@@ -15,7 +15,7 @@ import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.database.RepoDao;
 
 /**
- * Abstracted Repository as promoted by the Architecture Guide. https://developer.android.com/topic/libraries/architecture/guide.html
+ * Abstracted Repository as promoted by the Architecture Guide. <a href="https://developer.android.com/topic/libraries/architecture/guide.html">...</a>
  */
 public class RepoRepository {
     private final RepoDao repoDao;

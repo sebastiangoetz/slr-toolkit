@@ -50,7 +50,6 @@ public class ProjectOverviewFragment extends Fragment {
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
     private TextView projectNameTextView;
-    private RepoViewModel repoViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +82,7 @@ public class ProjectOverviewFragment extends Fragment {
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         int repoId = projectViewModel.getCurrentRepoId();
-        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
+        RepoViewModel repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_entriesToClassifyViewPagerFragment));
@@ -98,18 +97,18 @@ public class ProjectOverviewFragment extends Fragment {
             throw new RuntimeException(e);
         }
         Repo currentRepo = repoViewModel.getCurrentRepo();
-        if (currentRepo.getRemote_url().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("") || currentRepo.getGit_name().equals("")) {
+        if (currentRepo.getRemote_url().isEmpty() || currentRepo.getToken().isEmpty() || currentRepo.getGit_email().isEmpty() || currentRepo.getGit_name().isEmpty()) {
             pullButton.setEnabled(false);
             pushButton.setEnabled(false);
         }
         pullButton.setOnClickListener(v -> actionPullRepo(view));
         commitButton.setOnClickListener(v -> {
 
-            if (currentRepo.getRemote_url().equals("") || currentRepo.getGit_name().equals("") || currentRepo.getToken().equals("") || currentRepo.getGit_email().equals("")) {
+            if (currentRepo.getRemote_url().isEmpty() || currentRepo.getGit_name().isEmpty() || currentRepo.getToken().isEmpty() || currentRepo.getGit_email().isEmpty()) {
                 AddGitDataDialog dialog = new AddGitDataDialog();
 
                 dialog.show(getChildFragmentManager(), AddGitDataDialog.TAG);
-                if (!currentRepo.getRemote_url().equals("") || !currentRepo.getToken().equals("") || !currentRepo.getGit_email().equals("") || !currentRepo.getGit_name().equals("")) {
+                if (!currentRepo.getRemote_url().isEmpty() || !currentRepo.getToken().isEmpty() || !currentRepo.getGit_email().isEmpty() || !currentRepo.getGit_name().isEmpty()) {
                     pullButton.setEnabled(true);
                     pushButton.setEnabled(true);
                 }

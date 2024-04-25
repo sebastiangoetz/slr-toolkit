@@ -92,7 +92,7 @@ public class FilterFragment extends Fragment {
 
         final Observer<List<Entry>> openEntriesObserver = data -> {
             entries = (ArrayList<Entry>) data;
-            if (entries.size() == 0) {
+            if (entries.isEmpty()) {
                 noEntriesToFilterTextview.setVisibility(View.VISIBLE);
                 flingAdapterView.setVisibility(View.INVISIBLE);
                 keepButton.setVisibility(View.INVISIBLE);

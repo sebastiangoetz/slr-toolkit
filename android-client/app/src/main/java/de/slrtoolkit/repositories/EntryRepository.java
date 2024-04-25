@@ -25,8 +25,8 @@ import de.slrtoolkit.util.FileUtil;
 
 public class EntryRepository {
     private final EntryDao entryDao;
-    Application application;
-    FileUtil fileUtil;
+    final Application application;
+    final FileUtil fileUtil;
 
     public EntryRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);

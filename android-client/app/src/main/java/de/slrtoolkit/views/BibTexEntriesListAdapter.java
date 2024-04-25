@@ -96,7 +96,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
         public void bind(Entry entry, RecyclerViewClickListener listener) {
             bibtexItemView.setText(entry.getTitle());
             String description = entry.getYear();
-            if (!entry.getYear().equals("")) {
+            if (!entry.getYear().isEmpty()) {
                 description = entry.getYear() + ", ";
             }
             description += entry.getAuthor();

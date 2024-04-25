@@ -7,13 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.slrtoolkit.R;
 import de.slrtoolkit.fragments.TaxonomyListFragment;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 public class
 TaxonomiesActivity extends AppCompatActivity {
-    private int repoId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +22,7 @@ TaxonomiesActivity extends AppCompatActivity {
         TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(this).get(TaxonomiesViewModel.class);
 
         if (extras != null) {
-            repoId = extras.getInt("repo");
+            int repoId = extras.getInt("repo");
             taxonomiesViewModel.setCurrentRepoId(repoId);
         }
 

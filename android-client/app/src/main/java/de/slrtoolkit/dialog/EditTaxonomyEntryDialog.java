@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import de.slrtoolkit.R;
 
 public class EditTaxonomyEntryDialog extends DialogFragment {
-    private String origName;
+    private final String origName;
 
     public EditTaxonomyEntryDialog(String origName) {
         this.origName = origName;

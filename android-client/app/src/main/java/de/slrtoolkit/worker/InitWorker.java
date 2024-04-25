@@ -8,41 +8,27 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
-import org.eclipse.jgit.api.StatusCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.NoFilepatternException;
-import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.util.FileUtil;
 
 public class InitWorker extends Worker {
 
-    private final RepoRepository repoRepository;
-
     public InitWorker(
             @NonNull Context context,
             @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        this.repoRepository = new RepoRepository((Application) context);
+        new RepoRepository((Application) context);
     }
 
     @Override
@@ -55,6 +41,7 @@ public class InitWorker extends Worker {
         }
 
         String local_path_git = getInputData().getString("LOCAL_PATH_GIT");
+        if(local_path_git == null) local_path_git = "";
         File path = new File(getApplicationContext().getFilesDir(), local_path_git);
         boolean isDirectoryCreated = path.exists();
         if (!isDirectoryCreated) {
@@ -78,16 +65,6 @@ public class InitWorker extends Worker {
 
         try {
             cloneCommand.call();
-        } catch (InvalidRemoteException | TransportException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_clone_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
-        } catch (GitAPIException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_clone_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_clone_failed)

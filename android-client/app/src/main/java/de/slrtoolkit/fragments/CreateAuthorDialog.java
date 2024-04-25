@@ -29,8 +29,7 @@ import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class CreateAuthorDialog extends DialogFragment {
-    public static String TAG = "CreateAuthorDialog";
-    private Button createButton;
+    public static final String TAG = "CreateAuthorDialog";
     private TextInputEditText editAuthorName;
     private TextInputEditText editAuthorAffilation;
     private TextInputEditText editAuthorEmail;
@@ -47,34 +46,29 @@ public class CreateAuthorDialog extends DialogFragment {
         editAuthorName = view1.findViewById(R.id.editname_author);
         editAuthorAffilation = view1.findViewById(R.id.editaffilation_author);
         editAuthorEmail = view1.findViewById(R.id.editemail_author);
-        createButton = view1.findViewById(R.id.button_create_author);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Author author = new Author(editAuthorName.getText().toString(), editAuthorAffilation.getText().toString(), editAuthorEmail.getText().toString());
-                author.setRepoId(repoViewModel.getCurrentRepo().getId());
-                authorRepository.insert(author);
+        Button createButton = view1.findViewById(R.id.button_create_author);
+        createButton.setOnClickListener(view -> {
+            Author author = new Author(editAuthorName.getText().toString(), editAuthorAffilation.getText().toString(), editAuthorEmail.getText().toString());
+            author.setRepoId(repoViewModel.getCurrentRepo().getId());
+            authorRepository.insert(author);
 
-                SlrprojectParser slrprojectParser = new SlrprojectParser();
+            SlrprojectParser slrprojectParser = new SlrprojectParser();
 
-                FileUtil fileUtil= new FileUtil();
-                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+            FileUtil fileUtil= new FileUtil();
+            File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
 
-                try {
-                    slrprojectParser.addAuthorList(String.valueOf(file),editAuthorName.getText().toString(), editAuthorEmail.getText().toString(), editAuthorAffilation.getText().toString());
-                } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
-                    throw new RuntimeException(e);
-                }
-                dismiss();
+            try {
+                slrprojectParser.addAuthorList(String.valueOf(file),editAuthorName.getText().toString(), editAuthorEmail.getText().toString(), editAuthorAffilation.getText().toString());
+            } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
+                throw new RuntimeException(e);
             }
+            dismiss();
         });
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         return builder
                 .setMessage("Create new author")
                 .setView(view1)
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    dialog.dismiss();
-                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .create();
     }
 }

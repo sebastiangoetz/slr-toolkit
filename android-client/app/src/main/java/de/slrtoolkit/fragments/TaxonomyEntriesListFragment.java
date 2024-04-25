@@ -74,7 +74,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
         setHeader(taxonomyWithEntries);
         List<Entry> entries = taxonomyWithEntries.entries;
         taxonomiesViewModel.setCurrentEntriesInList(entries);
-        if (entries.size() == 0) {
+        if (entries.isEmpty()) {
             noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
         } else {
             noTaxonomyEntriesTextview.setVisibility(View.INVISIBLE);

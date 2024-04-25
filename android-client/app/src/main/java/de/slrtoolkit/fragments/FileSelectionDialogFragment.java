@@ -1,43 +1,17 @@
 package de.slrtoolkit.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.OpenableColumns;
-import android.util.Log;
 import android.widget.Button;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
-
-import de.slrtoolkit.R;
-import de.slrtoolkit.database.Repo;
-import de.slrtoolkit.viewmodels.AnalyzeViewModel;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class FileSelectionDialogFragment extends DialogFragment {
-    public static String TAG = "FileSelectionDialog";
    // private RecyclerView recyclerView;
     private Button addDefaultFileButton;
     private Button addFileButton;
@@ -49,10 +23,15 @@ public class FileSelectionDialogFragment extends DialogFragment {
     private CardView button_create_project;
     private static String currentType;
 
-    private static boolean isSlrChoosen = false, isBibChoosen = false, isTaxonomyChoosen = false;
+    private static final boolean isSlrChoosen = false;
+    private static final boolean isBibChoosen = false;
+    private static final boolean isTaxonomyChoosen = false;
+
+ public FileSelectionDialogFragment() {
+ }
 
 
-    @NonNull
+ @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
@@ -72,8 +51,7 @@ public class FileSelectionDialogFragment extends DialogFragment {
 //                });
 
 
-        Dialog dialog = new Dialog(this.getContext());
-//        dialog.setContentView(R.layout.add_file_dialog);
+        //        dialog.setContentView(R.layout.add_file_dialog);
 //        addFileButton = dialog.findViewById(R.id.button_add_file);
 //        addDefaultFileButton = dialog.findViewById(R.id.button_add_default_file);
 //        sample_slrproj_btn = dialog.findViewById(R.id.button_choose_slrproject);
@@ -98,7 +76,7 @@ public class FileSelectionDialogFragment extends DialogFragment {
 //            copyDocumentFile(getContext(), selectedDoc, repo);
 //        });
 
-        return dialog;
+        return new Dialog(this.getContext());
     }
 
 //    public void copyDocumentFile(Context context, Uri documentUri, Repo repo) {

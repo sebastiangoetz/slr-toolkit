@@ -2,16 +2,12 @@ package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
 import android.os.Build;
-import android.util.Xml;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import org.jbibtex.ParseException;
-import org.xml.sax.XMLReader;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -191,7 +187,7 @@ public class RepoViewModel extends AndroidViewModel {
                 for (TaxonomyParserNode node : taxonomyParserNodes) {
                     try {
                         //only if the taxonomy has no child taxonomies a relation is added
-                        if (node.getChildren().size() == 0) {
+                        if (node.getChildren().isEmpty()) {
                             Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
                             Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
                             if (taxonomy != null && entry != null) {

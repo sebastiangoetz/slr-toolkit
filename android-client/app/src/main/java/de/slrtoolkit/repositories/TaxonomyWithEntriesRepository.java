@@ -16,8 +16,8 @@ import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.database.TaxonomyWithEntriesDao;
 
 public class TaxonomyWithEntriesRepository {
-    TaxonomyWithEntriesDao taxonomyWithEntriesDao;
-    Application application;
+    final TaxonomyWithEntriesDao taxonomyWithEntriesDao;
+    final Application application;
 
     public TaxonomyWithEntriesRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);

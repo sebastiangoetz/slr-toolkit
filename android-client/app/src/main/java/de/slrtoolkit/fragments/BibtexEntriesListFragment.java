@@ -94,7 +94,7 @@ public class BibtexEntriesListFragment extends Fragment {
 
     private void onLoaded(List<Entry> list) {
         projectViewModel.setCurrentEntriesInList(list);
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             recyclerView.setVisibility(View.INVISIBLE);
             noEntriesTextView.setVisibility(View.VISIBLE);
         } else {

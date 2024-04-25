@@ -60,7 +60,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
         projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), list -> {
             entries = list;
-            if (entries.size() == 0) {
+            if (entries.isEmpty()) {
                 noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
             } else {
                 noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
@@ -71,7 +71,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     private void classifyEntry() {
-        if (entries.size() == 0) return;
+        if (entries.isEmpty()) return;
         Entry entry = entries.get(viewPager.getCurrentItem());
 
         if (entry != null) {
@@ -123,7 +123,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {
-        List<Entry> entries;
+        final List<Entry> entries;
 
         public EntrySlidePagerAdapter(FragmentActivity fa, List<Entry> entries) {
             super(fa);

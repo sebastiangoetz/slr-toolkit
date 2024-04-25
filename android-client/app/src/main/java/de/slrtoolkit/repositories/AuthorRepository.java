@@ -15,7 +15,7 @@ import de.slrtoolkit.database.AuthorDao;
 
 public class AuthorRepository {
     private final AuthorDao authorDao;
-    Application application;
+    final Application application;
 
     public AuthorRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);

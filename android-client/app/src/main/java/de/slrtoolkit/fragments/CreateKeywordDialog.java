@@ -23,8 +23,7 @@ import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class CreateKeywordDialog extends DialogFragment {
-    public static String TAG = "CreateKeywordDialog";
-    private Button createButton;
+    public static final String TAG = "CreateKeywordDialog";
     private TextInputEditText editKeywordName;
     private RepoViewModel repoViewModel;
     private KeywordRepository keywordRepository;
@@ -38,30 +37,25 @@ public class CreateKeywordDialog extends DialogFragment {
 
         View view1 = getLayoutInflater().inflate(R.layout.create_keyword_dialog, null);
         editKeywordName = view1.findViewById(R.id.editkeyword_name);
-        createButton= view1.findViewById(R.id.button_create_keyword);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Keyword keyword = new Keyword(editKeywordName.getText().toString());
-                keyword.setRepoId(repoViewModel.getCurrentRepo().getId());
-                keywordRepository.insert(keyword);
+        Button createButton = view1.findViewById(R.id.button_create_keyword);
+        createButton.setOnClickListener(view -> {
+            Keyword keyword = new Keyword(editKeywordName.getText().toString());
+            keyword.setRepoId(repoViewModel.getCurrentRepo().getId());
+            keywordRepository.insert(keyword);
 
-                SlrprojectParser slrprojectParser = new SlrprojectParser();
+            SlrprojectParser slrprojectParser = new SlrprojectParser();
 
-                FileUtil fileUtil= new FileUtil();
-                File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+            FileUtil fileUtil= new FileUtil();
+            File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
 
-                slrprojectParser.editKeywords(String.valueOf(file), editKeywordName.getText().toString(),true);
-                dismiss();
-            }
+            slrprojectParser.editKeywords(String.valueOf(file), editKeywordName.getText().toString(),true);
+            dismiss();
         });
         AlertDialog.Builder builder= new AlertDialog.Builder(requireContext());
         return builder
                 .setMessage("Create new keyword")
                 .setView(view1)
-                .setNegativeButton("Cancel", (dialog, which)->{
-                    dialog.dismiss();
-                })
+                .setNegativeButton("Cancel", (dialog, which)-> dialog.dismiss())
                 .create();
     }
 }

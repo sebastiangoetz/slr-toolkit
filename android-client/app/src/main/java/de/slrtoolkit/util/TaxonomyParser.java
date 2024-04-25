@@ -7,24 +7,24 @@ import java.util.Stack;
 
 public class TaxonomyParser {
     public boolean isEmpty(String string) {
-        return string == null || string.trim().isEmpty();
+        return string != null && !string.trim().isEmpty();
     }
 
     public List<TaxonomyParserNode> parse(String taxonomy) {
-        char openingBracet = "{".charAt(0);
-        char closingBracet = "}".charAt(0);
-        char comma = ",".charAt(0);
+        char openingBracet = '{';
+        char closingBracet = '}';
+        char comma = ',';
         String node = "";
         Stack<TaxonomyParserNode> parentNodes = new Stack<>();
         List<TaxonomyParserNode> taxonomyNodes = new ArrayList<>();
 
         for (int i = 0; i < taxonomy.length(); i++) {
             if (taxonomy.charAt(i) == openingBracet) {
-                if (!isEmpty(node)) {
+                if (isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
                     taxonomyNode.setName(trimmedNode);
-                    if (parentNodes.size() > 0) {
+                    if (!parentNodes.isEmpty()) {
                         TaxonomyParserNode currentParent = parentNodes.peek();
 
                         //set child and parent on respective nodes
@@ -39,11 +39,11 @@ public class TaxonomyParser {
                     node = "";
                 }
             } else if (taxonomy.charAt(i) == closingBracet) {
-                if (!isEmpty(node)) {
+                if (isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
                     taxonomyNode.setName(trimmedNode);
-                    if (parentNodes.size() > 0) {
+                    if (!parentNodes.isEmpty()) {
                         TaxonomyParserNode currentParent = parentNodes.pop();
                         taxonomyNode.setParent(currentParent);
                         currentParent.addChild(taxonomyNode);
@@ -54,17 +54,17 @@ public class TaxonomyParser {
                     taxonomyNodes.add(taxonomyNode);
                     node = "";
                 } else {
-                    if (parentNodes.size() > 0) {
+                    if (!parentNodes.isEmpty()) {
                         TaxonomyParserNode currentParent = parentNodes.pop();
                         taxonomyNodes.add(currentParent);
                     }
                 }
             } else if (taxonomy.charAt(i) == comma) {
-                if (!isEmpty(node)) {
+                if (isEmpty(node)) {
                     String trimmedNode = node.trim();
                     TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
                     taxonomyNode.setName(trimmedNode);
-                    if (parentNodes.size() > 0) {
+                    if (!parentNodes.isEmpty()) {
                         TaxonomyParserNode currentParent = parentNodes.peek();
 
                         //set child and parent on respective nodes
