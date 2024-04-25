@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <Button
         android:id="@+id/button_create_project_with_git"
         android:layout_width="match_parent"
@@ -9,7 +10,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/button_add_project" />
+        android:text="@string/button_add_project_from_git" />
     <Button
         android:id="@+id/button_create_project_manualy"
         android:layout_width="match_parent"

@@ -94,8 +94,8 @@ public class CreateProject1Fragment extends Fragment {
 
         button_create_project = view.findViewById(R.id.button_create_project);
 
-
         button_create_project.setEnabled(false);
+        button_create_project.setAlpha(0.3f);
 
         slrDefaultBtn.setOnClickListener(view1 -> {
             currentType = ".slrproject";
@@ -280,6 +280,7 @@ public class CreateProject1Fragment extends Fragment {
         }
 
         if (isSlrChoosen && isBibChoosen && isTaxonomyChoosen) {
+            button_create_project.setAlpha(1.0f);
             button_create_project.setEnabled(true);
             button_create_project.setOnClickListener(cardview_create_project ->
                     NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectFragment_to_AddProject2Fragment));

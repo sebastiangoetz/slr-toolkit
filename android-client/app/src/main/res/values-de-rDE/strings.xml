@@ -93,4 +93,5 @@
     <string name="enter_token">Git Token (PAT)</string>
     <string name="enter_email_for_git">Email für Git</string>
     <string name="enter_repo_url_on_git">Repo-Link auf Git</string>
+    <string name="button_add_project_from_git">Add Project From Git</string>
 </resources>

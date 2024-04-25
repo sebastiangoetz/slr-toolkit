@@ -16,10 +16,10 @@
     <string name="textinput_git_name">Name</string>
     <string name="textinput_git_email">Email</string>
     <string name="button_clone_project">Clone Project</string>
-    <string name="button_create_project">Create Project</string>
+    <string name="button_create_project">Create Local Project</string>
     <string name="button_add_project">Add Project</string>
     <string name="button_add_project_file">Add Project file</string>
-    <string name="button_add_bib">Add BIB</string>
+    <string name="button_add_bib">Add Bibliography</string>
     <string name="button_add_taxonomy">Add taxonomy</string>
     <string name="button_add_default_file">Add default file</string>
     <string name="button_edit_project">Edit Project Metadata</string>
@@ -92,5 +92,6 @@
     <string name="enter_token">Enter token</string>
     <string name="enter_email_for_git">Enter email for git</string>
     <string name="enter_repo_url_on_git">Enter repo url on git</string>
+    <string name="button_add_project_from_git">Add Project From Git</string>
 
 </resources>
