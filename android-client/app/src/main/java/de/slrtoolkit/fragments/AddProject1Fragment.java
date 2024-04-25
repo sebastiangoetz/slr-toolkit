@@ -45,7 +45,7 @@ public class AddProject1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FloatingActionButton floatingActionButton = ((MainActivity) requireActivity()).getFloatingActionButton();
         floatingActionButton.setVisibility(View.INVISIBLE);
-        return inflater.inflate(R.layout.fragment_add_project_1, container, false);
+        return inflater.inflate(R.layout.fragment_add_project_from_git, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {

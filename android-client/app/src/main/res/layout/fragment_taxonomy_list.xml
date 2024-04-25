@@ -52,6 +52,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_taxonomies_breadcrumb"
-        tools:listitem="@layout/recyclerview_item" />
+        tools:listitem="@layout/item_project" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,9 +7,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,6 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +61,20 @@ public class BibtexEntriesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.bibTexEntriesRecyclerView);
         noEntriesTextView = view.findViewById(R.id.textview_no_entries);
+
+        view.findViewById(R.id.btn_add_bibtex_entry).setOnClickListener(btn -> {
+            AlertDialog importBibtexDialog = new MaterialAlertDialogBuilder(requireActivity())
+                    .setView(R.layout.dialog_add_bibtex)
+                    .setNegativeButton(R.string.close, (dialogInterface, i) -> dialogInterface.dismiss()).create();
+            importBibtexDialog.show();
+            //TODO check if pasted bibtex is parsable and disable import button if that is not the case
+            importBibtexDialog.findViewById(R.id.button_dialog_import_bibtex).setOnClickListener(view1 -> {
+                importBibtexDialog.dismiss();
+                EditText txt = importBibtexDialog.findViewById(R.id.dialog_import_bibtex_text);
+                String bibtex = txt.getText().toString();
+                //TODO add bibtex entry to the project
+            });
+        });
 
         setOnClickListener();
 

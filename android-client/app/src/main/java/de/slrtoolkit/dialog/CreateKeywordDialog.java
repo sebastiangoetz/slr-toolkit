@@ -1,4 +1,4 @@
-package de.slrtoolkit.fragments;
+package de.slrtoolkit.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -35,7 +35,7 @@ public class CreateKeywordDialog extends DialogFragment {
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         keywordRepository = new KeywordRepository(getActivity().getApplication());
 
-        View view1 = getLayoutInflater().inflate(R.layout.create_keyword_dialog, null);
+        View view1 = getLayoutInflater().inflate(R.layout.dialog_create_keyword, null);
         editKeywordName = view1.findViewById(R.id.editkeyword_name);
         Button createButton = view1.findViewById(R.id.button_create_keyword);
         createButton.setOnClickListener(view -> {

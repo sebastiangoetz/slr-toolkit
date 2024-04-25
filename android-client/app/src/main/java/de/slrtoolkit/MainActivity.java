@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab_add_project);
 
         fab.setOnClickListener(view -> {
-            View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.choose_option_dialog_layout, null);
+            View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_create_project_choose_option, null);
             Button button_create_project_with_git = view1.findViewById(R.id.button_create_project_with_git);
             Button button_create_project_manually = view1.findViewById(R.id.button_create_project_manualy);
 

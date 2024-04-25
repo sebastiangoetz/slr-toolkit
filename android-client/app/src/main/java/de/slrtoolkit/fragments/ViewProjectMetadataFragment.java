@@ -26,6 +26,8 @@ import de.slrtoolkit.R;
 import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.dialog.CreateAuthorDialog;
+import de.slrtoolkit.dialog.CreateKeywordDialog;
 import de.slrtoolkit.repositories.AuthorRepository;
 import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.util.FileUtil;

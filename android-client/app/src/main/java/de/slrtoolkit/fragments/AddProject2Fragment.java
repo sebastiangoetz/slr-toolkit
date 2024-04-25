@@ -35,7 +35,7 @@ public class AddProject2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FloatingActionButton floatingActionButton = ((MainActivity) requireActivity()).getFloatingActionButton();
         floatingActionButton.setVisibility(View.INVISIBLE);
-        return inflater.inflate(R.layout.fragment_add_project_2, container, false);
+        return inflater.inflate(R.layout.fragment_add_project_set_name, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

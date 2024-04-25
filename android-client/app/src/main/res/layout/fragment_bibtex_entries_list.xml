@@ -30,6 +30,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add_bibtex_entry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

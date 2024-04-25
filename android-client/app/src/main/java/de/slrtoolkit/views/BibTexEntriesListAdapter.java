@@ -83,7 +83,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<Entry, BibTexEntriesLi
 
         public static BibTexEntriesViewHolder create(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.bibtex_recyclerview_item, parent, false);
+                    .inflate(R.layout.item_bibtex, parent, false);
             return new BibTexEntriesViewHolder(view);
         }
 

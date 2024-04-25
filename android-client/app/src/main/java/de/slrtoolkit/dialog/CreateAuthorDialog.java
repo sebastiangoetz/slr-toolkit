@@ -1,4 +1,4 @@
-package de.slrtoolkit.fragments;
+package de.slrtoolkit.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,7 +42,7 @@ public class CreateAuthorDialog extends DialogFragment {
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         authorRepository = new AuthorRepository(getActivity().getApplication());
 
-        View view1 = getLayoutInflater().inflate(R.layout.create_author_dialog, null);
+        View view1 = getLayoutInflater().inflate(R.layout.dialog_create_author, null);
         editAuthorName = view1.findViewById(R.id.editname_author);
         editAuthorAffilation = view1.findViewById(R.id.editaffilation_author);
         editAuthorEmail = view1.findViewById(R.id.editemail_author);

@@ -55,7 +55,7 @@ public class CloneWorker extends Worker {
         }
 
         try {
-            cloneCommand.call()
+            cloneCommand.call();
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_clone_failed)

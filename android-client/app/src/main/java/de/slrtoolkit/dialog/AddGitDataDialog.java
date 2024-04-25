@@ -1,4 +1,4 @@
-package de.slrtoolkit.fragments;
+package de.slrtoolkit.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,7 +42,7 @@ public class AddGitDataDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
-        View view1 = getLayoutInflater().inflate(R.layout.add_git_dialog, null);
+        View view1 = getLayoutInflater().inflate(R.layout.dialog_add_project_to_git, null);
         remoteUrl = view1.findViewById(R.id.editeremoteurl_git);
         token = view1.findViewById(R.id.edittoken_git);
         gitName = view1.findViewById(R.id.editname_git);

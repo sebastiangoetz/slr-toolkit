@@ -59,7 +59,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
         for(Taxonomy root : taxonomies) {
             if(root.getParentId() == 0) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(root.getTaxonomyId(), root.getName());
-                TreeNode rootNode = new TreeNode(n, R.layout.taxonomy_entry_item);
+                TreeNode rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
                 addChildren(rootNode, root.getTaxonomyId(), taxonomies);
                 rootTaxonomies.add(rootNode);
             }
@@ -72,7 +72,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
         for(Taxonomy tax : taxonomies) {
             if(tax.getParentId() == rootId) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(tax.getTaxonomyId(), tax.getName());
-                TreeNode child = new TreeNode(n, R.layout.taxonomy_entry_item);
+                TreeNode child = new TreeNode(n, R.layout.item_taxonomy_entry);
                 addChildren(child, tax.getTaxonomyId(), taxonomies);
                 root.addChild(child);
             }

@@ -93,4 +93,8 @@
     <string name="enter_email_for_git">Email für Git</string>
     <string name="enter_repo_url_on_git">Repo-Link auf Git</string>
     <string name="button_add_project_from_git">Add Project From Git</string>
+    <string name="import_bibtex">Import Bibtex</string>
+    <string name="paste_bibtex">Paste your bibtex code here</string>
+    <string name="btn_import_bibtex">Import Bibtex</string>
+    <string name="close">Close</string>
 </resources>

@@ -29,6 +29,7 @@ import de.slrtoolkit.ManageTaxonomyActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.dialog.AddGitDataDialog;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.worker.CommitWorker;
