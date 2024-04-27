@@ -2,6 +2,7 @@ package de.slrtoolkit.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.views.ProgressButtonCloneProject;
 import de.slrtoolkit.worker.CloneWorker;
 
-public class AddProject1Fragment extends Fragment {
+public class AddProjectFromGitFragment extends Fragment {
     private TextInputEditText edittext_url;
     private TextInputEditText edittext_username;
     private TextInputEditText edittext_token;
@@ -90,7 +91,7 @@ public class AddProject1Fragment extends Fragment {
         try {
             repo = repoViewModel.getRepoDirectly(id);
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            Log.e(AddProjectFromGitFragment.class.getName(), "actionCloneRepo: ", e);
         }
 
         repoViewModel.setCurrentRepo(repo);
@@ -116,7 +117,7 @@ public class AddProject1Fragment extends Fragment {
                     if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         progressButton.onSucceeded();
                         button_clone_project.setOnClickListener(cardview_clone_project ->
-                                NavHostFragment.findNavController(AddProject1Fragment.this)
+                                NavHostFragment.findNavController(AddProjectFromGitFragment.this)
                                         .navigate(R.id.action_AddProjectFromGitFragment_to_AddProjectSetNameFragment));
                     } else if (worker.getState() == WorkInfo.State.FAILED) {
                         progressButton.onFailed();

@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/AddProjectFromGitFragment"
-        android:name="de.slrtoolkit.fragments.AddProject1Fragment"
+        android:name="de.slrtoolkit.fragments.AddProjectFromGitFragment"
         android:label="@string/fragment_label_add_project"
         tools:layout="@layout/fragment_add_project_from_git">
 
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/CreateProjectLocallyFragment"
-        android:name="de.slrtoolkit.fragments.CreateProject1Fragment"
+        android:name="de.slrtoolkit.fragments.AddProjectLocallyFragment"
         android:label="@string/fragment_label_add_project"
         tools:layout="@layout/fragment_add_project_locally"
         >

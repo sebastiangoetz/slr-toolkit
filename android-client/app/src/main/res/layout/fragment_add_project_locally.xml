@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.slrtoolkit.fragments.CreateProject1Fragment">
+    tools:context="de.slrtoolkit.fragments.AddProjectLocallyFragment">
 
     <TextView
         android:id="@+id/textview_create_project1"

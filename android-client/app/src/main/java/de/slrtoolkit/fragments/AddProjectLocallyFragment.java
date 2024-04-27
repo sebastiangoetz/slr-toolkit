@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 
 import androidx.activity.result.ActivityResult;
@@ -29,13 +27,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -44,7 +40,7 @@ import de.slrtoolkit.R;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
-public class CreateProject1Fragment extends Fragment {
+public class AddProjectLocallyFragment extends Fragment {
     private RepoViewModel repoViewModel;
     private Button bibDefaultBtn, bibChooseBtn;
     private Button slrDefaultBtn, slrChooseBtn;
@@ -65,7 +61,7 @@ public class CreateProject1Fragment extends Fragment {
                             Uri selectedDoc = data.getData();
                             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
                             Repo repo = repoViewModel.getCurrentRepo();
-                            copyDocumentFile(getContext(), selectedDoc, repo);
+                            copyDocumentFile(requireContext(), selectedDoc, repo);
                         }
                     }
                 }
@@ -172,76 +168,10 @@ public class CreateProject1Fragment extends Fragment {
 
         File repoFolder = new File(requireActivity().getFilesDir(), repo.getLocal_path());
         if (!repoFolder.exists()) {
-            repoFolder.mkdir();
-        }
-    }
-
-    private void actionCreateProject(View view) {
-        button_create_project.setOnClickListener(null);
-        Repo repo = new Repo("", "", "", "", "");
-        repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
-        int id = (int) repoViewModel.insert(repo);
-        try {
-            repo = repoViewModel.getRepoDirectly(id);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        repoViewModel.setCurrentRepo(repo);
-        repo.setLocal_path("repo_" + repo.getId());
-        repoViewModel.update(repo);
-
-        File repoFolder = new File(getActivity().getFilesDir(), repo.getLocal_path());
-        if (!repoFolder.exists()) {
-            repoFolder.mkdir();
-        }
-
-        button_create_project.setOnClickListener(cardview_create_project ->
-                NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
-    }
-
-    public static String getMimeType(Context context, Uri uri) {
-        String extension;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
-            final MimeTypeMap mime = MimeTypeMap.getSingleton();
-            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
-        } else {
-            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
-        }
-        return extension;
-    }
-
-    private static String getPath(Context context, Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
-
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String filePath = cursor.getString(column_index);
-            cursor.close();
-            return filePath;
-        }
-
-        return uri.getPath();
-    }
-
-    private void addFileToInternalStorage(File src, File dst) throws IOException {
-
-        File expFile = new File(dst.getPath() + File.separator + "test" + ".slrproject");
-        try {
-            InputStream inputStream = new FileInputStream(src);
-            OutputStream outputStream = new FileOutputStream(expFile);
-            byte[] byteArrayBuffer = new byte[1824];
-            int intLength;
-            while ((intLength = inputStream.read(byteArrayBuffer)) > 0) {
-                outputStream.write(byteArrayBuffer, 0, intLength);
+            if(!repoFolder.mkdir()) {
+                Log.e(AddProjectLocallyFragment.class.getName(), "onViewCreated: could not create repo dir", null);
             }
-            inputStream.close();
-            outputStream.close();
-        } catch (Exception e) {
-            Log.e("slr-toolkit", "addFileToInternalStorage: ", e);
         }
-
     }
 
     private void addDefaultFile(String repoFolder, String fileType, String body) {
@@ -286,7 +216,7 @@ public class CreateProject1Fragment extends Fragment {
             button_create_project.setAlpha(1.0f);
             button_create_project.setEnabled(true);
             button_create_project.setOnClickListener(cardview_create_project ->
-                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
+                    NavHostFragment.findNavController(AddProjectLocallyFragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
         }
     }
 
@@ -336,7 +266,7 @@ public class CreateProject1Fragment extends Fragment {
         if (isSlrChoosen && isBibChoosen && isTaxonomyChoosen) {
             button_create_project.setEnabled(true);
             button_create_project.setOnClickListener(cardview_create_project ->
-                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
+                    NavHostFragment.findNavController(AddProjectLocallyFragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
         }
     }
 
