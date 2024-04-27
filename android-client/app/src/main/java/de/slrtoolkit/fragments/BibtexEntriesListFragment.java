@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.views.BibTexEntriesListAdapter;
 import de.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
@@ -95,12 +94,12 @@ public class BibtexEntriesListFragment extends Fragment {
 
     private void setOnClickListener() {
         listener = (v, position) -> {
-            Entry clickedEntry = adapter.getItemAtPosition(position);
+            BibEntry clickedBibEntry = adapter.getItemAtPosition(position);
 
-            if (clickedEntry == null) return;
+            if (clickedBibEntry == null) return;
 
-            projectViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
-            int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
+            projectViewModel.setCurrentEntryIdForCard(clickedBibEntry.getEntryId());
+            int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedBibEntry);
             projectViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
                     .navigate(R.id.action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment);
@@ -111,7 +110,7 @@ public class BibtexEntriesListFragment extends Fragment {
         projectViewModel.getEntriesForRepo(repoId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    private void onLoaded(List<Entry> list) {
+    private void onLoaded(List<BibEntry> list) {
         projectViewModel.setCurrentEntriesInList(list);
         if (list.isEmpty()) {
             recyclerView.setVisibility(View.INVISIBLE);
@@ -124,8 +123,8 @@ public class BibtexEntriesListFragment extends Fragment {
     }
 
     private void filterList(String searchTerm) {
-        List<Entry> filteredEntries = new ArrayList<>();
-        for (Entry e : projectViewModel.getCurrentEntriesInList()) {
+        List<BibEntry> filteredEntries = new ArrayList<>();
+        for (BibEntry e : projectViewModel.getCurrentEntriesInList()) {
             if (e.getTitle().toLowerCase(Locale.ROOT).contains(searchTerm.toLowerCase(Locale.ROOT))) {
                 filteredEntries.add(e);
             }

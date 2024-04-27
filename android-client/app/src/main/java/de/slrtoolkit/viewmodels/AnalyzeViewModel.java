@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
@@ -104,8 +104,8 @@ public class AnalyzeViewModel extends AndroidViewModel {
     public int getNumberOfEntriesForTaxonomy(List<TaxonomyWithEntries> taxonomyWithEntries) {
         Set<Integer> entries = new HashSet<>();
         for (TaxonomyWithEntries t : taxonomyWithEntries) {
-            for (Entry entry : t.entries) {
-                entries.add(entry.getEntryId());
+            for (BibEntry bibEntry : t.entries) {
+                entries.add(bibEntry.getEntryId());
             }
         }
         return entries.size();
@@ -118,14 +118,14 @@ public class AnalyzeViewModel extends AndroidViewModel {
                 taxonomiesWithAggregatedChildren.add(currentTaxonomy);
             } else {
                 List<TaxonomyWithEntries> children = aggregateChildrenOfTaxonomy(repoId, currentTaxonomy);
-                List<Entry> entries = new ArrayList<>();
+                List<BibEntry> entries = new ArrayList<>();
                 ArrayList<Integer> entryIds = new ArrayList<>();
 
                 for (TaxonomyWithEntries child : children) {
-                    for (Entry entry : child.entries) {
-                        if (!entryIds.contains(entry.getEntryId())) {
-                            entryIds.add(entry.getEntryId());
-                            entries.add(entry);
+                    for (BibEntry bibEntry : child.entries) {
+                        if (!entryIds.contains(bibEntry.getEntryId())) {
+                            entryIds.add(bibEntry.getEntryId());
+                            entries.add(bibEntry);
                         }
                     }
                 }

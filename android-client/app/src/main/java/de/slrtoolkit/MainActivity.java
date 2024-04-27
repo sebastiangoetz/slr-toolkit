@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
+    private FloatingActionButton btnAddProject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +28,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fab = findViewById(R.id.fab_add_project);
+        btnAddProject = findViewById(R.id.fab_add_project);
 
-        fab.setOnClickListener(view -> {
+        btnAddProject.setOnClickListener(view -> {
             View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_create_project_choose_option, null);
-            Button button_create_project_with_git = view1.findViewById(R.id.button_create_project_with_git);
-            Button button_create_project_manually = view1.findViewById(R.id.button_create_project_manualy);
+            Button buttonAddProjectFromGit = view1.findViewById(R.id.button_add_project_from_git);
+            Button buttonCreateProjectLocally = view1.findViewById(R.id.button_create_project_locally);
 
             AlertDialog alertDialog = new MaterialAlertDialogBuilder(MainActivity.this)
                     .setTitle("Choose option to add a new project")
@@ -41,17 +41,17 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Close", (dialogInterface, i) -> dialogInterface.dismiss()).create();
             alertDialog.show();
 
-            button_create_project_with_git.setOnClickListener(view2 -> {
+            buttonAddProjectFromGit.setOnClickListener(view2 -> {
                 alertDialog.dismiss();
                 NavHostFragment.findNavController(
                                 Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
-                        .navigate(R.id.action_ProjectsFragment_to_AddProjectFragment);
+                        .navigate(R.id.action_ProjectsFragment_to_AddProjectFromGitFragment);
             });
-            button_create_project_manually.setOnClickListener(view2 -> {
+            buttonCreateProjectLocally.setOnClickListener(view2 -> {
                 alertDialog.dismiss();
                 NavHostFragment.findNavController(
                                 Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)))
-                        .navigate((R.id.actionProjectsFragment_to_CreateProjectFragment));
+                        .navigate((R.id.actionProjectsFragment_to_CreateLocalProjectFragment));
             });
         });
     }
@@ -78,6 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public FloatingActionButton getFloatingActionButton() {
-        return fab;
+        return btnAddProject;
     }
 }

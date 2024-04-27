@@ -11,8 +11,8 @@ public class RepoWithEntries {
     @Relation(
             parentColumn = "id",
             entityColumn = "repoId",
-            entity = Entry.class
+            entity = BibEntry.class
     )
-    public List<Entry> entries;
+    public List<BibEntry> entries;
 
 }

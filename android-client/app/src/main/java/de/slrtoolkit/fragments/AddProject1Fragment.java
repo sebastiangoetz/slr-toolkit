@@ -117,7 +117,7 @@ public class AddProject1Fragment extends Fragment {
                         progressButton.onSucceeded();
                         button_clone_project.setOnClickListener(cardview_clone_project ->
                                 NavHostFragment.findNavController(AddProject1Fragment.this)
-                                        .navigate(R.id.action_AddProject1Fragment_to_AddProject2Fragment));
+                                        .navigate(R.id.action_AddProjectFromGitFragment_to_AddProjectSetNameFragment));
                     } else if (worker.getState() == WorkInfo.State.FAILED) {
                         progressButton.onFailed();
                         TextView textview_clone_project_failed = view.findViewById(R.id.textview_clone_project_failed);

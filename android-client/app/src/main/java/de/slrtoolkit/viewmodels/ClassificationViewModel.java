@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.database.TaxonomyWithEntries;
-import de.slrtoolkit.repositories.EntryRepository;
+import de.slrtoolkit.repositories.BibEntryRepository;
 import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
@@ -26,7 +26,7 @@ public class ClassificationViewModel extends AndroidViewModel {
     public ClassificationViewModel(@NonNull Application application) {
         super(application);
         RepoRepository repoRepository = new RepoRepository(application);
-        EntryRepository entryRepository = new EntryRepository(application);
+        BibEntryRepository bibEntryRepository = new BibEntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
 

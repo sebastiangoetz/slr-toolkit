@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity
-public class Entry {
+public class BibEntry {
     private final String key;
     private final String title;
     @PrimaryKey(autoGenerate = true)
@@ -26,7 +26,7 @@ public class Entry {
     @TypeConverters(StatusConverter.class)
     private Status status;
 
-    public Entry(String key, String title) {
+    public BibEntry(String key, String title) {
         this.key = key;
         this.title = title;
         this.status = Status.OPEN;

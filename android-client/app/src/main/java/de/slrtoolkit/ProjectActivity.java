@@ -18,8 +18,6 @@ public class ProjectActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         ProjectViewModel projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
-        RepoViewModel repoViewModel = new ViewModelProvider(this).get(RepoViewModel.class);
-
 
         if (extras != null) {
             int id = extras.getInt("repo");

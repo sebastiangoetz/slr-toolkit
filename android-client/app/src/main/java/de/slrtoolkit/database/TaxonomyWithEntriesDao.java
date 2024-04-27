@@ -13,13 +13,13 @@ import java.util.List;
 @Dao
 public interface TaxonomyWithEntriesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(EntryTaxonomyCrossRef entryTaxonomyCrossRef);
+    long insert(BibEntryTaxonomyCrossRef bibEntryTaxonomyCrossRef);
 
     @Insert
-    void insertAll(List<EntryTaxonomyCrossRef> entryTaxonomyCrossRef);
+    void insertAll(List<BibEntryTaxonomyCrossRef> bibEntryTaxonomyCrossRef);
 
     @Delete
-    void delete(EntryTaxonomyCrossRef entryTaxonomyCrossRef);
+    void delete(BibEntryTaxonomyCrossRef bibEntryTaxonomyCrossRef);
 
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND parentId=:parentId")

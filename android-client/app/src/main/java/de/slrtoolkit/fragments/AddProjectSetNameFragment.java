@@ -26,7 +26,7 @@ import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 
-public class AddProject2Fragment extends Fragment {
+public class AddProjectSetNameFragment extends Fragment {
 
     private RepoViewModel repoViewModel;
     private TextInputEditText edittext_name;
@@ -65,8 +65,8 @@ public class AddProject2Fragment extends Fragment {
             slrprojectParser.parseSlr(String.valueOf(file), currentRepo.getName(), currentRepo.getTextAbstract());
 
 
-            NavHostFragment.findNavController(AddProject2Fragment.this)
-                    .navigate(R.id.action_AddProject2Fragment_to_ProjectsFragment);
+            NavHostFragment.findNavController(AddProjectSetNameFragment.this)
+                    .navigate(R.id.action_AddProjectSetNameFragment_to_ProjectsFragment);
         });
     }
 

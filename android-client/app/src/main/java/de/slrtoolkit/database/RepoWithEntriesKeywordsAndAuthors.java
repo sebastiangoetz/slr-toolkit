@@ -11,9 +11,9 @@ public class RepoWithEntriesKeywordsAndAuthors {
     @Relation(
             parentColumn = "id",
             entityColumn = "repoId",
-            entity = Entry.class
+            entity = BibEntry.class
     )
-    public List<Entry> entries;
+    public List<BibEntry> entries;
 
     @Relation(
             parentColumn = "id",

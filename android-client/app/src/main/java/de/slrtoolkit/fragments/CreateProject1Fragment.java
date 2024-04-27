@@ -196,7 +196,7 @@ public class CreateProject1Fragment extends Fragment {
         }
 
         button_create_project.setOnClickListener(cardview_create_project ->
-                NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectFragment_to_AddProject2Fragment));
+                NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
     }
 
     public static String getMimeType(Context context, Uri uri) {
@@ -286,7 +286,7 @@ public class CreateProject1Fragment extends Fragment {
             button_create_project.setAlpha(1.0f);
             button_create_project.setEnabled(true);
             button_create_project.setOnClickListener(cardview_create_project ->
-                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectFragment_to_AddProject2Fragment));
+                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
         }
     }
 
@@ -336,7 +336,7 @@ public class CreateProject1Fragment extends Fragment {
         if (isSlrChoosen && isBibChoosen && isTaxonomyChoosen) {
             button_create_project.setEnabled(true);
             button_create_project.setOnClickListener(cardview_create_project ->
-                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectFragment_to_AddProject2Fragment));
+                    NavHostFragment.findNavController(CreateProject1Fragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
         }
     }
 

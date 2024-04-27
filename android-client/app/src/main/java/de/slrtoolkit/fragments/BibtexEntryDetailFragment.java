@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
@@ -75,21 +75,21 @@ public class BibtexEntryDetailFragment extends Fragment {
 
     }
 
-    public void setEntryInformation(Entry entry) {
-        if (entry == null) {
+    public void setEntryInformation(BibEntry bibEntry) {
+        if (bibEntry == null) {
             return;
         }
-        titleTextView.setText(entry.getTitle());
-        authorsTextView.setText(entry.getAuthor());
-        yearTextView.setText(entry.getYear());
-        monthTextView.setText(entry.getMonth());
-        abstractTextView.setText(entry.getAbstractText());
-        doiTextView.setText(entry.getDoi());
-        keywordsTextView.setText(entry.getKeywords());
-        if(entry.getJournal() == null || entry.getJournal().trim().isEmpty()) {
-            publishedTextView.setText(entry.getBooktitle());
+        titleTextView.setText(bibEntry.getTitle());
+        authorsTextView.setText(bibEntry.getAuthor());
+        yearTextView.setText(bibEntry.getYear());
+        monthTextView.setText(bibEntry.getMonth());
+        abstractTextView.setText(bibEntry.getAbstractText());
+        doiTextView.setText(bibEntry.getDoi());
+        keywordsTextView.setText(bibEntry.getKeywords());
+        if(bibEntry.getJournal() == null || bibEntry.getJournal().trim().isEmpty()) {
+            publishedTextView.setText(bibEntry.getBooktitle());
         } else {
-            publishedTextView.setText(entry.getJournal());
+            publishedTextView.setText(bibEntry.getJournal());
         }
     }
 }

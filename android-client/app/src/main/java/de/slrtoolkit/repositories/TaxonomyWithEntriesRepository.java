@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.slrtoolkit.database.AppDatabase;
-import de.slrtoolkit.database.EntryTaxonomyCrossRef;
+import de.slrtoolkit.database.BibEntryTaxonomyCrossRef;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.database.TaxonomyWithEntriesDao;
 
@@ -26,10 +26,10 @@ public class TaxonomyWithEntriesRepository {
     }
 
     public long insert(int taxonomyId, int entryId) {
-        EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
-        entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entryTaxonomyCrossRef.setEntryId(entryId);
-        Callable<Long> insertCallable = () -> taxonomyWithEntriesDao.insert(entryTaxonomyCrossRef);
+        BibEntryTaxonomyCrossRef bibEntryTaxonomyCrossRef = new BibEntryTaxonomyCrossRef();
+        bibEntryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
+        bibEntryTaxonomyCrossRef.setEntryId(entryId);
+        Callable<Long> insertCallable = () -> taxonomyWithEntriesDao.insert(bibEntryTaxonomyCrossRef);
         long id = 0;
 
         Future<Long> future = AppDatabase.databaseWriteExecutor.submit(insertCallable);
@@ -42,15 +42,15 @@ public class TaxonomyWithEntriesRepository {
 
     }
 
-    public void insertAll(List<EntryTaxonomyCrossRef> entryTaxonomyCrossRefs) {
-        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.insertAll(entryTaxonomyCrossRefs));
+    public void insertAll(List<BibEntryTaxonomyCrossRef> bibEntryTaxonomyCrossRefs) {
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.insertAll(bibEntryTaxonomyCrossRefs));
     }
 
     public void delete(int taxonomyId, int entryId) {
-        EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
-        entryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
-        entryTaxonomyCrossRef.setEntryId(entryId);
-        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(entryTaxonomyCrossRef));
+        BibEntryTaxonomyCrossRef bibEntryTaxonomyCrossRef = new BibEntryTaxonomyCrossRef();
+        bibEntryTaxonomyCrossRef.setTaxonomyId(taxonomyId);
+        bibEntryTaxonomyCrossRef.setEntryId(entryId);
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(bibEntryTaxonomyCrossRef));
     }
 
     public List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {

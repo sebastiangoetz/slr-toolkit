@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.viewmodels.AnalyzeViewModel;
 
@@ -119,20 +119,20 @@ public class BubbleChartFragment extends Fragment {
         for (TaxonomyWithEntries t1 : taxonomyWithEntries1) {
             int yCount = 0;
             for (TaxonomyWithEntries t2 : taxonomyWithEntries2) {
-                List<Entry> t1Entries = t1.entries;
+                List<BibEntry> t1Entries = t1.entries;
                 System.out.println("t1 entries!");
                 System.out.println("name: " + t1.taxonomy.getName());
-                for (Entry entry : t1Entries) {
-                    System.out.println(entry.getTitle());
+                for (BibEntry bibEntry : t1Entries) {
+                    System.out.println(bibEntry.getTitle());
                 }
-                List<Entry> t2Entries = t2.entries;
+                List<BibEntry> t2Entries = t2.entries;
                 System.out.println("t2 entries!");
                 System.out.println("name: " + t2.taxonomy.getName());
-                for (Entry entry : t2Entries) {
-                    System.out.println(entry.getTitle());
+                for (BibEntry bibEntry : t2Entries) {
+                    System.out.println(bibEntry.getTitle());
                 }
-                List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
-                List<Integer> t2EntryIds = t2Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
+                List<Integer> t1EntryIds = t1Entries.stream().map(BibEntry::getEntryId).collect(Collectors.toList());
+                List<Integer> t2EntryIds = t2Entries.stream().map(BibEntry::getEntryId).collect(Collectors.toList());
                 System.out.println(t1EntryIds);
                 System.out.println(t2EntryIds);
                 t1EntryIds.retainAll(t2EntryIds);

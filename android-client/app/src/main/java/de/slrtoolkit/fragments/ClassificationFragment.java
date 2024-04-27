@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.viewmodels.ClassificationViewModel;
 import de.slrtoolkit.views.TaxonomyClassificationListAdapter;
@@ -90,8 +90,8 @@ public class ClassificationFragment extends Fragment {
         ArrayList<Integer> selectedTaxonomies = new ArrayList<>();
         for (int i = 0; i < taxonomyWithEntries.size(); i++) {
             TaxonomyWithEntries currentTaxWithEntries = taxonomyWithEntries.get(i);
-            for (Entry entry : currentTaxWithEntries.entries) {
-                if (entry.getEntryId() == entryId) {
+            for (BibEntry bibEntry : currentTaxWithEntries.entries) {
+                if (bibEntry.getEntryId() == entryId) {
                     selectedTaxonomies.add(currentTaxWithEntries.taxonomy.getTaxonomyId());
                 }
             }

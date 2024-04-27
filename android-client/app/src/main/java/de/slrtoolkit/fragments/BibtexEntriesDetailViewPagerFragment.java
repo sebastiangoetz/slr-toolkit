@@ -24,7 +24,7 @@ import de.slrtoolkit.ClassificationActivity;
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
 import de.slrtoolkit.TaxonomiesActivity;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
@@ -69,7 +69,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     }
 
     private void setViewPager() {
-        List<Entry> entries = getCurrentEntries();
+        List<BibEntry> entries = getCurrentEntries();
         if (entries.isEmpty()) {
             noEntriesDetails.setVisibility(View.VISIBLE);
         } else {
@@ -90,28 +90,28 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
 
     private void classifyEntry() {
         Intent intent = new Intent(getActivity(), ClassificationActivity.class);
-        List<Entry> entries = getCurrentEntries();
+        List<BibEntry> entries = getCurrentEntries();
         int index = viewPager.getCurrentItem();
         if (entries.size() > index) {
-            Entry entry = entries.get(index);
+            BibEntry bibEntry = entries.get(index);
             intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entry.getEntryId());
+            intent.putExtra("entry", bibEntry.getEntryId());
             startActivity(intent);
         }
     }
 
     private void deleteEntry() {
         int index = viewPager.getCurrentItem();
-        List<Entry> entries = getCurrentEntries();
+        List<BibEntry> entries = getCurrentEntries();
         if (entries.size() > index) {
-            Entry entry = entries.get(index);
-            projectViewModel.deleteById(entry.getEntryId(), repoId);
+            BibEntry bibEntry = entries.get(index);
+            projectViewModel.deleteById(bibEntry.getEntryId(), repoId);
             requireActivity().onBackPressed();
         }
     }
 
-    public List<Entry> getCurrentEntries() {
-        List<Entry> entries = new ArrayList<>();
+    public List<BibEntry> getCurrentEntries() {
+        List<BibEntry> entries = new ArrayList<>();
         if (requireActivity() instanceof ProjectActivity) {
             entries = projectViewModel.getCurrentEntriesInList();
         } else if (requireActivity() instanceof TaxonomiesActivity) {
@@ -145,10 +145,10 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {
-        final List<Entry> entries;
+        final List<BibEntry> entries;
         final FragmentActivity fa;
 
-        public EntrySlidePagerAdapter(FragmentActivity fa, List<Entry> entries) {
+        public EntrySlidePagerAdapter(FragmentActivity fa, List<BibEntry> entries) {
             super(fa);
             this.entries = entries;
             this.fa = fa;
@@ -157,11 +157,11 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            Entry entry = entries.get(position);
+            BibEntry bibEntry = entries.get(position);
             if (fa instanceof ProjectActivity) {
-                projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
+                projectViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
             } else if (fa instanceof TaxonomiesActivity) {
-                taxonomiesViewModel.setCurrentEntryIdForCard(entry.getEntryId());
+                taxonomiesViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
             }
             return new BibtexEntryDetailFragment();
         }

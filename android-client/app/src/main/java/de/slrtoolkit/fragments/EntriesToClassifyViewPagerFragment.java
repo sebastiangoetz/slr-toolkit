@@ -22,7 +22,7 @@ import java.util.List;
 
 import de.slrtoolkit.ClassificationActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 
 /**
@@ -33,7 +33,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     ViewPager2 viewPager;
     ProjectViewModel projectViewModel;
     int repoId;
-    List<Entry> entries;
+    List<BibEntry> entries;
     private FragmentStateAdapter pagerAdapter;
     private TextView noEntriesToClassifyTextview;
 
@@ -72,12 +72,12 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
 
     private void classifyEntry() {
         if (entries.isEmpty()) return;
-        Entry entry = entries.get(viewPager.getCurrentItem());
+        BibEntry bibEntry = entries.get(viewPager.getCurrentItem());
 
-        if (entry != null) {
+        if (bibEntry != null) {
             Intent intent = new Intent(getActivity(), ClassificationActivity.class);
             intent.putExtra("repo", repoId);
-            intent.putExtra("entry", entry.getEntryId());
+            intent.putExtra("entry", bibEntry.getEntryId());
             startActivity(intent);
         }
     }
@@ -91,8 +91,8 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
             noEntriesToClassifyTextview.setVisibility(View.INVISIBLE);
             viewPager.setVisibility(View.VISIBLE);
         }
-        Entry entry = entries.get(i);
-        projectViewModel.deleteById(entry.getEntryId(), repoId);
+        BibEntry bibEntry = entries.get(i);
+        projectViewModel.deleteById(bibEntry.getEntryId(), repoId);
         pagerAdapter.notifyDataSetChanged();
         viewPager.invalidate();
         viewPager.setCurrentItem(i);
@@ -123,9 +123,9 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
     }
 
     public class EntrySlidePagerAdapter extends FragmentStateAdapter {
-        final List<Entry> entries;
+        final List<BibEntry> entries;
 
-        public EntrySlidePagerAdapter(FragmentActivity fa, List<Entry> entries) {
+        public EntrySlidePagerAdapter(FragmentActivity fa, List<BibEntry> entries) {
             super(fa);
             this.entries = entries;
         }
@@ -133,8 +133,8 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            Entry entry = entries.get(position);
-            projectViewModel.setCurrentEntryIdForCard(entry.getEntryId());
+            BibEntry bibEntry = entries.get(position);
+            projectViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
             return new BibtexEntryDetailFragment();
         }
 

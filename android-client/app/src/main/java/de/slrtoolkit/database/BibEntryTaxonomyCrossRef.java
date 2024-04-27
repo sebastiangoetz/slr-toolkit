@@ -6,7 +6,7 @@ import androidx.room.Index;
 @Entity(primaryKeys = {"taxonomyId", "entryId"}, indices = {
         @Index(value = "entryId")
 })
-public class EntryTaxonomyCrossRef {
+public class BibEntryTaxonomyCrossRef {
     public int taxonomyId;
     public int entryId;
 

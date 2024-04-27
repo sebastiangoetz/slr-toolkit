@@ -11,39 +11,40 @@
         tools:layout="@layout/fragment_projects">
 
         <action
-            android:id="@+id/action_ProjectsFragment_to_AddProjectFragment"
-            app:destination="@id/AddProject1Fragment" />
+            android:id="@+id/action_ProjectsFragment_to_AddProjectFromGitFragment"
+            app:destination="@id/AddProjectFromGitFragment" />
         <action
-            android:id="@+id/actionProjectsFragment_to_CreateProjectFragment"
-            app:destination="@+id/CreateProjectFragment"
+            android:id="@+id/actionProjectsFragment_to_CreateLocalProjectFragment"
+            app:destination="@+id/CreateProjectLocallyFragment"
             />
     </fragment>
     <fragment
-        android:id="@+id/AddProject1Fragment"
+        android:id="@+id/AddProjectFromGitFragment"
         android:name="de.slrtoolkit.fragments.AddProject1Fragment"
         android:label="@string/fragment_label_add_project"
         tools:layout="@layout/fragment_add_project_from_git">
 
         <action
-            android:id="@+id/action_AddProject1Fragment_to_AddProject2Fragment"
-            app:destination="@id/AddProject2Fragment" />
+            android:id="@+id/action_AddProjectFromGitFragment_to_AddProjectSetNameFragment"
+            app:destination="@id/AddProjectSetNameFragment" />
     </fragment>
     <fragment
-        android:id="@+id/CreateProjectFragment"
+        android:id="@+id/CreateProjectLocallyFragment"
         android:name="de.slrtoolkit.fragments.CreateProject1Fragment"
         android:label="@string/fragment_label_add_project"
         tools:layout="@layout/fragment_add_project_locally"
         >
         <action
-            android:id="@+id/action_CreateProjectFragment_to_AddProject2Fragment"
-            app:destination="@+id/AddProject2Fragment"/>
+            android:id="@+id/action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment"
+            app:destination="@+id/AddProjectSetNameFragment"/>
     </fragment>
     <fragment
-        android:id="@+id/AddProject2Fragment"
-        android:name="de.slrtoolkit.fragments.AddProject2Fragment"
+        android:id="@+id/AddProjectSetNameFragment"
+        android:name="de.slrtoolkit.fragments.AddProjectSetNameFragment"
+        tools:layout="@layout/fragment_add_project_set_name"
         android:label="@string/fragment_label_add_project" >
         <action
-            android:id="@+id/action_AddProject2Fragment_to_ProjectsFragment"
+            android:id="@+id/action_AddProjectSetNameFragment_to_ProjectsFragment"
             app:destination="@id/ProjectsFragment" />
         <argument
             android:name="repo_id"

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.BibTexEntriesListAdapter;
@@ -72,7 +72,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
 
     public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
         setHeader(taxonomyWithEntries);
-        List<Entry> entries = taxonomyWithEntries.entries;
+        List<BibEntry> entries = taxonomyWithEntries.entries;
         taxonomiesViewModel.setCurrentEntriesInList(entries);
         if (entries.isEmpty()) {
             noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);
@@ -84,11 +84,11 @@ public class TaxonomyEntriesListFragment extends Fragment {
 
     private void setOnClickListener() {
         listener = (v, position) -> {
-            Entry clickedEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
-            if (clickedEntry == null) return;
+            BibEntry clickedBibEntry = bibTexEntriesListAdapter.getItemAtPosition(position);
+            if (clickedBibEntry == null) return;
 
-            taxonomiesViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
-            int indexOfEntryInOriginalList = taxonomiesViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
+            taxonomiesViewModel.setCurrentEntryIdForCard(clickedBibEntry.getEntryId());
+            int indexOfEntryInOriginalList = taxonomiesViewModel.getCurrentEntriesInList().indexOf(clickedBibEntry);
             taxonomiesViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
             Fragment entryFragment = new BibtexEntriesDetailViewPagerFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();

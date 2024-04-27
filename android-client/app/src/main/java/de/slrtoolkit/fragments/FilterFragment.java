@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.views.FilterEntriesAdapter;
 
@@ -28,7 +28,7 @@ import de.slrtoolkit.views.FilterEntriesAdapter;
 public class FilterFragment extends Fragment {
     SwipeFlingAdapterView flingAdapterView;
     private FilterEntriesAdapter arrayAdapter;
-    private ArrayList<Entry> entries;
+    private ArrayList<BibEntry> entries;
     private Button keepButton;
     private Button discardButton;
     private TextView noEntriesToFilterTextview;
@@ -66,15 +66,15 @@ public class FilterFragment extends Fragment {
 
             @Override
             public void onLeftCardExit(Object o) {
-                Entry entry = (Entry) o;
-                projectViewModel.delete(entry, repoId);
+                BibEntry bibEntry = (BibEntry) o;
+                projectViewModel.delete(bibEntry, repoId);
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Entry entry = (Entry) o;
-                entry.setStatus(Entry.Status.KEEP);
-                projectViewModel.updateEntry(entry);
+                BibEntry bibEntry = (BibEntry) o;
+                bibEntry.setStatus(BibEntry.Status.KEEP);
+                projectViewModel.updateEntry(bibEntry);
             }
 
             @Override
@@ -90,8 +90,8 @@ public class FilterFragment extends Fragment {
 
         int id = projectViewModel.getCurrentRepoId();
 
-        final Observer<List<Entry>> openEntriesObserver = data -> {
-            entries = (ArrayList<Entry>) data;
+        final Observer<List<BibEntry>> openEntriesObserver = data -> {
+            entries = (ArrayList<BibEntry>) data;
             if (entries.isEmpty()) {
                 noEntriesToFilterTextview.setVisibility(View.VISIBLE);
                 flingAdapterView.setVisibility(View.INVISIBLE);
@@ -101,7 +101,7 @@ public class FilterFragment extends Fragment {
                 noEntriesToFilterTextview.setVisibility(View.INVISIBLE);
                 keepButton.setVisibility(View.VISIBLE);
                 discardButton.setVisibility(View.VISIBLE);
-                ArrayList<Entry> newItems = new ArrayList<>(data);
+                ArrayList<BibEntry> newItems = new ArrayList<>(data);
                 arrayAdapter.setEntries(newItems);
             }
         };

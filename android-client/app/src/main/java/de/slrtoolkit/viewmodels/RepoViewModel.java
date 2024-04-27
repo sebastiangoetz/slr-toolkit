@@ -21,13 +21,13 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.database.Author;
-import de.slrtoolkit.database.Entry;
-import de.slrtoolkit.database.EntryTaxonomyCrossRef;
+import de.slrtoolkit.database.BibEntry;
+import de.slrtoolkit.database.BibEntryTaxonomyCrossRef;
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.repositories.AuthorRepository;
-import de.slrtoolkit.repositories.EntryRepository;
+import de.slrtoolkit.repositories.BibEntryRepository;
 import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
@@ -43,7 +43,7 @@ import de.slrtoolkit.util.TaxonomyParserNode;
 public class RepoViewModel extends AndroidViewModel {
 
     private final RepoRepository repoRepository;
-    private final EntryRepository entryRepository;
+    private final BibEntryRepository bibEntryRepository;
     private final AuthorRepository authorRepository;
     private final KeywordRepository keywordRepository;
     private final TaxonomyRepository taxonomyRepository;
@@ -55,7 +55,7 @@ public class RepoViewModel extends AndroidViewModel {
     public RepoViewModel(Application application) {
         super(application);
         repoRepository = new RepoRepository(application);
-        entryRepository = new EntryRepository(application);
+        bibEntryRepository = new BibEntryRepository(application);
         authorRepository = new AuthorRepository(application);
         keywordRepository = new KeywordRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
@@ -92,8 +92,8 @@ public class RepoViewModel extends AndroidViewModel {
         return repoRepository.getRepoByIdDirectly(id);
     }
 
-    public void saveAllEntriesForRepo(List<Entry> entries, int repoId) {
-        entryRepository.insertEntriesForRepo(repoId, entries);
+    public void saveAllEntriesForRepo(List<BibEntry> entries, int repoId) {
+        bibEntryRepository.insertEntriesForRepo(repoId, entries);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -146,7 +146,7 @@ public class RepoViewModel extends AndroidViewModel {
         }
 
         File file = fileUtil.accessFiles(path, application, ".bib");
-        Map<Entry, String> entriesWithTaxonomies = new HashMap<>();
+        Map<BibEntry, String> entriesWithTaxonomies = new HashMap<>();
         try {
             BibTexParser parser = BibTexParser.getBibTexParser();
             parser.setBibTeXDatabase(file);
@@ -167,8 +167,8 @@ public class RepoViewModel extends AndroidViewModel {
         return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
     }
 
-    public void initializeEntries(int repoId, Map<Entry, String> entriesWithTaxonomies) {
-        List<Entry> entries = new ArrayList<>(entriesWithTaxonomies.keySet());
+    public void initializeEntries(int repoId, Map<BibEntry, String> entriesWithTaxonomies) {
+        List<BibEntry> entries = new ArrayList<>(entriesWithTaxonomies.keySet());
         saveAllEntriesForRepo(entries, repoId);
     }
 
@@ -177,10 +177,10 @@ public class RepoViewModel extends AndroidViewModel {
         taxonomyRepository.initializeTaxonomy(repoId, path, application);
     }
 
-    public void initializeTaxonomiesWithEntries(Map<Entry, String> entriesWithTaxonomies, int repoId) {
-        List<EntryTaxonomyCrossRef> entryTaxonomyCrossRefs = new ArrayList<>();
+    public void initializeTaxonomiesWithEntries(Map<BibEntry, String> entriesWithTaxonomies, int repoId) {
+        List<BibEntryTaxonomyCrossRef> bibEntryTaxonomyCrossRefs = new ArrayList<>();
         TaxonomyParser taxonomyParser = new TaxonomyParser();
-        for (Map.Entry<Entry, String> e : entriesWithTaxonomies.entrySet()) {
+        for (Map.Entry<BibEntry, String> e : entriesWithTaxonomies.entrySet()) {
             String taxonomyString = e.getValue();
             if (taxonomyString.compareTo("") != 0) {
                 List<TaxonomyParserNode> taxonomyParserNodes = taxonomyParser.parse(taxonomyString);
@@ -188,15 +188,15 @@ public class RepoViewModel extends AndroidViewModel {
                     try {
                         //only if the taxonomy has no child taxonomies a relation is added
                         if (node.getChildren().isEmpty()) {
-                            Entry entry = entryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
+                            BibEntry bibEntry = bibEntryRepository.getEntryByRepoAndKeyDirectly(repoId, e.getKey().getKey());
                             Taxonomy taxonomy = taxonomyRepository.getTaxonomyByRepoAndPathDirectly(repoId, node.getPath());
-                            if (taxonomy != null && entry != null) {
+                            if (taxonomy != null && bibEntry != null) {
                                 //saved taxonomy also can't have children
                                 if (!taxonomy.isHasChildren()) {
-                                    EntryTaxonomyCrossRef entryTaxonomyCrossRef = new EntryTaxonomyCrossRef();
-                                    entryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
-                                    entryTaxonomyCrossRef.setEntryId(entry.getEntryId());
-                                    entryTaxonomyCrossRefs.add(entryTaxonomyCrossRef);
+                                    BibEntryTaxonomyCrossRef bibEntryTaxonomyCrossRef = new BibEntryTaxonomyCrossRef();
+                                    bibEntryTaxonomyCrossRef.setTaxonomyId(taxonomy.getTaxonomyId());
+                                    bibEntryTaxonomyCrossRef.setEntryId(bibEntry.getEntryId());
+                                    bibEntryTaxonomyCrossRefs.add(bibEntryTaxonomyCrossRef);
                                 }
                             }
                         }
@@ -206,6 +206,6 @@ public class RepoViewModel extends AndroidViewModel {
                 }
             }
         }
-        taxonomyWithEntriesRepository.insertAll(entryTaxonomyCrossRefs);
+        taxonomyWithEntriesRepository.insertAll(bibEntryTaxonomyCrossRefs);
     }
 }
