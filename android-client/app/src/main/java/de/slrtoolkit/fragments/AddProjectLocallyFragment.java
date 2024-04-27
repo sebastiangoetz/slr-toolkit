@@ -265,6 +265,7 @@ public class AddProjectLocallyFragment extends Fragment {
 
         if (isSlrChoosen && isBibChoosen && isTaxonomyChoosen) {
             button_create_project.setEnabled(true);
+            button_create_project.setAlpha(1.0f);
             button_create_project.setOnClickListener(cardview_create_project ->
                     NavHostFragment.findNavController(AddProjectLocallyFragment.this).navigate(R.id.action_CreateProjectLocallyFragment_to_AddProjectSetNameFragment));
         }
