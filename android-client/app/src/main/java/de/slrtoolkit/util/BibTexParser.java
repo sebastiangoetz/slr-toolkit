@@ -7,6 +7,7 @@ import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +88,11 @@ public class BibTexParser {
         return "";
     }
 
+    public BibTeXDatabase parse(String s) throws ParseException {
+        StringReader r = new StringReader(s);
+        return parser.parse(r);
+    }
+
     public Map<BibEntry, String> parseBibTexFile(File file) throws FileNotFoundException, ParseException {
         HashMap<BibEntry, String> entryTaxMap = new HashMap<>();
         setBibTeXDatabase(file);
@@ -113,5 +120,21 @@ public class BibTexParser {
         }
 
         return entryTaxMap;
+    }
+
+    public BibEntry translate(@NotNull BibTeXEntry bibTeXEntry) {
+        BibEntry bibEntry = new BibEntry(bibTeXEntry.getKey().toString(), safeGetField(bibTeXEntry, BibTeXEntry.KEY_TITLE));
+        bibEntry.setAuthor(safeGetField(bibTeXEntry, BibTeXEntry.KEY_AUTHOR));
+        bibEntry.setYear(safeGetField(bibTeXEntry, BibTeXEntry.KEY_YEAR));
+        bibEntry.setMonth(safeGetField(bibTeXEntry, BibTeXEntry.KEY_MONTH));
+        bibEntry.setBooktitle(safeGetField(bibTeXEntry, BibTeXEntry.KEY_BOOKTITLE));
+        bibEntry.setJournal(safeGetField(bibTeXEntry, BibTeXEntry.KEY_JOURNAL));
+        bibEntry.setVolume(safeGetField(bibTeXEntry, BibTeXEntry.KEY_VOLUME));
+        bibEntry.setUrl(safeGetField(bibTeXEntry, BibTeXEntry.KEY_URL));
+        bibEntry.setKeywords(safeGetField(bibTeXEntry, new Key("keywords")));
+        bibEntry.setDoi(safeGetField(bibTeXEntry, new Key("doi")));
+        bibEntry.setAbstractText(safeGetField(bibTeXEntry, new Key("abstract")));
+        bibEntry.setType(safeGetField(bibTeXEntry, BibTeXEntry.KEY_TYPE));
+        return bibEntry;
     }
 }

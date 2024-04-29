@@ -67,14 +67,14 @@ public class FilterFragment extends Fragment {
             @Override
             public void onLeftCardExit(Object o) {
                 BibEntry bibEntry = (BibEntry) o;
-                projectViewModel.delete(bibEntry, repoId);
+                projectViewModel.deleteBibEntry(bibEntry, repoId);
             }
 
             @Override
             public void onRightCardExit(Object o) {
                 BibEntry bibEntry = (BibEntry) o;
                 bibEntry.setStatus(BibEntry.Status.KEEP);
-                projectViewModel.updateEntry(bibEntry);
+                projectViewModel.updateBibEntry(bibEntry);
             }
 
             @Override
@@ -106,7 +106,7 @@ public class FilterFragment extends Fragment {
             }
         };
 
-        projectViewModel.getOpenEntriesForRepo(id).observe(getViewLifecycleOwner(), openEntriesObserver);
+        projectViewModel.getOpenBibEntriesForRepo(id).observe(getViewLifecycleOwner(), openEntriesObserver);
 
         keepButton = view.findViewById(R.id.keep_button);
         discardButton = view.findViewById(R.id.discard_button);

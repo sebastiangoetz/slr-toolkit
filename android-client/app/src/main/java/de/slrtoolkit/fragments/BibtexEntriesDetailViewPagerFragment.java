@@ -79,7 +79,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         }
         int currentItemPosition = 0;
         if (requireActivity() instanceof ProjectActivity) {
-            currentItemPosition = projectViewModel.getCurrentEntryInListCount();
+            currentItemPosition = projectViewModel.getCurrentBibEntryInListCount();
         } else if (requireActivity() instanceof TaxonomiesActivity) {
             currentItemPosition = taxonomiesViewModel.getCurrentEntryInListCount();
         }
@@ -105,7 +105,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         List<BibEntry> entries = getCurrentEntries();
         if (entries.size() > index) {
             BibEntry bibEntry = entries.get(index);
-            projectViewModel.deleteById(bibEntry.getEntryId(), repoId);
+            projectViewModel.deleteBibEntryById(bibEntry.getEntryId(), repoId);
             requireActivity().onBackPressed();
         }
     }
@@ -113,7 +113,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
     public List<BibEntry> getCurrentEntries() {
         List<BibEntry> entries = new ArrayList<>();
         if (requireActivity() instanceof ProjectActivity) {
-            entries = projectViewModel.getCurrentEntriesInList();
+            entries = projectViewModel.getCurrentBibEntriesInList();
         } else if (requireActivity() instanceof TaxonomiesActivity) {
             entries = taxonomiesViewModel.getCurrentEntriesInList();
         }
@@ -159,7 +159,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         public Fragment createFragment(int position) {
             BibEntry bibEntry = entries.get(position);
             if (fa instanceof ProjectActivity) {
-                projectViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
+                projectViewModel.setCurrentBibEntryIdForCard(bibEntry.getEntryId());
             } else if (fa instanceof TaxonomiesActivity) {
                 taxonomiesViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
             }

@@ -57,8 +57,8 @@ public class BibtexEntryDetailFragment extends Fragment {
 
         if (getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
-            int entryId = projectViewModel.getCurrentEntryIdForCard();
-            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
+            int entryId = projectViewModel.getCurrentBibEntryIdForCard();
+            projectViewModel.getBibEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
 
         } else if (getActivity() instanceof TaxonomiesActivity) {

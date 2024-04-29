@@ -1,9 +1,8 @@
 package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
-import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -96,7 +95,6 @@ public class RepoViewModel extends AndroidViewModel {
         bibEntryRepository.insertEntriesForRepo(repoId, entries);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeDataForRepo(int repoId, String path) {
         FileUtil fileUtil = new FileUtil();
         File metadata = fileUtil.accessFiles(path, application, ".slrproject");
@@ -125,7 +123,7 @@ public class RepoViewModel extends AndroidViewModel {
             }
 
             int lastAuthorIndex = 0;
-            int nextAuthorIndex = 0;
+            int nextAuthorIndex;
             while (true) {
                 nextAuthorIndex = contents.indexOf("<authorsList>", lastAuthorIndex);
                 if (nextAuthorIndex == -1) break;
@@ -142,7 +140,7 @@ public class RepoViewModel extends AndroidViewModel {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(RepoViewModel.class.getName(), "initializeDataForRepo: couldn't read slrproject file", e);
         }
 
         File file = fileUtil.accessFiles(path, application, ".bib");
@@ -152,7 +150,7 @@ public class RepoViewModel extends AndroidViewModel {
             parser.setBibTeXDatabase(file);
             entriesWithTaxonomies = parser.parseBibTexFile(file);
         } catch (FileNotFoundException | ParseException e) {
-            e.printStackTrace();
+            Log.e(RepoViewModel.class.getName(), "initializeDataForRepo: could read bibtex file", e);
         }
         initializeEntries(repoId, entriesWithTaxonomies);
         initializeTaxonomy(repoId, path);
@@ -162,17 +160,11 @@ public class RepoViewModel extends AndroidViewModel {
     private String getValueOfTag(String tag, String xml) {
         return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
     }
-
-    private String setValueOfTag(String tag, String xml, String valueToSet){
-        return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
-    }
-
     public void initializeEntries(int repoId, Map<BibEntry, String> entriesWithTaxonomies) {
         List<BibEntry> entries = new ArrayList<>(entriesWithTaxonomies.keySet());
         saveAllEntriesForRepo(entries, repoId);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void initializeTaxonomy(int repoId, String path) {
         taxonomyRepository.initializeTaxonomy(repoId, path, application);
     }
@@ -201,7 +193,7 @@ public class RepoViewModel extends AndroidViewModel {
                             }
                         }
                     } catch (ExecutionException | InterruptedException exception) {
-                        exception.printStackTrace();
+                        Log.e(RepoViewModel.class.getName(), "initializeTaxonomiesWithEntries: ", exception);
                     }
                 }
             }

@@ -56,7 +56,7 @@ public class BibTexEntriesListAdapter extends ListAdapter<BibEntry, BibTexEntrie
     public void deleteItem(int i) {
         BibEntry deletedBibEntry = getItem(i);
         ProjectViewModel projectViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(ProjectViewModel.class);
-        projectViewModel.delete(deletedBibEntry, repoId);
+        projectViewModel.deleteBibEntry(deletedBibEntry, repoId);
         notifyItemRemoved(i);
     }
 

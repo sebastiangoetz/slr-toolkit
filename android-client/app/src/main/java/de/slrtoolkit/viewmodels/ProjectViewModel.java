@@ -1,6 +1,7 @@
 package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -24,9 +25,9 @@ public class ProjectViewModel extends AndroidViewModel {
     private final AuthorRepository authorRepository;
     private final KeywordRepository keywordRepository;
     private int currentRepoId;
-    private int currentEntryIdForCard;
-    private List<BibEntry> currentEntriesInList;
-    private int currentEntryInListCount;
+    private int currentBibEntryIdForCard;
+    private List<BibEntry> currentBibEntriesInList;
+    private int currentBibEntryInListCount;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
@@ -51,20 +52,20 @@ public class ProjectViewModel extends AndroidViewModel {
     public LiveData<List<Author>> getAuthorsForCurrentProject() {
         return authorRepository.getAuthorsForRepo(currentRepoId);
     }
-    public int getCurrentEntryInListCount() {
-        return currentEntryInListCount;
+    public int getCurrentBibEntryInListCount() {
+        return currentBibEntryInListCount;
     }
 
-    public void setCurrentEntryInListCount(int currentEntryInListCount) {
-        this.currentEntryInListCount = currentEntryInListCount;
+    public void setCurrentBibEntryInListCount(int currentEntryInListCount) {
+        this.currentBibEntryInListCount = currentEntryInListCount;
     }
 
-    public List<BibEntry> getCurrentEntriesInList() {
-        return currentEntriesInList;
+    public List<BibEntry> getCurrentBibEntriesInList() {
+        return currentBibEntriesInList;
     }
 
-    public void setCurrentEntriesInList(List<BibEntry> currentEntriesInList) {
-        this.currentEntriesInList = currentEntriesInList;
+    public void setCurrentBibEntriesInList(List<BibEntry> currentEntriesInList) {
+        this.currentBibEntriesInList = currentEntriesInList;
     }
 
     public int getCurrentRepoId() {
@@ -75,19 +76,19 @@ public class ProjectViewModel extends AndroidViewModel {
         this.currentRepoId = currentRepoId;
     }
 
-    public int getCurrentEntryIdForCard() {
-        return currentEntryIdForCard;
+    public int getCurrentBibEntryIdForCard() {
+        return currentBibEntryIdForCard;
     }
 
-    public void setCurrentEntryIdForCard(int currentEntryIdForCard) {
-        this.currentEntryIdForCard = currentEntryIdForCard;
+    public void setCurrentBibEntryIdForCard(int currentEntryIdForCard) {
+        this.currentBibEntryIdForCard = currentEntryIdForCard;
     }
 
-    public LiveData<Integer> getEntryAmount(int repoId) {
+    public LiveData<Integer> getBibEntryAmount(int repoId) {
         return bibEntryRepository.getEntryAmountForRepo(repoId);
     }
 
-    public LiveData<Integer> getOpenEntryAmount(int repoId) {
+    public LiveData<Integer> getOpenBibEntryAmount(int repoId) {
         return bibEntryRepository.getEntryAmountForStatus(repoId, BibEntry.Status.OPEN);
     }
 
@@ -100,30 +101,35 @@ public class ProjectViewModel extends AndroidViewModel {
         try {
             repo = repoRepository.getRepoByIdDirectly(id);
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e(ProjectViewModel.class.getName(), "getRepoByIdDirectly: ", e);
         }
         return repo;
     }
 
-    public void delete(BibEntry bibEntry, int id) {
-        Repo repo = getRepoByIdDirectly(id);
+    public void deleteBibEntry(BibEntry bibEntry, int repoId) {
+        Repo repo = getRepoByIdDirectly(repoId);
         if (repo != null) {
             bibEntryRepository.delete(bibEntry, repo);
         }
     }
 
-    public void deleteById(int entryId, int id) {
-        BibEntry bibEntry = getEntryByIdDirectly(entryId);
+    public void addBibEntry(String bibtex, int repoId) {
+        Repo repo = getRepoByIdDirectly(repoId);
+        bibEntryRepository.insert(bibtex, repo);
+    }
+
+    public void deleteBibEntryById(int entryId, int repoId) {
+        BibEntry bibEntry = getBibEntryByIdDirectly(entryId);
         if (bibEntry != null) {
-            delete(bibEntry, id);
+            deleteBibEntry(bibEntry, repoId);
         }
     }
 
-    public LiveData<BibEntry> getEntryById(int id) {
+    public LiveData<BibEntry> getBibEntryById(int id) {
         return bibEntryRepository.getEntryById(id);
     }
 
-    public BibEntry getEntryByIdDirectly(int id) {
+    public BibEntry getBibEntryByIdDirectly(int id) {
         BibEntry bibEntry = null;
         try {
             bibEntry = bibEntryRepository.getEntryByIdDirectly(id);
@@ -133,19 +139,19 @@ public class ProjectViewModel extends AndroidViewModel {
         return bibEntry;
     }
 
-    public LiveData<List<BibEntry>> getOpenEntriesForRepo(int repoId) {
+    public LiveData<List<BibEntry>> getOpenBibEntriesForRepo(int repoId) {
         return bibEntryRepository.getEntryForRepoByStatus(repoId, BibEntry.Status.OPEN);
     }
 
-    public void updateEntry(BibEntry bibEntry) {
+    public void updateBibEntry(BibEntry bibEntry) {
         bibEntryRepository.update(bibEntry);
     }
 
-    public LiveData<List<BibEntry>> getEntriesWithoutTaxonomies(int repoId) {
+    public LiveData<List<BibEntry>> getBibEntriesWithoutTaxonomies(int repoId) {
         return bibEntryRepository.getEntriesWithoutTaxonomies(repoId);
     }
 
-    public LiveData<Integer> getEntriesWithoutTaxonomiesCount(int repoId) {
+    public LiveData<Integer> getBibEntriesWithoutTaxonomiesCount(int repoId) {
         return bibEntryRepository.getEntriesWithoutTaxonomiesCount(repoId);
     }
 }

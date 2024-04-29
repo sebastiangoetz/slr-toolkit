@@ -149,15 +149,15 @@ public class ProjectOverviewFragment extends Fragment {
 
         final Observer<Integer> entriesToClassifyObserver =
                 amount -> classifyButton.setText(getResources().getString(R.string.button_classify) + " (" + amount.toString() + ")");
-        projectViewModel.getEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
+        projectViewModel.getBibEntriesWithoutTaxonomiesCount(repoId).observe(getViewLifecycleOwner(), entriesToClassifyObserver);
 
         final Observer<Integer> openEntryAmountObserver =
                 amount -> filterButton.setText(getResources().getString(R.string.button_filter) + " (" + amount.toString() + ")");
-        projectViewModel.getOpenEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
+        projectViewModel.getOpenBibEntryAmount(repoId).observe(getViewLifecycleOwner(), openEntryAmountObserver);
 
         final Observer<Integer> entryAmountObserver =
                 amount -> allEntryButton.setText(getResources().getString(R.string.button_all_entries) + " (" + amount.toString() + ")");
-        projectViewModel.getEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
+        projectViewModel.getBibEntryAmount(repoId).observe(getViewLifecycleOwner(), entryAmountObserver);
     }
 
     private void actionPullRepo(View view) {

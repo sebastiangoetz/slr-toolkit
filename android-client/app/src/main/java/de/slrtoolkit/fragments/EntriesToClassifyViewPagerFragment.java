@@ -58,7 +58,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         pagerAdapter = new EntrySlidePagerAdapter(EntriesToClassifyViewPagerFragment.this.getActivity(), new ArrayList<>());
         viewPager.setAdapter(pagerAdapter);
 
-        projectViewModel.getEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), list -> {
+        projectViewModel.getBibEntriesWithoutTaxonomies(repoId).observe(getViewLifecycleOwner(), list -> {
             entries = list;
             if (entries.isEmpty()) {
                 noEntriesToClassifyTextview.setVisibility(View.VISIBLE);
@@ -92,7 +92,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
             viewPager.setVisibility(View.VISIBLE);
         }
         BibEntry bibEntry = entries.get(i);
-        projectViewModel.deleteById(bibEntry.getEntryId(), repoId);
+        projectViewModel.deleteBibEntryById(bibEntry.getEntryId(), repoId);
         pagerAdapter.notifyDataSetChanged();
         viewPager.invalidate();
         viewPager.setCurrentItem(i);
@@ -134,7 +134,7 @@ public class EntriesToClassifyViewPagerFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             BibEntry bibEntry = entries.get(position);
-            projectViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
+            projectViewModel.setCurrentBibEntryIdForCard(bibEntry.getEntryId());
             return new BibtexEntryDetailFragment();
         }
 
