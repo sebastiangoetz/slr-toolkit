@@ -158,7 +158,11 @@ public class RepoViewModel extends AndroidViewModel {
     }
 
     private String getValueOfTag(String tag, String xml) {
-        return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
+        if(xml.contains(tag)) {
+            if(xml.contains("<"+tag+"/>")) return "";
+            else return xml.subSequence(xml.indexOf("<" + tag + ">") + tag.length() + 2, xml.indexOf("</" + tag + ">")).toString().trim();
+        }
+        else return "";
     }
     public void initializeEntries(int repoId, Map<BibEntry, String> entriesWithTaxonomies) {
         List<BibEntry> entries = new ArrayList<>(entriesWithTaxonomies.keySet());
