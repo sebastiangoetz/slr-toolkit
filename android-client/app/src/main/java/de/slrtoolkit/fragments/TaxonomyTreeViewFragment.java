@@ -20,12 +20,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.dialog.AddTaxonomyEntryDialog;
-import de.slrtoolkit.dialog.CreateKeywordDialog;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 

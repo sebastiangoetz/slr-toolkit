@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,23 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.database.Taxonomy;
-import de.slrtoolkit.repositories.KeywordRepository;
-import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
-import de.slrtoolkit.util.FileUtil;
-import de.slrtoolkit.util.SlrprojectParser;
-import de.slrtoolkit.util.TaxonomyParser;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
