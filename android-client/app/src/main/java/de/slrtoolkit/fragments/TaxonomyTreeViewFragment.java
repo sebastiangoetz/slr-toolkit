@@ -23,6 +23,7 @@ import java.util.List;
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.dialog.AddTaxonomyEntryDialog;
+import de.slrtoolkit.util.TaxonomyTreeNode;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
@@ -57,7 +58,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add_taxonomy);
         fab.setOnClickListener(v -> {
-                AddTaxonomyEntryDialog dialog = new AddTaxonomyEntryDialog();
+                AddTaxonomyEntryDialog dialog = new AddTaxonomyEntryDialog(treeViewAdapter.getTreeNodes());
                 dialog.show(getChildFragmentManager(), AddTaxonomyEntryDialog.class.getName());
         });
     }
@@ -87,33 +88,4 @@ public class TaxonomyTreeViewFragment extends Fragment {
         }
     }
 
-    private static class TaxonomyTreeNode {
-        private int id;
-        private String name;
-        public TaxonomyTreeNode(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
 }
