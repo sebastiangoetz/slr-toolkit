@@ -75,7 +75,7 @@ public class AddTaxonomyEntryDialog extends DialogFragment {
         createButton.setOnClickListener(view -> {
             Taxonomy t = new Taxonomy();
             String name = Objects.requireNonNull(edittextTaxonomyEntryName.getText()).toString();
-            if(allTaxonomyEntries.stream().filter(tax -> tax.getName().equals(name)).count() > 0) {
+            if(allTaxonomyEntries.stream().anyMatch(tax -> tax.getName().equals(name))) {
                 Toast.makeText(requireContext(), "This Taxonomy Entry already exists", Toast.LENGTH_LONG).show();
                 return;
             }
