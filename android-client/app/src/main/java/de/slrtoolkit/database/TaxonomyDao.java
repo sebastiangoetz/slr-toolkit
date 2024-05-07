@@ -10,10 +10,6 @@ import java.util.List;
 
 @Dao
 public interface TaxonomyDao {
-    @Transaction
-    @Query("SELECT * FROM taxonomy")
-    LiveData<List<TaxonomyWithEntries>> getTaxonomyWithEntries();
-
     @Insert
     long insert(Taxonomy taxonomy);
 

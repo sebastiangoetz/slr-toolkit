@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,7 +70,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
                     .setTitle("Delete Taxonomy Entry")
                     .setMessage("Do you really want to delete '"+treeNode.getValue().toString()+"' ?")
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             remove(treeNode);
@@ -92,7 +91,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
                             taxonomiesList.removeIf(taxonomy -> taxonomy.getTaxonomyId() == ((TaxonomyTreeNode)node.getValue()).getId());
                         }
                     })
-                    .setNegativeButton(android.R.string.no, null).show();
+                    .setNegativeButton(android.R.string.cancel, null).show();
             return true;
         });
 
