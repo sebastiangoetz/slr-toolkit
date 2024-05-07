@@ -15,12 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amrdeveloper.treeview.TreeNode;
 import com.amrdeveloper.treeview.TreeViewAdapter;
 import com.amrdeveloper.treeview.TreeViewHolderFactory;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
+import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Taxonomy;
+import de.slrtoolkit.dialog.AddTaxonomyEntryDialog;
+import de.slrtoolkit.dialog.CreateKeywordDialog;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
@@ -52,6 +57,12 @@ public class TaxonomyTreeViewFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         taxonomiesViewModel.getAllTaxonomiesForRepo(taxonomiesViewModel.getCurrentRepoId()).observe(getViewLifecycleOwner(), this::onLoaded);
+
+        FloatingActionButton fab = view.findViewById(R.id.fab_add_taxonomy);
+        fab.setOnClickListener(v -> {
+                AddTaxonomyEntryDialog dialog = new AddTaxonomyEntryDialog();
+                dialog.show(getChildFragmentManager(), AddTaxonomyEntryDialog.class.getName());
+        });
     }
 
     private void onLoaded(List<Taxonomy> taxonomies) {

@@ -54,9 +54,9 @@ public class TaxonomyParserNode {
         for (TaxonomyParserNode child : getChildren()) {
             children.append(child.getName());
         }
-        String string = "Name: " + getName() + ", Children: " + children;
-        if (parent != null) {
-            string += "Parent: " + parent.getName();
+        String string = getName();
+        if(!getChildren().isEmpty()) {
+            string += " { " + children + " } ";
         }
         return string;
     }

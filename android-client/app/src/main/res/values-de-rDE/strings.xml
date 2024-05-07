@@ -97,4 +97,8 @@
     <string name="paste_bibtex">Fügen Sie hier ihren Bibtex Code ein</string>
     <string name="btn_import_bibtex">Import Bibtex</string>
     <string name="close">Schließen</string>
+    <string name="fab_add_taxonomy">Taxonomie-Eintrag hinzufügen</string>
+    <string name="enter_name_of_taxonomy_entry">Geben sie einen Namen ein</string>
+    <string name="add">Hinzufügen</string>
+    <string name="cancel">Cancel</string>
 </resources>

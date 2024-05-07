@@ -96,5 +96,9 @@
     <string name="paste_bibtex">Paste your bibtex code here</string>
     <string name="btn_import_bibtex">Import Bibtex</string>
     <string name="close">Close</string>
+    <string name="fab_add_taxonomy">Add Taxonomy Item</string>
+    <string name="enter_name_of_taxonomy_entry">Enter name of taxonomy entry</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

@@ -1,10 +1,14 @@
 package de.slrtoolkit.repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -28,6 +32,42 @@ public class TaxonomyRepository {
         this.fileUtil = new FileUtil();
     }
 
+    public void addToFile(String path, Application application, Taxonomy t, Taxonomy parent) {
+        TaxonomyParser parser = new TaxonomyParser();
+
+        try {
+            String contents = fileUtil.readContentFromFile(path, application);
+            TaxonomyParserNode newNode = new TaxonomyParserNode();
+            newNode.setName(t.getName());
+            newNode.setPath(t.getPath());
+            List<TaxonomyParserNode> nodes = parser.parse(contents);
+            if(parent != null) {
+                for(TaxonomyParserNode n : nodes) {
+                    if(n.getPath().equals(parent.getPath())) {
+                        n.addChild(newNode);
+                        newNode.setParent(n);
+                    }
+                }
+            } else {
+                nodes.add(newNode);
+            }
+            File file = fileUtil.accessFiles(path, application, ".taxonomy");
+            try(FileWriter fw = new FileWriter(file, false)) {
+                //we need the full taxonomy to insert and then pretty print
+                StringBuilder sb = new StringBuilder();
+                for(TaxonomyParserNode n : nodes) {
+                    sb.append(n.toString()).append(",");
+                }
+                sb.delete(sb.length()-1,sb.length());
+                fw.write(sb.toString());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(TaxonomyRepository.class.getName(), "addToFile: couldn't read taxonomy", e);
+        }
+    }
+
     public long insert(Taxonomy taxonomy) {
         Callable<Long> insertCallable = () -> taxonomyDao.insert(taxonomy);
         long id = 0;
@@ -36,7 +76,7 @@ public class TaxonomyRepository {
         try {
             id = future.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e(TaxonomyRepository.class.getName(), "insert: failed", e);
         }
         return id;
     }
@@ -52,7 +92,7 @@ public class TaxonomyRepository {
             List<TaxonomyParserNode> parserNodes = parser.parse(taxonomyString);
             addTaxonomyEntries(parserNodes, repoId, 0);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TaxonomyRepository.class.getName(), "initializeTaxonomy: failed", e);
         }
     }
 

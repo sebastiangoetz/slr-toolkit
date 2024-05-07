@@ -61,28 +61,37 @@ public class TaxonomyParser {
                 }
             } else if (taxonomy.charAt(i) == comma) {
                 if (isEmpty(node)) {
-                    String trimmedNode = node.trim();
-                    TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
-                    taxonomyNode.setName(trimmedNode);
-                    if (!parentNodes.isEmpty()) {
-                        TaxonomyParserNode currentParent = parentNodes.peek();
-
-                        //set child and parent on respective nodes
-                        taxonomyNode.setParent(currentParent);
-                        currentParent.addChild(taxonomyNode);
-                        int parentIndex = parentNodes.indexOf(currentParent);
-                        parentNodes.set(parentIndex, currentParent);
-                    }
-                    String path = getTaxonomyPath(taxonomyNode);
-                    taxonomyNode.setPath(path);
-                    taxonomyNodes.add(taxonomyNode);
+                    addNode(node, parentNodes, taxonomyNodes);
                     node = "";
                 }
             } else {
-                node += taxonomy.charAt(i);
+                if(!String.valueOf(taxonomy.charAt(i)).equals(System.lineSeparator())) {
+                    node += taxonomy.charAt(i);
+                }
             }
         }
+        if(isEmpty(node)) {
+            addNode(node, parentNodes, taxonomyNodes);
+        }
         return taxonomyNodes;
+    }
+
+    private void addNode(String node, Stack<TaxonomyParserNode> parentNodes, List<TaxonomyParserNode> taxonomyNodes) {
+        String trimmedNode = node.trim();
+        TaxonomyParserNode taxonomyNode = new TaxonomyParserNode();
+        taxonomyNode.setName(trimmedNode);
+        if (!parentNodes.isEmpty()) {
+            TaxonomyParserNode currentParent = parentNodes.peek();
+
+            //set child and parent on respective nodes
+            taxonomyNode.setParent(currentParent);
+            currentParent.addChild(taxonomyNode);
+            int parentIndex = parentNodes.indexOf(currentParent);
+            parentNodes.set(parentIndex, currentParent);
+        }
+        String path = getTaxonomyPath(taxonomyNode);
+        taxonomyNode.setPath(path);
+        taxonomyNodes.add(taxonomyNode);
     }
 
     public String getTaxonomyPath(TaxonomyParserNode taxonomyNode) {

@@ -146,7 +146,7 @@ public class AddProjectLocallyFragment extends Fragment {
             repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
             Repo repo = repoViewModel.getCurrentRepo();
             addDefaultFile(repo.getLocal_path(), currentType, """
-                    Venue ,
+                    Venue,
                     Venue Type\s
                     """);
         });
