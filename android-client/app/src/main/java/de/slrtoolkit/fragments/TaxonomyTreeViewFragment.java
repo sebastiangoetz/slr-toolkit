@@ -28,7 +28,9 @@ import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
 public class TaxonomyTreeViewFragment extends Fragment {
+    TaxonomiesViewModel taxonomiesViewModel;
     private TreeViewAdapter treeViewAdapter;
+    private List<Taxonomy> taxonomiesList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class TaxonomyTreeViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
+        taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
 
         RecyclerView rv = view.findViewById(R.id.taxonomyRecyclerview);
 
@@ -58,18 +60,19 @@ public class TaxonomyTreeViewFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add_taxonomy);
         fab.setOnClickListener(v -> {
-                AddTaxonomyEntryDialog dialog = new AddTaxonomyEntryDialog(treeViewAdapter.getTreeNodes());
+                AddTaxonomyEntryDialog dialog = new AddTaxonomyEntryDialog(taxonomiesList);
                 dialog.show(getChildFragmentManager(), AddTaxonomyEntryDialog.class.getName());
         });
     }
 
     private void onLoaded(List<Taxonomy> taxonomies) {
+        this.taxonomiesList = taxonomies;
         List<TreeNode> rootTaxonomies = new ArrayList<>();
         for(Taxonomy root : taxonomies) {
             if(root.getParentId() == 0) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(root.getTaxonomyId(), root.getName());
                 TreeNode rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
-                addChildren(rootNode, root.getTaxonomyId(), taxonomies);
+                addChildrenToRoot(rootNode, root.getTaxonomyId(), taxonomies);
                 rootTaxonomies.add(rootNode);
             }
         }
@@ -77,15 +80,20 @@ public class TaxonomyTreeViewFragment extends Fragment {
         treeViewAdapter.updateTreeNodes(rootTaxonomies);
     }
 
-    private void addChildren(TreeNode root, int rootId, List<Taxonomy> taxonomies) {
-        for(Taxonomy tax : taxonomies) {
-            if(tax.getParentId() == rootId) {
+    /**Adds all taxonomy entries from the third parameter to the root node, if this node is their parent
+     *
+     * @param root the TreeNode to which children shall be added
+     * @param rootId the id of the root
+     * @param taxonomies list of taxonomy entries which potentially are children of root
+     */
+    private void addChildrenToRoot(TreeNode root, int rootId, List<Taxonomy> taxonomies) {
+        for (Taxonomy tax : taxonomies) {
+            if (tax.getParentId() == rootId) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(tax.getTaxonomyId(), tax.getName());
                 TreeNode child = new TreeNode(n, R.layout.item_taxonomy_entry);
-                addChildren(child, tax.getTaxonomyId(), taxonomies);
+                addChildrenToRoot(child, tax.getTaxonomyId(), taxonomies);
                 root.addChild(child);
             }
         }
     }
-
 }

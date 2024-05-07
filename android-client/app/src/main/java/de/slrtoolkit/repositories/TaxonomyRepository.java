@@ -29,42 +29,75 @@ import de.slrtoolkit.util.TaxonomyTreeNode;
 public class TaxonomyRepository {
     private final TaxonomyDao taxonomyDao;
     private final FileUtil fileUtil;
+
+    private class TaxonomyEntryTreeNode {
+        private Taxonomy t;
+        private List<TaxonomyEntryTreeNode> children;
+        public TaxonomyEntryTreeNode(Taxonomy t) {
+            this.t = t;
+            children = new ArrayList<>();
+        }
+        public TaxonomyEntryTreeNode addChild(Taxonomy t) {
+            TaxonomyEntryTreeNode tetn = new TaxonomyEntryTreeNode(t);
+            children.add(tetn);
+            return tetn;
+        }
+        public Taxonomy getTaxonomy() {
+            return t;
+        }
+        public List<TaxonomyEntryTreeNode> getChildren() {
+            return children;
+        }
+    }
     public TaxonomyRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyDao = db.taxonomyDao();
         this.fileUtil = new FileUtil();
     }
 
-    public void addToFile(String path, Application application, Taxonomy t, List<TreeNode> roots) {
-            TaxonomyTreeNode ttt = new TaxonomyTreeNode(t.getTaxonomyId(), t.getName());
-            TreeNode newTT = new TreeNode(ttt, 0);
-            if(t.getParentId() == 0) {
-                roots.add(newTT);
-            } else {
-                addChild(roots, newTT, t);
+    private List<TaxonomyEntryTreeNode> transformListToTree(List<Taxonomy> allTaxonomies) {
+        List<TaxonomyEntryTreeNode> rootTaxonomies = new ArrayList<>();
+        for(Taxonomy tax : allTaxonomies) {
+            if(tax.getParentId() == 0) {
+                TaxonomyEntryTreeNode tetn = new TaxonomyEntryTreeNode(tax);
+                addChildrenToTree(tetn, allTaxonomies);
+                rootTaxonomies.add(tetn);
             }
-            File file = fileUtil.accessFiles(path, application, ".taxonomy");
-            try(FileWriter fw = new FileWriter(file, false)) {
-                //we need the full taxonomy to insert and then pretty print
-                StringBuilder sb = new StringBuilder();
-                buildStringRepresentation(0, roots, sb);
-                fw.write(sb.toString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        return rootTaxonomies;
     }
 
-    private static void buildStringRepresentation(int level, List<TreeNode> roots, StringBuilder sb) {
-        for(TreeNode n : roots) {
+    private void addChildrenToTree(TaxonomyEntryTreeNode node, List<Taxonomy> allTaxonomies) {
+        for(Taxonomy t : allTaxonomies) {
+            if(t.getParentId() != 0 && t.getParentId() == node.getTaxonomy().getTaxonomyId()) {
+                TaxonomyEntryTreeNode tetn = node.addChild(t);
+                addChildrenToTree(tetn, allTaxonomies);
+            }
+        }
+    }
+
+    public void updateFile(String path, Application application, List<Taxonomy> allTaxonomies) {
+        List<TaxonomyEntryTreeNode> rootTaxonomies = transformListToTree(allTaxonomies);
+        File file = fileUtil.accessFiles(path, application, ".taxonomy");
+        try(FileWriter fw = new FileWriter(file, false)) {
+            StringBuilder sb = new StringBuilder();
+            buildStringRepresentation(0, rootTaxonomies, sb);
+            fw.write(sb.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void buildStringRepresentation(int level, List<TaxonomyEntryTreeNode> roots, StringBuilder sb) {
+        for(TaxonomyEntryTreeNode t : roots) {
             addIndent(level, sb);
-            sb.append(n.getValue().toString());
-            if(!n.getChildren().isEmpty()) {
-                addIndent(level, sb);
+            sb.append(t.getTaxonomy().getName());
+            if(!t.getChildren().isEmpty()) {
                 sb.append(" {\n");
+                buildStringRepresentation(level + 1, t.getChildren(), sb);
+                sb.append("\n");
                 addIndent(level, sb);
-                buildStringRepresentation(level + 1, n.getChildren(), sb);
-                addIndent(level, sb);
-                sb.append("\n}\n");
+                sb.append("}\n");
             } else {
                 sb.append(",\n");
             }
@@ -76,19 +109,6 @@ public class TaxonomyRepository {
     private static void addIndent(int level, StringBuilder sb) {
         for(int i = 0; i < level; i++) {
             sb.append("  ");
-        }
-    }
-
-    private void addChild(List<TreeNode> parents, TreeNode newTT, Taxonomy t) {
-        for(TreeNode parent : parents) {
-            boolean done = false;
-            if(((TaxonomyTreeNode)parent.getValue()).getId() == t.getParentId()) {
-                parent.addChild(newTT);
-                done = true;
-            }
-            if(!done) {
-                addChild(parent.getChildren(), newTT, t);
-            }
         }
     }
 

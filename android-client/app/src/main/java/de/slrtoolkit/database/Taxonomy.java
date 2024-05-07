@@ -15,6 +15,10 @@ public class Taxonomy {
     private boolean hasChildren;
     private String path;
 
+    public int getId() {
+        return taxonomyId;
+    }
+
     public int getParentId() {
         return parentId;
     }
