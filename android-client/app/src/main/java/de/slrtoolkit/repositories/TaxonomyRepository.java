@@ -5,8 +5,6 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
-import com.amrdeveloper.treeview.TreeNode;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -24,15 +22,14 @@ import de.slrtoolkit.database.TaxonomyDao;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.TaxonomyParser;
 import de.slrtoolkit.util.TaxonomyParserNode;
-import de.slrtoolkit.util.TaxonomyTreeNode;
 
 public class TaxonomyRepository {
     private final TaxonomyDao taxonomyDao;
     private final FileUtil fileUtil;
 
-    private class TaxonomyEntryTreeNode {
-        private Taxonomy t;
-        private List<TaxonomyEntryTreeNode> children;
+    private static class TaxonomyEntryTreeNode {
+        private final Taxonomy t;
+        private final List<TaxonomyEntryTreeNode> children;
         public TaxonomyEntryTreeNode(Taxonomy t) {
             this.t = t;
             children = new ArrayList<>();
