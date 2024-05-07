@@ -126,6 +126,16 @@ public class TaxonomyRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.insertAll(taxonomies));
     }
 
+    public void remove(int repoId, int taxId) {
+        List<Taxonomy> children = getChildTaxonomies(repoId, taxId).getValue();
+        if(children != null) {
+            for (Taxonomy t : children) {
+                remove(repoId, t.getTaxonomyId());
+            }
+        }
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.removeTaxonomyEntryById(taxId));
+    }
+
     public void initializeTaxonomy(int repoId, String path, Application application) {
         try {
             String taxonomyString = fileUtil.readContentFromFile(path, application);

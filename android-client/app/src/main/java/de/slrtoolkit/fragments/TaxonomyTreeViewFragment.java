@@ -1,9 +1,12 @@
 package de.slrtoolkit.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,16 +22,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
+import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.dialog.AddTaxonomyEntryDialog;
+import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.util.TaxonomyTreeNode;
+import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
 public class TaxonomyTreeViewFragment extends Fragment {
     TaxonomiesViewModel taxonomiesViewModel;
+    RepoViewModel repoViewModel;
+    TaxonomyRepository taxonomyRepository;
     private TreeViewAdapter treeViewAdapter;
     private List<Taxonomy> taxonomiesList;
 
@@ -48,6 +57,8 @@ public class TaxonomyTreeViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
+        taxonomyRepository = new TaxonomyRepository(requireActivity().getApplication());
+        repoViewModel = new RepoViewModel(requireActivity().getApplication());
 
         RecyclerView rv = view.findViewById(R.id.taxonomyRecyclerview);
 
@@ -55,6 +66,35 @@ public class TaxonomyTreeViewFragment extends Fragment {
         treeViewAdapter = new TreeViewAdapter(factory);
         rv.setAdapter(treeViewAdapter);
         rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        treeViewAdapter.setTreeNodeLongClickListener((treeNode, view1) -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Delete Taxonomy Entry")
+                    .setMessage("Do you really want to delete '"+treeNode.getValue().toString()+"' ?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            remove(treeNode);
+                            try {
+                                Repo repo = repoViewModel.getRepoDirectly(taxonomiesViewModel.getCurrentRepoId());
+                                taxonomyRepository.updateFile(repo.getLocal_path(), requireActivity().getApplication(), taxonomiesList);
+                            } catch (ExecutionException | InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        private void remove(TreeNode node) {
+                            if(!node.getChildren().isEmpty()) {
+                                for(TreeNode n : node.getChildren()) {
+                                    remove(n);
+                                }
+                            }
+                            taxonomyRepository.remove(taxonomiesViewModel.getCurrentRepoId(), ((TaxonomyTreeNode) node.getValue()).getId());
+                            taxonomiesList.removeIf(taxonomy -> taxonomy.getTaxonomyId() == ((TaxonomyTreeNode)node.getValue()).getId());
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+            return true;
+        });
 
         taxonomiesViewModel.getAllTaxonomiesForRepo(taxonomiesViewModel.getCurrentRepoId()).observe(getViewLifecycleOwner(), this::onLoaded);
 

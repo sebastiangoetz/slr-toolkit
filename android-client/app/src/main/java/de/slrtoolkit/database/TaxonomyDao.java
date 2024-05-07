@@ -31,4 +31,8 @@ public interface TaxonomyDao {
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND path=:path")
     Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path);
+
+    @Transaction
+    @Query("DELETE FROM TAXONOMY WHERE taxonomyId=:id")
+    void removeTaxonomyEntryById(int id);
 }
