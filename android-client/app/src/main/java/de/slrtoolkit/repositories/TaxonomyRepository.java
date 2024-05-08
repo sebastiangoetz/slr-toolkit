@@ -56,6 +56,7 @@ public class TaxonomyRepository {
         List<TaxonomyEntryTreeNode> rootTaxonomies = new ArrayList<>();
         for(Taxonomy tax : allTaxonomies) {
             if(tax.getParentId() == 0) {
+                if(tax.getName().equals("<Root>")) continue;
                 TaxonomyEntryTreeNode tetn = new TaxonomyEntryTreeNode(tax);
                 addChildrenToTree(tetn, allTaxonomies);
                 rootTaxonomies.add(tetn);

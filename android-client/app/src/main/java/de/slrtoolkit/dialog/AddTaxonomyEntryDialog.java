@@ -54,9 +54,12 @@ public class AddTaxonomyEntryDialog extends DialogFragment {
         Spinner spinnerParentEntries = view1.findViewById(R.id.spinner_parentEntry);
 
         ArrayAdapter<Taxonomy> parentEntriesAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, allTaxonomyEntries);
+        Taxonomy noTaxonomy = new Taxonomy();
+        noTaxonomy.setName("<Root>");
+        noTaxonomy.setTaxonomyId(0);
+        parentEntriesAdapter.insert(noTaxonomy, 0);
         spinnerParentEntries.setAdapter(parentEntriesAdapter);
         parentEntriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Log.e(AddTaxonomyEntryDialog.class.getName(), "onCreateDialog: test");
         spinnerParentEntries.setEnabled(true);
         spinnerParentEntries.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
