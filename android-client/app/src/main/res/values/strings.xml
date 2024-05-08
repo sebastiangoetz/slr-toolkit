@@ -100,5 +100,6 @@
     <string name="enter_name_of_taxonomy_entry">Enter name of taxonomy entry</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="collapse_state">collapse state</string>
 
 </resources>

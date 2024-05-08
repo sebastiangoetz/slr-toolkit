@@ -92,7 +92,7 @@
     <string name="enter_token">Git Token (PAT)</string>
     <string name="enter_email_for_git">Email für Git</string>
     <string name="enter_repo_url_on_git">Repo-Link auf Git</string>
-    <string name="button_add_project_from_git">Add Projekt From Git</string>
+    <string name="button_add_project_from_git">Projekt von Git Importieren</string>
     <string name="import_bibtex">Import Bibtex</string>
     <string name="paste_bibtex">Fügen Sie hier ihren Bibtex Code ein</string>
     <string name="btn_import_bibtex">Import Bibtex</string>
@@ -100,5 +100,6 @@
     <string name="fab_add_taxonomy">Taxonomie-Eintrag hinzufügen</string>
     <string name="enter_name_of_taxonomy_entry">Geben sie einen Namen ein</string>
     <string name="add">Hinzufügen</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="collapse_state">Klappzustand</string>
 </resources>
