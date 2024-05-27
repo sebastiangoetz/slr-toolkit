@@ -26,6 +26,10 @@ public interface TaxonomyWithEntriesDao {
     List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId);
 
     @Transaction
+    @Query("SELECT t.* FROM Taxonomy t, BibEntryTaxonomyCrossRef b WHERE b.entryId=:entryId and t.taxonomyId = b.taxonomyId")
+    List<TaxonomyWithEntries> getTaxonomiesForEntry(int entryId);
+
+    @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE taxonomyId IN (SELECT parentId FROM TAXONOMY WHERE repoId=:repoId AND NOT hasChildren)")
     List<TaxonomyWithEntries> getTaxonomyIdsWithLeafChildTaxonomies(int repoId);
 

@@ -53,6 +53,12 @@ public class TaxonomyWithEntriesRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyWithEntriesDao.delete(bibEntryTaxonomyCrossRef));
     }
 
+    public List<TaxonomyWithEntries> getTaxonomiesForEntry(int entryId) throws ExecutionException, InterruptedException {
+        Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getTaxonomiesForEntry(entryId);
+        Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+    }
+
     public List<TaxonomyWithEntries> getChildTaxonomiesForTaxonomyId(int repoId, int parentId) throws ExecutionException, InterruptedException {
         Callable<List<TaxonomyWithEntries>> getCallable = () -> taxonomyWithEntriesDao.getChildTaxonomiesForTaxonomyId(repoId, parentId);
         Future<List<TaxonomyWithEntries>> future = Executors.newSingleThreadExecutor().submit(getCallable);

@@ -1,18 +1,19 @@
 package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.database.TaxonomyWithEntries;
-import de.slrtoolkit.repositories.BibEntryRepository;
-import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
@@ -21,14 +22,13 @@ public class ClassificationViewModel extends AndroidViewModel {
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private int currentRepoId;
     private int currentEntryId;
-    private List<Integer> selectedTaxonomies;
+    private Set<Integer> selectedTaxonomies;
 
     public ClassificationViewModel(@NonNull Application application) {
         super(application);
-        RepoRepository repoRepository = new RepoRepository(application);
-        BibEntryRepository bibEntryRepository = new BibEntryRepository(application);
         taxonomyRepository = new TaxonomyRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
+        selectedTaxonomies = new HashSet<>();
 
     }
 
@@ -48,20 +48,16 @@ public class ClassificationViewModel extends AndroidViewModel {
         this.currentRepoId = currentRepoId;
     }
 
-    public List<Integer> getSelectedTaxonomies() {
+    public Set<Integer> getSelectedTaxonomies() {
+        if(selectedTaxonomies == null) selectedTaxonomies = new HashSet<>();
+        try {
+            for(TaxonomyWithEntries t : taxonomyWithEntriesRepository.getTaxonomiesForEntry(this.currentEntryId)) {
+                selectedTaxonomies.add(t.taxonomy.getTaxonomyId());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(this.getClass().getName(), "couldn't fetch selected taxonomies for this entry", e);
+        }
         return selectedTaxonomies;
-    }
-
-    public void setSelectedTaxonomies(List<Integer> selectedTaxonomies) {
-        this.selectedTaxonomies = selectedTaxonomies;
-    }
-
-    public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
-        return taxonomyRepository.getChildTaxonomies(repoId, parentId);
-    }
-
-    public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int parentId) {
-        return taxonomyWithEntriesRepository.getChildTaxonomiesWithEntries(repoId, parentId);
     }
 
     public void insertEntryForTaxonomy(int taxonomyId, int entryId) {
@@ -70,14 +66,11 @@ public class ClassificationViewModel extends AndroidViewModel {
     }
 
     public void delete(int taxonomyId, int entryId) {
-        int indexOfSelectedTaxonomy = this.selectedTaxonomies.indexOf(taxonomyId);
-        if (indexOfSelectedTaxonomy != -1) {
-            this.selectedTaxonomies.remove(indexOfSelectedTaxonomy);
-        }
+        this.selectedTaxonomies.remove(taxonomyId);
         taxonomyWithEntriesRepository.delete(taxonomyId, entryId);
     }
 
-    public List<TaxonomyWithEntries> getTaxonomyWithEntriesDirectly(int repoId, int parentId) throws ExecutionException, InterruptedException {
-        return taxonomyWithEntriesRepository.getChildTaxonomiesForTaxonomyId(repoId, parentId);
+    public LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId) throws ExecutionException, InterruptedException {
+        return taxonomyRepository.getAllTaxonomiesForRepo(repoId);
     }
 }

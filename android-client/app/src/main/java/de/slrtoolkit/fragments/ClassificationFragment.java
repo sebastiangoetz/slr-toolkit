@@ -1,27 +1,32 @@
 package de.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amrdeveloper.treeview.TreeNode;
+import com.amrdeveloper.treeview.TreeViewAdapter;
+import com.amrdeveloper.treeview.TreeViewHolderFactory;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.BibEntry;
-import de.slrtoolkit.database.TaxonomyWithEntries;
+import de.slrtoolkit.database.Taxonomy;
+import de.slrtoolkit.util.TaxonomyTreeNode;
 import de.slrtoolkit.viewmodels.ClassificationViewModel;
-import de.slrtoolkit.views.TaxonomyClassificationListAdapter;
+import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,11 +34,12 @@ import de.slrtoolkit.views.TaxonomyClassificationListAdapter;
 public class ClassificationFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "currentTaxonomy";
-    private int currentTaxonomy;
     private int entryId;
-    private TaxonomyClassificationListAdapter taxonomyListAdapter;
-    private TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
+    private TreeViewAdapter treeViewAdapter;
     private ClassificationViewModel classificationViewModel;
+
+    private List<Taxonomy> taxonomiesList;
+    private Set<Integer> selectedTaxonomies;
 
     /**
      * Use this factory method to create a new instance of
@@ -53,9 +59,7 @@ public class ClassificationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentTaxonomy = getArguments().getInt(ARG_PARAM1);
-        }
+        selectedTaxonomies = new HashSet<>();
     }
 
     @Override
@@ -66,66 +70,92 @@ public class ClassificationFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        setOnClickListener();
         classificationViewModel = new ViewModelProvider(requireActivity()).get(ClassificationViewModel.class);
         int repoId = classificationViewModel.getCurrentRepoId();
         entryId = classificationViewModel.getCurrentEntryId();
-        RecyclerView taxonomyRecyclerView = view.findViewById(R.id.taxonomy_classification_recyclerview);
-        taxonomyRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        taxonomyListAdapter = new TaxonomyClassificationListAdapter(new TaxonomyClassificationListAdapter.TaxonomyDiff(), listener, true);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(taxonomyRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        taxonomyRecyclerView.addItemDecoration(dividerItemDecoration);
-        taxonomyRecyclerView.setAdapter(taxonomyListAdapter);
+
+        RecyclerView rv = view.findViewById(R.id.taxonomy_classification_recyclerview);
+        TreeViewHolderFactory factory = (v, layout) -> new TaxonomyTreeViewHolder(v);
+        treeViewAdapter = new TreeViewAdapter(factory);
+        rv.setAdapter(treeViewAdapter);
+        rv.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         try {
-            List<TaxonomyWithEntries> taxonomyWithEntries = classificationViewModel.getTaxonomyWithEntriesDirectly(repoId, currentTaxonomy);
-            setSelectedTaxonomies(taxonomyWithEntries);
-            taxonomyListAdapter.submitList(taxonomyWithEntries);
+            classificationViewModel.getAllTaxonomiesForRepo(repoId).observe(getViewLifecycleOwner(), this::setTree);
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            Log.e(ClassificationFragment.class.getName(), "could not select taxonomies", e);
         }
+        setOnLongClickListener();
     }
 
-    public void setSelectedTaxonomies(List<TaxonomyWithEntries> taxonomyWithEntries) {
-        ArrayList<Integer> selectedTaxonomies = new ArrayList<>();
-        for (int i = 0; i < taxonomyWithEntries.size(); i++) {
-            TaxonomyWithEntries currentTaxWithEntries = taxonomyWithEntries.get(i);
-            for (BibEntry bibEntry : currentTaxWithEntries.entries) {
-                if (bibEntry.getEntryId() == entryId) {
-                    selectedTaxonomies.add(currentTaxWithEntries.taxonomy.getTaxonomyId());
-                }
+    private void setTree(List<Taxonomy> taxonomies) {
+        this.taxonomiesList = taxonomies;
+        List<TreeNode> rootTaxonomies = new ArrayList<>();
+        selectedTaxonomies = classificationViewModel.getSelectedTaxonomies();
+        for(Taxonomy root : taxonomies) {
+            if(root.getParentId() == 0) {
+                TaxonomyTreeNode n = new TaxonomyTreeNode(root.getTaxonomyId(), root.getName()+" "+selectedDecoration(root.getTaxonomyId()));
+                TreeNode rootNode;
+                if(selectedTaxonomies.contains(root.getTaxonomyId()))
+                    rootNode = new TreeNode(n, R.layout.item_taxonomy_entry_selected);
+                else
+                    rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
+                addChildrenToRoot(rootNode, root.getTaxonomyId(), taxonomies);
+                rootTaxonomies.add(rootNode);
             }
         }
-        classificationViewModel.setSelectedTaxonomies(selectedTaxonomies);
-        taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
+        treeViewAdapter.updateTreeNodes(rootTaxonomies);
+        treeViewAdapter.expandAll();
     }
 
-    private void setOnClickListener() {
-        listener = (v, position) -> {
-            TaxonomyWithEntries clickedTaxonomy = taxonomyListAdapter.getItemAtPosition(position);
-            if (clickedTaxonomy.taxonomy.isHasChildren()) {
-                Fragment classificationFragment = ClassificationFragment.newInstance(clickedTaxonomy.taxonomy.getTaxonomyId());
-                FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.classification_fragment_container_view, classificationFragment);
-                ft.addToBackStack(null);
-                ft.commit();
+    private String selectedDecoration(int taxId) {
+        String selected = "(-)";
+        if(selectedTaxonomies.contains(taxId)) {
+            selected = "(+)";
+        }
+        return selected;
+    }
+
+    /**Adds all taxonomy entries from the third parameter to the root node, if this node is their parent
+     *
+     * @param root the TreeNode to which children shall be added
+     * @param rootId the id of the root
+     * @param taxonomies list of taxonomy entries which potentially are children of root
+     */
+    private void addChildrenToRoot(TreeNode root, int rootId, List<Taxonomy> taxonomies) {
+        for (Taxonomy tax : taxonomies) {
+            if (tax.getParentId() == rootId) {
+                TaxonomyTreeNode n = new TaxonomyTreeNode(tax.getTaxonomyId(), tax.getName()+" "+selectedDecoration(tax.getTaxonomyId()));
+                TreeNode child;
+                if(selectedTaxonomies.contains(tax.getTaxonomyId()))
+                    child = new TreeNode(n, R.layout.item_taxonomy_entry_selected);
+                else
+                    child = new TreeNode(n, R.layout.item_taxonomy_entry);
+                addChildrenToRoot(child, tax.getTaxonomyId(), taxonomies);
+                root.addChild(child);
+            }
+        }
+    }
+
+    private void setOnLongClickListener() {
+        treeViewAdapter.setTreeNodeLongClickListener((treeNode, view) -> {
+            TaxonomyTreeNode clickedTaxonomy = (TaxonomyTreeNode) treeNode.getValue();
+            boolean entryContainsTaxonomy = false;
+            Set<Integer> selectedTaxonomyIds = classificationViewModel.getSelectedTaxonomies();
+            if(selectedTaxonomyIds == null) selectedTaxonomyIds = new HashSet<>();
+            for (int taxId : selectedTaxonomyIds) {
+                if (taxId == clickedTaxonomy.getId()) {
+                    entryContainsTaxonomy = true;
+                    break;
+                }
+            }
+            if (entryContainsTaxonomy) {
+                classificationViewModel.delete(clickedTaxonomy.getId(), entryId);
             } else {
-                boolean entryContainsTaxonomy = false;
-                List<Integer> selectedTaxonomyIds = classificationViewModel.getSelectedTaxonomies();
-                for (int taxId : selectedTaxonomyIds) {
-                    if (taxId == clickedTaxonomy.taxonomy.getTaxonomyId()) {
-                        entryContainsTaxonomy = true;
-                        break;
-                    }
-                }
-                if (entryContainsTaxonomy) {
-                    classificationViewModel.delete(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
-
-                } else {
-                    classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.taxonomy.getTaxonomyId(), entryId);
-                }
-                taxonomyListAdapter.setCurrentTaxonomyIds(classificationViewModel.getSelectedTaxonomies());
+                classificationViewModel.insertEntryForTaxonomy(clickedTaxonomy.getId(), entryId);
             }
-        };
+            setTree(taxonomiesList);
+            return entryContainsTaxonomy;
+        });
     }
 }
