@@ -1,11 +1,14 @@
 package de.slrtoolkit.util;
 
+import android.util.Log;
+
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXFormatter;
 import org.jbibtex.BibTeXObject;
 import org.jbibtex.BibTeXParser;
 import org.jbibtex.Key;
+import org.jbibtex.KeyValue;
 import org.jbibtex.ParseException;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,26 +25,42 @@ import java.util.Map;
 
 import de.slrtoolkit.database.BibEntry;
 
-public class BibTexParser {
-    private static BibTexParser bibTexParser;
+public class BibUtil {
+    private static BibUtil bibUtil;
     File file;
     private BibTeXParser parser;
     private BibTeXDatabase bibTeXDatabase;
 
-    private BibTexParser() {
+    private BibUtil() {
         try {
             parser = new BibTeXParser();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getName(), "could not instantiate parser", e);
         }
     }
 
     //make BibTexParser Singleton
-    public static BibTexParser getBibTexParser() {
-        if (bibTexParser == null)
-            bibTexParser = new BibTexParser();
+    public static BibUtil getInstance() {
+        if (bibUtil == null)
+            bibUtil = new BibUtil();
 
-        return bibTexParser;
+        return bibUtil;
+    }
+
+    /**Removes the respective class from the classes string.
+     *
+     * @param classesString the full classification string
+     * @param name the class to remove from it
+     */
+    public static String removeClassFromClassification(String classesString, String name) {
+        //TODO
+        return classesString;
+    }
+
+    public static String addClassToClassification(String classesString, String name) {
+        //TODO
+        classesString = "{" + name + "}";
+        return classesString;
     }
 
     public void setBibTeXDatabase(File file) throws FileNotFoundException, ParseException {
@@ -65,7 +84,7 @@ public class BibTexParser {
             Writer writer = new FileWriter(this.file.getAbsolutePath());
             formatter.format(bibTeXDatabase, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getName(), "could not remove object from file", e);
         }
 
     }
@@ -77,7 +96,7 @@ public class BibTexParser {
             Writer writer = new FileWriter(this.file.getAbsolutePath());
             formatter.format(bibTeXDatabase, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getName(), "could not add object to file", e);
         }
     }
 
@@ -115,6 +134,7 @@ public class BibTexParser {
             bibEntry.setType(safeGetField(bibTeXEntry, BibTeXEntry.KEY_TYPE));
 
             String classes = safeGetField(bibTeXEntry, new Key("classes"));
+            bibEntry.setClasses(classes);
 
             entryTaxMap.put(bibEntry, classes);
         }
@@ -135,6 +155,30 @@ public class BibTexParser {
         bibEntry.setDoi(safeGetField(bibTeXEntry, new Key("doi")));
         bibEntry.setAbstractText(safeGetField(bibTeXEntry, new Key("abstract")));
         bibEntry.setType(safeGetField(bibTeXEntry, BibTeXEntry.KEY_TYPE));
+        bibEntry.setClasses(safeGetField(bibTeXEntry, new Key("classes")));
         return bibEntry;
+    }
+
+    /**Updates a bibEntry in the .bib file. Currently, only a changed classification is supported.
+     * That is, only the classes-attribute can change.
+     *
+      * @param bibEntry the entry in it's new version
+     */
+    public void update(BibEntry bibEntry) {
+        BibTeXEntry orig = bibTeXDatabase.resolveEntry(new Key(bibEntry.getKey()));
+        if(orig != null) { //update
+            bibTeXDatabase.removeObject(orig);
+            orig.removeField(new Key("classes"));
+            orig.addField(new Key("classes"), new KeyValue(bibEntry.getClasses()));
+            bibTeXDatabase.addObject(orig);
+            BibTeXFormatter f = new BibTeXFormatter();
+            try {
+                f.format(bibTeXDatabase,new FileWriter(file));
+            } catch (IOException e) {
+                Log.e(this.getClass().getName(), "could not write bib file", e);
+            }
+        } else {
+            Log.e(this.getClass().getName(), "could not update bib entry in file");
+        }
     }
 }

@@ -143,8 +143,8 @@ public class ProjectViewModel extends AndroidViewModel {
         return bibEntryRepository.getEntryForRepoByStatus(repoId, BibEntry.Status.OPEN);
     }
 
-    public void updateBibEntry(BibEntry bibEntry) {
-        bibEntryRepository.update(bibEntry);
+    public void updateBibEntry(BibEntry bibEntry, Repo repo) {
+        bibEntryRepository.update(bibEntry, repo);
     }
 
     public LiveData<List<BibEntry>> getBibEntriesWithoutTaxonomies(int repoId) {

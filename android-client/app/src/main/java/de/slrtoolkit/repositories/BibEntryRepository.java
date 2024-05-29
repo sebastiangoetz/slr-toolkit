@@ -8,13 +8,12 @@ import androidx.lifecycle.LiveData;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXObject;
-import org.jbibtex.BibTeXString;
 import org.jbibtex.Key;
 import org.jbibtex.ParseException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ import de.slrtoolkit.database.AppDatabase;
 import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.BibEntryDao;
 import de.slrtoolkit.database.Repo;
-import de.slrtoolkit.util.BibTexParser;
+import de.slrtoolkit.util.BibUtil;
 import de.slrtoolkit.util.FileUtil;
 
 public class BibEntryRepository {
@@ -46,20 +45,30 @@ public class BibEntryRepository {
         return bibEntryDao.getEntriesForRepo(repoId);
     }
 
-    public void update(BibEntry bibEntry) {
+    public void update(BibEntry bibEntry, Repo repo) {
         AppDatabase.databaseWriteExecutor.execute(() -> bibEntryDao.update(bibEntry));
+        BibUtil bibUtil = BibUtil.getInstance();
+        String path = repo.getLocal_path();
+        File file = fileUtil.accessFiles(path, application, ".bib");
+        try {
+            bibUtil.setBibTeXDatabase(file);
+            bibUtil.update(bibEntry);
+        } catch (FileNotFoundException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void insert(String bibtexString, Repo repo) {
         String path = repo.getLocal_path();
         File file = fileUtil.accessFiles(path, application, ".bib");
         Map<String,BibTeXEntry> parsedObjects = new HashMap<>();
-        BibTexParser parser = BibTexParser.getBibTexParser();
+        BibUtil bibUtil = BibUtil.getInstance();
         try {
             //add entry to file
-            parser.setBibTeXDatabase(file);
+            bibUtil.setBibTeXDatabase(file);
             //transform bibEntry to bibtex
-            BibTeXDatabase db = parser.parse(bibtexString);
+            BibTeXDatabase db = bibUtil.parse(bibtexString);
             for(Key k : db.getEntries().keySet()) {
                 parsedObjects.put(k.getValue(),db.resolveEntry(k));
             }
@@ -69,9 +78,9 @@ public class BibEntryRepository {
 
         for(String key : parsedObjects.keySet()) {
             BibTeXEntry entry = parsedObjects.get(key);
-            BibEntry bibEntry = parser.translate(entry);
+            BibEntry bibEntry = bibUtil.translate(entry);
             bibEntry.setRepoId(repo.getId());
-            parser.addObjectToFile(entry);
+            bibUtil.addObjectToFile(entry);
             Callable<Long> insertCallable = () -> bibEntryDao.insert(bibEntry);
             AppDatabase.databaseWriteExecutor.submit(insertCallable);
         }
@@ -82,7 +91,7 @@ public class BibEntryRepository {
         File file = fileUtil.accessFiles(path, application, ".bib");
         try {
             //remove entry from file
-            BibTexParser parser = BibTexParser.getBibTexParser();
+            BibUtil parser = BibUtil.getInstance();
             parser.setBibTeXDatabase(file);
             Key key = new Key(bibEntry.getKey());
             BibTeXObject entryToDelete = parser.getBibTexObject(key);

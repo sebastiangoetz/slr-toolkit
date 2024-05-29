@@ -17,6 +17,13 @@ public interface TaxonomyDao {
     void insertAll(List<Taxonomy> taxonomies);
 
     @Transaction
+    @Query("SELECT * FROM taxonomy WHERE taxonomyId=:taxId")
+    LiveData<Taxonomy> getTaxonomyById(int taxId);
+
+    @Query("SELECT * FROM taxonomy WHERE taxonomyId=:taxId")
+    Taxonomy getTaxonomyByIdDirectly(int taxId);
+
+    @Transaction
     @Query("SELECT * FROM taxonomy WHERE repoId=:repoId AND parentId=:parentId")
     LiveData<List<Taxonomy>> getChildTaxonomies(int repoId, int parentId);
 

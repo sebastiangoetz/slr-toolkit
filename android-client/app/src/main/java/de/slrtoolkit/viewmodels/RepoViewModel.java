@@ -31,7 +31,7 @@ import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
-import de.slrtoolkit.util.BibTexParser;
+import de.slrtoolkit.util.BibUtil;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.TaxonomyParser;
 import de.slrtoolkit.util.TaxonomyParserNode;
@@ -146,7 +146,7 @@ public class RepoViewModel extends AndroidViewModel {
         File file = fileUtil.accessFiles(path, application, ".bib");
         Map<BibEntry, String> entriesWithTaxonomies = new HashMap<>();
         try {
-            BibTexParser parser = BibTexParser.getBibTexParser();
+            BibUtil parser = BibUtil.getInstance();
             parser.setBibTeXDatabase(file);
             entriesWithTaxonomies = parser.parseBibTexFile(file);
         } catch (FileNotFoundException | ParseException e) {

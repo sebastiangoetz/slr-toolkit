@@ -16,9 +16,12 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.BibEntry;
+import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.views.FilterEntriesAdapter;
 
@@ -33,6 +36,7 @@ public class FilterFragment extends Fragment {
     private Button discardButton;
     private TextView noEntriesToFilterTextview;
     private int repoId;
+    private Repo repo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class FilterFragment extends Fragment {
         ProjectViewModel projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
 
         repoId = projectViewModel.getCurrentRepoId();
+        new RepoRepository(requireActivity().getApplication()).getRepoById(repoId).observe(getViewLifecycleOwner(),repo1 -> {
+            repo = repo1;
+        });
 
         noEntriesToFilterTextview = view.findViewById(R.id.textview_no_entries_to_filter);
         flingAdapterView = view.findViewById(R.id.swipe_entries);
@@ -74,7 +81,7 @@ public class FilterFragment extends Fragment {
             public void onRightCardExit(Object o) {
                 BibEntry bibEntry = (BibEntry) o;
                 bibEntry.setStatus(BibEntry.Status.KEEP);
-                projectViewModel.updateBibEntry(bibEntry);
+                projectViewModel.updateBibEntry(bibEntry, repo);
             }
 
             @Override

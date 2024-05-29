@@ -23,6 +23,7 @@ public class BibEntry {
     private String doi;
     private String keywords;
     private String type;
+    private String classes;
     @TypeConverters(StatusConverter.class)
     private Status status;
 
@@ -155,6 +156,10 @@ public class BibEntry {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getClasses() { return classes; }
+
+    public void setClasses(String classes) { this.classes = classes; }
 
     public enum Status {
         OPEN(0), KEEP(1), DISCARD(2);
