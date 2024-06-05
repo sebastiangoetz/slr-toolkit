@@ -1,6 +1,6 @@
 package de.slrtoolkit.util;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class ClassificationNode {
     private final String name;
     private final List<ClassificationNode> children;
-    private @Nullable ClassificationNode parent;
+    private ClassificationNode parent;
 
     public ClassificationNode(String name) {
         this.name = name;
@@ -28,7 +28,6 @@ public class ClassificationNode {
         return children;
     }
 
-    @Nullable
     public ClassificationNode getParent() {
         return parent;
     }
@@ -96,7 +95,7 @@ public class ClassificationNode {
         } else {
             String name = classification.substring(0, classification.indexOf("{"));
             String children = classification.substring(classification.indexOf("{")+1);
-            String remainder = children;
+            String remainder;
             int idxClosing = children.indexOf("}");
             if(children.indexOf("{") < idxClosing) {
                 idxClosing = findClosingIndex(children, idxClosing, children.indexOf("{"));
@@ -125,6 +124,7 @@ public class ClassificationNode {
         else return findClosingIndex(children, nextCloseIdx, nextOpenIdx);
     }
 
+    @NonNull
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -1,6 +1,5 @@
 package de.slrtoolkit.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -60,7 +58,7 @@ public class AddProjectSetNameFragment extends Fragment {
 
             SlrprojectParser slrprojectParser = new SlrprojectParser();
             FileUtil fileUtil = new FileUtil();
-            File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), getActivity().getApplication(), ".slrproject");
+            File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), requireActivity().getApplication(), ".slrproject");
             slrprojectParser.parseSlr(String.valueOf(file), currentRepo.getName(), currentRepo.getTextAbstract());
 
 
