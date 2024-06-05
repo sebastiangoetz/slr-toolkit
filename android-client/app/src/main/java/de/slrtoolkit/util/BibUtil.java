@@ -21,6 +21,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.slrtoolkit.database.BibEntry;
@@ -53,14 +54,53 @@ public class BibUtil {
      * @param name the class to remove from it
      */
     public static String removeClassFromClassification(String classesString, String name) {
-        //TODO
-        return classesString;
+        List<ClassificationNode> parsed = ClassificationNode.parseString(classesString);
+        String rootName;
+        if(name.contains("/")) {
+            rootName = name.substring(0,name.indexOf("/"));
+        } else {
+            rootName = name;
+        }
+        ClassificationNode n = parsed.stream().filter(c -> c.getName().equals(rootName)).findAny().orElse(null);
+        if(n == null) {
+            System.err.println("Path not in Classification. Cannot remove. ("+rootName+")");
+        } else if(name.contains("/")) {
+            n.removePath(name.substring(name.indexOf("/")+1));
+            if(n.getChildren().isEmpty()) parsed.remove(n);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(ClassificationNode cn : parsed) {
+            sb.append(cn).append(", ");
+        }
+        if(!parsed.isEmpty())
+            sb.delete(sb.length()-2, sb.length());
+        return sb.toString();
     }
 
     public static String addClassToClassification(String classesString, String name) {
-        //TODO
-        classesString = "{" + name + "}";
-        return classesString;
+        StringBuilder sb = new StringBuilder();
+        if(name.contains("/")) {
+            List<ClassificationNode> classification = ClassificationNode.parseString(classesString);
+            for(String sn : name.split("/")) {
+                ClassificationNode cn = classification.stream().filter(c -> c.getName().equals(sn)).findAny().orElse(null);
+                if(cn == null) {
+                    cn = new ClassificationNode(sn);
+                    classification.add(cn);
+                }
+                cn.addPath(name.substring(name.indexOf("/") + 1));
+                classification.forEach(c -> sb.append(c.toString()).append(", "));
+                sb.delete(sb.length() - 2, sb.length());
+                break;
+            }
+        } else {
+            if(!classesString.trim().isEmpty()) {
+                sb.append(classesString);
+                sb.append(", ");
+            }
+            sb.append(name);
+        }
+        return sb.toString();
     }
 
     public void setBibTeXDatabase(File file) throws FileNotFoundException, ParseException {
@@ -169,7 +209,9 @@ public class BibUtil {
         if(orig != null) { //update
             bibTeXDatabase.removeObject(orig);
             orig.removeField(new Key("classes"));
-            orig.addField(new Key("classes"), new KeyValue(bibEntry.getClasses()));
+            if(!bibEntry.getClasses().isEmpty()) {
+                orig.addField(new Key("classes"), new KeyValue("{"+bibEntry.getClasses()+"}"));
+            }
             bibTeXDatabase.addObject(orig);
             BibTeXFormatter f = new BibTeXFormatter();
             try {

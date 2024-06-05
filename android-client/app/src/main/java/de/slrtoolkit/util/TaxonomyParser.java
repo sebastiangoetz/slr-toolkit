@@ -97,9 +97,9 @@ public class TaxonomyParser {
     public String getTaxonomyPath(TaxonomyParserNode taxonomyNode) {
         String path = "";
         if (taxonomyNode.getParent() != null) {
-            path += taxonomyNode.getParent().getPath();
+            path += taxonomyNode.getParent().getPath()+"/";
         }
-        path += "#" + taxonomyNode.getName();
+        path += taxonomyNode.getName();
         return path;
     }
 }

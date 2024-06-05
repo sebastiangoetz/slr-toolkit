@@ -17,7 +17,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.slrtoolkit.database.AppDatabase;
-import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.database.TaxonomyDao;
 import de.slrtoolkit.util.FileUtil;
@@ -202,10 +201,6 @@ public class TaxonomyRepository {
         Callable<Taxonomy> getCallable = () -> taxonomyDao.getTaxonomyByRepoAndPathDirectly(repoId, path);
         Future<Taxonomy> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
-    }
-
-    public LiveData<Taxonomy> getTaxonmyById(int taxId) {
-        return taxonomyDao.getTaxonomyById(taxId);
     }
 
     public Taxonomy getTaxonomyByIdDirectly(int taxId) throws ExecutionException, InterruptedException {

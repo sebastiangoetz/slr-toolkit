@@ -21,6 +21,7 @@ import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 import de.slrtoolkit.util.BibUtil;
+import de.slrtoolkit.util.TaxonomyTreeNode;
 
 public class ClassificationViewModel extends AndroidViewModel {
     private final TaxonomyRepository taxonomyRepository;
@@ -74,15 +75,15 @@ public class ClassificationViewModel extends AndroidViewModel {
         return selectedTaxonomies;
     }
 
-    public void addTaxonomyToClassification(int taxonomyId, int entryId) {
-        this.selectedTaxonomies.add(taxonomyId);
-        taxonomyWithEntriesRepository.insert(taxonomyId, entryId);
-        BibEntry bibEntry = null;
+    public void addTaxonomyToClassification(TaxonomyTreeNode node, int entryId) {
+        this.selectedTaxonomies.add(node.getId());
+        taxonomyWithEntriesRepository.insert(node.getId(), entryId);
+        BibEntry bibEntry;
         try {
             bibEntry = bibEntryRepository.getEntryByIdDirectly(entryId);
             String classesString = bibEntry.getClasses();
-            Taxonomy taxonomy = taxonomyRepository.getTaxonomyByIdDirectly(taxonomyId);
-            String newClassification = BibUtil.addClassToClassification(classesString, taxonomy.getName());
+            Taxonomy taxonomy = taxonomyRepository.getTaxonomyByIdDirectly(node.getId());
+            String newClassification = BibUtil.addClassToClassification(classesString, taxonomy.getPath());
             bibEntry.setClasses(newClassification);
             bibEntryRepository.update(bibEntry, repo);
         } catch (ExecutionException | InterruptedException e) {
@@ -90,14 +91,14 @@ public class ClassificationViewModel extends AndroidViewModel {
         }
     }
 
-    public void removeTaxonomyFromClassification(int taxonomyId, int entryId) {
-        this.selectedTaxonomies.remove(taxonomyId);
-        taxonomyWithEntriesRepository.delete(taxonomyId, entryId);
+    public void removeTaxonomyFromClassification(TaxonomyTreeNode node, int entryId) {
+        this.selectedTaxonomies.remove(node.getId());
+        taxonomyWithEntriesRepository.delete(node.getId(), entryId);
         try {
             BibEntry bibEntry = bibEntryRepository.getEntryByIdDirectly(entryId);
             String classesString = bibEntry.getClasses();
-            Taxonomy taxonomy = taxonomyRepository.getTaxonomyByIdDirectly(taxonomyId);
-            String newClassification = BibUtil.removeClassFromClassification(classesString, taxonomy.getName());
+            Taxonomy taxonomy = taxonomyRepository.getTaxonomyByIdDirectly(node.getId());
+            String newClassification = BibUtil.removeClassFromClassification(classesString, taxonomy.getPath());
             bibEntry.setClasses(newClassification);
             bibEntryRepository.update(bibEntry, repo);
         } catch (ExecutionException | InterruptedException e) {

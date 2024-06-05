@@ -84,6 +84,7 @@ public class AddTaxonomyEntryDialog extends DialogFragment {
             t.setName(name);
             t.setRepoId(taxonomiesViewModel.getCurrentRepoId());
             t.setParentId(selectedTaxonomy.getTaxonomyId());
+            t.setPath(selectedTaxonomy.getPath()+"/"+name);
             allTaxonomyEntries.add(t);
             try {
                 Repo repo = repoViewModel.getRepoDirectly(taxonomiesViewModel.getCurrentRepoId());

@@ -38,7 +38,6 @@ public class AddProjectSetNameFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_add_project_set_name, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

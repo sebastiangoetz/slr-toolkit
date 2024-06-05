@@ -45,6 +45,7 @@ public class TaxonomyParserNode {
 
     public void addChild(TaxonomyParserNode child) {
         children.add(child);
+        child.setParent(this);
     }
 
     @NonNull

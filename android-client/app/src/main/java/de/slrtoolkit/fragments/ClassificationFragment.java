@@ -150,9 +150,9 @@ public class ClassificationFragment extends Fragment {
                 }
             }
             if (entryContainsTaxonomy) {
-                classificationViewModel.removeTaxonomyFromClassification(clickedTaxonomy.getId(), entryId);
+                classificationViewModel.removeTaxonomyFromClassification(clickedTaxonomy, entryId);
             } else {
-                classificationViewModel.addTaxonomyToClassification(clickedTaxonomy.getId(), entryId);
+                classificationViewModel.addTaxonomyToClassification(clickedTaxonomy, entryId);
             }
             setTree(taxonomiesList);
             return entryContainsTaxonomy;
