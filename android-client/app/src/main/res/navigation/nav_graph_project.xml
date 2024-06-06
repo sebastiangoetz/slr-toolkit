@@ -53,9 +53,9 @@
         android:label="FilterFragment" />
     <fragment
         android:id="@+id/taxonomyListFragment"
-        android:name="de.slrtoolkit.fragments.TaxonomyListFragment"
+        android:name="de.slrtoolkit.fragments.EntriesByTaxonomiesFragment"
         android:label="fragment_taxonomy_list"
-        tools:layout="@layout/fragment_taxonomy_list" />
+        tools:layout="@layout/fragment_entries_by_taxonomies_overview" />
     <fragment
         android:id="@+id/entriesToClassifyViewPagerFragment"
         android:name="de.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"

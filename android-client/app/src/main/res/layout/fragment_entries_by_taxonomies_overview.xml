@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/taxonomy_list_constraint_layout"
-    tools:context="de.slrtoolkit.fragments.TaxonomyListFragment">
+    tools:context="de.slrtoolkit.fragments.EntriesByTaxonomiesFragment">
 
     <TextView
         android:id="@+id/textview_taxonomies_breadcrumb"

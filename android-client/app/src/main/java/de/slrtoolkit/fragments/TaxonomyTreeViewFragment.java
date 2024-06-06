@@ -29,6 +29,7 @@ import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.dialog.AddTaxonomyEntryDialog;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.util.TaxonomyTreeNode;
+import de.slrtoolkit.util.TaxonomyUtil;
 import de.slrtoolkit.viewmodels.RepoViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
@@ -106,33 +107,8 @@ public class TaxonomyTreeViewFragment extends Fragment {
 
     private void onLoaded(List<Taxonomy> taxonomies) {
         this.taxonomiesList = taxonomies;
-        List<TreeNode> rootTaxonomies = new ArrayList<>();
-        for(Taxonomy root : taxonomies) {
-            if(root.getParentId() == 0) {
-                TaxonomyTreeNode n = new TaxonomyTreeNode(root.getTaxonomyId(), root.getName());
-                TreeNode rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
-                addChildrenToRoot(rootNode, root.getTaxonomyId(), taxonomies);
-                rootTaxonomies.add(rootNode);
-            }
-        }
-
+        List<TreeNode> rootTaxonomies = new TaxonomyUtil().taxonomiesToTreeNodes(taxonomies);
         treeViewAdapter.updateTreeNodes(rootTaxonomies);
     }
 
-    /**Adds all taxonomy entries from the third parameter to the root node, if this node is their parent
-     *
-     * @param root the TreeNode to which children shall be added
-     * @param rootId the id of the root
-     * @param taxonomies list of taxonomy entries which potentially are children of root
-     */
-    private void addChildrenToRoot(TreeNode root, int rootId, List<Taxonomy> taxonomies) {
-        for (Taxonomy tax : taxonomies) {
-            if (tax.getParentId() == rootId) {
-                TaxonomyTreeNode n = new TaxonomyTreeNode(tax.getTaxonomyId(), tax.getName());
-                TreeNode child = new TreeNode(n, R.layout.item_taxonomy_entry);
-                addChildrenToRoot(child, tax.getTaxonomyId(), taxonomies);
-                root.addChild(child);
-            }
-        }
-    }
 }

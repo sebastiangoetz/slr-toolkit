@@ -2,6 +2,7 @@ package de.slrtoolkit.fragments;
 
 import static androidx.navigation.fragment.NavHostFragment.findNavController;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import de.slrtoolkit.AnalyzeActivity;
 import de.slrtoolkit.ManageTaxonomyActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.TaxonomiesActivity;
+import de.slrtoolkit.EntriesByTaxonomiesActivity;
 import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.dialog.AddGitDataDialog;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
@@ -77,7 +78,7 @@ public class ProjectOverviewFragment extends Fragment {
         Button manageTaxonomyButton = view.findViewById(R.id.button_manage_taxonomy);
 
         allEntryButton = view.findViewById(R.id.button_all_entries);
-        Button taxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
+        Button entriesByTaxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         Button analyzeButton = view.findViewById(R.id.button_analyze);
 
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
@@ -123,25 +124,25 @@ public class ProjectOverviewFragment extends Fragment {
         allEntryButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
                 .navigate(R.id.action_projectOverviewFragment_to_bibtexEntriesListFragment));
 
-        taxonomyButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), TaxonomiesActivity.class);
+        entriesByTaxonomyButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EntriesByTaxonomiesActivity.class);
             intent.putExtra("repo", projectViewModel.getCurrentRepoId());
             startActivity(intent);
-            (requireActivity()).overridePendingTransition(0, 0);
+            requireActivity().overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0);
         });
 
         analyzeButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AnalyzeActivity.class);
             intent.putExtra("repo", projectViewModel.getCurrentRepoId());
             startActivity(intent);
-            requireActivity().overridePendingTransition(0, 0);
+            requireActivity().overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0);
         });
 
         manageTaxonomyButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ManageTaxonomyActivity.class);
             intent.putExtra("repo", projectViewModel.getCurrentRepoId());
             startActivity(intent);
-            requireActivity().overridePendingTransition(0, 0);
+            requireActivity().overrideActivityTransition(Activity.OVERRIDE_TRANSITION_OPEN, 0, 0);
         });
 
         final Observer<Repo> repoTitleObserver = repo -> projectNameTextView.setText(repo.getName());

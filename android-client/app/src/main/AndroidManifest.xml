@@ -33,7 +33,7 @@
             android:name="de.slrtoolkit.AnalyzeActivity"
             android:exported="false" />
         <activity
-            android:name="de.slrtoolkit.TaxonomiesActivity"
+            android:name="de.slrtoolkit.EntriesByTaxonomiesActivity"
             android:exported="false" />
         <activity
             android:name="de.slrtoolkit.ClassificationActivity"

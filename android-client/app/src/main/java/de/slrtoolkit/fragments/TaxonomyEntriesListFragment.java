@@ -92,7 +92,7 @@ public class TaxonomyEntriesListFragment extends Fragment {
             taxonomiesViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
             Fragment entryFragment = new BibtexEntriesDetailViewPagerFragment();
             FragmentTransaction ft = TaxonomyEntriesListFragment.this.getParentFragmentManager().beginTransaction();
-            ft.replace(R.id.taxonomies_fragment_container_view, entryFragment);
+            ft.replace(R.id.entries_by_taxonomies_fragment_container_view, entryFragment);
             ft.addToBackStack(null);
             ft.commit();
         };

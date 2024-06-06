@@ -23,7 +23,7 @@ import java.util.List;
 import de.slrtoolkit.ClassificationActivity;
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.TaxonomiesActivity;
+import de.slrtoolkit.EntriesByTaxonomiesActivity;
 import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
@@ -57,7 +57,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
         if (requireActivity() instanceof ProjectActivity) {
             repoId = projectViewModel.getCurrentRepoId();
-        } else if (requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof EntriesByTaxonomiesActivity) {
             repoId = taxonomiesViewModel.getCurrentRepoId();
         }
         viewPager = view.findViewById(R.id.entries_detail_viewpager);
@@ -80,7 +80,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         int currentItemPosition = 0;
         if (requireActivity() instanceof ProjectActivity) {
             currentItemPosition = projectViewModel.getCurrentBibEntryInListCount();
-        } else if (requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof EntriesByTaxonomiesActivity) {
             currentItemPosition = taxonomiesViewModel.getCurrentEntryInListCount();
         }
         if (currentItemPosition != 0 && currentItemPosition < entries.size()) {
@@ -114,7 +114,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
         List<BibEntry> entries = new ArrayList<>();
         if (requireActivity() instanceof ProjectActivity) {
             entries = projectViewModel.getCurrentBibEntriesInList();
-        } else if (requireActivity() instanceof TaxonomiesActivity) {
+        } else if (requireActivity() instanceof EntriesByTaxonomiesActivity) {
             entries = taxonomiesViewModel.getCurrentEntriesInList();
         }
         return entries;
@@ -160,7 +160,7 @@ public class BibtexEntriesDetailViewPagerFragment extends Fragment {
             BibEntry bibEntry = entries.get(position);
             if (fa instanceof ProjectActivity) {
                 projectViewModel.setCurrentBibEntryIdForCard(bibEntry.getEntryId());
-            } else if (fa instanceof TaxonomiesActivity) {
+            } else if (fa instanceof EntriesByTaxonomiesActivity) {
                 taxonomiesViewModel.setCurrentEntryIdForCard(bibEntry.getEntryId());
             }
             return new BibtexEntryDetailFragment();

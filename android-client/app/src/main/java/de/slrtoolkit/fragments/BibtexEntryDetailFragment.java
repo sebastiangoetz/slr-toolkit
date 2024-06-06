@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.TaxonomiesActivity;
+import de.slrtoolkit.EntriesByTaxonomiesActivity;
 import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
@@ -61,7 +61,7 @@ public class BibtexEntryDetailFragment extends Fragment {
             projectViewModel.getBibEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
 
-        } else if (getActivity() instanceof TaxonomiesActivity) {
+        } else if (getActivity() instanceof EntriesByTaxonomiesActivity) {
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
             int entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
