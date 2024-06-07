@@ -10,10 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Taxonomy;
-import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
-import de.slrtoolkit.viewmodels.ClassificationViewModel;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
-import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 public class TaxonomyUtil {
 
@@ -35,6 +32,7 @@ public class TaxonomyUtil {
                     n.setNumberOfEntries(getNumberOfEntries(root));
                 }
                 TreeNode rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
+                n.setTreeNode(rootNode);
                 addChildrenToRoot(rootNode, root.getTaxonomyId(), taxonomies);
                 rootTaxonomies.add(rootNode);
             }
@@ -67,6 +65,7 @@ public class TaxonomyUtil {
                     n.setNumberOfEntries(getNumberOfEntries(tax));
                 }
                 TreeNode child = new TreeNode(n, R.layout.item_taxonomy_entry);
+                n.setTreeNode(child);
                 addChildrenToRoot(child, tax.getTaxonomyId(), taxonomies);
                 root.addChild(child);
             }

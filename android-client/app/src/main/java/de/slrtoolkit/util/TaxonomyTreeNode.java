@@ -2,11 +2,16 @@ package de.slrtoolkit.util;
 
 import androidx.annotation.NonNull;
 
+import com.amrdeveloper.treeview.TreeNode;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class TaxonomyTreeNode {
     private int id;
     private String name;
     private boolean showNumberOfEntries;
     private int numberOfEntries;
+    private TreeNode encapsulatingTreeNode;
 
     public TaxonomyTreeNode(int id, String name) {
         this.id = id;
@@ -19,6 +24,10 @@ public class TaxonomyTreeNode {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setTreeNode(TreeNode treeNode) {
+        encapsulatingTreeNode = treeNode;
     }
 
     public String getName() {
@@ -38,12 +47,19 @@ public class TaxonomyTreeNode {
     }
 
     public int getNumberOfEntries() {
-        return numberOfEntries;
+        if(encapsulatingTreeNode.getChildren().isEmpty()) {
+            return numberOfEntries;
+        } else {
+            AtomicInteger total = new AtomicInteger();
+            encapsulatingTreeNode.getChildren().forEach(treeNode -> total.addAndGet(((TaxonomyTreeNode) treeNode.getValue()).getNumberOfEntries()));
+            return total.intValue();
+        }
+
     }
 
     @NonNull
     @Override
     public String toString() {
-        return name + (showNumberOfEntries ? " ("+numberOfEntries+")" : "");
+        return name + (showNumberOfEntries ? " ("+getNumberOfEntries()+")" : "");
     }
 }
