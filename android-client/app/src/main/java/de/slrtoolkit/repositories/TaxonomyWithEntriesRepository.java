@@ -1,6 +1,7 @@
 package de.slrtoolkit.repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import de.slrtoolkit.database.AppDatabase;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.BibEntryTaxonomyCrossRef;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.database.TaxonomyWithEntriesDao;
@@ -36,7 +38,7 @@ public class TaxonomyWithEntriesRepository {
         try {
             id = future.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Could not insert entry to taxonomy class.", e);
         }
         return id;
 
@@ -71,11 +73,7 @@ public class TaxonomyWithEntriesRepository {
         return future.get();
     }
 
-    public LiveData<List<TaxonomyWithEntries>> getChildTaxonomiesWithEntries(int repoId, int taxonomyId) {
-        return taxonomyWithEntriesDao.getChildTaxonomiesWithEntries(repoId, taxonomyId);
-    }
-
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
-        return taxonomyWithEntriesDao.getTaxonomyWithEntries(repoId, taxonomyId);
+    public LiveData<List<BibEntry>> getTaxonomyWithEntries(List<Integer> taxonomyIds) {
+        return taxonomyWithEntriesDao.getTaxonomyWithEntries(taxonomyIds);
     }
 }

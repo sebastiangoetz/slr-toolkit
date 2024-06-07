@@ -1,6 +1,7 @@
 package de.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amrdeveloper.treeview.TreeNode;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.BibEntry;
-import de.slrtoolkit.database.TaxonomyWithEntries;
+import de.slrtoolkit.database.Taxonomy;
+import de.slrtoolkit.util.TaxonomyTreeNode;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.BibTexEntriesListAdapter;
 
@@ -33,6 +40,11 @@ public class TaxonomyEntriesListFragment extends Fragment {
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private TextView noTaxonomyEntriesTextview;
     private TextView taxonomiesBreadCrumbTextview;
+    private List<TreeNode> taxonomyTree;
+
+    public void setTaxonomyTree(List<TreeNode> taxonomyTree) {
+        this.taxonomyTree = taxonomyTree;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,19 +72,41 @@ public class TaxonomyEntriesListFragment extends Fragment {
         taxonomyEntriesRecyclerView.addItemDecoration(dividerItemDecoration);
         taxonomyEntriesRecyclerView.setAdapter(bibTexEntriesListAdapter);
 
-        taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), this::onLoaded);
+        List<Integer> currentTaxonomyAndChildrenIDs = new ArrayList<>();
+        currentTaxonomyAndChildrenIDs.add(currentTaxonomyId);
+        currentTaxonomyAndChildrenIDs.addAll(getAllChildrenIDs(currentTaxonomyId));
+
+        taxonomiesViewModel.getTaxonomyWithEntries(currentTaxonomyAndChildrenIDs).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    public void setHeader(TaxonomyWithEntries taxonomyWithEntries) {
-        if (taxonomyWithEntries != null) {
-            String title = getResources().getString(R.string.entries_for_taxonomy) + " " + taxonomyWithEntries.taxonomy.getName();
+    private Collection<Integer> getAllChildrenIDs(int taxId) {
+        List<Integer> ret = new ArrayList<>();
+        for(TreeNode n : taxonomyTree) {
+            TaxonomyTreeNode ttn = (TaxonomyTreeNode)n.getValue();
+            if(ttn.getId() == taxId) {
+                for(TreeNode c : n.getChildren()) {
+                    int childId = ((TaxonomyTreeNode)c.getValue()).getId();
+                    ret.add(childId);
+                    ret.addAll(getAllChildrenIDs(childId));
+                }
+            }
+        }
+        return ret;
+    }
+
+    public void setHeader(Taxonomy taxonomy) {
+        if (taxonomy != null) {
+            String title = getResources().getString(R.string.entries_for_taxonomy) + " " + taxonomy.getName();
             taxonomiesBreadCrumbTextview.setText(title);
         }
     }
 
-    public void onLoaded(TaxonomyWithEntries taxonomyWithEntries) {
-        setHeader(taxonomyWithEntries);
-        List<BibEntry> entries = taxonomyWithEntries.entries;
+    public void onLoaded(List<BibEntry> entries) {
+        try {
+            setHeader(taxonomiesViewModel.getTaxonomyById(currentTaxonomyId));
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(this.getClass().getName(), "Couldn't load current taxonomy.", e);
+        }
         taxonomiesViewModel.setCurrentEntriesInList(entries);
         if (entries.isEmpty()) {
             noTaxonomyEntriesTextview.setVisibility(View.VISIBLE);

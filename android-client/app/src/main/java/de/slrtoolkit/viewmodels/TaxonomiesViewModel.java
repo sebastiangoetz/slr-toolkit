@@ -6,10 +6,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.Taxonomy;
-import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.repositories.BibEntryRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
@@ -71,10 +71,6 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         this.currentEntriesInList = currentEntriesInList;
     }
 
-    public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
-        return taxonomyRepository.getChildTaxonomies(repoId, parentId);
-    }
-
     public LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId) {
         return taxonomyRepository.getAllTaxonomiesForRepo(repoId);
     }
@@ -84,7 +80,11 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         return bibEntryRepository.getEntryById(id);
     }
 
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
-        return taxonomyWithEntriesRepository.getTaxonomyWithEntries(repoId, taxonomyId);
+    public LiveData<List<BibEntry>> getTaxonomyWithEntries(List<Integer> taxonomyIds) {
+        return taxonomyWithEntriesRepository.getTaxonomyWithEntries(taxonomyIds);
+    }
+
+    public Taxonomy getTaxonomyById(int taxId) throws ExecutionException, InterruptedException {
+        return taxonomyRepository.getTaxonomyByIdDirectly(taxId);
     }
 }

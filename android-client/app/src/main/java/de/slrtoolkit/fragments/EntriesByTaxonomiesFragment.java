@@ -1,6 +1,7 @@
 package de.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.amrdeveloper.treeview.TreeViewAdapter;
 import com.amrdeveloper.treeview.TreeViewHolderFactory;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Taxonomy;
@@ -39,7 +41,6 @@ public class EntriesByTaxonomiesFragment extends Fragment {
     private TextView taxonomiesBreadCrumbTextview;
     private TextView noTaxonomiesTextview;
     private int currentTaxonomyId;
-    private int repoId;
 
     public EntriesByTaxonomiesFragment() {
         // Required empty public constructor
@@ -77,7 +78,7 @@ public class EntriesByTaxonomiesFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
-        repoId = taxonomiesViewModel.getCurrentRepoId();
+        int repoId = taxonomiesViewModel.getCurrentRepoId();
         RecyclerView rv = view.findViewById(R.id.taxonomyRecyclerview);
         noTaxonomiesTextview = view.findViewById(R.id.textview_no_taxonomies);
         taxonomiesBreadCrumbTextview = view.findViewById(R.id.textview_taxonomies_breadcrumb);
@@ -91,7 +92,8 @@ public class EntriesByTaxonomiesFragment extends Fragment {
             TaxonomyTreeNode n = (TaxonomyTreeNode) treeNode.getValue();
 
             taxonomiesViewModel.setCurrentTaxonomyId(n.getId());
-            Fragment entriesFragment = new TaxonomyEntriesListFragment();
+            TaxonomyEntriesListFragment entriesFragment = new TaxonomyEntriesListFragment();
+            entriesFragment.setTaxonomyTree(treeViewAdapter.getTreeNodes());
             FragmentTransaction ft = this.getParentFragmentManager().beginTransaction();
             ft.replace(R.id.entries_by_taxonomies_fragment_container_view, entriesFragment);
             ft.addToBackStack(null);
@@ -104,8 +106,10 @@ public class EntriesByTaxonomiesFragment extends Fragment {
 
     public void setHeader() {
         if (currentTaxonomyId > 0) {
-            taxonomiesViewModel.getTaxonomyWithEntries(repoId, currentTaxonomyId).observe(getViewLifecycleOwner(), t -> {
-                String path = t.taxonomy.getPath();
+            Taxonomy t;
+            try {
+                t = taxonomiesViewModel.getTaxonomyById(currentTaxonomyId);
+                String path = t.getPath();
                 if (path.length() > 1) {
                     path = path.replaceAll("#", " > ");
                     if (path.charAt(1) == '>') {
@@ -113,7 +117,9 @@ public class EntriesByTaxonomiesFragment extends Fragment {
                     }
                     taxonomiesBreadCrumbTextview.setText(path);
                 }
-            });
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e(this.getClass().getName(), "Could not load Taxonomy.", e);
+            }
         } else {
             taxonomiesBreadCrumbTextview.setVisibility(View.INVISIBLE);
             ConstraintSet constraintSet = new ConstraintSet();
