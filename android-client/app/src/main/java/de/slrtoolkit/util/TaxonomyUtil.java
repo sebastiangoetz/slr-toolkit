@@ -1,20 +1,39 @@
 package de.slrtoolkit.util;
 
+import android.util.Log;
+
 import com.amrdeveloper.treeview.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Taxonomy;
+import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
+import de.slrtoolkit.viewmodels.ClassificationViewModel;
+import de.slrtoolkit.viewmodels.ProjectViewModel;
+import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
 public class TaxonomyUtil {
 
+    private boolean withNumberOfEntries;
+    private ProjectViewModel viewModel;
+
+    public List<TreeNode> taxonomiesToTreeNodes(List<Taxonomy> taxonomies, boolean withNumberOfEntries, ProjectViewModel viewModel) {
+        this.withNumberOfEntries = withNumberOfEntries;
+        this.viewModel = viewModel;
+        return taxonomiesToTreeNodes(taxonomies);
+    }
     public List<TreeNode> taxonomiesToTreeNodes(List<Taxonomy> taxonomies) {
         List<TreeNode> rootTaxonomies = new ArrayList<>();
         for(Taxonomy root : taxonomies) {
             if(root.getParentId() == 0) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(root.getTaxonomyId(), root.getName());
+                if(withNumberOfEntries) {
+                    n.setShowNumberOfEntries(true);
+                    n.setNumberOfEntries(getNumberOfEntries(root));
+                }
                 TreeNode rootNode = new TreeNode(n, R.layout.item_taxonomy_entry);
                 addChildrenToRoot(rootNode, root.getTaxonomyId(), taxonomies);
                 rootTaxonomies.add(rootNode);
@@ -22,6 +41,15 @@ public class TaxonomyUtil {
         }
 
         return rootTaxonomies;
+    }
+
+    private int getNumberOfEntries(Taxonomy taxonomy) {
+        try {
+            return viewModel.getBibEntryAmountForTaxonomy(taxonomy.getTaxonomyId());
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(this.getClass().getName(), "Could not load number of entries for this taxonomy.", e);
+            return 0;
+        }
     }
 
     /**Adds all taxonomy entries from the third parameter to the root node, if this node is their parent
@@ -34,6 +62,10 @@ public class TaxonomyUtil {
         for (Taxonomy tax : taxonomies) {
             if (tax.getParentId() == rootId) {
                 TaxonomyTreeNode n = new TaxonomyTreeNode(tax.getTaxonomyId(), tax.getName());
+                if(withNumberOfEntries) {
+                    n.setShowNumberOfEntries(true);
+                    n.setNumberOfEntries(getNumberOfEntries(tax));
+                }
                 TreeNode child = new TreeNode(n, R.layout.item_taxonomy_entry);
                 addChildrenToRoot(child, tax.getTaxonomyId(), taxonomies);
                 root.addChild(child);

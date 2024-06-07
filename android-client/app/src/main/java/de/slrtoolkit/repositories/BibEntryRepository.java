@@ -111,6 +111,12 @@ public class BibEntryRepository {
         return bibEntryDao.getEntryAmount(repoId);
     }
 
+    public Integer getEntryAmountForTaxonomy(int taxId) throws ExecutionException, InterruptedException {
+        Callable<Integer> getCallable = () -> bibEntryDao.getEntryAmountForTaxonomy(taxId);
+        Future<Integer> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+    }
+
     public LiveData<Integer> getEntryAmountForStatus(int repoId, BibEntry.Status status) {
         int statusCode = status.getCode();
         return bibEntryDao.getEntryAmountForStatus(repoId, statusCode);

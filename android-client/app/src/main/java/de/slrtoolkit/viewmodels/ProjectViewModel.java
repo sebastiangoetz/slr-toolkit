@@ -88,6 +88,10 @@ public class ProjectViewModel extends AndroidViewModel {
         return bibEntryRepository.getEntryAmountForRepo(repoId);
     }
 
+    public Integer getBibEntryAmountForTaxonomy(int taxId) throws ExecutionException, InterruptedException {
+        return bibEntryRepository.getEntryAmountForTaxonomy(taxId);
+    }
+
     public LiveData<Integer> getOpenBibEntryAmount(int repoId) {
         return bibEntryRepository.getEntryAmountForStatus(repoId, BibEntry.Status.OPEN);
     }

@@ -25,6 +25,7 @@ import de.slrtoolkit.R;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.util.TaxonomyTreeNode;
 import de.slrtoolkit.util.TaxonomyUtil;
+import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.views.TaxonomyTreeViewHolder;
 
@@ -123,7 +124,7 @@ public class EntriesByTaxonomiesFragment extends Fragment {
     }
 
     private void onLoaded(List<Taxonomy> taxonomies) {
-        List<TreeNode> rootTaxonomies = new TaxonomyUtil().taxonomiesToTreeNodes(taxonomies);
+        List<TreeNode> rootTaxonomies = new TaxonomyUtil().taxonomiesToTreeNodes(taxonomies, true, new ViewModelProvider(requireActivity()).get(ProjectViewModel.class));
         if(!rootTaxonomies.isEmpty()) {
             noTaxonomiesTextview.setVisibility(View.INVISIBLE);
         } else {

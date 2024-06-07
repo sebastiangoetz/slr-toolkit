@@ -30,6 +30,9 @@ public abstract class BibEntryDao {
     @Query("SELECT COUNT(entryId) FROM BibEntry WHERE repoId=:id")
     public abstract LiveData<Integer> getEntryAmount(int id);
 
+    @Query("SELECT COUNT(entryId) FROM BibEntryTaxonomyCrossRef WHERE taxonomyId=:taxId")
+    public abstract Integer getEntryAmountForTaxonomy(int taxId);
+
     @Query("SELECT COUNT(entryId) FROM BibEntry WHERE status=:status AND repoId=:id")
     public abstract LiveData<Integer> getEntryAmountForStatus(int id, int status);
 

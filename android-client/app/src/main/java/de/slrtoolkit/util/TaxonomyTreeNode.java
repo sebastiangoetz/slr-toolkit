@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 public class TaxonomyTreeNode {
     private int id;
     private String name;
+    private boolean showNumberOfEntries;
+    private int numberOfEntries;
 
     public TaxonomyTreeNode(int id, String name) {
         this.id = id;
@@ -27,9 +29,21 @@ public class TaxonomyTreeNode {
         this.name = name;
     }
 
+    public void setShowNumberOfEntries(boolean showNumberOfEntries) {
+        this.showNumberOfEntries = showNumberOfEntries;
+    }
+
+    public void setNumberOfEntries(int numberOfEntries) {
+        this.numberOfEntries = numberOfEntries;
+    }
+
+    public int getNumberOfEntries() {
+        return numberOfEntries;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return name;
+        return name + (showNumberOfEntries ? " ("+numberOfEntries+")" : "");
     }
 }
