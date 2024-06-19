@@ -102,4 +102,6 @@
     <string name="add">Hinzufügen</string>
     <string name="cancel">Abbrechen</string>
     <string name="collapse_state">Klappzustand</string>
+    <string name="or">oder</string>
+    <string name="import_from_file">Aus Datei importieren..</string>
 </resources>

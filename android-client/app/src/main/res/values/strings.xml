@@ -101,5 +101,7 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="collapse_state">collapse state</string>
+    <string name="or">or</string>
+    <string name="import_from_file">Import from File..</string>
 
 </resources>

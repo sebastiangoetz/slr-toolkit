@@ -1,5 +1,8 @@
 package de.slrtoolkit.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,9 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -23,6 +30,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +56,8 @@ public class BibtexEntriesListFragment extends Fragment {
     private int repoId;
     private ProjectViewModel projectViewModel;
 
+    private ActivityResultLauncher<Intent> resultLauncher;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +68,8 @@ public class BibtexEntriesListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                this::onActivityResult);
         return inflater.inflate(R.layout.fragment_bibtex_entries_list, container, false);
     }
 
@@ -74,8 +89,16 @@ public class BibtexEntriesListFragment extends Fragment {
                 String bibtex = txt.getText().toString();
                 Log.e("de.slrtoolkit", "onViewCreated: "+bibtex);
                 projectViewModel.addBibEntry(bibtex,repoId);
-                //TODO how to notify the recycler view?
             });
+            Button btnImportFromFile = importBibtexDialog.findViewById(R.id.button_import_from_file);
+            if(btnImportFromFile != null) {
+                btnImportFromFile.setOnClickListener(view1 -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("*/*");
+                    resultLauncher.launch(intent);
+                });
+            }
         });
 
         setOnClickListener();
@@ -153,5 +176,28 @@ public class BibtexEntriesListFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void onActivityResult(ActivityResult result) {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            if (data != null) {
+                Uri selectedDoc = data.getData();
+                if (selectedDoc != null) {
+                    try (InputStream is = requireContext().getContentResolver().openInputStream(selectedDoc)) {
+                        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                        StringBuilder entries = new StringBuilder();
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            entries.append(line).append(System.lineSeparator());
+                        }
+                        br.close();
+                        projectViewModel.addBibEntry(entries.toString(), repoId);
+                    } catch (IOException exception) {
+                        Log.e(this.getClass().getName(), "Can't open bibtex file.", exception);
+                    }
+                }
+            }
+        }
     }
 }
