@@ -37,6 +37,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.BibEntry;
@@ -55,7 +57,6 @@ public class BibtexEntriesListFragment extends Fragment {
     private BibTexEntriesListAdapter.RecyclerViewClickListener listener;
     private int repoId;
     private ProjectViewModel projectViewModel;
-
     private ActivityResultLauncher<Intent> resultLauncher;
 
     @Override
@@ -87,12 +88,12 @@ public class BibtexEntriesListFragment extends Fragment {
                 importBibtexDialog.dismiss();
                 EditText txt = importBibtexDialog.findViewById(R.id.dialog_import_bibtex_text);
                 String bibtex = txt.getText().toString();
-                Log.e("de.slrtoolkit", "onViewCreated: "+bibtex);
                 projectViewModel.addBibEntry(bibtex,repoId);
             });
             Button btnImportFromFile = importBibtexDialog.findViewById(R.id.button_import_from_file);
             if(btnImportFromFile != null) {
                 btnImportFromFile.setOnClickListener(view1 -> {
+                    importBibtexDialog.dismiss();
                     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                     intent.setType("*/*");
@@ -192,7 +193,10 @@ public class BibtexEntriesListFragment extends Fragment {
                             entries.append(line).append(System.lineSeparator());
                         }
                         br.close();
-                        projectViewModel.addBibEntry(entries.toString(), repoId);
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        executor.execute(() -> {
+                            projectViewModel.addBibEntry(entries.toString(), repoId);
+                        });
                     } catch (IOException exception) {
                         Log.e(this.getClass().getName(), "Can't open bibtex file.", exception);
                     }
