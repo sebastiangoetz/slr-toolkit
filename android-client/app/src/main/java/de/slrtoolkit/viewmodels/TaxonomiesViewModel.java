@@ -6,28 +6,28 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.Taxonomy;
-import de.slrtoolkit.database.TaxonomyWithEntries;
-import de.slrtoolkit.repositories.EntryRepository;
+import de.slrtoolkit.repositories.BibEntryRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
     private final TaxonomyRepository taxonomyRepository;
-    private final EntryRepository entryRepository;
+    private final BibEntryRepository bibEntryRepository;
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private int currentRepoId;
     private int currentEntryIdForCard;
     private int currentTaxonomyId;
-    private List<Entry> currentEntriesInList;
+    private List<BibEntry> currentEntriesInList;
     private int currentEntryInListCount;
 
     public TaxonomiesViewModel(Application application) {
         super(application);
         taxonomyRepository = new TaxonomyRepository(application);
-        entryRepository = new EntryRepository(application);
+        bibEntryRepository = new BibEntryRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
     }
 
@@ -63,16 +63,12 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         this.currentTaxonomyId = currentTaxonomyId;
     }
 
-    public List<Entry> getCurrentEntriesInList() {
+    public List<BibEntry> getCurrentEntriesInList() {
         return currentEntriesInList;
     }
 
-    public void setCurrentEntriesInList(List<Entry> currentEntriesInList) {
+    public void setCurrentEntriesInList(List<BibEntry> currentEntriesInList) {
         this.currentEntriesInList = currentEntriesInList;
-    }
-
-    public LiveData<List<Taxonomy>> getChildrenForTaxonomy(int repoId, int parentId) {
-        return taxonomyRepository.getChildTaxonomies(repoId, parentId);
     }
 
     public LiveData<List<Taxonomy>> getAllTaxonomiesForRepo(int repoId) {
@@ -80,11 +76,15 @@ public class TaxonomiesViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<Entry> getEntryById(int id) {
-        return entryRepository.getEntryById(id);
+    public LiveData<BibEntry> getEntryById(int id) {
+        return bibEntryRepository.getEntryById(id);
     }
 
-    public LiveData<TaxonomyWithEntries> getTaxonomyWithEntries(int repoId, int taxonomyId) {
-        return taxonomyWithEntriesRepository.getTaxonomyWithEntries(repoId, taxonomyId);
+    public LiveData<List<BibEntry>> getTaxonomyWithEntries(List<Integer> taxonomyIds) {
+        return taxonomyWithEntriesRepository.getTaxonomyWithEntries(taxonomyIds);
+    }
+
+    public Taxonomy getTaxonomyById(int taxId) throws ExecutionException, InterruptedException {
+        return taxonomyRepository.getTaxonomyByIdDirectly(taxId);
     }
 }

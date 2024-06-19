@@ -10,15 +10,18 @@ import java.util.List;
 
 @Dao
 public interface TaxonomyDao {
-    @Transaction
-    @Query("SELECT * FROM taxonomy")
-    LiveData<List<TaxonomyWithEntries>> getTaxonomyWithEntries();
-
     @Insert
     long insert(Taxonomy taxonomy);
 
     @Insert
     void insertAll(List<Taxonomy> taxonomies);
+
+    @Transaction
+    @Query("SELECT * FROM taxonomy WHERE taxonomyId=:taxId")
+    LiveData<Taxonomy> getTaxonomyById(int taxId);
+
+    @Query("SELECT * FROM taxonomy WHERE taxonomyId=:taxId")
+    Taxonomy getTaxonomyByIdDirectly(int taxId);
 
     @Transaction
     @Query("SELECT * FROM taxonomy WHERE repoId=:repoId AND parentId=:parentId")
@@ -31,4 +34,8 @@ public interface TaxonomyDao {
     @Transaction
     @Query("SELECT * FROM TAXONOMY WHERE repoId=:repoId AND path=:path")
     Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path);
+
+    @Transaction
+    @Query("DELETE FROM TAXONOMY WHERE taxonomyId=:id")
+    void removeTaxonomyEntryById(int id);
 }

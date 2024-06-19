@@ -5,8 +5,8 @@
     <string name="textview_view_project_metadata">Metadaten des Projekts</string>
     <string name="textview_add_project">Projekt hinzufügen</string>
     <string name="textview_no_project">Bisher wurden noch keine Projekte erstellt.\nNutze \"+\" um neue SLR Projekte hinzuzufügen.</string>
-    <string name="fragment_label_projects">Projects Fragment</string>
-    <string name="fragment_label_add_project">Project Fragment hinzufügen</string>
+    <string name="fragment_label_projects">Projekte</string>
+    <string name="fragment_label_add_project">Projekt Fragment hinzufügen</string>
     <string name="fab_add_project">SLR Projekt hinzufügen</string>
     <string name="textinput_token">Token</string>
     <string name="textinput_url">Repository URL</string>
@@ -17,12 +17,12 @@
     <string name="textinput_git_name">Name</string>
     <string name="textinput_git_email">E-Mail</string>
     <string name="button_clone_project">Clone Projekt</string>
-    <string name="button_create_project">Project erstellen</string>
+    <string name="button_create_project">Projekt erstellen</string>
     <string name="button_add_project">Projekt hinzufügen</string>
     <string name="button_edit_project">Projekt-Metadaten bearbeiten</string>
-    <string name="button_add_project_file">Project-Datei hinzufügen</string>
+    <string name="button_add_project_file">Projekt-Datei hinzufügen</string>
     <string name="button_add_bib">BIB hinzufügen</string>
-    <string name="button_add_taxonomy">Taxonomy hinzufügen</string>
+    <string name="button_add_taxonomy">Taxonomie hinzufügen</string>
     <string name="button_add_default_file">Default-Datei hinzufügen</string>
     <string name="button_add_file">Datei auswählen</string>
     <string name="textinput_name">Projektname</string>
@@ -39,7 +39,7 @@
     <string name="entry_detail_heading_authors">Autoren</string>
     <string name="entry_detail_heading_year">Jahr</string>
     <string name="entry_detail_heading_month">Monat</string>
-    <string name="entry_detail_heading_abstract">Abstrakt</string>
+    <string name="entry_detail_heading_abstract">Abstract</string>
     <string name="entry_detail_heading_doi">DOI</string>
     <string name="entry_detail_heading_keywords">Schlüsselworte</string>
     <string name="entry_detail_heading_published">Publiziert in</string>
@@ -49,7 +49,7 @@
     <string name="button_commit">Commit</string>
     <string name="button_entries_by_taxonomy">Einträge nach Taxonomie</string>
     <string name="button_all_entries">Alle Einträge</string>
-    <string name="button_analyze">Analyze</string>
+    <string name="button_analyze">Analysieren</string>
     <string name="button_keep">Behalten</string>
     <string name="button_discard">Verwerfen</string>
     <string-array name="chart_array">
@@ -71,7 +71,6 @@
     <string name="error_commit_failed">Fehler beim Committen.</string>
     <string name="error_commit_git_name">Bitte trage dein Git Namen ein.</string>
     <string name="error_commit_git_email">Bitte trage deine Git E-Mail ein.</string>
-    <string name="error_commit_git_message">Bitte trage eine Commit-Nachricht ein.</string>
     <string name="toast_commit_succeeded">Aktueller Stand wurde committet.</string>
     <string name="error_push_failed">Fehler beim Pushen zum Remote-Repository.</string>
     <string name="button_push">Push</string>
@@ -79,13 +78,13 @@
     <string name="error_git_no_changes">Es gibt keine Änderungen zum Committen.</string>
     <string name="textinput_abstract">Abstract</string>
     <string name="authors">Authors</string>
-    <string name="manage_taxonomy">Manage Taxonomy</string>
+    <string name="manage_taxonomy">Taxonomie verwalten</string>
     <string name="create_keyword">Keyword erstellen</string>
     <string name="name_new_keyword">Bitte trage einen Namen für Keyword ein.</string>
-    <string name="create_new_keyword">Keyword erstellen</string>
-    <string name="create_new_author">Author erstellen</string>
+    <string name="create_new_keyword">Schlüsselwort erstellen</string>
+    <string name="create_new_author">Autor erstellen</string>
     <string name="enter_a_name_of_author"> Bitte trage einen Namen für Author ein.</string>
-    <string name="create_author">Author erstellen</string>
+    <string name="create_author">Autor erstellen</string>
     <string name="enter_affilation_of_author"> Bitte trage eine Organisation für AUthor ein.</string>
     <string name="enter_email_of_author"> Bitte trage eine Email für AUthor ein.</string>
     <string name="add_git_repository">Git-Repository hinzufügen</string>
@@ -93,4 +92,14 @@
     <string name="enter_token">Git Token (PAT)</string>
     <string name="enter_email_for_git">Email für Git</string>
     <string name="enter_repo_url_on_git">Repo-Link auf Git</string>
+    <string name="button_add_project_from_git">Projekt von Git Importieren</string>
+    <string name="import_bibtex">Import Bibtex</string>
+    <string name="paste_bibtex">Fügen Sie hier ihren Bibtex Code ein</string>
+    <string name="btn_import_bibtex">Import Bibtex</string>
+    <string name="close">Schließen</string>
+    <string name="fab_add_taxonomy">Taxonomie-Eintrag hinzufügen</string>
+    <string name="enter_name_of_taxonomy_entry">Geben sie einen Namen ein</string>
+    <string name="add">Hinzufügen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="collapse_state">Klappzustand</string>
 </resources>

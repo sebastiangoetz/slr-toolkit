@@ -3,8 +3,6 @@ package de.slrtoolkit.views;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,6 @@ import java.io.File;
 
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.repositories.KeywordRepository;
-import de.slrtoolkit.repositories.OnDeleteCompleteListener;
 import de.slrtoolkit.util.DoubleClickListener;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.SlrprojectParser;
@@ -27,16 +24,14 @@ import de.slrtoolkit.viewmodels.RepoViewModel;
 
 public class KeywordListAdapter extends ListAdapter<Keyword, KeywordViewHolder> {
     private RecyclerView recyclerView;
-    private KeywordRepository keywordRepository;
-    private FragmentManager fragmentManager;
+    private final KeywordRepository keywordRepository;
 
-    private Application application;
+    private final Application application;
 
 
     public KeywordListAdapter(Application application, FragmentManager fragmentManager, KeywordRepository keywordRepository, @NonNull DiffUtil.ItemCallback<Keyword> diffCallback) {
         super(diffCallback);
         this.keywordRepository = keywordRepository;
-        this.fragmentManager = fragmentManager;
         this.application = application;
     }
 
@@ -52,13 +47,7 @@ public class KeywordListAdapter extends ListAdapter<Keyword, KeywordViewHolder> 
         holder.bind(current.getName());
         RepoViewModel repoViewModel = new ViewModelProvider((ViewModelStoreOwner) getContext()).get(RepoViewModel.class);
 
-        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), new DoubleClickListener.OnDoubleClickListener() {
-
-            @Override
-            public void onDoubleClick(View v) {
-                showDialog(repoViewModel, current);
-            }
-        }));
+        holder.itemView.setOnTouchListener(new DoubleClickListener(recyclerView.getContext(), v -> showDialog(repoViewModel, current)));
     }
 
     @Override
@@ -74,26 +63,17 @@ public class KeywordListAdapter extends ListAdapter<Keyword, KeywordViewHolder> 
     private void showDialog(RepoViewModel repoViewModel, Keyword current) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Keyword?")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FileUtil fileUtil = new FileUtil();
-                        File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application, ".slrproject");
-                        SlrprojectParser slrprojectParser = new SlrprojectParser();
-                        slrprojectParser.deleteKeyword(String.valueOf(file), current.getName());
+                .setPositiveButton("OK", (dialog, which) -> {
+                    FileUtil fileUtil = new FileUtil();
+                    File file = fileUtil.accessFiles(repoViewModel.getCurrentRepo().getLocal_path(), application, ".slrproject");
+                    SlrprojectParser slrprojectParser = new SlrprojectParser();
+                    slrprojectParser.deleteKeyword(String.valueOf(file), current.getName());
 
-                        keywordRepository.deleteAsync(current, new OnDeleteCompleteListener() {
-                            @Override
-                            public void onDeleteComplete() {
+                    keywordRepository.deleteAsync(current, () -> {
 
-                            }
-                        });
-                    }
+                    });
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setNegativeButton("Cancel", (dialog, which) -> {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();

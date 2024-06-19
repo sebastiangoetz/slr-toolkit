@@ -1,15 +1,18 @@
 package de.slrtoolkit.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,12 +21,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.views.BibTexEntriesListAdapter;
 import de.slrtoolkit.views.SwipeToDeleteCallbackBibTexEntries;
@@ -57,6 +62,22 @@ public class BibtexEntriesListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.bibTexEntriesRecyclerView);
         noEntriesTextView = view.findViewById(R.id.textview_no_entries);
 
+        view.findViewById(R.id.btn_add_bibtex_entry).setOnClickListener(btn -> {
+            AlertDialog importBibtexDialog = new MaterialAlertDialogBuilder(requireActivity())
+                    .setView(R.layout.dialog_add_bibtex)
+                    .setNegativeButton(R.string.close, (dialogInterface, i) -> dialogInterface.dismiss()).create();
+            importBibtexDialog.show();
+            //TODO check if pasted bibtex is parsable and disable import button if that is not the case
+            importBibtexDialog.findViewById(R.id.button_dialog_import_bibtex).setOnClickListener(view1 -> {
+                importBibtexDialog.dismiss();
+                EditText txt = importBibtexDialog.findViewById(R.id.dialog_import_bibtex_text);
+                String bibtex = txt.getText().toString();
+                Log.e("de.slrtoolkit", "onViewCreated: "+bibtex);
+                projectViewModel.addBibEntry(bibtex,repoId);
+                //TODO how to notify the recycler view?
+            });
+        });
+
         setOnClickListener();
 
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
@@ -76,13 +97,13 @@ public class BibtexEntriesListFragment extends Fragment {
 
     private void setOnClickListener() {
         listener = (v, position) -> {
-            Entry clickedEntry = adapter.getItemAtPosition(position);
+            BibEntry clickedBibEntry = adapter.getItemAtPosition(position);
 
-            if (clickedEntry == null) return;
+            if (clickedBibEntry == null) return;
 
-            projectViewModel.setCurrentEntryIdForCard(clickedEntry.getEntryId());
-            int indexOfEntryInOriginalList = projectViewModel.getCurrentEntriesInList().indexOf(clickedEntry);
-            projectViewModel.setCurrentEntryInListCount(indexOfEntryInOriginalList);
+            projectViewModel.setCurrentBibEntryIdForCard(clickedBibEntry.getEntryId());
+            int indexOfEntryInOriginalList = projectViewModel.getCurrentBibEntriesInList().indexOf(clickedBibEntry);
+            projectViewModel.setCurrentBibEntryInListCount(indexOfEntryInOriginalList);
             NavHostFragment.findNavController(BibtexEntriesListFragment.this)
                     .navigate(R.id.action_bibtexEntriesListFragment_to_bibtexEntryDetailFragment);
         };
@@ -92,9 +113,9 @@ public class BibtexEntriesListFragment extends Fragment {
         projectViewModel.getEntriesForRepo(repoId).observe(getViewLifecycleOwner(), this::onLoaded);
     }
 
-    private void onLoaded(List<Entry> list) {
-        projectViewModel.setCurrentEntriesInList(list);
-        if (list.size() == 0) {
+    private void onLoaded(List<BibEntry> list) {
+        projectViewModel.setCurrentBibEntriesInList(list);
+        if (list.isEmpty()) {
             recyclerView.setVisibility(View.INVISIBLE);
             noEntriesTextView.setVisibility(View.VISIBLE);
         } else {
@@ -105,8 +126,8 @@ public class BibtexEntriesListFragment extends Fragment {
     }
 
     private void filterList(String searchTerm) {
-        List<Entry> filteredEntries = new ArrayList<>();
-        for (Entry e : projectViewModel.getCurrentEntriesInList()) {
+        List<BibEntry> filteredEntries = new ArrayList<>();
+        for (BibEntry e : projectViewModel.getCurrentBibEntriesInList()) {
             if (e.getTitle().toLowerCase(Locale.ROOT).contains(searchTerm.toLowerCase(Locale.ROOT))) {
                 filteredEntries.add(e);
             }

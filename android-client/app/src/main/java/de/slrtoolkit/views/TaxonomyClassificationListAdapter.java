@@ -29,7 +29,7 @@ import de.slrtoolkit.database.TaxonomyWithEntries;
 public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithEntries, TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder> {
     private final TaxonomyClassificationListAdapter.RecyclerViewClickListener listener;
     List<Integer> currentTaxonomyIds;
-    boolean showArrows;
+    final boolean showArrows;
     private RecyclerView recyclerView;
 
     public TaxonomyClassificationListAdapter(@NonNull DiffUtil.ItemCallback<TaxonomyWithEntries> diffCallback, TaxonomyClassificationListAdapter.RecyclerViewClickListener listener, boolean showArrows) {
@@ -90,7 +90,7 @@ public class TaxonomyClassificationListAdapter extends ListAdapter<TaxonomyWithE
 
         public static TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder create(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.taxonomy_classification_recyclerview_item, parent, false);
+                    .inflate(R.layout.item_taxonomy_classification, parent, false);
             return new TaxonomyClassificationListAdapter.TaxonomyClassificationViewHolder(view);
         }
 

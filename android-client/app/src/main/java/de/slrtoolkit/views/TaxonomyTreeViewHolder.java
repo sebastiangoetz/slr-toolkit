@@ -12,8 +12,8 @@ import com.amrdeveloper.treeview.TreeViewHolder;
 import de.slrtoolkit.R;
 
 public class TaxonomyTreeViewHolder extends TreeViewHolder {
-    TextView textName;
-    ImageButton btn;
+    final TextView textName;
+    final ImageButton btn;
     public TaxonomyTreeViewHolder(@NonNull View itemView) {
         super(itemView);
         textName = itemView.findViewById(R.id.taxonomy_entry_name);
@@ -24,7 +24,7 @@ public class TaxonomyTreeViewHolder extends TreeViewHolder {
     public void bindTreeNode(TreeNode node) {
         super.bindTreeNode(node);
         textName.setText(node.getValue().toString());
-        if(node.getChildren().size() == 0) {
+        if(node.getChildren().isEmpty()) {
             btn.setVisibility(View.INVISIBLE);
         } else {
             btn.setVisibility(View.VISIBLE);

@@ -12,13 +12,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
@@ -58,13 +55,12 @@ public class PushWorker extends Worker {
         }
 
         File path = new File(getApplicationContext().getFilesDir(), repo.getLocal_path());
-        Status status = null;
 
         Git git;
         try {
             git = Git.open(path);
             try {
-                status = git.status().call();
+                git.status().call();
             } catch (GitAPIException e) {
                 throw new RuntimeException(e);
             }
@@ -77,22 +73,11 @@ public class PushWorker extends Worker {
         PushCommand pushCommand = git.push();
 
         if (repo.getUsername() != null && repo.getToken() != null && !repo.getUsername().trim().isEmpty() && !repo.getToken().trim().isEmpty()) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(repo.getUsername(), repo.getToken());
             pushCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider(repo.getToken(), "" ) );
         }
 
         try {
             pushCommand.call();
-        } catch (InvalidRemoteException | TransportException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_push_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
-        } catch (Exception e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_push_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_push_failed)
@@ -101,7 +86,7 @@ public class PushWorker extends Worker {
         }
 
         try {
-            status = git.status().call();
+            git.status().call();
         } catch (GitAPIException e) {
             throw new RuntimeException(e);
         }

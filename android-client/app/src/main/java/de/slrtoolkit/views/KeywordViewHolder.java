@@ -19,7 +19,7 @@ public class KeywordViewHolder extends RecyclerView.ViewHolder {
 
     static KeywordViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.keyword_item, parent, false);
+                .inflate(R.layout.item_keyword, parent, false);
         return new KeywordViewHolder(view);
     }
 

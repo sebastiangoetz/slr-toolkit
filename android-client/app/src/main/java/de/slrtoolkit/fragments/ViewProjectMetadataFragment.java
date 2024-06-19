@@ -20,16 +20,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
 import de.slrtoolkit.database.Author;
 import de.slrtoolkit.database.Keyword;
 import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.dialog.CreateAuthorDialog;
+import de.slrtoolkit.dialog.CreateKeywordDialog;
 import de.slrtoolkit.repositories.AuthorRepository;
 import de.slrtoolkit.repositories.KeywordRepository;
-import de.slrtoolkit.repositories.OnDeleteCompleteListener;
 import de.slrtoolkit.util.FileUtil;
 import de.slrtoolkit.util.SlrprojectParser;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
@@ -40,21 +40,17 @@ import de.slrtoolkit.views.KeywordListAdapter;
 public class ViewProjectMetadataFragment extends Fragment {
     private EditText textName;
     private EditText textAbstract;
-    private ProjectViewModel projectViewModel;
     private RepoViewModel repoViewModel;
     private KeywordRepository keywordRepository;
     private AuthorRepository authorRepository;
     private KeywordListAdapter keywordListAdapter;
     private AuthorListAdapter authorListAdapter;
-    private Button updateMetadata;
-    private FloatingActionButton plusKeyword;
-    private FloatingActionButton plusAuthor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        keywordRepository = new KeywordRepository(getActivity().getApplication());
-        authorRepository = new AuthorRepository(getActivity().getApplication());
+        keywordRepository = new KeywordRepository(requireActivity().getApplication());
+        authorRepository = new AuthorRepository(requireActivity().getApplication());
     }
 
     @Nullable
@@ -67,7 +63,7 @@ public class ViewProjectMetadataFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
+        ProjectViewModel projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
         try {
             repoViewModel.setCurrentRepo(repoViewModel.getRepoDirectly(projectViewModel.getCurrentRepoId()));
@@ -75,9 +71,9 @@ public class ViewProjectMetadataFragment extends Fragment {
             throw new RuntimeException(e);
         }
         Repo currentRepository = repoViewModel.getCurrentRepo();
-        updateMetadata = view.findViewById(R.id.button_edit_metadata);
-        plusKeyword = view.findViewById(R.id.plus_keyword);
-        plusAuthor = view.findViewById(R.id.plus_author);
+        Button updateMetadata = view.findViewById(R.id.button_edit_metadata);
+        FloatingActionButton plusKeyword = view.findViewById(R.id.plus_keyword);
+        FloatingActionButton plusAuthor = view.findViewById(R.id.plus_author);
 
         keywordListAdapter = new KeywordListAdapter(getActivity().getApplication(),getActivity().getSupportFragmentManager(), keywordRepository, new KeywordListAdapter.KeywordsDiff());
         RecyclerView keywordsRecycler = view.findViewById(R.id.list_keywords);
@@ -102,41 +98,29 @@ public class ViewProjectMetadataFragment extends Fragment {
         projectViewModel.getKeywordsForCurrentProject().observe(getViewLifecycleOwner(), this::onKeywordsLoaded);
         projectViewModel.getAuthorsForCurrentProject().observe(getViewLifecycleOwner(), this::onAuthorsLoaded);
 
-        plusKeyword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateKeywordDialog dialog = new CreateKeywordDialog();
-                dialog.show(getChildFragmentManager(), CreateKeywordDialog.TAG);
+        plusKeyword.setOnClickListener(view13 -> {
+            CreateKeywordDialog dialog = new CreateKeywordDialog();
+            dialog.show(getChildFragmentManager(), CreateKeywordDialog.TAG);
 
-                List<Keyword> keywords = keywordListAdapter.getCurrentList();
-                if (!(keywords.isEmpty()))
-                    if (keywords.get(0).getName().equals("")) {
-                        keywordRepository.deleteAsync(keywords.get(0), new OnDeleteCompleteListener() {
-                            @Override
-                            public void onDeleteComplete() {
+            List<Keyword> keywords = keywordListAdapter.getCurrentList();
+            if (!(keywords.isEmpty()))
+                if (keywords.get(0).getName().isEmpty()) {
+                    keywordRepository.deleteAsync(keywords.get(0), () -> {
 
-                            }
-                        });
-                    }
-            }
+                    });
+                }
         });
 
-        plusAuthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateAuthorDialog dialog = new CreateAuthorDialog();
-                dialog.show(getChildFragmentManager(), CreateAuthorDialog.TAG);
-                List<Author> authors = authorListAdapter.getCurrentList();
-                if (!(authors.isEmpty()))
-                    if (authors.get(0).getName().equals("")) {
-                        authorRepository.deleteAsync(authors.get(0), new OnDeleteCompleteListener() {
-                            @Override
-                            public void onDeleteComplete() {
+        plusAuthor.setOnClickListener(view12 -> {
+            CreateAuthorDialog dialog = new CreateAuthorDialog();
+            dialog.show(getChildFragmentManager(), CreateAuthorDialog.TAG);
+            List<Author> authors = authorListAdapter.getCurrentList();
+            if (!(authors.isEmpty()))
+                if (authors.get(0).getName().isEmpty()) {
+                    authorRepository.deleteAsync(authors.get(0), () -> {
 
-                            }
-                        });
-                    }
-            }
+                    });
+                }
         });
 
         updateMetadata.setOnClickListener(view1 -> {
@@ -153,7 +137,7 @@ public class ViewProjectMetadataFragment extends Fragment {
 
 
             NavHostFragment.findNavController(
-                            Objects.requireNonNull(ViewProjectMetadataFragment.this))
+                            ViewProjectMetadataFragment.this)
                     .navigate(R.id.action_editProjectMetadata_to_projectOverview);
         });
     }

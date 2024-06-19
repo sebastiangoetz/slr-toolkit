@@ -1,0 +1,86 @@
+@startuml
+package Database {
+    class AppDatabase
+    class Author {
+     - name
+     - affiliation
+     - email
+    }
+    class BibEntry {
+     - name
+     - doi
+     - ...
+    }
+    enum Status {
+        OPEN
+        KEEP
+        DISCARD
+    }
+    BibEntry -> Status
+    class Keyword {
+     - name
+    }
+    class Repo {
+     - local_path
+     - remote_url
+     - username
+     - token
+     - git_name
+     - git_email
+     --
+     - name
+     - textAbstract
+     - taxonomyDescription
+    }
+    class Taxonomy {
+     - name
+     - hasChildren
+     - path
+    }
+
+    abstract class RepoDao
+    abstract class AuthorDao
+    abstract class BibEntryDao
+    abstract class KeywordDao
+    abstract class TaxonomyDao
+
+    AppDatabase --> BibEntryDao
+    AppDatabase --> RepoDao
+    AppDatabase --> AuthorDao
+    AppDatabase --> KeywordDao
+    AppDatabase --> TaxonomyDao
+
+    BibEntryDao ..> BibEntry
+    RepoDao ..> Repo
+    AuthorDao ..> Author
+    KeywordDao ..> Keyword
+    TaxonomyDao ..> Taxonomy
+
+    Author --> Repo
+    Keyword --> Repo
+    Taxonomy --> Repo
+    Taxonomy --> "parent" Taxonomy
+    BibEntry --> Repo
+
+    note "Repo combines Project and Git." as n1
+}
+
+package Repository {
+    class AuthorRepository
+    class BibEntryRepository
+    class KeywordRepository
+    class RepoRepository
+    class TaxonomyRepository
+}
+
+package ViewModel {
+    class RepoViewModel
+    class ProjectViewModel
+    class ClassificationViewModel
+    class AnalyzeViewModel
+    class TaxonomiesViewModel
+}
+
+Repository -> Database
+ViewModel -> Repository
+@enduml

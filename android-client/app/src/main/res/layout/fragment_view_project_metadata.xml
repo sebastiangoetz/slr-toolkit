@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.slrtoolkit.fragments.AddProject1Fragment">
+    tools:context="de.slrtoolkit.fragments.AddProjectFromGitFragment">
 
     <TextView
         android:id="@+id/textview_add_project"
@@ -113,7 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_keywords"
-            tools:listitem="@layout/keyword_item" />
+            tools:listitem="@layout/item_keyword" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -159,7 +159,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_authors"
-            tools:listitem="@layout/author_item" />
+            tools:listitem="@layout/item_author" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/plus_author"

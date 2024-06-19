@@ -16,9 +16,12 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
+import de.slrtoolkit.database.Repo;
+import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.views.FilterEntriesAdapter;
 
@@ -28,11 +31,12 @@ import de.slrtoolkit.views.FilterEntriesAdapter;
 public class FilterFragment extends Fragment {
     SwipeFlingAdapterView flingAdapterView;
     private FilterEntriesAdapter arrayAdapter;
-    private ArrayList<Entry> entries;
+    private ArrayList<BibEntry> entries;
     private Button keepButton;
     private Button discardButton;
     private TextView noEntriesToFilterTextview;
     private int repoId;
+    private Repo repo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class FilterFragment extends Fragment {
         ProjectViewModel projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
 
         repoId = projectViewModel.getCurrentRepoId();
+        new RepoRepository(requireActivity().getApplication()).getRepoById(repoId).observe(getViewLifecycleOwner(),repo1 -> {
+            repo = repo1;
+        });
 
         noEntriesToFilterTextview = view.findViewById(R.id.textview_no_entries_to_filter);
         flingAdapterView = view.findViewById(R.id.swipe_entries);
@@ -66,15 +73,15 @@ public class FilterFragment extends Fragment {
 
             @Override
             public void onLeftCardExit(Object o) {
-                Entry entry = (Entry) o;
-                projectViewModel.delete(entry, repoId);
+                BibEntry bibEntry = (BibEntry) o;
+                projectViewModel.deleteBibEntry(bibEntry, repoId);
             }
 
             @Override
             public void onRightCardExit(Object o) {
-                Entry entry = (Entry) o;
-                entry.setStatus(Entry.Status.KEEP);
-                projectViewModel.updateEntry(entry);
+                BibEntry bibEntry = (BibEntry) o;
+                bibEntry.setStatus(BibEntry.Status.KEEP);
+                projectViewModel.updateBibEntry(bibEntry, repo);
             }
 
             @Override
@@ -90,9 +97,9 @@ public class FilterFragment extends Fragment {
 
         int id = projectViewModel.getCurrentRepoId();
 
-        final Observer<List<Entry>> openEntriesObserver = data -> {
-            entries = (ArrayList<Entry>) data;
-            if (entries.size() == 0) {
+        final Observer<List<BibEntry>> openEntriesObserver = data -> {
+            entries = (ArrayList<BibEntry>) data;
+            if (entries.isEmpty()) {
                 noEntriesToFilterTextview.setVisibility(View.VISIBLE);
                 flingAdapterView.setVisibility(View.INVISIBLE);
                 keepButton.setVisibility(View.INVISIBLE);
@@ -101,12 +108,12 @@ public class FilterFragment extends Fragment {
                 noEntriesToFilterTextview.setVisibility(View.INVISIBLE);
                 keepButton.setVisibility(View.VISIBLE);
                 discardButton.setVisibility(View.VISIBLE);
-                ArrayList<Entry> newItems = new ArrayList<>(data);
+                ArrayList<BibEntry> newItems = new ArrayList<>(data);
                 arrayAdapter.setEntries(newItems);
             }
         };
 
-        projectViewModel.getOpenEntriesForRepo(id).observe(getViewLifecycleOwner(), openEntriesObserver);
+        projectViewModel.getOpenBibEntriesForRepo(id).observe(getViewLifecycleOwner(), openEntriesObserver);
 
         keepButton = view.findViewById(R.id.keep_button);
         discardButton = view.findViewById(R.id.discard_button);

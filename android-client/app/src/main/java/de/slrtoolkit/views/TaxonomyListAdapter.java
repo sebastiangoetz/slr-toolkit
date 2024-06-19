@@ -72,7 +72,7 @@ public class TaxonomyListAdapter extends ListAdapter<Taxonomy, TaxonomyListAdapt
 
         public static TaxonomyListAdapter.TaxonomyViewHolder create(ViewGroup parent) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.taxonomy_classification_recyclerview_item, parent, false);
+                    .inflate(R.layout.item_taxonomy_classification, parent, false);
             return new TaxonomyListAdapter.TaxonomyViewHolder(view);
         }
 

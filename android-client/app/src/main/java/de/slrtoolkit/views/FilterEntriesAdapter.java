@@ -13,12 +13,12 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 
-public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
-    private final ArrayList<Entry> entries;
+public class FilterEntriesAdapter extends ArrayAdapter<BibEntry> {
+    private final ArrayList<BibEntry> entries;
 
-    public FilterEntriesAdapter(@NonNull Context context, @NonNull ArrayList<Entry> entries) {
+    public FilterEntriesAdapter(@NonNull Context context, @NonNull ArrayList<BibEntry> entries) {
         super(context, 0, entries);
         this.entries = entries;
     }
@@ -31,7 +31,7 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
             listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_bibtex_entry_detail, parent, false);
         }
 
-        Entry currentEntry = entries.get(position);
+        BibEntry currentBibEntry = entries.get(position);
 
         TextView titleTextView = listItem.findViewById(R.id.bibtex_entry_title);
         TextView authorTextView = listItem.findViewById(R.id.bibtex_entry_authors);
@@ -41,17 +41,17 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
         TextView monthTextView = listItem.findViewById(R.id.bibtex_entry_month);
         TextView abstractTextView = listItem.findViewById(R.id.bibtex_entry_abstract);
         TextView publishedTextView = listItem.findViewById(R.id.bibtex_entry_published);
-        titleTextView.setText(currentEntry.getTitle());
-        authorTextView.setText(currentEntry.getAuthor());
-        doiTextView.setText(currentEntry.getDoi());
-        keywordsTextView.setText(currentEntry.getKeywords());
-        yearTextView.setText(currentEntry.getYear());
-        monthTextView.setText(currentEntry.getMonth());
-        abstractTextView.setText(currentEntry.getAbstractText());
-        if(currentEntry.getJournal() != null && currentEntry.getJournal().length() > 0)
-            publishedTextView.setText(currentEntry.getJournal());
+        titleTextView.setText(currentBibEntry.getTitle());
+        authorTextView.setText(currentBibEntry.getAuthor());
+        doiTextView.setText(currentBibEntry.getDoi());
+        keywordsTextView.setText(currentBibEntry.getKeywords());
+        yearTextView.setText(currentBibEntry.getYear());
+        monthTextView.setText(currentBibEntry.getMonth());
+        abstractTextView.setText(currentBibEntry.getAbstractText());
+        if(currentBibEntry.getJournal() != null && !currentBibEntry.getJournal().isEmpty())
+            publishedTextView.setText(currentBibEntry.getJournal());
         else
-            publishedTextView.setText(currentEntry.getBooktitle());
+            publishedTextView.setText(currentBibEntry.getBooktitle());
 
         return listItem;
     }
@@ -61,7 +61,7 @@ public class FilterEntriesAdapter extends ArrayAdapter<Entry> {
         return entries.size();
     }
 
-    public void setEntries(ArrayList<Entry> entries) {
+    public void setEntries(ArrayList<BibEntry> entries) {
         this.entries.clear();
         this.entries.addAll(entries);
         notifyDataSetChanged();

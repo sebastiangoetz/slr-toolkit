@@ -1,12 +1,14 @@
 package de.slrtoolkit.repositories;
 
 import android.app.Application;
-import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -24,10 +26,88 @@ import de.slrtoolkit.util.TaxonomyParserNode;
 public class TaxonomyRepository {
     private final TaxonomyDao taxonomyDao;
     private final FileUtil fileUtil;
+
+    private static class TaxonomyEntryTreeNode {
+        private final Taxonomy t;
+        private final List<TaxonomyEntryTreeNode> children;
+        public TaxonomyEntryTreeNode(Taxonomy t) {
+            this.t = t;
+            children = new ArrayList<>();
+        }
+        public TaxonomyEntryTreeNode addChild(Taxonomy t) {
+            TaxonomyEntryTreeNode tetn = new TaxonomyEntryTreeNode(t);
+            children.add(tetn);
+            return tetn;
+        }
+        public Taxonomy getTaxonomy() {
+            return t;
+        }
+        public List<TaxonomyEntryTreeNode> getChildren() {
+            return children;
+        }
+    }
     public TaxonomyRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         taxonomyDao = db.taxonomyDao();
         this.fileUtil = new FileUtil();
+    }
+
+    private List<TaxonomyEntryTreeNode> transformListToTree(List<Taxonomy> allTaxonomies) {
+        List<TaxonomyEntryTreeNode> rootTaxonomies = new ArrayList<>();
+        for(Taxonomy tax : allTaxonomies) {
+            if(tax.getParentId() == 0) {
+                if(tax.getName().equals("<Root>")) continue;
+                TaxonomyEntryTreeNode tetn = new TaxonomyEntryTreeNode(tax);
+                addChildrenToTree(tetn, allTaxonomies);
+                rootTaxonomies.add(tetn);
+            }
+        }
+        return rootTaxonomies;
+    }
+
+    private void addChildrenToTree(TaxonomyEntryTreeNode node, List<Taxonomy> allTaxonomies) {
+        for(Taxonomy t : allTaxonomies) {
+            if(t.getParentId() != 0 && t.getParentId() == node.getTaxonomy().getTaxonomyId()) {
+                TaxonomyEntryTreeNode tetn = node.addChild(t);
+                addChildrenToTree(tetn, allTaxonomies);
+            }
+        }
+    }
+
+    public void updateFile(String path, Application application, List<Taxonomy> allTaxonomies) {
+        List<TaxonomyEntryTreeNode> rootTaxonomies = transformListToTree(allTaxonomies);
+        File file = fileUtil.accessFiles(path, application, ".taxonomy");
+        try(FileWriter fw = new FileWriter(file, false)) {
+            StringBuilder sb = new StringBuilder();
+            buildStringRepresentation(0, rootTaxonomies, sb);
+            fw.write(sb.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static void buildStringRepresentation(int level, List<TaxonomyEntryTreeNode> roots, StringBuilder sb) {
+        for(TaxonomyEntryTreeNode t : roots) {
+            addIndent(level, sb);
+            sb.append(t.getTaxonomy().getName());
+            if(!t.getChildren().isEmpty()) {
+                sb.append(" {\n");
+                buildStringRepresentation(level + 1, t.getChildren(), sb);
+                sb.append("\n");
+                addIndent(level, sb);
+                sb.append("}\n");
+            } else {
+                sb.append(",\n");
+            }
+        }
+        if(sb.lastIndexOf(",") == sb.length()-2)
+            sb.delete(sb.length() - 2, sb.length());
+    }
+
+    private static void addIndent(int level, StringBuilder sb) {
+        for(int i = 0; i < level; i++) {
+            sb.append("  ");
+        }
     }
 
     public long insert(Taxonomy taxonomy) {
@@ -38,13 +118,23 @@ public class TaxonomyRepository {
         try {
             id = future.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            Log.e(TaxonomyRepository.class.getName(), "insert: failed", e);
         }
         return id;
     }
 
     public void insertAll(List<Taxonomy> taxonomies) {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.insertAll(taxonomies));
+    }
+
+    public void remove(int repoId, int taxId) {
+        List<Taxonomy> children = getChildTaxonomies(repoId, taxId).getValue();
+        if(children != null) {
+            for (Taxonomy t : children) {
+                remove(repoId, t.getTaxonomyId());
+            }
+        }
+        AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.removeTaxonomyEntryById(taxId));
     }
 
     public void initializeTaxonomy(int repoId, String path, Application application) {
@@ -54,7 +144,7 @@ public class TaxonomyRepository {
             List<TaxonomyParserNode> parserNodes = parser.parse(taxonomyString);
             addTaxonomyEntries(parserNodes, repoId, 0);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TaxonomyRepository.class.getName(), "initializeTaxonomy: failed", e);
         }
     }
 
@@ -69,14 +159,14 @@ public class TaxonomyRepository {
                 if (parent != 0) {
                     taxonomyNode.setParentId(parent);
                 }
-                if (node.getChildren().size() > 0) {
+                if (!node.getChildren().isEmpty()) {
                     taxonomyNode.setHasChildren(true);
                     //insert current node
                     int parentId = (int) insert(taxonomyNode);
                     List<Taxonomy> nodesWithoutChildren = new ArrayList<>();
                     List<TaxonomyParserNode> nodesWithChildren = new ArrayList<>();
                     for (TaxonomyParserNode childNode : node.getChildren()) {
-                        if (childNode.getChildren().size() == 0) {
+                        if (childNode.getChildren().isEmpty()) {
                             Taxonomy childTaxonomy = new Taxonomy();
                             childTaxonomy.setName(childNode.getName());
                             childTaxonomy.setPath(childNode.getPath());
@@ -109,6 +199,12 @@ public class TaxonomyRepository {
 
     public Taxonomy getTaxonomyByRepoAndPathDirectly(int repoId, String path) throws ExecutionException, InterruptedException {
         Callable<Taxonomy> getCallable = () -> taxonomyDao.getTaxonomyByRepoAndPathDirectly(repoId, path);
+        Future<Taxonomy> future = Executors.newSingleThreadExecutor().submit(getCallable);
+        return future.get();
+    }
+
+    public Taxonomy getTaxonomyByIdDirectly(int taxId) throws ExecutionException, InterruptedException {
+        Callable<Taxonomy> getCallable = () -> taxonomyDao.getTaxonomyByIdDirectly(taxId);
         Future<Taxonomy> future = Executors.newSingleThreadExecutor().submit(getCallable);
         return future.get();
     }

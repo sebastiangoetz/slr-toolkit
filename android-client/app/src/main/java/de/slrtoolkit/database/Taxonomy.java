@@ -1,5 +1,6 @@
 package de.slrtoolkit.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,6 +14,10 @@ public class Taxonomy {
     private int parentId;
     private boolean hasChildren;
     private String path;
+
+    public int getId() {
+        return taxonomyId;
+    }
 
     public int getParentId() {
         return parentId;
@@ -60,5 +65,11 @@ public class Taxonomy {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
     }
 }

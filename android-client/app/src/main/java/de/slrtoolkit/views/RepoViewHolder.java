@@ -21,7 +21,7 @@ class RepoViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     static RepoViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
+                .inflate(R.layout.item_project, parent, false);
         return new RepoViewHolder(view);
     }
 

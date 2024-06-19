@@ -23,7 +23,7 @@ public class AuthorViewHolder extends RecyclerView.ViewHolder {
 
     static AuthorViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.author_item, parent, false);
+                .inflate(R.layout.item_author, parent, false);
         return new AuthorViewHolder(view);
     }
 

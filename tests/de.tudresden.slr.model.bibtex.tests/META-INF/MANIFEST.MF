@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: de.tudresden.slr.model.bibtex.tests
-Bundle-Version: 0.4.0.qualifier
+Bundle-Version: 0.5.0.qualifier
 Automatic-Module-Name: de.tudresden.slr.model.bibtex.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: de.tudresden.slr.tests.parent;bundle-version="0.3.0",

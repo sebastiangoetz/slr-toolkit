@@ -1,9 +1,7 @@
 package de.slrtoolkit.database;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
 
 @Entity
 public class Repo {

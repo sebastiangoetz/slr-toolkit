@@ -2,13 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_project"
     app:startDestination="@id/projectOverviewFragment">
 
     <fragment
         android:id="@+id/projectOverviewFragment"
         android:name="de.slrtoolkit.fragments.ProjectOverviewFragment"
-        android:label="ProjectOverviewFragment">
+        android:label="ProjectOverviewFragment"
+        tools:layout="@layout/fragment_project_overview">
         <action
             android:id="@+id/action_projectOverviewFragment_to_editProjectMetadataFragment"
             app:destination="@id/editProjectMetadataFragment" />
@@ -53,12 +53,13 @@
         android:label="FilterFragment" />
     <fragment
         android:id="@+id/taxonomyListFragment"
-        android:name="de.slrtoolkit.fragments.TaxonomyListFragment"
+        android:name="de.slrtoolkit.fragments.EntriesByTaxonomiesFragment"
         android:label="fragment_taxonomy_list"
-        tools:layout="@layout/fragment_taxonomy_list" />
+        tools:layout="@layout/fragment_entries_by_taxonomies_overview" />
     <fragment
         android:id="@+id/entriesToClassifyViewPagerFragment"
         android:name="de.slrtoolkit.fragments.EntriesToClassifyViewPagerFragment"
+        tools:layout="@layout/fragment_classification"
         android:label="EntriesToClassifyViewPagerFragment" />
     <fragment
         android:id="@+id/bibtexEntriesDetailViewPager"

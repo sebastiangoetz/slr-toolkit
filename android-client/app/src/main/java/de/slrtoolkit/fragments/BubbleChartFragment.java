@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import de.slrtoolkit.R;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.TaxonomyWithEntries;
 import de.slrtoolkit.viewmodels.AnalyzeViewModel;
 
@@ -66,13 +66,13 @@ public class BubbleChartFragment extends Fragment {
             List<TaxonomyWithEntries> childTaxonomies1;
             List<TaxonomyWithEntries> childTaxonomies2;
 
-            if (analyzeViewModel.getChildTaxonomiesToDisplay1() == null || analyzeViewModel.getChildTaxonomiesToDisplay1().size() == 0) {
+            if (analyzeViewModel.getChildTaxonomiesToDisplay1() == null || analyzeViewModel.getChildTaxonomiesToDisplay1().isEmpty()) {
                 childTaxonomies1 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId1);
             } else {
                 childTaxonomies1 = analyzeViewModel.getChildTaxonomiesToDisplay1();
             }
 
-            if (analyzeViewModel.getChildTaxonomiesToDisplay2() == null || analyzeViewModel.getChildTaxonomiesToDisplay2().size() == 0) {
+            if (analyzeViewModel.getChildTaxonomiesToDisplay2() == null || analyzeViewModel.getChildTaxonomiesToDisplay2().isEmpty()) {
                 childTaxonomies2 = analyzeViewModel.getChildTaxonomiesForTaxonomyId(repoId, parentTaxonomyId2);
             } else {
                 childTaxonomies2 = analyzeViewModel.getChildTaxonomiesToDisplay2();
@@ -88,7 +88,7 @@ public class BubbleChartFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setBubbleChart(List<TaxonomyWithEntries> taxonomies1, List<TaxonomyWithEntries> taxonomies2) {
         List<BubbleEntry> bubbleEntries = getData(taxonomies1, taxonomies2);
-        if (bubbleEntries.size() > 0) {
+        if (!bubbleEntries.isEmpty()) {
             noBubbleEntriesTextView.setVisibility(View.INVISIBLE);
             bubbleDataSet = new BubbleDataSet(bubbleEntries, "");
             bubbleData = new BubbleData(bubbleDataSet);
@@ -119,27 +119,27 @@ public class BubbleChartFragment extends Fragment {
         for (TaxonomyWithEntries t1 : taxonomyWithEntries1) {
             int yCount = 0;
             for (TaxonomyWithEntries t2 : taxonomyWithEntries2) {
-                List<Entry> t1Entries = t1.entries;
+                List<BibEntry> t1Entries = t1.entries;
                 System.out.println("t1 entries!");
                 System.out.println("name: " + t1.taxonomy.getName());
-                for (Entry entry : t1Entries) {
-                    System.out.println(entry.getTitle());
+                for (BibEntry bibEntry : t1Entries) {
+                    System.out.println(bibEntry.getTitle());
                 }
-                List<Entry> t2Entries = t2.entries;
+                List<BibEntry> t2Entries = t2.entries;
                 System.out.println("t2 entries!");
                 System.out.println("name: " + t2.taxonomy.getName());
-                for (Entry entry : t2Entries) {
-                    System.out.println(entry.getTitle());
+                for (BibEntry bibEntry : t2Entries) {
+                    System.out.println(bibEntry.getTitle());
                 }
-                List<Integer> t1EntryIds = t1Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
-                List<Integer> t2EntryIds = t2Entries.stream().map(Entry::getEntryId).collect(Collectors.toList());
+                List<Integer> t1EntryIds = t1Entries.stream().map(BibEntry::getEntryId).collect(Collectors.toList());
+                List<Integer> t2EntryIds = t2Entries.stream().map(BibEntry::getEntryId).collect(Collectors.toList());
                 System.out.println(t1EntryIds);
                 System.out.println(t2EntryIds);
                 t1EntryIds.retainAll(t2EntryIds);
                 System.out.println(t1EntryIds);
                 System.out.println("Adding!");
                 System.out.println(t1EntryIds.size());
-                if (t1EntryIds.size() > 0) {
+                if (!t1EntryIds.isEmpty()) {
                     BubbleEntry bubbleEntry = new BubbleEntry(xCount, yCount, t1EntryIds.size());
                     bubbleEntries.add(bubbleEntry);
                 }
@@ -153,7 +153,7 @@ public class BubbleChartFragment extends Fragment {
     }
 
     public static class AxisValueFormatter extends ValueFormatter {
-        List<TaxonomyWithEntries> taxonomyWithEntries;
+        final List<TaxonomyWithEntries> taxonomyWithEntries;
 
         public AxisValueFormatter(List<TaxonomyWithEntries> taxonomyWithEntries) {
             this.taxonomyWithEntries = taxonomyWithEntries;

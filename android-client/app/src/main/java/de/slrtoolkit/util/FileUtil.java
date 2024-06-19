@@ -11,8 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -33,7 +31,6 @@ public class FileUtil {
         return bibFile;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public String readContentFromFile(String path, Application application) throws FileNotFoundException {
         File file = accessFiles(path, application, ".taxonomy");
         Scanner scanner = new Scanner(file);

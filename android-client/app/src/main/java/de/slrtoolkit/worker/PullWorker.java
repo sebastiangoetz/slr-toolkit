@@ -10,8 +10,6 @@ import androidx.work.WorkerParameters;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
@@ -74,16 +72,6 @@ public class PullWorker extends Worker {
 
         try {
             pullCommand.call();
-        } catch (InvalidRemoteException | TransportException e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_pull_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
-        } catch (Exception e) {
-            return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_pull_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
                     getApplicationContext().getString(R.string.error_pull_failed)

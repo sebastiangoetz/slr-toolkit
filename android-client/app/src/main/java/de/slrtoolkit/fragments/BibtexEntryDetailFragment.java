@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,11 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import de.slrtoolkit.MainActivity;
 import de.slrtoolkit.ProjectActivity;
 import de.slrtoolkit.R;
-import de.slrtoolkit.TaxonomiesActivity;
-import de.slrtoolkit.database.Entry;
+import de.slrtoolkit.EntriesByTaxonomiesActivity;
+import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 
@@ -59,42 +57,39 @@ public class BibtexEntryDetailFragment extends Fragment {
 
         if (getActivity() instanceof ProjectActivity) {
             ProjectViewModel projectViewModel = new ViewModelProvider(getActivity()).get(ProjectViewModel.class);
-            int entryId = projectViewModel.getCurrentEntryIdForCard();
-            projectViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
+            int entryId = projectViewModel.getCurrentBibEntryIdForCard();
+            projectViewModel.getBibEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
 
 
-        } else if (getActivity() instanceof TaxonomiesActivity) {
+        } else if (getActivity() instanceof EntriesByTaxonomiesActivity) {
             TaxonomiesViewModel taxonomiesViewModel = new ViewModelProvider(getActivity()).get(TaxonomiesViewModel.class);
             int entryId = taxonomiesViewModel.getCurrentEntryIdForCard();
             taxonomiesViewModel.getEntryById(entryId).observe(getViewLifecycleOwner(), this::setEntryInformation);
         }
 
-        doiTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openDoiIntent = new Intent(Intent.ACTION_VIEW);
-                openDoiIntent.setData(Uri.parse("https://doi.org/"+doiTextView.getText()));
-                startActivity(openDoiIntent);
-            }
+        doiTextView.setOnClickListener(view1 -> {
+            Intent openDoiIntent = new Intent(Intent.ACTION_VIEW);
+            openDoiIntent.setData(Uri.parse("https://doi.org/"+doiTextView.getText()));
+            startActivity(openDoiIntent);
         });
 
     }
 
-    public void setEntryInformation(Entry entry) {
-        if (entry == null) {
+    public void setEntryInformation(BibEntry bibEntry) {
+        if (bibEntry == null) {
             return;
         }
-        titleTextView.setText(entry.getTitle());
-        authorsTextView.setText(entry.getAuthor());
-        yearTextView.setText(entry.getYear());
-        monthTextView.setText(entry.getMonth());
-        abstractTextView.setText(entry.getAbstractText());
-        doiTextView.setText(entry.getDoi());
-        keywordsTextView.setText(entry.getKeywords());
-        if(entry.getJournal() == null || entry.getJournal().trim().length() == 0) {
-            publishedTextView.setText(entry.getBooktitle());
+        titleTextView.setText(bibEntry.getTitle());
+        authorsTextView.setText(bibEntry.getAuthor());
+        yearTextView.setText(bibEntry.getYear());
+        monthTextView.setText(bibEntry.getMonth());
+        abstractTextView.setText(bibEntry.getAbstractText());
+        doiTextView.setText(bibEntry.getDoi());
+        keywordsTextView.setText(bibEntry.getKeywords());
+        if(bibEntry.getJournal() == null || bibEntry.getJournal().trim().isEmpty()) {
+            publishedTextView.setText(bibEntry.getBooktitle());
         } else {
-            publishedTextView.setText(entry.getJournal());
+            publishedTextView.setText(bibEntry.getJournal());
         }
     }
 }
