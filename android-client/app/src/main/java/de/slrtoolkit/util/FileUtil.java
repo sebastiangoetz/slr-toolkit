@@ -22,7 +22,7 @@ public class FileUtil {
         for (File file : Objects.requireNonNull(files)) {
             //if (file.isDirectory()) {
                 //for (File f : Objects.requireNonNull(file.listFiles())) {
-                    if (file.getName().endsWith(type)) {
+                    if (file.getName().endsWith(type) && !file.getName().startsWith("deleted")) {
                         bibFile = file;
                     }
                 //}
