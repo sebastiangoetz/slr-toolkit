@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -61,6 +62,35 @@ public class BibtexEntriesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+                inflater.inflate(R.menu.menu_entries_list, menu);
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem searchItem) {
+                SearchView searchView = (SearchView) searchItem.getActionView();
+                if(searchView != null) {
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            filterList(s);
+                            return true;
+                        }
+                    });
+                }
+                return true;
+            }
+        });
+
+
+
         super.onCreate(savedInstanceState);
     }
 
@@ -68,7 +98,6 @@ public class BibtexEntriesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 this::onActivityResult);
         return inflater.inflate(R.layout.fragment_bibtex_entries_list, container, false);
@@ -83,13 +112,17 @@ public class BibtexEntriesListFragment extends Fragment {
                     .setView(R.layout.dialog_add_bibtex)
                     .setNegativeButton(R.string.close, (dialogInterface, i) -> dialogInterface.dismiss()).create();
             importBibtexDialog.show();
-            //TODO check if pasted bibtex is parsable and disable import button if that is not the case
-            importBibtexDialog.findViewById(R.id.button_dialog_import_bibtex).setOnClickListener(view1 -> {
-                importBibtexDialog.dismiss();
-                EditText txt = importBibtexDialog.findViewById(R.id.dialog_import_bibtex_text);
-                String bibtex = txt.getText().toString();
-                projectViewModel.addBibEntry(bibtex,repoId);
-            });
+            Button btnImportText = importBibtexDialog.findViewById(R.id.button_dialog_import_bibtex);
+            if(btnImportText != null) {
+                btnImportText.setOnClickListener(view1 -> {
+                    importBibtexDialog.dismiss();
+                    EditText txt = importBibtexDialog.findViewById(R.id.dialog_import_bibtex_text);
+                    if (txt != null) {
+                        String bibtex = txt.getText().toString();
+                        projectViewModel.addBibEntry(bibtex, repoId);
+                    }
+                });
+            }
             Button btnImportFromFile = importBibtexDialog.findViewById(R.id.button_import_from_file);
             if(btnImportFromFile != null) {
                 btnImportFromFile.setOnClickListener(view1 -> {
@@ -159,26 +192,6 @@ public class BibtexEntriesListFragment extends Fragment {
         adapter.submitList(filteredEntries);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_entries_list, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                filterList(s);
-                return true;
-            }
-        });
-    }
-
     private void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
@@ -194,9 +207,7 @@ public class BibtexEntriesListFragment extends Fragment {
                         }
                         br.close();
                         ExecutorService executor = Executors.newSingleThreadExecutor();
-                        executor.execute(() -> {
-                            projectViewModel.addBibEntry(entries.toString(), repoId);
-                        });
+                        executor.execute(() -> projectViewModel.addBibEntry(entries.toString(), repoId));
                     } catch (IOException exception) {
                         Log.e(this.getClass().getName(), "Can't open bibtex file.", exception);
                     }
