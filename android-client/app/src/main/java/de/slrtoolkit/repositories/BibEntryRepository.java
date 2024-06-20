@@ -5,6 +5,9 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.jbibtex.BibTeXDatabase;
 import org.jbibtex.BibTeXEntry;
 import org.jbibtex.BibTeXObject;
@@ -100,6 +103,15 @@ public class BibEntryRepository {
             File fileForDeletedEntries = fileUtil.createFileIfNotExists(application, path, "deletedItems.bib");
             parser.setBibTeXDatabase(fileForDeletedEntries);
             parser.addObjectToFile(entryToDelete);
+            if(repo.getRemote_url() != null) {
+
+                File local_path = new File(application.getApplicationContext().getFilesDir(), repo.getLocal_path());
+                try(Git git = Git.open(local_path)) {
+                    git.add().addFilepattern("deletedItems.bib").call();
+                } catch (GitAPIException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             //remove entry from database
             AppDatabase.databaseWriteExecutor.execute(() -> bibEntryDao.delete(bibEntry));
         } catch (ParseException | IOException e) {

@@ -95,16 +95,10 @@ public class AddGitDataDialog extends DialogFragment {
             workManager.getWorkInfoByIdLiveData(initWorkRequest.getId())
                     .observe(getParentFragment(), worker -> {
                         if (worker.getState() == WorkInfo.State.SUCCEEDED) {
-
                                 repo.setLocal_path(repo.getLocal_path() + "git");
                                 repoViewModel.update(repo);
-
-
-                            Toast.makeText(view.getContext(),
-                                    getString(R.string.toast_commit_succeeded),
-                                    Toast.LENGTH_SHORT).show();
                         } else if (worker.getState() == WorkInfo.State.FAILED) {
-                            Toast.makeText(view.getContext(),
+                            Toast.makeText(getContext(),
                                     worker.getOutputData().getString("RESULT_MSG"),
                                     Toast.LENGTH_LONG).show();
                         }

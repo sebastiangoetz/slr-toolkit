@@ -12,10 +12,15 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.UnsupportedCredentialItem;
+import org.eclipse.jgit.transport.CredentialItem;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.R;
@@ -60,7 +65,7 @@ public class PushWorker extends Worker {
         try {
             git = Git.open(path);
             try {
-                git.status().call();
+                Status stat = git.status().call();
             } catch (GitAPIException e) {
                 throw new RuntimeException(e);
             }
@@ -73,16 +78,19 @@ public class PushWorker extends Worker {
         PushCommand pushCommand = git.push();
 
         if (repo.getUsername() != null && repo.getToken() != null && !repo.getUsername().trim().isEmpty() && !repo.getToken().trim().isEmpty()) {
-            pushCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider(repo.getToken(), "" ) );
+            if(repo.getRemote_url().contains("github.com")) {
+                pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getToken(), "" ));
+            } else {
+                pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider("sgoetz",repo.getToken()));
+            }
+
         }
 
         try {
             pushCommand.call();
         } catch (Throwable e) {
             return Result.failure(outputData.putString("RESULT_MSG",
-                    getApplicationContext().getString(R.string.error_push_failed)
-                            + System.getProperty("line.separator")
-                            + e.getMessage()).build());
+                            Objects.requireNonNull(e.getMessage()).replace(repo.getRemote_url()+":","").trim()).build());
         }
 
         try {

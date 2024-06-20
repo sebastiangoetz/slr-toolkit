@@ -62,35 +62,6 @@ public class BibtexEntriesListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-                inflater.inflate(R.menu.menu_entries_list, menu);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem searchItem) {
-                SearchView searchView = (SearchView) searchItem.getActionView();
-                if(searchView != null) {
-                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit(String s) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onQueryTextChange(String s) {
-                            filterList(s);
-                            return true;
-                        }
-                    });
-                }
-                return true;
-            }
-        });
-
-
-
         super.onCreate(savedInstanceState);
     }
 
@@ -98,6 +69,7 @@ public class BibtexEntriesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 this::onActivityResult);
         return inflater.inflate(R.layout.fragment_bibtex_entries_list, container, false);
@@ -192,6 +164,25 @@ public class BibtexEntriesListFragment extends Fragment {
         adapter.submitList(filteredEntries);
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_entries_list, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterList(s);
+                return true;
+            }
+        });
+    }
     private void onActivityResult(ActivityResult result) {
         if (result.getResultCode() == Activity.RESULT_OK) {
             Intent data = result.getData();
