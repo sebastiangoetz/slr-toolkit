@@ -33,6 +33,7 @@ import de.slrtoolkit.database.Repo;
 import de.slrtoolkit.dialog.AddGitDataDialog;
 import de.slrtoolkit.viewmodels.ProjectViewModel;
 import de.slrtoolkit.viewmodels.RepoViewModel;
+import de.slrtoolkit.viewmodels.TaxonomiesViewModel;
 import de.slrtoolkit.worker.CommitWorker;
 import de.slrtoolkit.worker.PullWorker;
 import de.slrtoolkit.worker.PushWorker;
@@ -51,6 +52,7 @@ public class ProjectOverviewFragment extends Fragment {
 
     private Button classifyButton;
     private ProjectViewModel projectViewModel;
+    private TaxonomiesViewModel taxonomiesViewModel;
     private TextView projectNameTextView;
 
     @Override
@@ -81,9 +83,12 @@ public class ProjectOverviewFragment extends Fragment {
         Button entriesByTaxonomyButton = view.findViewById(R.id.button_entries_by_taxonomy);
         Button analyzeButton = view.findViewById(R.id.button_analyze);
 
+        taxonomiesViewModel = new ViewModelProvider(requireActivity()).get(TaxonomiesViewModel.class);
+
         projectNameTextView = view.findViewById(R.id.project_name_text_view);
         projectViewModel = new ViewModelProvider(requireActivity()).get(ProjectViewModel.class);
         int repoId = projectViewModel.getCurrentRepoId();
+        taxonomiesViewModel.setCurrentRepoId(repoId);
         RepoViewModel repoViewModel = new ViewModelProvider(requireActivity()).get(RepoViewModel.class);
 
         classifyButton.setOnClickListener(v -> findNavController(ProjectOverviewFragment.this)
@@ -179,11 +184,9 @@ public class ProjectOverviewFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), worker -> {
                     if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         pullButton.setEnabled(true);
-                        //TODO update slr project
+                        taxonomiesViewModel.updateTaxonomyAfterPull();
                         projectViewModel.updateMetadataAfterPull();
-                        //TODO update bibtex
                         projectViewModel.updateBibEntriesAfterPull();
-                        //TODO update taxonomy
                         Toast.makeText(view.getContext(),
                                 getString(R.string.toast_pull_succeeded),
                                 Toast.LENGTH_SHORT).show();

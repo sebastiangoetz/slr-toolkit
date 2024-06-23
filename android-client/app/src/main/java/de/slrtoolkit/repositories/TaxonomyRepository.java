@@ -137,6 +137,13 @@ public class TaxonomyRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> taxonomyDao.removeTaxonomyEntryById(taxId));
     }
 
+    public void removeAllTaxonomiesOfRepo(int repoId) {
+        Runnable deleteRunnable = () -> {
+            taxonomyDao.removeAllTaxonomiesOfRepo(repoId);
+        };
+        AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
+    }
+
     public void initializeTaxonomy(int repoId, String path, Application application) {
         try {
             String taxonomyString = fileUtil.readContentFromFile(path, application);

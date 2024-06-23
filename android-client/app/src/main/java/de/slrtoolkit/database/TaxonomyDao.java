@@ -38,4 +38,8 @@ public interface TaxonomyDao {
     @Transaction
     @Query("DELETE FROM TAXONOMY WHERE taxonomyId=:id")
     void removeTaxonomyEntryById(int id);
+
+    @Transaction
+    @Query("DELETE FROM TAXONOMY WHERE repoId=:repoId")
+    void removeAllTaxonomiesOfRepo(int repoId);
 }

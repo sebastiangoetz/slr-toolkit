@@ -1,6 +1,7 @@
 package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -11,12 +12,14 @@ import java.util.concurrent.ExecutionException;
 import de.slrtoolkit.database.BibEntry;
 import de.slrtoolkit.database.Taxonomy;
 import de.slrtoolkit.repositories.BibEntryRepository;
+import de.slrtoolkit.repositories.RepoRepository;
 import de.slrtoolkit.repositories.TaxonomyRepository;
 import de.slrtoolkit.repositories.TaxonomyWithEntriesRepository;
 
 public class TaxonomiesViewModel extends AndroidViewModel {
     private final TaxonomyRepository taxonomyRepository;
     private final BibEntryRepository bibEntryRepository;
+    private final RepoRepository repoRepository;
     private final TaxonomyWithEntriesRepository taxonomyWithEntriesRepository;
     private int currentRepoId;
     private int currentEntryIdForCard;
@@ -28,6 +31,7 @@ public class TaxonomiesViewModel extends AndroidViewModel {
         super(application);
         taxonomyRepository = new TaxonomyRepository(application);
         bibEntryRepository = new BibEntryRepository(application);
+        repoRepository = new RepoRepository(application);
         taxonomyWithEntriesRepository = new TaxonomyWithEntriesRepository(application);
     }
 
@@ -86,5 +90,15 @@ public class TaxonomiesViewModel extends AndroidViewModel {
 
     public Taxonomy getTaxonomyById(int taxId) throws ExecutionException, InterruptedException {
         return taxonomyRepository.getTaxonomyByIdDirectly(taxId);
+    }
+
+    public void updateTaxonomyAfterPull() {
+        try {
+            taxonomyRepository.removeAllTaxonomiesOfRepo(currentRepoId);
+            String path = repoRepository.getRepoByIdDirectly(currentRepoId).getLocal_path();
+            taxonomyRepository.initializeTaxonomy(currentRepoId, path, getApplication());
+        } catch(ExecutionException | InterruptedException e) {
+            Log.e(this.getClass().getName(), "update taxonomy after pull failed", e);
+        }
     }
 }
