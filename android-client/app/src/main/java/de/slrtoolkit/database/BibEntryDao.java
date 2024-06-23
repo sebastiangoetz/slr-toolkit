@@ -63,4 +63,7 @@ public abstract class BibEntryDao {
 
     @Query("SELECT * FROM BibEntry WHERE entryId=:id")
     public abstract BibEntry getEntryByIdDirectly(int id);
+
+    @Query("DELETE FROM BibEntry WHERE repoId=:id")
+    public abstract void deleteAllEntriesOfRepo(int id);
 }

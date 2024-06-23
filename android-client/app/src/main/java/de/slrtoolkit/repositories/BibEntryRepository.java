@@ -89,6 +89,10 @@ public class BibEntryRepository {
         }
     }
 
+    public void deleteAllEntriesOfRepo(int repoId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> bibEntryDao.deleteAllEntriesOfRepo(repoId));
+    }
+
     public void delete(BibEntry bibEntry, Repo repo) {
         String path = repo.getLocal_path();
         File file = fileUtil.accessFiles(path, application, ".bib");

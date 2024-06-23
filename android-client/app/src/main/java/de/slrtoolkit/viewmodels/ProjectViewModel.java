@@ -2,12 +2,24 @@ package de.slrtoolkit.viewmodels;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import org.jbibtex.BibTeXEntry;
+import org.jbibtex.Key;
+import org.jbibtex.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import de.slrtoolkit.database.Author;
@@ -18,6 +30,8 @@ import de.slrtoolkit.repositories.AuthorRepository;
 import de.slrtoolkit.repositories.BibEntryRepository;
 import de.slrtoolkit.repositories.KeywordRepository;
 import de.slrtoolkit.repositories.RepoRepository;
+import de.slrtoolkit.util.BibUtil;
+import de.slrtoolkit.util.FileUtil;
 
 public class ProjectViewModel extends AndroidViewModel {
     private final RepoRepository repoRepository;
@@ -138,7 +152,7 @@ public class ProjectViewModel extends AndroidViewModel {
         try {
             bibEntry = bibEntryRepository.getEntryByIdDirectly(id);
         } catch (InterruptedException | ExecutionException exception) {
-            exception.printStackTrace();
+            Log.e(this.getClass().getName(), "couldn't fetch bibentry.", exception);
         }
         return bibEntry;
     }
@@ -157,5 +171,74 @@ public class ProjectViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getBibEntriesWithoutTaxonomiesCount(int repoId) {
         return bibEntryRepository.getEntriesWithoutTaxonomiesCount(repoId);
+    }
+
+    public void updateBibEntriesAfterPull() {
+        int repoId = getCurrentRepoId();
+        try {
+            Repo repo = repoRepository.getRepoByIdDirectly(repoId);
+            BibUtil bu = BibUtil.getInstance();
+            FileUtil fu = new FileUtil();
+            File bibFile = fu.accessFiles(repo.getLocal_path(), getApplication(), ".bib");
+            bu.setBibTeXDatabase(bibFile);
+            Map<Key,BibTeXEntry> entriesInFile = bu.getBibTeXEntries();
+            bibEntryRepository.deleteAllEntriesOfRepo(repoId);
+            for(Key k : entriesInFile.keySet()) {
+                BibTeXEntry entry = entriesInFile.get(k);
+                if(entry != null) {
+                    BibEntry bEntry = bu.translate(entry);
+                    bibEntryRepository.insertEntriesForRepo(repoId, List.of(bEntry));
+                }
+            }
+        } catch (ExecutionException | InterruptedException | ParseException | FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateMetadataAfterPull() {
+        try {
+            Repo repo = repoRepository.getRepoByIdDirectly(getCurrentRepoId());
+            File f = new FileUtil().accessFiles(repo.getLocal_path(), getApplication(), ".slrproject");
+            StringBuilder contents = new StringBuilder();
+            Files.readAllLines(f.toPath()).forEach(contents::append);
+            String title = contents.substring(contents.indexOf("<title>")+7,contents.indexOf("</title>"));
+            String pAbstract = "";
+            if(contents.indexOf("<projectAbstract/>") == -1) {
+                pAbstract = contents.substring(contents.indexOf("<projectAbstract>")+17, contents.indexOf("</projectAbstract>"));
+            }
+            repo.setName(title);
+            repo.setTextAbstract(pAbstract);
+            repoRepository.update(repo);
+            List<String> keywords = new ArrayList<>();
+            if(contents.indexOf("<keywords/>") == -1) {
+                keywords = Arrays.stream(contents.substring(contents.indexOf("<keywords>")+10, contents.indexOf("</keywords>")).split(",")).toList();
+            }
+            keywordRepository.deleteAllForRepo(repo.getId());
+            for(String keyword : keywords) {
+                Keyword k = new Keyword(keyword.trim());
+                k.setRepoId(repo.getId());
+                keywordRepository.insert(k);
+            }
+            List<String> authors = new ArrayList<>();
+            int curPos = 0;
+            while(contents.indexOf("<authorsList>",curPos) != -1) {
+                authors.add(contents.substring(contents.indexOf("<authorsList>", curPos)+13, contents.indexOf("</authorsList>", curPos)).replace("\n","").trim());
+                curPos = contents.indexOf("</authorsList>", curPos)+13;
+            }
+            authorRepository.deleteAllForRepo(repo.getId());
+            for(String author : authors) {
+                if(author.contains("<name/>")) continue;
+                String name = author.substring(author.indexOf("<name>")+6, author.indexOf("</name>"));
+                String email = author.substring(author.indexOf("<email>")+7, author.indexOf("</email>"));
+                String organisation = author.substring(author.indexOf("<organisation>")+14, author.indexOf("</organisation>"));
+                Author a = new Author(name,organisation,email);
+                a.setRepoId(repo.getId());
+                authorRepository.insert(a);
+            }
+            //Toast.makeText(getApplication().getApplicationContext(), title, Toast.LENGTH_LONG).show();
+        } catch (ExecutionException | InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

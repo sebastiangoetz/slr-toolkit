@@ -179,6 +179,11 @@ public class ProjectOverviewFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), worker -> {
                     if (worker.getState() == WorkInfo.State.SUCCEEDED) {
                         pullButton.setEnabled(true);
+                        //TODO update slr project
+                        projectViewModel.updateMetadataAfterPull();
+                        //TODO update bibtex
+                        projectViewModel.updateBibEntriesAfterPull();
+                        //TODO update taxonomy
                         Toast.makeText(view.getContext(),
                                 getString(R.string.toast_pull_succeeded),
                                 Toast.LENGTH_SHORT).show();

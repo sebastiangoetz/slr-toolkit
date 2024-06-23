@@ -28,4 +28,7 @@ public abstract class AuthorDao {
 
     @Query("SELECT * FROM author WHERE authorId=:id")
     public abstract LiveData<Author> getAuthorById(int id);
+
+    @Query("DELETE FROM author WHERE repoId=:repoId")
+    public abstract void deleteAllForRepo(int repoId);
 }

@@ -50,6 +50,13 @@ public class KeywordRepository {
         AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
     }
 
+    public void deleteAllForRepo(int repoId) {
+        Runnable deleteRunnable = () -> {
+            keywordDao.deleteAllForRepo(repoId);
+        };
+        AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
+    }
+
 
     public LiveData<List<Keyword>> getKeywordsForRepo(int repoId) {
         return keywordDao.getKeywordsForRepo(repoId);

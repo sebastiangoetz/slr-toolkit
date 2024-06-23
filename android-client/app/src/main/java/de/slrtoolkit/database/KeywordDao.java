@@ -28,4 +28,7 @@ public abstract class KeywordDao {
 
     @Query("SELECT * FROM keyword WHERE keywordId=:id")
     public abstract LiveData<Keyword> getKeywordById(int id);
+
+    @Query("DELETE FROM keyword WHERE repoId=:repoId")
+    public abstract void deleteAllForRepo(int repoId);
 }

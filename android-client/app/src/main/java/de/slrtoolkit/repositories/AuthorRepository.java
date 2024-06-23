@@ -52,6 +52,13 @@ public class AuthorRepository {
         AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
     }
 
+    public void deleteAllForRepo(int repoId) {
+        Runnable deleteRunnable = () -> {
+            authorDao.deleteAllForRepo(repoId);
+        };
+        AppDatabase.databaseWriteExecutor.execute(deleteRunnable);
+    }
+
     public LiveData<Author> getAuthorById(int authorId) {
         return authorDao.getAuthorById(authorId);
     }
