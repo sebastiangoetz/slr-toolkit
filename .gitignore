@@ -22,3 +22,7 @@ plugins/de\.tudresden\.slr\.model\.taxonomy\.ui/xtend-gen/de/tudresden/slr/model
 \.recommenders/
 
 examples
+.idea/.name
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
