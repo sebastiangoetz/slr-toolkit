@@ -104,10 +104,24 @@ public class ProjectOverviewFragment extends Fragment {
             throw new RuntimeException(e);
         }
         Repo currentRepo = repoViewModel.getCurrentRepo();
-        if (currentRepo.getRemote_url().isEmpty() || currentRepo.getToken().isEmpty() || currentRepo.getGit_email().isEmpty() || currentRepo.getGit_name().isEmpty()) {
-            pullButton.setEnabled(false);
-            pushButton.setEnabled(false);
-        }
+        repoViewModel.getAllRepos().observe(getViewLifecycleOwner(), repos -> {
+            for(Repo r : repos) {
+                if(r.getId() == currentRepo.getId()) {
+                    if(!r.getRemote_url().isEmpty()) {
+                        pushButton.setEnabled(true);
+                        pullButton.setEnabled(true);
+                    } else {
+                        pushButton.setEnabled(false);
+                        pullButton.setEnabled(false);
+                    }
+                }
+            }
+        });
+        //if (currentRepo.getRemote_url().isEmpty() || currentRepo.getToken().isEmpty() || currentRepo.getGit_email().isEmpty() || currentRepo.getGit_name().isEmpty()) {
+        //    pullButton.setEnabled(false);
+        //    pushButton.setEnabled(false);
+        //}
+
         pullButton.setOnClickListener(v -> actionPullRepo(view));
         commitButton.setOnClickListener(v -> {
 
